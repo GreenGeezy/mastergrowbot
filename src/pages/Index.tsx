@@ -1,14 +1,34 @@
 import { MessageCircle, Camera, BookOpen } from "lucide-react";
+import { useEffect, useState } from "react";
 import FeatureCard from "@/components/FeatureCard";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import AuthUI from "@/components/AuthUI";
+import { supabase } from "@/integrations/supabase/client";
+import { Session } from "@supabase/supabase-js";
 
 const Index = () => {
   const { toast } = useToast();
-  const isLoggedIn = false; // This would come from your auth state
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleFeatureClick = () => {
-    if (!isLoggedIn) {
+    if (!session) {
       toast({
         title: "Sign in required",
         description: "Please sign in to access this feature",
@@ -18,7 +38,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-[#111111] text-white px-4 sm:px-6 py-6 sm:py-12">
-      {/* Header Section with enhanced mobile styling */}
+      {/* Header Section */}
       <div className="w-full flex flex-col items-center mb-8 sm:mb-16 animate-fade-in">
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-secondary/50 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
@@ -38,7 +58,7 @@ const Index = () => {
         </p>
       </div>
 
-      {/* Feature Cards Section with improved mobile layout */}
+      {/* Feature Cards Section */}
       <div className="w-full max-w-6xl mx-auto mb-8 sm:mb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-2 sm:px-4">
         <FeatureCard
           icon={MessageCircle}
@@ -60,35 +80,25 @@ const Index = () => {
         />
       </div>
 
-      {/* Bottom Section with mobile-friendly spacing */}
-      {isLoggedIn ? (
-        <div className="w-full max-w-md mx-auto animate-fade-in px-4">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-center">Recent Activity</h2>
-          <div className="space-y-3 sm:space-y-4">
-            <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 sm:p-6 ring-1 ring-white/10 hover:ring-white/30 transition-all duration-300">
-              <p className="text-gray-300">Last health scan: Healthy</p>
-              <p className="text-sm text-gray-500">2 hours ago</p>
-            </div>
-            <div className="bg-card/80 backdrop-blur-sm rounded-lg p-4 sm:p-6 ring-1 ring-white/10 hover:ring-white/30 transition-all duration-300">
-              <p className="text-gray-300">Last chat: Nutrient schedule</p>
-              <p className="text-sm text-gray-500">Yesterday</p>
-            </div>
-          </div>
+      {/* Auth Section */}
+      {!session && !loading && (
+        <div className="w-full max-w-md mx-auto animate-fade-in px-4 mb-8">
+          <AuthUI />
         </div>
-      ) : (
-        <div className="w-full max-w-md mx-auto flex flex-col items-center animate-fade-in px-4">
-          <Button
-            className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white mb-3 sm:mb-4 h-10 sm:h-12 text-base sm:text-lg font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
-            size="lg"
-          >
-            Sign Up
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-gray-400 hover:text-white hover:bg-white/10 transition-colors duration-300"
-          >
-            Sign In
-          </Button>
+      )}
+
+      {/* User Dashboard Section */}
+      {session && (
+        <div className="w-full max-w-md mx-auto animate-fade-in px-4">
+          <div className="flex flex-col items-center space-y-4">
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-center">Welcome back!</h2>
+            <Button
+              onClick={() => supabase.auth.signOut()}
+              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white"
+            >
+              Sign Out
+            </Button>
+          </div>
         </div>
       )}
     </div>
