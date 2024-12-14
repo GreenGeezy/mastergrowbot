@@ -1,4 +1,4 @@
-import { MessageCircle, Camera, BookOpen, Cannabis } from "lucide-react";
+import { MessageCircle, Camera, BookOpen } from "lucide-react";
 import FeatureCard from "@/components/FeatureCard";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -21,10 +21,16 @@ const Index = () => {
       {/* Header Section */}
       <div className="w-full flex flex-col items-center mb-12 animate-fade-in">
         <div className="bg-primary/20 p-4 rounded-full mb-4">
-          <Cannabis className="w-12 h-12 text-secondary" />
+          <img 
+            src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
+            alt="Master Growbot Logo" 
+            className="w-12 h-12"
+          />
         </div>
         <h1 className="text-3xl font-bold mb-2">Master Growbot</h1>
-        <p className="text-gray-400 text-center">AI-Powered Cannabis Growing Assistant</p>
+        <p className="text-gray-400 text-center max-w-md">
+          Grow Bigger, Grow Better with your AI powered Cannabis Growing Assistant!
+        </p>
       </div>
 
       {/* Feature Cards Section */}
