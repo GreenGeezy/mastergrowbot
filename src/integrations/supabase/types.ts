@@ -1,0 +1,301 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  public: {
+    Tables: {
+      chat_history: {
+        Row: {
+          created_at: string
+          id: string
+          is_ai: boolean | null
+          message: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_ai?: boolean | null
+          message: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_ai?: boolean | null
+          message?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guide_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string
+          guide_id: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          guide_id: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          guide_id?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guide_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      openai_chats: {
+        Row: {
+          assistant_id: string | null
+          created_at: string | null
+          id: number
+          prompt: string | null
+          response: string | null
+          user_id: string | null
+        }
+        Insert: {
+          assistant_id?: string | null
+          created_at?: string | null
+          id?: number
+          prompt?: string | null
+          response?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          assistant_id?: string | null
+          created_at?: string | null
+          id?: number
+          prompt?: string | null
+          response?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      plant_analyses: {
+        Row: {
+          confidence_level: number | null
+          created_at: string | null
+          detailed_analysis: Json | null
+          diagnosis: string | null
+          follow_up_date: string | null
+          growing_method: string | null
+          growth_stage: string | null
+          id: string
+          image_taken_at: string | null
+          image_url: string
+          issue_resolved: boolean | null
+          primary_issue: string | null
+          recommended_actions: Json | null
+          resolution_notes: string | null
+          strain_name: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          confidence_level?: number | null
+          created_at?: string | null
+          detailed_analysis?: Json | null
+          diagnosis?: string | null
+          follow_up_date?: string | null
+          growing_method?: string | null
+          growth_stage?: string | null
+          id?: string
+          image_taken_at?: string | null
+          image_url: string
+          issue_resolved?: boolean | null
+          primary_issue?: string | null
+          recommended_actions?: Json | null
+          resolution_notes?: string | null
+          strain_name?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          confidence_level?: number | null
+          created_at?: string | null
+          detailed_analysis?: Json | null
+          diagnosis?: string | null
+          follow_up_date?: string | null
+          growing_method?: string | null
+          growth_stage?: string | null
+          id?: string
+          image_taken_at?: string | null
+          image_url?: string
+          issue_resolved?: boolean | null
+          primary_issue?: string | null
+          recommended_actions?: Json | null
+          resolution_notes?: string | null
+          strain_name?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          created_at: string
+          grow_experience_level: string | null
+          id: string
+          subscription_status: string | null
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          grow_experience_level?: string | null
+          id: string
+          subscription_status?: string | null
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          grow_experience_level?: string | null
+          id?: string
+          subscription_status?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type PublicSchema = Database[Extract<keyof Database, "public">]
+
+export type Tables<
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
