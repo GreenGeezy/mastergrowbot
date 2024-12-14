@@ -20,16 +20,16 @@ const Index = () => {
     <div className="min-h-screen bg-background text-white p-6 flex flex-col items-center">
       {/* Header Section */}
       <div className="w-full flex flex-col items-center mb-12 animate-fade-in">
-        <div className="bg-primary/20 p-4 rounded-full mb-4">
+        <div className="bg-primary/20 p-6 rounded-full mb-4">
           <img 
             src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
             alt="Master Growbot Logo" 
-            className="w-12 h-12"
+            className="w-20 h-20"
           />
         </div>
         <h1 className="text-3xl font-bold mb-2">Master Growbot</h1>
         <p className="text-gray-400 text-center max-w-md">
-          Grow Bigger, Grow Better with your AI powered Cannabis Growing Assistant!
+          Grow Bigger and Grow Better with your personal AI powered Cannabis Growing Assistant!
         </p>
       </div>
 
