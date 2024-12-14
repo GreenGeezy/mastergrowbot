@@ -34,7 +34,7 @@ const Index = () => {
       </div>
 
       {/* Feature Cards Section */}
-      <div className="w-full max-w-md mb-8">
+      <div className="w-full max-w-5xl mb-8 flex flex-col sm:flex-row gap-4 justify-center items-stretch">
         <FeatureCard
           icon={MessageCircle}
           title="Growing Assistant"

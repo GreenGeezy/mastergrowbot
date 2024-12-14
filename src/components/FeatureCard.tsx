@@ -11,7 +11,7 @@ const FeatureCard = ({ icon: Icon, title, subtitle, onClick }: FeatureCardProps)
   return (
     <div
       onClick={onClick}
-      className="w-full p-4 bg-card rounded-lg mb-4 cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/20 flex items-center space-x-4 animate-fade-in"
+      className="w-full sm:w-[250px] p-4 bg-card rounded-lg cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/20 flex items-center space-x-4 animate-fade-in"
     >
       <div className="p-3 bg-primary rounded-lg">
         <Icon className="w-6 h-6 text-white" />
