@@ -17,12 +17,12 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-[#1F1F1F] text-white px-4 sm:px-6 py-6 sm:py-12">
+    <div className="min-h-screen bg-gradient-to-b from-black to-[#111111] text-white px-4 sm:px-6 py-6 sm:py-12">
       {/* Header Section with enhanced mobile styling */}
       <div className="w-full flex flex-col items-center mb-8 sm:mb-16 animate-fade-in">
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-secondary/50 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-          <div className="relative bg-background/90 p-4 sm:p-8 rounded-full mb-4 sm:mb-6 backdrop-blur-sm ring-1 ring-white/10 hover:ring-white/30 transition-all duration-300">
+          <div className="relative bg-black/90 p-4 sm:p-8 rounded-full mb-4 sm:mb-6 backdrop-blur-sm ring-1 ring-white/10 hover:ring-white/30 transition-all duration-300">
             <img 
               src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
               alt="Master Growbot Logo" 
@@ -33,7 +33,7 @@ const Index = () => {
         <h1 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary animate-fade-in px-2">
           Master Growbot
         </h1>
-        <p className="text-lg sm:text-xl text-gray-300 text-center max-w-2xl leading-relaxed mb-6 sm:mb-8 animate-fade-in px-4">
+        <p className="text-lg sm:text-xl text-[#8B5CF6] text-center max-w-2xl leading-relaxed mb-6 sm:mb-8 animate-fade-in px-4">
           Grow Bigger and Grow Better with your personal AI powered Cannabis Growing Genius Friend!
         </p>
       </div>
