@@ -1,71 +1,49 @@
-# Welcome to your Lovable project
+# Master Growbot MVP
 
-## Project info
+## About
+Master Growbot is an AI-powered cannabis cultivation assistant that helps growers optimize their cultivation process through advanced AI technology and expert guidance.
 
-**URL**: https://lovable.dev/projects/4a890707-41df-4980-a668-0e1ebdbeae5f
+## Core Features
+- AI chatbot for growing advice using OpenAI's GPT
+- Plant health analysis using OpenAI's Vision API
+- Simple FAQ-style grow guide
+- User authentication and profiles
+- Mobile-responsive design
 
-## How can I edit this code?
+## Tech Stack
+- React + Vite
+- TypeScript
+- Tailwind CSS
+- Supabase (Authentication, Database, Storage)
+- OpenAI APIs (GPT, Vision)
 
-There are several ways of editing your application.
+## Development Setup
 
-**Use Lovable**
+1. Clone the repository:
+```bash
+git clone https://github.com/YourUsername/v1mastergrowbot.git
+cd v1mastergrowbot
+```
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4a890707-41df-4980-a668-0e1ebdbeae5f) and start prompting.
+2. Install dependencies:
+```bash
+npm install
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+3. Set up environment variables:
+Create a `.env` file in the root directory with:
+```
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+4. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Production Deployment
+The application is configured for deployment at www.mastergrowbot.com/app
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/4a890707-41df-4980-a668-0e1ebdbeae5f) and click on Share -> Publish.
-
-Once the app is fully built and tested, you can deploy it to www.mastergrowbot.com by following our custom domain setup guide.
-
-## I want to use a custom domain - is that possible?
-
-Yes! This project is configured to be deployed to www.mastergrowbot.com. Visit our docs for detailed setup instructions: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+## License
+All rights reserved. This source code is proprietary and confidential.
