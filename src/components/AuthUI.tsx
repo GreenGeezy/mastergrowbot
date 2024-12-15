@@ -42,7 +42,7 @@ const AuthUI = () => {
           },
         }}
         theme="dark"
-        providers={[]}
+        providers={["google"]}
       />
     </div>
   );
