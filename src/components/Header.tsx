@@ -17,7 +17,7 @@ const Header = () => {
         Master Growbot
       </h1>
       <p className="text-base sm:text-lg text-[#8B5CF6] text-center max-w-2xl leading-relaxed mb-4 sm:mb-6 animate-fade-in px-4 font-light">
-        Grow Bigger and Grow Better with your personal AI powered Cannabis Growing Genius Friend!
+        Grow Bigger, Grow Better with your personal AI Cannabis Genius Friend!
       </p>
     </div>
   );
