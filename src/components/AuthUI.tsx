@@ -43,6 +43,8 @@ const AuthUI = () => {
         }}
         theme="dark"
         providers={["google"]}
+        redirectTo={`${window.location.origin}/auth/callback`}
+        onlyThirdPartyProviders
       />
     </div>
   );
