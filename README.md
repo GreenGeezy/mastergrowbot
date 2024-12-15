@@ -64,6 +64,8 @@ This project is built with .
 
 Simply open [Lovable](https://lovable.dev/projects/4a890707-41df-4980-a668-0e1ebdbeae5f) and click on Share -> Publish.
 
+Once the app is fully built and tested, you can deploy it to www.mastergrowbot.com by following our custom domain setup guide.
+
 ## I want to use a custom domain - is that possible?
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Yes! This project is configured to be deployed to www.mastergrowbot.com. Visit our docs for detailed setup instructions: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
