@@ -21,8 +21,8 @@ const Index = () => {
       setSession(session);
       setLoading(false);
       
-      // If we're on the callback URL and have a session, redirect to home
-      if (session && (location.hash || location.pathname.includes('/auth/v1/callback'))) {
+      // If we have a session and we're on the callback route, redirect to home
+      if (session && (location.pathname.includes('/auth/callback') || location.hash)) {
         navigate('/', { replace: true });
       }
     });
@@ -33,8 +33,8 @@ const Index = () => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       
-      // If we're on the callback URL and have a session, redirect to home
-      if (session && (location.hash || location.pathname.includes('/auth/v1/callback'))) {
+      // If we have a session and we're on the callback route, redirect to home
+      if (session && (location.pathname.includes('/auth/callback') || location.hash)) {
         navigate('/', { replace: true });
       }
     });

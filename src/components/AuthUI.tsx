@@ -4,7 +4,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 
 const AuthUI = () => {
   // For local development, always use the current origin
-  const redirectUrl = `${window.location.origin}/auth/v1/callback`;
+  const redirectUrl = `${window.location.origin}/auth/callback`;
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
