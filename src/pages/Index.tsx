@@ -16,9 +16,17 @@ const Index = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Handle auth callback redirect
-    if (location.hash.includes('access_token')) {
-      navigate('/', { replace: true });
+    const handleRedirect = () => {
+      // Check for both hash fragments and callback path
+      if (location.hash || location.pathname.includes('/auth/v1/callback')) {
+        navigate('/', { replace: true });
+        return true;
+      }
+      return false;
+    };
+
+    // Handle initial redirect if needed
+    if (handleRedirect()) {
       return;
     }
 
@@ -33,9 +41,7 @@ const Index = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (location.pathname.includes('/auth/v1/callback')) {
-        navigate('/', { replace: true });
-      }
+      handleRedirect();
     });
 
     return () => subscription.unsubscribe();
