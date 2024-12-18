@@ -6,8 +6,8 @@ interface PasswordToggleProps {
 }
 
 const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => {
-  // Only render if there's a password input
-  const passwordInput = document.querySelector('input[type="password"]');
+  // Only render if there's a password input and explicitly type it as HTMLInputElement
+  const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement | null;
   if (!passwordInput) return null;
 
   return (
