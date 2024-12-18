@@ -15,6 +15,10 @@ const AuthUI = () => {
           const passwordInput = document.querySelector('input[type="password"]');
           if (passwordInput && passwordInput.parentElement) {
             passwordInput.parentElement.style.position = 'relative';
+            
+            // Add our custom data attribute to identify the password input
+            passwordInput.setAttribute('data-password-input', 'true');
+            
             observer.disconnect();
           }
         }
@@ -30,35 +34,21 @@ const AuthUI = () => {
   }, []);
 
   const handleTogglePassword = () => {
-    // Find all password inputs in the form
-    const inputs = document.querySelectorAll('input');
-    const passwordInput = Array.from(inputs).find(input => {
-      const type = input.getAttribute('type');
-      const name = input.getAttribute('name');
-      const placeholder = input.getAttribute('placeholder');
-      return (type === 'password' || type === 'text') && 
-             (name?.toLowerCase().includes('password') || placeholder?.toLowerCase().includes('password'));
-    }) as HTMLInputElement | undefined;
-
+    const passwordInput = document.querySelector('[data-password-input]') as HTMLInputElement;
     if (!passwordInput) return;
 
-    // Store current state
-    const currentValue = passwordInput.value;
-    const currentPosition = passwordInput.selectionStart;
+    // Store the current value and selection
+    const value = passwordInput.value;
+    const selectionStart = passwordInput.selectionStart;
 
-    // Update input type
-    if (showPassword) {
-      passwordInput.type = 'password';
-    } else {
-      passwordInput.type = 'text';
-    }
+    // Update the input type
+    passwordInput.type = showPassword ? 'password' : 'text';
 
-    // Restore value and cursor position
-    requestAnimationFrame(() => {
-      passwordInput.value = currentValue;
-      passwordInput.setSelectionRange(currentPosition, currentPosition);
-      passwordInput.focus();
-    });
+    // Immediately restore the value and selection
+    passwordInput.value = value;
+    passwordInput.selectionStart = selectionStart;
+    passwordInput.selectionEnd = selectionStart;
+    passwordInput.focus();
 
     setShowPassword(!showPassword);
   };
