@@ -14,6 +14,7 @@ const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => (
       onToggle();
     }}
     className="absolute right-3 top-[135px] text-primary hover:text-primary/80 transition-colors"
+    aria-label={showPassword ? "Hide password" : "Show password"}
   >
     {showPassword ? (
       <Eye size={20} className="opacity-75 hover:opacity-100" />
