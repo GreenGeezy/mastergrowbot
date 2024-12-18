@@ -1,12 +1,32 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PasswordToggle from "./auth/PasswordToggle";
 import { authStyles } from "./auth/authStyles";
 
 const AuthUI = () => {
   const [showPassword, setShowPassword] = useState(false);
   const redirectUrl = `${window.location.origin}/auth/callback`;
+
+  useEffect(() => {
+    const container = document.querySelector('.supabase-auth-ui_ui-container');
+    if (!container) return;
+
+    // Create a wrapper for the password input if it doesn't exist
+    const existingWrapper = container.querySelector('.password-input-wrapper');
+    if (!existingWrapper) {
+      const passwordInput = container.querySelector('input[type="password"]');
+      if (passwordInput && passwordInput.parentNode) {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'password-input-wrapper relative';
+        
+        // Replace password input with wrapper containing the input
+        passwordInput.parentNode.replaceChild(wrapper, passwordInput);
+        wrapper.appendChild(passwordInput);
+      }
+    }
+  }, []);
 
   const handleTogglePassword = () => {
     const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
@@ -17,20 +37,12 @@ const AuthUI = () => {
     const isInputFocused = document.activeElement === passwordInput;
     const cursorPosition = isInputFocused ? passwordInput.selectionStart : null;
 
-    // Create a new input element with the desired type
-    const tempInput = passwordInput.cloneNode(true) as HTMLInputElement;
-    tempInput.type = newType;
-    tempInput.value = value;
+    passwordInput.type = newType;
+    passwordInput.value = value;
 
-    // Replace the old input with the new one
-    if (passwordInput.parentNode) {
-      passwordInput.parentNode.replaceChild(tempInput, passwordInput);
-    }
-
-    // Restore focus and cursor position if needed
     if (isInputFocused && cursorPosition !== null) {
-      tempInput.focus();
-      tempInput.setSelectionRange(cursorPosition, cursorPosition);
+      passwordInput.focus();
+      passwordInput.setSelectionRange(cursorPosition, cursorPosition);
     }
 
     setShowPassword(!showPassword);

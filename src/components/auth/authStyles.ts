@@ -33,6 +33,11 @@ export const authStyles = {
     message: {
       color: '#22c55e',
     },
+    container: {
+      '.password-input-wrapper': {
+        position: 'relative',
+      },
+    },
   },
   className: {
     container: 'relative',
