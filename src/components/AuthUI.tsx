@@ -9,45 +9,36 @@ const AuthUI = () => {
   const redirectUrl = `${window.location.origin}/auth/callback`;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const container = document.querySelector('.supabase-auth-ui_ui-container');
-      if (!container) return;
-
-      const passwordInput = container.querySelector('input[type="password"]') as HTMLInputElement;
-      if (passwordInput && passwordInput.parentNode) {
-        const parentElement = passwordInput.parentElement as HTMLElement;
-        if (parentElement) {
-          parentElement.style.position = 'relative';
-          passwordInput.style.paddingRight = '2.5rem';
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.addedNodes.length) {
+          const passwordInput = document.querySelector('input[type="password"]');
+          if (passwordInput && passwordInput.parentElement) {
+            passwordInput.parentElement.style.position = 'relative';
+            observer.disconnect();
+          }
         }
-      }
-    }, 100);
+      });
+    });
 
-    return () => clearTimeout(timer);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const handleTogglePassword = () => {
-    const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
+    const passwordInput = document.querySelector('input[type="password"]');
     if (!passwordInput) return;
-
-    // Store the current value and cursor position
-    const currentValue = passwordInput.value;
-    const cursorPosition = passwordInput.selectionStart;
-    const isInputFocused = document.activeElement === passwordInput;
-
-    // Toggle the input type
-    const newType = showPassword ? 'password' : 'text';
-    passwordInput.type = newType;
-
-    // Restore the value
-    passwordInput.value = currentValue;
-
-    // Restore focus and cursor position if the input was focused
-    if (isInputFocused && cursorPosition !== null) {
-      passwordInput.focus();
-      passwordInput.setSelectionRange(cursorPosition, cursorPosition);
+    
+    if (showPassword) {
+      passwordInput.setAttribute('type', 'password');
+    } else {
+      passwordInput.setAttribute('type', 'text');
     }
-
+    
     setShowPassword(!showPassword);
   };
 

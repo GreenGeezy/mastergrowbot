@@ -9,13 +9,12 @@ const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => {
   return (
     <button
       type="button"
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        onToggle();
-      }}
-      className="absolute right-3 top-1/2 -translate-y-1/2 z-50 text-gray-500 hover:text-gray-700 focus:outline-none"
+      onClick={onToggle}
+      className="absolute right-3 top-[50%] -translate-y-[50%] z-[100] text-gray-400 hover:text-white transition-colors duration-200"
       aria-label={showPassword ? "Hide password" : "Show password"}
+      style={{
+        pointerEvents: 'auto',
+      }}
     >
       {showPassword ? (
         <Eye className="h-5 w-5" />
