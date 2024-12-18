@@ -9,10 +9,12 @@ const AuthUI = () => {
   const redirectUrl = `${window.location.origin}/auth/callback`;
 
   useEffect(() => {
-    // Handle password visibility
+    // Handle password visibility while preserving input value
     const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
     if (passwordInput) {
+      const currentValue = passwordInput.value; // Store current value
       passwordInput.type = showPassword ? 'text' : 'password';
+      passwordInput.value = currentValue; // Restore the value after changing type
     }
   }, [showPassword]);
 
