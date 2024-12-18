@@ -1,12 +1,20 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PasswordToggle from "./auth/PasswordToggle";
 import { authStyles } from "./auth/authStyles";
 
 const AuthUI = () => {
   const [showPassword, setShowPassword] = useState(false);
   const redirectUrl = `${window.location.origin}/auth/callback`;
+
+  useEffect(() => {
+    // Handle password visibility
+    const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
+    if (passwordInput) {
+      passwordInput.type = showPassword ? 'text' : 'password';
+    }
+  }, [showPassword]);
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
