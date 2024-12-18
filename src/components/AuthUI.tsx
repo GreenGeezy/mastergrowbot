@@ -30,8 +30,24 @@ const AuthUI = () => {
     const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
     if (!passwordInput) return;
 
+    // Store the current value and cursor position
+    const currentValue = passwordInput.value;
+    const cursorPosition = passwordInput.selectionStart;
+    const isInputFocused = document.activeElement === passwordInput;
+
+    // Toggle the input type
     const newType = showPassword ? 'password' : 'text';
     passwordInput.type = newType;
+
+    // Restore the value
+    passwordInput.value = currentValue;
+
+    // Restore focus and cursor position if the input was focused
+    if (isInputFocused && cursorPosition !== null) {
+      passwordInput.focus();
+      passwordInput.setSelectionRange(cursorPosition, cursorPosition);
+    }
+
     setShowPassword(!showPassword);
   };
 
