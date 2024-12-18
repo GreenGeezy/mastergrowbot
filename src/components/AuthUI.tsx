@@ -37,12 +37,14 @@ const AuthUI = () => {
               
               // Create a new password input to replace the original
               const newInput = document.createElement('input');
+              const originalInput = input as HTMLInputElement;
+              
               Object.assign(newInput, {
                 type: showPassword ? 'text' : 'password',
-                className: input.className,
-                name: input.name,
-                placeholder: input.placeholder,
-                value: input.value
+                className: originalInput.className,
+                name: originalInput.name,
+                placeholder: originalInput.placeholder,
+                value: originalInput.value
               });
               
               // Replace the original input
@@ -51,7 +53,7 @@ const AuthUI = () => {
               // Add event listener to sync the input value
               newInput.addEventListener('input', (e) => {
                 const target = e.target as HTMLInputElement;
-                input.value = target.value;
+                originalInput.value = target.value;
               });
             }
           });
