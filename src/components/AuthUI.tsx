@@ -12,11 +12,13 @@ const AuthUI = () => {
     const passwordInputs = document.querySelectorAll('input[type="password"], input[type="text"]') as NodeListOf<HTMLInputElement>;
     passwordInputs.forEach(input => {
       if (input.name === 'password' || input.placeholder.toLowerCase().includes('password')) {
+        const currentValue = input.value;
         const isInputFocused = document.activeElement === input;
         const cursorPosition = isInputFocused ? input.selectionStart : null;
         
-        // Set type based on showPassword state (opposite of before)
+        // Change the type while preserving the current value
         input.type = showPassword ? 'text' : 'password';
+        input.value = currentValue; // Restore the value after changing type
         
         // Restore focus and cursor position if needed
         if (isInputFocused && cursorPosition !== null) {
