@@ -13,14 +13,21 @@ const AuthUI = () => {
     passwordInputs.forEach(input => {
       if (input.name === 'password' || input.placeholder.toLowerCase().includes('password')) {
         const currentValue = input.value;
-        input.type = showPassword ? 'text' : 'password';
-        input.value = currentValue;
+        const currentType = input.type;
         
-        // Ensure the input maintains focus if it had it
-        if (document.activeElement === input) {
-          const position = input.selectionStart;
-          input.focus();
-          input.setSelectionRange(position, position);
+        // Only change the type if it's different from what we want
+        if ((showPassword && currentType !== 'text') || (!showPassword && currentType !== 'password')) {
+          input.type = showPassword ? 'text' : 'password';
+          input.value = currentValue;
+          
+          // Maintain focus and cursor position if the input was focused
+          if (document.activeElement === input) {
+            const position = input.selectionStart;
+            requestAnimationFrame(() => {
+              input.focus();
+              input.setSelectionRange(position, position);
+            });
+          }
         }
       }
     });
