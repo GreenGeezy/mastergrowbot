@@ -30,29 +30,35 @@ const AuthUI = () => {
   }, []);
 
   const handleTogglePassword = () => {
-    const passwordInputs = document.querySelectorAll('input[type="password"], input[type="text"]');
-    const passwordInput = Array.from(passwordInputs).find(input => 
-      input.getAttribute('name')?.includes('password') || 
-      input.getAttribute('placeholder')?.toLowerCase().includes('password')
-    ) as HTMLInputElement;
+    // Find all password inputs in the form
+    const inputs = document.querySelectorAll('input');
+    const passwordInput = Array.from(inputs).find(input => {
+      const type = input.getAttribute('type');
+      const name = input.getAttribute('name');
+      const placeholder = input.getAttribute('placeholder');
+      return (type === 'password' || type === 'text') && 
+             (name?.toLowerCase().includes('password') || placeholder?.toLowerCase().includes('password'));
+    }) as HTMLInputElement | undefined;
 
     if (!passwordInput) return;
 
-    // Store the current value and cursor position
-    const value = passwordInput.value;
-    const selectionStart = passwordInput.selectionStart;
-    const selectionEnd = passwordInput.selectionEnd;
+    // Store current state
+    const currentValue = passwordInput.value;
+    const currentPosition = passwordInput.selectionStart;
 
-    // Change the input type
-    const newType = showPassword ? 'password' : 'text';
-    passwordInput.type = newType;
-
-    // Restore the value and cursor position
-    passwordInput.value = value;
-    if (selectionStart !== null && selectionEnd !== null) {
-      passwordInput.setSelectionRange(selectionStart, selectionEnd);
+    // Update input type
+    if (showPassword) {
+      passwordInput.type = 'password';
+    } else {
+      passwordInput.type = 'text';
     }
-    passwordInput.focus();
+
+    // Restore value and cursor position
+    requestAnimationFrame(() => {
+      passwordInput.value = currentValue;
+      passwordInput.setSelectionRange(currentPosition, currentPosition);
+      passwordInput.focus();
+    });
 
     setShowPassword(!showPassword);
   };
