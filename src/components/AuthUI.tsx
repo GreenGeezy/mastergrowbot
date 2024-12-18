@@ -16,17 +16,22 @@ const AuthUI = () => {
         const isInputFocused = document.activeElement === input;
         const cursorPosition = isInputFocused ? input.selectionStart : null;
         
-        // Change the type while preserving the current value
-        input.type = showPassword ? 'text' : 'password';
-        input.value = currentValue; // Always restore the value regardless of whether it's empty
+        // Store the current value before changing type
+        const valueBeforeChange = input.value;
         
-        // Restore focus and cursor position if needed
-        if (isInputFocused && cursorPosition !== null) {
-          requestAnimationFrame(() => {
+        // Change the input type
+        input.type = showPassword ? 'text' : 'password';
+        
+        // Immediately restore the value
+        requestAnimationFrame(() => {
+          input.value = valueBeforeChange;
+          
+          // Restore focus and cursor position if needed
+          if (isInputFocused && cursorPosition !== null) {
             input.focus();
             input.setSelectionRange(cursorPosition, cursorPosition);
-          });
-        }
+          }
+        });
       }
     });
   }, [showPassword]);
