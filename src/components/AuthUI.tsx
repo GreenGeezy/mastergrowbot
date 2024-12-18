@@ -9,13 +9,21 @@ const AuthUI = () => {
   const redirectUrl = `${window.location.origin}/auth/callback`;
 
   useEffect(() => {
-    // Handle password visibility while preserving input value
-    const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
-    if (passwordInput) {
-      const currentValue = passwordInput.value; // Store current value
-      passwordInput.type = showPassword ? 'text' : 'password';
-      passwordInput.value = currentValue; // Restore the value after changing type
-    }
+    const passwordInputs = document.querySelectorAll('input[type="password"], input[type="text"]') as NodeListOf<HTMLInputElement>;
+    passwordInputs.forEach(input => {
+      if (input.name === 'password' || input.placeholder.toLowerCase().includes('password')) {
+        const currentValue = input.value;
+        input.type = showPassword ? 'text' : 'password';
+        input.value = currentValue;
+        
+        // Ensure the input maintains focus if it had it
+        if (document.activeElement === input) {
+          const position = input.selectionStart;
+          input.focus();
+          input.setSelectionRange(position, position);
+        }
+      }
+    });
   }, [showPassword]);
 
   return (
@@ -39,7 +47,6 @@ const AuthUI = () => {
           theme="dark"
           providers={["google"]}
           redirectTo={redirectUrl}
-          view={showPassword ? "sign_in" : undefined}
         />
         <PasswordToggle 
           showPassword={showPassword}
