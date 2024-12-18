@@ -6,6 +6,10 @@ interface PasswordToggleProps {
 }
 
 const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => {
+  // Only render if there's a password input
+  const passwordInput = document.querySelector('input[type="password"]');
+  if (!passwordInput) return null;
+
   return (
     <button
       type="button"
@@ -14,7 +18,10 @@ const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => {
         e.stopPropagation();
         onToggle();
       }}
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+      className="absolute right-3 top-[50%] -translate-y-[50%] text-gray-400 hover:text-gray-600 transition-colors z-10"
+      style={{
+        top: `${passwordInput.offsetTop + (passwordInput.offsetHeight / 2)}px`
+      }}
       aria-label={showPassword ? "Hide password" : "Show password"}
     >
       {showPassword ? (

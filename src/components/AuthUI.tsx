@@ -12,19 +12,9 @@ const AuthUI = () => {
     const container = document.querySelector('.supabase-auth-ui_ui-container');
     if (!container) return;
 
-    // Create a wrapper for the password input if it doesn't exist
-    const existingWrapper = container.querySelector('.password-input-wrapper');
-    if (!existingWrapper) {
-      const passwordInput = container.querySelector('input[type="password"]');
-      if (passwordInput && passwordInput.parentNode) {
-        // Create wrapper
-        const wrapper = document.createElement('div');
-        wrapper.className = 'password-input-wrapper relative';
-        
-        // Replace password input with wrapper containing the input
-        passwordInput.parentNode.replaceChild(wrapper, passwordInput);
-        wrapper.appendChild(passwordInput);
-      }
+    const passwordInput = container.querySelector('input[type="password"]');
+    if (passwordInput && passwordInput.parentNode) {
+      passwordInput.classList.add('pr-10'); // Add padding for the icon
     }
   }, []);
 
