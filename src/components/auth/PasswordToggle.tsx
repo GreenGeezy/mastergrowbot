@@ -6,13 +6,15 @@ interface PasswordToggleProps {
 }
 
 const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => {
-  // Only render if there's a password input and explicitly type it as HTMLInputElement
   const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement | null;
   if (!passwordInput) return null;
 
   const parentElement = passwordInput.parentElement;
   if (!parentElement) return null;
 
+  // Get the position relative to the viewport
+  const rect = passwordInput.getBoundingClientRect();
+  
   return (
     <button
       type="button"
@@ -21,7 +23,18 @@ const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => {
         e.stopPropagation();
         onToggle();
       }}
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors z-10"
+      style={{
+        position: 'absolute',
+        right: '12px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        zIndex: 50,
+        color: '#666',
+        background: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+        padding: '4px',
+      }}
       aria-label={showPassword ? "Hide password" : "Show password"}
     >
       {showPassword ? (

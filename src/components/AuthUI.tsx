@@ -9,17 +9,22 @@ const AuthUI = () => {
   const redirectUrl = `${window.location.origin}/auth/callback`;
 
   useEffect(() => {
-    const container = document.querySelector('.supabase-auth-ui_ui-container');
-    if (!container) return;
+    // Use a small delay to ensure the Auth UI is rendered
+    const timer = setTimeout(() => {
+      const container = document.querySelector('.supabase-auth-ui_ui-container');
+      if (!container) return;
 
-    const passwordInput = container.querySelector('input[type="password"]');
-    if (passwordInput && passwordInput.parentNode) {
-      const parentElement = passwordInput.parentElement;
-      if (parentElement) {
-        parentElement.style.position = 'relative';
-        passwordInput.classList.add('pr-10');
+      const passwordInput = container.querySelector('input[type="password"]');
+      if (passwordInput && passwordInput.parentNode) {
+        const parentElement = passwordInput.parentElement;
+        if (parentElement) {
+          parentElement.style.position = 'relative';
+          passwordInput.style.paddingRight = '2.5rem';
+        }
       }
-    }
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleTogglePassword = () => {

@@ -25,7 +25,6 @@ export const authStyles = {
     input: {
       borderColor: '#22c55e40',
       background: 'rgba(0,0,0,0.4)',
-      paddingRight: '2.5rem',
     },
     anchor: {
       color: '#22c55e',
