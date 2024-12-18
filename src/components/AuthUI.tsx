@@ -12,26 +12,23 @@ const AuthUI = () => {
     const passwordInputs = document.querySelectorAll('input[type="password"], input[type="text"]') as NodeListOf<HTMLInputElement>;
     passwordInputs.forEach(input => {
       if (input.name === 'password' || input.placeholder.toLowerCase().includes('password')) {
-        const currentValue = input.value;
         const isInputFocused = document.activeElement === input;
         const cursorPosition = isInputFocused ? input.selectionStart : null;
-        
-        // Store the current value before changing type
-        const valueBeforeChange = input.value;
-        
-        // Change the input type
+        const currentValue = input.value;
+
+        // Change input type without modifying the value
         input.type = showPassword ? 'text' : 'password';
         
-        // Immediately restore the value
-        requestAnimationFrame(() => {
-          input.value = valueBeforeChange;
-          
-          // Restore focus and cursor position if needed
-          if (isInputFocused && cursorPosition !== null) {
-            input.focus();
-            input.setSelectionRange(cursorPosition, cursorPosition);
-          }
-        });
+        // Ensure the value is preserved
+        if (currentValue) {
+          input.value = currentValue;
+        }
+
+        // Restore focus and cursor position if needed
+        if (isInputFocused && cursorPosition !== null) {
+          input.focus();
+          input.setSelectionRange(cursorPosition, cursorPosition);
+        }
       }
     });
   }, [showPassword]);
