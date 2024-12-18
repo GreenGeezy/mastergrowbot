@@ -8,9 +8,12 @@ interface PasswordToggleProps {
 const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => (
   <button
     type="button"
-    onClick={onToggle}
-    className="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:text-primary/80 transition-colors"
-    style={{ marginTop: '-12px' }}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onToggle();
+    }}
+    className="absolute right-3 top-[135px] text-primary hover:text-primary/80 transition-colors"
   >
     {showPassword ? (
       <Eye size={20} className="opacity-75 hover:opacity-100" />
