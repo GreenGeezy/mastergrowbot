@@ -45,42 +45,22 @@ const AuthUI = () => {
               color: '#22c55e',
             },
           },
-          extend: {
+          className: {
             password: {
-              container: {
-                position: 'relative',
-              },
-              input: {
-                paddingRight: '2.5rem',
-              },
-              icon: {
-                position: 'absolute',
-                right: '0.75rem',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                cursor: 'pointer',
-                color: '#22c55e',
-                zIndex: 10,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '1.5rem',
-                height: '1.5rem',
-              },
+              container: 'relative',
+              input: 'pr-10',
             },
           },
         }}
         localization={{
           variables: {
             sign_in: {
-              password_input: {
-                type: showPassword ? 'text' : 'password',
-              },
+              email_label: 'Email',
+              password_label: 'Password',
             },
             sign_up: {
-              password_input: {
-                type: showPassword ? 'text' : 'password',
-              },
+              email_label: 'Email',
+              password_label: 'Password',
             },
           },
         }}
@@ -104,6 +84,7 @@ const AuthUI = () => {
             </button>
           </div>
         )}
+        view={showPassword ? "sign_in" : undefined}
       />
     </div>
   );
