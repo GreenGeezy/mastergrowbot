@@ -9,28 +9,37 @@ const AuthUI = () => {
   const redirectUrl = `${window.location.origin}/auth/callback`;
 
   useEffect(() => {
-    const passwordInputs = document.querySelectorAll('input[type="password"], input[type="text"]') as NodeListOf<HTMLInputElement>;
-    passwordInputs.forEach(input => {
-      if (input.name === 'password' || input.placeholder.toLowerCase().includes('password')) {
-        const isInputFocused = document.activeElement === input;
-        const cursorPosition = isInputFocused ? input.selectionStart : null;
-        const currentValue = input.value;
-
-        // Change input type without modifying the value
-        input.type = showPassword ? 'text' : 'password';
-        
-        // Ensure the value is preserved
-        if (currentValue) {
-          input.value = currentValue;
-        }
-
-        // Restore focus and cursor position if needed
-        if (isInputFocused && cursorPosition !== null) {
-          input.focus();
-          input.setSelectionRange(cursorPosition, cursorPosition);
-        }
-      }
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach(() => {
+        const passwordInputs = document.querySelectorAll('input[type="password"]') as NodeListOf<HTMLInputElement>;
+        passwordInputs.forEach(input => {
+          if (input.name === 'password' || input.placeholder.toLowerCase().includes('password')) {
+            const value = input.value;
+            if (showPassword) {
+              input.type = 'text';
+              // Ensure value is preserved after type change
+              setTimeout(() => {
+                input.value = value;
+              }, 0);
+            } else {
+              input.type = 'password';
+              // Ensure value is preserved after type change
+              setTimeout(() => {
+                input.value = value;
+              }, 0);
+            }
+          }
+        });
+      });
     });
+
+    // Start observing the document with the configured parameters
+    observer.observe(document.body, { 
+      childList: true, 
+      subtree: true 
+    });
+
+    return () => observer.disconnect();
   }, [showPassword]);
 
   return (
