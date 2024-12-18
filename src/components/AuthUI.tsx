@@ -16,8 +16,9 @@ const AuthUI = () => {
         const currentType = input.type;
         
         // Only change the type if it's different from what we want
-        if ((showPassword && currentType !== 'text') || (!showPassword && currentType !== 'password')) {
-          input.type = showPassword ? 'text' : 'password';
+        // Note: We've inverted the condition here to match the icon state
+        if ((!showPassword && currentType !== 'text') || (showPassword && currentType !== 'password')) {
+          input.type = !showPassword ? 'text' : 'password';
           input.value = currentValue;
           
           // Maintain focus and cursor position if the input was focused
