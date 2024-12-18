@@ -12,15 +12,51 @@ const AuthUI = () => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length) {
-          const passwordInput = document.querySelector('input[type="password"]');
-          if (passwordInput && passwordInput.parentElement) {
-            passwordInput.parentElement.style.position = 'relative';
-            
-            // Add our custom data attribute to identify the password input
-            passwordInput.setAttribute('data-password-input', 'true');
-            
-            observer.disconnect();
-          }
+          const inputs = document.querySelectorAll('input[type="password"]');
+          inputs.forEach(input => {
+            if (input.parentElement) {
+              input.parentElement.style.position = 'relative';
+              
+              // Create a wrapper div for the input and toggle button
+              const wrapper = document.createElement('div');
+              wrapper.style.position = 'relative';
+              wrapper.className = 'password-input-wrapper';
+              
+              // Move the input into the wrapper
+              input.parentElement.insertBefore(wrapper, input);
+              wrapper.appendChild(input);
+              
+              // Create a toggle button container
+              const toggleContainer = document.createElement('div');
+              toggleContainer.className = 'password-toggle-container';
+              toggleContainer.style.position = 'absolute';
+              toggleContainer.style.right = '8px';
+              toggleContainer.style.top = '50%';
+              toggleContainer.style.transform = 'translateY(-50%)';
+              wrapper.appendChild(toggleContainer);
+              
+              // Create a new password input to replace the original
+              const newInput = document.createElement('input');
+              Object.assign(newInput, {
+                type: showPassword ? 'text' : 'password',
+                className: input.className,
+                name: input.name,
+                placeholder: input.placeholder,
+                value: input.value
+              });
+              
+              // Replace the original input
+              wrapper.replaceChild(newInput, input);
+              
+              // Add event listener to sync the input value
+              newInput.addEventListener('input', (e) => {
+                const target = e.target as HTMLInputElement;
+                input.value = target.value;
+              });
+            }
+          });
+          
+          observer.disconnect();
         }
       });
     });
@@ -31,25 +67,9 @@ const AuthUI = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [showPassword]);
 
   const handleTogglePassword = () => {
-    const passwordInput = document.querySelector('[data-password-input]') as HTMLInputElement;
-    if (!passwordInput) return;
-
-    // Store the current value and selection
-    const value = passwordInput.value;
-    const selectionStart = passwordInput.selectionStart;
-
-    // Update the input type
-    passwordInput.type = showPassword ? 'password' : 'text';
-
-    // Immediately restore the value and selection
-    passwordInput.value = value;
-    passwordInput.selectionStart = selectionStart;
-    passwordInput.selectionEnd = selectionStart;
-    passwordInput.focus();
-
     setShowPassword(!showPassword);
   };
 
