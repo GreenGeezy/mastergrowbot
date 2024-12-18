@@ -30,13 +30,21 @@ const AuthUI = () => {
   }, []);
 
   const handleTogglePassword = () => {
-    const passwordInput = document.querySelector('input[type="password"]');
+    const passwordInput = document.querySelector('input[type="password"], input[type="text"]') as HTMLInputElement;
     if (!passwordInput) return;
     
-    if (showPassword) {
-      passwordInput.setAttribute('type', 'password');
-    } else {
-      passwordInput.setAttribute('type', 'text');
+    // Store current value and selection
+    const currentValue = passwordInput.value;
+    const selectionStart = passwordInput.selectionStart;
+    const selectionEnd = passwordInput.selectionEnd;
+    
+    // Toggle type
+    passwordInput.setAttribute('type', showPassword ? 'password' : 'text');
+    
+    // Restore value and selection
+    passwordInput.value = currentValue;
+    if (selectionStart !== null && selectionEnd !== null) {
+      passwordInput.setSelectionRange(selectionStart, selectionEnd);
     }
     
     setShowPassword(!showPassword);
