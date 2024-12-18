@@ -34,8 +34,4 @@ export const authStyles = {
       color: '#22c55e',
     },
   },
-  className: {
-    container: 'relative password-input-wrapper',
-    input: 'relative',
-  },
 };

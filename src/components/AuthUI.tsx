@@ -14,7 +14,11 @@ const AuthUI = () => {
 
     const passwordInput = container.querySelector('input[type="password"]');
     if (passwordInput && passwordInput.parentNode) {
-      passwordInput.classList.add('pr-10'); // Add padding for the icon
+      const parentElement = passwordInput.parentElement;
+      if (parentElement) {
+        parentElement.style.position = 'relative';
+        passwordInput.classList.add('pr-10');
+      }
     }
   }, []);
 
