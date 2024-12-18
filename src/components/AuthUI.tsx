@@ -10,35 +10,32 @@ const AuthUI = () => {
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
-      <Auth
-        supabaseClient={supabase}
-        appearance={authStyles}
-        localization={{
-          variables: {
-            sign_in: {
-              email_label: 'Email',
-              password_label: 'Password',
+      <div className="relative">
+        <Auth
+          supabaseClient={supabase}
+          appearance={authStyles}
+          localization={{
+            variables: {
+              sign_in: {
+                email_label: 'Email',
+                password_label: 'Password',
+              },
+              sign_up: {
+                email_label: 'Email',
+                password_label: 'Password',
+              },
             },
-            sign_up: {
-              email_label: 'Email',
-              password_label: 'Password',
-            },
-          },
-        }}
-        theme="dark"
-        providers={["google"]}
-        redirectTo={redirectUrl}
-        afterComponent={({ children }) => (
-          <div style={{ position: 'relative' }}>
-            {children}
-            <PasswordToggle 
-              showPassword={showPassword}
-              onToggle={() => setShowPassword(!showPassword)}
-            />
-          </div>
-        )}
-        view={showPassword ? "sign_in" : undefined}
-      />
+          }}
+          theme="dark"
+          providers={["google"]}
+          redirectTo={redirectUrl}
+          view={showPassword ? "sign_in" : undefined}
+        />
+        <PasswordToggle 
+          showPassword={showPassword}
+          onToggle={() => setShowPassword(!showPassword)}
+        />
+      </div>
     </div>
   );
 };
