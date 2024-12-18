@@ -14,9 +14,9 @@ const AuthUI = () => {
       const container = document.querySelector('.supabase-auth-ui_ui-container');
       if (!container) return;
 
-      const passwordInput = container.querySelector('input[type="password"]');
+      const passwordInput = container.querySelector('input[type="password"]') as HTMLInputElement;
       if (passwordInput && passwordInput.parentNode) {
-        const parentElement = passwordInput.parentElement;
+        const parentElement = passwordInput.parentElement as HTMLElement;
         if (parentElement) {
           parentElement.style.position = 'relative';
           passwordInput.style.paddingRight = '2.5rem';
