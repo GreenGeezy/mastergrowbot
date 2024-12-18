@@ -18,7 +18,11 @@ const AuthUI = () => {
         
         // Change the type while preserving the current value
         input.type = showPassword ? 'text' : 'password';
-        input.value = currentValue; // Restore the value after changing type
+        
+        // Only update the value if it's not empty to avoid showing placeholder
+        if (currentValue) {
+          input.value = currentValue;
+        }
         
         // Restore focus and cursor position if needed
         if (isInputFocused && cursorPosition !== null) {

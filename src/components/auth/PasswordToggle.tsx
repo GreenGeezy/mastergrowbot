@@ -13,9 +13,9 @@ const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => (
     style={{ marginTop: '-12px' }}
   >
     {showPassword ? (
-      <EyeOff size={20} className="opacity-75 hover:opacity-100" />
-    ) : (
       <Eye size={20} className="opacity-75 hover:opacity-100" />
+    ) : (
+      <EyeOff size={20} className="opacity-75 hover:opacity-100" />
     )}
   </button>
 );
