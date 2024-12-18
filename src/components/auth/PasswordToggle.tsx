@@ -6,15 +6,6 @@ interface PasswordToggleProps {
 }
 
 const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => {
-  const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement | null;
-  if (!passwordInput) return null;
-
-  const parentElement = passwordInput.parentElement;
-  if (!parentElement) return null;
-
-  // Get the position relative to the viewport
-  const rect = passwordInput.getBoundingClientRect();
-  
   return (
     <button
       type="button"
@@ -23,24 +14,13 @@ const PasswordToggle = ({ showPassword, onToggle }: PasswordToggleProps) => {
         e.stopPropagation();
         onToggle();
       }}
-      style={{
-        position: 'absolute',
-        right: '12px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 50,
-        color: '#666',
-        background: 'transparent',
-        border: 'none',
-        cursor: 'pointer',
-        padding: '4px',
-      }}
+      className="absolute right-3 top-1/2 -translate-y-1/2 z-50 text-gray-500 hover:text-gray-700 focus:outline-none"
       aria-label={showPassword ? "Hide password" : "Show password"}
     >
       {showPassword ? (
-        <Eye size={20} className="opacity-75 hover:opacity-100" />
+        <Eye className="h-5 w-5" />
       ) : (
-        <EyeOff size={20} className="opacity-75 hover:opacity-100" />
+        <EyeOff className="h-5 w-5" />
       )}
     </button>
   );

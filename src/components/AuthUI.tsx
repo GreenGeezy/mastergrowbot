@@ -9,7 +9,6 @@ const AuthUI = () => {
   const redirectUrl = `${window.location.origin}/auth/callback`;
 
   useEffect(() => {
-    // Use a small delay to ensure the Auth UI is rendered
     const timer = setTimeout(() => {
       const container = document.querySelector('.supabase-auth-ui_ui-container');
       if (!container) return;
@@ -32,18 +31,7 @@ const AuthUI = () => {
     if (!passwordInput) return;
 
     const newType = showPassword ? 'password' : 'text';
-    const value = passwordInput.value;
-    const isInputFocused = document.activeElement === passwordInput;
-    const cursorPosition = isInputFocused ? passwordInput.selectionStart : null;
-
     passwordInput.type = newType;
-    passwordInput.value = value;
-
-    if (isInputFocused && cursorPosition !== null) {
-      passwordInput.focus();
-      passwordInput.setSelectionRange(cursorPosition, cursorPosition);
-    }
-
     setShowPassword(!showPassword);
   };
 
