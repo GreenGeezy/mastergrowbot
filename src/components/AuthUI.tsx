@@ -1,6 +1,6 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PasswordToggle from "./auth/PasswordToggle";
 import { authStyles } from "./auth/authStyles";
 
@@ -8,70 +8,16 @@ const AuthUI = () => {
   const [showPassword, setShowPassword] = useState(false);
   const redirectUrl = `${window.location.origin}/auth/callback`;
 
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.addedNodes.length) {
-          const inputs = document.querySelectorAll('input[type="password"]');
-          inputs.forEach(input => {
-            if (input.parentElement) {
-              input.parentElement.style.position = 'relative';
-              
-              // Create a wrapper div for the input and toggle button
-              const wrapper = document.createElement('div');
-              wrapper.style.position = 'relative';
-              wrapper.className = 'password-input-wrapper';
-              
-              // Move the input into the wrapper
-              input.parentElement.insertBefore(wrapper, input);
-              wrapper.appendChild(input);
-              
-              // Create a toggle button container
-              const toggleContainer = document.createElement('div');
-              toggleContainer.className = 'password-toggle-container';
-              toggleContainer.style.position = 'absolute';
-              toggleContainer.style.right = '8px';
-              toggleContainer.style.top = '50%';
-              toggleContainer.style.transform = 'translateY(-50%)';
-              wrapper.appendChild(toggleContainer);
-              
-              // Create a new password input to replace the original
-              const newInput = document.createElement('input');
-              const originalInput = input as HTMLInputElement;
-              
-              Object.assign(newInput, {
-                type: showPassword ? 'text' : 'password',
-                className: originalInput.className,
-                name: originalInput.name,
-                placeholder: originalInput.placeholder,
-                value: originalInput.value
-              });
-              
-              // Replace the original input
-              wrapper.replaceChild(newInput, input);
-              
-              // Add event listener to sync the input value
-              newInput.addEventListener('input', (e) => {
-                const target = e.target as HTMLInputElement;
-                originalInput.value = target.value;
-              });
-            }
-          });
-          
-          observer.disconnect();
-        }
-      });
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-
-    return () => observer.disconnect();
-  }, [showPassword]);
-
   const handleTogglePassword = () => {
+    const passwordInputs = document.querySelectorAll('input[type="password"]');
+    passwordInputs.forEach((input) => {
+      if (input instanceof HTMLInputElement) {
+        const newType = showPassword ? 'password' : 'text';
+        const currentValue = input.value;
+        input.type = newType;
+        input.value = currentValue;
+      }
+    });
     setShowPassword(!showPassword);
   };
 
