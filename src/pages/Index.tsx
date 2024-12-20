@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import FeatureSection from "@/components/FeatureSection";
 import UserDashboard from "@/components/UserDashboard";
 import AuthUI from "@/components/AuthUI";
+import ChatInterface from "@/components/ChatInterface";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Index = () => {
@@ -68,6 +69,12 @@ const Index = () => {
       {!session && !loading && (
         <div className="w-full max-w-md mx-auto animate-fade-in px-4 mb-8">
           <AuthUI />
+        </div>
+      )}
+
+      {session && (
+        <div className="mt-8">
+          <ChatInterface />
         </div>
       )}
 
