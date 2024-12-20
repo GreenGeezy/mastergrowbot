@@ -23,7 +23,7 @@ const starterQuestions = [
   "What's the ideal temperature and humidity for flowering?",
   "How can I prevent and treat common pests?",
   "When is the best time to harvest?"
-];
+]
 
 export default function ChatInterface() {
   const [message, setMessage] = useState('')
@@ -181,28 +181,23 @@ export default function ChatInterface() {
 
     setIsLoading(true)
     try {
-      const response = await fetch('/functions/v1/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token}`,
-        },
-        body: JSON.stringify({
+      // Use supabase.functions.invoke instead of fetch
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: {
           message,
           userId: session?.user?.id,
-        }),
+        },
       })
 
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error)
+      if (error) throw error
 
       setMessage('')
-      await loadChatHistory()
-    } catch (error) {
+      await loadChatHistory() // Reload chat history after successful message
+    } catch (error: any) {
       console.error('Error sending message:', error)
       toast({
         title: 'Error',
-        description: 'Failed to send message',
+        description: error.message || 'Failed to send message',
         variant: 'destructive',
       })
     } finally {

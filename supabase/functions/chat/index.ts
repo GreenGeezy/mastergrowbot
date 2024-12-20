@@ -15,11 +15,17 @@ serve(async (req) => {
 
   try {
     const { message, userId } = await req.json()
+    
+    if (!message || !userId) {
+      throw new Error('Missing required fields: message and userId are required')
+    }
+
     const openAiKey = Deno.env.get('OPENAI_API_KEY')
     const assistantId = Deno.env.get('OPENAI_ASSISTANT_ID')
 
     if (!openAiKey || !assistantId) {
-      throw new Error('Missing OpenAI configuration')
+      console.error('Missing OpenAI configuration')
+      throw new Error('Server configuration error')
     }
 
     console.log('Processing chat request:', { userId, messageLength: message.length })
@@ -47,10 +53,13 @@ serve(async (req) => {
 
     // Wait for the run to complete
     let runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id)
-    while (runStatus.status !== "completed") {
+    let attempts = 0
+    const maxAttempts = 30 // Maximum 30 seconds wait
+
+    while (runStatus.status !== "completed" && attempts < maxAttempts) {
       if (runStatus.status === "failed") {
         console.error('Assistant run failed:', runStatus)
-        throw new Error("Assistant run failed")
+        throw new Error("Assistant run failed: " + runStatus.last_error?.message || 'Unknown error')
       }
       if (runStatus.status === "requires_action") {
         console.error('Assistant requires action:', runStatus)
@@ -59,6 +68,11 @@ serve(async (req) => {
       await new Promise(resolve => setTimeout(resolve, 1000))
       runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id)
       console.log('Run status:', runStatus.status)
+      attempts++
+    }
+
+    if (attempts >= maxAttempts) {
+      throw new Error("Request timeout: Assistant took too long to respond")
     }
 
     // Get the assistant's response
