@@ -96,15 +96,15 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[600px] w-full max-w-4xl mx-auto bg-[#222222] border border-[#333333] rounded-xl shadow-lg overflow-hidden">
-      <ScrollArea className="flex-1 p-6">
+    <div className="flex flex-col h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
+      <ScrollArea className="flex-1 p-4">
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
               <Leaf className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-semibold text-white">How can I help you today?</h2>
-            <p className="text-gray-400 max-w-md mb-6">
+            <p className="text-gray-400 max-w-md">
               I'm your cannabis cultivation assistant. Ask me anything about growing, plant care, or troubleshooting issues.
             </p>
             
@@ -129,8 +129,8 @@ export default function ChatInterface() {
               />
             </div>
 
-            <div className="mt-6 w-full max-w-2xl">
-              <h3 className="text-white text-left mb-3 font-medium">Common Questions</h3>
+            <div className="w-full max-w-2xl mt-2">
+              <h3 className="text-white text-left mb-2 font-medium">Common Questions</h3>
               <div className="grid grid-cols-1 gap-2">
                 {starterQuestions.map((question, index) => (
                   <button
@@ -145,7 +145,7 @@ export default function ChatInterface() {
             </div>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -173,12 +173,12 @@ export default function ChatInterface() {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Ask about cannabis cultivation..."
             disabled={isLoading}
-            className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400 rounded-xl"
+            className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400"
           />
           <Button 
             type="submit" 
             disabled={isLoading}
-            className="rounded-xl bg-primary hover:bg-primary/90"
+            className="bg-primary hover:bg-primary/90"
           >
             {isLoading ? (
               'Sending...'
@@ -189,5 +189,5 @@ export default function ChatInterface() {
         </form>
       </div>
     </div>
-  );
+  )
 }

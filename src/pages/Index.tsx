@@ -62,12 +62,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#111111] text-white">
-      {!session && <div className="px-4 sm:px-6 py-2 sm:py-3"><Header /></div>}
+      {!session && <div className="px-4 sm:px-6 py-2"><Header /></div>}
       
       {!session && !loading && (
         <>
           <FeatureSection onFeatureClick={handleFeatureClick} />
-          <div className="w-full max-w-md mx-auto animate-fade-in px-4 mt-2">
+          <div className="w-full max-w-md mx-auto animate-fade-in px-4">
             <AuthUI />
           </div>
         </>
@@ -78,8 +78,6 @@ const Index = () => {
           <ChatInterface />
         </div>
       )}
-
-      {session && <UserDashboard />}
     </div>
   );
 };
