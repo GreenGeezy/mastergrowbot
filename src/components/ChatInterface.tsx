@@ -62,17 +62,38 @@ export default function ChatInterface() {
 
     setIsLoading(true)
     try {
+      // Add user message to UI immediately for better UX
+      const userMessage = {
+        id: crypto.randomUUID(),
+        message: message.trim(),
+        is_ai: false,
+        created_at: new Date().toISOString()
+      }
+      setMessages(prev => [...prev, userMessage])
+      
       const { data, error } = await supabase.functions.invoke('chat', {
         body: {
-          message,
-          userId: session?.user?.id,
+          message: message.trim(),
+          userId: session.user.id,
         },
       })
 
       if (error) throw error
 
+      if (data?.response) {
+        // Add AI response to UI
+        const aiMessage = {
+          id: crypto.randomUUID(),
+          message: data.response,
+          is_ai: true,
+          created_at: new Date().toISOString()
+        }
+        setMessages(prev => [...prev, aiMessage])
+      }
+
       setMessage('')
-      await loadChatHistory() // Reload chat history after successful message
+      // Reload chat history to ensure consistency
+      await loadChatHistory()
     } catch (error: any) {
       console.error('Error sending message:', error)
       toast({
