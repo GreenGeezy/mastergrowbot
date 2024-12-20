@@ -104,70 +104,70 @@ export default function ChatInterface() {
         <div className="flex flex-col flex-1 h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
           <ScrollArea className="flex-1 p-4">
             {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-            <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
-              <Leaf className="w-8 h-8 text-white" />
-            </div>
-            <h2 className="text-2xl font-semibold text-white">How can I help you today?</h2>
-            <p className="text-gray-400 max-w-md">
-              I'm your cannabis cultivation assistant. Ask me anything about growing, plant care, or troubleshooting issues.
-            </p>
-            
-            <div className="grid grid-cols-1 gap-3 w-full max-w-2xl">
-              <FeatureCard
-                icon={MessageCircle}
-                title="Growing Assistant"
-                subtitle="Get expert growing advice"
-                onClick={() => handleQuestionClick("Can you help me optimize my growing setup?")}
-              />
-              <FeatureCard
-                icon={Camera}
-                title="Plant Health Check"
-                subtitle="Diagnose plant issues"
-                onClick={() => handleQuestionClick("How can I identify common plant health issues?")}
-              />
-              <FeatureCard
-                icon={BookOpen}
-                title="Growing Guide"
-                subtitle="Quick answers to FAQs"
-                onClick={() => handleQuestionClick("What are the essential steps for successful cannabis cultivation?")}
-              />
-            </div>
+              <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center glow-effect">
+                  <Leaf className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-2xl font-semibold text-white">How can I help you today?</h2>
+                <p className="text-gray-400 max-w-md">
+                  I'm your cannabis cultivation assistant. Ask me anything about growing, plant care, or troubleshooting issues.
+                </p>
+                
+                <div className="grid grid-cols-1 gap-3 w-full max-w-2xl">
+                  <FeatureCard
+                    icon={MessageCircle}
+                    title="Growing Assistant"
+                    subtitle="Get expert growing advice"
+                    onClick={() => handleQuestionClick("Can you help me optimize my growing setup?")}
+                  />
+                  <FeatureCard
+                    icon={Camera}
+                    title="Plant Health Check"
+                    subtitle="Diagnose plant issues"
+                    onClick={() => handleQuestionClick("How can I identify common plant health issues?")}
+                  />
+                  <FeatureCard
+                    icon={BookOpen}
+                    title="Growing Guide"
+                    subtitle="Quick answers to FAQs"
+                    onClick={() => handleQuestionClick("What are the essential steps for successful cannabis cultivation?")}
+                  />
+                </div>
 
-            <div className="w-full max-w-2xl mt-2">
-              <h3 className="text-white text-left mb-2 font-medium">Common Questions</h3>
-              <div className="grid grid-cols-1 gap-2">
-                {starterQuestions.map((question, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleQuestionClick(question)}
-                    className="text-left p-3 rounded-lg bg-[#333333] hover:bg-[#444444] text-gray-300 hover:text-white text-sm transition-colors duration-200"
-                  >
-                    {question}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-            ) : (
-          <div className="space-y-4">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.is_ai ? 'justify-start' : 'justify-end'}`}
-              >
-                <div
-                  className={`max-w-[80%] p-4 rounded-2xl ${
-                    msg.is_ai
-                      ? 'bg-[#333333] text-white'
-                      : 'bg-primary text-white'
-                  }`}
-                >
-                  {msg.message}
+                <div className="w-full max-w-2xl mt-2">
+                  <h3 className="text-white text-left mb-2 font-medium">Common Questions</h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    {starterQuestions.map((question, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleQuestionClick(question)}
+                        className="cyber-button text-left p-3 rounded-lg text-gray-300 hover:text-white text-sm transition-all duration-200"
+                      >
+                        {question}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
+            ) : (
+              <div className="space-y-4">
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.is_ai ? 'justify-start' : 'justify-end'}`}
+                  >
+                    <div
+                      className={`max-w-[80%] p-4 rounded-2xl ${
+                        msg.is_ai
+                          ? 'message-bubble-ai'
+                          : 'message-bubble-user'
+                      }`}
+                    >
+                      {msg.message}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </ScrollArea>
           
@@ -178,15 +178,15 @@ export default function ChatInterface() {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Ask about cannabis cultivation..."
                 disabled={isLoading}
-                className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400"
+                className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400 focus:border-accent focus:ring-accent"
               />
               <Button 
                 type="submit" 
                 disabled={isLoading}
-                className="bg-primary hover:bg-primary/90"
+                className="cyber-button"
               >
                 {isLoading ? (
-                  'Sending...'
+                  <div className="loading-pulse">Sending...</div>
                 ) : (
                   <Send className="w-5 h-5" />
                 )}

@@ -29,8 +29,12 @@ export default {
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#90EE90",
-          foreground: "#1A1A1A",
+          DEFAULT: "#663399",
+          foreground: "#ffffff",
+        },
+        accent: {
+          DEFAULT: "#B24BF3",
+          foreground: "#ffffff",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -39,10 +43,6 @@ export default {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -71,11 +71,25 @@ export default {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        pulse: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
+        glow: {
+          "0%, 100%": {
+            boxShadow: "0 0 15px #B24BF3",
+          },
+          "50%": {
+            boxShadow: "0 0 30px #B24BF3",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
+        "pulse-glow": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        glow: "glow 2s ease-in-out infinite",
       },
     },
   },
