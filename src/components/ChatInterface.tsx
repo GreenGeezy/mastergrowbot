@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/hooks/use-toast'
+import { Leaf, Send } from 'lucide-react'
 
 interface Message {
   id: string
@@ -82,41 +83,62 @@ export default function ChatInterface() {
   }
 
   return (
-    <div className="flex flex-col h-[600px] w-full max-w-2xl mx-auto bg-background border rounded-lg shadow-sm">
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.is_ai ? 'justify-start' : 'justify-end'}`}
-            >
-              <div
-                className={`max-w-[80%] p-3 rounded-lg ${
-                  msg.is_ai
-                    ? 'bg-secondary text-secondary-foreground'
-                    : 'bg-primary text-primary-foreground'
-                }`}
-              >
-                {msg.message}
-              </div>
+    <div className="flex flex-col h-[600px] w-full max-w-4xl mx-auto bg-[#222222] border border-[#333333] rounded-xl shadow-lg overflow-hidden">
+      <ScrollArea className="flex-1 p-6">
+        {messages.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+            <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+              <Leaf className="w-8 h-8 text-white" />
             </div>
-          ))}
-        </div>
+            <h2 className="text-2xl font-semibold text-white">How can I help you today?</h2>
+            <p className="text-gray-400 max-w-md">
+              I'm your cannabis cultivation assistant. Ask me anything about growing, plant care, or troubleshooting issues.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${msg.is_ai ? 'justify-start' : 'justify-end'}`}
+              >
+                <div
+                  className={`max-w-[80%] p-4 rounded-2xl ${
+                    msg.is_ai
+                      ? 'bg-[#333333] text-white'
+                      : 'bg-primary text-white'
+                  }`}
+                >
+                  {msg.message}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </ScrollArea>
       
-      <form onSubmit={sendMessage} className="p-4 border-t">
-        <div className="flex gap-2">
+      <div className="p-4 bg-[#1A1A1A] border-t border-[#333333]">
+        <form onSubmit={sendMessage} className="flex gap-2">
           <Input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Ask about cannabis cultivation..."
             disabled={isLoading}
+            className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400 rounded-xl"
           />
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Sending...' : 'Send'}
+          <Button 
+            type="submit" 
+            disabled={isLoading}
+            className="rounded-xl bg-primary hover:bg-primary/90"
+          >
+            {isLoading ? (
+              'Sending...'
+            ) : (
+              <Send className="w-5 h-5" />
+            )}
           </Button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   )
 }
