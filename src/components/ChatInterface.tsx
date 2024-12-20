@@ -128,60 +128,12 @@ export default function ChatInterface() {
     }
   }
 
-  const toggleRecording = async () => {
-    if (isRecording) {
-      audioRecorderRef.current?.stop()
-      setIsRecording(false)
-    } else {
-      try {
-        audioRecorderRef.current = new AudioRecorder((audioData) => {
-          if (wsRef.current?.readyState === WebSocket.OPEN) {
-            const base64Audio = encodeAudioData(audioData)
-            wsRef.current.send(JSON.stringify({
-              type: 'input_audio_buffer.append',
-              audio: base64Audio
-            }))
-          }
-        })
-        await audioRecorderRef.current.start()
-        setIsRecording(true)
-      } catch (error) {
-        console.error('Error starting recording:', error)
-        toast({
-          title: 'Error',
-          description: 'Failed to access microphone',
-          variant: 'destructive',
-        })
-      }
-    }
-  }
-
-  const encodeAudioData = (float32Array: Float32Array): string => {
-    const int16Array = new Int16Array(float32Array.length)
-    for (let i = 0; i < float32Array.length; i++) {
-      const s = Math.max(-1, Math.min(1, float32Array[i]))
-      int16Array[i] = s < 0 ? s * 0x8000 : s * 0x7FFF
-    }
-    
-    const uint8Array = new Uint8Array(int16Array.buffer)
-    let binary = ''
-    const chunkSize = 0x8000
-    
-    for (let i = 0; i < uint8Array.length; i += chunkSize) {
-      const chunk = uint8Array.subarray(i, Math.min(i + chunkSize, uint8Array.length))
-      binary += String.fromCharCode.apply(null, Array.from(chunk))
-    }
-    
-    return btoa(binary)
-  }
-
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!message.trim() || !session?.user?.id) return
 
     setIsLoading(true)
     try {
-      // Use supabase.functions.invoke instead of fetch
       const { data, error } = await supabase.functions.invoke('chat', {
         body: {
           message,
