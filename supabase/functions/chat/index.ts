@@ -22,32 +22,43 @@ serve(async (req) => {
       throw new Error('Missing OpenAI configuration')
     }
 
+    console.log('Processing chat request:', { userId, messageLength: message.length })
+
     const openai = new OpenAI({
       apiKey: openAiKey,
     })
 
     // Create a thread
     const thread = await openai.beta.threads.create()
+    console.log('Created thread:', thread.id)
 
     // Add the user's message to the thread
     await openai.beta.threads.messages.create(thread.id, {
       role: "user",
       content: message,
     })
+    console.log('Added user message to thread')
 
     // Run the assistant
     const run = await openai.beta.threads.runs.create(thread.id, {
       assistant_id: assistantId,
     })
+    console.log('Started assistant run:', run.id)
 
     // Wait for the run to complete
     let runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id)
     while (runStatus.status !== "completed") {
       if (runStatus.status === "failed") {
+        console.error('Assistant run failed:', runStatus)
         throw new Error("Assistant run failed")
+      }
+      if (runStatus.status === "requires_action") {
+        console.error('Assistant requires action:', runStatus)
+        throw new Error("Assistant requires action")
       }
       await new Promise(resolve => setTimeout(resolve, 1000))
       runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id)
+      console.log('Run status:', runStatus.status)
     }
 
     // Get the assistant's response
@@ -57,10 +68,12 @@ serve(async (req) => {
       .pop()
 
     if (!assistantMessage) {
+      console.error('No assistant message found in thread')
       throw new Error("No response from assistant")
     }
 
     const aiResponse = assistantMessage.content[0].text.value
+    console.log('Got assistant response:', { responseLength: aiResponse.length })
 
     // Store the chat history in Supabase
     const supabaseClient = createClient(
@@ -86,13 +99,15 @@ serve(async (req) => {
       }
     ])
 
+    console.log('Stored chat history in database')
+
     return new Response(
       JSON.stringify({ response: aiResponse }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Error in chat function:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
