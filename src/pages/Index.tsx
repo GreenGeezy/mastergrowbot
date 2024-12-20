@@ -62,8 +62,8 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#111111] text-white px-4 sm:px-6 py-4 sm:py-8">
-      <Header />
+    <div className="min-h-screen bg-[#111111] text-white">
+      {!session && <div className="px-4 sm:px-6 py-4 sm:py-8"><Header /></div>}
       
       {!session && !loading && (
         <>
@@ -75,7 +75,7 @@ const Index = () => {
       )}
 
       {session && (
-        <div className="mt-8">
+        <div className="h-screen">
           <ChatInterface />
         </div>
       )}
