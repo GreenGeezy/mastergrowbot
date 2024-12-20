@@ -52,7 +52,6 @@ const Index = () => {
     }
   };
 
-  // Show loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-[#111111] text-white flex items-center justify-center">
@@ -63,12 +62,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#111111] text-white">
-      {!session && <div className="px-4 sm:px-6 py-4 sm:py-8"><Header /></div>}
+      {!session && <div className="px-4 sm:px-6 py-4 sm:py-6"><Header /></div>}
       
       {!session && !loading && (
         <>
           <FeatureSection onFeatureClick={handleFeatureClick} />
-          <div className="w-full max-w-md mx-auto animate-fade-in px-4 mb-8 mt-8">
+          <div className="w-full max-w-md mx-auto animate-fade-in px-4 mt-4">
             <AuthUI />
           </div>
         </>
