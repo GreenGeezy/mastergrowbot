@@ -67,10 +67,10 @@ const Index = () => {
       
       {!session && !loading && (
         <>
-          <div className="w-full max-w-md mx-auto animate-fade-in px-4 mb-8">
+          <FeatureSection onFeatureClick={handleFeatureClick} />
+          <div className="w-full max-w-md mx-auto animate-fade-in px-4 mb-8 mt-8">
             <AuthUI />
           </div>
-          <FeatureSection onFeatureClick={handleFeatureClick} />
         </>
       )}
 
