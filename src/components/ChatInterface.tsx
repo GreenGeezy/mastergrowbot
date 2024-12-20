@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/hooks/use-toast'
 import { Leaf, Send, MessageCircle, Camera, BookOpen } from 'lucide-react'
+import { SidebarProvider } from '@/components/ui/sidebar'
+import { AppSidebar } from './AppSidebar'
 import FeatureCard from './FeatureCard'
 
 interface Message {
@@ -96,9 +98,12 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
-      <ScrollArea className="flex-1 p-4">
-        {messages.length === 0 ? (
+    <SidebarProvider>
+      <div className="flex h-screen w-full">
+        <AppSidebar />
+        <div className="flex flex-col flex-1 h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
+          <ScrollArea className="flex-1 p-4">
+            {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
               <Leaf className="w-8 h-8 text-white" />
@@ -144,7 +149,7 @@ export default function ChatInterface() {
               </div>
             </div>
           </div>
-        ) : (
+            ) : (
           <div className="space-y-4">
             {messages.map((msg) => (
               <div
@@ -163,31 +168,33 @@ export default function ChatInterface() {
               </div>
             ))}
           </div>
-        )}
-      </ScrollArea>
-      
-      <div className="p-4 bg-[#1A1A1A] border-t border-[#333333]">
-        <form onSubmit={sendMessage} className="flex gap-2">
-          <Input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Ask about cannabis cultivation..."
-            disabled={isLoading}
-            className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400"
-          />
-          <Button 
-            type="submit" 
-            disabled={isLoading}
-            className="bg-primary hover:bg-primary/90"
-          >
-            {isLoading ? (
-              'Sending...'
-            ) : (
-              <Send className="w-5 h-5" />
             )}
-          </Button>
-        </form>
+          </ScrollArea>
+          
+          <div className="p-4 bg-[#1A1A1A] border-t border-[#333333]">
+            <form onSubmit={sendMessage} className="flex gap-2">
+              <Input
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Ask about cannabis cultivation..."
+                disabled={isLoading}
+                className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400"
+              />
+              <Button 
+                type="submit" 
+                disabled={isLoading}
+                className="bg-primary hover:bg-primary/90"
+              >
+                {isLoading ? (
+                  'Sending...'
+                ) : (
+                  <Send className="w-5 h-5" />
+                )}
+              </Button>
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   )
 }
