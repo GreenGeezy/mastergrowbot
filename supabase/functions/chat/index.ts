@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4'
+import OpenAI from "https://deno.land/x/openai@v4.24.0/mod.ts"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,30 +22,45 @@ serve(async (req) => {
       throw new Error('Missing OpenAI configuration')
     }
 
-    // Create OpenAI API client
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are Master Growbot, an AI cannabis cultivation assistant. You provide expert guidance on growing cannabis, focusing on best practices, troubleshooting, and optimization. Keep responses clear, practical, and focused on legal cultivation methods.'
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ],
-      }),
+    const openai = new OpenAI({
+      apiKey: openAiKey,
     })
 
-    const data = await response.json()
-    const aiResponse = data.choices[0].message.content
+    // Create a thread
+    const thread = await openai.beta.threads.create()
+
+    // Add the user's message to the thread
+    await openai.beta.threads.messages.create(thread.id, {
+      role: "user",
+      content: message,
+    })
+
+    // Run the assistant
+    const run = await openai.beta.threads.runs.create(thread.id, {
+      assistant_id: assistantId,
+    })
+
+    // Wait for the run to complete
+    let runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id)
+    while (runStatus.status !== "completed") {
+      if (runStatus.status === "failed") {
+        throw new Error("Assistant run failed")
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id)
+    }
+
+    // Get the assistant's response
+    const messages = await openai.beta.threads.messages.list(thread.id)
+    const assistantMessage = messages.data
+      .filter(msg => msg.role === "assistant")
+      .pop()
+
+    if (!assistantMessage) {
+      throw new Error("No response from assistant")
+    }
+
+    const aiResponse = assistantMessage.content[0].text.value
 
     // Store the chat history in Supabase
     const supabaseClient = createClient(
