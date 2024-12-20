@@ -1,14 +1,111 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
 import { supabase } from '@/integrations/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/hooks/use-toast'
-import { Leaf, Send, MessageCircle, Camera, BookOpen } from 'lucide-react'
+import { Leaf, Send, MessageCircle, Camera, BookOpen, Mic, MicOff, Volume2, VolumeX } from 'lucide-react'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from './AppSidebar'
 import FeatureCard from './FeatureCard'
+
+// Audio recorder class for handling microphone input
+class AudioRecorder {
+  private stream: MediaStream | null = null;
+  private audioContext: AudioContext | null = null;
+  private processor: ScriptProcessorNode | null = null;
+  private source: MediaStreamAudioSourceNode | null = null;
+
+  constructor(private onAudioData: (audioData: Float32Array) => void) {}
+
+  async start() {
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          sampleRate: 24000,
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
+      this.audioContext = new AudioContext({ sampleRate: 24000 });
+      this.source = this.audioContext.createMediaStreamSource(this.stream);
+      this.processor = this.audioContext.createScriptProcessor(4096, 1, 1);
+      
+      this.processor.onaudioprocess = (e) => {
+        const inputData = e.inputBuffer.getChannelData(0);
+        this.onAudioData(new Float32Array(inputData));
+      };
+      
+      this.source.connect(this.processor);
+      this.processor.connect(this.audioContext.destination);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      throw error;
+    }
+  }
+
+  stop() {
+    if (this.source) {
+      this.source.disconnect();
+      this.source = null;
+    }
+    if (this.processor) {
+      this.processor.disconnect();
+      this.processor = null;
+    }
+    if (this.stream) {
+      this.stream.getTracks().forEach(track => track.stop());
+      this.stream = null;
+    }
+    if (this.audioContext) {
+      this.audioContext.close();
+      this.audioContext = null;
+    }
+  }
+}
+
+// Audio queue for managing sequential playback
+class AudioQueue {
+  private queue: Uint8Array[] = [];
+  private isPlaying = false;
+  private audioContext: AudioContext;
+
+  constructor(audioContext: AudioContext) {
+    this.audioContext = audioContext;
+  }
+
+  async addToQueue(audioData: Uint8Array) {
+    this.queue.push(audioData);
+    if (!this.isPlaying) {
+      await this.playNext();
+    }
+  }
+
+  private async playNext() {
+    if (this.queue.length === 0) {
+      this.isPlaying = false;
+      return;
+    }
+
+    this.isPlaying = true;
+    const audioData = this.queue.shift()!;
+
+    try {
+      const audioBuffer = await this.audioContext.decodeAudioData(audioData.buffer);
+      const source = this.audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(this.audioContext.destination);
+      source.onended = () => this.playNext();
+      source.start(0);
+    } catch (error) {
+      console.error('Error playing audio:', error);
+      this.playNext();
+    }
+  }
+}
 
 interface Message {
   id: string
@@ -29,14 +126,84 @@ export default function ChatInterface() {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
   const session = useSession()
   const { toast } = useToast()
+  const audioRecorderRef = useRef<AudioRecorder | null>(null)
+  const wsRef = useRef<WebSocket | null>(null)
+  const audioQueueRef = useRef<AudioQueue | null>(null)
+  const audioContextRef = useRef<AudioContext | null>(null)
 
   useEffect(() => {
     if (session?.user?.id) {
       loadChatHistory()
+      initializeWebSocket()
+    }
+    return () => {
+      wsRef.current?.close()
     }
   }, [session?.user?.id])
+
+  const initializeWebSocket = () => {
+    const ws = new WebSocket(`wss://inbfxduleyhygxatxmre.functions.supabase.co/functions/v1/realtime-chat`)
+    wsRef.current = ws
+
+    ws.onmessage = async (event) => {
+      const data = JSON.parse(event.data)
+      console.log('WebSocket message received:', data)
+
+      if (data.type === 'session.created') {
+        // Send session configuration after connection is established
+        ws.send(JSON.stringify({
+          type: 'session.update',
+          session: {
+            modalities: ['text', 'audio'],
+            instructions: "You are Master Growbot, an AI cannabis cultivation expert. Your knowledge cutoff is 2023-10.",
+            voice: "alloy",
+            input_audio_format: "pcm16",
+            output_audio_format: "pcm16",
+            input_audio_transcription: {
+              model: "whisper-1"
+            },
+            turn_detection: {
+              type: "server_vad",
+              threshold: 0.5,
+              prefix_padding_ms: 300,
+              silence_duration_ms: 1000
+            }
+          }
+        }))
+      }
+
+      if (data.type === 'response.audio.delta' && !isMuted) {
+        const binaryString = atob(data.delta)
+        const bytes = new Uint8Array(binaryString.length)
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i)
+        }
+        
+        if (!audioContextRef.current) {
+          audioContextRef.current = new AudioContext()
+        }
+        
+        if (!audioQueueRef.current) {
+          audioQueueRef.current = new AudioQueue(audioContextRef.current)
+        }
+        
+        await audioQueueRef.current.addToQueue(bytes)
+      }
+    }
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error)
+      toast({
+        title: 'Connection Error',
+        description: 'Failed to connect to voice service',
+        variant: 'destructive',
+      })
+    }
+  }
 
   const loadChatHistory = async () => {
     try {
@@ -56,6 +223,53 @@ export default function ChatInterface() {
         variant: 'destructive',
       })
     }
+  }
+
+  const toggleRecording = async () => {
+    if (isRecording) {
+      audioRecorderRef.current?.stop()
+      setIsRecording(false)
+    } else {
+      try {
+        audioRecorderRef.current = new AudioRecorder((audioData) => {
+          if (wsRef.current?.readyState === WebSocket.OPEN) {
+            const base64Audio = encodeAudioData(audioData)
+            wsRef.current.send(JSON.stringify({
+              type: 'input_audio_buffer.append',
+              audio: base64Audio
+            }))
+          }
+        })
+        await audioRecorderRef.current.start()
+        setIsRecording(true)
+      } catch (error) {
+        console.error('Error starting recording:', error)
+        toast({
+          title: 'Error',
+          description: 'Failed to access microphone',
+          variant: 'destructive',
+        })
+      }
+    }
+  }
+
+  const encodeAudioData = (float32Array: Float32Array): string => {
+    const int16Array = new Int16Array(float32Array.length)
+    for (let i = 0; i < float32Array.length; i++) {
+      const s = Math.max(-1, Math.min(1, float32Array[i]))
+      int16Array[i] = s < 0 ? s * 0x8000 : s * 0x7FFF
+    }
+    
+    const uint8Array = new Uint8Array(int16Array.buffer)
+    let binary = ''
+    const chunkSize = 0x8000
+    
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+      const chunk = uint8Array.subarray(i, Math.min(i + chunkSize, uint8Array.length))
+      binary += String.fromCharCode.apply(null, Array.from(chunk))
+    }
+    
+    return btoa(binary)
   }
 
   const sendMessage = async (e: React.FormEvent) => {
@@ -94,14 +308,43 @@ export default function ChatInterface() {
   }
 
   const handleQuestionClick = (question: string) => {
-    setMessage(question);
-  };
+    setMessage(question)
+  }
 
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
         <AppSidebar />
         <div className="flex flex-col flex-1 h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
+          <div className="flex items-center justify-between p-4 border-b border-[#333333] bg-[#1A1A1A]">
+            <div className="flex items-center space-x-3">
+              <img 
+                src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
+                alt="Master Growbot Logo" 
+                className="w-10 h-10 rounded-full"
+              />
+              <h1 className="text-xl font-semibold text-white">Master Growbot</h1>
+            </div>
+            <div className="flex space-x-2">
+              <Button
+                onClick={() => setIsMuted(!isMuted)}
+                variant="ghost"
+                size="icon"
+                className={`rounded-full ${isMuted ? 'bg-red-500/10 text-red-500' : 'hover:bg-accent/10'}`}
+              >
+                {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+              </Button>
+              <Button
+                onClick={toggleRecording}
+                variant="ghost"
+                size="icon"
+                className={`rounded-full ${isRecording ? 'bg-red-500/10 text-red-500' : 'hover:bg-accent/10'}`}
+              >
+                {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+              </Button>
+            </div>
+          </div>
+
           <ScrollArea className="flex-1 p-4">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
