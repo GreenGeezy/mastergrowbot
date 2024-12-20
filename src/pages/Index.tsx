@@ -3,7 +3,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
-import FeatureSection from "@/components/FeatureSection";
 import UserDashboard from "@/components/UserDashboard";
 import AuthUI from "@/components/AuthUI";
 import ChatInterface from "@/components/ChatInterface";
@@ -64,7 +63,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#111111] text-white px-4 sm:px-6 py-4 sm:py-8">
       <Header />
-      <FeatureSection onFeatureClick={handleFeatureClick} />
       
       {!session && !loading && (
         <div className="w-full max-w-md mx-auto animate-fade-in px-4 mb-8">

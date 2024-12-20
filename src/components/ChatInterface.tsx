@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/hooks/use-toast'
-import { Leaf, Send } from 'lucide-react'
+import { Leaf, Send, MessageCircle, Camera, BookOpen } from 'lucide-react'
+import FeatureCard from './FeatureCard'
 
 interface Message {
   id: string
@@ -13,6 +14,14 @@ interface Message {
   is_ai: boolean
   created_at: string
 }
+
+const starterQuestions = [
+  "What nutrients are essential during the vegetative stage?",
+  "How do I identify and fix nutrient deficiencies?",
+  "What's the ideal temperature and humidity for flowering?",
+  "How can I prevent and treat common pests?",
+  "When is the best time to harvest?"
+];
 
 export default function ChatInterface() {
   const [message, setMessage] = useState('')
@@ -82,18 +91,58 @@ export default function ChatInterface() {
     }
   }
 
+  const handleQuestionClick = (question: string) => {
+    setMessage(question);
+  };
+
   return (
     <div className="flex flex-col h-[600px] w-full max-w-4xl mx-auto bg-[#222222] border border-[#333333] rounded-xl shadow-lg overflow-hidden">
       <ScrollArea className="flex-1 p-6">
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
               <Leaf className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-semibold text-white">How can I help you today?</h2>
-            <p className="text-gray-400 max-w-md">
+            <p className="text-gray-400 max-w-md mb-6">
               I'm your cannabis cultivation assistant. Ask me anything about growing, plant care, or troubleshooting issues.
             </p>
+            
+            <div className="grid grid-cols-1 gap-3 w-full max-w-2xl">
+              <FeatureCard
+                icon={MessageCircle}
+                title="Growing Assistant"
+                subtitle="Get expert growing advice"
+                onClick={() => handleQuestionClick("Can you help me optimize my growing setup?")}
+              />
+              <FeatureCard
+                icon={Camera}
+                title="Plant Health Check"
+                subtitle="Diagnose plant issues"
+                onClick={() => handleQuestionClick("How can I identify common plant health issues?")}
+              />
+              <FeatureCard
+                icon={BookOpen}
+                title="Growing Guide"
+                subtitle="Quick answers to FAQs"
+                onClick={() => handleQuestionClick("What are the essential steps for successful cannabis cultivation?")}
+              />
+            </div>
+
+            <div className="mt-6 w-full max-w-2xl">
+              <h3 className="text-white text-left mb-3 font-medium">Common Questions</h3>
+              <div className="grid grid-cols-1 gap-2">
+                {starterQuestions.map((question, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleQuestionClick(question)}
+                    className="text-left p-3 rounded-lg bg-[#333333] hover:bg-[#444444] text-gray-300 hover:text-white text-sm transition-colors duration-200"
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         ) : (
           <div className="space-y-6">
@@ -140,5 +189,5 @@ export default function ChatInterface() {
         </form>
       </div>
     </div>
-  )
+  );
 }
