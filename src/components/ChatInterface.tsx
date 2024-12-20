@@ -1,111 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
 import { supabase } from '@/integrations/supabase/client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/hooks/use-toast'
-import { Leaf, Send, MessageCircle, Camera, BookOpen, Mic, MicOff, Volume2, VolumeX } from 'lucide-react'
+import { Leaf, MessageCircle, Camera, BookOpen } from 'lucide-react'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from './AppSidebar'
 import FeatureCard from './FeatureCard'
-
-// Audio recorder class for handling microphone input
-class AudioRecorder {
-  private stream: MediaStream | null = null;
-  private audioContext: AudioContext | null = null;
-  private processor: ScriptProcessorNode | null = null;
-  private source: MediaStreamAudioSourceNode | null = null;
-
-  constructor(private onAudioData: (audioData: Float32Array) => void) {}
-
-  async start() {
-    try {
-      this.stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          sampleRate: 24000,
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        }
-      });
-      this.audioContext = new AudioContext({ sampleRate: 24000 });
-      this.source = this.audioContext.createMediaStreamSource(this.stream);
-      this.processor = this.audioContext.createScriptProcessor(4096, 1, 1);
-      
-      this.processor.onaudioprocess = (e) => {
-        const inputData = e.inputBuffer.getChannelData(0);
-        this.onAudioData(new Float32Array(inputData));
-      };
-      
-      this.source.connect(this.processor);
-      this.processor.connect(this.audioContext.destination);
-    } catch (error) {
-      console.error('Error accessing microphone:', error);
-      throw error;
-    }
-  }
-
-  stop() {
-    if (this.source) {
-      this.source.disconnect();
-      this.source = null;
-    }
-    if (this.processor) {
-      this.processor.disconnect();
-      this.processor = null;
-    }
-    if (this.stream) {
-      this.stream.getTracks().forEach(track => track.stop());
-      this.stream = null;
-    }
-    if (this.audioContext) {
-      this.audioContext.close();
-      this.audioContext = null;
-    }
-  }
-}
-
-// Audio queue for managing sequential playback
-class AudioQueue {
-  private queue: Uint8Array[] = [];
-  private isPlaying = false;
-  private audioContext: AudioContext;
-
-  constructor(audioContext: AudioContext) {
-    this.audioContext = audioContext;
-  }
-
-  async addToQueue(audioData: Uint8Array) {
-    this.queue.push(audioData);
-    if (!this.isPlaying) {
-      await this.playNext();
-    }
-  }
-
-  private async playNext() {
-    if (this.queue.length === 0) {
-      this.isPlaying = false;
-      return;
-    }
-
-    this.isPlaying = true;
-    const audioData = this.queue.shift()!;
-
-    try {
-      const audioBuffer = await this.audioContext.decodeAudioData(audioData.buffer);
-      const source = this.audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(this.audioContext.destination);
-      source.onended = () => this.playNext();
-      source.start(0);
-    } catch (error) {
-      console.error('Error playing audio:', error);
-      this.playNext();
-    }
-  }
-}
+import ChatInput from './ChatInput'
+import { AudioRecorder, AudioQueue } from './audio/AudioHandlers'
 
 interface Message {
   id: string
@@ -325,24 +228,6 @@ export default function ChatInterface() {
               />
               <h1 className="text-xl font-semibold text-white">Master Growbot</h1>
             </div>
-            <div className="flex space-x-2">
-              <Button
-                onClick={() => setIsMuted(!isMuted)}
-                variant="ghost"
-                size="icon"
-                className={`rounded-full ${isMuted ? 'bg-red-500/10 text-red-500' : 'hover:bg-accent/10'}`}
-              >
-                {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-              </Button>
-              <Button
-                onClick={toggleRecording}
-                variant="ghost"
-                size="icon"
-                className={`rounded-full ${isRecording ? 'bg-red-500/10 text-red-500' : 'hover:bg-accent/10'}`}
-              >
-                {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-              </Button>
-            </div>
           </div>
 
           <ScrollArea className="flex-1 p-4">
@@ -414,28 +299,16 @@ export default function ChatInterface() {
             )}
           </ScrollArea>
           
-          <div className="p-4 bg-[#1A1A1A] border-t border-[#333333]">
-            <form onSubmit={sendMessage} className="flex gap-2">
-              <Input
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Ask about cannabis cultivation..."
-                disabled={isLoading}
-                className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400 focus:border-accent focus:ring-accent"
-              />
-              <Button 
-                type="submit" 
-                disabled={isLoading}
-                className="cyber-button"
-              >
-                {isLoading ? (
-                  <div className="loading-pulse">Sending...</div>
-                ) : (
-                  <Send className="w-5 h-5" />
-                )}
-              </Button>
-            </form>
-          </div>
+          <ChatInput
+            message={message}
+            isLoading={isLoading}
+            isRecording={isRecording}
+            isMuted={isMuted}
+            onMessageChange={(e) => setMessage(e.target.value)}
+            onSubmit={sendMessage}
+            onToggleRecording={toggleRecording}
+            onToggleMute={() => setIsMuted(!isMuted)}
+          />
         </div>
       </div>
     </SidebarProvider>
