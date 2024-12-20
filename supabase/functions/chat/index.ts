@@ -8,7 +8,6 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
@@ -21,10 +20,8 @@ serve(async (req) => {
     }
 
     const openAiKey = Deno.env.get('OPENAI_API_KEY')
-    const assistantId = Deno.env.get('OPENAI_ASSISTANT_ID')
-
-    if (!openAiKey || !assistantId) {
-      console.error('Missing OpenAI configuration')
+    if (!openAiKey) {
+      console.error('Missing OpenAI API key')
       throw new Error('Server configuration error')
     }
 
@@ -34,60 +31,22 @@ serve(async (req) => {
       apiKey: openAiKey,
     })
 
-    // Create a thread
-    const thread = await openai.beta.threads.create()
-    console.log('Created thread:', thread.id)
-
-    // Add the user's message to the thread
-    await openai.beta.threads.messages.create(thread.id, {
-      role: "user",
-      content: message,
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are Master Growbot, an AI cannabis cultivation expert. Your knowledge cutoff is 2023-10. Provide clear, actionable advice about cannabis growing while maintaining professionalism and focusing on legal, safe cultivation practices."
+        },
+        {
+          role: "user",
+          content: message
+        }
+      ],
     })
-    console.log('Added user message to thread')
 
-    // Run the assistant
-    const run = await openai.beta.threads.runs.create(thread.id, {
-      assistant_id: assistantId,
-    })
-    console.log('Started assistant run:', run.id)
-
-    // Wait for the run to complete
-    let runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id)
-    let attempts = 0
-    const maxAttempts = 30 // Maximum 30 seconds wait
-
-    while (runStatus.status !== "completed" && attempts < maxAttempts) {
-      if (runStatus.status === "failed") {
-        console.error('Assistant run failed:', runStatus)
-        throw new Error("Assistant run failed: " + runStatus.last_error?.message || 'Unknown error')
-      }
-      if (runStatus.status === "requires_action") {
-        console.error('Assistant requires action:', runStatus)
-        throw new Error("Assistant requires action")
-      }
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id)
-      console.log('Run status:', runStatus.status)
-      attempts++
-    }
-
-    if (attempts >= maxAttempts) {
-      throw new Error("Request timeout: Assistant took too long to respond")
-    }
-
-    // Get the assistant's response
-    const messages = await openai.beta.threads.messages.list(thread.id)
-    const assistantMessage = messages.data
-      .filter(msg => msg.role === "assistant")
-      .pop()
-
-    if (!assistantMessage) {
-      console.error('No assistant message found in thread')
-      throw new Error("No response from assistant")
-    }
-
-    const aiResponse = assistantMessage.content[0].text.value
-    console.log('Got assistant response:', { responseLength: aiResponse.length })
+    const aiResponse = completion.choices[0].message.content
+    console.log('Got assistant response:', { responseLength: aiResponse?.length })
 
     // Store the chat history in Supabase
     const supabaseClient = createClient(
