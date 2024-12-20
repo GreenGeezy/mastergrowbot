@@ -15,9 +15,14 @@ export default function ChatInput({
   onMessageChange,
   onSubmit
 }: ChatInputProps) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault() // Prevent form from submitting traditionally
+    onSubmit(e)
+  }
+
   return (
     <div className="p-4 bg-[#1A1A1A] border-t border-[#333333]">
-      <form onSubmit={onSubmit} className="flex items-center gap-2">
+      <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <Input
           value={message}
           onChange={onMessageChange}

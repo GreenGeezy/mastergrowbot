@@ -57,7 +57,7 @@ export default function ChatInterface() {
   }
 
   const sendMessage = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault() // Prevent form submission
     if (!message.trim() || !session?.user?.id) return
 
     setIsLoading(true)
@@ -92,8 +92,6 @@ export default function ChatInterface() {
       }
 
       setMessage('')
-      // Reload chat history to ensure consistency
-      await loadChatHistory()
     } catch (error: any) {
       console.error('Error sending message:', error)
       toast({
