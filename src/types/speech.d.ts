@@ -1,6 +1,7 @@
 interface Window {
   SpeechRecognition: typeof SpeechRecognition;
   webkitSpeechRecognition: typeof SpeechRecognition;
+  speakResponse?: (text: string) => void;
 }
 
 interface SpeechRecognition {

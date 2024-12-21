@@ -20,10 +20,12 @@ export default function AudioControls({
 }: AudioControlsProps) {
   const { toast } = useToast()
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
+  const [synthesis, setSynthesis] = useState<SpeechSynthesis | null>(null)
+  const [currentUtterance, setCurrentUtterance] = useState<SpeechSynthesisUtterance | null>(null)
 
   useEffect(() => {
+    // Initialize speech recognition
     if (typeof window !== 'undefined') {
-      // Initialize speech recognition
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition()
@@ -48,6 +50,11 @@ export default function AudioControls({
         }
 
         setRecognition(recognition)
+      }
+
+      // Initialize speech synthesis
+      if ('speechSynthesis' in window) {
+        setSynthesis(window.speechSynthesis)
       }
     }
   }, [onSpeechResult, onToggleRecording, toast])
@@ -75,6 +82,46 @@ export default function AudioControls({
       }
     }
   }, [isRecording, recognition, toast, onToggleRecording])
+
+  // Handle mute/unmute for speech synthesis
+  useEffect(() => {
+    if (synthesis && currentUtterance) {
+      if (isMuted) {
+        synthesis.cancel()
+      }
+    }
+  }, [isMuted, synthesis, currentUtterance])
+
+  // Expose speak function to parent components
+  useEffect(() => {
+    if (synthesis && !isMuted) {
+      const speakText = (text: string) => {
+        if (currentUtterance) {
+          synthesis.cancel()
+        }
+        const utterance = new SpeechSynthesisUtterance(text)
+        utterance.lang = 'en-US'
+        utterance.rate = 1.0
+        utterance.pitch = 1.0
+        setCurrentUtterance(utterance)
+        synthesis.speak(utterance)
+      }
+
+      // Add speak function to window object for global access
+      (window as any).speakResponse = speakText
+    } else {
+      // Remove speak function when audio is muted
+      (window as any).speakResponse = null
+    }
+
+    // Cleanup
+    return () => {
+      if (synthesis) {
+        synthesis.cancel()
+      }
+      (window as any).speakResponse = null
+    }
+  }, [synthesis, isMuted, currentUtterance])
 
   return (
     <div className="flex space-x-2">

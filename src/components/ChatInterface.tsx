@@ -59,12 +59,11 @@ export default function ChatInterface() {
   }
 
   const sendMessage = async (e: React.FormEvent) => {
-    e.preventDefault() // Prevent form submission
+    e.preventDefault()
     if (!message.trim() || !session?.user?.id) return
 
     setIsLoading(true)
     try {
-      // Add user message to UI immediately for better UX
       const userMessage = {
         id: crypto.randomUUID(),
         message: message.trim(),
@@ -83,7 +82,6 @@ export default function ChatInterface() {
       if (error) throw error
 
       if (data?.response) {
-        // Add AI response to UI
         const aiMessage = {
           id: crypto.randomUUID(),
           message: data.response,
@@ -91,6 +89,11 @@ export default function ChatInterface() {
           created_at: new Date().toISOString()
         }
         setMessages(prev => [...prev, aiMessage])
+
+        // Speak the AI response if speech synthesis is enabled
+        if (!isMuted && window.speakResponse) {
+          window.speakResponse(data.response)
+        }
       }
 
       setMessage('')
