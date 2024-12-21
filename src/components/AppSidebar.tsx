@@ -42,36 +42,24 @@ export function AppSidebar() {
 
   const loadChatHistory = async () => {
     try {
-      // Get all user messages to represent conversation starters
-      const { data: userMessages, error: userError } = await supabase
+      console.log('Loading chat history for user:', session?.user?.id)
+      
+      const { data: messages, error } = await supabase
         .from('chat_history')
-        .select('id, message, created_at, is_ai')
+        .select('*')
         .eq('user_id', session?.user?.id)
-        .eq('is_ai', false)
         .order('created_at', { ascending: false })
 
-      if (userError) throw userError
+      if (error) {
+        console.error('Error fetching chat history:', error)
+        throw error
+      }
 
-      // Get the corresponding AI responses
-      if (userMessages) {
-        // Create a map to store conversations
-        const conversationsMap = new Map()
-        
-        // Add user messages first
-        userMessages.forEach(msg => {
-          const date = new Date(msg.created_at).toISOString().split('T')[0]
-          if (!conversationsMap.has(date)) {
-            conversationsMap.set(date, [])
-          }
-          conversationsMap.get(date).push(msg)
-        })
-
-        // Convert map to array and sort by date
-        const sortedConversations = Array.from(conversationsMap.entries())
-          .sort(([dateA], [dateB]) => new Date(dateB).getTime() - new Date(dateA).getTime())
-          .flatMap(([_, messages]) => messages)
-
-        setChatHistory(sortedConversations)
+      if (messages) {
+        console.log('Fetched messages:', messages)
+        // Filter to only show user messages as conversation starters
+        const userMessages = messages.filter(msg => !msg.is_ai)
+        setChatHistory(userMessages)
       }
     } catch (error) {
       console.error('Error loading chat history:', error)
