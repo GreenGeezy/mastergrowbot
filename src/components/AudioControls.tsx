@@ -24,7 +24,7 @@ export default function AudioControls({
   const [currentUtterance, setCurrentUtterance] = useState<SpeechSynthesisUtterance | null>(null)
 
   useEffect(() => {
-    // Initialize speech recognition
+    // Initialize speech recognition and synthesis
     if (typeof window !== 'undefined') {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
       if (SpeechRecognition) {

@@ -58,6 +58,15 @@ export default function ChatInterface() {
     }
   }
 
+  const speakResponse = (text: string) => {
+    if (!isMuted && window.speakResponse) {
+      // Add a small delay to ensure the text is displayed before speaking
+      setTimeout(() => {
+        window.speakResponse(text)
+      }, 100)
+    }
+  }
+
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!message.trim() || !session?.user?.id) return
@@ -89,11 +98,9 @@ export default function ChatInterface() {
           created_at: new Date().toISOString()
         }
         setMessages(prev => [...prev, aiMessage])
-
-        // Speak the AI response if speech synthesis is enabled
-        if (!isMuted && window.speakResponse) {
-          window.speakResponse(data.response)
-        }
+        
+        // Speak the AI response
+        speakResponse(data.response)
       }
 
       setMessage('')
@@ -119,6 +126,10 @@ export default function ChatInterface() {
 
   const handleToggleMute = () => {
     setIsMuted(!isMuted)
+    // Cancel any ongoing speech when muting
+    if (!isMuted && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
   }
 
   const handleSpeechResult = (text: string) => {
