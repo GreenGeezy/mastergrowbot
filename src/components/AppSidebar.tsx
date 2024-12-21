@@ -33,6 +33,7 @@ export function AppSidebar() {
   const session = useSession()
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([])
   const [searchQuery, setSearchQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -42,12 +43,18 @@ export function AppSidebar() {
 
   const loadChatHistory = async () => {
     try {
+      setIsLoading(true)
       console.log('Loading chat history for user:', session?.user?.id)
       
+      if (!session?.user?.id) {
+        console.log('No user session found')
+        return
+      }
+
       const { data: messages, error } = await supabase
         .from('chat_history')
         .select('*')
-        .eq('user_id', session?.user?.id)
+        .eq('user_id', session.user.id)
         .order('created_at', { ascending: false })
 
       if (error) {
@@ -57,12 +64,17 @@ export function AppSidebar() {
 
       if (messages) {
         console.log('Fetched messages:', messages)
-        // Filter to only show user messages as conversation starters
-        const userMessages = messages.filter(msg => !msg.is_ai)
-        setChatHistory(userMessages)
+        // Get all messages to show full conversations
+        setChatHistory(messages)
+      } else {
+        console.log('No messages found')
+        setChatHistory([])
       }
     } catch (error) {
       console.error('Error loading chat history:', error)
+      setChatHistory([])
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -72,8 +84,23 @@ export function AppSidebar() {
     const yesterday = new Date(today)
     yesterday.setDate(yesterday.getDate() - 1)
 
-    chats.forEach(chat => {
-      const chatDate = new Date(chat.created_at)
+    // First, group messages by conversation (user message followed by AI response)
+    const conversations = chats.reduce((acc: ChatHistory[][], curr) => {
+      if (!curr.is_ai) {
+        // Start a new conversation with user message
+        acc.push([curr])
+      } else if (acc.length > 0) {
+        // Add AI response to the last conversation
+        acc[acc.length - 1].push(curr)
+      }
+      return acc
+    }, [])
+
+    // Now group conversations by date
+    conversations.forEach(conversation => {
+      if (conversation.length === 0) return
+      
+      const chatDate = new Date(conversation[0].created_at)
       let label = ''
 
       if (chatDate.toDateString() === today.toDateString()) {
@@ -93,7 +120,8 @@ export function AppSidebar() {
       if (!groups[label]) {
         groups[label] = []
       }
-      groups[label].push(chat)
+      // Add only the user message as the conversation starter
+      groups[label].push(conversation[0])
     })
 
     return Object.entries(groups).map(([label, chats]) => ({
@@ -143,21 +171,27 @@ export function AppSidebar() {
           </div>
           <SidebarGroupContent>
             <SidebarMenu>
-              {groupedChats.map((group) => (
-                <div key={group.label}>
-                  <div className="px-2 py-1 text-xs text-gray-400">
-                    {group.label}
+              {isLoading ? (
+                <div className="px-2 py-1 text-gray-400">Loading...</div>
+              ) : groupedChats.length > 0 ? (
+                groupedChats.map((group) => (
+                  <div key={group.label}>
+                    <div className="px-2 py-1 text-xs text-gray-400">
+                      {group.label}
+                    </div>
+                    {group.chats.map((chat) => (
+                      <SidebarMenuItem key={chat.id}>
+                        <SidebarMenuButton className="w-full">
+                          <MessageSquare className="h-4 w-4" />
+                          <span className="truncate">{chat.message}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
                   </div>
-                  {group.chats.map((chat) => (
-                    <SidebarMenuItem key={chat.id}>
-                      <SidebarMenuButton className="w-full">
-                        <MessageSquare className="h-4 w-4" />
-                        <span className="truncate">{chat.message}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </div>
-              ))}
+                ))
+              ) : (
+                <div className="px-2 py-1 text-gray-400">No chat history found</div>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
