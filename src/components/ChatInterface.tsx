@@ -7,6 +7,7 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from './AppSidebar'
 import ChatInput from './ChatInput'
 import ChatMessages from './ChatMessages'
+import AudioControls from './AudioControls'
 
 interface Message {
   id: string
@@ -27,6 +28,8 @@ export default function ChatInterface() {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
   const session = useSession()
   const { toast } = useToast()
 
@@ -108,6 +111,18 @@ export default function ChatInterface() {
     setMessage(question)
   }
 
+  const handleToggleRecording = () => {
+    setIsRecording(!isRecording)
+  }
+
+  const handleToggleMute = () => {
+    setIsMuted(!isMuted)
+  }
+
+  const handleSpeechResult = (text: string) => {
+    setMessage(text)
+  }
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
@@ -122,6 +137,13 @@ export default function ChatInterface() {
               />
               <h1 className="text-xl font-semibold text-white">Master Growbot</h1>
             </div>
+            <AudioControls 
+              isRecording={isRecording}
+              isMuted={isMuted}
+              onToggleRecording={handleToggleRecording}
+              onToggleMute={handleToggleMute}
+              onSpeechResult={handleSpeechResult}
+            />
           </div>
 
           <ScrollArea className="flex-1 p-4">
