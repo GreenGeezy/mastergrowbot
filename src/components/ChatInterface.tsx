@@ -82,6 +82,13 @@ export default function ChatInterface() {
       }
       setMessages(prev => [...prev, userMessage])
       
+      // Store user message in chat history
+      await supabase.from('chat_history').insert([{
+        user_id: session.user.id,
+        message: message.trim(),
+        is_ai: false
+      }])
+
       const { data, error } = await supabase.functions.invoke('chat', {
         body: {
           message: message.trim(),
@@ -99,6 +106,13 @@ export default function ChatInterface() {
           created_at: new Date().toISOString()
         }
         setMessages(prev => [...prev, aiMessage])
+        
+        // Store AI response in chat history
+        await supabase.from('chat_history').insert([{
+          user_id: session.user.id,
+          message: data.response,
+          is_ai: true
+        }])
         
         // Speak the AI response
         speakResponse(data.response)

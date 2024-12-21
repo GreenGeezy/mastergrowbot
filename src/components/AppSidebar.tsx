@@ -21,6 +21,7 @@ interface ChatHistory {
   id: string
   message: string
   created_at: string
+  is_ai: boolean
 }
 
 interface ChatHistoryGroup {
@@ -41,15 +42,25 @@ export function AppSidebar() {
 
   const loadChatHistory = async () => {
     try {
+      // Get all messages (both user and AI) ordered by creation time
       const { data, error } = await supabase
         .from('chat_history')
-        .select('id, message, created_at')
+        .select('id, message, created_at, is_ai')
         .eq('user_id', session?.user?.id)
-        .eq('is_ai', false)
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      if (data) setChatHistory(data)
+      if (data) {
+        // Group messages by conversation (consecutive user-AI exchanges)
+        const conversations = data.reduce((acc: ChatHistory[], message: ChatHistory) => {
+          // Only add user messages to start conversations
+          if (!message.is_ai) {
+            acc.push(message)
+          }
+          return acc
+        }, [])
+        setChatHistory(conversations)
+      }
     } catch (error) {
       console.error('Error loading chat history:', error)
     }
@@ -99,6 +110,11 @@ export function AppSidebar() {
 
   const groupedChats = groupChatsByDate(filteredHistory)
 
+  const handleNewChat = () => {
+    // TODO: Implement new chat functionality
+    console.log('New chat clicked')
+  }
+
   return (
     <Sidebar className="border-r border-[#333333]">
       <SidebarHeader>
@@ -120,6 +136,7 @@ export function AppSidebar() {
               variant="ghost" 
               size="icon"
               className="h-7 w-7 text-gray-400 hover:text-white"
+              onClick={handleNewChat}
             >
               <Plus className="h-4 w-4" />
             </Button>
