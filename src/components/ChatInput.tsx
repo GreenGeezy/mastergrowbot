@@ -1,22 +1,33 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Send } from 'lucide-react'
+import AudioControls from './AudioControls'
 
 interface ChatInputProps {
   message: string
   isLoading: boolean
+  isRecording: boolean
+  isMuted: boolean
   onMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onSubmit: (e: React.FormEvent) => void
+  onToggleRecording: () => void
+  onToggleMute: () => void
+  onSpeechResult: (text: string) => void
 }
 
 export default function ChatInput({
   message,
   isLoading,
+  isRecording,
+  isMuted,
   onMessageChange,
-  onSubmit
+  onSubmit,
+  onToggleRecording,
+  onToggleMute,
+  onSpeechResult
 }: ChatInputProps) {
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault() // Prevent form from submitting traditionally
+    e.preventDefault()
     onSubmit(e)
   }
 
@@ -29,6 +40,13 @@ export default function ChatInput({
           placeholder="Ask about cannabis cultivation..."
           disabled={isLoading}
           className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400 focus:border-accent focus:ring-accent"
+        />
+        <AudioControls
+          isRecording={isRecording}
+          isMuted={isMuted}
+          onToggleRecording={onToggleRecording}
+          onToggleMute={onToggleMute}
+          onSpeechResult={onSpeechResult}
         />
         <Button 
           type="submit" 

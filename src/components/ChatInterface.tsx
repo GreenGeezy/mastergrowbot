@@ -7,7 +7,6 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from './AppSidebar'
 import ChatInput from './ChatInput'
 import ChatMessages from './ChatMessages'
-import AudioControls from './AudioControls'
 
 interface Message {
   id: string
@@ -137,13 +136,6 @@ export default function ChatInterface() {
               />
               <h1 className="text-xl font-semibold text-white">Master Growbot</h1>
             </div>
-            <AudioControls 
-              isRecording={isRecording}
-              isMuted={isMuted}
-              onToggleRecording={handleToggleRecording}
-              onToggleMute={handleToggleMute}
-              onSpeechResult={handleSpeechResult}
-            />
           </div>
 
           <ScrollArea className="flex-1 p-4">
@@ -157,8 +149,13 @@ export default function ChatInterface() {
           <ChatInput
             message={message}
             isLoading={isLoading}
+            isRecording={isRecording}
+            isMuted={isMuted}
             onMessageChange={(e) => setMessage(e.target.value)}
             onSubmit={sendMessage}
+            onToggleRecording={handleToggleRecording}
+            onToggleMute={handleToggleMute}
+            onSpeechResult={handleSpeechResult}
           />
         </div>
       </div>
