@@ -62,6 +62,7 @@ export default function ChatInterface() {
     if (!isMuted && window.speakResponse) {
       // Add a small delay to ensure the text is displayed before speaking
       setTimeout(() => {
+        console.log('Speaking response:', text) // Debug log
         window.speakResponse(text)
       }, 100)
     }

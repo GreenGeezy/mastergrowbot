@@ -94,34 +94,37 @@ export default function AudioControls({
 
   // Expose speak function to parent components
   useEffect(() => {
-    if (synthesis && !isMuted) {
+    if (synthesis) {
       const speakText = (text: string) => {
-        if (currentUtterance) {
-          synthesis.cancel()
-        }
+        synthesis.cancel() // Cancel any ongoing speech
         const utterance = new SpeechSynthesisUtterance(text)
         utterance.lang = 'en-US'
         utterance.rate = 1.0
         utterance.pitch = 1.0
         setCurrentUtterance(utterance)
+        
+        // Add error handling for speech synthesis
+        utterance.onerror = (event) => {
+          console.error('Speech synthesis error:', event.error)
+          toast({
+            title: "Speech Synthesis Error",
+            description: "Failed to speak the response. Please try again.",
+            variant: "destructive",
+          })
+        }
+
         synthesis.speak(utterance)
       }
 
       // Add speak function to window object for global access
-      (window as any).speakResponse = speakText
-    } else {
-      // Remove speak function when audio is muted
-      (window as any).speakResponse = null
-    }
+      window.speakResponse = speakText
 
-    // Cleanup
-    return () => {
-      if (synthesis) {
+      return () => {
         synthesis.cancel()
+        window.speakResponse = null
       }
-      (window as any).speakResponse = null
     }
-  }, [synthesis, isMuted, currentUtterance])
+  }, [synthesis, toast])
 
   return (
     <div className="flex space-x-2">
