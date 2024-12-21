@@ -3,9 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
-import UserDashboard from "@/components/UserDashboard";
 import AuthUI from "@/components/AuthUI";
-import ChatInterface from "@/components/ChatInterface";
 import FeatureSection from "@/components/FeatureSection";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -22,9 +20,9 @@ const Index = () => {
       setSession(session);
       setLoading(false);
       
-      // If we have a session and we're on the callback route, redirect to home
-      if (session && (location.pathname.includes('/auth/callback') || location.hash)) {
-        navigate('/', { replace: true });
+      // If user is authenticated, redirect to chat
+      if (session) {
+        navigate('/chat', { replace: true });
       }
     });
 
@@ -34,14 +32,14 @@ const Index = () => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       
-      // If we have a session and we're on the callback route, redirect to home
-      if (session && (location.pathname.includes('/auth/callback') || location.hash)) {
-        navigate('/', { replace: true });
+      // If user becomes authenticated, redirect to chat
+      if (session) {
+        navigate('/chat', { replace: true });
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, location]);
+  }, [navigate]);
 
   const handleFeatureClick = () => {
     if (!session) {
@@ -62,22 +60,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#111111] text-white">
-      {!session && <div className="px-4 sm:px-6 py-2"><Header /></div>}
+      <div className="px-4 sm:px-6 py-2">
+        <Header />
+      </div>
       
-      {!session && !loading && (
-        <>
-          <FeatureSection onFeatureClick={handleFeatureClick} />
-          <div className="w-full max-w-md mx-auto animate-fade-in px-4">
-            <AuthUI />
-          </div>
-        </>
-      )}
-
-      {session && (
-        <div className="h-screen">
-          <ChatInterface />
-        </div>
-      )}
+      <FeatureSection onFeatureClick={handleFeatureClick} />
+      <div className="w-full max-w-md mx-auto animate-fade-in px-4">
+        <AuthUI />
+      </div>
     </div>
   );
 };
