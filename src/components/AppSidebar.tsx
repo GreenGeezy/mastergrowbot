@@ -1,7 +1,7 @@
 import { useSession } from '@supabase/auth-helpers-react'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { MessageSquare, Settings, UserRound, Plus } from 'lucide-react'
+import { Settings, UserRound, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -13,9 +13,10 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuButton,
 } from '@/components/ui/sidebar'
+import { ChatHistoryList } from './sidebar/ChatHistoryList'
 
 interface ChatHistory {
   id: string
@@ -64,7 +65,6 @@ export function AppSidebar() {
 
       if (messages) {
         console.log('Fetched messages:', messages)
-        // Get all messages to show full conversations
         setChatHistory(messages)
       } else {
         console.log('No messages found')
@@ -171,27 +171,10 @@ export function AppSidebar() {
           </div>
           <SidebarGroupContent>
             <SidebarMenu>
-              {isLoading ? (
-                <div className="px-2 py-1 text-gray-400">Loading...</div>
-              ) : groupedChats.length > 0 ? (
-                groupedChats.map((group) => (
-                  <div key={group.label}>
-                    <div className="px-2 py-1 text-xs text-gray-400">
-                      {group.label}
-                    </div>
-                    {group.chats.map((chat) => (
-                      <SidebarMenuItem key={chat.id}>
-                        <SidebarMenuButton className="w-full">
-                          <MessageSquare className="h-4 w-4" />
-                          <span className="truncate">{chat.message}</span>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </div>
-                ))
-              ) : (
-                <div className="px-2 py-1 text-gray-400">No chat history found</div>
-              )}
+              <ChatHistoryList 
+                isLoading={isLoading}
+                groupedChats={groupedChats}
+              />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

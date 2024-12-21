@@ -1,92 +1,85 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4'
-import OpenAI from "https://deno.land/x/openai@v4.24.0/mod.ts"
+import { createClient } from '@supabase/supabase-js'
+import { OpenAI } from 'openai'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
     const { message, userId } = await req.json()
-    
-    if (!message || !userId) {
-      throw new Error('Missing required fields: message and userId are required')
+
+    if (!message) {
+      throw new Error('Message is required')
     }
 
-    const openAiKey = Deno.env.get('OPENAI_API_KEY')
-    if (!openAiKey) {
-      console.error('Missing OpenAI API key')
-      throw new Error('Server configuration error')
+    if (!userId) {
+      throw new Error('User ID is required')
     }
-
-    console.log('Processing chat request:', { userId, messageLength: message.length })
 
     const openai = new OpenAI({
-      apiKey: openAiKey,
+      apiKey: Deno.env.get('OPENAI_API_KEY'),
     })
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4",
       messages: [
         {
           role: "system",
-          content: "You are Master Growbot, an AI cannabis cultivation expert. Your knowledge cutoff is 2023-10. Provide clear, actionable advice about cannabis growing while maintaining professionalism and focusing on legal, safe cultivation practices. IMPORTANT: Format your responses in plain text without any special characters. Do not use asterisks (*), hashtags (#), or any other markdown formatting. When listing items or examples, use numbers or plain text (e.g., '1.', '2.', or 'First,', 'Second,'). Structure your responses with clear paragraphs and natural language. When referring to strain names or specific items, simply use quotes or plain text."
+          content: "You are Master Growbot, an AI cannabis cultivation expert. Provide clear, direct advice without using markdown formatting. Focus on being helpful and accurate while maintaining a friendly, professional tone. Keep responses concise but informative."
         },
         {
           role: "user",
           content: message
         }
       ],
+      temperature: 0.7,
+      max_tokens: 500,
     })
 
-    const aiResponse = completion.choices[0].message.content
-    console.log('Got assistant response:', { responseLength: aiResponse?.length })
+    const response = completion.choices[0].message.content
 
-    // Store the chat history in Supabase
+    // Create Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Store user message
-    await supabaseClient.from('chat_history').insert([
-      {
-        user_id: userId,
-        message: message,
-        is_ai: false
-      }
-    ])
-
-    // Store AI response
-    await supabaseClient.from('chat_history').insert([
-      {
-        user_id: userId,
-        message: aiResponse,
-        is_ai: true
-      }
-    ])
-
-    console.log('Stored chat history in database')
+    // Store the chat in history
+    await supabaseClient
+      .from('chat_history')
+      .insert([
+        {
+          user_id: userId,
+          message: message,
+          is_ai: false
+        },
+        {
+          user_id: userId,
+          message: response,
+          is_ai: true
+        }
+      ])
 
     return new Response(
-      JSON.stringify({ response: aiResponse }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ response }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      },
     )
-
   } catch (error) {
-    console.error('Error in chat function:', error)
+    console.error('Error:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
-      { 
+      {
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      },
     )
   }
 })

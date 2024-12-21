@@ -31,15 +31,7 @@ export type Database = {
           message?: string
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "chat_history_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       guide_progress: {
         Row: {
