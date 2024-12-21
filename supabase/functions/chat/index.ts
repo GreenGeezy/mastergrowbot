@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { OpenAI } from 'openai'
+import { OpenAI } from "https://deno.land/x/openai@v4.24.0/mod.ts"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
