@@ -42,24 +42,36 @@ export function AppSidebar() {
 
   const loadChatHistory = async () => {
     try {
-      // Get all messages (both user and AI) ordered by creation time
-      const { data, error } = await supabase
+      // Get all user messages to represent conversation starters
+      const { data: userMessages, error: userError } = await supabase
         .from('chat_history')
         .select('id, message, created_at, is_ai')
         .eq('user_id', session?.user?.id)
+        .eq('is_ai', false)
         .order('created_at', { ascending: false })
 
-      if (error) throw error
-      if (data) {
-        // Group messages by conversation (consecutive user-AI exchanges)
-        const conversations = data.reduce((acc: ChatHistory[], message: ChatHistory) => {
-          // Only add user messages to start conversations
-          if (!message.is_ai) {
-            acc.push(message)
+      if (userError) throw userError
+
+      // Get the corresponding AI responses
+      if (userMessages) {
+        // Create a map to store conversations
+        const conversationsMap = new Map()
+        
+        // Add user messages first
+        userMessages.forEach(msg => {
+          const date = new Date(msg.created_at).toISOString().split('T')[0]
+          if (!conversationsMap.has(date)) {
+            conversationsMap.set(date, [])
           }
-          return acc
-        }, [])
-        setChatHistory(conversations)
+          conversationsMap.get(date).push(msg)
+        })
+
+        // Convert map to array and sort by date
+        const sortedConversations = Array.from(conversationsMap.entries())
+          .sort(([dateA], [dateB]) => new Date(dateB).getTime() - new Date(dateA).getTime())
+          .flatMap(([_, messages]) => messages)
+
+        setChatHistory(sortedConversations)
       }
     } catch (error) {
       console.error('Error loading chat history:', error)
