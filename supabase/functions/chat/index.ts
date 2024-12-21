@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7'
 import { OpenAI } from "https://deno.land/x/openai@v4.24.0/mod.ts"
 
 const corsHeaders = {
