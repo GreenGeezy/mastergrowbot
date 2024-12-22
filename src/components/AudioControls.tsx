@@ -96,7 +96,8 @@ export default function AudioControls({
   useEffect(() => {
     if (synthesis) {
       const speakText = (text: string) => {
-        if (isMuted) return // Don't speak if muted
+        // Strict check to ensure audio is explicitly unmuted
+        if (isMuted === true) return
         
         synthesis.cancel() // Cancel any ongoing speech
         const utterance = new SpeechSynthesisUtterance(text)

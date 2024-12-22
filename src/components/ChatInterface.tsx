@@ -38,11 +38,16 @@ export default function ChatInterface() {
     }
   }, [session?.user?.id])
 
-  // Reset muted state and cancel any ongoing speech when component mounts
+  // Reset muted state and ensure speech synthesis is cancelled on mount
   useEffect(() => {
     setIsMuted(true)
     if (window.speechSynthesis) {
       window.speechSynthesis.cancel()
+    }
+    return () => {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel()
+      }
     }
   }, [])
 
@@ -67,10 +72,9 @@ export default function ChatInterface() {
   }
 
   const speakResponse = (text: string) => {
-    // Only speak if explicitly unmuted and window.speakResponse exists
-    if (!isMuted && window.speakResponse) {
-      window.speakResponse(text)
-    }
+    // Strict check to ensure audio is explicitly unmuted
+    if (isMuted === true || !window.speakResponse) return
+    window.speakResponse(text)
   }
 
   const sendMessage = async (e: React.FormEvent) => {
@@ -123,9 +127,7 @@ export default function ChatInterface() {
         }])
         
         // Only attempt to speak if explicitly unmuted
-        if (!isMuted) {
-          speakResponse(data.response)
-        }
+        speakResponse(data.response)
       }
 
       setMessage('')
