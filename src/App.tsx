@@ -7,6 +7,7 @@ import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import ChatInterface from "./components/ChatInterface";
+import PlantHealthAnalyzer from "./pages/PlantHealthAnalyzer";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ChatInterface />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/plant-health" 
+              element={
+                <ProtectedRoute>
+                  <PlantHealthAnalyzer />
                 </ProtectedRoute>
               } 
             />

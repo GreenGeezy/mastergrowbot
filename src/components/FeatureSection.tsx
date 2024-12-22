@@ -19,7 +19,7 @@ const FeatureSection = ({ onFeatureClick }: FeatureSectionProps) => {
         icon={Camera}
         title="Plant Health Check"
         subtitle="Diagnose plant issues"
-        onClick={onFeatureClick}
+        to="/plant-health"
       />
       <FeatureCard
         icon={BookOpen}

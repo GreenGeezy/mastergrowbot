@@ -1,16 +1,28 @@
 import { LucideIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface FeatureCardProps {
   icon: LucideIcon;
   title: string;
   subtitle: string;
   onClick?: () => void;
+  to?: string;
 }
 
-const FeatureCard = ({ icon: Icon, title, subtitle, onClick }: FeatureCardProps) => {
+const FeatureCard = ({ icon: Icon, title, subtitle, onClick, to }: FeatureCardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (to) {
+      navigate(to);
+    } else if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
       className="group flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#333333] border border-[#333333] hover:border-primary/50"
     >
       <div className="p-1.5 bg-gradient-to-r from-primary to-[#33C3F0] rounded-lg">
