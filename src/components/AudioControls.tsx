@@ -96,8 +96,8 @@ export default function AudioControls({
   useEffect(() => {
     if (synthesis) {
       const speakText = (text: string) => {
-        // Strict check to ensure audio is explicitly unmuted
-        if (isMuted === true) return
+        // Only speak if audio is explicitly unmuted AND the message came from voice input
+        if (isMuted === true || !isRecording) return
         
         synthesis.cancel() // Cancel any ongoing speech
         const utterance = new SpeechSynthesisUtterance(text)
@@ -125,7 +125,7 @@ export default function AudioControls({
         window.speakResponse = null
       }
     }
-  }, [synthesis, toast, isMuted])
+  }, [synthesis, toast, isMuted, isRecording])
 
   return (
     <div className="flex space-x-2">
