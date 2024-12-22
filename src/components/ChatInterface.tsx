@@ -28,7 +28,7 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
-  const [isMuted, setIsMuted] = useState(true) // Changed to true for default muted state
+  const [isMuted, setIsMuted] = useState(true) // This ensures audio is muted by default
   const session = useSession()
   const { toast } = useToast()
 
@@ -37,6 +37,11 @@ export default function ChatInterface() {
       loadChatHistory()
     }
   }, [session?.user?.id])
+
+  // Reset muted state to true whenever component mounts
+  useEffect(() => {
+    setIsMuted(true)
+  }, [])
 
   const loadChatHistory = async () => {
     try {
