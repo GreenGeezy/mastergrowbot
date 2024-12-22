@@ -28,7 +28,7 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
-  const [isMuted, setIsMuted] = useState(true) // This ensures audio is muted by default
+  const [isMuted, setIsMuted] = useState(true)
   const session = useSession()
   const { toast } = useToast()
 
@@ -41,6 +41,10 @@ export default function ChatInterface() {
   // Reset muted state to true whenever component mounts
   useEffect(() => {
     setIsMuted(true)
+    // Cancel any ongoing speech when component mounts
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
   }, [])
 
   const loadChatHistory = async () => {
@@ -64,9 +68,12 @@ export default function ChatInterface() {
   }
 
   const speakResponse = (text: string) => {
-    // Only speak if explicitly unmuted
+    // Double-check mute state before speaking
     if (!isMuted && window.speakResponse) {
+      console.log('Speaking response, mute state:', isMuted)
       window.speakResponse(text)
+    } else {
+      console.log('Speech suppressed, mute state:', isMuted)
     }
   }
 
@@ -116,7 +123,7 @@ export default function ChatInterface() {
           is_ai: true
         }])
         
-        // Only attempt to speak if not muted
+        // Only attempt to speak if explicitly unmuted
         if (!isMuted) {
           speakResponse(data.response)
         }
