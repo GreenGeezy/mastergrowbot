@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       chat_history: {
         Row: {
+          conversation_id: string | null
           created_at: string
           id: string
           is_ai: boolean | null
@@ -18,6 +19,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          conversation_id?: string | null
           created_at?: string
           id?: string
           is_ai?: boolean | null
@@ -25,6 +27,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          conversation_id?: string | null
           created_at?: string
           id?: string
           is_ai?: boolean | null
