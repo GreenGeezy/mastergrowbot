@@ -97,7 +97,9 @@ export default function AudioControls({
     if (synthesis) {
       const speakText = (text: string) => {
         // Only speak if audio is explicitly unmuted AND the message came from voice input
-        if (isMuted || !isRecording) return
+        if (!isRecording || isMuted) {
+          return // Don't speak if not from voice input or if muted
+        }
         
         synthesis.cancel() // Cancel any ongoing speech
         const utterance = new SpeechSynthesisUtterance(text)
