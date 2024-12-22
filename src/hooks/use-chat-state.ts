@@ -10,9 +10,16 @@ interface Message {
 export function useChatState() {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
 
   const handleQuestionClick = (question: string) => {
     setMessage(question)
+  }
+
+  const startNewChat = () => {
+    setMessages([])
+    setCurrentConversationId(crypto.randomUUID())
+    setMessage('')
   }
 
   return {
@@ -20,6 +27,8 @@ export function useChatState() {
     setMessage,
     messages,
     setMessages,
-    handleQuestionClick
+    handleQuestionClick,
+    startNewChat,
+    currentConversationId
   }
 }

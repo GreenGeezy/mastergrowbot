@@ -15,6 +15,7 @@ interface Message {
   message: string
   is_ai: boolean
   created_at: string
+  conversation_id?: string
 }
 
 const starterQuestions = [
@@ -26,7 +27,15 @@ const starterQuestions = [
 ]
 
 export default function ChatInterface() {
-  const { message, setMessage, messages, setMessages, handleQuestionClick } = useChatState()
+  const { 
+    message, 
+    setMessage, 
+    messages, 
+    setMessages, 
+    handleQuestionClick,
+    startNewChat,
+    currentConversationId 
+  } = useChatState()
   const { isMuted, setIsMuted, speakResponse } = useAudioState()
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
@@ -37,14 +46,17 @@ export default function ChatInterface() {
     if (session?.user?.id) {
       loadChatHistory()
     }
-  }, [session?.user?.id])
+  }, [session?.user?.id, currentConversationId])
 
   const loadChatHistory = async () => {
     try {
+      if (!currentConversationId) return
+
       const { data, error } = await supabase
         .from('chat_history')
         .select('*')
         .eq('user_id', session?.user?.id)
+        .eq('conversation_id', currentConversationId)
         .order('created_at', { ascending: true })
 
       if (error) throw error
@@ -61,33 +73,32 @@ export default function ChatInterface() {
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!message.trim() || !session?.user?.id) return
+    if (!message.trim() || !session?.user?.id || !currentConversationId) return
 
     setIsLoading(true)
     try {
-      // Store user message
       const userMessage = {
         id: crypto.randomUUID(),
         message: message.trim(),
         is_ai: false,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        conversation_id: currentConversationId
       }
       
-      // Update local state first
       setMessages(prev => [...prev, userMessage])
       
-      // Store in Supabase
       await supabase.from('chat_history').insert([{
         user_id: session.user.id,
         message: message.trim(),
-        is_ai: false
+        is_ai: false,
+        conversation_id: currentConversationId
       }])
 
-      // Get AI response
       const { data, error } = await supabase.functions.invoke('chat', {
         body: {
           message: message.trim(),
           userId: session.user.id,
+          conversationId: currentConversationId
         },
       })
 
@@ -98,20 +109,19 @@ export default function ChatInterface() {
           id: crypto.randomUUID(),
           message: data.response,
           is_ai: true,
-          created_at: new Date().toISOString()
+          created_at: new Date().toISOString(),
+          conversation_id: currentConversationId
         }
         
-        // Update local state with AI response
         setMessages(prev => [...prev, aiMessage])
         
-        // Store AI response in Supabase
         await supabase.from('chat_history').insert([{
           user_id: session.user.id,
           message: data.response,
-          is_ai: true
+          is_ai: true,
+          conversation_id: currentConversationId
         }])
         
-        // Only speak if explicitly unmuted
         if (!isMuted) {
           speakResponse(data.response)
         }
@@ -142,10 +152,17 @@ export default function ChatInterface() {
     setMessage(text)
   }
 
+  // Start a new chat if there's no current conversation
+  useEffect(() => {
+    if (!currentConversationId) {
+      startNewChat()
+    }
+  }, [currentConversationId])
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
-        <AppSidebar />
+        <AppSidebar onNewChat={startNewChat} />
         <div className="flex flex-col flex-1 h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
           <div className="flex items-center justify-between p-4 border-b border-[#333333] bg-[#1A1A1A]">
             <div className="flex items-center space-x-3">

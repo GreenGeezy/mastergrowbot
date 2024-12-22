@@ -23,6 +23,7 @@ interface ChatHistory {
   message: string
   created_at: string
   is_ai: boolean
+  conversation_id: string
 }
 
 interface ChatHistoryGroup {
@@ -30,7 +31,11 @@ interface ChatHistoryGroup {
   chats: ChatHistory[]
 }
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  onNewChat: () => void
+}
+
+export function AppSidebar({ onNewChat }: AppSidebarProps) {
   const session = useSession()
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -45,10 +50,8 @@ export function AppSidebar() {
   const loadChatHistory = async () => {
     try {
       setIsLoading(true)
-      console.log('Loading chat history for user:', session?.user?.id)
       
       if (!session?.user?.id) {
-        console.log('No user session found')
         return
       }
 
@@ -59,15 +62,12 @@ export function AppSidebar() {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching chat history:', error)
         throw error
       }
 
       if (messages) {
-        console.log('Fetched messages:', messages)
         setChatHistory(messages)
       } else {
-        console.log('No messages found')
         setChatHistory([])
       }
     } catch (error) {
@@ -78,29 +78,26 @@ export function AppSidebar() {
     }
   }
 
-  const groupChatsByDate = (chats: ChatHistory[]): ChatHistoryGroup[] => {
+  const groupChatsByConversation = (chats: ChatHistory[]): ChatHistoryGroup[] => {
     const groups: { [key: string]: ChatHistory[] } = {}
     const today = new Date()
     const yesterday = new Date(today)
     yesterday.setDate(yesterday.getDate() - 1)
 
-    // First, group messages by conversation (user message followed by AI response)
-    const conversations = chats.reduce((acc: ChatHistory[][], curr) => {
-      if (!curr.is_ai) {
-        // Start a new conversation with user message
-        acc.push([curr])
-      } else if (acc.length > 0) {
-        // Add AI response to the last conversation
-        acc[acc.length - 1].push(curr)
-      }
-      return acc
-    }, [])
-
-    // Now group conversations by date
-    conversations.forEach(conversation => {
-      if (conversation.length === 0) return
+    // Group messages by conversation_id
+    chats.forEach(chat => {
+      if (!chat.conversation_id) return
       
-      const chatDate = new Date(conversation[0].created_at)
+      if (!groups[chat.conversation_id]) {
+        groups[chat.conversation_id] = []
+      }
+      groups[chat.conversation_id].push(chat)
+    })
+
+    // Convert to array and sort by date
+    return Object.entries(groups).map(([_, chats]) => {
+      const firstMessage = chats[0]
+      const chatDate = new Date(firstMessage.created_at)
       let label = ''
 
       if (chatDate.toDateString() === today.toDateString()) {
@@ -117,36 +114,34 @@ export function AppSidebar() {
         label = `${month} ${year}`
       }
 
-      if (!groups[label]) {
-        groups[label] = []
+      return {
+        label,
+        chats: chats.sort((a, b) => 
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
       }
-      // Add only the user message as the conversation starter
-      groups[label].push(conversation[0])
+    }).sort((a, b) => {
+      return new Date(b.chats[0].created_at).getTime() - new Date(a.chats[0].created_at).getTime()
     })
-
-    return Object.entries(groups).map(([label, chats]) => ({
-      label,
-      chats: chats.sort((a, b) => 
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      )
-    }))
   }
 
   const filteredHistory = chatHistory.filter(chat =>
     chat.message.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  const groupedChats = groupChatsByDate(filteredHistory)
-
-  const handleNewChat = () => {
-    // TODO: Implement new chat functionality
-    console.log('New chat clicked')
-  }
+  const groupedChats = groupChatsByConversation(filteredHistory)
 
   return (
     <Sidebar className="border-r border-[#333333]">
       <SidebarHeader>
-        <div className="p-2">
+        <div className="p-2 space-y-2">
+          <Button 
+            onClick={onNewChat}
+            className="w-full cyber-button flex items-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            New Chat
+          </Button>
           <Input
             placeholder="Search chats..."
             value={searchQuery}
@@ -160,14 +155,6 @@ export function AppSidebar() {
         <SidebarGroup>
           <div className="flex items-center justify-between px-2 mb-2">
             <SidebarGroupLabel>Chat History</SidebarGroupLabel>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="h-7 w-7 text-gray-400 hover:text-white"
-              onClick={handleNewChat}
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
           </div>
           <SidebarGroupContent>
             <SidebarMenu>
