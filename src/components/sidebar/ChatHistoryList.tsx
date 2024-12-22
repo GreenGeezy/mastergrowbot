@@ -5,6 +5,7 @@ interface ChatHistory {
   message: string
   created_at: string
   is_ai: boolean
+  conversation_id: string
 }
 
 interface ChatHistoryGroup {
