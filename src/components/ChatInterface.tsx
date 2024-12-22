@@ -38,10 +38,9 @@ export default function ChatInterface() {
     }
   }, [session?.user?.id])
 
-  // Reset muted state to true whenever component mounts
+  // Reset muted state and cancel any ongoing speech when component mounts
   useEffect(() => {
     setIsMuted(true)
-    // Cancel any ongoing speech when component mounts
     if (window.speechSynthesis) {
       window.speechSynthesis.cancel()
     }
@@ -68,12 +67,9 @@ export default function ChatInterface() {
   }
 
   const speakResponse = (text: string) => {
-    // Double-check mute state before speaking
+    // Only speak if explicitly unmuted and window.speakResponse exists
     if (!isMuted && window.speakResponse) {
-      console.log('Speaking response, mute state:', isMuted)
       window.speakResponse(text)
-    } else {
-      console.log('Speech suppressed, mute state:', isMuted)
     }
   }
 
@@ -83,6 +79,7 @@ export default function ChatInterface() {
 
     setIsLoading(true)
     try {
+      // Store user message
       const userMessage = {
         id: crypto.randomUUID(),
         message: message.trim(),
@@ -91,13 +88,13 @@ export default function ChatInterface() {
       }
       setMessages(prev => [...prev, userMessage])
       
-      // Store user message in chat history
       await supabase.from('chat_history').insert([{
         user_id: session.user.id,
         message: message.trim(),
         is_ai: false
       }])
 
+      // Get AI response
       const { data, error } = await supabase.functions.invoke('chat', {
         body: {
           message: message.trim(),
@@ -114,6 +111,8 @@ export default function ChatInterface() {
           is_ai: true,
           created_at: new Date().toISOString()
         }
+        
+        // Update messages state with AI response
         setMessages(prev => [...prev, aiMessage])
         
         // Store AI response in chat history

@@ -96,6 +96,8 @@ export default function AudioControls({
   useEffect(() => {
     if (synthesis) {
       const speakText = (text: string) => {
+        if (isMuted) return // Don't speak if muted
+        
         synthesis.cancel() // Cancel any ongoing speech
         const utterance = new SpeechSynthesisUtterance(text)
         utterance.lang = 'en-US'
@@ -103,7 +105,6 @@ export default function AudioControls({
         utterance.pitch = 1.0
         setCurrentUtterance(utterance)
         
-        // Add error handling for speech synthesis
         utterance.onerror = (event) => {
           console.error('Speech synthesis error:', event.error)
           toast({
@@ -116,7 +117,6 @@ export default function AudioControls({
         synthesis.speak(utterance)
       }
 
-      // Add speak function to window object for global access
       window.speakResponse = speakText
 
       return () => {
@@ -124,7 +124,7 @@ export default function AudioControls({
         window.speakResponse = null
       }
     }
-  }, [synthesis, toast])
+  }, [synthesis, toast, isMuted])
 
   return (
     <div className="flex space-x-2">
