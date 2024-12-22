@@ -122,7 +122,8 @@ export default function ChatInterface() {
           conversation_id: currentConversationId
         }])
         
-        if (!isMuted) {
+        // Only speak the response if audio is explicitly enabled (not muted) AND we're in recording mode
+        if (!isMuted && isRecording) {
           speakResponse(data.response)
         }
       }
