@@ -20,9 +20,13 @@ const Index = () => {
       setSession(session);
       setLoading(false);
       
-      // If user is authenticated, redirect to chat
+      // If user is authenticated and on the home page, keep them on their current route
+      // or default to /chat if they're at the root
       if (session) {
-        navigate('/chat', { replace: true });
+        const intendedPath = location.pathname;
+        if (intendedPath === '/') {
+          navigate('/chat', { replace: true });
+        }
       }
     });
 
@@ -32,14 +36,17 @@ const Index = () => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       
-      // If user becomes authenticated, redirect to chat
+      // If user becomes authenticated, handle routing
       if (session) {
-        navigate('/chat', { replace: true });
+        const intendedPath = location.pathname;
+        if (intendedPath === '/') {
+          navigate('/chat', { replace: true });
+        }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, location]);
 
   const handleFeatureClick = () => {
     if (!session) {
