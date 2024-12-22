@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 
 export function useAudioState() {
+  // Initialize muted state to true by default
   const [isMuted, setIsMuted] = useState(true)
 
   // Reset muted state and ensure speech synthesis is cancelled on mount
   useEffect(() => {
-    setIsMuted(true)
     if (window.speechSynthesis) {
       window.speechSynthesis.cancel()
     }
@@ -17,7 +17,7 @@ export function useAudioState() {
   }, [])
 
   const speakResponse = (text: string) => {
-    // Strict check to ensure audio is explicitly unmuted
+    // Only speak if audio is explicitly unmuted
     if (isMuted || !window.speakResponse) return
     window.speakResponse(text)
   }
