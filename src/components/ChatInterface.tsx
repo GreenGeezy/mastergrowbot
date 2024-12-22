@@ -7,6 +7,8 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from './AppSidebar'
 import ChatInput from './ChatInput'
 import ChatMessages from './ChatMessages'
+import { useChatState } from '@/hooks/use-chat-state'
+import { useAudioState } from '@/hooks/use-audio-state'
 
 interface Message {
   id: string
@@ -24,11 +26,10 @@ const starterQuestions = [
 ]
 
 export default function ChatInterface() {
-  const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState<Message[]>([])
+  const { message, setMessage, messages, setMessages, handleQuestionClick } = useChatState()
+  const { isMuted, setIsMuted, speakResponse } = useAudioState()
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
   const session = useSession()
   const { toast } = useToast()
 
@@ -37,19 +38,6 @@ export default function ChatInterface() {
       loadChatHistory()
     }
   }, [session?.user?.id])
-
-  // Reset muted state and ensure speech synthesis is cancelled on mount
-  useEffect(() => {
-    setIsMuted(true)
-    if (window.speechSynthesis) {
-      window.speechSynthesis.cancel()
-    }
-    return () => {
-      if (window.speechSynthesis) {
-        window.speechSynthesis.cancel()
-      }
-    }
-  }, [])
 
   const loadChatHistory = async () => {
     try {
@@ -71,12 +59,6 @@ export default function ChatInterface() {
     }
   }
 
-  const speakResponse = (text: string) => {
-    // Strict check to ensure audio is explicitly unmuted
-    if (isMuted === true || !window.speakResponse) return
-    window.speakResponse(text)
-  }
-
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!message.trim() || !session?.user?.id) return
@@ -90,8 +72,11 @@ export default function ChatInterface() {
         is_ai: false,
         created_at: new Date().toISOString()
       }
+      
+      // Update local state first
       setMessages(prev => [...prev, userMessage])
       
+      // Store in Supabase
       await supabase.from('chat_history').insert([{
         user_id: session.user.id,
         message: message.trim(),
@@ -116,18 +101,20 @@ export default function ChatInterface() {
           created_at: new Date().toISOString()
         }
         
-        // Update messages state with AI response
+        // Update local state with AI response
         setMessages(prev => [...prev, aiMessage])
         
-        // Store AI response in chat history
+        // Store AI response in Supabase
         await supabase.from('chat_history').insert([{
           user_id: session.user.id,
           message: data.response,
           is_ai: true
         }])
         
-        // Only attempt to speak if explicitly unmuted
-        speakResponse(data.response)
+        // Only speak if explicitly unmuted
+        if (!isMuted) {
+          speakResponse(data.response)
+        }
       }
 
       setMessage('')
@@ -143,20 +130,12 @@ export default function ChatInterface() {
     }
   }
 
-  const handleQuestionClick = (question: string) => {
-    setMessage(question)
-  }
-
   const handleToggleRecording = () => {
     setIsRecording(!isRecording)
   }
 
   const handleToggleMute = () => {
     setIsMuted(!isMuted)
-    // Cancel any ongoing speech when muting
-    if (!isMuted && window.speechSynthesis) {
-      window.speechSynthesis.cancel()
-    }
   }
 
   const handleSpeechResult = (text: string) => {
