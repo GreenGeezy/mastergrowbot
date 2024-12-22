@@ -64,12 +64,9 @@ export default function ChatInterface() {
   }
 
   const speakResponse = (text: string) => {
+    // Only speak if explicitly unmuted
     if (!isMuted && window.speakResponse) {
-      // Add a small delay to ensure the text is displayed before speaking
-      setTimeout(() => {
-        console.log('Speaking response:', text) // Debug log
-        window.speakResponse(text)
-      }, 100)
+      window.speakResponse(text)
     }
   }
 
@@ -119,8 +116,10 @@ export default function ChatInterface() {
           is_ai: true
         }])
         
-        // Speak the AI response
-        speakResponse(data.response)
+        // Only attempt to speak if not muted
+        if (!isMuted) {
+          speakResponse(data.response)
+        }
       }
 
       setMessage('')
