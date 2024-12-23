@@ -101,19 +101,17 @@ const PlantHealthAnalyzer = () => {
 
   const analyzeImage = async (imageUrl: string) => {
     try {
-      const response = await fetch('/api/analyze-plant', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token}`,
-        },
-        body: JSON.stringify({ imageUrl }),
+      const { data, error } = await supabase.functions.invoke('analyze-plant', {
+        body: { imageUrl },
       });
 
-      if (!response.ok) throw new Error('Analysis failed');
+      if (error) throw error;
 
-      const result = await response.json();
-      return result;
+      if (!data || !data.analysis) {
+        throw new Error('No analysis data received');
+      }
+
+      return data.analysis;
     } catch (error: any) {
       console.error('Error analyzing image:', error);
       throw new Error('Failed to analyze image');
