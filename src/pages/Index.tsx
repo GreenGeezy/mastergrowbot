@@ -20,9 +20,12 @@ const Index = () => {
       setSession(session);
       setLoading(false);
       
-      // Only redirect to /chat if user is at the root path
-      if (session && location.pathname === '/') {
+      // Only redirect to /chat if user is at the root path and there's no intended destination
+      if (session && location.pathname === '/' && !location.state?.from) {
         navigate('/chat', { replace: true });
+      } else if (session && location.state?.from) {
+        // If there's an intended destination, navigate there
+        navigate(location.state.from.pathname, { replace: true });
       }
     });
 
@@ -32,9 +35,12 @@ const Index = () => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       
-      // Only redirect to /chat if user is at the root path
-      if (session && location.pathname === '/') {
+      // Only redirect to /chat if user is at the root path and there's no intended destination
+      if (session && location.pathname === '/' && !location.state?.from) {
         navigate('/chat', { replace: true });
+      } else if (session && location.state?.from) {
+        // If there's an intended destination, navigate there
+        navigate(location.state.from.pathname, { replace: true });
       }
     });
 
