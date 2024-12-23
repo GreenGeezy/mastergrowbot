@@ -19,6 +19,8 @@ serve(async (req) => {
       throw new Error('No image URL provided')
     }
 
+    console.log('Analyzing image:', imageUrl)
+
     // Initialize OpenAI API client
     const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
