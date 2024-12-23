@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
-import { Upload, Leaf, AlertCircle } from 'lucide-react';
+import { Upload, Leaf, AlertCircle, LoaderCircle, CheckCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useSession } from '@supabase/auth-helpers-react';
+
+interface AnalysisResult {
+  diagnosis: string;
+  confidence_level: number;
+  detailed_analysis: any;
+  recommended_actions: string[];
+}
 
 const PlantHealthAnalyzer = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const { toast } = useToast();
+  const session = useSession();
 
   const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -46,6 +59,86 @@ const PlantHealthAnalyzer = () => {
       setPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
+  };
+
+  const uploadImage = async (file: File): Promise<string> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${crypto.randomUUID()}.${fileExt}`;
+    const filePath = `${session?.user.id}/${fileName}`;
+
+    try {
+      const { error: uploadError, data } = await supabase.storage
+        .from('plant-images')
+        .upload(filePath, file, {
+          upsert: false,
+          onUploadProgress: (progress) => {
+            const percent = (progress.loaded / progress.total) * 100;
+            setUploadProgress(percent);
+          },
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('plant-images')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error: any) {
+      console.error('Error uploading image:', error);
+      throw new Error('Failed to upload image');
+    }
+  };
+
+  const analyzeImage = async (imageUrl: string) => {
+    try {
+      const response = await fetch('/api/analyze-plant', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token}`,
+        },
+        body: JSON.stringify({ imageUrl }),
+      });
+
+      if (!response.ok) throw new Error('Analysis failed');
+
+      const result = await response.json();
+      return result;
+    } catch (error: any) {
+      console.error('Error analyzing image:', error);
+      throw new Error('Failed to analyze image');
+    }
+  };
+
+  const handleAnalysis = async () => {
+    if (!file || !session) return;
+
+    setIsAnalyzing(true);
+    setAnalysisResult(null);
+    setUploadProgress(0);
+
+    try {
+      // Upload image
+      const imageUrl = await uploadImage(file);
+      
+      // Analyze image
+      const result = await analyzeImage(imageUrl);
+      
+      setAnalysisResult(result);
+      toast({
+        title: "Analysis Complete",
+        description: "Your plant health analysis is ready!",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Analysis Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const quickTips = [
@@ -132,6 +225,7 @@ const PlantHealthAnalyzer = () => {
                     onClick={() => {
                       setFile(null);
                       setPreview(null);
+                      setAnalysisResult(null);
                     }}
                     variant="secondary"
                     className="bg-gradient-to-r from-green-500 to-blue-500 text-white"
@@ -143,6 +237,61 @@ const PlantHealthAnalyzer = () => {
             )}
           </div>
         </Card>
+
+        {/* Analysis Progress */}
+        {isAnalyzing && (
+          <Card className="mb-8 p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-white">Analyzing plant health...</span>
+                <LoaderCircle className="animate-spin text-primary" />
+              </div>
+              <Progress value={uploadProgress} className="h-2" />
+            </div>
+          </Card>
+        )}
+
+        {/* Analysis Results */}
+        {analysisResult && !isAnalyzing && (
+          <Card className="mb-8 p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800">
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <CheckCircle className="text-green-500" />
+                <h3 className="text-xl font-semibold text-white">Analysis Complete</h3>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-lg font-medium text-white mb-2">Diagnosis</h4>
+                  <p className="text-gray-300">{analysisResult.diagnosis}</p>
+                </div>
+                
+                <div>
+                  <h4 className="text-lg font-medium text-white mb-2">Confidence Level</h4>
+                  <Progress 
+                    value={analysisResult.confidence_level * 100} 
+                    className="h-2"
+                  />
+                  <p className="text-sm text-gray-400 mt-1">
+                    {Math.round(analysisResult.confidence_level * 100)}% confidence
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-medium text-white mb-2">Recommended Actions</h4>
+                  <ul className="space-y-2">
+                    {analysisResult.recommended_actions.map((action: string, index: number) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-300">
+                        <CheckCircle className="w-5 h-5 text-green-500 mt-1" />
+                        <span>{action}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </Card>
+        )}
 
         {/* Quick Tips Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -163,15 +312,15 @@ const PlantHealthAnalyzer = () => {
         </div>
 
         {/* Analysis Button */}
-        {file && (
+        {file && !isAnalyzing && (
           <Button
-            onClick={() => setIsAnalyzing(true)}
+            onClick={handleAnalysis}
             className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium py-6 rounded-xl hover:opacity-90 transition-opacity duration-300 relative overflow-hidden"
             disabled={isAnalyzing}
           >
             {isAnalyzing ? (
               <div className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                <LoaderCircle className="animate-spin" />
                 Analyzing Plant Health...
               </div>
             ) : (
