@@ -1,27 +1,28 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+};
 
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { imageUrl } = await req.json()
+    const { imageUrl } = await req.json();
     
     if (!imageUrl) {
-      throw new Error('No image URL provided')
+      throw new Error('No image URL provided');
     }
 
-    console.log('Starting analysis for image:', imageUrl)
+    console.log('Starting analysis for image:', imageUrl);
 
-    // Initialize OpenAI API client
+    // Initialize OpenAI API request
     const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -53,56 +54,50 @@ serve(async (req) => {
         ],
         max_tokens: 1000
       })
-    })
+    });
 
     if (!openaiResponse.ok) {
-      const errorData = await openaiResponse.json()
-      console.error('OpenAI API Error:', errorData)
-      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`)
+      const errorData = await openaiResponse.json();
+      console.error('OpenAI API Error:', errorData);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
     }
 
-    const analysis = await openaiResponse.json()
-    console.log('OpenAI Analysis received:', analysis)
+    const analysis = await openaiResponse.json();
+    console.log('OpenAI Analysis received:', analysis);
 
     if (!analysis.choices?.[0]?.message?.content) {
-      throw new Error('Invalid response format from OpenAI')
+      throw new Error('Invalid response format from OpenAI');
     }
 
-    const analysisText = analysis.choices[0].message.content
+    const analysisText = analysis.choices[0].message.content;
 
     // Parse the analysis text to extract structured data
-    const structuredAnalysis = parseAnalysisResponse(analysisText)
+    const structuredAnalysis = {
+      diagnosis: analysisText,
+      confidence_level: 0.85, // Default confidence level
+      recommended_actions: [],
+      detailed_analysis: analysisText,
+    };
 
-    // Create Supabase client
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    // Extract recommended actions from the text
+    const actionsMatch = analysisText.match(/Recommended actions?:?\s*((?:[\s\S](?!Confidence level|Growth stage|Primary issues?))*)/i);
+    if (actionsMatch) {
+      structuredAnalysis.recommended_actions = actionsMatch[1]
+        .split(/\d+\.|•|-/)
+        .map(action => action.trim())
+        .filter(action => action.length > 0);
+    }
 
-    // Store analysis results
-    const { data: analysisRecord, error: dbError } = await supabaseAdmin
-      .from('plant_analyses')
-      .insert({
-        image_url: imageUrl,
-        growth_stage: structuredAnalysis.growthStage,
-        primary_issue: structuredAnalysis.primaryIssue,
-        confidence_level: structuredAnalysis.confidenceLevel,
-        diagnosis: analysisText,
-        recommended_actions: structuredAnalysis.recommendedActions,
-        detailed_analysis: structuredAnalysis
-      })
-      .select()
-      .single()
-
-    if (dbError) {
-      console.error('Database Error:', dbError)
-      throw new Error('Failed to save analysis results')
+    // Extract confidence level if present
+    const confidenceMatch = analysisText.match(/Confidence level:?\s*(\d+)%/i);
+    if (confidenceMatch) {
+      structuredAnalysis.confidence_level = parseInt(confidenceMatch[1]) / 100;
     }
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        analysis: analysisRecord 
+        analysis: structuredAnalysis 
       }),
       { 
         headers: { 
@@ -110,10 +105,10 @@ serve(async (req) => {
           'Content-Type': 'application/json' 
         } 
       }
-    )
+    );
 
   } catch (error) {
-    console.error('Error in analyze-plant function:', error)
+    console.error('Error in analyze-plant function:', error);
     return new Response(
       JSON.stringify({ 
         success: false, 
@@ -126,51 +121,6 @@ serve(async (req) => {
           'Content-Type': 'application/json' 
         } 
       }
-    )
+    );
   }
-})
-
-function parseAnalysisResponse(text: string) {
-  // Initialize default structure
-  const analysis = {
-    primaryIssue: null,
-    growthStage: null,
-    confidenceLevel: 0,
-    recommendedActions: [],
-    detailedAnalysis: text
-  }
-
-  try {
-    // Extract growth stage
-    const growthStageMatch = text.match(/Growth stage:?\s*([^\.]+)/i)
-    if (growthStageMatch) {
-      analysis.growthStage = growthStageMatch[1].trim()
-    }
-
-    // Extract primary issue
-    const issueMatch = text.match(/Primary (?:health )?issues?:?\s*([^\.]+)/i)
-    if (issueMatch) {
-      analysis.primaryIssue = issueMatch[1].trim()
-    }
-
-    // Extract confidence level
-    const confidenceMatch = text.match(/Confidence level:?\s*(\d+)%/i)
-    if (confidenceMatch) {
-      analysis.confidenceLevel = parseInt(confidenceMatch[1]) / 100
-    }
-
-    // Extract recommended actions
-    const actionsMatch = text.match(/Recommended actions?:?\s*((?:[\s\S](?!Confidence level|Growth stage|Primary issues?))*)/i)
-    if (actionsMatch) {
-      analysis.recommendedActions = actionsMatch[1]
-        .split(/\d+\.|•|-/)
-        .map(action => action.trim())
-        .filter(action => action.length > 0)
-    }
-
-  } catch (error) {
-    console.error('Error parsing analysis:', error)
-  }
-
-  return analysis
-}
+});
