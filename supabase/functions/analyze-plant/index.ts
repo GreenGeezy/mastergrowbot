@@ -19,7 +19,7 @@ serve(async (req) => {
       throw new Error('No image URL provided')
     }
 
-    console.log('Analyzing image:', imageUrl)
+    console.log('Starting analysis for image:', imageUrl)
 
     // Initialize OpenAI API client
     const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -44,7 +44,9 @@ serve(async (req) => {
               },
               {
                 type: "image_url",
-                image_url: imageUrl
+                image_url: {
+                  url: imageUrl
+                }
               }
             ]
           }
@@ -54,12 +56,18 @@ serve(async (req) => {
     })
 
     if (!openaiResponse.ok) {
-      const error = await openaiResponse.json()
-      console.error('OpenAI API Error:', error)
-      throw new Error('Failed to analyze image')
+      const errorData = await openaiResponse.json()
+      console.error('OpenAI API Error:', errorData)
+      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`)
     }
 
     const analysis = await openaiResponse.json()
+    console.log('OpenAI Analysis received:', analysis)
+
+    if (!analysis.choices?.[0]?.message?.content) {
+      throw new Error('Invalid response format from OpenAI')
+    }
+
     const analysisText = analysis.choices[0].message.content
 
     // Parse the analysis text to extract structured data
