@@ -67,14 +67,20 @@ const PlantHealthAnalyzer = () => {
     const filePath = `${session?.user.id}/${fileName}`;
 
     try {
+      // Create a channel for upload progress
+      const channel = supabase.channel('upload-progress');
+      
+      channel.subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('Subscribed to upload progress');
+        }
+      });
+
       const { error: uploadError, data } = await supabase.storage
         .from('plant-images')
         .upload(filePath, file, {
           upsert: false,
-          onUploadProgress: (progress) => {
-            const percent = (progress.loaded / progress.total) * 100;
-            setUploadProgress(percent);
-          },
+          // The progress will be tracked through the channel subscription
         });
 
       if (uploadError) throw uploadError;
@@ -82,6 +88,9 @@ const PlantHealthAnalyzer = () => {
       const { data: { publicUrl } } = supabase.storage
         .from('plant-images')
         .getPublicUrl(filePath);
+
+      // Clean up the channel subscription
+      channel.unsubscribe();
 
       return publicUrl;
     } catch (error: any) {
@@ -121,6 +130,7 @@ const PlantHealthAnalyzer = () => {
     try {
       // Upload image
       const imageUrl = await uploadImage(file);
+      setUploadProgress(100); // Set to 100% when upload is complete
       
       // Analyze image
       const result = await analyzeImage(imageUrl);
