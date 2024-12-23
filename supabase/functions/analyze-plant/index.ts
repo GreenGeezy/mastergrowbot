@@ -1,6 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,7 +21,7 @@ serve(async (req) => {
 
     console.log('Starting analysis for image:', imageUrl);
 
-    // Initialize OpenAI API request
+    // Initialize OpenAI API request with a more specific prompt for cannabis plant analysis
     const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -34,14 +33,21 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are an expert cannabis cultivation advisor. Analyze plant images for health issues and provide detailed recommendations."
+            content: `You are an expert cannabis cultivation advisor specializing in plant health diagnostics. 
+            Analyze images of cannabis plants and provide detailed, actionable feedback in the following format:
+            1. Growth Stage Assessment: Identify if the plant is in seedling, vegetative, or flowering stage
+            2. Overall Health Score: Rate the plant's health on a scale of 1-10
+            3. Specific Issues: List any visible problems (nutrient deficiencies, pest damage, etc.)
+            4. Environmental Factors: Comment on any visible environmental stress indicators
+            5. Detailed Recommendations: Provide specific, actionable steps to improve plant health
+            Be specific and technical but explain terms when needed.`
           },
           {
             role: "user",
             content: [
               {
                 type: "text",
-                text: "Analyze this cannabis plant image and provide a detailed health assessment. Include: 1) Primary health issues if any 2) Growth stage 3) Confidence level in diagnosis 4) Recommended actions"
+                text: "Analyze this cannabis plant image and provide a comprehensive health assessment following the format specified."
               },
               {
                 type: "image_url",
@@ -73,26 +79,16 @@ serve(async (req) => {
 
     // Parse the analysis text to extract structured data
     const structuredAnalysis = {
-      diagnosis: analysisText,
-      confidence_level: 0.85, // Default confidence level
-      recommended_actions: [],
-      detailed_analysis: analysisText,
+      diagnosis: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
+      confidence_level: 0.85,
+      recommended_actions: extractRecommendations(analysisText),
+      detailed_analysis: {
+        growth_stage: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
+        health_score: extractSection(analysisText, "Overall Health Score", "Specific Issues"),
+        specific_issues: extractSection(analysisText, "Specific Issues", "Environmental Factors"),
+        environmental_factors: extractSection(analysisText, "Environmental Factors", "Detailed Recommendations"),
+      }
     };
-
-    // Extract recommended actions from the text
-    const actionsMatch = analysisText.match(/Recommended actions?:?\s*((?:[\s\S](?!Confidence level|Growth stage|Primary issues?))*)/i);
-    if (actionsMatch) {
-      structuredAnalysis.recommended_actions = actionsMatch[1]
-        .split(/\d+\.|•|-/)
-        .map(action => action.trim())
-        .filter(action => action.length > 0);
-    }
-
-    // Extract confidence level if present
-    const confidenceMatch = analysisText.match(/Confidence level:?\s*(\d+)%/i);
-    if (confidenceMatch) {
-      structuredAnalysis.confidence_level = parseInt(confidenceMatch[1]) / 100;
-    }
 
     return new Response(
       JSON.stringify({ 
@@ -124,3 +120,25 @@ serve(async (req) => {
     );
   }
 });
+
+// Helper function to extract sections from the analysis text
+function extractSection(text: string, startMarker: string, endMarker: string): string {
+  const startIndex = text.indexOf(startMarker);
+  const endIndex = text.indexOf(endMarker);
+  
+  if (startIndex === -1) return "";
+  
+  const start = startIndex + startMarker.length;
+  const end = endIndex === -1 ? undefined : endIndex;
+  
+  return text.slice(start, end).trim();
+}
+
+// Helper function to extract recommendations from the analysis text
+function extractRecommendations(text: string): string[] {
+  const recommendationsSection = extractSection(text, "Detailed Recommendations", "END");
+  return recommendationsSection
+    .split(/\d+\.|•|-/)
+    .map(item => item.trim())
+    .filter(item => item.length > 0);
+}

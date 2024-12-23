@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-import { Upload, Leaf, AlertCircle, LoaderCircle, CheckCircle } from 'lucide-react';
+import { Upload, Leaf, AlertCircle, LoaderCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useSession } from '@supabase/auth-helpers-react';
+import AnalysisResults from '@/components/plant-health/AnalysisResults';
 
 interface AnalysisResult {
   diagnosis: string;
   confidence_level: number;
-  detailed_analysis: any;
+  detailed_analysis: {
+    growth_stage: string;
+    health_score: string;
+    specific_issues: string;
+    environmental_factors: string;
+  };
   recommended_actions: string[];
 }
 
@@ -67,20 +73,10 @@ const PlantHealthAnalyzer = () => {
     const filePath = `${session?.user.id}/${fileName}`;
 
     try {
-      // Create a channel for upload progress
-      const channel = supabase.channel('upload-progress');
-      
-      channel.subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('Subscribed to upload progress');
-        }
-      });
-
       const { error: uploadError, data } = await supabase.storage
         .from('plant-images')
         .upload(filePath, file, {
           upsert: false,
-          // The progress will be tracked through the channel subscription
         });
 
       if (uploadError) throw uploadError;
@@ -88,9 +84,6 @@ const PlantHealthAnalyzer = () => {
       const { data: { publicUrl } } = supabase.storage
         .from('plant-images')
         .getPublicUrl(filePath);
-
-      // Clean up the channel subscription
-      channel.unsubscribe();
 
       return publicUrl;
     } catch (error: any) {
@@ -126,11 +119,9 @@ const PlantHealthAnalyzer = () => {
     setUploadProgress(0);
 
     try {
-      // Upload image
       const imageUrl = await uploadImage(file);
-      setUploadProgress(100); // Set to 100% when upload is complete
+      setUploadProgress(100);
       
-      // Analyze image
       const result = await analyzeImage(imageUrl);
       
       setAnalysisResult(result);
@@ -261,44 +252,7 @@ const PlantHealthAnalyzer = () => {
 
         {/* Analysis Results */}
         {analysisResult && !isAnalyzing && (
-          <Card className="mb-8 p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800">
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <CheckCircle className="text-green-500" />
-                <h3 className="text-xl font-semibold text-white">Analysis Complete</h3>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-lg font-medium text-white mb-2">Diagnosis</h4>
-                  <p className="text-gray-300">{analysisResult.diagnosis}</p>
-                </div>
-                
-                <div>
-                  <h4 className="text-lg font-medium text-white mb-2">Confidence Level</h4>
-                  <Progress 
-                    value={analysisResult.confidence_level * 100} 
-                    className="h-2"
-                  />
-                  <p className="text-sm text-gray-400 mt-1">
-                    {Math.round(analysisResult.confidence_level * 100)}% confidence
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="text-lg font-medium text-white mb-2">Recommended Actions</h4>
-                  <ul className="space-y-2">
-                    {analysisResult.recommended_actions.map((action: string, index: number) => (
-                      <li key={index} className="flex items-start gap-2 text-gray-300">
-                        <CheckCircle className="w-5 h-5 text-green-500 mt-1" />
-                        <span>{action}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </Card>
+          <AnalysisResults analysisResult={analysisResult} />
         )}
 
         {/* Quick Tips Grid */}
