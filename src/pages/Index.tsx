@@ -20,13 +20,9 @@ const Index = () => {
       setSession(session);
       setLoading(false);
       
-      // If user is authenticated and on the home page, keep them on their current route
-      // or default to /chat if they're at the root
-      if (session) {
-        const intendedPath = location.pathname;
-        if (intendedPath === '/') {
-          navigate('/chat', { replace: true });
-        }
+      // Only redirect to /chat if user is at the root path
+      if (session && location.pathname === '/') {
+        navigate('/chat', { replace: true });
       }
     });
 
@@ -36,12 +32,9 @@ const Index = () => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       
-      // If user becomes authenticated, handle routing
-      if (session) {
-        const intendedPath = location.pathname;
-        if (intendedPath === '/') {
-          navigate('/chat', { replace: true });
-        }
+      // Only redirect to /chat if user is at the root path
+      if (session && location.pathname === '/') {
+        navigate('/chat', { replace: true });
       }
     });
 
