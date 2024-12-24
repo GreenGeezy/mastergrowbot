@@ -15,11 +15,19 @@ interface QuickTip {
 const QuickTipCards = () => {
   const session = useSession();
 
+  const handleTakePhoto = () => {
+    const fileInput = document.getElementById('file-upload');
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
   const quickTips: QuickTip[] = [
     {
       icon: Camera,
       title: "Take Photo",
-      description: "Upload clear, detailed photos of any concerning areas on your plant"
+      description: "Upload clear, detailed photos of any concerning areas on your plant",
+      action: handleTakePhoto
     },
     {
       icon: Share2,
