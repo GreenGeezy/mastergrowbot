@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Leaf, AlertCircle, LoaderCircle } from 'lucide-react';
+import { Leaf, AlertCircle, LoaderCircle, Upload } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
