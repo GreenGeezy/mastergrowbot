@@ -83,6 +83,24 @@ const ImageDropzone = ({
     }
   };
 
+  const startCamera = async () => {
+    try {
+      // Check if the browser supports getUserMedia
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Your browser does not support camera access');
+      }
+      
+      setShowCamera(true);
+    } catch (err: any) {
+      console.error('Camera initialization error:', err);
+      toast({
+        title: "Camera Error",
+        description: err.message || "Unable to access camera. Please check your browser settings.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card className="backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:border-primary/50 transition-all duration-300">
       <div
@@ -139,7 +157,7 @@ const ImageDropzone = ({
             </label>
 
             <Button
-              onClick={() => setShowCamera(true)}
+              onClick={startCamera}
               className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white"
             >
               <Camera className="w-4 h-4 mr-2" />
@@ -157,7 +175,7 @@ const ImageDropzone = ({
               const fileInput = document.getElementById('file-upload') as HTMLInputElement;
               if (fileInput) fileInput.click();
             }}
-            onStartCamera={() => setShowCamera(true)}
+            onStartCamera={startCamera}
           />
         )}
       </div>

@@ -12,9 +12,11 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
   const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   const startCamera = async () => {
     try {
+      console.log('Requesting camera access...');
       const mediaStream = await navigator.mediaDevices.getUserMedia({ 
         video: { 
           facingMode: 'environment',
@@ -23,15 +25,18 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
         } 
       });
       
+      console.log('Camera access granted');
       setStream(mediaStream);
+      setHasPermission(true);
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
     } catch (err: any) {
       console.error('Camera access error:', err);
+      setHasPermission(false);
       toast({
         title: "Camera Access Required",
-        description: "Please allow camera access to take photos. You may need to enable it in your browser settings.",
+        description: err.message || "Please allow camera access to take photos. You may need to enable it in your browser settings.",
         variant: "destructive",
       });
       onClose();
@@ -64,6 +69,15 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
       }
     }
   };
+
+  if (hasPermission === false) {
+    return (
+      <div className="text-center p-4">
+        <p className="text-red-500 mb-4">Camera access was denied. Please enable camera access in your browser settings.</p>
+        <Button onClick={onClose} variant="destructive">Close</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
