@@ -64,7 +64,7 @@ const QuickTipCards = () => {
             tip.component
           ) : (
             <div
-              className="p-6 cursor-pointer flex flex-col items-center text-center h-full"
+              className="p-6 cursor-pointer flex flex-col items-center text-center h-[240px]"
               onClick={tip.action}
               role="button"
               tabIndex={0}
