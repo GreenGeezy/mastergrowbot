@@ -164,6 +164,38 @@ export type Database = {
         }
         Relationships: []
       }
+      share_metrics: {
+        Row: {
+          analysis_id: string | null
+          created_at: string
+          id: string
+          share_type: string
+          user_id: string | null
+        }
+        Insert: {
+          analysis_id?: string | null
+          created_at?: string
+          id?: string
+          share_type: string
+          user_id?: string | null
+        }
+        Update: {
+          analysis_id?: string | null
+          created_at?: string
+          id?: string
+          share_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "share_metrics_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "plant_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_profiles: {
         Row: {
           created_at: string

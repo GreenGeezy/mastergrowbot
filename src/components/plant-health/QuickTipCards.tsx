@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Camera, Share2, History } from 'lucide-react';
 import AnalysisHistory from './AnalysisHistory';
+import ShareResults from './ShareResults';
 import { useSession } from '@supabase/auth-helpers-react';
 
 interface QuickTip {
@@ -10,6 +11,7 @@ interface QuickTip {
   description: string;
   action?: () => void;
   dialog?: React.ReactNode;
+  component?: React.ReactNode;
 }
 
 const QuickTipCards = () => {
@@ -36,7 +38,8 @@ const QuickTipCards = () => {
     {
       icon: Share2,
       title: "Share Results",
-      description: "Share your analysis via email, social media, or copy a direct link"
+      description: "Share your analysis via email, social media, or copy a direct link",
+      component: session && <ShareResults analysisId="" imageUrls={[]} /> // These props will be populated when there's an active analysis
     },
     {
       icon: History,
@@ -51,17 +54,32 @@ const QuickTipCards = () => {
       {quickTips.map((tip, index) => (
         <Card
           key={index}
-          className="backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:border-primary/50 transition-all duration-300 p-6 cursor-pointer"
-          onClick={tip.action}
+          className="backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:border-primary/50 transition-all duration-300"
         >
-          <div className="flex flex-col items-center text-center gap-3">
-            <div className="p-3 rounded-full bg-gradient-to-r from-green-500 to-blue-500">
-              <tip.icon className="w-5 h-5 text-white" />
+          {tip.component ? (
+            tip.component
+          ) : (
+            <div
+              className="p-6 cursor-pointer"
+              onClick={tip.action}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  tip.action?.();
+                }
+              }}
+            >
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="p-3 rounded-full bg-gradient-to-r from-green-500 to-blue-500">
+                  <tip.icon className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-white font-medium">{tip.title}</h3>
+                <p className="text-gray-400 text-sm">{tip.description}</p>
+                {tip.dialog}
+              </div>
             </div>
-            <h3 className="text-white font-medium">{tip.title}</h3>
-            <p className="text-gray-400 text-sm">{tip.description}</p>
-            {tip.dialog}
-          </div>
+          )}
         </Card>
       ))}
     </div>
