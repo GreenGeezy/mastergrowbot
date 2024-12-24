@@ -143,18 +143,18 @@ const PlantHealthAnalyzer = () => {
   const quickTips = [
     {
       icon: Leaf,
-      title: "Clear Photos",
-      description: "Take well-lit, focused shots of affected areas"
+      title: "Take Photo",
+      description: "Upload clear, detailed photo of any concerning areas on your plant"
     },
     {
       icon: AlertCircle,
-      title: "Multiple Angles",
-      description: "Include both close-up and full plant views"
+      title: "Share Results",
+      description: "Share your analysis via email, social media, or copy a direct link"
     },
     {
       icon: Upload,
-      title: "Recent Images",
-      description: "Use photos taken within the last 24 hours"
+      title: "Analysis History",
+      description: "Review past diagnoses and track your plant's health over time"
     }
   ];
 
