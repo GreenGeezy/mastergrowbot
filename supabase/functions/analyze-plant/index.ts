@@ -13,15 +13,42 @@ serve(async (req) => {
   }
 
   try {
-    const { imageUrl } = await req.json();
+    const { imageUrls } = await req.json();
     
-    if (!imageUrl) {
-      throw new Error('No image URL provided');
+    if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
+      throw new Error('No image URLs provided');
     }
 
-    console.log('Starting analysis for image:', imageUrl);
+    console.log('Starting analysis for images:', imageUrls);
 
-    // Initialize OpenAI API request with a more specific prompt for cannabis plant analysis
+    // Create a combined prompt that includes all images
+    const messages = [
+      {
+        role: "system",
+        content: `You are an expert cannabis cultivation advisor specializing in plant health diagnostics. 
+        Analyze multiple images of cannabis plants and provide detailed, actionable feedback in the following format:
+        1. Growth Stage Assessment: Identify if the plant is in seedling, vegetative, or flowering stage
+        2. Overall Health Score: Rate the plant's health on a scale of 1-10
+        3. Specific Issues: List any visible problems (nutrient deficiencies, pest damage, etc.)
+        4. Environmental Factors: Comment on any visible environmental stress indicators
+        5. Detailed Recommendations: Provide specific, actionable steps to improve plant health
+        Be specific and technical but explain terms when needed.`
+      },
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "Analyze these cannabis plant images and provide a comprehensive health assessment following the format specified. Consider all angles and details shown in the images."
+          },
+          ...imageUrls.map(url => ({
+            type: "image_url",
+            image_url: { url }
+          }))
+        ]
+      }
+    ];
+
     const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -30,34 +57,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content: `You are an expert cannabis cultivation advisor specializing in plant health diagnostics. 
-            Analyze images of cannabis plants and provide detailed, actionable feedback in the following format:
-            1. Growth Stage Assessment: Identify if the plant is in seedling, vegetative, or flowering stage
-            2. Overall Health Score: Rate the plant's health on a scale of 1-10
-            3. Specific Issues: List any visible problems (nutrient deficiencies, pest damage, etc.)
-            4. Environmental Factors: Comment on any visible environmental stress indicators
-            5. Detailed Recommendations: Provide specific, actionable steps to improve plant health
-            Be specific and technical but explain terms when needed.`
-          },
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: "Analyze this cannabis plant image and provide a comprehensive health assessment following the format specified."
-              },
-              {
-                type: "image_url",
-                image_url: {
-                  url: imageUrl
-                }
-              }
-            ]
-          }
-        ],
+        messages,
         max_tokens: 1000
       })
     });

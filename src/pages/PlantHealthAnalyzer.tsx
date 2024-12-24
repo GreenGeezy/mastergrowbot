@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, Leaf, AlertCircle, LoaderCircle } from 'lucide-react';
+import { Leaf, AlertCircle, LoaderCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useSession } from '@supabase/auth-helpers-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
+import ImageDropzone from '@/components/plant-health/ImageDropzone';
 
 interface AnalysisResult {
   diagnosis: string;
@@ -21,81 +22,49 @@ interface AnalysisResult {
 }
 
 const PlantHealthAnalyzer = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const { toast } = useToast();
   const session = useSession();
 
-  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const droppedFile = e.dataTransfer.files[0];
-    if (validateFile(droppedFile)) {
-      handleFileSelect(droppedFile);
+  const uploadImages = async (files: File[]): Promise<string[]> => {
+    const uploadedUrls: string[] = [];
+
+    for (const file of files) {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${crypto.randomUUID()}.${fileExt}`;
+      const filePath = `${session?.user.id}/${fileName}`;
+
+      try {
+        const { error: uploadError, data } = await supabase.storage
+          .from('plant-images')
+          .upload(filePath, file, {
+            upsert: false,
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('plant-images')
+          .getPublicUrl(filePath);
+
+        uploadedUrls.push(publicUrl);
+        setUploadProgress((prev) => prev + (100 / files.length));
+      } catch (error: any) {
+        console.error('Error uploading image:', error);
+        throw new Error('Failed to upload image');
+      }
     }
+
+    return uploadedUrls;
   };
 
-  const validateFile = (file: File): boolean => {
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    if (!validTypes.includes(file.type)) {
-      toast({
-        title: "Invalid file type",
-        description: "Please upload a JPEG, PNG, or WebP image.",
-        variant: "destructive",
-      });
-      return false;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      toast({
-        title: "File too large",
-        description: "Please upload an image smaller than 10MB.",
-        variant: "destructive",
-      });
-      return false;
-    }
-    return true;
-  };
-
-  const handleFileSelect = (file: File) => {
-    setFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const uploadImage = async (file: File): Promise<string> => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${crypto.randomUUID()}.${fileExt}`;
-    const filePath = `${session?.user.id}/${fileName}`;
-
-    try {
-      const { error: uploadError, data } = await supabase.storage
-        .from('plant-images')
-        .upload(filePath, file, {
-          upsert: false,
-        });
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('plant-images')
-        .getPublicUrl(filePath);
-
-      return publicUrl;
-    } catch (error: any) {
-      console.error('Error uploading image:', error);
-      throw new Error('Failed to upload image');
-    }
-  };
-
-  const analyzeImage = async (imageUrl: string) => {
+  const analyzeImages = async (imageUrls: string[]) => {
     try {
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
-        body: { imageUrl },
+        body: { imageUrls },
       });
 
       if (error) throw error;
@@ -106,23 +75,23 @@ const PlantHealthAnalyzer = () => {
 
       return data.analysis;
     } catch (error: any) {
-      console.error('Error analyzing image:', error);
-      throw new Error('Failed to analyze image');
+      console.error('Error analyzing images:', error);
+      throw new Error('Failed to analyze images');
     }
   };
 
   const handleAnalysis = async () => {
-    if (!file || !session) return;
+    if (files.length === 0 || !session) return;
 
     setIsAnalyzing(true);
     setAnalysisResult(null);
     setUploadProgress(0);
 
     try {
-      const imageUrl = await uploadImage(file);
+      const imageUrls = await uploadImages(files);
       setUploadProgress(100);
       
-      const result = await analyzeImage(imageUrl);
+      const result = await analyzeImages(imageUrls);
       
       setAnalysisResult(result);
       toast({
@@ -144,7 +113,7 @@ const PlantHealthAnalyzer = () => {
     {
       icon: Leaf,
       title: "Take Photo",
-      description: "Upload clear, detailed photo of any concerning areas on your plant"
+      description: "Upload clear, detailed photos of any concerning areas on your plant"
     },
     {
       icon: AlertCircle,
@@ -182,60 +151,11 @@ const PlantHealthAnalyzer = () => {
         </div>
 
         {/* Upload Zone */}
-        <Card className="mb-8 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:border-primary/50 transition-all duration-300">
-          <div
-            className="p-8 text-center"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleFileDrop}
-          >
-            {!preview ? (
-              <div className="border-2 border-dashed border-gray-700 rounded-xl p-8 hover:border-primary/50 transition-all duration-300">
-                <input
-                  type="file"
-                  id="file-upload"
-                  className="hidden"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={(e) => e.target.files?.[0] && validateFile(e.target.files[0]) && handleFileSelect(e.target.files[0])}
-                />
-                <label
-                  htmlFor="file-upload"
-                  className="cursor-pointer"
-                >
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="p-4 rounded-full bg-gradient-to-r from-green-500 to-blue-500">
-                      <Upload className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-white font-medium">Drop your image here or click to upload</p>
-                      <p className="text-gray-400 text-sm mt-1">JPEG, PNG or WebP (max. 10MB)</p>
-                    </div>
-                  </div>
-                </label>
-              </div>
-            ) : (
-              <div className="relative group">
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="max-h-[400px] rounded-xl mx-auto"
-                />
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <Button
-                    onClick={() => {
-                      setFile(null);
-                      setPreview(null);
-                      setAnalysisResult(null);
-                    }}
-                    variant="secondary"
-                    className="bg-gradient-to-r from-green-500 to-blue-500 text-white"
-                  >
-                    Choose Different Image
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
-        </Card>
+        <ImageDropzone
+          onImagesSelected={setFiles}
+          selectedFiles={files}
+          maxFiles={3}
+        />
 
         {/* Analysis Progress */}
         {isAnalyzing && (
@@ -274,7 +194,7 @@ const PlantHealthAnalyzer = () => {
         </div>
 
         {/* Analysis Button */}
-        {file && !isAnalyzing && (
+        {files.length > 0 && !isAnalyzing && (
           <Button
             onClick={handleAnalysis}
             className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium py-6 rounded-xl hover:opacity-90 transition-opacity duration-300 relative overflow-hidden"

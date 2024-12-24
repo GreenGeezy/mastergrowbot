@@ -113,6 +113,7 @@ export type Database = {
           id: string
           image_taken_at: string | null
           image_url: string
+          image_urls: Json | null
           issue_resolved: boolean | null
           primary_issue: string | null
           recommended_actions: Json | null
@@ -132,6 +133,7 @@ export type Database = {
           id?: string
           image_taken_at?: string | null
           image_url: string
+          image_urls?: Json | null
           issue_resolved?: boolean | null
           primary_issue?: string | null
           recommended_actions?: Json | null
@@ -151,6 +153,7 @@ export type Database = {
           id?: string
           image_taken_at?: string | null
           image_url?: string
+          image_urls?: Json | null
           issue_resolved?: boolean | null
           primary_issue?: string | null
           recommended_actions?: Json | null
