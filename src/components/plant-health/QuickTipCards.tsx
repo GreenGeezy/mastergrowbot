@@ -58,13 +58,13 @@ const QuickTipCards = () => {
       {quickTips.map((tip, index) => (
         <Card
           key={index}
-          className="bg-[#111827] border border-gray-800 hover:border-primary/50 transition-all duration-300"
+          className="bg-[#0F172A] border border-gray-800 hover:border-primary/50 transition-all duration-300"
         >
           {tip.component ? (
             tip.component
           ) : (
             <div
-              className="p-8 cursor-pointer flex flex-col items-center text-center"
+              className="p-6 cursor-pointer flex flex-col items-center text-center h-full"
               onClick={tip.action}
               role="button"
               tabIndex={0}
@@ -74,14 +74,14 @@ const QuickTipCards = () => {
                 }
               }}
             >
-              <div className="rounded-full bg-[#2D5A27] p-4 mb-6">
+              <div className="rounded-full bg-[#2D5A27] p-3 mb-4">
                 <tip.icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-white font-medium text-lg mb-3">{tip.title}</h3>
-              <p className="text-gray-400 text-sm mb-6">{tip.description}</p>
+              <h3 className="text-white font-medium text-base mb-2">{tip.title}</h3>
+              <p className="text-gray-400 text-sm mb-6 px-4">{tip.description}</p>
               {(tip.dialog || tip.buttonText) && (
                 <button 
-                  className="w-full bg-transparent text-white border border-gray-800 hover:border-primary/50 rounded-lg py-2.5 px-4 transition-all duration-300"
+                  className="w-[80%] bg-[#1E293B] text-white border border-gray-800 hover:border-primary/50 rounded-lg py-2 px-4 transition-all duration-300 mt-auto"
                   onClick={(e) => {
                     e.stopPropagation();
                     if (tip.action) tip.action();
