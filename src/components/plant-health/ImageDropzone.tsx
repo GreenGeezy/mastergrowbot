@@ -53,7 +53,7 @@ const ImageDropzone = ({
       return;
     }
 
-    onImagesSelected(validFiles);
+    onImagesSelected([...selectedFiles, ...validFiles]);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
