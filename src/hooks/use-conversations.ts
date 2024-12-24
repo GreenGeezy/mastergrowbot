@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
 import { supabase } from '@/integrations/supabase/client'
 import { useToast } from '@/hooks/use-toast'
+import { Database } from '@/integrations/supabase/types'
+
+type ChatMessage = Database['public']['Tables']['chat_history']['Row']
 
 interface Message {
   id: string
@@ -38,17 +41,17 @@ export function useConversations() {
       if (error) throw error
 
       // Group messages by conversation
-      const groupedConversations = messages?.reduce((acc: { [key: string]: Message[] }, message) => {
+      const groupedConversations = (messages || []).reduce((acc: { [key: string]: Message[] }, message: ChatMessage) => {
         const conversationId = message.conversation_id || 'default'
         if (!acc[conversationId]) {
           acc[conversationId] = []
         }
-        acc[conversationId].push(message)
+        acc[conversationId].push(message as Message)
         return acc
       }, {})
 
       // Format conversations for display
-      const formattedConversations = Object.entries(groupedConversations || {}).map(([id, messages]) => {
+      const formattedConversations = Object.entries(groupedConversations).map(([id, messages]) => {
         const firstUserMessage = messages.find(m => !m.is_ai)?.message || 'New Conversation'
         const lastMessage = messages[messages.length - 1]?.message || ''
         const updatedAt = messages[messages.length - 1]?.updated_at || messages[messages.length - 1]?.created_at
