@@ -12,6 +12,7 @@ interface QuickTip {
   action?: () => void;
   dialog?: React.ReactNode;
   component?: React.ReactNode;
+  buttonText?: string;
 }
 
 const QuickTipCards = () => {
@@ -33,19 +34,22 @@ const QuickTipCards = () => {
       icon: Camera,
       title: "Take Photo",
       description: "Upload clear, detailed photos of any concerning areas on your plant",
-      action: handleTakePhoto
+      action: handleTakePhoto,
+      buttonText: "Take Photo"
     },
     {
       icon: Share2,
       title: "Share Results",
       description: "Share your analysis via email, social media, or copy a direct link",
-      component: session && <ShareResults analysisId="" imageUrls={[]} /> // These props will be populated when there's an active analysis
+      component: session && <ShareResults analysisId="" imageUrls={[]} />,
+      buttonText: "Share Results"
     },
     {
       icon: History,
       title: "Analysis History",
       description: "Review past diagnoses and track your plant's health over time",
-      dialog: session && <AnalysisHistory userId={session.user.id} />
+      dialog: session && <AnalysisHistory userId={session.user.id} />,
+      buttonText: "View Analysis History"
     }
   ];
 
@@ -54,13 +58,13 @@ const QuickTipCards = () => {
       {quickTips.map((tip, index) => (
         <Card
           key={index}
-          className="backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:border-primary/50 transition-all duration-300"
+          className="backdrop-blur-lg bg-[#0F1117] border border-gray-800 hover:border-primary/50 transition-all duration-300"
         >
           {tip.component ? (
             tip.component
           ) : (
             <div
-              className="p-6 cursor-pointer"
+              className="p-6 cursor-pointer flex flex-col items-center text-center"
               onClick={tip.action}
               role="button"
               tabIndex={0}
@@ -70,14 +74,23 @@ const QuickTipCards = () => {
                 }
               }}
             >
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="p-3 rounded-full bg-gradient-to-r from-green-500 to-blue-500">
-                  <tip.icon className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-white font-medium">{tip.title}</h3>
-                <p className="text-gray-400 text-sm">{tip.description}</p>
-                {tip.dialog}
+              <div className="rounded-full bg-[#2D5A27] p-4 mb-4">
+                <tip.icon className="w-6 h-6 text-white" />
               </div>
+              <h3 className="text-white font-medium text-lg mb-2">{tip.title}</h3>
+              <p className="text-gray-400 text-sm mb-6">{tip.description}</p>
+              {(tip.dialog || tip.buttonText) && (
+                <button 
+                  className="w-full bg-[#0F1117] text-white border border-gray-800 hover:border-primary/50 rounded-lg py-2 px-4 transition-all duration-300"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (tip.action) tip.action();
+                  }}
+                >
+                  {tip.buttonText}
+                </button>
+              )}
+              {tip.dialog}
             </div>
           )}
         </Card>
