@@ -20,15 +20,22 @@ interface AnalysisHistoryProps {
 }
 
 const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
-  const { data: analyses, isLoading } = useQuery({
+  const { data: analyses, isLoading, error } = useQuery({
     queryKey: ['plantAnalyses', userId],
     queryFn: async () => {
+      console.log('Fetching analyses for user:', userId); // Debug log
       const { data, error } = await supabase
         .from('plant_analyses')
         .select('*')
+        .eq('user_id', userId)
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching analyses:', error); // Debug log
+        throw error;
+      }
+      
+      console.log('Fetched analyses:', data); // Debug log
       return data;
     },
   });
@@ -37,6 +44,22 @@ const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8 text-center">
+        <p className="text-red-500">Error loading analysis history. Please try again later.</p>
+      </div>
+    );
+  }
+
+  if (!analyses || analyses.length === 0) {
+    return (
+      <div className="p-8 text-center">
+        <p className="text-gray-400">No plant analyses found. Upload some images to get started!</p>
       </div>
     );
   }
@@ -54,7 +77,7 @@ const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
         </DialogHeader>
         <ScrollArea className="h-full pr-4">
           <div className="space-y-4">
-            {analyses?.map((analysis) => (
+            {analyses.map((analysis) => (
               <Card key={analysis.id} className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -73,7 +96,8 @@ const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {Array.isArray(analysis.image_urls) && analysis.image_urls.length > 0 ? (
+                    {analysis.image_urls && Array.isArray(analysis.image_urls) && analysis.image_urls.length > 0 ? (
+                      // Handle multiple images from image_urls array
                       analysis.image_urls.map((url: string, index: number) => (
                         <img
                           key={index}
@@ -82,31 +106,42 @@ const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
                           className="w-full h-48 object-cover rounded-lg"
                         />
                       ))
-                    ) : (
+                    ) : analysis.image_url ? (
+                      // Fallback to single image_url if image_urls is empty
                       <img
                         src={analysis.image_url}
                         alt="Plant analysis"
                         className="w-full h-48 object-cover rounded-lg"
                       />
+                    ) : (
+                      <div className="col-span-3 text-center text-gray-400">
+                        No images available
+                      </div>
                     )}
                   </div>
 
-                  <div>
-                    <h4 className="text-lg font-medium text-white mb-2">Diagnosis</h4>
-                    <p className="text-gray-300">{analysis.diagnosis}</p>
-                  </div>
+                  {analysis.diagnosis && (
+                    <div>
+                      <h4 className="text-lg font-medium text-white mb-2">Diagnosis</h4>
+                      <p className="text-gray-300">{analysis.diagnosis}</p>
+                    </div>
+                  )}
 
                   {analysis.detailed_analysis && (
                     <>
-                      <div>
-                        <h4 className="text-lg font-medium text-white mb-2">Growth Stage</h4>
-                        <p className="text-gray-300">{analysis.detailed_analysis.growth_stage}</p>
-                      </div>
+                      {analysis.detailed_analysis.growth_stage && (
+                        <div>
+                          <h4 className="text-lg font-medium text-white mb-2">Growth Stage</h4>
+                          <p className="text-gray-300">{analysis.detailed_analysis.growth_stage}</p>
+                        </div>
+                      )}
 
-                      <div>
-                        <h4 className="text-lg font-medium text-white mb-2">Health Score</h4>
-                        <p className="text-gray-300">{analysis.detailed_analysis.health_score}</p>
-                      </div>
+                      {analysis.detailed_analysis.health_score && (
+                        <div>
+                          <h4 className="text-lg font-medium text-white mb-2">Health Score</h4>
+                          <p className="text-gray-300">{analysis.detailed_analysis.health_score}</p>
+                        </div>
+                      )}
 
                       {analysis.detailed_analysis.specific_issues && (
                         <div>
@@ -135,7 +170,7 @@ const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
                     </div>
                   )}
 
-                  {Array.isArray(analysis.recommended_actions) && analysis.recommended_actions.length > 0 && (
+                  {analysis.recommended_actions && Array.isArray(analysis.recommended_actions) && analysis.recommended_actions.length > 0 && (
                     <div>
                       <h4 className="text-lg font-medium text-white mb-2">Recommended Actions</h4>
                       <ul className="space-y-2">
