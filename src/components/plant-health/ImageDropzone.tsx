@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, Camera } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -85,7 +85,6 @@ const ImageDropzone = ({
 
   const startCamera = async () => {
     try {
-      // Check if the browser supports getUserMedia
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         throw new Error('Your browser does not support camera access');
       }
@@ -155,14 +154,6 @@ const ImageDropzone = ({
                 </div>
               </div>
             </label>
-
-            <Button
-              onClick={startCamera}
-              className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white"
-            >
-              <Camera className="w-4 h-4 mr-2" />
-              Take Photo with Camera
-            </Button>
           </div>
         )}
 

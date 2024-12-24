@@ -18,7 +18,10 @@ const QuickTipCards = () => {
   const handleTakePhoto = () => {
     const fileInput = document.getElementById('file-upload');
     if (fileInput) {
-      fileInput.click();
+      const startCameraButton = document.querySelector('[data-camera-button]');
+      if (startCameraButton instanceof HTMLButtonElement) {
+        startCameraButton.click();
+      }
     }
   };
 
