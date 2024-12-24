@@ -12,6 +12,7 @@ interface Message {
   is_ai: boolean
   created_at: string
   conversation_id: string
+  updated_at?: string | null
 }
 
 interface Conversation {
@@ -41,7 +42,7 @@ export function useConversations() {
       if (error) throw error
 
       // Group messages by conversation
-      const groupedConversations = (messages || []).reduce((acc: { [key: string]: Message[] }, message: ChatMessage) => {
+      const groupedConversations = (messages || []).reduce<Record<string, Message[]>>((acc, message: ChatMessage) => {
         const conversationId = message.conversation_id || 'default'
         if (!acc[conversationId]) {
           acc[conversationId] = []
@@ -51,10 +52,10 @@ export function useConversations() {
       }, {})
 
       // Format conversations for display
-      const formattedConversations = Object.entries(groupedConversations).map(([id, messages]) => {
+      const formattedConversations: Conversation[] = Object.entries(groupedConversations).map(([id, messages]) => {
         const firstUserMessage = messages.find(m => !m.is_ai)?.message || 'New Conversation'
         const lastMessage = messages[messages.length - 1]?.message || ''
-        const updatedAt = messages[messages.length - 1]?.updated_at || messages[messages.length - 1]?.created_at
+        const updatedAt = messages[messages.length - 1]?.updated_at || messages[messages.length - 1]?.created_at || new Date().toISOString()
 
         return {
           id,
