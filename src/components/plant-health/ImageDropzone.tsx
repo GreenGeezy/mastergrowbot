@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card } from '@/components/ui/card';
@@ -20,6 +20,23 @@ const ImageDropzone = ({
   const { toast } = useToast();
   const [dragActive, setDragActive] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
+
+  useEffect(() => {
+    const handleStartCamera = () => {
+      startCamera();
+    };
+
+    const dropzone = document.querySelector('[data-image-dropzone]');
+    if (dropzone) {
+      dropzone.addEventListener('start-camera', handleStartCamera);
+    }
+
+    return () => {
+      if (dropzone) {
+        dropzone.removeEventListener('start-camera', handleStartCamera);
+      }
+    };
+  }, []);
 
   const validateFile = (file: File): boolean => {
     const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
@@ -101,7 +118,10 @@ const ImageDropzone = ({
   };
 
   return (
-    <Card className="backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:border-primary/50 transition-all duration-300">
+    <Card 
+      className="backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:border-primary/50 transition-all duration-300"
+      data-image-dropzone
+    >
       <div
         className="p-8 text-center"
         onDragOver={(e) => {

@@ -18,9 +18,10 @@ const QuickTipCards = () => {
   const handleTakePhoto = () => {
     const fileInput = document.getElementById('file-upload');
     if (fileInput) {
-      const startCameraButton = document.querySelector('[data-camera-button]');
-      if (startCameraButton instanceof HTMLButtonElement) {
-        startCameraButton.click();
+      const imageDropzone = document.querySelector('[data-image-dropzone]');
+      if (imageDropzone) {
+        const event = new CustomEvent('start-camera');
+        imageDropzone.dispatchEvent(event);
       }
     }
   };
