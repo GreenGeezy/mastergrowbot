@@ -9,6 +9,8 @@ import { useChatState } from '@/hooks/use-chat-state'
 import { useAudioState } from '@/hooks/use-audio-state'
 import { ChatHeader } from './chat/ChatHeader'
 import { useChatMessages } from '@/hooks/use-chat-messages'
+import { useConversations } from '@/hooks/use-conversations'
+import { ConversationList } from './chat/ConversationList'
 
 const starterQuestions = [
   "What nutrients are essential during the vegetative stage?",
@@ -29,6 +31,7 @@ export default function ChatInterface() {
   const { isMuted, setIsMuted, speakResponse } = useAudioState()
   const [isRecording, setIsRecording] = useState(false)
   const session = useSession()
+  const { conversations, isLoading: isLoadingConversations, refreshConversations } = useConversations()
 
   const {
     messages,
@@ -38,7 +41,7 @@ export default function ChatInterface() {
   } = useChatMessages(currentConversationId, speakResponse, isMuted)
 
   useEffect(() => {
-    if (session?.user?.id) {
+    if (session?.user?.id && currentConversationId) {
       loadChatHistory()
     }
   }, [session?.user?.id, currentConversationId])
@@ -49,6 +52,7 @@ export default function ChatInterface() {
     
     await sendMessage(message)
     setMessage('')
+    refreshConversations()
   }
 
   const handleToggleRecording = () => {
@@ -63,6 +67,13 @@ export default function ChatInterface() {
     setMessage(text)
   }
 
+  const handleConversationSelect = (conversationId: string) => {
+    if (currentConversationId !== conversationId) {
+      setMessage('')
+      startNewChat()
+    }
+  }
+
   // Start a new chat if there's no current conversation
   useEffect(() => {
     if (!currentConversationId) {
@@ -73,7 +84,15 @@ export default function ChatInterface() {
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full">
-        <AppSidebar onNewChat={startNewChat} />
+        <AppSidebar onNewChat={startNewChat}>
+          <ConversationList
+            conversations={conversations}
+            isLoading={isLoadingConversations}
+            currentConversationId={currentConversationId}
+            onConversationSelect={handleConversationSelect}
+          />
+        </AppSidebar>
+        
         <div className="flex flex-col flex-1 h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
           <ChatHeader />
           
