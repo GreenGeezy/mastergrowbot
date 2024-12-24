@@ -23,6 +23,13 @@ const FeatureCard = ({ icon: Icon, title, subtitle, onClick, to }: FeatureCardPr
   return (
     <div
       onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleClick();
+        }
+      }}
       className="group flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#333333] border border-[#333333] hover:border-primary/50"
     >
       <div className="p-1.5 bg-gradient-to-r from-primary to-[#33C3F0] rounded-lg">
