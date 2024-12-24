@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Leaf, AlertCircle, LoaderCircle, Upload } from 'lucide-react';
+import { Leaf, AlertCircle, LoaderCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useSession } from '@supabase/auth-helpers-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
+import AnalysisHistory from '@/components/plant-health/AnalysisHistory';
 
 interface AnalysisResult {
   diagnosis: string;
@@ -93,6 +93,21 @@ const PlantHealthAnalyzer = () => {
       
       const result = await analyzeImages(imageUrls);
       
+      // Store the analysis in the database
+      const { error: dbError } = await supabase
+        .from('plant_analyses')
+        .insert({
+          user_id: session.user.id,
+          image_url: imageUrls[0], // Keep for backward compatibility
+          image_urls: imageUrls,
+          diagnosis: result.diagnosis,
+          confidence_level: result.confidence_level,
+          detailed_analysis: result.detailed_analysis,
+          recommended_actions: result.recommended_actions,
+        });
+
+      if (dbError) throw dbError;
+      
       setAnalysisResult(result);
       toast({
         title: "Analysis Complete",
@@ -121,7 +136,7 @@ const PlantHealthAnalyzer = () => {
       description: "Share your analysis via email, social media, or copy a direct link"
     },
     {
-      icon: Upload,
+      icon: LoaderCircle,
       title: "Analysis History",
       description: "Review past diagnoses and track your plant's health over time"
     }
@@ -175,8 +190,15 @@ const PlantHealthAnalyzer = () => {
           <AnalysisResults analysisResult={analysisResult} />
         )}
 
+        {/* Analysis History */}
+        {session && (
+          <div className="mt-8">
+            <AnalysisHistory userId={session.user.id} />
+          </div>
+        )}
+
         {/* Quick Tips Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
           {quickTips.map((tip, index) => (
             <Card
               key={index}
@@ -197,7 +219,7 @@ const PlantHealthAnalyzer = () => {
         {files.length > 0 && !isAnalyzing && (
           <Button
             onClick={handleAnalysis}
-            className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium py-6 rounded-xl hover:opacity-90 transition-opacity duration-300 relative overflow-hidden"
+            className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium py-6 rounded-xl hover:opacity-90 transition-opacity duration-300 relative overflow-hidden mt-8"
             disabled={isAnalyzing}
           >
             {isAnalyzing ? (
