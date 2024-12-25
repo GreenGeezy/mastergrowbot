@@ -120,6 +120,14 @@ const PlantHealthAnalyzer = () => {
     }
   };
 
+  const handleTakePhoto = () => {
+    const imageDropzone = document.querySelector('[data-image-dropzone]');
+    if (imageDropzone) {
+      const event = new CustomEvent('start-camera');
+      imageDropzone.dispatchEvent(event);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0A0A0A] bg-gradient-to-br from-green-900/20 to-blue-900/20">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -178,6 +186,14 @@ const PlantHealthAnalyzer = () => {
                 className="w-full bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600 hover:border-slate-500 text-white font-semibold text-lg px-6 py-4 rounded-xl transition-all duration-300 flex items-center justify-center"
               >
                 View Analysis History
+              </Button>
+            </div>
+            <div className="w-full">
+              <Button
+                onClick={handleTakePhoto}
+                className="w-full bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600 hover:border-slate-500 text-white font-semibold text-lg px-6 py-4 rounded-xl transition-all duration-300 flex items-center justify-center"
+              >
+                Take Photo
               </Button>
             </div>
           </div>
