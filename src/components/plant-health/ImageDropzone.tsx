@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import CameraCapture from './CameraCapture';
 import ImagePreviewGrid from './ImagePreviewGrid';
 
