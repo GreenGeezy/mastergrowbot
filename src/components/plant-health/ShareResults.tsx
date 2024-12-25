@@ -3,8 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Share2, Link, Mail, Twitter } from 'lucide-react';
-import { LoaderCircle } from 'lucide-react';
+import { Share2, Link, Mail, Twitter, Instagram, Copy, LoaderCircle } from 'lucide-react';
 
 interface ShareOption {
   icon: React.ElementType;
@@ -36,6 +35,8 @@ const ShareResults = ({ analysisId, imageUrls }: ShareResultsProps) => {
   };
 
   const generateShareableUrl = async (): Promise<string> => {
+    if (imageUrls.length === 0) return '';
+    
     const { data } = await supabase
       .storage
       .from('plant-images')
@@ -58,6 +59,33 @@ const ShareResults = ({ analysisId, imageUrls }: ShareResultsProps) => {
       toast({
         title: "Error",
         description: "Failed to generate shareable link.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const copyImageToClipboard = async () => {
+    setIsLoading(true);
+    try {
+      const shareableUrl = await generateShareableUrl();
+      const response = await fetch(shareableUrl);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          [blob.type]: blob
+        })
+      ]);
+      await recordShareMetric('copy_image');
+      toast({
+        title: "Image Copied!",
+        description: "The analysis image has been copied to your clipboard.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to copy image. Try using the link instead.",
         variant: "destructive",
       });
     } finally {
@@ -102,17 +130,21 @@ const ShareResults = ({ analysisId, imageUrls }: ShareResultsProps) => {
     }
   };
 
-  const shareViaWhatsApp = async () => {
+  const shareViaInstagram = async () => {
     setIsLoading(true);
     try {
       const shareableUrl = await generateShareableUrl();
-      const text = encodeURIComponent('Check out my plant health analysis from Master Growbot: ');
-      await recordShareMetric('whatsapp');
-      window.open(`https://wa.me/?text=${text}${encodeURIComponent(shareableUrl)}`, '_blank');
+      await recordShareMetric('instagram');
+      // Since Instagram doesn't have a direct web share API, we'll copy the link and show instructions
+      await navigator.clipboard.writeText(shareableUrl);
+      toast({
+        title: "Ready to Share on Instagram",
+        description: "Link copied! Open Instagram and paste in your story or direct message.",
+      });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to share on WhatsApp.",
+        description: "Failed to prepare Instagram share.",
         variant: "destructive",
       });
     } finally {
@@ -122,24 +154,25 @@ const ShareResults = ({ analysisId, imageUrls }: ShareResultsProps) => {
 
   const shareOptions: ShareOption[] = [
     { icon: Link, label: 'Copy Link', action: copyToClipboard },
+    { icon: Copy, label: 'Copy Image', action: copyImageToClipboard },
     { icon: Mail, label: 'Email', action: shareViaEmail },
     { icon: Twitter, label: 'Twitter', action: shareViaTwitter },
-    { icon: Share2, label: 'WhatsApp', action: shareViaWhatsApp },
+    { icon: Instagram, label: 'Instagram', action: shareViaInstagram },
   ];
 
   return (
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md bg-gray-900 border border-gray-800">
           <DialogHeader>
-            <DialogTitle>Share Analysis Results</DialogTitle>
+            <DialogTitle className="text-white">Share Analysis Results</DialogTitle>
           </DialogHeader>
           <div className="grid grid-cols-2 gap-4 py-4">
             {shareOptions.map((option, index) => (
               <Button
                 key={index}
                 variant="outline"
-                className="flex items-center gap-2 p-4"
+                className="flex items-center gap-2 p-4 bg-gray-800 hover:bg-gray-700 text-white border-gray-700"
                 onClick={() => option.action()}
                 disabled={isLoading}
               >
@@ -164,7 +197,7 @@ const ShareResults = ({ analysisId, imageUrls }: ShareResultsProps) => {
             setIsOpen(true);
           }
         }}
-        className="group flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#333333] border border-[#333333] hover:border-primary/50"
+        className="group flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 hover:bg-gray-800 border border-gray-700 hover:border-primary/50"
       >
         <div className="p-1.5 bg-gradient-to-r from-primary to-[#33C3F0] rounded-lg">
           <Share2 className="w-4 h-4 text-white" />
