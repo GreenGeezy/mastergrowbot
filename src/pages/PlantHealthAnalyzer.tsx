@@ -14,11 +14,13 @@ const PlantHealthAnalyzer = () => {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [cameraFile, setCameraFile] = useState<File | null>(null);
 
-  const handleImagesSelected = (files: File[]) => {
+  const handleImagesSelected = async (files: File[]) => {
     setSelectedFiles(files);
-    if (files.length > 0) {
-      setShowConfirmation(true);
+    // Directly analyze uploaded images without confirmation
+    if (files.length > 0 && !cameraFile) {
+      await handleAnalyze();
     }
   };
 
@@ -28,6 +30,12 @@ const PlantHealthAnalyzer = () => {
       const event = new CustomEvent('start-camera');
       imageDropzone.dispatchEvent(event);
     }
+  };
+
+  const handleCameraCapture = (file: File) => {
+    setCameraFile(file);
+    setSelectedFiles([file]);
+    setShowConfirmation(true);
   };
 
   const handleAnalyze = async () => {
@@ -82,6 +90,7 @@ const PlantHealthAnalyzer = () => {
     } finally {
       setIsAnalyzing(false);
       setShowConfirmation(false);
+      setCameraFile(null);
     }
   };
 
@@ -93,6 +102,7 @@ const PlantHealthAnalyzer = () => {
         <ImageDropzone
           onImagesSelected={handleImagesSelected}
           selectedFiles={selectedFiles}
+          onCameraCapture={handleCameraCapture}
         />
 
         {analysisResult && (
@@ -104,7 +114,11 @@ const PlantHealthAnalyzer = () => {
           onTakePhoto={handleTakePhoto}
           onAnalyze={handleAnalyze}
           showConfirmation={showConfirmation}
-          onConfirmationCancel={() => setShowConfirmation(false)}
+          onConfirmationCancel={() => {
+            setShowConfirmation(false);
+            setCameraFile(null);
+            setSelectedFiles([]);
+          }}
           onConfirmationConfirm={() => {
             setShowConfirmation(false);
             handleAnalyze();

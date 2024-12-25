@@ -9,12 +9,14 @@ interface ImageDropzoneProps {
   onImagesSelected: (files: File[]) => void;
   selectedFiles: File[];
   maxFiles?: number;
+  onCameraCapture?: (file: File) => void;
 }
 
 const ImageDropzone = ({ 
   onImagesSelected, 
   selectedFiles, 
-  maxFiles = 3 
+  maxFiles = 3,
+  onCameraCapture 
 }: ImageDropzoneProps) => {
   const { toast } = useToast();
   const [dragActive, setDragActive] = useState(false);
@@ -87,14 +89,13 @@ const ImageDropzone = ({
     }
   };
 
-  const removeFile = (index: number) => {
-    const newFiles = selectedFiles.filter((_, i) => i !== index);
-    onImagesSelected(newFiles);
-  };
-
   const handlePhotoCapture = (file: File) => {
     if (validateFile(file)) {
-      onImagesSelected([...selectedFiles, file]);
+      if (onCameraCapture) {
+        onCameraCapture(file);
+      } else {
+        onImagesSelected([...selectedFiles, file]);
+      }
       setShowCamera(false);
     }
   };
@@ -180,7 +181,10 @@ const ImageDropzone = ({
           <ImagePreviewGrid
             files={selectedFiles}
             maxFiles={maxFiles}
-            onRemove={removeFile}
+            onRemove={(index) => {
+              const newFiles = selectedFiles.filter((_, i) => i !== index);
+              onImagesSelected(newFiles);
+            }}
             onAddMore={() => {
               const fileInput = document.getElementById('file-upload') as HTMLInputElement;
               if (fileInput) fileInput.click();
