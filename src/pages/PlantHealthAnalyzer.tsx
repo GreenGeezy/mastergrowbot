@@ -150,7 +150,7 @@ const PlantHealthAnalyzer = () => {
         {files.length > 0 && !isAnalyzing && (
           <Button
             onClick={handleAnalysis}
-            className="w-3/4 mx-auto bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium py-6 text-lg rounded-xl hover:opacity-90 transition-opacity duration-300 relative overflow-hidden mt-8 mb-6 block"
+            className="w-full max-w-lg mx-auto bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold text-lg px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 mb-4"
             disabled={isAnalyzing}
           >
             {isAnalyzing ? (
@@ -165,12 +165,20 @@ const PlantHealthAnalyzer = () => {
         )}
 
         {session && (
-          <div className="flex flex-col items-center gap-6 mt-8">
-            <div data-share-dialog className="w-3/4">
-              <ShareResults analysisId="" imageUrls={[]} />
+          <div className="flex flex-col items-center gap-4 mt-6 max-w-lg mx-auto px-4">
+            <div data-share-dialog className="w-full">
+              <Button
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold text-lg px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 mb-4"
+              >
+                Share Results
+              </Button>
             </div>
-            <div data-history-dialog className="w-3/4">
-              <AnalysisHistory userId={session.user.id} />
+            <div data-history-dialog className="w-full">
+              <Button
+                className="w-full bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600 hover:border-slate-500 text-white font-semibold text-lg px-6 py-4 rounded-xl transition-all duration-300 flex items-center justify-center"
+              >
+                View Analysis History
+              </Button>
             </div>
           </div>
         )}
