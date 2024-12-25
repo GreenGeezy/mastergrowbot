@@ -8,7 +8,8 @@ import { useSession } from '@supabase/auth-helpers-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
-import QuickTipCards from '@/components/plant-health/QuickTipCards';
+import ShareResults from '@/components/plant-health/ShareResults';
+import AnalysisHistory from '@/components/plant-health/AnalysisHistory';
 
 interface AnalysisResult {
   diagnosis: string;
@@ -149,7 +150,7 @@ const PlantHealthAnalyzer = () => {
         {files.length > 0 && !isAnalyzing && (
           <Button
             onClick={handleAnalysis}
-            className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium py-6 rounded-xl hover:opacity-90 transition-opacity duration-300 relative overflow-hidden mt-8"
+            className="w-3/4 mx-auto bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium py-6 text-lg rounded-xl hover:opacity-90 transition-opacity duration-300 relative overflow-hidden mt-8 mb-6 block"
             disabled={isAnalyzing}
           >
             {isAnalyzing ? (
@@ -163,7 +164,16 @@ const PlantHealthAnalyzer = () => {
           </Button>
         )}
 
-        <QuickTipCards />
+        {session && (
+          <div className="flex flex-col items-center gap-6 mt-8">
+            <div data-share-dialog className="w-3/4">
+              <ShareResults analysisId="" imageUrls={[]} />
+            </div>
+            <div data-history-dialog className="w-3/4">
+              <AnalysisHistory userId={session.user.id} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
