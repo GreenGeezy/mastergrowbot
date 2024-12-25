@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
-import { Card } from '@/components/ui/card';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import AnalysisActions from '@/components/plant-health/AnalysisActions';
@@ -15,6 +14,9 @@ const PlantHealthAnalyzer = () => {
 
   const handleImagesSelected = (files: File[]) => {
     setSelectedFiles(files);
+    if (files.length > 0) {
+      setShowConfirmation(true);
+    }
   };
 
   const handleTakePhoto = () => {

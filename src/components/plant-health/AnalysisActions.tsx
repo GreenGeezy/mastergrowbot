@@ -16,6 +16,7 @@ interface AnalysisActionsProps {
 const AnalysisActions = ({
   session,
   onTakePhoto,
+  onAnalyze,
   showConfirmation,
   onConfirmationCancel,
   onConfirmationConfirm,

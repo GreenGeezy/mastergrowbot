@@ -13,6 +13,7 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
 
   const startCamera = async () => {
     try {
@@ -60,6 +61,7 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(videoRef.current, 0, 0);
+        setCapturedImage(canvas.toDataURL('image/jpeg'));
         canvas.toBlob((blob) => {
           if (blob) {
             const file = new File([blob], `capture-${Date.now()}.jpg`, { type: 'image/jpeg' });
@@ -68,6 +70,10 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
         }, 'image/jpeg', 0.8);
       }
     }
+  };
+
+  const retakePhoto = () => {
+    setCapturedImage(null);
   };
 
   if (hasPermission === false) {
@@ -81,26 +87,52 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
 
   return (
     <div className="relative">
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        className="w-full rounded-lg"
-      />
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
-        <Button
-          onClick={capturePhoto}
-          className="bg-green-500 hover:bg-green-600"
-        >
-          Take Photo
-        </Button>
-        <Button
-          onClick={onClose}
-          variant="destructive"
-        >
-          Cancel
-        </Button>
-      </div>
+      {!capturedImage ? (
+        <>
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="w-full rounded-lg"
+          />
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
+            <Button
+              onClick={capturePhoto}
+              className="bg-green-500 hover:bg-green-600"
+            >
+              Take Photo
+            </Button>
+            <Button
+              onClick={onClose}
+              variant="destructive"
+            >
+              Cancel
+            </Button>
+          </div>
+        </>
+      ) : (
+        <>
+          <img 
+            src={capturedImage} 
+            alt="Captured" 
+            className="w-full rounded-lg"
+          />
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
+            <Button
+              onClick={retakePhoto}
+              variant="secondary"
+            >
+              Retake
+            </Button>
+            <Button
+              onClick={onClose}
+              className="bg-green-500 hover:bg-green-600"
+            >
+              Use Photo
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
