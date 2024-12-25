@@ -146,8 +146,6 @@ const PlantHealthAnalyzer = () => {
           <AnalysisResults analysisResult={analysisResult} />
         )}
 
-        <QuickTipCards />
-
         {files.length > 0 && !isAnalyzing && (
           <Button
             onClick={handleAnalysis}
@@ -164,6 +162,8 @@ const PlantHealthAnalyzer = () => {
             )}
           </Button>
         )}
+
+        <QuickTipCards />
       </div>
     </div>
   );
