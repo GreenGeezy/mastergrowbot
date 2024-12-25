@@ -182,11 +182,7 @@ const PlantHealthAnalyzer = () => {
               </Button>
             </div>
             <div data-history-dialog className="w-full">
-              <Button
-                className="w-full bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600 hover:border-slate-500 text-white font-semibold text-lg px-6 py-4 rounded-xl transition-all duration-300 flex items-center justify-center"
-              >
-                View Analysis History
-              </Button>
+              <AnalysisHistory userId={session.user.id} />
             </div>
             <div className="w-full">
               <Button
