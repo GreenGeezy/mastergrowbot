@@ -14,6 +14,7 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [capturedFile, setCapturedFile] = useState<File | null>(null);
 
   const startCamera = async () => {
     try {
@@ -65,7 +66,7 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
         canvas.toBlob((blob) => {
           if (blob) {
             const file = new File([blob], `capture-${Date.now()}.jpg`, { type: 'image/jpeg' });
-            onPhotoCapture(file);
+            setCapturedFile(file);
           }
         }, 'image/jpeg', 0.8);
       }
@@ -74,6 +75,14 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
 
   const retakePhoto = () => {
     setCapturedImage(null);
+    setCapturedFile(null);
+  };
+
+  const handleUsePhoto = () => {
+    if (capturedFile) {
+      onPhotoCapture(capturedFile);
+      onClose();
+    }
   };
 
   if (hasPermission === false) {
@@ -98,13 +107,14 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
           <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
             <Button
               onClick={capturePhoto}
-              className="bg-green-500 hover:bg-green-600"
+              className="bg-green-500 hover:bg-green-600 text-white"
             >
               Take Photo
             </Button>
             <Button
               onClick={onClose}
               variant="destructive"
+              className="text-white"
             >
               Cancel
             </Button>
@@ -121,12 +131,13 @@ const CameraCapture = ({ onPhotoCapture, onClose }: CameraCaptureProps) => {
             <Button
               onClick={retakePhoto}
               variant="secondary"
+              className="text-white"
             >
               Retake
             </Button>
             <Button
-              onClick={onClose}
-              className="bg-green-500 hover:bg-green-600"
+              onClick={handleUsePhoto}
+              className="bg-green-500 hover:bg-green-600 text-white"
             >
               Use Photo
             </Button>

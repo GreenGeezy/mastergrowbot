@@ -4,9 +4,12 @@ import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import AnalysisActions from '@/components/plant-health/AnalysisActions';
 import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const PlantHealthAnalyzer = () => {
   const session = useSession();
+  const { toast } = useToast();
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -28,9 +31,58 @@ const PlantHealthAnalyzer = () => {
   };
 
   const handleAnalyze = async () => {
+    if (selectedFiles.length === 0) {
+      toast({
+        title: "No images selected",
+        description: "Please select or capture at least one image to analyze.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsAnalyzing(true);
-    // Analysis logic here
-    setIsAnalyzing(false);
+    try {
+      // Upload images to Supabase storage
+      const imageUrls = await Promise.all(
+        selectedFiles.map(async (file) => {
+          const fileName = `${Date.now()}-${file.name}`;
+          const { data, error } = await supabase.storage
+            .from('plant-images')
+            .upload(fileName, file);
+
+          if (error) throw error;
+
+          const { data: { publicUrl } } = supabase.storage
+            .from('plant-images')
+            .getPublicUrl(fileName);
+
+          return publicUrl;
+        })
+      );
+
+      // Call the analyze-plant function
+      const { data, error } = await supabase.functions.invoke('analyze-plant', {
+        body: { imageUrls },
+      });
+
+      if (error) throw error;
+
+      setAnalysisResult(data.analysis);
+      toast({
+        title: "Analysis Complete",
+        description: "Your plant health analysis is ready to view.",
+      });
+    } catch (error: any) {
+      console.error('Analysis error:', error);
+      toast({
+        title: "Analysis Failed",
+        description: error.message || "Failed to analyze plant health. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
+      setShowConfirmation(false);
+    }
   };
 
   return (
