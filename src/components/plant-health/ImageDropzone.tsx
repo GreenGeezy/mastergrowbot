@@ -119,7 +119,7 @@ const ImageDropzone = ({
 
   return (
     <Card 
-      className="backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:border-primary/50 transition-all duration-300"
+      className="backdrop-blur-lg bg-gray-900/60 border-2 border-gray-800 hover:border-primary/50 transition-all duration-300 shadow-lg hover:shadow-xl"
       data-image-dropzone
     >
       <div
@@ -151,24 +151,33 @@ const ImageDropzone = ({
           <div className="space-y-4">
             <label
               htmlFor="file-upload"
-              className="cursor-pointer"
+              className="cursor-pointer block"
             >
-              <div className={`border-2 border-dashed ${dragActive ? 'border-primary' : 'border-gray-700'} rounded-xl p-8 hover:border-primary/50 transition-all duration-300`}>
+              <div className={`border-2 border-dashed ${dragActive ? 'border-primary' : 'border-gray-700'} rounded-xl p-8 hover:border-primary/50 transition-all duration-300 group`}>
                 <div className="flex flex-col items-center gap-4">
-                  <div className="p-4 rounded-full bg-gradient-to-r from-green-500 to-blue-500">
+                  <div className="p-4 rounded-full bg-gradient-to-r from-green-500 to-blue-500 group-hover:shadow-lg group-hover:shadow-primary/20 transition-all duration-300">
                     <Upload className="w-6 h-6 text-white" />
                   </div>
-                  <div>
-                    <p className="text-white font-medium">
+                  <div className="space-y-2">
+                    <p className="text-white font-medium text-lg">
                       Drop up to {maxFiles} images here or click to upload
                     </p>
-                    <p className="text-gray-400 text-sm mt-1">
-                      Upload multiple angles of your plant (max. 10MB each)
+                    <p className="text-gray-400 text-sm">
+                      Upload multiple angles of your plant for better analysis (max. 10MB each)
                     </p>
-                    <ul className="text-gray-400 text-sm mt-4 space-y-1">
-                      <li>• Show the whole plant for context</li>
-                      <li>• Include close-ups of problem areas</li>
-                      <li>• Ensure photos are well-lit</li>
+                    <ul className="text-gray-400 text-sm mt-4 space-y-2">
+                      <li className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                        Show the whole plant for context
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                        Include close-ups of problem areas
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                        Ensure photos are well-lit
+                      </li>
                     </ul>
                   </div>
                 </div>

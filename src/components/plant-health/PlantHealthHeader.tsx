@@ -2,23 +2,27 @@ import React from 'react';
 
 const PlantHealthHeader = () => {
   return (
-    <div className="text-center mb-8 animate-fade-in">
-      <div className="relative group mb-4">
-        <div className="absolute -inset-1 bg-gradient-to-r from-primary via-[#33C3F0] to-secondary rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-        <div className="relative bg-[#1A1A1A]/90 p-4 rounded-full backdrop-blur-xl ring-1 ring-white/10 hover:ring-[#33C3F0]/30 transition-all duration-500">
-          <img 
-            src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
-            alt="Plant Health Scanner" 
-            className="w-16 h-16 mx-auto"
-          />
-        </div>
-      </div>
-      <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 text-transparent bg-clip-text">
+    <div className="text-center space-y-4 mb-8">
+      <h1 className="text-3xl md:text-4xl font-bold text-white">
         Plant Health Scanner
       </h1>
-      <p className="text-gray-400">
-        Upload a photo of your plant for instant AI-powered health analysis
+      <p className="text-gray-400 max-w-2xl mx-auto px-4">
+        Upload photos of your plant for instant AI-powered analysis. Get insights on health issues, nutrient deficiencies, and personalized care recommendations.
       </p>
+      <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+          Instant Analysis
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+          Expert Insights
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+          Care Tips
+        </span>
+      </div>
     </div>
   );
 };
