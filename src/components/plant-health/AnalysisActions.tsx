@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import ShareResults from './ShareResults';
 import AnalysisHistory from './AnalysisHistory';
@@ -25,7 +25,7 @@ const AnalysisActions = ({
   return (
     <div className="flex flex-col items-center gap-4 mt-6 max-w-lg mx-auto px-4">
       <div data-share-dialog className="w-full">
-        <ShareResults />
+        <ShareResults analysisId="" imageUrls={[]} />
       </div>
       <div data-history-dialog className="w-full">
         <AnalysisHistory userId={session.user.id} />
