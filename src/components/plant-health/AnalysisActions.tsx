@@ -12,6 +12,7 @@ interface AnalysisActionsProps {
   showConfirmation: boolean;
   onConfirmationCancel: () => void;
   onConfirmationConfirm: () => void;
+  analysisResult?: any; // Add this prop
 }
 
 const AnalysisActions = ({
@@ -21,13 +22,17 @@ const AnalysisActions = ({
   showConfirmation,
   onConfirmationCancel,
   onConfirmationConfirm,
+  analysisResult, // Add this prop
 }: AnalysisActionsProps) => {
   if (!session) return null;
 
   return (
     <div className="flex flex-col items-center gap-4 mt-6 max-w-lg mx-auto px-4">
       <div data-share-dialog className="w-full">
-        <ShareResults analysisId="" imageUrls={[]} />
+        <ShareResults 
+          analysisId={analysisResult?.id || ""} 
+          imageUrls={analysisResult?.image_urls || [analysisResult?.image_url] || []} 
+        />
       </div>
       <div data-history-dialog className="w-full">
         <AnalysisHistory userId={session.user.id} />

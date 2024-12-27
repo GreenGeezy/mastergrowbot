@@ -70,24 +70,26 @@ const PlantHealthAnalyzer = () => {
       if (error) throw error;
 
       // Save analysis results to the database
-      const { error: saveError } = await supabase
+      const { data: savedAnalysis, error: saveError } = await supabase
         .from('plant_analyses')
         .insert({
           user_id: session?.user?.id,
-          image_url: imageUrls[0], // Keep first image as primary for backward compatibility
+          image_url: imageUrls[0], // Keep first image as primary
           image_urls: imageUrls, // Store all images
           diagnosis: data.analysis.diagnosis,
           confidence_level: data.analysis.confidence_level,
           detailed_analysis: data.analysis.detailed_analysis,
           recommended_actions: data.analysis.recommended_actions,
-        });
+        })
+        .select()
+        .single();
 
       if (saveError) {
         console.error('Error saving analysis:', saveError);
         throw new Error('Failed to save analysis results');
       }
 
-      setAnalysisResult(data.analysis);
+      setAnalysisResult(savedAnalysis);
       toast({
         title: "Analysis Complete",
         description: "Your plant health analysis is ready to view.",
@@ -142,6 +144,7 @@ const PlantHealthAnalyzer = () => {
             setShowConfirmation(false);
             handleAnalyze();
           }}
+          analysisResult={analysisResult}
         />
       </div>
     </div>

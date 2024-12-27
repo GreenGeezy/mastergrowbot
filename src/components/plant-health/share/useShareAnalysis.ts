@@ -23,6 +23,10 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   };
 
   const generateShareableUrl = async (): Promise<string> => {
+    if (!analysisId) {
+      throw new Error('No analysis available to share');
+    }
+
     try {
       const { data: shareData, error: shareError } = await supabase
         .from('shared_analyses')
@@ -35,6 +39,7 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
         .single();
 
       if (shareError) throw shareError;
+      if (!shareData?.share_token) throw new Error('Failed to generate share token');
 
       return `${window.location.origin}/shared/${shareData.share_token}`;
     } catch (error) {
@@ -44,6 +49,15 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   };
 
   const copyToClipboard = async () => {
+    if (!analysisId) {
+      toast({
+        title: "Error",
+        description: "No analysis available to share.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const shareableUrl = await generateShareableUrl();
@@ -53,10 +67,11 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
         title: "Link Copied!",
         description: "The shareable link has been copied to your clipboard.",
       });
-    } catch (error) {
+      setIsOpen(false);
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to generate shareable link.",
+        description: error.message || "Failed to generate shareable link.",
         variant: "destructive",
       });
     } finally {
@@ -65,6 +80,15 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   };
 
   const copyImageToClipboard = async () => {
+    if (!imageUrls.length) {
+      toast({
+        title: "Error",
+        description: "No image available to share.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const { data } = await supabase
@@ -86,6 +110,7 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
         title: "Image Copied!",
         description: "The analysis image has been copied to your clipboard.",
       });
+      setIsOpen(false);
     } catch (error) {
       toast({
         title: "Error",
@@ -98,6 +123,15 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   };
 
   const shareViaEmail = async () => {
+    if (!analysisId) {
+      toast({
+        title: "Error",
+        description: "No analysis available to share.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const shareableUrl = await generateShareableUrl();
@@ -105,6 +139,7 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       const body = encodeURIComponent(`I wanted to share my plant health analysis with you: ${shareableUrl}`);
       await recordShareMetric('email');
       window.location.href = `mailto:?subject=${subject}&body=${body}`;
+      setIsOpen(false);
     } catch (error) {
       toast({
         title: "Error",
@@ -117,12 +152,22 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   };
 
   const shareViaTwitter = async () => {
+    if (!analysisId) {
+      toast({
+        title: "Error",
+        description: "No analysis available to share.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const shareableUrl = await generateShareableUrl();
       const text = encodeURIComponent('Check out my plant health analysis from @MasterGrowbot');
       await recordShareMetric('twitter');
       window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(shareableUrl)}`, '_blank');
+      setIsOpen(false);
     } catch (error) {
       toast({
         title: "Error",
@@ -135,6 +180,15 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   };
 
   const shareViaInstagram = async () => {
+    if (!analysisId) {
+      toast({
+        title: "Error",
+        description: "No analysis available to share.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const shareableUrl = await generateShareableUrl();
@@ -144,6 +198,7 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
         title: "Ready to Share on Instagram",
         description: "Link copied! Open Instagram and paste in your story or direct message.",
       });
+      setIsOpen(false);
     } catch (error) {
       toast({
         title: "Error",
