@@ -196,6 +196,38 @@ export type Database = {
           },
         ]
       }
+      shared_analyses: {
+        Row: {
+          analysis_id: string
+          created_at: string
+          expires_at: string
+          id: string
+          share_token: string
+        }
+        Insert: {
+          analysis_id: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          share_token: string
+        }
+        Update: {
+          analysis_id?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          share_token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shared_analyses_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "plant_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_profiles: {
         Row: {
           created_at: string

@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import ChatInterface from "./components/ChatInterface";
 import PlantHealthAnalyzer from "./pages/PlantHealthAnalyzer";
+import SharedAnalysis from "./pages/SharedAnalysis";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
+            <Route path="/shared/:token" element={<SharedAnalysis />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
