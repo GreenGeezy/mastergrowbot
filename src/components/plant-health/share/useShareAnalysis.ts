@@ -3,6 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { nanoid } from 'nanoid';
 import { addDays } from 'date-fns';
+import { Share2, Mail, Twitter, Link2 } from 'lucide-react';
+import type { ShareOption } from './types';
 
 export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,12 +64,34 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     }
   };
 
-  const shareOptions = {
-    title: "Check out my plant analysis from Master Growbot!",
-    text: "Grow Bigger, Grow Better with Master Growbot - AI-powered plant analysis",
-    createShareableLink,
-    imageUrls,
-  };
+  const shareOptions: ShareOption[] = [
+    {
+      icon: Link2,
+      label: "Copy Link",
+      action: async () => {
+        await createShareableLink();
+      }
+    },
+    {
+      icon: Twitter,
+      label: "Share on X/Twitter",
+      action: async () => {
+        const url = await createShareableLink();
+        const text = "Check out my plant analysis from Master Growbot! Grow Bigger, Grow Better with AI-powered plant analysis";
+        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+      }
+    },
+    {
+      icon: Mail,
+      label: "Share via Email",
+      action: async () => {
+        const url = await createShareableLink();
+        const subject = "Check out my plant analysis from Master Growbot!";
+        const body = "I wanted to share this plant analysis with you from Master Growbot. Check it out here: " + url;
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+    }
+  ];
 
   return {
     isOpen,
