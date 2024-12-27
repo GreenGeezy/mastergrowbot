@@ -16,15 +16,26 @@ const SharedAnalysis = () => {
   useEffect(() => {
     const fetchAnalysis = async () => {
       try {
-        // First get the analysis_id from shared_analyses
+        // First get the analysis_id and check expiration from shared_analyses
         const { data: sharedAnalysis, error: sharedError } = await supabase
           .from('shared_analyses')
-          .select('analysis_id')
+          .select('analysis_id, expires_at')
           .eq('share_token', token)
           .maybeSingle();
 
         if (sharedError) throw sharedError;
-        if (!sharedAnalysis) throw new Error('Shared analysis not found');
+        if (!sharedAnalysis) {
+          setError('Shared analysis not found');
+          setLoading(false);
+          return;
+        }
+
+        // Check if the analysis has expired
+        if (new Date(sharedAnalysis.expires_at) < new Date()) {
+          setError('This shared analysis has expired');
+          setLoading(false);
+          return;
+        }
 
         // Then fetch the actual analysis data
         const { data: analysis, error: analysisError } = await supabase
@@ -34,7 +45,11 @@ const SharedAnalysis = () => {
           .maybeSingle();
 
         if (analysisError) throw analysisError;
-        if (!analysis) throw new Error('Analysis data not found');
+        if (!analysis) {
+          setError('Analysis data not found');
+          setLoading(false);
+          return;
+        }
 
         setAnalysis(analysis);
       } catch (error: any) {
@@ -45,7 +60,12 @@ const SharedAnalysis = () => {
       }
     };
 
-    fetchAnalysis();
+    if (token) {
+      fetchAnalysis();
+    } else {
+      setError('Invalid share link');
+      setLoading(false);
+    }
   }, [token]);
 
   const handleUnleashClick = () => {
@@ -64,7 +84,7 @@ const SharedAnalysis = () => {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
         <h1 className="text-2xl font-bold text-white mb-4">Analysis Not Found</h1>
-        <p className="text-gray-400 mb-8">This analysis may have expired or been removed.</p>
+        <p className="text-gray-400 mb-8">{error || 'This analysis may have been removed.'}</p>
         <Button asChild>
           <Link to="/">Return Home</Link>
         </Button>
