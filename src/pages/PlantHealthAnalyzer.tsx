@@ -40,14 +40,7 @@ const PlantHealthAnalyzer = () => {
   };
 
   const handleAnalyze = async () => {
-    if (selectedFiles.length === 0) {
-      toast({
-        title: "No images selected",
-        description: "Please select or capture at least one image to analyze.",
-        variant: "destructive",
-      });
-      return;
-    }
+    if (selectedFiles.length === 0) return;
 
     setIsAnalyzing(true);
     try {
