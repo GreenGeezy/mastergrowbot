@@ -1,83 +1,28 @@
-import { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
-import Header from "@/components/Header";
-import AuthUI from "@/components/AuthUI";
-import FeatureSection from "@/components/FeatureSection";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useSession } from '@supabase/auth-helpers-react'
+import AuthUI from '@/components/AuthUI'
+import UserDashboard from '@/components/UserDashboard'
+import Header from '@/components/Header'
+import FeatureSection from '@/components/FeatureSection'
 
-const Index = () => {
-  const { toast } = useToast();
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    // Handle initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
-      
-      // If user is authenticated and at root path with no intended destination
-      if (session && location.pathname === "/" && !location.state?.from) {
-        navigate("/chat", { replace: true });
-      }
-      // If user is authenticated and has an intended destination
-      else if (session && location.state?.from) {
-        navigate(location.state.from.pathname, { replace: true });
-      }
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      
-      // If user is authenticated and at root path with no intended destination
-      if (session && location.pathname === "/" && !location.state?.from) {
-        navigate("/chat", { replace: true });
-      }
-      // If user is authenticated and has an intended destination
-      else if (session && location.state?.from) {
-        navigate(location.state.from.pathname, { replace: true });
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate, location]);
-
-  const handleFeatureClick = () => {
-    if (!session) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to access this feature",
-      });
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#111111] text-white flex items-center justify-center">
-        <div className="animate-pulse">Loading...</div>
-      </div>
-    );
-  }
+export default function Index() {
+  const session = useSession()
 
   return (
-    <div className="min-h-screen bg-[#111111] text-white">
-      <div className="px-4 sm:px-6 py-2">
-        <Header />
-      </div>
+    <div className="min-h-screen bg-[#111111]">
+      <Header />
       
-      <FeatureSection onFeatureClick={handleFeatureClick} />
-      <div className="w-full max-w-md mx-auto animate-fade-in px-4">
-        <AuthUI />
-      </div>
+      {session ? (
+        <UserDashboard />
+      ) : (
+        <div className="container mx-auto px-4">
+          <div className="py-12 md:py-20">
+            <FeatureSection />
+            <div className="mt-12">
+              <AuthUI />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  );
-};
-
-export default Index;
+  )
+}
