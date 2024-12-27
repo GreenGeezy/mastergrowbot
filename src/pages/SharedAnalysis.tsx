@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 
@@ -12,6 +11,7 @@ const SharedAnalysis = () => {
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnalysis = async () => {
@@ -47,6 +47,10 @@ const SharedAnalysis = () => {
 
     fetchAnalysis();
   }, [token]);
+
+  const handleUnleashClick = () => {
+    navigate('/');
+  };
 
   if (loading) {
     return (
@@ -97,8 +101,12 @@ const SharedAnalysis = () => {
             <p className="text-gray-400 max-w-md mx-auto">
               Join thousands of growers optimizing their harvests with advanced AI analysis
             </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-              <Link to="/auth">Unleash your AI Superpowers Today!</Link>
+            <Button 
+              onClick={handleUnleashClick}
+              size="lg" 
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg transform transition-all duration-300 hover:scale-105"
+            >
+              Unleash your AI Superpowers Today!
             </Button>
           </div>
         </div>
