@@ -6,6 +6,7 @@ import AnalysisActions from '@/components/plant-health/AnalysisActions';
 import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 
 const PlantHealthAnalyzer = () => {
   const session = useSession();
@@ -18,7 +19,7 @@ const PlantHealthAnalyzer = () => {
 
   const handleImagesSelected = async (files: File[]) => {
     setSelectedFiles(files);
-    // Directly analyze uploaded images without confirmation
+    // Only auto-analyze if it's not from camera
     if (files.length > 0 && !cameraFile) {
       await handleAnalyze();
     }
@@ -105,7 +106,14 @@ const PlantHealthAnalyzer = () => {
           onCameraCapture={handleCameraCapture}
         />
 
-        {analysisResult && (
+        {isAnalyzing && (
+          <div className="flex flex-col items-center justify-center p-8 space-y-4">
+            <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            <p className="text-white text-lg">Analyzing your plant...</p>
+          </div>
+        )}
+
+        {analysisResult && !isAnalyzing && (
           <AnalysisResults analysisResult={analysisResult} />
         )}
 
