@@ -23,7 +23,7 @@ const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
   const { data: analyses, isLoading, error } = useQuery({
     queryKey: ['plantAnalyses', userId],
     queryFn: async () => {
-      console.log('Fetching analyses for user:', userId); // Debug log
+      console.log('Fetching analyses for user:', userId);
       const { data, error } = await supabase
         .from('plant_analyses')
         .select('*')
@@ -31,11 +31,11 @@ const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
         .order('created_at', { ascending: false });
       
       if (error) {
-        console.error('Error fetching analyses:', error); // Debug log
+        console.error('Error fetching analyses:', error);
         throw error;
       }
       
-      console.log('Fetched analyses:', data); // Debug log
+      console.log('Fetched analyses:', data);
       return data;
     },
   });

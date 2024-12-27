@@ -69,6 +69,24 @@ const PlantHealthAnalyzer = () => {
 
       if (error) throw error;
 
+      // Save analysis results to the database
+      const { error: saveError } = await supabase
+        .from('plant_analyses')
+        .insert({
+          user_id: session?.user?.id,
+          image_url: imageUrls[0], // Keep first image as primary for backward compatibility
+          image_urls: imageUrls, // Store all images
+          diagnosis: data.analysis.diagnosis,
+          confidence_level: data.analysis.confidence_level,
+          detailed_analysis: data.analysis.detailed_analysis,
+          recommended_actions: data.analysis.recommended_actions,
+        });
+
+      if (saveError) {
+        console.error('Error saving analysis:', saveError);
+        throw new Error('Failed to save analysis results');
+      }
+
       setAnalysisResult(data.analysis);
       toast({
         title: "Analysis Complete",
