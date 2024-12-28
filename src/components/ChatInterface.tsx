@@ -11,6 +11,7 @@ import { ChatHeader } from './chat/ChatHeader'
 import { useChatMessages } from '@/hooks/use-chat-messages'
 import { useConversations } from '@/hooks/use-conversations'
 import { ConversationList } from './chat/ConversationList'
+import { ProfileDropdown } from './profile/ProfileDropdown'
 
 const starterQuestions = [
   "What nutrients are essential during the vegetative stage?",
@@ -91,6 +92,9 @@ export default function ChatInterface() {
             currentConversationId={currentConversationId}
             onConversationSelect={handleConversationSelect}
           />
+          <div className="absolute bottom-4 left-4">
+            <ProfileDropdown />
+          </div>
         </AppSidebar>
         
         <div className="flex flex-col flex-1 h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
