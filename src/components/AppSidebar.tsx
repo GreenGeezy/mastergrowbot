@@ -1,15 +1,13 @@
 import { useSession } from '@supabase/auth-helpers-react'
-import { Settings, UserRound, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
 } from '@/components/ui/sidebar'
+import { ProfileDropdown } from './profile/ProfileDropdown'
 
 interface AppSidebarProps {
   onNewChat: () => void
@@ -38,20 +36,9 @@ export function AppSidebar({ onNewChat, children }: AppSidebarProps) {
       </SidebarContent>
 
       <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <UserRound className="h-4 w-4" />
-              <span>Profile</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Settings className="h-4 w-4" />
-              <span>Settings</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <div className="p-2">
+          <ProfileDropdown />
+        </div>
       </SidebarFooter>
     </Sidebar>
   )
