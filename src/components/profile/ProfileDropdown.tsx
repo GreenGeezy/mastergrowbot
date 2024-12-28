@@ -104,7 +104,7 @@ export function ProfileDropdown() {
             {getInitials(profileData.username)}
           </span>
         </div>
-        <span className="text-sm text-white">Profile Settings</span>
+        <span className="text-sm font-medium text-white">Profile Settings</span>
       </button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
