@@ -97,7 +97,7 @@ export function ProfileDropdown() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors"
+        className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors bg-transparent"
       >
         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
           <span className="text-sm font-medium">
