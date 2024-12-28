@@ -92,7 +92,7 @@ export default function ChatInterface() {
             currentConversationId={currentConversationId}
             onConversationSelect={handleConversationSelect}
           />
-          <div className="absolute bottom-4 left-4">
+          <div className="absolute bottom-4 left-4 flex items-center gap-2 text-white hover:text-primary transition-colors">
             <ProfileDropdown />
           </div>
         </AppSidebar>

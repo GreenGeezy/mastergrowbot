@@ -78,11 +78,14 @@ export function ProfileDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center w-10 h-10 rounded-full bg-primary hover:bg-primary/90 transition-colors"
+        className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors"
       >
-        <span className="text-sm font-medium text-white">
-          {getInitials(profileData.username)}
-        </span>
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
+          <span className="text-sm font-medium">
+            {getInitials(profileData.username)}
+          </span>
+        </div>
+        <span className="text-sm text-white">Profile Settings</span>
       </button>
 
       <div
