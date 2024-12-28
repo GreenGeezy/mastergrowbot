@@ -1,22 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { User, Moon, Sun, Bell, BellOff, Key, LogOut } from 'lucide-react'
-import { Switch } from '@/components/ui/switch'
 import { useToast } from '@/hooks/use-toast'
-import { cn } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-
-interface ProfileData {
-  username?: string
-  grow_experience_level?: string
-  email?: string
-}
+import { ProfileInfo } from './ProfileInfo'
+import { ProfileSettings } from './ProfileSettings'
+import { ProfileData } from './types'
 
 export function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState(false)
@@ -121,85 +114,17 @@ export function ProfileDropdown() {
           </DialogHeader>
           
           <div className="space-y-6 py-4">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <User className="w-5 h-5 text-primary" />
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-white">
-                    {profileData.username || 'Anonymous User'}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {session?.user?.email}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-200">Experience Level</span>
-                </div>
-                <Select 
-                  value={profileData.grow_experience_level} 
-                  onValueChange={updateExperienceLevel}
-                >
-                  <SelectTrigger className="w-[140px]">
-                    <SelectValue placeholder="Select level" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="beginner">Beginner</SelectItem>
-                    <SelectItem value="intermediate">Intermediate</SelectItem>
-                    <SelectItem value="advanced">Advanced</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <button
-                className="flex items-center w-full px-3 py-2 text-sm text-gray-200 rounded-md hover:bg-primary/10"
-              >
-                <Key className="w-4 h-4 mr-3" />
-                Change Password
-              </button>
-
-              <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-200 rounded-md hover:bg-primary/10">
-                <div className="flex items-center">
-                  {notifications ? (
-                    <Bell className="w-4 h-4 mr-3" />
-                  ) : (
-                    <BellOff className="w-4 h-4 mr-3" />
-                  )}
-                  Email Notifications
-                </div>
-                <Switch
-                  checked={notifications}
-                  onCheckedChange={setNotifications}
-                />
-              </div>
-
-              <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-200 rounded-md hover:bg-primary/10">
-                <div className="flex items-center">
-                  {isDarkMode ? (
-                    <Moon className="w-4 h-4 mr-3" />
-                  ) : (
-                    <Sun className="w-4 h-4 mr-3" />
-                  )}
-                  Dark Mode
-                </div>
-                <Switch
-                  checked={isDarkMode}
-                  onCheckedChange={toggleTheme}
-                />
-              </div>
-
-              <button
-                onClick={handleSignOut}
-                className="flex items-center w-full px-3 py-2 text-sm text-red-400 rounded-md hover:bg-red-500/10"
-              >
-                <LogOut className="w-4 h-4 mr-3" />
-                Sign Out
-              </button>
-            </div>
+            <ProfileInfo 
+              profileData={profileData}
+              updateExperienceLevel={updateExperienceLevel}
+            />
+            <ProfileSettings 
+              notifications={notifications}
+              setNotifications={setNotifications}
+              isDarkMode={isDarkMode}
+              toggleTheme={toggleTheme}
+              handleSignOut={handleSignOut}
+            />
           </div>
         </DialogContent>
       </Dialog>
