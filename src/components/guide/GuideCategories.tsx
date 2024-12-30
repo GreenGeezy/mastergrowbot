@@ -48,6 +48,46 @@ const categories = [
     description: "Expert growing tips and problem-solving",
     questions: [
       {
+        q: "What are the key signs of nutrient deficiencies in cannabis plants?",
+        a: "One of the most common symptoms is leaf discoloration, often starting at the lower leaves. Leaves may turn yellow, show brown spots, or develop unusual curling or twisting. Slow growth and weak stems can also indicate a lack of specific nutrients.\n\nNutrient Deficiency Guide:\n- Nitrogen: Yellowing from bottom up, leaves look pale, overall slow growth\n- Phosphorus: Purple/reddish leaf stems, stunted growth and dark leaf patches\n- Potassium: Brown leaf edges/tips, crispy or scorched appearance"
+      },
+      {
+        q: "How do I optimize temperature and humidity through different growth stages?",
+        a: "Seedlings and clones generally prefer warmer temperatures (around 70–80°F) and higher humidity (60–70%) to encourage root development. In the vegetative stage, a slightly lower humidity (40–60%) and consistent warmth (70–78°F) helps promote healthy leaves. During flowering, lower humidity (40–50%) and slightly cooler temperatures (65–75°F) help prevent mold and enhance bud quality."
+      },
+      {
+        q: "What are the most reliable indicators that cannabis is ready for harvest?",
+        a: "Trichomes (tiny resin glands) that shift from clear to milky or cloudy, with some turning amber, are a top indicator of ripeness. Pistils (the hair-like structures on buds) also darken and curl inward when the plant is near harvest. Many growers also notice that fan leaves may start to yellow as the plant directs energy into bud development."
+      },
+      {
+        q: "How can I identify and prevent common cannabis pests early?",
+        a: "Regularly inspect leaves, especially the undersides, for tiny bugs, spots, or webbing. Sticky traps hung near the plants help catch and monitor flying pests like fungus gnats and whiteflies. Introducing natural predators (like ladybugs) or using safe organic sprays early can stop pests from spreading."
+      },
+      {
+        q: "Which metrics should I track to maximize yields and potency?",
+        a: "Keep an eye on pH and EC (electrical conductivity) levels to ensure proper nutrient uptake. Monitor temperature and humidity daily to maintain stable conditions. Tracking plant height, bud density, and even terpene profiles can help refine your grow strategies for better yields over time."
+      },
+      {
+        q: "What's the optimal lighting schedule for different growth phases?",
+        a: "During the seedling and vegetative phases, cannabis typically thrives with 18–20 hours of light to promote strong leaf and stem growth. In the flowering phase, switching to 12 hours of light and 12 hours of darkness triggers bud development. Some growers use slight variations (like 20/4 or 11/13) to fine-tune growth, but the standard 18/6 and 12/12 schedules remain most popular."
+      },
+      {
+        q: "How do I prevent and address mold issues in cannabis cultivation?",
+        a: "Consistent airflow, achieved by using fans or vents, helps reduce moisture buildup on leaves. Keeping humidity lower, especially during flowering (around 40–50%), also makes conditions less inviting for mold. If you spot any moldy buds, remove them immediately and increase ventilation to prevent further spread."
+      },
+      {
+        q: "What's the best approach for nutrient feeding throughout the grow cycle?",
+        a: "Begin with light nutrient solutions when plants are small, gradually increasing as they develop more leaves and roots. Maintain a feeding schedule that matches your plants' stage: higher nitrogen during vegetative growth and higher phosphorus/potassium during flowering. Toward the end, many growers flush their plants with plain water for a week or two to improve final taste."
+      },
+      {
+        q: "Which plant training techniques maximize indoor cannabis yields?",
+        a: "Low-stress training (LST), which gently bends branches to create an even canopy, helps all parts of the plant receive good light. Topping (snipping the main stem) encourages more branches and bud sites. Techniques like scrogging (using a screen) also help to spread out growth and boost yields."
+      },
+      {
+        q: "How do I maintain consistent phenotypes across multiple grows?",
+        a: "The simplest way is to clone a healthy \"mother plant\" with the traits you desire, ensuring the genetic makeup remains the same. Keep environmental conditions—like temperature, humidity, and nutrient levels—as consistent as possible from grow to grow. Document everything (feeding schedule, lighting duration, etc.) so you can recreate successful conditions every time."
+      },
+      {
         q: "How can Master Growbot help identify plant problems?",
         a: "Our proprietary dual-AI approach sets new standards in plant health monitoring. The process begins with our advanced computer vision system analyzing your uploads for immediate insights, followed by our expert AI chat system providing detailed recommendations by leveraging powerful machine learning technology with Master Growbot's vast knowledge of how to grow the world's best cannabis and optimize profits. This revolutionary combination delivers professional-grade diagnostics and personalized solutions previously unavailable to individual growers."
       },
@@ -161,7 +201,7 @@ const GuideCategories = ({ searchQuery }: GuideCategoriesProps) => {
                 <AccordionTrigger className="text-left hover:text-[#FF69B4] text-sm py-4">
                   {qa.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-300 text-sm leading-relaxed">
+                <AccordionContent className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
                   {qa.a}
                 </AccordionContent>
               </AccordionItem>
