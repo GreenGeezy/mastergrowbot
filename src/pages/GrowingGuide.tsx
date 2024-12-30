@@ -74,7 +74,7 @@ const GrowingGuide = () => {
         </div>
 
         {/* Guide Categories */}
-        <GuideCategories />
+        <GuideCategories searchQuery={searchQuery} />
       </main>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import {
   Accordion,
@@ -101,12 +101,47 @@ const categories = [
   }
 ];
 
-const GuideCategories = () => {
+interface GuideCategoriesProps {
+  searchQuery: string;
+}
+
+const GuideCategories = ({ searchQuery }: GuideCategoriesProps) => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+
+  const filteredCategories = useMemo(() => {
+    if (!searchQuery.trim()) return categories;
+
+    const query = searchQuery.toLowerCase().trim();
+    
+    return categories.map(category => {
+      // Filter questions that match the search query
+      const matchingQuestions = category.questions.filter(qa => 
+        qa.q.toLowerCase().includes(query) || 
+        qa.a.toLowerCase().includes(query)
+      );
+
+      // Only return categories that have matching questions
+      if (matchingQuestions.length === 0) return null;
+
+      // Return a new category object with only matching questions
+      return {
+        ...category,
+        questions: matchingQuestions
+      };
+    }).filter(Boolean); // Remove null categories
+  }, [searchQuery]);
+
+  if (filteredCategories.length === 0 && searchQuery.trim()) {
+    return (
+      <div className="text-center py-8 text-gray-400 animate-fade-in">
+        No results found for "{searchQuery}". Try a different search term.
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-6 animate-fade-in">
-      {categories.map((category) => (
+      {filteredCategories.map((category) => (
         <div
           key={category.id}
           className="rounded-xl bg-black/30 backdrop-blur-sm border border-white/10 overflow-hidden transition-all duration-300 hover:border-[#FF69B4]/30 group"
