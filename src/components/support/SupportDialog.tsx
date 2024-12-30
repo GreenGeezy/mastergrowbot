@@ -25,9 +25,11 @@ const SupportDialog = ({ isOpen, onOpenChange }: SupportDialogProps) => {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke("send-support-email", {
-        body: { name, email, title, message },
-      });
+      const { error } = await supabase
+        .from('support_messages')
+        .insert([
+          { name, email, title, message }
+        ]);
 
       if (error) throw error;
 
