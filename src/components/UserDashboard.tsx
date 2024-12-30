@@ -23,7 +23,7 @@ const UserDashboard = () => {
     {
       title: "Growing Guide",
       subtitle: "Quick answers to FAQs",
-      onClick: () => navigate("/guide"),
+      onClick: () => navigate("/grow-guide"), // Updated from /guide to /grow-guide
       icon: BookOpen,
     },
   ];
