@@ -25,7 +25,7 @@ const FeatureSection = ({ onFeatureClick }: FeatureSectionProps) => {
         icon={BookOpen}
         title="Growing Guide"
         subtitle="Quick answers to FAQs"
-        onClick={onFeatureClick}
+        to="/grow-guide"
       />
     </div>
   );

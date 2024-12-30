@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import ChatInterface from "./components/ChatInterface";
 import PlantHealthAnalyzer from "./pages/PlantHealthAnalyzer";
 import SharedAnalysis from "./pages/SharedAnalysis";
+import GrowingGuide from "./pages/GrowingGuide";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,14 @@ const App = () => (
               } 
             />
             <Route path="/shared/:token" element={<SharedAnalysis />} />
+            <Route 
+              path="/grow-guide" 
+              element={
+                <ProtectedRoute>
+                  <GrowingGuide />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
