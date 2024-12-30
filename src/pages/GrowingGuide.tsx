@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import GuideCategories from "@/components/guide/GuideCategories";
 import { useNavigate } from "react-router-dom";
+import SupportDialog from "@/components/support/SupportDialog";
 
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -41,7 +43,11 @@ const GrowingGuide = () => {
               <h1 className="text-xl font-medium hidden sm:block">Growing Guide</h1>
             </div>
           </div>
-          <Button variant="secondary" className="bg-[#2D243B] hover:bg-[#3D344B]">
+          <Button 
+            variant="secondary" 
+            className="bg-[#2D243B] hover:bg-[#3D344B]"
+            onClick={() => setShowSupport(true)}
+          >
             <HelpCircle className="w-4 h-4 mr-2" />
             Get Support
           </Button>
@@ -75,6 +81,9 @@ const GrowingGuide = () => {
 
         {/* Guide Categories */}
         <GuideCategories searchQuery={searchQuery} />
+
+        {/* Support Dialog */}
+        <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
       </main>
     </div>
   );
