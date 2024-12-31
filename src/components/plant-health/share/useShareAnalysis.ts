@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { nanoid } from 'nanoid';
 import { addDays } from 'date-fns';
-import { Share2, Mail, Twitter, Link2, Instagram, Video, Facebook } from 'lucide-react';
+import { Share2, Mail, Twitter, Link2, Instagram, Video, Facebook, Linkedin } from 'lucide-react';
 import type { ShareOption } from './types';
 
 export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
@@ -92,6 +92,29 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
         toast({
           title: "Opening Facebook",
           description: "The Facebook sharing dialog will open in a new window.",
+        });
+      }
+    },
+    {
+      icon: Linkedin,
+      label: "Share on LinkedIn",
+      action: async () => {
+        const url = await createShareableLink();
+        // Track the LinkedIn share
+        await supabase
+          .from('share_metrics')
+          .insert({
+            analysis_id: analysisId,
+            share_type: 'linkedin',
+          });
+        
+        // Open LinkedIn share dialog
+        const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+        
+        toast({
+          title: "Opening LinkedIn",
+          description: "The LinkedIn sharing dialog will open in a new window.",
         });
       }
     },
