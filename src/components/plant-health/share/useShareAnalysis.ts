@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { nanoid } from 'nanoid';
 import { addDays } from 'date-fns';
-import { Share2, Mail, Twitter, Link2, Instagram } from 'lucide-react';
+import { Share2, Mail, Twitter, Link2, Instagram, TikTok } from 'lucide-react';
 import type { ShareOption } from './types';
 
 export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
@@ -111,6 +111,38 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
         toast({
           title: "Opening Instagram",
           description: "The link has been copied to your clipboard. You can paste it in your Instagram post.",
+        });
+      }
+    },
+    {
+      icon: TikTok,
+      label: "Share on TikTok",
+      action: async () => {
+        const url = await createShareableLink();
+        // Track the TikTok share
+        await supabase
+          .from('share_metrics')
+          .insert({
+            analysis_id: analysisId,
+            share_type: 'tiktok',
+          });
+        
+        // Open TikTok app or web version
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          // Try to open TikTok app
+          window.location.href = `tiktok://share?text=Check out my plant analysis from Master Growbot!%0A${encodeURIComponent(url)}`;
+          // Fallback to web version after a short delay
+          setTimeout(() => {
+            window.location.href = `https://www.tiktok.com/upload`;
+          }, 2000);
+        } else {
+          // On desktop, open TikTok web upload page
+          window.open('https://www.tiktok.com/upload', '_blank');
+        }
+        
+        toast({
+          title: "Opening TikTok",
+          description: "The link has been copied to your clipboard. You can paste it in your TikTok video description.",
         });
       }
     },
