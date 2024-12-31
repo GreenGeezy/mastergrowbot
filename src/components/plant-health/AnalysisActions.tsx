@@ -3,7 +3,7 @@ import { Session } from '@supabase/auth-helpers-react';
 import { Button } from '@/components/ui/button';
 import { Camera, Share2 } from 'lucide-react';
 import AnalysisConfirmationDialog from './AnalysisConfirmationDialog';
-import ShareResults from './share/ShareResults';
+import ShareResults from '../plant-health/share/ShareResults';
 
 interface AnalysisActionsProps {
   session: Session | null;
