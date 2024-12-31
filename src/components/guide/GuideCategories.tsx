@@ -6,6 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import SuccessShare from "./SuccessShare";
+import CommunityShares from "./CommunityShares";
 
 const categories = [
   {
@@ -141,11 +143,7 @@ const categories = [
   }
 ];
 
-interface GuideCategoriesProps {
-  searchQuery: string;
-}
-
-const GuideCategories = ({ searchQuery }: GuideCategoriesProps) => {
+const GuideCategories = ({ searchQuery }: { searchQuery: string }) => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   const filteredCategories = useMemo(() => {
@@ -203,12 +201,15 @@ const GuideCategories = ({ searchQuery }: GuideCategoriesProps) => {
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
                   {qa.a}
+                  <SuccessShare guideId={`${category.id}-${index}`} title={qa.q} />
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </div>
       ))}
+      
+      <CommunityShares />
     </div>
   );
 };
