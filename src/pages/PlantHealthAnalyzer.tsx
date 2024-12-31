@@ -4,8 +4,6 @@ import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import AnalysisActions from '@/components/plant-health/AnalysisActions';
 import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
-import AnalysisHistory from '@/components/plant-health/AnalysisHistory';
-import AnalysisConfirmationDialog from '@/components/plant-health/AnalysisConfirmationDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
@@ -132,40 +130,21 @@ const PlantHealthAnalyzer = () => {
           <AnalysisResults analysisResult={analysisResult} />
         )}
 
-        <div className="flex flex-col space-y-4">
-          <AnalysisActions
-            session={session}
-            onTakePhoto={handleTakePhoto}
-            onAnalyze={handleAnalyze}
-            showConfirmation={showConfirmation}
-            onConfirmationCancel={() => {
-              setShowConfirmation(false);
-              setCameraFile(null);
-              setSelectedFiles([]);
-            }}
-            onConfirmationConfirm={() => {
-              setShowConfirmation(false);
-              handleAnalyze();
-            }}
-            analysisResult={analysisResult}
-          />
-          
-          {session && (
-            <AnalysisHistory userId={session.user.id} />
-          )}
-        </div>
-
-        <AnalysisConfirmationDialog
-          isOpen={showConfirmation}
-          onConfirm={() => {
-            setShowConfirmation(false);
-            handleAnalyze();
-          }}
-          onCancel={() => {
+        <AnalysisActions
+          session={session}
+          onTakePhoto={handleTakePhoto}
+          onAnalyze={handleAnalyze}
+          showConfirmation={showConfirmation}
+          onConfirmationCancel={() => {
             setShowConfirmation(false);
             setCameraFile(null);
             setSelectedFiles([]);
           }}
+          onConfirmationConfirm={() => {
+            setShowConfirmation(false);
+            handleAnalyze();
+          }}
+          analysisResult={analysisResult}
         />
       </div>
     </div>
