@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
+import AnalysisActions from '@/components/plant-health/AnalysisActions';
 
 const SharedAnalysis = () => {
   const { token } = useParams();
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnalysis = async () => {
       try {
-        // First get the analysis_id and check expiration from shared_analyses
         const { data: sharedAnalysis, error: sharedError } = await supabase
           .from('shared_analyses')
           .select('analysis_id, expires_at')
@@ -30,14 +29,12 @@ const SharedAnalysis = () => {
           return;
         }
 
-        // Check if the analysis has expired
         if (new Date(sharedAnalysis.expires_at) < new Date()) {
           setError('This shared analysis has expired');
           setLoading(false);
           return;
         }
 
-        // Then fetch the actual analysis data
         const { data: analysis, error: analysisError } = await supabase
           .from('plant_analyses')
           .select('*')
@@ -67,10 +64,6 @@ const SharedAnalysis = () => {
       setLoading(false);
     }
   }, [token]);
-
-  const handleUnleashClick = () => {
-    navigate('/');
-  };
 
   if (loading) {
     return (
@@ -113,22 +106,7 @@ const SharedAnalysis = () => {
           </div>
 
           <AnalysisResults analysisResult={analysis} />
-
-          <div className="mt-12 text-center space-y-6 border-t border-gray-800 pt-8">
-            <h2 className="text-2xl font-bold text-white">
-              Grow Bigger, Grow Better with Master Growbot
-            </h2>
-            <p className="text-gray-400 max-w-md mx-auto">
-              Join thousands of growers optimizing their harvests with advanced AI analysis
-            </p>
-            <Button 
-              onClick={handleUnleashClick}
-              size="lg" 
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg transform transition-all duration-300 hover:scale-105"
-            >
-              Unleash your AI Superpowers Today!
-            </Button>
-          </div>
+          <AnalysisActions />
         </div>
       </Card>
     </div>
