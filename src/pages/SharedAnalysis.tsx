@@ -12,6 +12,7 @@ const SharedAnalysis = () => {
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchAnalysis = async () => {
@@ -65,6 +66,16 @@ const SharedAnalysis = () => {
     }
   }, [token]);
 
+  const handleTakePhoto = () => {
+    // Navigate to plant health analyzer or handle photo taking
+    window.location.href = '/plant-health';
+  };
+
+  const handleAnalyze = async () => {
+    // This is a shared view, so we'll redirect to the main analyzer
+    window.location.href = '/plant-health';
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -106,7 +117,18 @@ const SharedAnalysis = () => {
           </div>
 
           <AnalysisResults analysisResult={analysis} />
-          <AnalysisActions />
+          <AnalysisActions 
+            session={null}
+            onTakePhoto={handleTakePhoto}
+            onAnalyze={handleAnalyze}
+            showConfirmation={showConfirmation}
+            onConfirmationCancel={() => setShowConfirmation(false)}
+            onConfirmationConfirm={() => {
+              setShowConfirmation(false);
+              handleAnalyze();
+            }}
+            analysisResult={analysis}
+          />
         </div>
       </Card>
     </div>
