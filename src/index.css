@@ -52,5 +52,80 @@
 
 body {
   font-family: 'Space Grotesk', sans-serif;
-  background-color: #1A1A1A;
+  background-color: #0F1117;
+  color: #ffffff;
+}
+
+/* Enhanced Card Styles */
+.card {
+  @apply bg-card border border-[#2A2F3B] rounded-lg transition-all duration-300;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+  @apply bg-card-hover border-accent/20;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(178, 75, 243, 0.15);
+}
+
+/* Enhanced Button Styles */
+.cyber-button {
+  @apply relative overflow-hidden bg-gradient-primary hover:bg-gradient-secondary transition-all duration-300 transform hover:scale-105;
+  box-shadow: 0 4px 15px rgba(45, 90, 39, 0.2);
+}
+
+.cyber-button:hover {
+  box-shadow: 0 6px 20px rgba(178, 75, 243, 0.3);
+}
+
+.cyber-button::before {
+  content: '';
+  @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+}
+
+.cyber-button:hover::before {
+  @apply opacity-10;
+}
+
+/* Enhanced Input Styles */
+input, textarea, select {
+  @apply bg-[#1A1E26] border border-[#2A2F3B] rounded-md transition-all duration-300;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input:focus, textarea:focus, select:focus {
+  @apply border-accent/50 ring-1 ring-accent/30;
+  box-shadow: 0 0 0 2px rgba(178, 75, 243, 0.1);
+}
+
+/* Shimmer Effect */
+.shimmer {
+  @apply relative overflow-hidden;
+}
+
+.shimmer::before {
+  content: '';
+  @apply absolute top-0 -left-[100%] w-full h-full;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(178, 75, 243, 0.1) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* Loading Animation */
+.loading-pulse {
+  @apply animate-pulse;
+}
+
+/* Glow Effect */
+.glow-effect {
+  @apply animate-glow;
+}
+
+/* Float Animation */
+.float-effect {
+  @apply animate-float;
 }

@@ -22,19 +22,22 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#1A1A1A",
+        background: "#0F1117",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "#2D5A27",
           foreground: "#ffffff",
+          hover: "#386E31",
         },
         secondary: {
           DEFAULT: "#663399",
           foreground: "#ffffff",
+          hover: "#7A3DB8",
         },
         accent: {
           DEFAULT: "#B24BF3",
           foreground: "#ffffff",
+          hover: "#C167FF",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -49,8 +52,9 @@ export default {
           foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "#222222",
+          DEFAULT: "#1A1E26",
           foreground: "#ffffff",
+          hover: "#222832",
         },
       },
       borderRadius: {
@@ -83,6 +87,13 @@ export default {
             boxShadow: "0 0 30px #B24BF3",
           },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
+        shimmer: {
+          "100%": { transform: "translateX(100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -90,6 +101,14 @@ export default {
         "fade-in": "fade-in 0.5s ease-out",
         "pulse-glow": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         glow: "glow 2s ease-in-out infinite",
+        float: "float 3s ease-in-out infinite",
+        shimmer: "shimmer 2s infinite",
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-primary': 'linear-gradient(135deg, #2D5A27 0%, #386E31 100%)',
+        'gradient-secondary': 'linear-gradient(135deg, #663399 0%, #7A3DB8 100%)',
+        'gradient-accent': 'linear-gradient(135deg, #B24BF3 0%, #C167FF 100%)',
       },
     },
   },
