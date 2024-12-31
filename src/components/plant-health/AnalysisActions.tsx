@@ -1,7 +1,9 @@
 import React from 'react';
 import { Session } from '@supabase/auth-helpers-react';
 import { Button } from '@/components/ui/button';
+import { Camera, Share2 } from 'lucide-react';
 import AnalysisConfirmationDialog from './AnalysisConfirmationDialog';
+import ShareResults from './share/ShareResults';
 
 interface AnalysisActionsProps {
   session: Session | null;
@@ -24,15 +26,23 @@ const AnalysisActions = ({
 }: AnalysisActionsProps) => {
   return (
     <div className="flex flex-col items-center space-y-4">
-      {!analysisResult && (
+      <div className="flex flex-wrap gap-4 w-full justify-center">
         <Button
           onClick={onTakePhoto}
-          className="w-full md:w-auto"
-          variant="default"
+          className="bg-gradient-to-r from-green-500 to-blue-500"
+          size="lg"
         >
-          Take Another Photo
+          <Camera className="w-5 h-5 mr-2" />
+          Take Photo
         </Button>
-      )}
+
+        {analysisResult && (
+          <ShareResults
+            analysisId={analysisResult.id}
+            imageUrls={analysisResult.image_urls || []}
+          />
+        )}
+      </div>
 
       <AnalysisConfirmationDialog
         isOpen={showConfirmation}
