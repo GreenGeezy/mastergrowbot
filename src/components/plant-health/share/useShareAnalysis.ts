@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { nanoid } from 'nanoid';
 import { addDays } from 'date-fns';
-import { Share2, Mail, Twitter, Link2, Instagram, Video } from 'lucide-react';
+import { Share2, Mail, Twitter, Link2, Instagram, Video, Facebook } from 'lucide-react';
 import type { ShareOption } from './types';
 
 export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
@@ -70,6 +70,29 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       label: "Copy Link",
       action: async () => {
         await createShareableLink();
+      }
+    },
+    {
+      icon: Facebook,
+      label: "Share on Facebook",
+      action: async () => {
+        const url = await createShareableLink();
+        // Track the Facebook share
+        await supabase
+          .from('share_metrics')
+          .insert({
+            analysis_id: analysisId,
+            share_type: 'facebook',
+          });
+        
+        // Open Facebook share dialog
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+        
+        toast({
+          title: "Opening Facebook",
+          description: "The Facebook sharing dialog will open in a new window.",
+        });
       }
     },
     {
