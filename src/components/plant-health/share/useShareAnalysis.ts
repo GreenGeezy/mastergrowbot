@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { nanoid } from 'nanoid';
 import { addDays } from 'date-fns';
-import { Share2, Mail, Twitter, Link2, Instagram, TikTok } from 'lucide-react';
+import { Share2, Mail, Twitter, Link2, Instagram, Video } from 'lucide-react';
 import type { ShareOption } from './types';
 
 export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
@@ -85,7 +85,6 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       icon: Instagram,
       label: "Share on Instagram",
       action: async () => {
-        // Instagram sharing works best with the Instagram app's URL scheme
         const url = await createShareableLink();
         // Track the Instagram share
         await supabase
@@ -115,7 +114,7 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       }
     },
     {
-      icon: TikTok,
+      icon: Video,
       label: "Share on TikTok",
       action: async () => {
         const url = await createShareableLink();
