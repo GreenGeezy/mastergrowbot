@@ -25,13 +25,23 @@ const SupportDialog = ({ isOpen, onOpenChange }: SupportDialogProps) => {
     setIsLoading(true);
 
     try {
+      console.log("Submitting support message...");
       const { error } = await supabase
         .from('support_messages')
         .insert([
-          { name, email, title, message }
+          { 
+            name, 
+            email, 
+            title, 
+            message,
+            status: 'new'
+          }
         ]);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
 
       toast({
         title: "Message Sent",
@@ -45,6 +55,7 @@ const SupportDialog = ({ isOpen, onOpenChange }: SupportDialogProps) => {
       setMessage("");
       onOpenChange(false);
     } catch (error) {
+      console.error("Support message error:", error);
       toast({
         title: "Error",
         description: "Failed to send message. Please try again.",
