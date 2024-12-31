@@ -152,21 +152,18 @@ const GuideCategories = ({ searchQuery }: { searchQuery: string }) => {
     const query = searchQuery.toLowerCase().trim();
     
     return categories.map(category => {
-      // Filter questions that match the search query
       const matchingQuestions = category.questions.filter(qa => 
         qa.q.toLowerCase().includes(query) || 
         qa.a.toLowerCase().includes(query)
       );
 
-      // Only return categories that have matching questions
       if (matchingQuestions.length === 0) return null;
 
-      // Return a new category object with only matching questions
       return {
         ...category,
         questions: matchingQuestions
       };
-    }).filter(Boolean); // Remove null categories
+    }).filter(Boolean);
   }, [searchQuery]);
 
   if (filteredCategories.length === 0 && searchQuery.trim()) {
@@ -201,15 +198,12 @@ const GuideCategories = ({ searchQuery }: { searchQuery: string }) => {
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
                   {qa.a}
-                  <SuccessShare guideId={`${category.id}-${index}`} title={qa.q} />
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </div>
       ))}
-      
-      <CommunityShares />
     </div>
   );
 };
