@@ -23,7 +23,7 @@ const UserDashboard = () => {
     {
       title: "Growing Guide",
       subtitle: "Quick answers to FAQs",
-      onClick: () => navigate("/grow-guide"), // Updated from /guide to /grow-guide
+      onClick: () => navigate("/grow-guide"),
       icon: BookOpen,
     },
   ];
@@ -38,13 +38,13 @@ const UserDashboard = () => {
               <button
                 key={button.title}
                 onClick={button.onClick}
-                className="flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#333333] border border-[#333333] hover:border-primary/50 w-full"
+                className="card flex items-center p-3 rounded-lg cursor-pointer w-full group"
               >
-                <div className="p-1.5 bg-gradient-to-r from-primary to-[#33C3F0] rounded-lg">
+                <div className="p-1.5 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg float-effect">
                   <Icon className="w-4 h-4 text-white" />
                 </div>
                 <div className="ml-3 flex flex-col text-left">
-                  <h3 className="font-medium text-sm text-white group-hover:text-[#33C3F0] transition-colors duration-300">
+                  <h3 className="font-medium text-sm text-white group-hover:text-accent transition-colors duration-300">
                     {button.title}
                   </h3>
                   <p className="text-gray-400 text-xs">
@@ -56,13 +56,13 @@ const UserDashboard = () => {
           })}
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#33C3F0]">
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
           Welcome back!
         </h2>
         
         <Button
           onClick={() => supabase.auth.signOut()}
-          className="bg-gradient-to-r from-primary to-[#33C3F0] hover:opacity-90 text-white font-medium px-8 py-2 rounded-lg transform hover:scale-105 transition-all duration-300"
+          className="cyber-button w-full"
         >
           Sign Out
         </Button>

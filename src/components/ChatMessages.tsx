@@ -20,7 +20,7 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
   if (messages.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center glow-effect">
+        <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center glow-effect">
           <Leaf className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-2xl font-semibold text-white">How can I help you today?</h2>
@@ -77,8 +77,8 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
           <div
             className={`max-w-[80%] p-4 rounded-2xl ${
               msg.is_ai
-                ? 'message-bubble-ai'
-                : 'message-bubble-user'
+                ? 'bg-card hover:bg-card-hover border border-accent/20 shimmer'
+                : 'bg-gradient-primary hover:bg-gradient-secondary'
             }`}
           >
             {msg.message}

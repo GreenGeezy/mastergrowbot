@@ -12,21 +12,20 @@ export default function Index() {
   const location = useLocation();
 
   useEffect(() => {
-    // Only redirect if there's a specific destination stored in location state
     if (session && location.state?.from) {
       navigate(location.state.from.pathname, { replace: true });
     }
   }, [session, navigate, location]);
 
   const handleFeatureClick = () => {
-    // This ensures FeatureSection has the required prop
     if (!session) {
       return;
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#111111]">
+    <div className="min-h-screen bg-background">
+      <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
       <Header />
       
       {session ? (

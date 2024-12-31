@@ -32,14 +32,14 @@ export default function ChatInput({
   }
 
   return (
-    <div className="p-4 bg-[#1A1A1A] border-t border-[#333333]">
+    <div className="p-4 bg-card border-t border-accent/20">
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <Input
           value={message}
           onChange={onMessageChange}
           placeholder="Ask about cannabis cultivation..."
           disabled={isLoading}
-          className="bg-[#333333] border-[#444444] text-white placeholder:text-gray-400 focus:border-accent focus:ring-accent"
+          className="bg-[#1A1E26] border-[#2A2F3B] text-white placeholder:text-gray-400 focus:border-accent focus:ring-accent"
         />
         <AudioControls
           isRecording={isRecording}
