@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import GuideCategories from "@/components/guide/GuideCategories";
 import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
+import CommunityShares from "@/components/guide/CommunityShares";
 
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -63,6 +64,11 @@ const GrowingGuide = () => {
           <p className="text-gray-300 max-w-2xl mx-auto">
             Find answers to common questions and learn expert growing techniques
           </p>
+        </div>
+
+        {/* Community Success Stories */}
+        <div className="mb-12 animate-fade-in">
+          <CommunityShares />
         </div>
 
         {/* Search Bar */}
