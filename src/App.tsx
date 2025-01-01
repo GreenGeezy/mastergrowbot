@@ -8,13 +8,12 @@ import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react
 import { supabase } from "@/integrations/supabase/client";
 
 // Lazy load components with descriptive chunk names
-const Index = lazy(() => import(/* webpackChunkName: "index" */ "./pages/Index"));
-const ChatInterface = lazy(() => import(/* webpackChunkName: "chat" */ "./components/ChatInterface"));
-const PlantHealthAnalyzer = lazy(() => import(/* webpackChunkName: "plant-health" */ "./pages/PlantHealthAnalyzer"));
-const SharedAnalysis = lazy(() => import(/* webpackChunkName: "shared-analysis" */ "./pages/SharedAnalysis"));
-const GrowingGuide = lazy(() => import(/* webpackChunkName: "growing-guide" */ "./pages/GrowingGuide"));
+const Index = lazy(() => import("./pages/Index"));
+const ChatInterface = lazy(() => import("./components/ChatInterface"));
+const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
+const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
+const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
 
-// Optimize query client settings
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -33,11 +32,23 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Add a timeout to prevent infinite loading
+    const checkSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setIsLoading(false);
+        if (!session) {
+          throw new Error('No session');
+        }
+      } catch (error) {
+        setIsLoading(false);
+      }
+    };
+
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 5000); // 5 second timeout
+    }, 3000); // Timeout after 3 seconds
 
+    checkSession();
     return () => clearTimeout(timer);
   }, []);
 
@@ -52,14 +63,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Enhanced loading fallback with timeout and error state
 const LoadingFallback = () => {
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowError(true);
-    }, 10000); // Show error message after 10 seconds
+    }, 5000); // Show error message after 5 seconds
 
     return () => clearTimeout(timer);
   }, []);
