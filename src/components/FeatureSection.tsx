@@ -13,7 +13,7 @@ const FeatureSection = ({ onFeatureClick }: FeatureSectionProps) => {
         icon={MessageCircle}
         title="Growing Assistant"
         subtitle="Get expert growing advice"
-        onClick={onFeatureClick}
+        to="/chat"
       />
       <FeatureCard
         icon={Camera}
