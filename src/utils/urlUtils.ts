@@ -1,10 +1,15 @@
 export const getRedirectUrl = () => {
+  // Force HTTPS for security
+  const protocol = 'https://';
   const hostname = window.location.hostname;
-  if (hostname.includes('preview--mastergrowbot.lovable.app')) {
-    return 'https://preview--mastergrowbot.lovable.app/auth/callback';
+  
+  // Handle preview and production URLs
+  if (hostname === 'preview--mastergrowbot.lovable.app') {
+    return `${protocol}preview--mastergrowbot.lovable.app/auth/callback`;
   }
-  if (hostname.includes('mastergrowbot.lovable.app')) {
-    return 'https://mastergrowbot.lovable.app/auth/callback';
+  if (hostname === 'mastergrowbot.lovable.app') {
+    return `${protocol}mastergrowbot.lovable.app/auth/callback`;
   }
+  // Local development
   return `${window.location.origin}/auth/callback`;
 };

@@ -8,27 +8,18 @@ import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 
-// Lazy load route components with preload hints
-const ChatInterface = lazy(() => {
-  const preloadLink = document.createElement('link');
-  preloadLink.rel = 'modulepreload';
-  preloadLink.href = '/src/components/ChatInterface.tsx';
-  document.head.appendChild(preloadLink);
-  return import("./components/ChatInterface");
-});
-
+const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
 
-// Configure QueryClient with optimized settings
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 60000,
       gcTime: 300000,
       retry: 1,
-      refetchOnWindowFocus: false, // Reduce unnecessary refetches
+      refetchOnWindowFocus: false,
     },
   },
 });
@@ -38,6 +29,19 @@ const LoadingSpinner = () => (
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
   </div>
 );
+
+const AuthCallback = () => {
+  const session = useSession();
+  const location = useLocation();
+  
+  if (session) {
+    const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+    sessionStorage.removeItem('redirectTo');
+    return <Navigate to={redirectTo} replace />;
+  }
+  
+  return <LoadingSpinner />;
+};
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
@@ -63,7 +67,7 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/auth/callback" element={<Index />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route 
                 path="/chat" 
                 element={
