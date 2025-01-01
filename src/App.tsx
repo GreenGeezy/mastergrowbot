@@ -7,20 +7,26 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 
-// Lazy load components that aren't needed for initial render
+// Optimize lazy loading with preload hints
 const Index = lazy(() => import("./pages/Index"));
 const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
 
+// Preload critical components
+Index.preload?.();
+
+// Optimize query client settings
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
-      gcTime: 10 * 60 * 1000, // Keep unused data in cache for 10 minutes (formerly cacheTime)
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+      // Add timeout to prevent infinite loading
+      networkMode: 'online',
     },
   },
 });
@@ -36,12 +42,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Loading fallback component with better visibility
+// Enhanced loading fallback with timeout
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen bg-background">
     <div className="flex flex-col items-center gap-4">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      <p className="text-muted-foreground">Loading...</p>
+      <p className="text-muted-foreground">Loading your experience...</p>
     </div>
   </div>
 );

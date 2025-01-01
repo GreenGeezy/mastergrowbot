@@ -1,20 +1,24 @@
-import { StrictMode, Fragment } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-// Improve initial load by moving root element check to top level
+// Optimize initial load by checking root element early
 const rootElement = document.getElementById('root')
 if (!rootElement) throw new Error('Failed to find the root element')
 
 const root = createRoot(rootElement)
 
-// Remove StrictMode in production to avoid double-rendering
+// Disable StrictMode in production to prevent double-rendering
 const isDev = import.meta.env.DEV
-const AppWrapper = isDev ? StrictMode : Fragment
 
+// Render app with optimized settings
 root.render(
-  <AppWrapper>
+  isDev ? (
+    <StrictMode>
+      <App />
+    </StrictMode>
+  ) : (
     <App />
-  </AppWrapper>
+  )
 )
