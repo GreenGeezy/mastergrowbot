@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 
-// Lazy load components with descriptive chunk names
+// Lazy load components
 const Index = lazy(() => import("./pages/Index"));
 const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
@@ -30,27 +30,37 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session: currentSession } } = await supabase.auth.getSession();
-      if (!currentSession) {
+      try {
+        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error('Error checking session:', error);
+        }
+        setIsCheckingAuth(false);
         setIsLoading(false);
-        return;
+      } catch (error) {
+        console.error('Error in checkSession:', error);
+        setIsCheckingAuth(false);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
-    // Set a shorter timeout for better UX
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500); // Reduced from 3000ms to 1500ms
-
     checkSession();
-    return () => clearTimeout(timer);
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsCheckingAuth(false);
+      setIsLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  if (isLoading) {
+  if (isCheckingAuth || isLoading) {
     return <LoadingFallback />;
   }
 
@@ -67,7 +77,7 @@ const LoadingFallback = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowError(true);
-    }, 2000); // Reduced from 5000ms to 2000ms for faster error feedback
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
