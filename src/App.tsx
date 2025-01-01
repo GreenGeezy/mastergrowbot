@@ -22,6 +22,12 @@ const queryClient = new QueryClient({
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+  const session = supabase.auth.getSession();
+  
+  if (!session) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
+  
   return children;
 };
 
