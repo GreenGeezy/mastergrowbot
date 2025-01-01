@@ -34,13 +34,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  // Check if we're on the wrong domain, including preview URLs
+  // Handle domain redirects
   const currentHostname = window.location.hostname;
-  const isPreviewUrl = currentHostname.includes('preview--');
-  const isWrongDomain = currentHostname !== 'mastergrowbot.lovable.app';
+  const targetDomain = 'mastergrowbot.lovable.app';
   
-  if ((isWrongDomain || isPreviewUrl) && process.env.NODE_ENV === 'production') {
-    window.location.href = 'https://mastergrowbot.lovable.app' + window.location.pathname;
+  // Check if we're on any domain other than the target
+  if (currentHostname !== targetDomain && process.env.NODE_ENV === 'production') {
+    const newUrl = `https://${targetDomain}${window.location.pathname}${window.location.search}`;
+    window.location.href = newUrl;
     return null;
   }
 
