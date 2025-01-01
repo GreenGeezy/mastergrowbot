@@ -30,28 +30,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-        if (error) {
-          console.error('Error checking session:', error);
-        }
-        setIsCheckingAuth(false);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error in checkSession:', error);
-        setIsCheckingAuth(false);
-        setIsLoading(false);
-      }
-    };
-
-    checkSession();
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsCheckingAuth(false);
       setIsLoading(false);
     });
 
@@ -60,7 +41,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  if (isCheckingAuth || isLoading) {
+  if (isLoading) {
     return <LoadingFallback />;
   }
 
@@ -77,7 +58,7 @@ const LoadingFallback = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowError(true);
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
