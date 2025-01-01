@@ -12,11 +12,14 @@ export default function Index() {
   const location = useLocation();
 
   useEffect(() => {
-    // Redirect to the intended page after login if there was one
     if (session && location.state?.from) {
       navigate(location.state.from.pathname, { replace: true });
     }
   }, [session, navigate, location]);
+
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
