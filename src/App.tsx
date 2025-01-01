@@ -6,9 +6,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
+import Index from "./pages/Index";
 
 // Lazy load route components
-const Index = lazy(() => import("./pages/Index"));
 const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
@@ -32,7 +32,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
   
-  return children;
+  return <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>;
 };
 
 const App = () => (
@@ -42,37 +42,42 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth/callback" element={<Index />} />
-              <Route 
-                path="/chat" 
-                element={
-                  <ProtectedRoute>
-                    <ChatInterface />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/plant-health" 
-                element={
-                  <ProtectedRoute>
-                    <PlantHealthAnalyzer />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route path="/shared/:token" element={<SharedAnalysis />} />
-              <Route 
-                path="/grow-guide" 
-                element={
-                  <ProtectedRoute>
-                    <GrowingGuide />
-                  </ProtectedRoute>
-                } 
-              />
-            </Routes>
-          </Suspense>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth/callback" element={<Index />} />
+            <Route 
+              path="/chat" 
+              element={
+                <ProtectedRoute>
+                  <ChatInterface />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/plant-health" 
+              element={
+                <ProtectedRoute>
+                  <PlantHealthAnalyzer />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/shared/:token" 
+              element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <SharedAnalysis />
+                </Suspense>
+              } 
+            />
+            <Route 
+              path="/grow-guide" 
+              element={
+                <ProtectedRoute>
+                  <GrowingGuide />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
         </BrowserRouter>
       </TooltipProvider>
     </SessionContextProvider>
