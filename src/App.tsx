@@ -34,10 +34,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  // Ensure we're on the correct domain
-  const isWrongDomain = window.location.hostname !== 'mastergrowbot.lovable.app';
+  // Check if we're on the wrong domain, including preview URLs
+  const currentHostname = window.location.hostname;
+  const isPreviewUrl = currentHostname.includes('preview--');
+  const isWrongDomain = currentHostname !== 'mastergrowbot.lovable.app';
   
-  if (isWrongDomain && process.env.NODE_ENV === 'production') {
+  if ((isWrongDomain || isPreviewUrl) && process.env.NODE_ENV === 'production') {
     window.location.href = 'https://mastergrowbot.lovable.app' + window.location.pathname;
     return null;
   }
