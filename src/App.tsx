@@ -16,14 +16,12 @@ const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
 
 const queryClient = new QueryClient();
 
-// Loading component for Suspense fallback
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
   </div>
 );
 
-// Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const location = useLocation();
@@ -41,7 +39,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename="/app">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth/callback" element={<Index />} />
