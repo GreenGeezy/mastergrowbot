@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 
+const PRODUCTION_URL = 'https://mastergrowbot.lovable.app';
+
 const AuthUI = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,6 +41,9 @@ const AuthUI = () => {
         ? await supabase.auth.signUp({
             email,
             password,
+            options: {
+              emailRedirectTo: `${window.location.origin}/auth/callback`
+            }
           })
         : await supabase.auth.signInWithPassword({
             email,
@@ -66,20 +71,18 @@ const AuthUI = () => {
 
   const handleOAuthSignIn = async (provider: 'google') => {
     try {
-      const redirectUrl = window.location.hostname === 'localhost' 
-        ? `${window.location.origin}/auth/callback`
-        : 'https://mastergrowbot.lovable.app/auth/callback';
-
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: redirectUrl,
+          redirectTo: `${PRODUCTION_URL}/auth/callback`,
+          skipBrowserRedirect: false,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
           },
         },
       });
+      
       if (error) throw error;
     } catch (error) {
       toast({
