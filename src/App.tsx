@@ -17,9 +17,9 @@ const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60000, // 1 minute
-      gcTime: 300000, // 5 minutes (formerly cacheTime)
-      retry: 1, // Only retry once
+      staleTime: 60000,
+      gcTime: 300000,
+      retry: 1,
     },
   },
 });
@@ -35,7 +35,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   
   if (!session) {
-    // Store the attempted URL in session storage before redirecting
     sessionStorage.setItem('redirectTo', location.pathname);
     return <Navigate to="/" replace />;
   }
@@ -44,17 +43,15 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  // Simplified domain handling - only redirect if absolutely necessary
+  // Simplified domain handling - only redirect in production to main domain
   const currentHostname = window.location.hostname;
-  const targetDomain = 'mastergrowbot.lovable.app';
-  const previewDomain = 'preview--mastergrowbot.lovable.app';
   const isLocalhost = currentHostname.includes('localhost') || currentHostname.includes('127.0.0.1');
-  const isPreview = currentHostname === previewDomain;
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isPreview = currentHostname.includes('preview--');
+  const isProduction = process.env.NODE_ENV === 'production' && !isLocalhost && !isPreview;
   
-  // Only redirect in production if we're on an unknown domain
-  if (isProduction && !isLocalhost && !isPreview && currentHostname !== targetDomain) {
-    window.location.replace(`https://${targetDomain}${window.location.pathname}${window.location.search}`);
+  // Only redirect if we're in production and not on preview or localhost
+  if (isProduction && currentHostname !== 'mastergrowbot.lovable.app') {
+    window.location.replace(`https://mastergrowbot.lovable.app${window.location.pathname}${window.location.search}`);
     return null;
   }
 
