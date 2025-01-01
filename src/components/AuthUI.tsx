@@ -66,10 +66,14 @@ const AuthUI = () => {
 
   const handleOAuthSignIn = async (provider: 'google') => {
     try {
+      const redirectUrl = window.location.hostname === 'localhost' 
+        ? `${window.location.origin}/auth/callback`
+        : 'https://mastergrowbot.lovable.app/auth/callback';
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
