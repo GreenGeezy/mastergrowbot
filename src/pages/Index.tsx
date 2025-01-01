@@ -12,20 +12,16 @@ export default function Index() {
   const location = useLocation();
 
   useEffect(() => {
-    const from = location.state?.from;
-    if (session && from && from.pathname !== '/') {
-      navigate(from.pathname, { replace: true });
+    if (session && location.state?.from) {
+      navigate(location.state.from.pathname, { replace: true });
     }
-  }, [session, navigate, location.state]);
+  }, [session, navigate, location]);
 
-  // If session is undefined, show loading state
-  if (session === undefined) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  const handleFeatureClick = () => {
+    if (!session) {
+      return;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -37,7 +33,7 @@ export default function Index() {
       ) : (
         <div className="container mx-auto px-4">
           <div className="py-12 md:py-20">
-            <FeatureSection onFeatureClick={() => {}} />
+            <FeatureSection onFeatureClick={handleFeatureClick} />
             <div className="mt-12">
               <AuthUI />
             </div>

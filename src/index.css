@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -53,11 +54,9 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   background-color: #0F1117;
   color: #ffffff;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
-/* Core Styles */
+/* Enhanced Card Styles */
 .card {
   @apply bg-card border border-[#2A2F3B] rounded-lg transition-all duration-300;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -69,6 +68,7 @@ body {
   box-shadow: 0 8px 30px rgba(178, 75, 243, 0.15);
 }
 
+/* Enhanced Button Styles */
 .cyber-button {
   @apply relative overflow-hidden bg-gradient-primary hover:bg-gradient-secondary transition-all duration-300 transform hover:scale-105;
   box-shadow: 0 4px 15px rgba(45, 90, 39, 0.2);
@@ -78,11 +78,18 @@ body {
   box-shadow: 0 6px 20px rgba(178, 75, 243, 0.3);
 }
 
-/* Input Styles */
+.cyber-button::before {
+  content: '';
+  @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+}
+
+.cyber-button:hover::before {
+  @apply opacity-10;
+}
+
+/* Enhanced Input Styles */
 input, textarea, select {
   @apply bg-[#1A1E26] border border-[#2A2F3B] rounded-md transition-all duration-300;
-  -webkit-appearance: none;
-  appearance: none;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -91,18 +98,9 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 2px rgba(178, 75, 243, 0.1);
 }
 
-/* Animations */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes shimmer {
-  100% { transform: translateX(100%); }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out;
+/* Shimmer Effect */
+.shimmer {
+  @apply relative overflow-hidden;
 }
 
 .shimmer::before {
@@ -115,4 +113,19 @@ input:focus, textarea:focus, select:focus {
     transparent 100%
   );
   animation: shimmer 2s infinite;
+}
+
+/* Loading Animation */
+.loading-pulse {
+  @apply animate-pulse;
+}
+
+/* Glow Effect */
+.glow-effect {
+  @apply animate-glow;
+}
+
+/* Float Animation */
+.float-effect {
+  @apply animate-float;
 }

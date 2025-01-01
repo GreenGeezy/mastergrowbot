@@ -41,7 +41,6 @@ const AuthUI = () => {
           : "You have successfully signed in.",
       });
     } catch (error) {
-      console.error("Auth error:", error);
       toast({
         title: "Error",
         description: error.message,
@@ -58,15 +57,10 @@ const AuthUI = () => {
         provider,
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
         },
       });
       if (error) throw error;
     } catch (error) {
-      console.error("OAuth error:", error);
       toast({
         title: "Error",
         description: error.message,
