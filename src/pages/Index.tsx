@@ -12,33 +12,34 @@ export default function Index() {
   const location = useLocation();
 
   useEffect(() => {
-    // Redirect to the intended page after login if there was one
     if (session && location.state?.from) {
       navigate(location.state.from.pathname, { replace: true });
     }
   }, [session, navigate, location]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background flex flex-col">
       <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
       <Header />
       
-      {session ? (
-        <UserDashboard />
-      ) : (
-        <div className="container mx-auto px-4">
-          <div className="py-12 md:py-20">
-            <FeatureSection onFeatureClick={() => {
-              if (!session) {
-                return;
-              }
-            }} />
+      <div className="flex-grow container mx-auto px-4 py-8">
+        {session ? (
+          <UserDashboard />
+        ) : (
+          <div className="max-w-6xl mx-auto">
+            <FeatureSection 
+              onFeatureClick={() => {
+                if (!session) {
+                  return;
+                }
+              }} 
+            />
             <div className="mt-12">
               <AuthUI />
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </main>
   );
 }
