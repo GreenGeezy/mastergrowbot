@@ -7,20 +7,6 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: true,
-    storage: window.localStorage,
-    flowType: 'pkce',
-    debug: false,
-    storageKey: 'sb-auth-token'
-  },
-  realtime: {
-    params: {
-      eventsPerSecond: 1
-    }
-  },
-  global: {
-    headers: {
-      'x-client-info': 'mastergrowbot'
-    }
+    detectSessionInUrl: true
   }
-});
+})

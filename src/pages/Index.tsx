@@ -17,6 +17,12 @@ export default function Index() {
     }
   }, [session, navigate, location]);
 
+  const handleFeatureClick = () => {
+    if (!session) {
+      return;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
@@ -27,11 +33,7 @@ export default function Index() {
       ) : (
         <div className="container mx-auto px-4">
           <div className="py-12 md:py-20">
-            <FeatureSection onFeatureClick={() => {
-              if (!session) {
-                return;
-              }
-            }} />
+            <FeatureSection onFeatureClick={handleFeatureClick} />
             <div className="mt-12">
               <AuthUI />
             </div>
