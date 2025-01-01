@@ -1,6 +1,8 @@
 import { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useSession } from "@supabase/auth-helpers-react";
 import React from "react";
+import { toast } from "sonner";
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -12,14 +14,20 @@ interface FeatureCardProps {
 
 const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: FeatureCardProps) => {
   const navigate = useNavigate();
+  const session = useSession();
 
   const handleClick = React.useCallback(() => {
+    if (!session) {
+      toast.error("Please sign in to access this feature");
+      return;
+    }
+
     if (to) {
       navigate(to);
     } else if (onClick) {
       onClick();
     }
-  }, [to, onClick, navigate]);
+  }, [to, onClick, navigate, session]);
 
   const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -33,7 +41,7 @@ const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: Fe
       role="button"
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className="card group flex items-center p-3 rounded-lg cursor-pointer will-change-transform"
+      className="card group flex items-center p-3 rounded-lg cursor-pointer will-change-transform transition-all duration-300 hover:scale-105"
     >
       <div className="p-1.5 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg float-effect will-change-transform">
         <Icon className="w-4 h-4 text-white" />
@@ -42,7 +50,7 @@ const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: Fe
         <h3 className="font-medium text-sm text-white group-hover:text-accent transition-colors duration-300">
           {title}
         </h3>
-        <p className="text-gray-400 text-[19px]">
+        <p className="text-gray-400 text-[13px]">
           {subtitle}
         </p>
       </div>
