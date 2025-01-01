@@ -36,13 +36,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const App = () => {
   // Handle domain redirects for both production and preview environments
   const currentHostname = window.location.hostname;
-  const targetDomain = 'mastergrowbot.com';
-  const lovableDomain = 'lovable.app';
+  const targetDomain = 'mastergrowbot.lovable.app';
+  const previewDomain = 'preview--mastergrowbot.lovable.app';
   
-  // Only redirect in production and if we're not on the target domain or its subdomains
+  // Only redirect in production and if we're not on the target or preview domains
   if (process.env.NODE_ENV === 'production' && 
-      !currentHostname.includes(targetDomain) && 
-      !currentHostname.includes(lovableDomain)) {
+      currentHostname !== targetDomain && 
+      currentHostname !== previewDomain) {
     const newUrl = `https://${targetDomain}${window.location.pathname}${window.location.search}`;
     window.location.href = newUrl;
     return null;
