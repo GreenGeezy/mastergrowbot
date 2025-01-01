@@ -33,53 +33,60 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>;
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <SessionContextProvider supabaseClient={supabase}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter basename="/app">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth/callback" element={<Index />} />
-            <Route 
-              path="/chat" 
-              element={
-                <ProtectedRoute>
-                  <ChatInterface />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/plant-health" 
-              element={
-                <ProtectedRoute>
-                  <PlantHealthAnalyzer />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/shared/:token" 
-              element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <SharedAnalysis />
-                </Suspense>
-              } 
-            />
-            <Route 
-              path="/grow-guide" 
-              element={
-                <ProtectedRoute>
-                  <GrowingGuide />
-                </ProtectedRoute>
-              } 
-            />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </SessionContextProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Get the current URL path
+  const currentPath = window.location.pathname;
+  // Determine if we're running at the root or in the /app subdirectory
+  const basename = currentPath.startsWith('/app') ? '/app' : '';
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SessionContextProvider supabaseClient={supabase}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter basename={basename}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth/callback" element={<Index />} />
+              <Route 
+                path="/chat" 
+                element={
+                  <ProtectedRoute>
+                    <ChatInterface />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/plant-health" 
+                element={
+                  <ProtectedRoute>
+                    <PlantHealthAnalyzer />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/shared/:token" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <SharedAnalysis />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/grow-guide" 
+                element={
+                  <ProtectedRoute>
+                    <GrowingGuide />
+                  </ProtectedRoute>
+                } 
+              />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </SessionContextProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
