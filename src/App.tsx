@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
 
-// Lazy load components
 const Index = lazy(() => import("./pages/Index"));
 const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
