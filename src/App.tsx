@@ -55,12 +55,6 @@ const Root = () => {
     return <Navigate to="/chat" replace />;
   }
 
-  // If we're at about:blank, redirect to the correct domain
-  if (window.location.href.includes('about:blank')) {
-    window.location.href = 'https://preview--mastergrowbot-dashboard.lovable.app/';
-    return null;
-  }
-
   return <Index />;
 };
 
@@ -70,7 +64,7 @@ const App = () => {
       <SessionContextProvider supabaseClient={supabase} initialSession={null}>
         <TooltipProvider>
           <Suspense fallback={<LoadingSpinner />}>
-            <BrowserRouter basename={process.env.NODE_ENV === 'production' ? '/app' : '/'}>
+            <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Root />} />
                 <Route path="/auth/callback" element={<Root />} />
