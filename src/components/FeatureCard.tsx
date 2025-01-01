@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -9,30 +10,32 @@ interface FeatureCardProps {
   to?: string;
 }
 
-const FeatureCard = ({ icon: Icon, title, subtitle, onClick, to }: FeatureCardProps) => {
+const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: FeatureCardProps) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = React.useCallback(() => {
     if (to) {
       navigate(to);
     } else if (onClick) {
       onClick();
     }
-  };
+  }, [to, onClick, navigate]);
+
+  const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      handleClick();
+    }
+  }, [handleClick]);
 
   return (
     <div
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          handleClick();
-        }
-      }}
-      className="card group flex items-center p-3 rounded-lg cursor-pointer"
+      onKeyDown={handleKeyDown}
+      className="card group flex items-center p-3 rounded-lg cursor-pointer will-change-transform"
     >
-      <div className="p-1.5 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg float-effect">
+      <div className="p-1.5 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg float-effect will-change-transform">
         <Icon className="w-4 h-4 text-white" />
       </div>
       <div className="ml-3 flex flex-col">
@@ -45,6 +48,8 @@ const FeatureCard = ({ icon: Icon, title, subtitle, onClick, to }: FeatureCardPr
       </div>
     </div>
   );
-};
+});
+
+FeatureCard.displayName = 'FeatureCard';
 
 export default FeatureCard;

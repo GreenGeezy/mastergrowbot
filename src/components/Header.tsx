@@ -11,10 +11,14 @@ const Header = () => {
             src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
             alt="Master Growbot Logo" 
             className="w-20 h-20 sm:w-28 sm:h-28 transform group-hover:scale-105 transition-transform duration-500"
+            loading="eager"
+            width={112}
+            height={112}
+            fetchPriority="high"
           />
         </div>
       </div>
-      <h1 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-accent to-secondary-glow animate-fade-in px-2 tracking-tight tech-font">
+      <h1 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-accent to-secondary-glow animate-fade-in px-2 tracking-tight tech-font will-change-transform">
         Master Growbot
       </h1>
       <p className="text-base sm:text-lg text-accent text-center max-w-2xl leading-relaxed mb-4 sm:mb-6 animate-fade-in px-4 font-light">
@@ -25,7 +29,7 @@ const Header = () => {
           Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
         </p>
         <div className="flex items-center justify-center space-x-3">
-          <Award className="w-7 h-7 text-gold animate-float" />
+          <Award className="w-7 h-7 text-gold animate-float will-change-transform" />
           <div className="flex items-center space-x-1">
             {[...Array(5)].map((_, index) => (
               <Star
