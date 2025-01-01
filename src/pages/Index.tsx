@@ -17,10 +17,6 @@ export default function Index() {
     }
   }, [session, navigate, location]);
 
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
