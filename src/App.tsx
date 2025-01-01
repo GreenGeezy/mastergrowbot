@@ -53,7 +53,7 @@ const AuthCallback = () => {
   useEffect(() => {
     if (session) {
       navigate('/chat', { replace: true });
-    } else {
+    } else if (session === null) {
       navigate('/', { replace: true });
     }
   }, [session, navigate]);
@@ -82,8 +82,8 @@ const App = () => {
         initialSession={null}
       >
         <TooltipProvider>
-          <Suspense fallback={<LoadingSpinner />}>
-            <BrowserRouter>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
               <Routes>
                 <Route path="/" element={<Root />} />
                 <Route path="/auth/callback" element={<AuthCallback />} />
@@ -114,10 +114,10 @@ const App = () => {
                 />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
-              <Toaster />
-              <Sonner />
-            </BrowserRouter>
-          </Suspense>
+            </Suspense>
+            <Toaster />
+            <Sonner />
+          </BrowserRouter>
         </TooltipProvider>
       </SessionContextProvider>
     </QueryClientProvider>
