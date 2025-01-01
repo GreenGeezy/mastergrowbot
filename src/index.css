@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,34 +27,37 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
   }
- 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
-  }
 }
 
 body {
   font-family: 'Space Grotesk', sans-serif;
   background-color: #0F1117;
   color: #ffffff;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(43, 90, 39, 0.1) 0%, transparent 60%),
+    radial-gradient(circle at 80% 20%, rgba(178, 75, 243, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, .tech-font {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.circuit-background {
+  position: relative;
+  overflow: hidden;
+}
+
+.circuit-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h80v80h-80z' fill='none' stroke='rgba(178, 75, 243, 0.1)' stroke-width='0.5'/%3E%3C/svg%3E");
+  opacity: 0.1;
+  z-index: -1;
 }
 
 /* Enhanced Card Styles */
@@ -87,6 +91,27 @@ body {
   @apply opacity-10;
 }
 
+/* Glow Effects */
+.glow-primary {
+  --glow-color: rgba(74, 229, 74, 0.5);
+  @apply animate-glow;
+}
+
+.glow-secondary {
+  --glow-color: rgba(155, 135, 245, 0.5);
+  @apply animate-glow;
+}
+
+.glow-accent {
+  --glow-color: rgba(226, 182, 255, 0.5);
+  @apply animate-glow;
+}
+
+.glow-gold {
+  --glow-color: rgba(255, 215, 0, 0.5);
+  @apply animate-glow;
+}
+
 /* Enhanced Input Styles */
 input, textarea, select {
   @apply bg-[#1A1E26] border border-[#2A2F3B] rounded-md transition-all duration-300;
@@ -118,11 +143,6 @@ input:focus, textarea:focus, select:focus {
 /* Loading Animation */
 .loading-pulse {
   @apply animate-pulse;
-}
-
-/* Glow Effect */
-.glow-effect {
-  @apply animate-glow;
 }
 
 /* Float Animation */

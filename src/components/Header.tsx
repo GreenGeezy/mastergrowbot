@@ -1,10 +1,11 @@
 import React from "react";
+import { Award } from "lucide-react";
 
 const Header = () => {
   return (
-    <div className="w-full flex flex-col items-center mb-2 sm:mb-4 animate-fade-in">
+    <div className="w-full flex flex-col items-center mb-2 sm:mb-4 animate-fade-in circuit-background">
       <div className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-secondary rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+        <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
         <div className="relative bg-card p-4 sm:p-6 rounded-full mb-4 sm:mb-6 backdrop-blur-xl ring-1 ring-white/10 hover:ring-accent/30 transition-all duration-500">
           <img 
             src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
@@ -13,12 +14,18 @@ const Header = () => {
           />
         </div>
       </div>
-      <h1 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary animate-fade-in px-2 tracking-tight">
+      <h1 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-accent to-secondary-glow animate-fade-in px-2 tracking-tight tech-font">
         Master Growbot
       </h1>
-      <p className="text-base sm:text-lg text-accent text-center max-w-2xl leading-relaxed mb-2 sm:mb-3 animate-fade-in px-4 font-light">
+      <p className="text-base sm:text-lg text-accent text-center max-w-2xl leading-relaxed mb-4 sm:mb-6 animate-fade-in px-4 font-light">
         Grow Bigger, Grow Better – Unleash Your Cannabis SuperPowers with AI
       </p>
+      <div className="flex items-center justify-center space-x-2 text-gold animate-fade-in">
+        <Award className="w-5 h-5 animate-float" />
+        <p className="text-sm sm:text-base text-center font-medium">
+          Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
+        </p>
+      </div>
     </div>
   );
 };

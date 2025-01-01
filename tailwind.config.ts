@@ -28,16 +28,24 @@ export default {
           DEFAULT: "#2D5A27",
           foreground: "#ffffff",
           hover: "#386E31",
+          glow: "#4AE54A",
         },
         secondary: {
           DEFAULT: "#663399",
           foreground: "#ffffff",
           hover: "#7A3DB8",
+          glow: "#9B87F5",
         },
         accent: {
           DEFAULT: "#B24BF3",
           foreground: "#ffffff",
           hover: "#C167FF",
+          glow: "#E2B6FF",
+        },
+        gold: {
+          DEFAULT: "#FFD700",
+          hover: "#FFC000",
+          glow: "#FFE55C",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -81,10 +89,10 @@ export default {
         },
         glow: {
           "0%, 100%": {
-            boxShadow: "0 0 15px #B24BF3",
+            boxShadow: "0 0 15px var(--glow-color)",
           },
           "50%": {
-            boxShadow: "0 0 30px #B24BF3",
+            boxShadow: "0 0 30px var(--glow-color)",
           },
         },
         float: {
@@ -93,6 +101,10 @@ export default {
         },
         shimmer: {
           "100%": { transform: "translateX(100%)" },
+        },
+        "circuit-flow": {
+          "0%": { strokeDashoffset: "1000" },
+          "100%": { strokeDashoffset: "0" },
         },
       },
       animation: {
@@ -103,12 +115,14 @@ export default {
         glow: "glow 2s ease-in-out infinite",
         float: "float 3s ease-in-out infinite",
         shimmer: "shimmer 2s infinite",
+        "circuit-flow": "circuit-flow 3s linear infinite",
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-primary': 'linear-gradient(135deg, #2D5A27 0%, #386E31 100%)',
         'gradient-secondary': 'linear-gradient(135deg, #663399 0%, #7A3DB8 100%)',
         'gradient-accent': 'linear-gradient(135deg, #B24BF3 0%, #C167FF 100%)',
+        'circuit-pattern': "url(\"data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h80v80h-80z' fill='none' stroke='%23333' stroke-width='0.5'/%3E%3C/svg%3E\")",
       },
     },
   },
