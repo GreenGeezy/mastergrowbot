@@ -12,16 +12,11 @@ export default function Index() {
   const location = useLocation();
 
   useEffect(() => {
+    // Redirect to the intended page after login if there was one
     if (session && location.state?.from) {
       navigate(location.state.from.pathname, { replace: true });
     }
   }, [session, navigate, location]);
-
-  const handleFeatureClick = () => {
-    if (!session) {
-      return;
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,7 +28,11 @@ export default function Index() {
       ) : (
         <div className="container mx-auto px-4">
           <div className="py-12 md:py-20">
-            <FeatureSection onFeatureClick={handleFeatureClick} />
+            <FeatureSection onFeatureClick={() => {
+              if (!session) {
+                return;
+              }
+            }} />
             <div className="mt-12">
               <AuthUI />
             </div>
