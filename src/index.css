@@ -53,6 +53,8 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   background-color: #0F1117;
   color: #ffffff;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* Core Styles */
@@ -79,6 +81,8 @@ body {
 /* Input Styles */
 input, textarea, select {
   @apply bg-[#1A1E26] border border-[#2A2F3B] rounded-md transition-all duration-300;
+  -webkit-appearance: none;
+  appearance: none;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
