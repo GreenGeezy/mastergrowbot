@@ -1,5 +1,5 @@
 import React from "react";
-import { Award } from "lucide-react";
+import { Award, Star } from "lucide-react";
 
 const Header = () => {
   return (
@@ -22,6 +22,14 @@ const Header = () => {
       </p>
       <div className="flex items-center justify-center space-x-2 text-gold animate-fade-in">
         <Award className="w-5 h-5 animate-float" />
+        <div className="flex items-center space-x-1">
+          {[...Array(5)].map((_, index) => (
+            <Star
+              key={index}
+              className="w-4 h-4 fill-gold text-gold"
+            />
+          ))}
+        </div>
         <p className="text-sm sm:text-base text-center font-medium">
           Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
         </p>
