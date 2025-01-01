@@ -7,15 +7,12 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 
-// Optimize lazy loading with preload hints
-const Index = lazy(() => import("./pages/Index"));
-const ChatInterface = lazy(() => import("./components/ChatInterface"));
-const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
-const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
-const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
-
-// Preload critical components
-Index.preload?.();
+// Lazy load components with descriptive chunk names
+const Index = lazy(() => import(/* webpackChunkName: "index" */ "./pages/Index"));
+const ChatInterface = lazy(() => import(/* webpackChunkName: "chat" */ "./components/ChatInterface"));
+const PlantHealthAnalyzer = lazy(() => import(/* webpackChunkName: "plant-health" */ "./pages/PlantHealthAnalyzer"));
+const SharedAnalysis = lazy(() => import(/* webpackChunkName: "shared-analysis" */ "./pages/SharedAnalysis"));
+const GrowingGuide = lazy(() => import(/* webpackChunkName: "growing-guide" */ "./pages/GrowingGuide"));
 
 // Optimize query client settings
 const queryClient = new QueryClient({
@@ -25,7 +22,6 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       gcTime: 10 * 60 * 1000,
-      // Add timeout to prevent infinite loading
       networkMode: 'online',
     },
   },
