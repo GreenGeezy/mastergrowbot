@@ -35,7 +35,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   
   if (!session) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    // Store the attempted URL in session storage before redirecting
+    sessionStorage.setItem('redirectTo', location.pathname);
+    return <Navigate to="/" replace />;
   }
   
   return <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>;
