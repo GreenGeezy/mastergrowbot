@@ -60,9 +60,9 @@ const App = () => (
               } 
             />
           </Routes>
+          <Toaster />
+          <Sonner />
         </BrowserRouter>
-        <Toaster />
-        <Sonner />
       </TooltipProvider>
     </SessionContextProvider>
   </QueryClientProvider>
