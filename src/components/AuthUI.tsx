@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { AuthForm } from "./auth/AuthForm";
 import { getRedirectUrl } from "@/utils/urlUtils";
+import { toast } from "sonner";
 
 const AuthUI = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +12,6 @@ const AuthUI = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,18 +49,9 @@ const AuthUI = () => {
 
       if (error) throw error;
 
-      toast({
-        title: isSignUp ? "Account created!" : "Welcome back!",
-        description: isSignUp 
-          ? "Please check your email to verify your account."
-          : "You have successfully signed in.",
-      });
+      toast.success(isSignUp ? "Account created! Please check your email." : "Welcome back!");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -68,6 +59,7 @@ const AuthUI = () => {
 
   const handleOAuthSignIn = async () => {
     try {
+      setLoading(true);
       const redirectUrl = getRedirectUrl();
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -82,11 +74,10 @@ const AuthUI = () => {
       
       if (error) throw error;
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error("Failed to sign in with Google. Please try again.");
+      console.error("Google sign-in error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
