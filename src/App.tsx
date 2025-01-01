@@ -20,7 +20,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const location = useLocation();
@@ -29,41 +28,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
   
-  return <>{children}</>;
-};
-
-const AppRoutes = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/auth/callback" element={<Index />} />
-      <Route 
-        path="/chat" 
-        element={
-          <ProtectedRoute>
-            <ChatInterface />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/plant-health" 
-        element={
-          <ProtectedRoute>
-            <PlantHealthAnalyzer />
-          </ProtectedRoute>
-        } 
-      />
-      <Route path="/shared/:token" element={<SharedAnalysis />} />
-      <Route 
-        path="/grow-guide" 
-        element={
-          <ProtectedRoute>
-            <GrowingGuide />
-          </ProtectedRoute>
-        } 
-      />
-    </Routes>
-  );
+  return children;
 };
 
 const App = () => {
@@ -72,7 +37,35 @@ const App = () => {
       <SessionContextProvider supabaseClient={supabase}>
         <TooltipProvider>
           <BrowserRouter>
-            <AppRoutes />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth/callback" element={<Index />} />
+              <Route 
+                path="/chat" 
+                element={
+                  <ProtectedRoute>
+                    <ChatInterface />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/plant-health" 
+                element={
+                  <ProtectedRoute>
+                    <PlantHealthAnalyzer />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route path="/shared/:token" element={<SharedAnalysis />} />
+              <Route 
+                path="/grow-guide" 
+                element={
+                  <ProtectedRoute>
+                    <GrowingGuide />
+                  </ProtectedRoute>
+                } 
+              />
+            </Routes>
             <Toaster />
             <Sonner />
           </BrowserRouter>
