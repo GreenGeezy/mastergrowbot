@@ -11,11 +11,21 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     detectSessionInUrl: true,
     storage: window.localStorage,
     flowType: 'pkce',
-    debug: false // Disable debug logs in production
+    debug: false, // Disable debug logs in production
+    storageKey: 'sb-auth-token',
+    cookieOptions: {
+      secure: true,
+      sameSite: 'lax'
+    }
   },
   realtime: {
     params: {
       eventsPerSecond: 2 // Limit realtime events
+    }
+  },
+  global: {
+    headers: {
+      'x-client-info': 'mastergrowbot'
     }
   }
 });
