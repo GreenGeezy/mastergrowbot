@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, Fragment } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
@@ -11,7 +11,7 @@ const root = createRoot(rootElement)
 
 // Remove StrictMode in production to avoid double-rendering
 const isDev = import.meta.env.DEV
-const AppWrapper = isDev ? StrictMode : React.Fragment
+const AppWrapper = isDev ? StrictMode : Fragment
 
 root.render(
   <AppWrapper>
