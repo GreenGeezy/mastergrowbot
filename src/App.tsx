@@ -24,6 +24,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const session = useSession();
   
+  if (session === undefined) {
+    // Still loading, don't redirect yet
+    return null;
+  }
+  
   if (!session) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
@@ -34,7 +39,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionContextProvider supabaseClient={supabase}>
+      <SessionContextProvider supabaseClient={supabase} initialSession={null}>
         <TooltipProvider>
           <BrowserRouter>
             <Routes>

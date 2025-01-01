@@ -18,11 +18,14 @@ export default function Index() {
     }
   }, [session, navigate, location.state]);
 
-  const handleFeatureClick = () => {
-    if (!session) {
-      return;
-    }
-  };
+  // If session is undefined, show loading state
+  if (session === undefined) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -34,7 +37,7 @@ export default function Index() {
       ) : (
         <div className="container mx-auto px-4">
           <div className="py-12 md:py-20">
-            <FeatureSection onFeatureClick={handleFeatureClick} />
+            <FeatureSection onFeatureClick={() => {}} />
             <div className="mt-12">
               <AuthUI />
             </div>
