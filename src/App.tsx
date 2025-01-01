@@ -45,16 +45,35 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return children;
 };
 
+// Root component to handle initial routing
+const Root = () => {
+  const session = useSession();
+  const location = useLocation();
+
+  // If we're at the root and have a session, redirect to chat
+  if (location.pathname === '/' && session) {
+    return <Navigate to="/chat" replace />;
+  }
+
+  // If we're at about:blank, redirect to the correct domain
+  if (window.location.href.includes('about:blank')) {
+    window.location.href = 'https://preview--mastergrowbot-dashboard.lovable.app/';
+    return null;
+  }
+
+  return <Index />;
+};
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase} initialSession={null}>
         <TooltipProvider>
           <Suspense fallback={<LoadingSpinner />}>
-            <BrowserRouter>
+            <BrowserRouter basename={process.env.NODE_ENV === 'production' ? '/app' : '/'}>
               <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth/callback" element={<Index />} />
+                <Route path="/" element={<Root />} />
+                <Route path="/auth/callback" element={<Root />} />
                 <Route 
                   path="/chat" 
                   element={
@@ -80,6 +99,7 @@ const App = () => {
                     </ProtectedRoute>
                   } 
                 />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
               <Toaster />
               <Sonner />
