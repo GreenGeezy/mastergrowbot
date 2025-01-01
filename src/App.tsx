@@ -34,18 +34,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  // Get the current URL path
-  const currentPath = window.location.pathname;
-  // Determine if we're running at the root or in the /app subdirectory
-  const basename = currentPath.startsWith('/app') ? '/app' : '';
-
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase}>
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter basename={basename}>
+          <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth/callback" element={<Index />} />
