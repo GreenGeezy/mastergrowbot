@@ -60,10 +60,7 @@ const AuthUI = () => {
           redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
-      if (error) {
-        console.error("OAuth error:", error);
-        throw error;
-      }
+      if (error) throw error;
     } catch (error) {
       console.error("OAuth error:", error);
       toast({
