@@ -12,11 +12,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     storage: window.localStorage,
     flowType: 'pkce',
     debug: false, // Disable debug logs in production
-    storageKey: 'sb-auth-token',
-    cookieOptions: {
-      secure: true,
-      sameSite: 'lax'
-    }
+    storageKey: 'sb-auth-token'
   },
   realtime: {
     params: {
