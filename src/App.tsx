@@ -59,10 +59,6 @@ const Root = () => {
 };
 
 const App = () => {
-  const siteUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://preview--mastergrowbot-dashboard.lovable.app'
-    : 'http://localhost:5173';
-
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider 
