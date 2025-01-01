@@ -11,10 +11,10 @@ export default function Index() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Only redirect if we have both a session and a "from" location
   useEffect(() => {
-    if (session && location.state?.from) {
-      navigate(location.state.from.pathname, { replace: true });
+    const from = location.state?.from;
+    if (session && from && from.pathname !== '/') {
+      navigate(from.pathname, { replace: true });
     }
   }, [session, navigate, location.state]);
 
