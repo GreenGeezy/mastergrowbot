@@ -2,10 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 
 // Lazy load components for better initial loading performance
 const Index = lazy(() => import("./pages/Index"));
@@ -45,6 +45,22 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return children;
 };
 
+// Auth callback handler component
+const AuthCallback = () => {
+  const navigate = useNavigate();
+  const session = useSession();
+
+  useEffect(() => {
+    if (session) {
+      navigate('/chat', { replace: true });
+    } else {
+      navigate('/', { replace: true });
+    }
+  }, [session, navigate]);
+
+  return <LoadingSpinner />;
+};
+
 // Root component to handle initial routing
 const Root = () => {
   const session = useSession();
@@ -70,7 +86,7 @@ const App = () => {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Root />} />
-                <Route path="/auth/callback" element={<Root />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
                 <Route 
                   path="/chat" 
                   element={
