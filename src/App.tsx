@@ -8,18 +8,27 @@ import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 
-// Lazy load route components
-const ChatInterface = lazy(() => import("./components/ChatInterface"));
+// Lazy load route components with preload hints
+const ChatInterface = lazy(() => {
+  const preloadLink = document.createElement('link');
+  preloadLink.rel = 'modulepreload';
+  preloadLink.href = '/src/components/ChatInterface.tsx';
+  document.head.appendChild(preloadLink);
+  return import("./components/ChatInterface");
+});
+
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
 
+// Configure QueryClient with optimized settings
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 60000,
       gcTime: 300000,
       retry: 1,
+      refetchOnWindowFocus: false, // Reduce unnecessary refetches
     },
   },
 });
@@ -35,7 +44,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   
   if (!session) {
-    // Store the current path before redirecting
     if (location.pathname !== '/') {
       sessionStorage.setItem('redirectTo', location.pathname);
     }
