@@ -39,7 +39,7 @@ const FeatureCard = ({ icon: Icon, title, subtitle, onClick, to }: FeatureCardPr
         <h3 className="font-medium text-sm text-white group-hover:text-accent transition-colors duration-300">
           {title}
         </h3>
-        <p className="text-gray-400 text-xs">
+        <p className="text-gray-400 text-[15px]">
           {subtitle}
         </p>
       </div>
