@@ -30,8 +30,6 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <SessionContextProvider supabaseClient={supabase}>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -63,6 +61,8 @@ const App = () => (
             />
           </Routes>
         </BrowserRouter>
+        <Toaster />
+        <Sonner />
       </TooltipProvider>
     </SessionContextProvider>
   </QueryClientProvider>
