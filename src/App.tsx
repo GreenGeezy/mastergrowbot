@@ -40,9 +40,12 @@ const App = () => {
   const previewDomain = 'preview--mastergrowbot.lovable.app';
   
   // Only redirect in production and if we're not on the target or preview domains
+  // Also check if we're not in a development environment
   if (process.env.NODE_ENV === 'production' && 
       currentHostname !== targetDomain && 
-      currentHostname !== previewDomain) {
+      currentHostname !== previewDomain && 
+      !currentHostname.includes('localhost') && 
+      !currentHostname.includes('127.0.0.1')) {
     const newUrl = `https://${targetDomain}${window.location.pathname}${window.location.search}`;
     window.location.href = newUrl;
     return null;
