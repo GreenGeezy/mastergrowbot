@@ -32,7 +32,7 @@ export default function Index() {
         <UserDashboard />
       ) : (
         <div className="container mx-auto px-4">
-          <div className="py-12 md:py-20">
+          <div className="py-6 md:py-10">
             <FeatureSection onFeatureClick={handleFeatureClick} />
             <div className="mt-12">
               <AuthUI />
@@ -42,4 +42,4 @@ export default function Index() {
       )}
     </div>
   );
-}
+};
