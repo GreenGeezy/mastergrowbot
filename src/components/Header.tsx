@@ -20,19 +20,21 @@ const Header = () => {
       <p className="text-base sm:text-lg text-accent text-center max-w-2xl leading-relaxed mb-4 sm:mb-6 animate-fade-in px-4 font-light">
         Grow Bigger, Grow Better – Unleash Your Cannabis SuperPowers with AI
       </p>
-      <div className="flex items-center justify-center space-x-2 text-gold animate-fade-in">
-        <Award className="w-5 h-5 animate-float" />
-        <div className="flex items-center space-x-1">
-          {[...Array(5)].map((_, index) => (
-            <Star
-              key={index}
-              className="w-4 h-4 fill-gold text-gold"
-            />
-          ))}
-        </div>
-        <p className="text-sm sm:text-base text-center font-medium">
+      <div className="flex flex-col items-center space-y-3 animate-fade-in">
+        <p className="text-sm sm:text-base text-center font-medium text-gold">
           Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
         </p>
+        <div className="flex items-center justify-center space-x-3">
+          <Award className="w-7 h-7 text-gold animate-float" />
+          <div className="flex items-center space-x-1">
+            {[...Array(5)].map((_, index) => (
+              <Star
+                key={index}
+                className="w-6 h-6 fill-gold text-gold"
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
