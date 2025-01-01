@@ -14,7 +14,15 @@ const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60000, // 1 minute
+      cacheTime: 300000, // 5 minutes
+      retry: 1, // Only retry once
+    },
+  },
+});
 
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -34,20 +42,17 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  // Handle domain redirects for both production and preview environments
+  // Simplified domain handling - only redirect if absolutely necessary
   const currentHostname = window.location.hostname;
   const targetDomain = 'mastergrowbot.lovable.app';
   const previewDomain = 'preview--mastergrowbot.lovable.app';
+  const isLocalhost = currentHostname.includes('localhost') || currentHostname.includes('127.0.0.1');
+  const isPreview = currentHostname === previewDomain;
+  const isProduction = process.env.NODE_ENV === 'production';
   
-  // Only redirect in production and if we're not on the target or preview domains
-  // Also check if we're not in a development environment
-  if (process.env.NODE_ENV === 'production' && 
-      currentHostname !== targetDomain && 
-      currentHostname !== previewDomain && 
-      !currentHostname.includes('localhost') && 
-      !currentHostname.includes('127.0.0.1')) {
-    const newUrl = `https://${targetDomain}${window.location.pathname}${window.location.search}`;
-    window.location.href = newUrl;
+  // Only redirect in production if we're on an unknown domain
+  if (isProduction && !isLocalhost && !isPreview && currentHostname !== targetDomain) {
+    window.location.replace(`https://${targetDomain}${window.location.pathname}${window.location.search}`);
     return null;
   }
 
