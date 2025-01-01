@@ -34,6 +34,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
+  // Ensure we're on the correct domain
+  const isWrongDomain = window.location.hostname !== 'mastergrowbot.lovable.app';
+  
+  if (isWrongDomain && process.env.NODE_ENV === 'production') {
+    window.location.href = 'https://mastergrowbot.lovable.app' + window.location.pathname;
+    return null;
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase}>
