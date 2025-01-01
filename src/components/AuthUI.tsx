@@ -17,12 +17,11 @@ const AuthUI = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check for authentication status changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo'); // Clean up
-        navigate(redirectTo);
+        navigate(redirectTo, { replace: true });
       }
     });
 
@@ -40,9 +39,6 @@ const AuthUI = () => {
         ? await supabase.auth.signUp({
             email,
             password,
-            options: {
-              emailRedirectTo: `${window.location.origin}/auth/callback`,
-            },
           })
         : await supabase.auth.signInWithPassword({
             email,
@@ -73,7 +69,7 @@ const AuthUI = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: window.location.origin,
         },
       });
       if (error) throw error;

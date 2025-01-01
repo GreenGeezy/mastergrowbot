@@ -35,7 +35,10 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   
   if (!session) {
-    sessionStorage.setItem('redirectTo', location.pathname);
+    // Store the current path before redirecting
+    if (location.pathname !== '/') {
+      sessionStorage.setItem('redirectTo', location.pathname);
+    }
     return <Navigate to="/" replace />;
   }
   
@@ -43,18 +46,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  // Simplified domain handling - only redirect in production to main domain
-  const currentHostname = window.location.hostname;
-  const isLocalhost = currentHostname.includes('localhost') || currentHostname.includes('127.0.0.1');
-  const isPreview = currentHostname.includes('preview--');
-  const isProduction = process.env.NODE_ENV === 'production' && !isLocalhost && !isPreview;
-  
-  // Only redirect if we're in production and not on preview or localhost
-  if (isProduction && currentHostname !== 'mastergrowbot.lovable.app') {
-    window.location.replace(`https://mastergrowbot.lovable.app${window.location.pathname}${window.location.search}`);
-    return null;
-  }
-
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase}>
