@@ -1,11 +1,11 @@
 import { Suspense, lazy } from "react";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "./components/ui/toaster";
+import { Toaster as Sonner } from "./components/ui/sonner";
+import { TooltipProvider } from "./components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "./integrations/supabase/client";
 
 // Lazy load components
 const Index = lazy(() => import("./pages/Index"));
