@@ -10,12 +10,12 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     detectSessionInUrl: true,
     storage: window.localStorage,
     flowType: 'pkce',
-    debug: import.meta.env.DEV, // Only enable debug in development
+    debug: false,
     storageKey: 'sb-auth-token'
   },
   realtime: {
     params: {
-      eventsPerSecond: 2
+      eventsPerSecond: 1
     }
   },
   global: {

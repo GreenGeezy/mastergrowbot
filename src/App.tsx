@@ -33,20 +33,18 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const checkSession = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      if (!currentSession) {
         setIsLoading(false);
-        if (!session) {
-          throw new Error('No session');
-        }
-      } catch (error) {
-        setIsLoading(false);
+        return;
       }
+      setIsLoading(false);
     };
 
+    // Set a shorter timeout for better UX
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // Timeout after 3 seconds
+    }, 1500); // Reduced from 3000ms to 1500ms
 
     checkSession();
     return () => clearTimeout(timer);
@@ -69,7 +67,7 @@ const LoadingFallback = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowError(true);
-    }, 5000); // Show error message after 5 seconds
+    }, 2000); // Reduced from 5000ms to 2000ms for faster error feedback
 
     return () => clearTimeout(timer);
   }, []);
@@ -81,7 +79,7 @@ const LoadingFallback = () => {
         <p className="text-muted-foreground">
           {showError 
             ? "Loading is taking longer than expected. Please refresh the page."
-            : "Loading your experience..."}
+            : "Loading..."}
         </p>
         {showError && (
           <button 
