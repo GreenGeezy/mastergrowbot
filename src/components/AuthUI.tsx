@@ -20,7 +20,7 @@ const AuthUI = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-        sessionStorage.removeItem('redirectTo'); // Clean up
+        sessionStorage.removeItem('redirectTo');
         navigate(redirectTo, { replace: true });
       }
     });
@@ -89,11 +89,14 @@ const AuthUI = () => {
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
+            name="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             required
+            autoComplete="email"
+            aria-label="Email address"
           />
         </div>
         
@@ -102,11 +105,14 @@ const AuthUI = () => {
           <div className="relative">
             <Input
               id="password"
+              name="password"
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              autoComplete={isSignUp ? "new-password" : "current-password"}
+              aria-label="Password"
             />
             <button
               type="button"
