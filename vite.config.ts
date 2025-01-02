@@ -41,9 +41,7 @@ export default defineConfig(({ mode }) => ({
     exclude: ['lovable-tagger'],
   },
   plugins: [
-    react({
-      jsxRuntime: 'automatic',
-    }),
+    react(),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
