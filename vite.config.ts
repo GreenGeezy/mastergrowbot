@@ -42,15 +42,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react({
-      swcOptions: {
-        jsc: {
-          transform: {
-            react: {
-              refresh: true,
-            },
-          },
-        },
-      },
+      jsxRuntime: 'automatic',
     }),
     mode === 'development' &&
     componentTagger(),
