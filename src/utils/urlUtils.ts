@@ -4,7 +4,7 @@ export const getRedirectUrl = () => {
   const hostname = window.location.hostname;
   
   // Handle production URL
-  if (hostname === 'www.mastergrowbot.com') {
+  if (hostname === 'www.mastergrowbot.com' || hostname === 'mastergrowbot.com') {
     return `${protocol}www.mastergrowbot.com/auth/callback`;
   }
   // Handle preview URL (keep for development)
