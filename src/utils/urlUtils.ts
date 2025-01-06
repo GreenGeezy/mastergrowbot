@@ -6,6 +6,11 @@ export const getRedirectUrl = () => {
     return `${window.location.origin}/auth/callback`;
   }
   
+  // For production domain
+  if (hostname.includes('mastergrowbot.com')) {
+    return `${window.location.origin}/auth/callback`;
+  }
+  
   // For Supabase hosted domain
   if (hostname.includes('supabase.co')) {
     return `${window.location.origin}/auth/v1/callback`;
