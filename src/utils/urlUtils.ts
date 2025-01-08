@@ -7,7 +7,7 @@ export const getRedirectUrl = () => {
   }
   
   // For production domain
-  if (hostname.includes('mastergrowbot.com')) {
+  if (hostname === 'mastergrowbot.com' || hostname === 'www.mastergrowbot.com') {
     return `${window.location.origin}/auth/callback`;
   }
   
