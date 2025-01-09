@@ -10,7 +10,7 @@
     <link rel="canonical" href="https://www.mastergrowbot.com" />
     <link rel="preload" href="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" as="image" />
     <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self' https://*.mastergrowbot.com https://*.cloudflare.com https://*.lovable.app https://*.supabase.co;
+      default-src 'self' https://*.mastergrowbot.com https://*.lovable.app https://*.supabase.co https://*.cloudflare.com;
       script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.gpteng.co https://*.supabase.co https://*.mastergrowbot.com https://*.lovable.app;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
@@ -36,6 +36,10 @@
       block-all-mixed-content;
     " />
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
   </head>
 
   <body>
