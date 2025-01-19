@@ -68,7 +68,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/callback" element={<AuthCallback />} /> {/* Added this route */}
+              <Route path="/auth/v1/callback" element={<AuthCallback />} />
+              <Route path="/auth/*" element={<AuthCallback />} /> {/* Added this catch-all route */}
               <Route 
                 path="/chat" 
                 element={
