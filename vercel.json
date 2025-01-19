@@ -37,10 +37,10 @@
       "has": [
         {
           "type": "host",
-          "value": "mastergrowbot.lovable.app"
+          "value": "mastergrowbot.com"
         }
       ],
-      "destination": "https://www.mastergrowbot.lovable.app/:path*",
+      "destination": "https://www.mastergrowbot.com/:path*",
       "permanent": true
     }
   ]
