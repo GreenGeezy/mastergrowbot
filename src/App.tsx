@@ -67,11 +67,13 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              {/* Auth routes - handle all possible callback patterns */}
-              <Route path="/auth/callback" element={<AuthCallback />} />
+              {/* Auth routes - handle all possible callback patterns with v1 */}
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
-              <Route path="/auth/google/callback" element={<AuthCallback />} />
-              <Route path="/auth/*" element={<AuthCallback />} />
+              <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
+              <Route path="/auth/v1/*" element={<AuthCallback />} />
+              {/* Legacy routes for backward compatibility */}
+              <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
+              <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
               <Route 
                 path="/chat" 
                 element={
