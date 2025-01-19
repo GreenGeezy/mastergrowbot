@@ -42,6 +42,17 @@
       ],
       "destination": "https://www.mastergrowbot.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/app/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "mastergrowbot.lovable.app"
+        }
+      ],
+      "destination": "/:path*",
+      "permanent": false
     }
   ]
 }
