@@ -54,5 +54,9 @@
       "destination": "/:path*",
       "permanent": false
     }
+  ],
+  "rewrites": [
+    { "source": "/auth/v1/(.*)", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
