@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { AuthForm } from "./auth/AuthForm";
 import { getRedirectUrl } from "@/utils/urlUtils";
@@ -34,22 +33,35 @@ const AuthUI = () => {
 
     try {
       const redirectUrl = getRedirectUrl();
-      const { error } = isSignUp 
-        ? await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-              emailRedirectTo: redirectUrl,
-            }
-          })
-        : await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
+      
+      if (isSignUp) {
+        const { error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: redirectUrl,
+          }
+        });
 
-      if (error) throw error;
+        if (signUpError) throw signUpError;
 
-      toast.success(isSignUp ? "Account created! Please check your email." : "Welcome back!");
+        // Call the verification email function
+        const response = await supabase.functions.invoke('send-verification-email', {
+          body: { email },
+        });
+
+        if (response.error) throw new Error(response.error.message);
+
+        toast.success("Account created! Please check your email for verification.");
+      } else {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (signInError) throw signInError;
+        toast.success("Welcome back!");
+      }
     } catch (error) {
       toast.error(error.message);
     } finally {
