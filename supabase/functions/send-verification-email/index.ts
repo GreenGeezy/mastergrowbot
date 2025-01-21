@@ -30,12 +30,10 @@ serve(async (req) => {
       throw new Error('Email is required');
     }
 
-    const { data, error } = await supabaseClient.auth.admin.generateLink({
-      type: 'signup',
+    // Use resend email verification instead of generate link
+    const { data, error } = await supabaseClient.auth.admin.sendEmailVerification({
       email: email,
-      options: {
-        redirectTo: `${req.headers.get('origin')}/auth/v1/callback`,
-      },
+      redirectTo: `${req.headers.get('origin')}/auth/v1/callback`,
     });
 
     if (error) {
