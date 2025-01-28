@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import { MessageSquare } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export const ChatHeader = () => {
   return (
@@ -11,6 +13,14 @@ export const ChatHeader = () => {
         />
         <h1 className="text-xl font-semibold text-white">Master Growbot</h1>
       </div>
+      <Button 
+        variant="secondary" 
+        className="bg-purple-600 hover:bg-purple-700"
+        onClick={() => document.getElementById('feedback-trigger')?.click()}
+      >
+        <MessageSquare className="w-4 h-4 mr-2" />
+        Share Feedback
+      </Button>
     </div>
-  )
-}
+  );
+};
