@@ -41,16 +41,16 @@ const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: Fe
       role="button"
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className="card group flex items-center p-3 rounded-lg cursor-pointer will-change-transform transition-all duration-300 hover:scale-105"
+      className="card group flex items-center p-2 rounded-lg cursor-pointer will-change-transform transition-all duration-300 hover:scale-105 min-w-[200px]"
     >
-      <div className="p-1.5 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg float-effect will-change-transform">
+      <div className="p-1 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg float-effect will-change-transform">
         <Icon className="w-4 h-4 text-white" />
       </div>
-      <div className="ml-3 flex flex-col">
+      <div className="ml-2 flex flex-col">
         <h3 className="font-medium text-sm text-white group-hover:text-accent transition-colors duration-300">
           {title}
         </h3>
-        <p className="text-gray-400 text-[13px]">
+        <p className="text-gray-400 text-xs">
           {subtitle}
         </p>
       </div>

@@ -22,16 +22,16 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
 
   if (messages.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-        <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center glow-effect">
-          <Leaf className="w-8 h-8 text-white" />
+      <div className="flex flex-col items-center justify-center h-full text-center">
+        <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center glow-effect mb-4">
+          <Leaf className="w-6 h-6 text-white" />
         </div>
-        <h2 className="text-2xl font-semibold text-white">How can I help you today?</h2>
-        <p className="text-gray-400 max-w-md">
+        <h2 className="text-2xl font-semibold text-white mb-2">How can I help you today?</h2>
+        <p className="text-gray-400 max-w-md mb-6">
           I'm your cannabis cultivation assistant. Ask me anything about growing, plant care, or troubleshooting issues.
         </p>
         
-        <div className="grid grid-cols-1 gap-3 w-full max-w-2xl">
+        <div className="flex gap-2 w-full max-w-4xl justify-center mb-8">
           <FeatureCard
             icon={MessageCircle}
             title="Growing Assistant"
@@ -52,7 +52,7 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
           />
         </div>
 
-        <div className="w-full max-w-2xl mt-2">
+        <div className="w-full max-w-2xl">
           <h3 className="text-white text-left mb-2 font-medium">Common Questions</h3>
           <div className="grid grid-cols-1 gap-2">
             {starterQuestions.map((question, index) => (
