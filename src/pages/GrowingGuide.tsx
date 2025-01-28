@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { Search, ArrowLeft, HelpCircle, MessageSquare } from "lucide-react";
+import { Search, ArrowLeft, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import GuideCategories from "@/components/guide/GuideCategories";
 import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
-import FeedbackDialog from "@/components/feedback/FeedbackDialog";
 
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSupport, setShowSupport] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -48,14 +46,6 @@ const GrowingGuide = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button 
-              variant="secondary" 
-              className="bg-purple-600 hover:bg-purple-700"
-              onClick={() => setShowFeedback(true)}
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Share Feedback
-            </Button>
             <Button 
               variant="secondary" 
               className="bg-gradient-secondary hover:opacity-90"
@@ -101,12 +91,6 @@ const GrowingGuide = () => {
       <SupportDialog 
         isOpen={showSupport} 
         onOpenChange={setShowSupport} 
-      />
-
-      {/* Feedback Dialog */}
-      <FeedbackDialog 
-        isOpen={showFeedback} 
-        onOpenChange={setShowFeedback} 
       />
     </div>
   );
