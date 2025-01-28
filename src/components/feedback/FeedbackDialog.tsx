@@ -206,7 +206,7 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
 
           <Button
             type="submit"
-            className="w-full bg-secondary hover:bg-secondary-hover"
+            className="w-full bg-purple-600 hover:bg-purple-700"
             disabled={isSubmitting}
           >
             {isSubmitting ? (

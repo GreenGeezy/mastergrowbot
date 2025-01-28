@@ -50,7 +50,7 @@ const GrowingGuide = () => {
           <div className="flex items-center gap-2">
             <Button 
               variant="secondary" 
-              className="bg-gradient-secondary hover:opacity-90"
+              className="bg-purple-600 hover:bg-purple-700"
               onClick={() => setShowFeedback(true)}
             >
               <MessageSquare className="w-4 h-4 mr-2" />
