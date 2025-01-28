@@ -315,6 +315,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_feedback: {
+        Row: {
+          beta_testing_email: string | null
+          biggest_challenge: string | null
+          created_at: string
+          growing_effectiveness_rating: number
+          id: string
+          main_improvement_area: string
+          other_improvement_details: string | null
+          recommendation_rating: number
+          user_id: string | null
+          whats_working: string | null
+        }
+        Insert: {
+          beta_testing_email?: string | null
+          biggest_challenge?: string | null
+          created_at?: string
+          growing_effectiveness_rating: number
+          id?: string
+          main_improvement_area: string
+          other_improvement_details?: string | null
+          recommendation_rating: number
+          user_id?: string | null
+          whats_working?: string | null
+        }
+        Update: {
+          beta_testing_email?: string | null
+          biggest_challenge?: string | null
+          created_at?: string
+          growing_effectiveness_rating?: number
+          id?: string
+          main_improvement_area?: string
+          other_improvement_details?: string | null
+          recommendation_rating?: number
+          user_id?: string | null
+          whats_working?: string | null
+        }
+        Relationships: []
+      }
       user_profiles: {
         Row: {
           created_at: string
