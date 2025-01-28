@@ -68,7 +68,6 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
         description: "Your input helps us improve Master Growbot for everyone.",
       });
 
-      // Reset form and close dialog
       setFormData({
         mainImprovementArea: "",
         otherImprovement: "",
@@ -92,24 +91,9 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
     }
   };
 
-  const renderRatingOptions = (name: string, value: number, onChange: (value: number) => void) => (
-    <div className="flex gap-4">
-      {[1, 2, 3, 4, 5].map((rating) => (
-        <label key={rating} className="flex items-center gap-2">
-          <RadioGroupItem
-            value={rating.toString()}
-            checked={value === rating}
-            onClick={() => onChange(rating)}
-          />
-          <span>{rating}</span>
-        </label>
-      ))}
-    </div>
-  );
-
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-gray-900 border border-gray-800">
+      <DialogContent className="sm:max-w-md bg-[#1a2234] border border-gray-800">
         <DialogHeader>
           <DialogTitle className="text-white">Help Us Improve Master Growbot</DialogTitle>
         </DialogHeader>
@@ -134,7 +118,7 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
                 placeholder="Please specify..."
                 value={formData.otherImprovement}
                 onChange={(e) => setFormData({ ...formData, otherImprovement: e.target.value })}
-                className="bg-gray-800 border-gray-700 text-white"
+                className="bg-[#1e293b] border-gray-700 text-white"
               />
             )}
           </div>
@@ -143,22 +127,36 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
             <div>
               <Label className="text-white">How effectively did Master Growbot help your growing process?</Label>
               <div className="mt-2">
-                {renderRatingOptions(
-                  "growingEffectiveness",
-                  formData.growingEffectivenessRating,
-                  (value) => setFormData({ ...formData, growingEffectivenessRating: value })
-                )}
+                <div className="flex gap-4">
+                  {[1, 2, 3, 4, 5].map((rating) => (
+                    <label key={rating} className="flex items-center gap-2">
+                      <RadioGroupItem
+                        value={rating.toString()}
+                        checked={formData.growingEffectivenessRating === rating}
+                        onClick={() => setFormData({ ...formData, growingEffectivenessRating: rating })}
+                      />
+                      <span className="text-white">{rating}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
 
             <div>
               <Label className="text-white">How likely are you to recommend Master Growbot to other growers?</Label>
               <div className="mt-2">
-                {renderRatingOptions(
-                  "recommendation",
-                  formData.recommendationRating,
-                  (value) => setFormData({ ...formData, recommendationRating: value })
-                )}
+                <div className="flex gap-4">
+                  {[1, 2, 3, 4, 5].map((rating) => (
+                    <label key={rating} className="flex items-center gap-2">
+                      <RadioGroupItem
+                        value={rating.toString()}
+                        checked={formData.recommendationRating === rating}
+                        onClick={() => setFormData({ ...formData, recommendationRating: rating })}
+                      />
+                      <span className="text-white">{rating}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -169,7 +167,7 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
               <Textarea
                 value={formData.whatsWorking}
                 onChange={(e) => setFormData({ ...formData, whatsWorking: e.target.value })}
-                className="bg-gray-800 border-gray-700 text-white mt-2"
+                className="bg-[#1e293b] border-gray-700 text-white mt-2"
               />
             </div>
 
@@ -178,7 +176,7 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
               <Textarea
                 value={formData.biggestChallenge}
                 onChange={(e) => setFormData({ ...formData, biggestChallenge: e.target.value })}
-                className="bg-gray-800 border-gray-700 text-white mt-2"
+                className="bg-[#1e293b] border-gray-700 text-white mt-2"
               />
             </div>
           </div>
@@ -199,14 +197,14 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
                 placeholder="Your email for beta updates"
                 value={formData.betaTestingEmail}
                 onChange={(e) => setFormData({ ...formData, betaTestingEmail: e.target.value })}
-                className="bg-gray-800 border-gray-700 text-white"
+                className="bg-[#1e293b] border-gray-700 text-white"
               />
             )}
           </div>
 
           <Button
             type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-700"
+            className="w-full bg-[#2F855A] hover:bg-[#276749] text-white"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -215,7 +213,7 @@ const FeedbackDialog = ({ isOpen, onOpenChange }: FeedbackDialogProps) => {
                 Submitting...
               </>
             ) : (
-              "Submit Feedback"
+              "Send Message"
             )}
           </Button>
         </form>

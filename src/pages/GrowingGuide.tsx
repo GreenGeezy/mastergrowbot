@@ -98,10 +98,16 @@ const GrowingGuide = () => {
       </main>
 
       {/* Support Dialog */}
-      <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
+      <SupportDialog 
+        isOpen={showSupport} 
+        onOpenChange={setShowSupport} 
+      />
 
       {/* Feedback Dialog */}
-      <FeedbackDialog isOpen={showFeedback} onOpenChange={setShowFeedback} />
+      <FeedbackDialog 
+        isOpen={showFeedback} 
+        onOpenChange={setShowFeedback} 
+      />
     </div>
   );
 };
