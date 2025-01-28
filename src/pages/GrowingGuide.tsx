@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, ArrowLeft, HelpCircle } from "lucide-react";
+import { Search, ArrowLeft, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import GuideCategories from "@/components/guide/GuideCategories";
@@ -51,8 +51,8 @@ const GrowingGuide = () => {
               className="bg-gradient-secondary hover:opacity-90"
               onClick={() => setShowSupport(true)}
             >
-              <HelpCircle className="w-4 h-4 mr-2" />
-              Get Support
+              <Lightbulb className="w-4 h-4 mr-2" />
+              Share Feedback
             </Button>
           </div>
         </div>
