@@ -70,7 +70,7 @@ const SupportDialog = ({ isOpen, onOpenChange }: SupportDialogProps) => {
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md bg-gray-900 border border-gray-800">
         <DialogHeader>
-          <DialogTitle className="text-white">Share Your Ideas & Feedback to Improve Master Growbot</DialogTitle>
+          <DialogTitle className="text-white text-base">Share Your Ideas or Feedback to help keep Master Growbot's title as the Best AI Cannabis Growing Assistant in the World!</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
