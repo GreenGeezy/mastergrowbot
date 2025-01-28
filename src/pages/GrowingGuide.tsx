@@ -95,13 +95,13 @@ const GrowingGuide = () => {
 
         {/* Guide Categories */}
         <GuideCategories searchQuery={searchQuery} />
-
-        {/* Support Dialog */}
-        <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
-
-        {/* Feedback Dialog */}
-        <FeedbackDialog isOpen={showFeedback} onOpenChange={setShowFeedback} />
       </main>
+
+      {/* Support Dialog */}
+      <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
+
+      {/* Feedback Dialog */}
+      <FeedbackDialog isOpen={showFeedback} onOpenChange={setShowFeedback} />
     </div>
   );
 };
