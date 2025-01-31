@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import FeedbackDialog from '@/components/feedback/FeedbackDialog';
+import SupportDialog from '@/components/support/SupportDialog';
 
 export const ChatHeader = () => {
-  const [showFeedback, setShowFeedback] = useState(false);
+  const [showSupport, setShowSupport] = useState(false);
 
   return (
     <>
@@ -20,13 +20,13 @@ export const ChatHeader = () => {
         <Button 
           variant="secondary" 
           className="bg-purple-600 hover:bg-purple-700"
-          onClick={() => setShowFeedback(true)}
+          onClick={() => setShowSupport(true)}
         >
           <MessageSquare className="w-4 h-4 mr-2" />
           Share Feedback
         </Button>
       </div>
-      <FeedbackDialog isOpen={showFeedback} onOpenChange={setShowFeedback} />
+      <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
     </>
   );
 };
