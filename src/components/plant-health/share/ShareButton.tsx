@@ -9,10 +9,19 @@ interface ShareButtonProps {
 const ShareButton = ({ onClick, onMobileShare }: ShareButtonProps) => {
   const isMobile = useIsMobile();
 
-  const handleClick = () => {
-    if (isMobile && onMobileShare) {
-      onMobileShare();
-    } else {
+  const handleClick = async (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    try {
+      if (isMobile && onMobileShare) {
+        await onMobileShare();
+      } else {
+        onClick();
+      }
+    } catch (error) {
+      console.error('Share error:', error);
+      // Fallback to dialog if mobile share fails
       onClick();
     }
   };
@@ -24,7 +33,7 @@ const ShareButton = ({ onClick, onMobileShare }: ShareButtonProps) => {
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          handleClick();
+          handleClick(e);
         }
       }}
       className="group flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 hover:bg-gray-800 border border-gray-700 hover:border-primary/50"

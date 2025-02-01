@@ -16,6 +16,15 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   const generateShareToken = () => nanoid(32);
 
   const createShareableLink = async () => {
+    if (!analysisId) {
+      toast({
+        title: "Error",
+        description: "No analysis to share",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
       
@@ -31,13 +40,6 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
         });
 
       if (shareError) throw shareError;
-
-      await supabase
-        .from('share_metrics')
-        .insert({
-          analysis_id: analysisId,
-          share_type: 'link',
-        });
 
       const shareableUrl = `${window.location.origin}/shared/${shareToken}`;
       
@@ -65,12 +67,23 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   const handleMobileShare = async () => {
     try {
       const url = await createShareableLink();
+      if (!url) return;
+
       if (navigator.share) {
         await navigator.share({
           title: 'Plant Analysis Results',
           text: 'Check out my plant analysis from Master Growbot!',
-          url: url
+          url
         });
+        
+        // Log the share metric
+        await supabase
+          .from('share_metrics')
+          .insert({
+            analysis_id: analysisId,
+            share_type: 'mobile_share',
+          });
+
         toast({
           title: "Success!",
           description: "Thanks for sharing your analysis.",
