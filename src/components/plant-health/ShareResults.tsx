@@ -8,7 +8,7 @@ interface ShareResultsProps {
 }
 
 const ShareResults = ({ analysisId, imageUrls }: ShareResultsProps) => {
-  const { isOpen, setIsOpen, isLoading, shareOptions } = useShareAnalysis(analysisId, imageUrls);
+  const { isOpen, setIsOpen, isLoading, shareOptions, handleMobileShare } = useShareAnalysis(analysisId, imageUrls);
 
   return (
     <>
@@ -18,7 +18,10 @@ const ShareResults = ({ analysisId, imageUrls }: ShareResultsProps) => {
         shareOptions={shareOptions}
         isLoading={isLoading}
       />
-      <ShareButton onClick={() => setIsOpen(true)} />
+      <ShareButton 
+        onClick={() => setIsOpen(true)} 
+        onMobileShare={handleMobileShare}
+      />
     </>
   );
 };

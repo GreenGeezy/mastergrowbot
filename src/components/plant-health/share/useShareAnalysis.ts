@@ -5,11 +5,13 @@ import { nanoid } from 'nanoid';
 import { addDays } from 'date-fns';
 import { Share2, Mail, Twitter, Link2, Instagram, Video, Facebook, Linkedin } from 'lucide-react';
 import type { ShareOption } from './types';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const generateShareToken = () => nanoid(32);
 
@@ -17,11 +19,9 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     try {
       setIsLoading(true);
       
-      // Generate a unique share token
       const shareToken = generateShareToken();
       const expiresAt = addDays(new Date(), 7);
 
-      // Create the shared analysis record
       const { error: shareError } = await supabase
         .from('shared_analyses')
         .insert({
@@ -32,7 +32,6 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
 
       if (shareError) throw shareError;
 
-      // Track sharing metrics
       await supabase
         .from('share_metrics')
         .insert({
@@ -42,7 +41,6 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
 
       const shareableUrl = `${window.location.origin}/shared/${shareToken}`;
       
-      // Copy to clipboard
       await navigator.clipboard.writeText(shareableUrl);
       
       toast({
@@ -64,20 +62,48 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     }
   };
 
+  const handleMobileShare = async () => {
+    try {
+      const url = await createShareableLink();
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Plant Analysis Results',
+          text: 'Check out my plant analysis from Master Growbot!',
+          url: url
+        });
+        toast({
+          title: "Success!",
+          description: "Thanks for sharing your analysis.",
+        });
+      } else {
+        // Fallback for browsers that don't support navigator.share
+        await navigator.clipboard.writeText(url);
+        toast({
+          title: "Link copied!",
+          description: "Share URL has been copied to your clipboard.",
+        });
+      }
+    } catch (error: any) {
+      console.error('Error sharing:', error);
+      toast({
+        title: "Sharing failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const shareOptions: ShareOption[] = [
     {
       icon: Link2,
       label: "Copy Link",
-      action: async () => {
-        await createShareableLink();
-      }
+      action: createShareableLink
     },
     {
       icon: Facebook,
       label: "Share on Facebook",
       action: async () => {
         const url = await createShareableLink();
-        // Track the Facebook share
         await supabase
           .from('share_metrics')
           .insert({
@@ -85,14 +111,11 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
             share_type: 'facebook',
           });
         
-        // Open Facebook share dialog
-        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-        window.open(shareUrl, '_blank', 'width=600,height=400');
-        
-        toast({
-          title: "Opening Facebook",
-          description: "The Facebook sharing dialog will open in a new window.",
-        });
+        if (isMobile) {
+          window.location.href = `fb://share?u=${encodeURIComponent(url)}`;
+        } else {
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+        }
       }
     },
     {
@@ -100,7 +123,6 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       label: "Share on LinkedIn",
       action: async () => {
         const url = await createShareableLink();
-        // Track the LinkedIn share
         await supabase
           .from('share_metrics')
           .insert({
@@ -108,14 +130,11 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
             share_type: 'linkedin',
           });
         
-        // Open LinkedIn share dialog
-        const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
-        window.open(shareUrl, '_blank', 'width=600,height=400');
-        
-        toast({
-          title: "Opening LinkedIn",
-          description: "The LinkedIn sharing dialog will open in a new window.",
-        });
+        if (isMobile) {
+          window.location.href = `linkedin://shareArticle?mini=true&url=${encodeURIComponent(url)}`;
+        } else {
+          window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+        }
       }
     },
     {
@@ -123,8 +142,12 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       label: "Share on X/Twitter",
       action: async () => {
         const url = await createShareableLink();
-        const text = "Check out my plant analysis from Master Growbot! Grow Bigger, Grow Better with AI-powered plant analysis";
-        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+        const text = "Check out my plant analysis from Master Growbot!";
+        if (isMobile) {
+          window.location.href = `twitter://post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        } else {
+          window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+        }
       }
     },
     {
@@ -132,7 +155,6 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       label: "Share on Instagram",
       action: async () => {
         const url = await createShareableLink();
-        // Track the Instagram share
         await supabase
           .from('share_metrics')
           .insert({
@@ -140,16 +162,9 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
             share_type: 'instagram',
           });
         
-        // Open Instagram app or web version
-        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-          // Try to open Instagram app
+        if (isMobile) {
           window.location.href = `instagram://share?text=Check out my plant analysis from Master Growbot!%0A${encodeURIComponent(url)}`;
-          // Fallback to web version after a short delay
-          setTimeout(() => {
-            window.location.href = `https://www.instagram.com/`;
-          }, 2000);
         } else {
-          // On desktop, open Instagram web
           window.open('https://www.instagram.com', '_blank');
         }
         
@@ -164,7 +179,6 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       label: "Share on TikTok",
       action: async () => {
         const url = await createShareableLink();
-        // Track the TikTok share
         await supabase
           .from('share_metrics')
           .insert({
@@ -172,16 +186,9 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
             share_type: 'tiktok',
           });
         
-        // Open TikTok app or web version
-        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-          // Try to open TikTok app
+        if (isMobile) {
           window.location.href = `tiktok://share?text=Check out my plant analysis from Master Growbot!%0A${encodeURIComponent(url)}`;
-          // Fallback to web version after a short delay
-          setTimeout(() => {
-            window.location.href = `https://www.tiktok.com/upload`;
-          }, 2000);
         } else {
-          // On desktop, open TikTok web upload page
           window.open('https://www.tiktok.com/upload', '_blank');
         }
         
@@ -208,5 +215,6 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     setIsOpen,
     isLoading,
     shareOptions,
+    handleMobileShare
   };
 };

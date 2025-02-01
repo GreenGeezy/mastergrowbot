@@ -1,18 +1,30 @@
 import { Share2 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ShareButtonProps {
   onClick: () => void;
+  onMobileShare?: () => void;
 }
 
-const ShareButton = ({ onClick }: ShareButtonProps) => {
+const ShareButton = ({ onClick, onMobileShare }: ShareButtonProps) => {
+  const isMobile = useIsMobile();
+
+  const handleClick = () => {
+    if (isMobile && onMobileShare) {
+      onMobileShare();
+    } else {
+      onClick();
+    }
+  };
+
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          onClick();
+          handleClick();
         }
       }}
       className="group flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 hover:bg-gray-800 border border-gray-700 hover:border-primary/50"
