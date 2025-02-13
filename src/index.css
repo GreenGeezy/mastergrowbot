@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -55,126 +56,30 @@ h1, h2, h3, .tech-font {
 .circuit-background::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h80v80h-80z' fill='none' stroke='rgba(178, 75, 243, 0.1)' stroke-width='0.5'/%3E%3C/svg%3E");
   opacity: 0.1;
   z-index: -1;
 }
 
-/* Enhanced Card Styles */
-.card {
-  @apply bg-card border border-[#2A2F3B] rounded-lg transition-all duration-300;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.card:hover {
-  @apply bg-card-hover border-accent/20;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(178, 75, 243, 0.15);
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
-/* Enhanced Button Styles */
-.cyber-button {
-  @apply relative overflow-hidden bg-gradient-primary hover:bg-gradient-secondary transition-all duration-300 transform hover:scale-105;
-  box-shadow: 0 4px 15px rgba(45, 90, 39, 0.2);
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
 }
 
-.cyber-button:hover {
-  box-shadow: 0 6px 20px rgba(178, 75, 243, 0.3);
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
-.cyber-button::before {
-  content: '';
-  @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
-}
-
-.cyber-button:hover::before {
-  @apply opacity-10;
-}
-
-/* Glow Effects */
-.glow-primary {
-  --glow-color: rgba(74, 229, 74, 0.5);
-  @apply animate-glow;
-}
-
-.glow-secondary {
-  --glow-color: rgba(155, 135, 245, 0.5);
-  @apply animate-glow;
-}
-
-.glow-accent {
-  --glow-color: rgba(226, 182, 255, 0.5);
-  @apply animate-glow;
-}
-
-.glow-gold {
-  --glow-color: rgba(255, 215, 0, 0.5);
-  @apply animate-glow;
-}
-
-/* Enhanced Input Styles */
-input, textarea, select {
-  @apply bg-[#1A1E26] border border-[#2A2F3B] rounded-md transition-all duration-300;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-input:focus, textarea:focus, select:focus {
-  @apply border-accent/50 ring-1 ring-accent/30;
-  box-shadow: 0 0 0 2px rgba(178, 75, 243, 0.1);
-}
-
-/* Shimmer Effect */
-.shimmer {
-  @apply relative overflow-hidden;
-}
-
-.shimmer::before {
-  content: '';
-  @apply absolute top-0 -left-[100%] w-full h-full;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(178, 75, 243, 0.1) 50%,
-    transparent 100%
-  );
-  animation: shimmer 2s infinite;
-}
-
-/* Loading Animation */
-.loading-pulse {
-  @apply animate-pulse;
-}
-
-/* Float Animation */
-.float-effect {
-  @apply animate-float;
-}
-
-/* Cross-browser compatibility fixes */
-button {
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-input, textarea, select {
-  -webkit-appearance: none;
-  appearance: none;
-  font-size: 16px; /* Prevents zoom on iOS */
-}
-
-/* Ensure proper text rendering */
-* {
-  text-rendering: optimizeLegibility;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Fix for mobile Safari */
-@supports (-webkit-touch-callout: none) {
-  .min-h-screen {
-    min-height: -webkit-fill-available;
-  }
+.will-change-transform {
+  will-change: transform;
 }
