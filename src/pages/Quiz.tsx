@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -172,9 +173,9 @@ export default function Quiz() {
                 
                 <div className="bg-white rounded-xl p-6 shadow-2xl transform hover:scale-105 transition-transform duration-300">
                   <img 
-                    src="/lovable-uploads/608a89bb-c3e4-410f-a681-76e6471fdb2a.png" 
+                    src="/lovable-uploads/776142fd-dcc5-4e33-8d24-bee66b2de970.png" 
                     alt="Master Growbot AI" 
-                    className="w-full rounded-t-lg mb-4"
+                    className="w-full h-48 object-cover rounded-t-lg mb-4"
                   />
                   <div className="space-y-3">
                     <h2 className="text-xl font-semibold text-gray-800">
@@ -185,7 +186,7 @@ export default function Quiz() {
                       href="https://checkout.square.site/merchant/MLSBW63ZJHNHQ/checkout/PZ2JH5LRAUO2T2ZMDC5MUMBC?src=embed"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full py-3 px-4 bg-[#006aff] text-white rounded-lg font-medium hover:bg-[#0055cc] transition-colors duration-300"
+                      className="block w-full py-3 px-4 bg-[#006aff] text-white rounded-lg font-medium hover:bg-[#0055cc] transition-colors duration-300 text-center"
                     >
                       Buy now
                     </a>
