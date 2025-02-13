@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -156,22 +157,28 @@ export default function Quiz() {
                   </p>
                 </div>
                 
-                <div className="bg-white rounded-xl p-6 shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                <div className="mx-auto w-[259px] bg-white rounded-xl shadow-2xl transform hover:scale-105 transition-transform duration-300 font-['Rubik']">
                   <img 
-                    src="/lovable-uploads/776142fd-dcc5-4e33-8d24-bee66b2de970.png" 
+                    src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1b6495bf2f2383d7f26be999d628cd32922ad0d3/original.png" 
                     alt="Master Growbot AI" 
-                    className="w-full h-48 object-cover rounded-t-lg mb-4"
+                    className="w-full h-auto rounded-t-lg"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.style.display = 'none'
+                    }}
                   />
-                  <div className="space-y-3">
-                    <h2 className="text-xl font-semibold text-gray-800">
+                  <div className="p-5 space-y-3">
+                    <p className="text-[18px] leading-[20px] text-gray-800">
                       Master Growbot AI
-                    </h2>
-                    <p className="text-2xl font-bold text-gray-900">$9.99</p>
+                    </p>
+                    <p className="text-[18px] leading-[20px] font-semibold text-gray-900">
+                      $9.99 - $199.00
+                    </p>
                     <a 
-                      href="https://checkout.square.site/merchant/MLSBW63ZJHNHQ/checkout/PZ2JH5LRAUO2T2ZMDC5MUMBC?src=embed"
+                      href="https://square.link/u/w3Vifn42?src=embed"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full py-3 px-4 bg-[#006aff] text-white rounded-lg font-medium hover:bg-[#0055cc] transition-colors duration-300 text-center"
+                      className="inline-block w-full text-[18px] leading-[48px] h-[48px] text-white bg-[#006aff] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#0055cc] transition-colors duration-300"
                     >
                       Buy now
                     </a>
