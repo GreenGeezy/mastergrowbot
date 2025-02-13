@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
@@ -22,12 +21,35 @@ serve(async (req) => {
 
     console.log('Received image URLs:', imageUrls);
 
-    const supabaseClient = createClient(
+    // Create a Supabase client with service role key
+    const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // First create a thread
+    // Generate signed URLs for each image that will be valid for 1 hour
+    const signedUrls = await Promise.all(
+      imageUrls.map(async (url) => {
+        const bucketPath = url.split('/storage/v1/object/public/plant-images/')[1];
+        if (!bucketPath) {
+          throw new Error('Invalid image URL format');
+        }
+        
+        const { data: signedUrl, error } = await supabaseAdmin.storage
+          .from('plant-images')
+          .createSignedUrl(bucketPath, 3600); // 1 hour expiry
+          
+        if (error) {
+          console.error('Error generating signed URL:', error);
+          throw error;
+        }
+        
+        console.log('Generated signed URL:', signedUrl);
+        return signedUrl.signedUrl;
+      })
+    );
+
+    // Create a thread
     const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
@@ -46,7 +68,7 @@ serve(async (req) => {
     const thread = await threadResponse.json();
     console.log('Created thread:', thread);
 
-    // Add a message to the thread with the image
+    // Add a message to the thread with the signed image URLs
     const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
       method: 'POST',
       headers: {
@@ -61,7 +83,7 @@ serve(async (req) => {
             type: 'text',
             text: 'Analyze this cannabis plant\'s health and provide recommendations.'
           },
-          ...imageUrls.map(url => ({
+          ...signedUrls.map(url => ({
             type: 'image_url',
             image_url: { url }
           }))
@@ -202,7 +224,7 @@ serve(async (req) => {
 
     // Save analysis in background
     EdgeRuntime.waitUntil(
-      supabaseClient
+      supabaseAdmin
         .from('plant_analyses')
         .insert({
           user_id: req.headers.get('x-user-id'),

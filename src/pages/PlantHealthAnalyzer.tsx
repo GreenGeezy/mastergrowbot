@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
@@ -32,7 +31,10 @@ export default function PlantHealthAnalyzer() {
   }, []);
 
   const uploadImage = useCallback(async (file: File) => {
-    const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9-.]/g, '')}`;
+    const timestamp = Date.now();
+    const cleanFileName = file.name.replace(/[^a-zA-Z0-9-.]/g, '');
+    const fileName = `${timestamp}-${cleanFileName}`;
+    
     const { data, error } = await supabase.storage
       .from('plant-images')
       .upload(fileName, file, {
@@ -42,9 +44,23 @@ export default function PlantHealthAnalyzer() {
 
     if (error) throw error;
 
-    return supabase.storage
+    // Get the public URL for the uploaded file
+    const { data: { publicUrl } } = supabase.storage
       .from('plant-images')
-      .getPublicUrl(fileName).data.publicUrl;
+      .getPublicUrl(fileName);
+
+    // Verify the URL is accessible
+    try {
+      const response = await fetch(publicUrl, { method: 'HEAD' });
+      if (!response.ok) {
+        throw new Error('Uploaded image is not accessible');
+      }
+    } catch (error) {
+      console.error('Image accessibility check failed:', error);
+      throw new Error('Failed to verify image accessibility');
+    }
+
+    return publicUrl;
   }, []);
 
   const handleImagesSelected = useCallback(async (files: File[]) => {
@@ -91,11 +107,13 @@ export default function PlantHealthAnalyzer() {
 
     setIsAnalyzing(true);
     try {
-      // Upload images in parallel with optimized error handling
+      // Upload images and verify they're accessible
       const uploadPromises = files.map(file => uploadImage(file));
       const imageUrls = await Promise.all(uploadPromises);
 
-      // Analyze plant with optimized edge function
+      console.log('Uploading images:', imageUrls);
+
+      // Call the analyze-plant function with verified URLs
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
         body: { imageUrls },
         headers: { 
