@@ -23,6 +23,9 @@ const starterQuestions = [
   "When is the best time to harvest?"
 ] as const;
 
+// Create a mutable version of the starter questions
+const mutableStarterQuestions: string[] = [...starterQuestions];
+
 export default function ChatInterface() {
   const { 
     message, 
@@ -112,7 +115,7 @@ export default function ChatInterface() {
         <ChatMessages 
           messages={messages}
           handleQuestionClick={handleQuestionClick}
-          starterQuestions={starterQuestions}
+          starterQuestions={mutableStarterQuestions}
         />
       </ScrollArea>
       
