@@ -20,6 +20,8 @@ serve(async (req) => {
       throw new Error('No image URLs provided');
     }
 
+    console.log('Received image URLs:', imageUrls); // Debug log
+
     // Create Supabase client early
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -27,46 +29,52 @@ serve(async (req) => {
     );
 
     // Call OpenAI API with correct model and format
+    const requestBody = {
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are a cannabis plant health expert. Provide concise analysis in this format:\n1. Growth Stage:\n2. Health Score (1-10):\n3. Issues:\n4. Environment:\n5. Recommendations:"
+        },
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: "Analyze this cannabis plant's health and provide recommendations."
+            },
+            ...imageUrls.map(url => ({
+              type: "image_url",
+              image_url: {
+                url: url
+              }
+            }))
+          ]
+        }
+      ],
+      max_tokens: 1000
+    };
+
+    console.log('OpenAI request body:', JSON.stringify(requestBody)); // Debug log
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: "gpt-4-vision-preview",
-        messages: [
-          {
-            role: "system",
-            content: "You are a cannabis plant health expert. Provide concise analysis in this format:\n1. Growth Stage:\n2. Health Score (1-10):\n3. Issues:\n4. Environment:\n5. Recommendations:"
-          },
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: "Analyze this cannabis plant's health and provide recommendations."
-              },
-              ...imageUrls.map(url => ({
-                type: "image_url",
-                image_url: {
-                  url: url
-                }
-              }))
-            ]
-          }
-        ],
-        max_tokens: 1000
-      })
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('OpenAI API error:', errorData);
+      console.error('OpenAI API error response:', errorData); // Debug log
       throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
     }
 
     const analysis = await response.json();
+    console.log('OpenAI API response:', analysis); // Debug log
+
     const analysisText = analysis.choices[0].message.content;
 
     // Parse the analysis into structured data
