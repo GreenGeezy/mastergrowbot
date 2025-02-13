@@ -30,7 +30,7 @@ serve(async (req) => {
 
     // Call OpenAI API with correct model and format
     const requestBody = {
-      model: "gpt-4o",  // Changed to gpt-4o for better analysis capabilities
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
