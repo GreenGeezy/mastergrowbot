@@ -1,3 +1,4 @@
+
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7'
 import { OpenAI } from "https://deno.land/x/openai@v4.24.0/mod.ts"
 
@@ -8,11 +9,11 @@ const corsHeaders = {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response(null, { headers: corsHeaders })
   }
 
   try {
-    const { message, userId } = await req.json()
+    const { message, userId, conversationId } = await req.json()
 
     if (!message) {
       throw new Error('Message is required')
@@ -26,8 +27,15 @@ Deno.serve(async (req) => {
       apiKey: Deno.env.get('OPENAI_API_KEY'),
     })
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+    // Create Supabase client outside the completion to start processing in parallel
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    )
+
+    // Start the OpenAI API call
+    const completionPromise = openai.chat.completions.create({
+      model: "gpt-4o-mini", // Using the faster mini model
       messages: [
         {
           role: "system",
@@ -40,32 +48,44 @@ Deno.serve(async (req) => {
       ],
       temperature: 0.7,
       max_tokens: 500,
+      presence_penalty: 0.6, // Added to encourage more focused responses
+      frequency_penalty: 0.5, // Added to reduce repetition
     })
 
+    // Start saving the user message to the database in parallel
+    const userMessagePromise = supabaseClient
+      .from('chat_history')
+      .insert([{
+        user_id: userId,
+        message: message,
+        is_ai: false,
+        conversation_id: conversationId
+      }])
+
+    // Wait for OpenAI response
+    const completion = await completionPromise
     const response = completion.choices[0].message.content
 
-    // Create Supabase client
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    // Use waitUntil for background task to avoid blocking the response
+    EdgeRuntime.waitUntil(
+      Promise.all([
+        // Save AI response to chat history
+        supabaseClient
+          .from('chat_history')
+          .insert([{
+            user_id: userId,
+            message: response,
+            is_ai: true,
+            conversation_id: conversationId
+          }]),
+        // Ensure user message was saved
+        userMessagePromise
+      ]).catch(error => {
+        console.error('Background task error:', error)
+      })
     )
 
-    // Store the chat in history
-    await supabaseClient
-      .from('chat_history')
-      .insert([
-        {
-          user_id: userId,
-          message: message,
-          is_ai: false
-        },
-        {
-          user_id: userId,
-          message: response,
-          is_ai: true
-        }
-      ])
-
+    // Return the response immediately without waiting for database operations
     return new Response(
       JSON.stringify({ response }),
       {
