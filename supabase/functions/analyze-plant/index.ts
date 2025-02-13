@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
@@ -22,54 +21,13 @@ serve(async (req) => {
 
     console.log('Received image URLs:', imageUrls);
 
-    // Instead of using signed URLs, we'll download the images and create temporary URLs
-    const downloadAndCreateTempUrls = async (url: string) => {
-      try {
-        // Extract the file path from the URL
-        const bucketPath = url.split('/storage/v1/object/public/plant-images/')[1];
-        if (!bucketPath) {
-          throw new Error('Invalid image URL format');
-        }
-
-        // Download the image using the service role client
-        const supabaseAdmin = createClient(
-          Deno.env.get('SUPABASE_URL') ?? '',
-          Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-        );
-
-        const { data, error } = await supabaseAdmin.storage
-          .from('plant-images')
-          .download(bucketPath);
-
-        if (error) {
-          console.error('Error downloading image:', error);
-          throw error;
-        }
-
-        // Convert the downloaded image to a base64 string
-        const base64 = await data.arrayBuffer().then(buffer => 
-          btoa(String.fromCharCode(...new Uint8Array(buffer)))
-        );
-
-        // Return a data URL that OpenAI can access
-        return `data:${data.type};base64,${base64}`;
-      } catch (error) {
-        console.error('Error processing image:', error);
-        throw error;
-      }
-    };
-
-    // Process all images
-    const processedUrls = await Promise.all(imageUrls.map(downloadAndCreateTempUrls));
-    console.log('Successfully processed images to data URLs');
-
-    // Create a thread
+    // Create a thread with the updated API version header
     const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
+        'OpenAI-Beta': 'assistants-v2'
       }
     });
 
@@ -82,13 +40,13 @@ serve(async (req) => {
     const thread = await threadResponse.json();
     console.log('Created thread:', thread);
 
-    // Add a message to the thread with the base64 image data
+    // Add a message to the thread with the direct image URLs
     const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
+        'OpenAI-Beta': 'assistants-v2'
       },
       body: JSON.stringify({
         role: 'user',
@@ -97,7 +55,7 @@ serve(async (req) => {
             type: 'text',
             text: 'Analyze this cannabis plant\'s health and provide recommendations.'
           },
-          ...processedUrls.map(url => ({
+          ...imageUrls.map(url => ({
             type: 'image_url',
             image_url: { url }
           }))
@@ -119,7 +77,7 @@ serve(async (req) => {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
+        'OpenAI-Beta': 'assistants-v2'
       },
       body: JSON.stringify({
         assistant_id: Deno.env.get('OPENAI_ASSISTANT_ID'),
@@ -145,7 +103,7 @@ serve(async (req) => {
       const statusResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`, {
         headers: {
           'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-          'OpenAI-Beta': 'assistants=v1'
+          'OpenAI-Beta': 'assistants-v2'
         }
       });
 
@@ -176,7 +134,7 @@ serve(async (req) => {
     const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'OpenAI-Beta': 'assistants=v1'
+        'OpenAI-Beta': 'assistants-v2'
       }
     });
 
