@@ -164,6 +164,45 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_responses: {
+        Row: {
+          challenges: string[]
+          created_at: string
+          experience_level: Database["public"]["Enums"]["grow_experience"]
+          goals: string[]
+          growing_method: Database["public"]["Enums"]["growing_method"]
+          id: string
+          monitoring_method: Database["public"]["Enums"]["monitoring_method"]
+          nutrient_type: Database["public"]["Enums"]["nutrient_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          challenges: string[]
+          created_at?: string
+          experience_level: Database["public"]["Enums"]["grow_experience"]
+          goals: string[]
+          growing_method: Database["public"]["Enums"]["growing_method"]
+          id?: string
+          monitoring_method: Database["public"]["Enums"]["monitoring_method"]
+          nutrient_type: Database["public"]["Enums"]["nutrient_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          challenges?: string[]
+          created_at?: string
+          experience_level?: Database["public"]["Enums"]["grow_experience"]
+          goals?: string[]
+          growing_method?: Database["public"]["Enums"]["growing_method"]
+          id?: string
+          monitoring_method?: Database["public"]["Enums"]["monitoring_method"]
+          nutrient_type?: Database["public"]["Enums"]["nutrient_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       share_metrics: {
         Row: {
           analysis_id: string | null
@@ -413,7 +452,10 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      grow_experience: "new" | "intermediate" | "advanced"
+      growing_method: "indoor" | "outdoor" | "greenhouse"
+      monitoring_method: "manual" | "basic_sensors" | "advanced_systems"
+      nutrient_type: "organic" | "synthetic" | "both" | "none"
     }
     CompositeTypes: {
       [_ in never]: never
