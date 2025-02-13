@@ -26,15 +26,15 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Optimize the prompt for faster processing
-    const openaiPromise = fetch('https://api.openai.com/v1/chat/completions', {
+    // Call OpenAI API with correct model and format
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "gpt-4-vision-preview",
         messages: [
           {
             role: "system",
@@ -49,27 +49,29 @@ serve(async (req) => {
               },
               ...imageUrls.map(url => ({
                 type: "image_url",
-                image_url: { url }
+                image_url: {
+                  url: url,
+                  detail: "high"
+                }
               }))
             ]
           }
         ],
-        max_tokens: 500,
-        temperature: 0.7,
-        response_format: { type: "text" }
+        max_tokens: 1000,
+        temperature: 0.7
       })
     });
 
-    // Wait for OpenAI response
-    const response = await openaiPromise;
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.statusText}`);
+      const errorData = await response.json();
+      console.error('OpenAI API error:', errorData);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
     }
 
     const analysis = await response.json();
     const analysisText = analysis.choices[0].message.content;
 
-    // Parse and structure the analysis more efficiently
+    // Parse the analysis into structured data
     const sections = analysisText.split('\n').reduce((acc, line) => {
       if (line.startsWith('1. Growth Stage:')) acc.growth_stage = line.replace('1. Growth Stage:', '').trim();
       else if (line.startsWith('2. Health Score:')) acc.health_score = line.replace('2. Health Score:', '').trim();
