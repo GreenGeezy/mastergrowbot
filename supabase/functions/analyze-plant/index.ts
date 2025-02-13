@@ -20,13 +20,13 @@ serve(async (req) => {
       throw new Error('No image URLs provided');
     }
 
-    // Create Supabase client early to start processing in parallel
+    // Create Supabase client early
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Start the OpenAI API call
+    // Optimize the prompt for faster processing
     const openaiPromise = fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -38,20 +38,14 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `You are an expert cannabis cultivation advisor specializing in plant health diagnostics. 
-            Analyze multiple images of cannabis plants and provide detailed, actionable feedback in the following format:
-            1. Growth Stage Assessment: Identify if the plant is in seedling, vegetative, or flowering stage
-            2. Overall Health Score: Rate the plant's health on a scale of 1-10
-            3. Specific Issues: List any visible problems (nutrient deficiencies, pest damage, etc.)
-            4. Environmental Factors: Comment on any visible environmental stress indicators
-            5. Detailed Recommendations: Provide specific, actionable steps to improve plant health`
+            content: "You are a cannabis plant health expert. Provide concise analysis in this format:\n1. Growth Stage:\n2. Health Score (1-10):\n3. Issues:\n4. Environment:\n5. Recommendations:"
           },
           {
             role: "user",
             content: [
               {
                 type: "text",
-                text: "Analyze these cannabis plant images and provide a comprehensive health assessment following the format specified."
+                text: "Analyze this cannabis plant's health and provide recommendations."
               },
               ...imageUrls.map(url => ({
                 type: "image_url",
@@ -60,34 +54,47 @@ serve(async (req) => {
             ]
           }
         ],
-        max_tokens: 1000
+        max_tokens: 500,
+        temperature: 0.7,
+        response_format: { type: "text" }
       })
     });
 
     // Wait for OpenAI response
     const response = await openaiPromise;
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
+      throw new Error(`OpenAI API error: ${response.statusText}`);
     }
 
     const analysis = await response.json();
     const analysisText = analysis.choices[0].message.content;
 
-    // Parse and structure the analysis
+    // Parse and structure the analysis more efficiently
+    const sections = analysisText.split('\n').reduce((acc, line) => {
+      if (line.startsWith('1. Growth Stage:')) acc.growth_stage = line.replace('1. Growth Stage:', '').trim();
+      else if (line.startsWith('2. Health Score:')) acc.health_score = line.replace('2. Health Score:', '').trim();
+      else if (line.startsWith('3. Issues:')) acc.specific_issues = line.replace('3. Issues:', '').trim();
+      else if (line.startsWith('4. Environment:')) acc.environmental_factors = line.replace('4. Environment:', '').trim();
+      else if (line.startsWith('5. Recommendations:')) {
+        acc.recommendations = line.replace('5. Recommendations:', '').trim()
+          .split(/(?:\r\n|\r|\n)/).filter(Boolean);
+      }
+      return acc;
+    }, {} as any);
+
     const structuredAnalysis = {
-      diagnosis: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
+      diagnosis: sections.growth_stage,
       confidence_level: 0.85,
-      recommended_actions: extractRecommendations(analysisText),
+      recommended_actions: sections.recommendations || [],
       detailed_analysis: {
-        growth_stage: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
-        health_score: extractSection(analysisText, "Overall Health Score", "Specific Issues"),
-        specific_issues: extractSection(analysisText, "Specific Issues", "Environmental Factors"),
-        environmental_factors: extractSection(analysisText, "Environmental Factors", "Detailed Recommendations"),
+        growth_stage: sections.growth_stage,
+        health_score: sections.health_score,
+        specific_issues: sections.specific_issues,
+        environmental_factors: sections.environmental_factors,
       }
     };
 
-    // Save analysis in background without blocking response
+    // Save analysis in background
     EdgeRuntime.waitUntil(
       supabaseClient
         .from('plant_analyses')
@@ -100,48 +107,18 @@ serve(async (req) => {
           detailed_analysis: structuredAnalysis.detailed_analysis,
           recommended_actions: structuredAnalysis.recommended_actions,
         })
-        .then(({ error }) => {
-          if (error) console.error('Error saving analysis:', error);
-        })
     );
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        analysis: structuredAnalysis 
-      }),
+      JSON.stringify({ success: true, analysis: structuredAnalysis }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
     console.error('Error in analyze-plant function:', error);
     return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: error.message 
-      }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
+      JSON.stringify({ success: false, error: error.message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
-
-// Helper functions stay the same
-function extractSection(text: string, startMarker: string, endMarker: string): string {
-  const startIndex = text.indexOf(startMarker);
-  const endIndex = text.indexOf(endMarker);
-  if (startIndex === -1) return "";
-  const start = startIndex + startMarker.length;
-  const end = endIndex === -1 ? undefined : endIndex;
-  return text.slice(start, end).trim();
-}
-
-function extractRecommendations(text: string): string[] {
-  const recommendationsSection = extractSection(text, "Detailed Recommendations", "END");
-  return recommendationsSection
-    .split(/\d+\.|•|-/)
-    .map(item => item.trim())
-    .filter(item => item.length > 0);
-}
