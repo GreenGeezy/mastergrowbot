@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
@@ -6,6 +7,18 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Initialize the Supabase client with admin privileges
+const supabaseAdmin = createClient(
+  Deno.env.get('SUPABASE_URL') ?? '',
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+);
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -21,13 +34,13 @@ serve(async (req) => {
 
     console.log('Received image URLs:', imageUrls);
 
-    // Create a thread with updated API version header
+    // Create a thread
     const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v2'  // Updated to v2
+        'OpenAI-Beta': 'assistants=v2'
       }
     });
 
@@ -46,7 +59,7 @@ serve(async (req) => {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v2'  // Updated to v2
+        'OpenAI-Beta': 'assistants=v2'
       },
       body: JSON.stringify({
         role: 'user',
@@ -77,7 +90,7 @@ serve(async (req) => {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v2'  // Updated to v2
+        'OpenAI-Beta': 'assistants=v2'
       },
       body: JSON.stringify({
         assistant_id: Deno.env.get('OPENAI_ASSISTANT_ID'),
@@ -103,7 +116,7 @@ serve(async (req) => {
       const statusResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`, {
         headers: {
           'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-          'OpenAI-Beta': 'assistants=v2'  // Updated to v2
+          'OpenAI-Beta': 'assistants=v2'
         }
       });
 
@@ -134,7 +147,7 @@ serve(async (req) => {
     const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'OpenAI-Beta': 'assistants=v2'  // Updated to v2
+        'OpenAI-Beta': 'assistants=v2'
       }
     });
 
