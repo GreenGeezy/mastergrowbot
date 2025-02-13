@@ -14,6 +14,7 @@ import { useConversations } from '@/hooks/use-conversations'
 import { ProfileDropdown } from './profile/ProfileDropdown'
 import { ConversationList } from './chat/ConversationList'
 
+// Memoize starter questions to prevent unnecessary rerenders
 const starterQuestions = [
   "What nutrients are essential during the vegetative stage?",
   "How do I identify and fix nutrient deficiencies?",
@@ -22,11 +23,7 @@ const starterQuestions = [
   "When is the best time to harvest?"
 ] as const;
 
-interface Props {
-  starterQuestions?: typeof starterQuestions
-}
-
-export default function ChatInterface({ starterQuestions: propStarterQuestions }: Props) {
+export default function ChatInterface() {
   const { 
     message, 
     setMessage, 
@@ -48,6 +45,7 @@ export default function ChatInterface({ starterQuestions: propStarterQuestions }
     sendMessage
   } = useChatMessages(currentConversationId, speakResponse, isMuted)
 
+  // Memoize handlers to prevent unnecessary rerenders
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
     if (!message.trim()) return
@@ -76,18 +74,21 @@ export default function ChatInterface({ starterQuestions: propStarterQuestions }
     }
   }, [currentConversationId, setMessage, startNewChat])
 
+  // Load chat history when conversation changes
   useEffect(() => {
     if (session?.user?.id && currentConversationId) {
       loadChatHistory()
     }
   }, [session?.user?.id, currentConversationId, loadChatHistory])
 
+  // Start new chat if there's no current conversation
   useEffect(() => {
     if (!currentConversationId) {
       startNewChat()
     }
   }, [currentConversationId, startNewChat])
 
+  // Memoize the sidebar content
   const sidebarContent = useMemo(() => (
     <>
       <ConversationList
@@ -102,6 +103,7 @@ export default function ChatInterface({ starterQuestions: propStarterQuestions }
     </>
   ), [conversations, isLoadingConversations, currentConversationId, handleConversationSelect])
 
+  // Memoize the main chat area content
   const chatAreaContent = useMemo(() => (
     <div className="flex flex-col flex-1 h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
       <ChatHeader />
@@ -110,7 +112,7 @@ export default function ChatInterface({ starterQuestions: propStarterQuestions }
         <ChatMessages 
           messages={messages}
           handleQuestionClick={handleQuestionClick}
-          starterQuestions={propStarterQuestions || starterQuestions}
+          starterQuestions={starterQuestions}
         />
       </ScrollArea>
       
@@ -137,8 +139,7 @@ export default function ChatInterface({ starterQuestions: propStarterQuestions }
     handleSubmit,
     handleToggleRecording,
     handleToggleMute,
-    handleSpeechResult,
-    propStarterQuestions
+    handleSpeechResult
   ])
 
   return (

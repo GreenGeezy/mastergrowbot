@@ -1,4 +1,3 @@
-
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Leaf } from 'lucide-react'
 import FeatureCard from './FeatureCard'
@@ -15,7 +14,7 @@ interface Message {
 interface ChatMessagesProps {
   messages: Message[]
   handleQuestionClick: (question: string) => void
-  starterQuestions: readonly string[]
+  starterQuestions: string[]
 }
 
 export default function ChatMessages({ messages, handleQuestionClick, starterQuestions }: ChatMessagesProps) {

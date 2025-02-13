@@ -1,26 +1,13 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Initialize the Supabase client with admin privileges
-const supabaseAdmin = createClient(
-  Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  }
-);
-
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -32,199 +19,88 @@ serve(async (req) => {
       throw new Error('No image URLs provided');
     }
 
-    console.log('Received image URLs:', imageUrls);
+    console.log('Starting analysis for images:', imageUrls);
 
-    // Create a thread
-    const threadResponse = await fetch('https://api.openai.com/v1/threads', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v2'
-      }
-    });
-
-    if (!threadResponse.ok) {
-      const threadError = await threadResponse.json();
-      console.error('Thread creation error:', threadError);
-      throw new Error('Failed to create thread: ' + JSON.stringify(threadError));
-    }
-
-    const thread = await threadResponse.json();
-    console.log('Created thread:', thread);
-
-    // Add a message to the thread with the direct image URLs
-    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v2'
+    // Create a combined prompt that includes all images
+    const messages = [
+      {
+        role: "system",
+        content: `You are an expert cannabis cultivation advisor specializing in plant health diagnostics. 
+        Analyze multiple images of cannabis plants and provide detailed, actionable feedback in the following format:
+        1. Growth Stage Assessment: Identify if the plant is in seedling, vegetative, or flowering stage
+        2. Overall Health Score: Rate the plant's health on a scale of 1-10
+        3. Specific Issues: List any visible problems (nutrient deficiencies, pest damage, etc.)
+        4. Environmental Factors: Comment on any visible environmental stress indicators
+        5. Detailed Recommendations: Provide specific, actionable steps to improve plant health
+        Be specific and technical but explain terms when needed.`
       },
-      body: JSON.stringify({
-        role: 'user',
+      {
+        role: "user",
         content: [
           {
-            type: 'text',
-            text: 'Analyze this cannabis plant\'s health and provide recommendations.'
+            type: "text",
+            text: "Analyze these cannabis plant images and provide a comprehensive health assessment following the format specified. Consider all angles and details shown in the images."
           },
           ...imageUrls.map(url => ({
-            type: 'image_url',
+            type: "image_url",
             image_url: { url }
           }))
         ]
-      })
-    });
+      }
+    ];
 
-    if (!messageResponse.ok) {
-      const messageError = await messageResponse.json();
-      console.error('Message creation error:', messageError);
-      throw new Error('Failed to add message to thread: ' + JSON.stringify(messageError));
-    }
-
-    console.log('Added message to thread');
-
-    // Run the assistant
-    const runResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
+    const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v2'
       },
       body: JSON.stringify({
-        assistant_id: Deno.env.get('OPENAI_ASSISTANT_ID'),
+        model: "gpt-4o-mini",
+        messages,
+        max_tokens: 1000
       })
     });
 
-    if (!runResponse.ok) {
-      const runError = await runResponse.json();
-      console.error('Run creation error:', runError);
-      throw new Error('Failed to start run: ' + JSON.stringify(runError));
+    if (!openaiResponse.ok) {
+      const errorData = await openaiResponse.json();
+      console.error('OpenAI API Error:', errorData);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
     }
 
-    const run = await runResponse.json();
-    console.log('Started run:', run);
+    const analysis = await openaiResponse.json();
+    console.log('OpenAI Analysis received:', analysis);
 
-    // Poll for completion
-    let runStatus;
-    let attempts = 0;
-    const maxAttempts = 60;
-    const delay = 2000;
-    
-    while (attempts < maxAttempts) {
-      const statusResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`, {
-        headers: {
-          'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-          'OpenAI-Beta': 'assistants=v2'
-        }
-      });
-
-      if (!statusResponse.ok) {
-        const statusError = await statusResponse.json();
-        console.error('Status check error:', statusError);
-        throw new Error('Failed to check run status: ' + JSON.stringify(statusError));
-      }
-
-      runStatus = await statusResponse.json();
-      console.log('Run status:', runStatus.status);
-
-      if (runStatus.status === 'completed') {
-        break;
-      } else if (runStatus.status === 'failed' || runStatus.status === 'cancelled' || runStatus.status === 'expired') {
-        throw new Error(`Run failed with status: ${runStatus.status}`);
-      }
-
-      await new Promise(resolve => setTimeout(resolve, delay));
-      attempts++;
+    if (!analysis.choices?.[0]?.message?.content) {
+      throw new Error('Invalid response format from OpenAI');
     }
 
-    if (attempts >= maxAttempts) {
-      throw new Error('Analysis timed out');
-    }
+    const analysisText = analysis.choices[0].message.content;
 
-    // Get the messages
-    const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'OpenAI-Beta': 'assistants=v2'
-      }
-    });
-
-    if (!messagesResponse.ok) {
-      const messagesError = await messagesResponse.json();
-      console.error('Messages retrieval error:', messagesError);
-      throw new Error('Failed to get messages: ' + JSON.stringify(messagesError));
-    }
-
-    const messages = await messagesResponse.json();
-    console.log('Messages:', messages);
-
-    // Get the assistant's response
-    const assistantMessage = messages.data.find(m => m.role === 'assistant');
-    if (!assistantMessage) {
-      throw new Error('No assistant response found');
-    }
-
-    const analysisText = assistantMessage.content[0].text.value;
-    console.log('Analysis text:', analysisText);
-
-    // Parse the analysis into structured data
-    const sections = {
-      growth_stage: "Not specified",
-      health_score: "Not specified",
-      specific_issues: "No issues detected",
-      environmental_factors: "Not specified",
-      recommendations: [] as string[]
-    };
-
-    const lines = analysisText.split('\n');
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-      if (trimmedLine.startsWith('1. Growth Stage:')) {
-        sections.growth_stage = trimmedLine.replace('1. Growth Stage:', '').trim();
-      } else if (trimmedLine.startsWith('2. Health Score:')) {
-        sections.health_score = trimmedLine.replace('2. Health Score:', '').trim();
-      } else if (trimmedLine.startsWith('3. Issues:')) {
-        sections.specific_issues = trimmedLine.replace('3. Issues:', '').trim();
-      } else if (trimmedLine.startsWith('4. Environment:')) {
-        sections.environmental_factors = trimmedLine.replace('4. Environment:', '').trim();
-      } else if (trimmedLine.startsWith('5. Recommendations:')) {
-        const recsText = trimmedLine.replace('5. Recommendations:', '').trim();
-        sections.recommendations = recsText ? recsText.split(';').map(r => r.trim()) : [];
-      }
-    }
-
+    // Parse the analysis text to extract structured data
     const structuredAnalysis = {
-      diagnosis: sections.growth_stage || "Analysis pending",
+      diagnosis: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
       confidence_level: 0.85,
-      recommended_actions: sections.recommendations,
+      recommended_actions: extractRecommendations(analysisText),
       detailed_analysis: {
-        growth_stage: sections.growth_stage,
-        health_score: sections.health_score,
-        specific_issues: sections.specific_issues,
-        environmental_factors: sections.environmental_factors,
+        growth_stage: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
+        health_score: extractSection(analysisText, "Overall Health Score", "Specific Issues"),
+        specific_issues: extractSection(analysisText, "Specific Issues", "Environmental Factors"),
+        environmental_factors: extractSection(analysisText, "Environmental Factors", "Detailed Recommendations"),
       }
     };
-
-    // Save analysis in background
-    EdgeRuntime.waitUntil(
-      supabaseAdmin
-        .from('plant_analyses')
-        .insert({
-          user_id: req.headers.get('x-user-id'),
-          image_url: imageUrls[0],
-          image_urls: imageUrls,
-          diagnosis: structuredAnalysis.diagnosis,
-          confidence_level: structuredAnalysis.confidence_level,
-          detailed_analysis: structuredAnalysis.detailed_analysis,
-          recommended_actions: structuredAnalysis.recommended_actions,
-        })
-    );
 
     return new Response(
-      JSON.stringify({ success: true, analysis: structuredAnalysis }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        success: true, 
+        analysis: structuredAnalysis 
+      }),
+      { 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json' 
+        } 
+      }
     );
 
   } catch (error) {
@@ -232,13 +108,37 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message,
-        details: error instanceof Error ? error.stack : undefined
+        error: error.message 
       }),
       { 
         status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json' 
+        } 
       }
     );
   }
 });
+
+// Helper function to extract sections from the analysis text
+function extractSection(text: string, startMarker: string, endMarker: string): string {
+  const startIndex = text.indexOf(startMarker);
+  const endIndex = text.indexOf(endMarker);
+  
+  if (startIndex === -1) return "";
+  
+  const start = startIndex + startMarker.length;
+  const end = endIndex === -1 ? undefined : endIndex;
+  
+  return text.slice(start, end).trim();
+}
+
+// Helper function to extract recommendations from the analysis text
+function extractRecommendations(text: string): string[] {
+  const recommendationsSection = extractSection(text, "Detailed Recommendations", "END");
+  return recommendationsSection
+    .split(/\d+\.|•|-/)
+    .map(item => item.trim())
+    .filter(item => item.length > 0);
+}
