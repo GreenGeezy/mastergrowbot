@@ -228,6 +228,33 @@ export type Database = {
           },
         ]
       }
+      site_visitors: {
+        Row: {
+          created_at: string
+          id: number
+          ip_address: string | null
+          page_visited: string
+          referrer: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          ip_address?: string | null
+          page_visited: string
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          ip_address?: string | null
+          page_visited?: string
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       success_stories: {
         Row: {
           after_image_url: string | null
