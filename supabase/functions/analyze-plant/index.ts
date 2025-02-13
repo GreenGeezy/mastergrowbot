@@ -20,7 +20,7 @@ serve(async (req) => {
       throw new Error('No image URLs provided');
     }
 
-    console.log('Received image URLs:', imageUrls); // Debug log
+    console.log('Received image URLs:', imageUrls);
 
     // Create Supabase client early
     const supabaseClient = createClient(
@@ -34,14 +34,14 @@ serve(async (req) => {
       messages: [
         {
           role: "system",
-          content: "You are a cannabis plant health expert. Provide concise analysis in this format:\n1. Growth Stage:\n2. Health Score (1-10):\n3. Issues:\n4. Environment:\n5. Recommendations:"
+          content: "You are a cannabis plant health expert. Your task is to analyze plant images and provide a detailed assessment. You MUST use this EXACT format for your response:\n\n1. Growth Stage: [stage]\n2. Health Score: [1-10]\n3. Issues: [list main problems]\n4. Environment: [environmental conditions]\n5. Recommendations: [list specific actions]"
         },
         {
           role: "user",
           content: [
             {
               type: "text",
-              text: "Analyze this cannabis plant's health and provide recommendations."
+              text: "Analyze this cannabis plant's health and provide recommendations. Follow the exact format specified."
             },
             ...imageUrls.map(url => ({
               type: "image_url",
@@ -55,7 +55,7 @@ serve(async (req) => {
       max_tokens: 1000
     };
 
-    console.log('OpenAI request body:', JSON.stringify(requestBody)); // Debug log
+    console.log('OpenAI request body:', JSON.stringify(requestBody));
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -68,32 +68,50 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('OpenAI API error response:', errorData); // Debug log
+      console.error('OpenAI API error response:', errorData);
       throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
     }
 
     const analysis = await response.json();
-    console.log('OpenAI API response:', analysis); // Debug log
+    console.log('Raw OpenAI API response:', analysis);
 
     const analysisText = analysis.choices[0].message.content;
+    console.log('Analysis text:', analysisText);
 
-    // Parse the analysis into structured data
-    const sections = analysisText.split('\n').reduce((acc, line) => {
-      if (line.startsWith('1. Growth Stage:')) acc.growth_stage = line.replace('1. Growth Stage:', '').trim();
-      else if (line.startsWith('2. Health Score:')) acc.health_score = line.replace('2. Health Score:', '').trim();
-      else if (line.startsWith('3. Issues:')) acc.specific_issues = line.replace('3. Issues:', '').trim();
-      else if (line.startsWith('4. Environment:')) acc.environmental_factors = line.replace('4. Environment:', '').trim();
-      else if (line.startsWith('5. Recommendations:')) {
-        acc.recommendations = line.replace('5. Recommendations:', '').trim()
-          .split(/(?:\r\n|\r|\n)/).filter(Boolean);
+    // Parse the analysis into structured data with default values
+    const sections = {
+      growth_stage: "Not specified",
+      health_score: "Not specified",
+      specific_issues: "No issues detected",
+      environmental_factors: "Not specified",
+      recommendations: [] as string[]
+    };
+
+    const lines = analysisText.split('\n');
+    console.log('Split lines:', lines);
+
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      if (trimmedLine.startsWith('1. Growth Stage:')) {
+        sections.growth_stage = trimmedLine.replace('1. Growth Stage:', '').trim();
+      } else if (trimmedLine.startsWith('2. Health Score:')) {
+        sections.health_score = trimmedLine.replace('2. Health Score:', '').trim();
+      } else if (trimmedLine.startsWith('3. Issues:')) {
+        sections.specific_issues = trimmedLine.replace('3. Issues:', '').trim();
+      } else if (trimmedLine.startsWith('4. Environment:')) {
+        sections.environmental_factors = trimmedLine.replace('4. Environment:', '').trim();
+      } else if (trimmedLine.startsWith('5. Recommendations:')) {
+        const recsText = trimmedLine.replace('5. Recommendations:', '').trim();
+        sections.recommendations = recsText ? recsText.split(';').map(r => r.trim()) : [];
       }
-      return acc;
-    }, {} as any);
+    }
+
+    console.log('Parsed sections:', sections);
 
     const structuredAnalysis = {
-      diagnosis: sections.growth_stage,
+      diagnosis: sections.growth_stage || "Analysis pending",
       confidence_level: 0.85,
-      recommended_actions: sections.recommendations || [],
+      recommended_actions: sections.recommendations,
       detailed_analysis: {
         growth_stage: sections.growth_stage,
         health_score: sections.health_score,
@@ -101,6 +119,8 @@ serve(async (req) => {
         environmental_factors: sections.environmental_factors,
       }
     };
+
+    console.log('Final structured analysis:', structuredAnalysis);
 
     // Save analysis in background
     EdgeRuntime.waitUntil(
