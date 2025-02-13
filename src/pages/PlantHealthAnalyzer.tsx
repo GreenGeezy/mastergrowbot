@@ -77,6 +77,15 @@ export default function PlantHealthAnalyzer() {
   }, []);
 
   const handleAnalyze = useCallback(async (filesToAnalyze?: File[]) => {
+    if (!session?.user?.id) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to analyze plants.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const files = filesToAnalyze || selectedFiles;
     if (files.length === 0) return;
 
@@ -89,7 +98,10 @@ export default function PlantHealthAnalyzer() {
       // Analyze plant with optimized edge function
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
         body: { imageUrls },
-        headers: { 'x-user-id': session?.user?.id }
+        headers: { 
+          'x-user-id': session.user.id,
+          'Authorization': `Bearer ${session.access_token}`
+        }
       });
 
       if (error) throw error;
@@ -111,7 +123,7 @@ export default function PlantHealthAnalyzer() {
       setShowConfirmation(false);
       setCameraFile(null);
     }
-  }, [selectedFiles, session?.user?.id, toast, uploadImage]);
+  }, [selectedFiles, session, toast, uploadImage]);
 
   const handleConfirmationCancel = useCallback(() => {
     setShowConfirmation(false);
