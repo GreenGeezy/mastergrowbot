@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useCallback } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
@@ -8,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 
-const PlantHealthAnalyzer = () => {
+export default function PlantHealthAnalyzer() {
   const session = useSession();
   const { toast } = useToast();
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -17,79 +18,58 @@ const PlantHealthAnalyzer = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [cameraFile, setCameraFile] = useState<File | null>(null);
 
-  const handleImagesSelected = async (files: File[]) => {
+  const handleImagesSelected = useCallback(async (files: File[]) => {
     setSelectedFiles(files);
     // Only auto-analyze if it's not from camera
     if (files.length > 0 && !cameraFile) {
-      await handleAnalyze();
+      handleAnalyze();
     }
-  };
+  }, [cameraFile]);
 
-  const handleTakePhoto = () => {
+  const handleTakePhoto = useCallback(() => {
     const imageDropzone = document.querySelector('[data-image-dropzone]');
     if (imageDropzone) {
       const event = new CustomEvent('start-camera');
       imageDropzone.dispatchEvent(event);
     }
-  };
+  }, []);
 
-  const handleCameraCapture = (file: File) => {
+  const handleCameraCapture = useCallback((file: File) => {
     setCameraFile(file);
     setSelectedFiles([file]);
     setShowConfirmation(true);
-  };
+  }, []);
 
-  const handleAnalyze = async () => {
+  const handleAnalyze = useCallback(async () => {
     if (selectedFiles.length === 0) return;
 
     setIsAnalyzing(true);
     try {
-      // Upload images to Supabase storage
-      const imageUrls = await Promise.all(
-        selectedFiles.map(async (file) => {
-          const fileName = `${Date.now()}-${file.name}`;
-          const { data, error } = await supabase.storage
-            .from('plant-images')
-            .upload(fileName, file);
+      // Upload images in parallel
+      const uploadPromises = selectedFiles.map(async (file) => {
+        const fileName = `${Date.now()}-${file.name}`;
+        const { data, error } = await supabase.storage
+          .from('plant-images')
+          .upload(fileName, file);
 
-          if (error) throw error;
+        if (error) throw error;
 
-          const { data: { publicUrl } } = supabase.storage
-            .from('plant-images')
-            .getPublicUrl(fileName);
+        return supabase.storage
+          .from('plant-images')
+          .getPublicUrl(fileName).data.publicUrl;
+      });
 
-          return publicUrl;
-        })
-      );
+      const imageUrls = await Promise.all(uploadPromises);
 
       // Call the analyze-plant function
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
         body: { imageUrls },
+        headers: { 'x-user-id': session?.user?.id }
       });
 
       if (error) throw error;
 
-      // Save analysis results to the database
-      const { data: savedAnalysis, error: saveError } = await supabase
-        .from('plant_analyses')
-        .insert({
-          user_id: session?.user?.id,
-          image_url: imageUrls[0], // Keep first image as primary
-          image_urls: imageUrls, // Store all images
-          diagnosis: data.analysis.diagnosis,
-          confidence_level: data.analysis.confidence_level,
-          detailed_analysis: data.analysis.detailed_analysis,
-          recommended_actions: data.analysis.recommended_actions,
-        })
-        .select()
-        .single();
-
-      if (saveError) {
-        console.error('Error saving analysis:', saveError);
-        throw new Error('Failed to save analysis results');
-      }
-
-      setAnalysisResult(savedAnalysis);
+      setAnalysisResult(data.analysis);
       toast({
         title: "Analysis Complete",
         description: "Your plant health analysis is ready to view.",
@@ -106,7 +86,7 @@ const PlantHealthAnalyzer = () => {
       setShowConfirmation(false);
       setCameraFile(null);
     }
-  };
+  }, [selectedFiles, session?.user?.id, toast]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -149,6 +129,4 @@ const PlantHealthAnalyzer = () => {
       </div>
     </div>
   );
-};
-
-export default PlantHealthAnalyzer;
+}
