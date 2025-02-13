@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -15,6 +14,7 @@ export default function Quiz() {
   const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showSubscription, setShowSubscription] = useState(false)
 
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>({
     experience_level: undefined,
@@ -141,7 +141,7 @@ export default function Quiz() {
         description: "Your responses have been saved successfully.",
       })
 
-      navigate('/chat')
+      setShowSubscription(true)
     } catch (error) {
       console.error('Error saving quiz responses:', error)
       toast({
@@ -149,9 +149,65 @@ export default function Quiz() {
         description: "Failed to save your responses. Please try again.",
         variant: "destructive",
       })
-    } finally {
       setIsSubmitting(false)
     }
+  }
+
+  if (showSubscription) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background animate-fade-in">
+        <div className="w-full max-w-2xl">
+          <div className="relative group mb-8">
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow" />
+            <div className="relative px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
+              <div className="space-y-8 text-center">
+                <div className="space-y-2">
+                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
+                    Unlock Your Growing Potential
+                  </h1>
+                  <p className="text-lg text-white/80">
+                    Get personalized AI guidance for your growing journey
+                  </p>
+                </div>
+                
+                <div className="bg-white rounded-xl p-6 shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                  <img 
+                    src="/lovable-uploads/608a89bb-c3e4-410f-a681-76e6471fdb2a.png" 
+                    alt="Master Growbot AI" 
+                    className="w-full rounded-t-lg mb-4"
+                  />
+                  <div className="space-y-3">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      Master Growbot AI
+                    </h2>
+                    <p className="text-2xl font-bold text-gray-900">$9.99</p>
+                    <a 
+                      href="https://checkout.square.site/merchant/MLSBW63ZJHNHQ/checkout/PZ2JH5LRAUO2T2ZMDC5MUMBC?src=embed"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full py-3 px-4 bg-[#006aff] text-white rounded-lg font-medium hover:bg-[#0055cc] transition-colors duration-300"
+                    >
+                      Buy now
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 justify-center">
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate('/chat')}
+                    className="relative group px-6"
+                  >
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
+                    <span className="relative">Skip for now</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const currentQuestion = questions[currentStep]
