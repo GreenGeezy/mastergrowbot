@@ -22,63 +22,136 @@ serve(async (req) => {
 
     console.log('Received image URLs:', imageUrls);
 
-    // Create Supabase client early
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Call OpenAI API with correct model and format
-    const requestBody = {
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: "You are a cannabis plant health expert. Your task is to analyze plant images and provide a detailed assessment. You MUST use this EXACT format for your response:\n\n1. Growth Stage: [stage]\n2. Health Score: [1-10]\n3. Issues: [list main problems]\n4. Environment: [environmental conditions]\n5. Recommendations: [list specific actions]"
-        },
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: "Analyze this cannabis plant's health and provide recommendations. Follow the exact format specified."
-            },
-            ...imageUrls.map(url => ({
-              type: "image_url",
-              image_url: {
-                url: url
-              }
-            }))
-          ]
-        }
-      ],
-      max_tokens: 1000
-    };
-
-    console.log('OpenAI request body:', JSON.stringify(requestBody));
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // First create a thread
+    const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody)
+        'OpenAI-Beta': 'assistants=v1'
+      }
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('OpenAI API error response:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+    if (!threadResponse.ok) {
+      throw new Error('Failed to create thread');
     }
 
-    const analysis = await response.json();
-    console.log('Raw OpenAI API response:', analysis);
+    const thread = await threadResponse.json();
+    console.log('Created thread:', thread);
 
-    const analysisText = analysis.choices[0].message.content;
+    // Add a message to the thread with the image
+    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'assistants=v1'
+      },
+      body: JSON.stringify({
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Analyze this cannabis plant\'s health and provide recommendations.'
+          },
+          ...imageUrls.map(url => ({
+            type: 'image_url',
+            image_url: { url }
+          }))
+        ]
+      })
+    });
+
+    if (!messageResponse.ok) {
+      throw new Error('Failed to add message to thread');
+    }
+
+    console.log('Added message to thread');
+
+    // Run the assistant
+    const runResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'assistants=v1'
+      },
+      body: JSON.stringify({
+        assistant_id: Deno.env.get('OPENAI_ASSISTANT_ID'),
+      })
+    });
+
+    if (!runResponse.ok) {
+      throw new Error('Failed to start run');
+    }
+
+    const run = await runResponse.json();
+    console.log('Started run:', run);
+
+    // Poll for completion
+    let runStatus;
+    let attempts = 0;
+    const maxAttempts = 30;
+    
+    while (attempts < maxAttempts) {
+      const statusResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`, {
+        headers: {
+          'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+          'OpenAI-Beta': 'assistants=v1'
+        }
+      });
+
+      if (!statusResponse.ok) {
+        throw new Error('Failed to check run status');
+      }
+
+      runStatus = await statusResponse.json();
+      console.log('Run status:', runStatus.status);
+
+      if (runStatus.status === 'completed') {
+        break;
+      } else if (runStatus.status === 'failed') {
+        throw new Error('Run failed');
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      attempts++;
+    }
+
+    if (attempts >= maxAttempts) {
+      throw new Error('Analysis timed out');
+    }
+
+    // Get the messages
+    const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'OpenAI-Beta': 'assistants=v1'
+      }
+    });
+
+    if (!messagesResponse.ok) {
+      throw new Error('Failed to get messages');
+    }
+
+    const messages = await messagesResponse.json();
+    console.log('Messages:', messages);
+
+    // Get the assistant's response
+    const assistantMessage = messages.data.find(m => m.role === 'assistant');
+    if (!assistantMessage) {
+      throw new Error('No assistant response found');
+    }
+
+    const analysisText = assistantMessage.content[0].text.value;
     console.log('Analysis text:', analysisText);
 
-    // Parse the analysis into structured data with default values
+    // Parse the analysis into structured data
     const sections = {
       growth_stage: "Not specified",
       health_score: "Not specified",
@@ -88,8 +161,6 @@ serve(async (req) => {
     };
 
     const lines = analysisText.split('\n');
-    console.log('Split lines:', lines);
-
     for (const line of lines) {
       const trimmedLine = line.trim();
       if (trimmedLine.startsWith('1. Growth Stage:')) {
@@ -106,8 +177,6 @@ serve(async (req) => {
       }
     }
 
-    console.log('Parsed sections:', sections);
-
     const structuredAnalysis = {
       diagnosis: sections.growth_stage || "Analysis pending",
       confidence_level: 0.85,
@@ -119,8 +188,6 @@ serve(async (req) => {
         environmental_factors: sections.environmental_factors,
       }
     };
-
-    console.log('Final structured analysis:', structuredAnalysis);
 
     // Save analysis in background
     EdgeRuntime.waitUntil(
