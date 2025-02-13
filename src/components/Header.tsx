@@ -1,5 +1,8 @@
+
 import React from "react";
 import { Award, Star } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
   return (
@@ -25,10 +28,10 @@ const Header = () => {
         Grow Bigger, Grow Better – Unleash Your Cannabis SuperPowers with AI
       </p>
       <div className="flex flex-col items-center space-y-3 animate-fade-in">
-        <p className="text-sm sm:text-base text-center font-medium text-gold">
+        <p className="text-sm sm:text-base text-center font-medium text-gold mb-2">
           Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
         </p>
-        <div className="flex items-center justify-center space-x-3">
+        <div className="flex items-center justify-center space-x-3 mb-8">
           <Award className="w-7 h-7 text-gold animate-float will-change-transform" />
           <div className="flex items-center space-x-1">
             {[...Array(5)].map((_, index) => (
@@ -39,6 +42,14 @@ const Header = () => {
             ))}
           </div>
         </div>
+        <Link to="/quiz" className="transform transition-transform duration-300 hover:scale-105">
+          <Button 
+            size="lg" 
+            className="bg-gradient-to-r from-primary via-primary-hover to-primary-glow hover:from-secondary hover:via-secondary-hover hover:to-secondary-glow text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl animate-pulse-glow"
+          >
+            Get Started
+          </Button>
+        </Link>
       </div>
     </div>
   );
