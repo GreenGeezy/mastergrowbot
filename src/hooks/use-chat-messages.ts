@@ -1,4 +1,5 @@
-import { useState } from 'react'
+
+import { useState, useCallback } from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
 import { useToast } from '@/hooks/use-toast'
 import { sendMessageToSupabase, fetchChatHistory, invokeAIChat } from '@/services/messageService'
@@ -21,7 +22,7 @@ export const useChatMessages = (
   const session = useSession()
   const { toast } = useToast()
 
-  const loadChatHistory = async () => {
+  const loadChatHistory = useCallback(async () => {
     try {
       if (!currentConversationId || !session?.user?.id) return
 
@@ -37,9 +38,9 @@ export const useChatMessages = (
         variant: 'destructive',
       })
     }
-  }
+  }, [currentConversationId, session?.user?.id, toast])
 
-  const sendMessage = async (message: string) => {
+  const sendMessage = useCallback(async (message: string) => {
     if (!message.trim() || !session?.user?.id || !currentConversationId) return
 
     setIsLoading(true)
@@ -86,7 +87,6 @@ export const useChatMessages = (
           true
         )
         
-        // Only speak the response if audio is explicitly enabled (not muted)
         if (!isMuted) {
           speakResponse(data.response)
         }
@@ -101,7 +101,7 @@ export const useChatMessages = (
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [currentConversationId, session?.user?.id, isMuted, speakResponse, toast])
 
   return {
     messages,
