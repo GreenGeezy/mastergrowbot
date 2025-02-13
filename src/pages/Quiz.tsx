@@ -157,111 +157,157 @@ export default function Quiz() {
   const currentQuestion = questions[currentStep]
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-card rounded-lg shadow-lg p-6 space-y-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-center text-foreground">
-            Help us personalize your growing experience
-          </h1>
-          <p className="text-center text-muted-foreground">
-            Question {currentStep + 1} of {questions.length}
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-foreground">
-            {currentQuestion.question}
-          </h2>
-
-          {currentQuestion.type === "radio" && (
-            <RadioGroup
-              value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
-              onValueChange={(value) =>
-                setQuizResponses((prev) => ({
-                  ...prev,
-                  [currentQuestion.field]: value,
-                }))
-              }
-              className="space-y-3"
-            >
-              {currentQuestion.options.map((option) => (
-                <div key={option.value} className="flex items-center space-x-3">
-                  <RadioGroupItem value={option.value} id={option.value} />
-                  <label
-                    htmlFor={option.value}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    {option.label}
-                  </label>
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background animate-fade-in">
+      <div className="w-full max-w-2xl">
+        <div className="relative group mb-8">
+          <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow" />
+          <div className="relative px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
+            <div className="space-y-6">
+              <div className="space-y-2 text-center">
+                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
+                  Help us personalize your growing experience
+                </h1>
+                <div className="flex items-center justify-center gap-2 mt-4">
+                  {questions.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                        index === currentStep
+                          ? 'bg-accent w-6'
+                          : index < currentStep
+                          ? 'bg-primary'
+                          : 'bg-white/20'
+                      }`}
+                    />
+                  ))}
                 </div>
-              ))}
-            </RadioGroup>
-          )}
+                <p className="text-accent/80 mt-2">
+                  Question {currentStep + 1} of {questions.length}
+                </p>
+              </div>
 
-          {currentQuestion.type === "checkbox" && (
-            <div className="space-y-3">
-              {currentQuestion.options.map((option) => (
-                <div key={option.value} className="flex items-center space-x-3">
-                  <Checkbox
-                    id={option.value}
-                    checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
-                    onCheckedChange={(checked) => {
-                      const field = currentQuestion.field as keyof QuizResponse
-                      const currentValues = (quizResponses[field] as string[]) || []
-                      
-                      if (checked) {
-                        if (option.value === 'all' || option.value === 'none') {
-                          setQuizResponses((prev) => ({
-                            ...prev,
-                            [field]: [option.value],
-                          }))
-                        } else {
-                          setQuizResponses((prev) => ({
-                            ...prev,
-                            [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value],
-                          }))
-                        }
-                      } else {
-                        setQuizResponses((prev) => ({
-                          ...prev,
-                          [field]: currentValues.filter((value) => value !== option.value),
-                        }))
-                      }
-                    }}
-                  />
-                  <label
-                    htmlFor={option.value}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              <div className="space-y-6">
+                <h2 className="text-2xl font-semibold text-white tech-font">
+                  {currentQuestion.question}
+                </h2>
+
+                {currentQuestion.type === "radio" && (
+                  <RadioGroup
+                    value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
+                    onValueChange={(value) =>
+                      setQuizResponses((prev) => ({
+                        ...prev,
+                        [currentQuestion.field]: value,
+                      }))
+                    }
+                    className="space-y-4"
                   >
-                    {option.label}
-                  </label>
-                </div>
-              ))}
+                    {currentQuestion.options.map((option) => (
+                      <div
+                        key={option.value}
+                        className="relative group flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5 transition-all duration-300"
+                      >
+                        <RadioGroupItem
+                          value={option.value}
+                          id={option.value}
+                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent"
+                        />
+                        <label
+                          htmlFor={option.value}
+                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent transition-colors"
+                        >
+                          {option.label}
+                        </label>
+                        <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary-glow/20 to-accent-glow/20 blur" />
+                        </div>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
+
+                {currentQuestion.type === "checkbox" && (
+                  <div className="space-y-4">
+                    {currentQuestion.options.map((option) => (
+                      <div
+                        key={option.value}
+                        className="relative group flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5 transition-all duration-300"
+                      >
+                        <Checkbox
+                          id={option.value}
+                          checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
+                          onCheckedChange={(checked) => {
+                            const field = currentQuestion.field as keyof QuizResponse
+                            const currentValues = (quizResponses[field] as string[]) || []
+                            
+                            if (checked) {
+                              if (option.value === 'all' || option.value === 'none') {
+                                setQuizResponses((prev) => ({
+                                  ...prev,
+                                  [field]: [option.value],
+                                }))
+                              } else {
+                                setQuizResponses((prev) => ({
+                                  ...prev,
+                                  [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value],
+                                }))
+                              }
+                            } else {
+                              setQuizResponses((prev) => ({
+                                ...prev,
+                                [field]: currentValues.filter((value) => value !== option.value),
+                              }))
+                            }
+                          }}
+                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent"
+                        />
+                        <label
+                          htmlFor={option.value}
+                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent transition-colors"
+                        >
+                          {option.label}
+                        </label>
+                        <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary-glow/20 to-accent-glow/20 blur" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-between pt-6">
+                <Button
+                  variant="outline"
+                  onClick={handlePreviousStep}
+                  disabled={currentStep === 0}
+                  className="relative group px-6"
+                >
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
+                  <span className="relative">Previous</span>
+                </Button>
+                
+                {currentStep === questions.length - 1 ? (
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                    className="relative group px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+                  >
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
+                    <span className="relative">{isSubmitting ? "Saving..." : "Complete Quiz"}</span>
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleNextStep}
+                    className="relative group px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+                  >
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
+                    <span className="relative">Next</span>
+                  </Button>
+                )}
+              </div>
             </div>
-          )}
-        </div>
-
-        <div className="flex justify-between pt-4">
-          <Button
-            variant="outline"
-            onClick={handlePreviousStep}
-            disabled={currentStep === 0}
-          >
-            Previous
-          </Button>
-          
-          {currentStep === questions.length - 1 ? (
-            <Button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Saving..." : "Complete Quiz"}
-            </Button>
-          ) : (
-            <Button onClick={handleNextStep}>
-              Next
-            </Button>
-          )}
+          </div>
         </div>
       </div>
     </div>
