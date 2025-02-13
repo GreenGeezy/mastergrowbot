@@ -21,13 +21,13 @@ serve(async (req) => {
 
     console.log('Received image URLs:', imageUrls);
 
-    // Create a thread with the updated API version header
+    // Create a thread with the correct beta header format
     const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants-v2'
+        'OpenAI-Beta': 'assistants=v1'  // Fixed header format
       }
     });
 
@@ -46,7 +46,7 @@ serve(async (req) => {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants-v2'
+        'OpenAI-Beta': 'assistants=v1'  // Fixed header format
       },
       body: JSON.stringify({
         role: 'user',
@@ -77,7 +77,7 @@ serve(async (req) => {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants-v2'
+        'OpenAI-Beta': 'assistants=v1'  // Fixed header format
       },
       body: JSON.stringify({
         assistant_id: Deno.env.get('OPENAI_ASSISTANT_ID'),
@@ -103,7 +103,7 @@ serve(async (req) => {
       const statusResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`, {
         headers: {
           'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-          'OpenAI-Beta': 'assistants-v2'
+          'OpenAI-Beta': 'assistants=v1'  // Fixed header format
         }
       });
 
@@ -134,7 +134,7 @@ serve(async (req) => {
     const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'OpenAI-Beta': 'assistants-v2'
+        'OpenAI-Beta': 'assistants=v1'  // Fixed header format
       }
     });
 
