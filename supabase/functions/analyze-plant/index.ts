@@ -38,7 +38,9 @@ serve(async (req) => {
     });
 
     if (!threadResponse.ok) {
-      throw new Error('Failed to create thread');
+      const threadError = await threadResponse.json();
+      console.error('Thread creation error:', threadError);
+      throw new Error('Failed to create thread: ' + JSON.stringify(threadError));
     }
 
     const thread = await threadResponse.json();
@@ -68,7 +70,9 @@ serve(async (req) => {
     });
 
     if (!messageResponse.ok) {
-      throw new Error('Failed to add message to thread');
+      const messageError = await messageResponse.json();
+      console.error('Message creation error:', messageError);
+      throw new Error('Failed to add message to thread: ' + JSON.stringify(messageError));
     }
 
     console.log('Added message to thread');
@@ -87,7 +91,9 @@ serve(async (req) => {
     });
 
     if (!runResponse.ok) {
-      throw new Error('Failed to start run');
+      const runError = await runResponse.json();
+      console.error('Run creation error:', runError);
+      throw new Error('Failed to start run: ' + JSON.stringify(runError));
     }
 
     const run = await runResponse.json();
@@ -96,7 +102,8 @@ serve(async (req) => {
     // Poll for completion
     let runStatus;
     let attempts = 0;
-    const maxAttempts = 30;
+    const maxAttempts = 60; // Increased max attempts to allow for longer processing
+    const delay = 2000; // 2 second delay between checks
     
     while (attempts < maxAttempts) {
       const statusResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`, {
@@ -107,7 +114,9 @@ serve(async (req) => {
       });
 
       if (!statusResponse.ok) {
-        throw new Error('Failed to check run status');
+        const statusError = await statusResponse.json();
+        console.error('Status check error:', statusError);
+        throw new Error('Failed to check run status: ' + JSON.stringify(statusError));
       }
 
       runStatus = await statusResponse.json();
@@ -115,11 +124,11 @@ serve(async (req) => {
 
       if (runStatus.status === 'completed') {
         break;
-      } else if (runStatus.status === 'failed') {
-        throw new Error('Run failed');
+      } else if (runStatus.status === 'failed' || runStatus.status === 'cancelled' || runStatus.status === 'expired') {
+        throw new Error(`Run failed with status: ${runStatus.status}`);
       }
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, delay));
       attempts++;
     }
 
@@ -136,7 +145,9 @@ serve(async (req) => {
     });
 
     if (!messagesResponse.ok) {
-      throw new Error('Failed to get messages');
+      const messagesError = await messagesResponse.json();
+      console.error('Messages retrieval error:', messagesError);
+      throw new Error('Failed to get messages: ' + JSON.stringify(messagesError));
     }
 
     const messages = await messagesResponse.json();
@@ -212,8 +223,15 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in analyze-plant function:', error);
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        success: false, 
+        error: error.message,
+        details: error instanceof Error ? error.stack : undefined
+      }),
+      { 
+        status: 500, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
     );
   }
 });
