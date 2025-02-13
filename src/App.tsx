@@ -14,6 +14,7 @@ const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
+const Quiz = lazy(() => import("./pages/Quiz"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -69,6 +70,14 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route 
+                path="/quiz" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Quiz />
+                  </Suspense>
+                } 
+              />
               {/* Auth routes - handle all possible callback patterns with v1 */}
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
