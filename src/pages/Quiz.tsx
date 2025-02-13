@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -107,6 +106,8 @@ export default function Quiz() {
     
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1)
+    } else {
+      handleSubmit()
     }
   }
 
@@ -117,41 +118,25 @@ export default function Quiz() {
   }
 
   const handleSubmit = async () => {
-    if (!session?.user?.id) {
-      toast({
-        title: "Please sign in",
-        description: "You need to be signed in to save your quiz responses",
-        variant: "destructive",
-      })
-      return
-    }
-
     setIsSubmitting(true)
-    try {
-      const { error } = await supabase
-        .from('quiz_responses')
-        .upsert({
-          user_id: session.user.id,
-          ...quizResponses,
-        })
+    
+    if (session?.user?.id) {
+      try {
+        const { error } = await supabase
+          .from('quiz_responses')
+          .upsert({
+            user_id: session.user.id,
+            ...quizResponses,
+          })
 
-      if (error) throw error
-
-      toast({
-        title: "Quiz completed!",
-        description: "Your responses have been saved successfully.",
-      })
-
-      setShowSubscription(true)
-    } catch (error) {
-      console.error('Error saving quiz responses:', error)
-      toast({
-        title: "Error",
-        description: "Failed to save your responses. Please try again.",
-        variant: "destructive",
-      })
-      setIsSubmitting(false)
+        if (error) throw error
+      } catch (error) {
+        console.error('Error saving quiz responses:', error)
+      }
     }
+
+    setShowSubscription(true)
+    setIsSubmitting(false)
   }
 
   if (showSubscription) {
@@ -344,24 +329,18 @@ export default function Quiz() {
                   <span className="relative">Previous</span>
                 </Button>
                 
-                {currentStep === questions.length - 1 ? (
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={isSubmitting}
-                    className="relative group px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
-                  >
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
-                    <span className="relative">{isSubmitting ? "Saving..." : "Complete Quiz"}</span>
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleNextStep}
-                    className="relative group px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
-                  >
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
-                    <span className="relative">Next</span>
-                  </Button>
-                )}
+                <Button
+                  onClick={handleNextStep}
+                  disabled={isSubmitting}
+                  className="relative group px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+                >
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
+                  <span className="relative">
+                    {currentStep === questions.length - 1 
+                      ? (isSubmitting ? "Saving..." : "Complete Quiz")
+                      : "Next"}
+                  </span>
+                </Button>
               </div>
             </div>
           </div>
