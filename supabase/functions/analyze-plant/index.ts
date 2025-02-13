@@ -21,13 +21,13 @@ serve(async (req) => {
 
     console.log('Received image URLs:', imageUrls);
 
-    // Create a thread with the correct beta header format
-    const threadResponse = await fetch('https://api.openai.com/v1/threads', {
+    // Create a thread using the beta API endpoint
+    const threadResponse = await fetch('https://api.openai.com/v1beta/threads', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'  // Fixed header format
+        'OpenAI-Beta': 'assistants=v1'
       }
     });
 
@@ -41,12 +41,12 @@ serve(async (req) => {
     console.log('Created thread:', thread);
 
     // Add a message to the thread with the direct image URLs
-    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+    const messageResponse = await fetch(`https://api.openai.com/v1beta/threads/${thread.id}/messages`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'  // Fixed header format
+        'OpenAI-Beta': 'assistants=v1'
       },
       body: JSON.stringify({
         role: 'user',
@@ -72,12 +72,12 @@ serve(async (req) => {
     console.log('Added message to thread');
 
     // Run the assistant
-    const runResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
+    const runResponse = await fetch(`https://api.openai.com/v1beta/threads/${thread.id}/runs`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'  // Fixed header format
+        'OpenAI-Beta': 'assistants=v1'
       },
       body: JSON.stringify({
         assistant_id: Deno.env.get('OPENAI_ASSISTANT_ID'),
@@ -100,10 +100,10 @@ serve(async (req) => {
     const delay = 2000; // 2 second delay between checks
     
     while (attempts < maxAttempts) {
-      const statusResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`, {
+      const statusResponse = await fetch(`https://api.openai.com/v1beta/threads/${thread.id}/runs/${run.id}`, {
         headers: {
           'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-          'OpenAI-Beta': 'assistants=v1'  // Fixed header format
+          'OpenAI-Beta': 'assistants=v1'
         }
       });
 
@@ -131,10 +131,10 @@ serve(async (req) => {
     }
 
     // Get the messages
-    const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+    const messagesResponse = await fetch(`https://api.openai.com/v1beta/threads/${thread.id}/messages`, {
       headers: {
         'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'OpenAI-Beta': 'assistants=v1'  // Fixed header format
+        'OpenAI-Beta': 'assistants=v1'
       }
     });
 
