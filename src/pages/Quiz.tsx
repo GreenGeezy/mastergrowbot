@@ -175,7 +175,7 @@ export default function Quiz() {
                       $9.99 - $199.00
                     </p>
                     <a 
-                      href="https://square.link/u/2zrZM1j8"
+                      href="https://checkout.square.site/merchant/MLSBW63ZJHNHQ/checkout/PZ2JH5LRAUO2T2ZMDC5MUMBC"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block w-full text-[18px] leading-[48px] h-[48px] text-white bg-[#006aff] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#0055cc] transition-colors duration-300"
