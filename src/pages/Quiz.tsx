@@ -141,10 +141,10 @@ export default function Quiz() {
 
   if (showSubscription) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background animate-fade-in">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-2xl">
           <div className="mb-8">
-            <div className="relative px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
+            <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
               <div className="space-y-8 text-center">
                 <div className="space-y-2">
                   <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
@@ -156,7 +156,7 @@ export default function Quiz() {
                 </div>
                 
                 <div className="flex flex-row gap-6 items-stretch justify-center flex-wrap">
-                  <div className="w-[259px] flex flex-col transform hover:scale-105 transition-transform duration-300 font-['Rubik'] bg-card rounded-lg overflow-hidden">
+                  <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
                     <img 
                       src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1b6495bf2f2383d7f26be999d628cd32922ad0d3/original.png" 
                       alt="Master Growbot AI Weekly Subscription" 
@@ -174,14 +174,14 @@ export default function Quiz() {
                         href="https://square.link/u/IXzCRNdQ?src=embed"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300"
+                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
                       >
                         Try for Just $9.99
                       </a>
                     </div>
                   </div>
 
-                  <div className="w-[259px] flex flex-col transform hover:scale-105 transition-transform duration-300 font-['Rubik'] bg-card rounded-lg overflow-hidden">
+                  <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
                     <img 
                       src="https://items-images-production.s3.us-west-2.amazonaws.com/files/717caf5133f5cf6d865bc3dd16cb11cc4be13d0a/original.png" 
                       alt="Master Growbot AI Quarterly Subscription" 
@@ -199,14 +199,14 @@ export default function Quiz() {
                         href="https://square.link/u/1lNhiUuU?src=embed"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300"
+                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
                       >
                         $89 (Save 25%)
                       </a>
                     </div>
                   </div>
 
-                  <div className="w-[259px] flex flex-col transform hover:scale-105 transition-transform duration-300 font-['Rubik'] bg-card rounded-lg overflow-hidden">
+                  <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
                     <img 
                       src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1b6495bf2f2383d7f26be999d628cd32922ad0d3/original.png" 
                       alt="Master Growbot AI Yearly Subscription" 
@@ -224,7 +224,7 @@ export default function Quiz() {
                         href="https://square.link/u/Q8XMeNCj?src=embed"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300"
+                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
                       >
                         $197 (Save 62%)
                       </a>
@@ -236,10 +236,9 @@ export default function Quiz() {
                   <Button
                     variant="outline"
                     onClick={() => navigate('/chat')}
-                    className="relative group px-6"
+                    className="px-6"
                   >
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
-                    <span className="relative">Skip for now</span>
+                    Skip for now
                   </Button>
                 </div>
               </div>
@@ -253,11 +252,10 @@ export default function Quiz() {
   const currentQuestion = questions[currentStep]
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background animate-fade-in">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
       <div className="w-full max-w-2xl">
-        <div className="relative group mb-8">
-          <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow" />
-          <div className="relative px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
+        <div className="mb-8">
+          <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
             <div className="space-y-6">
               <div className="space-y-2 text-center">
                 <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
@@ -267,7 +265,7 @@ export default function Quiz() {
                   {questions.map((_, index) => (
                     <div
                       key={index}
-                      className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                      className={`h-2 w-2 rounded-full ${
                         index === currentStep
                           ? 'bg-accent w-6'
                           : index < currentStep
@@ -301,7 +299,7 @@ export default function Quiz() {
                     {currentQuestion.options.map((option) => (
                       <div
                         key={option.value}
-                        className="relative group flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5 transition-all duration-300"
+                        className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5"
                       >
                         <RadioGroupItem
                           value={option.value}
@@ -310,13 +308,10 @@ export default function Quiz() {
                         />
                         <label
                           htmlFor={option.value}
-                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent transition-colors"
+                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
                         >
                           {option.label}
                         </label>
-                        <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary-glow/20 to-accent-glow/20 blur" />
-                        </div>
                       </div>
                     ))}
                   </RadioGroup>
@@ -327,7 +322,7 @@ export default function Quiz() {
                     {currentQuestion.options.map((option) => (
                       <div
                         key={option.value}
-                        className="relative group flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5 transition-all duration-300"
+                        className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5"
                       >
                         <Checkbox
                           id={option.value}
@@ -359,13 +354,10 @@ export default function Quiz() {
                         />
                         <label
                           htmlFor={option.value}
-                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent transition-colors"
+                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
                         >
                           {option.label}
                         </label>
-                        <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary-glow/20 to-accent-glow/20 blur" />
-                        </div>
                       </div>
                     ))}
                   </div>
@@ -377,23 +369,19 @@ export default function Quiz() {
                   variant="outline"
                   onClick={handlePreviousStep}
                   disabled={currentStep === 0}
-                  className="relative group px-6"
+                  className="px-6"
                 >
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
-                  <span className="relative">Previous</span>
+                  Previous
                 </Button>
                 
                 <Button
                   onClick={handleNextStep}
                   disabled={isSubmitting}
-                  className="relative group px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+                  className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
                 >
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow to-accent-glow rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-200" />
-                  <span className="relative">
-                    {currentStep === questions.length - 1 
-                      ? (isSubmitting ? "Saving..." : "Complete Quiz")
-                      : "Next"}
-                  </span>
+                  {currentStep === questions.length - 1 
+                    ? (isSubmitting ? "Saving..." : "Complete Quiz")
+                    : "Next"}
                 </Button>
               </div>
             </div>
