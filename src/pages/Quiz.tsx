@@ -159,19 +159,16 @@ export default function Quiz() {
                 <div className="mx-auto w-[259px] bg-white rounded-xl shadow-2xl transform hover:scale-105 transition-transform duration-300 font-['Rubik']">
                   <img 
                     src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1b6495bf2f2383d7f26be999d628cd32922ad0d3/original.png" 
-                    alt="Master Growbot AI" 
+                    alt="Master Growbot AI Weekly Subscription" 
                     className="w-full h-auto rounded-t-lg"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
                       target.style.display = 'none'
                     }}
                   />
-                  <div className="p-5 space-y-3">
-                    <p className="text-[18px] leading-[20px] text-gray-800">
-                      Master Growbot AI
-                    </p>
+                  <div className="p-5">
                     <a 
-                      href="https://checkout.square.site/merchant/MLSBW63ZJHNHQ/checkout/PZ2JH5LRAUO2T2ZMDC5MUMBC?src=embed"
+                      href="https://square.link/u/IXzCRNdQ?src=embed"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300"
