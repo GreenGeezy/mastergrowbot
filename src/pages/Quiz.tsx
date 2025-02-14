@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -144,8 +143,7 @@ export default function Quiz() {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background animate-fade-in">
         <div className="w-full max-w-2xl">
-          <div className="relative group mb-8">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow" />
+          <div className="mb-8">
             <div className="relative px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
               <div className="space-y-8 text-center">
                 <div className="space-y-2">
