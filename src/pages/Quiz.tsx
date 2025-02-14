@@ -195,6 +195,22 @@ export default function Quiz() {
                       </a>
                     </div>
                   </div>
+
+                  <div className="w-[259px] bg-white rounded-xl shadow-2xl transform hover:scale-105 transition-transform duration-300 font-['Rubik']">
+                    <div className="p-5 space-y-4">
+                      <p className="text-[18px] leading-[20px] text-black">
+                        Master Growbot AI Yearly Subscription
+                      </p>
+                      <a 
+                        href="https://square.link/u/Q8XMeNCj?src=embed"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300"
+                      >
+                        $199 (Save 62%)
+                      </a>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex gap-4 justify-center">
