@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -171,16 +170,13 @@ export default function Quiz() {
                     <p className="text-[18px] leading-[20px] text-gray-800">
                       Master Growbot AI
                     </p>
-                    <p className="text-[18px] leading-[20px] font-semibold text-gray-900">
-                      $9.99 - $199.00
-                    </p>
                     <a 
-                      href="https://checkout.square.site/merchant/MLSBW63ZJHNHQ/checkout/PZ2JH5LRAUO2T2ZMDC5MUMBC"
+                      href="https://checkout.square.site/merchant/MLSBW63ZJHNHQ/checkout/PZ2JH5LRAUO2T2ZMDC5MUMBC?src=embed"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block w-full text-[18px] leading-[48px] h-[48px] text-white bg-[#006aff] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#0055cc] transition-colors duration-300"
+                      className="inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300"
                     >
-                      Buy now
+                      Try for Just $9.99
                     </a>
                   </div>
                 </div>
