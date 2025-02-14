@@ -157,7 +157,7 @@ export default function Quiz() {
                   </p>
                 </div>
                 
-                <div className="flex flex-col gap-4 items-center">
+                <div className="flex flex-row gap-4 items-start justify-center flex-wrap">
                   <div className="w-[259px] bg-white rounded-xl shadow-2xl transform hover:scale-105 transition-transform duration-300 font-['Rubik']">
                     <img 
                       src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1b6495bf2f2383d7f26be999d628cd32922ad0d3/original.png" 
