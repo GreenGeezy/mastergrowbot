@@ -197,17 +197,26 @@ export default function Quiz() {
                   </div>
 
                   <div className="w-[259px] transform hover:scale-105 transition-transform duration-300 font-['Rubik']">
-                    <p className="text-[18px] leading-[20px] text-white">
-                      Master Growbot AI Yearly Subscription
-                    </p>
+                    <img 
+                      src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1b6495bf2f2383d7f26be999d628cd32922ad0d3/original.png" 
+                      alt="Master Growbot AI Yearly Subscription" 
+                      className="w-full h-auto rounded-t-lg"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                      }}
+                    />
                     <div className="p-5">
+                      <p className="text-[18px] leading-[20px] text-white">
+                        Master Growbot AI Yearly Subscription
+                      </p>
                       <a 
-                        href="https://square.link/u/Q8XMeNCj"
+                        href="https://square.link/u/Q8XMeNCj?src=embed"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300"
+                        className="inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300 mt-4"
                       >
-                        $199 (Save 62%)
+                        $197 (Save 62%)
                       </a>
                     </div>
                   </div>
