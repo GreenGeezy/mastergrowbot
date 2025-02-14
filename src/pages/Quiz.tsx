@@ -169,7 +169,7 @@ export default function Quiz() {
                   />
                   <div className="p-5">
                     <a 
-                      href="https://checkout.square.site/merchant/MLSBW63ZJHNHQ/checkout/KCE4RJBE4ZIEQHRNOWEIDFUB?src=embed"
+                      href="https://square.link/u/IXzCRNdQ?src=embed"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c] transition-colors duration-300"
