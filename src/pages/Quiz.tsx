@@ -143,7 +143,7 @@ export default function Quiz() {
   if (showSubscription) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-[850px]">
           <div className="mb-8">
             <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
               <div className="space-y-8 text-center">
@@ -156,17 +156,19 @@ export default function Quiz() {
                   </p>
                 </div>
                 
-                <div className="flex flex-row gap-6 items-stretch justify-center flex-wrap">
+                <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap">
                   <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
-                    <img 
-                      src="https://items-images-production.s3.us-west-2.amazonaws.com/files/717caf5133f5cf6d865bc3dd16cb11cc4be13d0a/original.png" 
-                      alt="Master Growbot AI Weekly Subscription" 
-                      className="w-full h-auto object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement
-                        target.style.display = 'none'
-                      }}
-                    />
+                    <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                      <img 
+                        src="https://items-images-production.s3.us-west-2.amazonaws.com/files/717caf5133f5cf6d865bc3dd16cb11cc4be13d0a/original.png" 
+                        alt="Master Growbot AI Weekly Subscription" 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          target.style.display = 'none'
+                        }}
+                      />
+                    </div>
                     <div className="p-5 flex flex-col flex-grow">
                       <p className="text-[18px] leading-[20px] text-white mb-4">
                         Master Growbot AI Weekly Subscription
@@ -183,15 +185,17 @@ export default function Quiz() {
                   </div>
 
                   <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
-                    <img 
-                      src="https://items-images-production.s3.us-west-2.amazonaws.com/files/06a35f41d5f7b28f98ff3a4fded063b66f5aee76/original.png" 
-                      alt="Master Growbot AI Quarterly Subscription" 
-                      className="w-full h-auto object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement
-                        target.style.display = 'none'
-                      }}
-                    />
+                    <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                      <img 
+                        src="https://items-images-production.s3.us-west-2.amazonaws.com/files/06a35f41d5f7b28f98ff3a4fded063b66f5aee76/original.png" 
+                        alt="Master Growbot AI Quarterly Subscription" 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          target.style.display = 'none'
+                        }}
+                      />
+                    </div>
                     <div className="p-5 flex flex-col flex-grow">
                       <p className="text-[18px] leading-[20px] text-white mb-4">
                         Master Growbot AI Quarterly Subscription
@@ -208,15 +212,17 @@ export default function Quiz() {
                   </div>
 
                   <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
-                    <img 
-                      src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" 
-                      alt="Master Growbot AI Yearly Subscription" 
-                      className="w-full h-auto object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement
-                        target.style.display = 'none'
-                      }}
-                    />
+                    <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                      <img 
+                        src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" 
+                        alt="Master Growbot AI Yearly Subscription" 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          target.style.display = 'none'
+                        }}
+                      />
+                    </div>
                     <div className="p-5 flex flex-col flex-grow">
                       <p className="text-[18px] leading-[20px] text-white mb-4">
                         Master Growbot AI Yearly Subscription
