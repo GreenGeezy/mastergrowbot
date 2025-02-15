@@ -209,7 +209,7 @@ export default function Quiz() {
 
                   <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
                     <img 
-                      src="https://items-images-production.s3.us-west-2.amazonaws.com/files/1b6495bf2f2383d7f26be999d628cd32922ad0d3/original.png" 
+                      src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" 
                       alt="Master Growbot AI Yearly Subscription" 
                       className="w-full h-auto object-cover"
                       onError={(e) => {
