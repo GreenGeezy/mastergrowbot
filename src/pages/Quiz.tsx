@@ -239,7 +239,7 @@ export default function Quiz() {
                   </div>
                 </div>
 
-                <div className="flex gap-4 justify-center">
+                <div className="flex flex-col items-center gap-6">
                   <Button
                     variant="outline"
                     onClick={() => navigate('/chat')}
@@ -247,6 +247,14 @@ export default function Quiz() {
                   >
                     Skip for now
                   </Button>
+                  
+                  <div className="w-full max-w-[600px] space-y-2">
+                    <img 
+                      src="/lovable-uploads/ff2ab745-26e7-4388-a649-035f5b9ca60f.png"
+                      alt="Secure checkout by Square with multiple payment options"
+                      className="w-full h-auto"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
