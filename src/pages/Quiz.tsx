@@ -258,8 +258,12 @@ export default function Quiz() {
               <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
             </div>
             
-            <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md">
-              Skip for now
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/chat')} 
+              className="px-6 w-full max-w-md h-12 text-base hover:bg-white/5 border-white/20 transition-colors duration-200"
+            >
+              No thanks, I want to stay basic
             </Button>
           </div>
         </div>
