@@ -8,7 +8,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
 import { Star, Award } from "lucide-react";
-
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -26,7 +25,6 @@ export default function Quiz() {
     nutrient_type: undefined,
     goals: []
   });
-
   const questions = [{
     question: "How long have you been growing?",
     type: "radio",
@@ -121,7 +119,6 @@ export default function Quiz() {
       value: "all"
     }]
   }];
-
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
@@ -139,13 +136,11 @@ export default function Quiz() {
       handleSubmit();
     }
   };
-
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
     if (session?.user?.id) {
@@ -164,7 +159,6 @@ export default function Quiz() {
     setShowSubscription(true);
     setIsSubmitting(false);
   };
-
   if (showSubscription) {
     return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-8">
@@ -178,18 +172,13 @@ export default function Quiz() {
               <div className="flex items-center justify-center space-x-3">
                 <Award className="w-7 h-7 text-[#FFD700] animate-float will-change-transform" />
                 <div className="flex items-center space-x-1">
-                  {[...Array(5)].map((_, index) => (
-                    <Star
-                      key={index}
-                      className="w-6 h-6 fill-[#FFD700] text-[#FFD700]"
-                    />
-                  ))}
+                  {[...Array(5)].map((_, index) => <Star key={index} className="w-6 h-6 fill-[#FFD700] text-[#FFD700]" />)}
                 </div>
               </div>
             </div>
           </div>
           
-          <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8 rounded py-[7px] px-[12px] my-[4px] mx-[37px]">
+          <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8 rounded py-[7px] px-[12px] my-[4px] mx-0">
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
                 <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
@@ -269,7 +258,6 @@ export default function Quiz() {
         </div>
       </div>;
   }
-
   const currentQuestion = questions[currentStep];
   return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
       <div className="w-full max-w-2xl">
