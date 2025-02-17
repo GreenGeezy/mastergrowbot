@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -167,12 +168,12 @@ export default function Quiz() {
 
   if (showSubscription) {
     return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
-        <div className="w-full max-w-[1200px] space-y-8">
+        <div className="w-full max-w-[1200px] space-y-6">
           <div className="text-center space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
             <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
-            <div className="flex flex-col items-center space-y-0\n">
-              <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-2">
+            <div className="flex flex-col items-center space-y-0">
+              <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
                 Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
               </p>
               <div className="flex items-center justify-center space-x-3">
@@ -184,7 +185,7 @@ export default function Quiz() {
             </div>
           </div>
           
-          <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8 mx-0 my-0 py-0 px-0 rounded">
+          <div className="flex flex-row gap-3 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
                 <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
@@ -192,9 +193,9 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 pt-4 pb-3 flex flex-col flex-grow">
-                <div className="min-h-[76px] mb-1">
-                  <h3 className="leading-[24px] font-bold text-white text-lg">
+              <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
+                <div className="min-h-[60px]">
+                  <h3 className="leading-[20px] font-bold text-white text-lg">
                     Master Growbot AI Weekly Subscription
                   </h3>
                 </div>
@@ -214,9 +215,9 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 pt-4 pb-3 flex flex-col flex-grow">
-                <div className="min-h-[76px] mb-1">
-                  <h3 className="leading-[24px] font-bold text-white text-lg">
+              <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
+                <div className="min-h-[60px]">
+                  <h3 className="leading-[20px] font-bold text-white text-lg">
                     Master Growbot AI Quarterly Subscription
                   </h3>
                 </div>
@@ -236,9 +237,9 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 pt-4 pb-3 flex flex-col flex-grow">
-                <div className="min-h-[76px] mb-1">
-                  <h3 className="leading-[24px] font-bold text-white text-lg">
+              <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
+                <div className="min-h-[60px]">
+                  <h3 className="leading-[20px] font-bold text-white text-lg">
                     Master Growbot AI Yearly Subscription
                   </h3>
                 </div>
