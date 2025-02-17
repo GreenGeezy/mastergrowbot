@@ -203,8 +203,11 @@ export default function Quiz() {
                       />
                     </div>
                     <div className="p-5 flex flex-col flex-grow">
-                      <p className="text-[18px] leading-[20px] text-white mb-4">
+                      <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
                         Master Growbot AI Quarterly Subscription
+                      </h3>
+                      <p className="text-[18px] leading-[20px] text-white/80 mb-4">
+                        $89 (Save 25%)
                       </p>
                       <a 
                         href="https://square.link/u/1lNhiUuU"
@@ -213,8 +216,8 @@ export default function Quiz() {
                         className="mt-auto"
                       >
                         <img 
-                          src="/lovable-uploads/3276fe48-d726-4d92-a7ba-01600b84c17b.png"
-                          alt="Square Logo"
+                          src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png"
+                          alt="Buy Now with Square"
                           className="w-full h-auto"
                         />
                       </a>
