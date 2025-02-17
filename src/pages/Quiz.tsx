@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -8,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
-
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -26,7 +24,6 @@ export default function Quiz() {
     nutrient_type: undefined,
     goals: []
   });
-
   const questions = [{
     question: "How long have you been growing?",
     type: "radio",
@@ -121,7 +118,6 @@ export default function Quiz() {
       value: "all"
     }]
   }];
-
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
@@ -139,13 +135,11 @@ export default function Quiz() {
       handleSubmit();
     }
   };
-
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
     if (session?.user?.id) {
@@ -164,18 +158,12 @@ export default function Quiz() {
     setShowSubscription(true);
     setIsSubmitting(false);
   };
-
   if (showSubscription) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
+    return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-8">
           <div className="text-center space-y-2">
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
-              Unlock Your Growing Potential
-            </h1>
-            <p className="text-lg text-white/80">
-              Get personalized AI guidance for your growing journey
-            </p>
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
+            <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
           </div>
           
           <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8 rounded py-[7px] px-[12px] my-[4px] mx-[37px]">
@@ -247,11 +235,7 @@ export default function Quiz() {
           </div>
 
           <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
-            <Button
-              variant="outline"
-              onClick={() => navigate('/chat')}
-              className="px-6 w-full max-w-md"
-            >
+            <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md">
               Skip for now
             </Button>
             
@@ -260,10 +244,8 @@ export default function Quiz() {
             </div>
           </div>
         </div>
-      </div>
-    )
+      </div>;
   }
-
   const currentQuestion = questions[currentStep];
   return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
       <div className="w-full max-w-2xl">
