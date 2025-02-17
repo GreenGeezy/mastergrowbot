@@ -195,10 +195,10 @@ export default function Quiz() {
 
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/06a35f41d5f7b28f98ff3a4fded063b66f5aee76/original.png" alt="Master Growbot AI Quarterly Subscription" onError={e => {
+                <img alt="Master Growbot AI Quarterly Subscription" onError={e => {
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
-              }} className="w-full h-full object-fill" />
+              }} className="w-full h-full object-fill" src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" />
               </div>
               <div className="p-5 flex flex-col flex-grow">
                 <div className="min-h-[76px] my-0">
