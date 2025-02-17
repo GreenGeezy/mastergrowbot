@@ -186,16 +186,16 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 flex flex-col flex-grow">
-                <div className="min-h-[76px] mb-2">
+              <div className="p-5 pt-4 pb-3 flex flex-col flex-grow">
+                <div className="min-h-[76px] mb-1">
                   <h3 className="leading-[24px] font-bold text-white text-lg">
                     Master Growbot AI Weekly Subscription
                   </h3>
                 </div>
-                <p className="leading-[20px] text-white/80 mb-1 font-bold text-xl">
+                <p className="leading-[20px] text-white/80 mb-0 font-bold text-xl">
                   $9.99/Week Cancel Anytime
                 </p>
-                <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer">
+                <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="-mt-1">
                   <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
@@ -208,16 +208,16 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 flex flex-col flex-grow">
-                <div className="min-h-[76px] mb-2">
+              <div className="p-5 pt-4 pb-3 flex flex-col flex-grow">
+                <div className="min-h-[76px] mb-1">
                   <h3 className="leading-[24px] font-bold text-white text-lg">
                     Master Growbot AI Quarterly Subscription
                   </h3>
                 </div>
-                <p className="leading-[20px] text-white/80 mb-1 font-bold text-xl">
+                <p className="leading-[20px] text-white/80 mb-0 font-bold text-xl">
                   $89 (Save 25%) Cancel Anytime
                 </p>
-                <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer">
+                <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="-mt-1">
                   <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
@@ -230,16 +230,16 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 flex flex-col flex-grow">
-                <div className="min-h-[76px] mb-2">
+              <div className="p-5 pt-4 pb-3 flex flex-col flex-grow">
+                <div className="min-h-[76px] mb-1">
                   <h3 className="leading-[24px] font-bold text-white text-lg">
                     Master Growbot AI Yearly Subscription
                   </h3>
                 </div>
-                <p className="leading-[20px] text-white/80 mb-1 font-bold text-xl">
+                <p className="leading-[20px] text-white/80 mb-0 font-bold text-xl">
                   $199 (Save Over 60%) Cancel Anytime
                 </p>
-                <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer">
+                <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="-mt-1">
                   <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
