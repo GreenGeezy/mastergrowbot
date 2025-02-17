@@ -208,7 +208,7 @@ export default function Quiz() {
                     Master Growbot AI Quarterly Subscription
                   </h3>
                 </div>
-                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]">
+                <p className="text-[20px] leading-[24px] text-white/80 mb-4">
                   $89 (Save 25%) Cancel Anytime
                 </p>
                 <a 
