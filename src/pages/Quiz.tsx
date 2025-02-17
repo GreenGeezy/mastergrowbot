@@ -212,7 +212,7 @@ export default function Quiz() {
                   $89 (Save 25%) Cancel Anytime
                 </p>
                 <a 
-                  href="https://square.link/u/1lNhiUuU"
+                  href="https://square.link/u/5Re3cMLs"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-auto"
