@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
-
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -25,7 +24,6 @@ export default function Quiz() {
     nutrient_type: undefined,
     goals: []
   });
-
   const questions = [{
     question: "How long have you been growing?",
     type: "radio",
@@ -120,7 +118,6 @@ export default function Quiz() {
       value: "all"
     }]
   }];
-
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
@@ -138,13 +135,11 @@ export default function Quiz() {
       handleSubmit();
     }
   };
-
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
     if (session?.user?.id) {
@@ -163,10 +158,8 @@ export default function Quiz() {
     setShowSubscription(true);
     setIsSubmitting(false);
   };
-
   if (showSubscription) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
+    return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-8">
           <div className="text-center space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
@@ -180,15 +173,10 @@ export default function Quiz() {
           <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8 px-0 mx-0 my-0 py-0 rounded">
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                <img 
-                  alt="Master Growbot AI Weekly Subscription" 
-                  src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" 
-                  className="w-full h-[146px] object-cover rounded-t-lg"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+                <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }} />
               </div>
               <div className="p-5 flex flex-col flex-grow">
                 <div className="min-h-[76px]">
@@ -199,68 +187,40 @@ export default function Quiz() {
                 <p className="text-[18px] leading-[20px] text-white/80 h-[24px]">
                   $9.99/Week Cancel Anytime
                 </p>
-                <a 
-                  href="https://square.link/u/TgbFtDnS"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-auto"
-                >
-                  <img 
-                    src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png"
-                    alt="Buy Now with Square"
-                    className="w-full h-auto"
-                  />
+                <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="mt-auto">
+                  <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
             </div>
 
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                <img 
-                  alt="Master Growbot AI Quarterly Subscription"
-                  src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png"
-                  className="w-full h-[146px] object-cover rounded-t-lg"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+                <img alt="Master Growbot AI Quarterly Subscription" src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }} />
               </div>
               <div className="p-5 flex flex-col flex-grow">
                 <div className="min-h-[76px]">
-                  <h3 className="text-[20px] leading-[24px] font-bold text-white">
+                  <h3 className="leading-[24px] font-bold text-white text-xl">
                     Master Growbot AI Quarterly Subscription
                   </h3>
                 </div>
-                <p className="text-[20px] leading-[24px] text-white/80 mb-4">
+                <p className="leading-[24px] text-white/80 mb-4 font-bold text-xl">
                   $89 (Save 25%) Cancel Anytime
                 </p>
-                <a 
-                  href="https://square.link/u/5Re3cMLs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-auto"
-                >
-                  <img 
-                    src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png"
-                    alt="Buy Now with Square"
-                    className="w-full h-auto"
-                  />
+                <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="mt-auto">
+                  <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
             </div>
 
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                <img 
-                  src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png"
-                  alt="Master Growbot AI Yearly Subscription"
-                  className="w-full h-[146px] object-cover rounded-t-lg"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+                <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" alt="Master Growbot AI Yearly Subscription" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }} />
               </div>
               <div className="p-5 flex flex-col flex-grow">
                 <div className="min-h-[76px]">
@@ -271,44 +231,25 @@ export default function Quiz() {
                 <p className="text-[18px] leading-[20px] text-white/80 h-[24px]">
                   $199 (Save Over 60%) Cancel Anytime
                 </p>
-                <a 
-                  href="https://square.link/u/1lsuAJjC"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-auto"
-                >
-                  <img 
-                    src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png"
-                    alt="Buy Now with Square"
-                    className="w-full h-auto"
-                  />
+                <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="mt-auto">
+                  <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
             </div>
           </div>
 
           <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
-            <Button
-              variant="outline"
-              onClick={() => navigate('/chat')}
-              className="px-6 w-full max-w-md"
-            >
+            <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md">
               Skip for now
             </Button>
             
             <div className="w-full">
-              <img 
-                src="/lovable-uploads/ff2ab745-26e7-4388-a649-035f5b9ca60f.png"
-                alt="Secure checkout by Square with multiple payment options"
-                className="w-full h-auto"
-              />
+              <img src="/lovable-uploads/ff2ab745-26e7-4388-a649-035f5b9ca60f.png" alt="Secure checkout by Square with multiple payment options" className="w-full h-auto" />
             </div>
           </div>
         </div>
-      </div>
-    )
+      </div>;
   }
-
   const currentQuestion = questions[currentStep];
   return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
       <div className="w-full max-w-2xl">
