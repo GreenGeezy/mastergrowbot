@@ -167,13 +167,13 @@ export default function Quiz() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-grow">
-                <div className="min-h-[76px]"> {/* Added fixed height container for title */}
+                <div className="min-h-[76px]">
                   <h3 className="text-[20px] leading-[24px] font-bold text-white">
                     Master Growbot AI Weekly Subscription
                   </h3>
                 </div>
-                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]"> {/* Added fixed height */}
-                  $9.99/Week
+                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]">
+                  $9.99/Week Cancel Anytime
                 </p>
                 <a 
                   href="https://square.link/u/TgbFtDnS"
@@ -203,13 +203,13 @@ export default function Quiz() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-grow">
-                <div className="min-h-[76px]"> {/* Added fixed height container for title */}
+                <div className="min-h-[76px]">
                   <h3 className="text-[20px] leading-[24px] font-bold text-white">
                     Master Growbot AI Quarterly Subscription
                   </h3>
                 </div>
-                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]"> {/* Added fixed height */}
-                  $89 (Save 25%)
+                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]">
+                  $89 (Save 25%) Cancel Anytime
                 </p>
                 <a 
                   href="https://square.link/u/1lNhiUuU"
@@ -239,12 +239,12 @@ export default function Quiz() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-grow">
-                <div className="min-h-[76px]"> {/* Added fixed height container for title */}
+                <div className="min-h-[76px]">
                   <h3 className="text-[20px] leading-[24px] font-bold text-white">
                     Master Growbot AI Yearly Subscription
                   </h3>
                 </div>
-                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]"> {/* Added fixed height */}
+                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]">
                   $199 (Save Over 60%)
                 </p>
                 <a 
