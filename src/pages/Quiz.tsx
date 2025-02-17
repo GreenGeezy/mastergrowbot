@@ -142,141 +142,135 @@ export default function Quiz() {
   if (showSubscription) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
-        <div className="w-full max-w-[850px]">
-          <div className="mb-8">
-            <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
-              <div className="space-y-8 text-center">
-                <div className="space-y-2">
-                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
-                    Unlock Your Growing Potential
-                  </h1>
-                  <p className="text-lg text-white/80">
-                    Get personalized AI guidance for your growing journey
-                  </p>
-                </div>
-                
-                <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap">
-                  <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
-                    <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                      <img 
-                        src="https://items-images-production.s3.us-west-2.amazonaws.com/files/717caf5133f5cf6d865bc3dd16cb11cc4be13d0a/original.png" 
-                        alt="Master Growbot AI Weekly Subscription" 
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement
-                          target.style.display = 'none'
-                        }}
-                      />
-                    </div>
-                    <div className="p-5 flex flex-col flex-grow">
-                      <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
-                        Master Growbot AI Weekly Subscription
-                      </h3>
-                      <p className="text-[18px] leading-[20px] text-white/80 mb-4">
-                        $9.99/Week
-                      </p>
-                      <a 
-                        href="https://square.link/u/TgbFtDnS"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-auto"
-                      >
-                        <img 
-                          src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png"
-                          alt="Buy Now with Square"
-                          className="w-full h-auto"
-                        />
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
-                    <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                      <img 
-                        src="https://items-images-production.s3.us-west-2.amazonaws.com/files/06a35f41d5f7b28f98ff3a4fded063b66f5aee76/original.png" 
-                        alt="Master Growbot AI Quarterly Subscription" 
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement
-                          target.style.display = 'none'
-                        }}
-                      />
-                    </div>
-                    <div className="p-5 flex flex-col flex-grow">
-                      <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
-                        Master Growbot AI Quarterly Subscription
-                      </h3>
-                      <p className="text-[18px] leading-[20px] text-white/80 mb-4">
-                        $89 (Save 25%)
-                      </p>
-                      <a 
-                        href="https://square.link/u/1lNhiUuU"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-auto"
-                      >
-                        <img 
-                          src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png"
-                          alt="Buy Now with Square"
-                          className="w-full h-auto"
-                        />
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
-                    <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                      <img 
-                        src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" 
-                        alt="Master Growbot AI Yearly Subscription" 
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement
-                          target.style.display = 'none'
-                        }}
-                      />
-                    </div>
-                    <div className="p-5 flex flex-col flex-grow">
-                      <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
-                        Master Growbot AI Yearly Subscription
-                      </h3>
-                      <p className="text-[18px] leading-[20px] text-white/80 mb-4">
-                        $199 (Save Over 60%)
-                      </p>
-                      <a 
-                        href="https://square.link/u/Q8XMeNCj"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-auto"
-                      >
-                        <img 
-                          src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png"
-                          alt="Buy Now with Square"
-                          className="w-full h-auto"
-                        />
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col items-center gap-6">
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate('/chat')}
-                      className="px-6"
-                    >
-                      Skip for now
-                    </Button>
-                    
-                    <div className="w-full max-w-[600px] space-y-2">
-                      <img 
-                        src="/lovable-uploads/ff2ab745-26e7-4388-a649-035f5b9ca60f.png"
-                        alt="Secure checkout by Square with multiple payment options"
-                        className="w-full h-auto"
-                      />
-                    </div>
-                  </div>
-                </div>
+        <div className="w-full max-w-[1200px] space-y-8">
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
+              Unlock Your Growing Potential
+            </h1>
+            <p className="text-lg text-white/80">
+              Get personalized AI guidance for your growing journey
+            </p>
+          </div>
+          
+          <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8">
+            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
+              <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                <img 
+                  src="https://items-images-production.s3.us-west-2.amazonaws.com/files/717caf5133f5cf6d865bc3dd16cb11cc4be13d0a/original.png" 
+                  alt="Master Growbot AI Weekly Subscription" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                  }}
+                />
               </div>
+              <div className="p-5 flex flex-col flex-grow">
+                <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
+                  Master Growbot AI Weekly Subscription
+                </h3>
+                <p className="text-[18px] leading-[20px] text-white/80 mb-4">
+                  $9.99/Week
+                </p>
+                <a 
+                  href="https://square.link/u/TgbFtDnS"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto"
+                >
+                  <img 
+                    src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png"
+                    alt="Buy Now with Square"
+                    className="w-full h-auto"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
+              <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                <img 
+                  src="https://items-images-production.s3.us-west-2.amazonaws.com/files/06a35f41d5f7b28f98ff3a4fded063b66f5aee76/original.png" 
+                  alt="Master Growbot AI Quarterly Subscription" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                  }}
+                />
+              </div>
+              <div className="p-5 flex flex-col flex-grow">
+                <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
+                  Master Growbot AI Quarterly Subscription
+                </h3>
+                <p className="text-[18px] leading-[20px] text-white/80 mb-4">
+                  $89 (Save 25%)
+                </p>
+                <a 
+                  href="https://square.link/u/1lNhiUuU"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto"
+                >
+                  <img 
+                    src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png"
+                    alt="Buy Now with Square"
+                    className="w-full h-auto"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
+              <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                <img 
+                  src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" 
+                  alt="Master Growbot AI Yearly Subscription" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                  }}
+                />
+              </div>
+              <div className="p-5 flex flex-col flex-grow">
+                <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
+                  Master Growbot AI Yearly Subscription
+                </h3>
+                <p className="text-[18px] leading-[20px] text-white/80 mb-4">
+                  $199 (Save Over 60%)
+                </p>
+                <a 
+                  href="https://square.link/u/Q8XMeNCj"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto"
+                >
+                  <img 
+                    src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png"
+                    alt="Buy Now with Square"
+                    className="w-full h-auto"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
+            <Button
+              variant="outline"
+              onClick={() => navigate('/chat')}
+              className="px-6 w-full max-w-md"
+            >
+              Skip for now
+            </Button>
+            
+            <div className="w-full">
+              <img 
+                src="/lovable-uploads/ff2ab745-26e7-4388-a649-035f5b9ca60f.png"
+                alt="Secure checkout by Square with multiple payment options"
+                className="w-full h-auto"
+              />
             </div>
           </div>
         </div>
