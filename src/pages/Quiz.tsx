@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -177,14 +176,13 @@ export default function Quiz() {
                         href="https://square.link/u/TgbFtDnS"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-flex items-center justify-center gap-2 w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-black text-center rounded-lg transition-colors duration-200 hover:bg-zinc-800 font-medium"
+                        className="mt-auto"
                       >
                         <img 
-                          src="/lovable-uploads/1c997f5b-d14b-4cb5-9e38-c1d0af451602.png"
+                          src="/lovable-uploads/3276fe48-d726-4d92-a7ba-01600b84c17b.png"
                           alt="Square Logo"
-                          className="h-6 w-auto"
+                          className="w-full h-auto"
                         />
-                        Try for Just $9.99
                       </a>
                     </div>
                   </div>
@@ -209,9 +207,13 @@ export default function Quiz() {
                         href="https://square.link/u/1lNhiUuU"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-black text-center rounded-lg transition-colors duration-200 hover:bg-zinc-800 font-medium"
+                        className="mt-auto"
                       >
-                        $89 (Save 25%)
+                        <img 
+                          src="/lovable-uploads/3276fe48-d726-4d92-a7ba-01600b84c17b.png"
+                          alt="Square Logo"
+                          className="w-full h-auto"
+                        />
                       </a>
                     </div>
                   </div>
@@ -236,9 +238,13 @@ export default function Quiz() {
                         href="https://square.link/u/Q8XMeNCj"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-black text-center rounded-lg transition-colors duration-200 hover:bg-zinc-800 font-medium"
+                        className="mt-auto"
                       >
-                        $197 (Save 62%)
+                        <img 
+                          src="/lovable-uploads/3276fe48-d726-4d92-a7ba-01600b84c17b.png"
+                          alt="Square Logo"
+                          className="w-full h-auto"
+                        />
                       </a>
                     </div>
                   </div>
