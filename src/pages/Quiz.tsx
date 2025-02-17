@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
 import { Star, Award } from "lucide-react";
+
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export default function Quiz() {
     nutrient_type: undefined,
     goals: []
   });
+
   const questions = [{
     question: "How long have you been growing?",
     type: "radio",
@@ -119,6 +121,7 @@ export default function Quiz() {
       value: "all"
     }]
   }];
+
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
@@ -136,11 +139,13 @@ export default function Quiz() {
       handleSubmit();
     }
   };
+
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     if (session?.user?.id) {
@@ -159,6 +164,7 @@ export default function Quiz() {
     setShowSubscription(true);
     setIsSubmitting(false);
   };
+
   if (showSubscription) {
     return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-8">
@@ -248,7 +254,7 @@ export default function Quiz() {
 
           <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
             <div className="w-full">
-              <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/7207338c-636f-44b7-b088-57a2d94223bf.png" />
+              <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
             </div>
             
             <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md">
@@ -258,6 +264,7 @@ export default function Quiz() {
         </div>
       </div>;
   }
+
   const currentQuestion = questions[currentStep];
   return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
       <div className="w-full max-w-2xl">
