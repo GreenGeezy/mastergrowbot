@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -176,7 +177,7 @@ export default function Quiz() {
                         href="https://square.link/u/TgbFtDnS"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
+                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-black text-center rounded-lg transition-colors duration-200 hover:bg-zinc-800 font-medium"
                       >
                         Try for Just $9.99
                       </a>
@@ -203,7 +204,7 @@ export default function Quiz() {
                         href="https://square.link/u/1lNhiUuU"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
+                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-black text-center rounded-lg transition-colors duration-200 hover:bg-zinc-800 font-medium"
                       >
                         $89 (Save 25%)
                       </a>
@@ -230,7 +231,7 @@ export default function Quiz() {
                         href="https://square.link/u/Q8XMeNCj"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
+                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-black text-center rounded-lg transition-colors duration-200 hover:bg-zinc-800 font-medium"
                       >
                         $197 (Save 62%)
                       </a>
