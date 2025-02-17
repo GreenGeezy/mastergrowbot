@@ -165,7 +165,7 @@ export default function Quiz() {
           <div className="text-center space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
             <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
-            <div className="flex flex-col items-center space-y-3">
+            <div className="flex flex-col items-center space-y-0\n">
               <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-2">
                 Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
               </p>
