@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -166,10 +167,12 @@ export default function Quiz() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-grow">
-                <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
-                  Master Growbot AI Weekly Subscription
-                </h3>
-                <p className="text-[18px] leading-[20px] text-white/80 mb-4">
+                <div className="min-h-[76px]"> {/* Added fixed height container for title */}
+                  <h3 className="text-[20px] leading-[24px] font-bold text-white">
+                    Master Growbot AI Weekly Subscription
+                  </h3>
+                </div>
+                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]"> {/* Added fixed height */}
                   $9.99/Week
                 </p>
                 <a 
@@ -200,10 +203,12 @@ export default function Quiz() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-grow">
-                <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
-                  Master Growbot AI Quarterly Subscription
-                </h3>
-                <p className="text-[18px] leading-[20px] text-white/80 mb-4">
+                <div className="min-h-[76px]"> {/* Added fixed height container for title */}
+                  <h3 className="text-[20px] leading-[24px] font-bold text-white">
+                    Master Growbot AI Quarterly Subscription
+                  </h3>
+                </div>
+                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]"> {/* Added fixed height */}
                   $89 (Save 25%)
                 </p>
                 <a 
@@ -234,10 +239,12 @@ export default function Quiz() {
                 />
               </div>
               <div className="p-5 flex flex-col flex-grow">
-                <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
-                  Master Growbot AI Yearly Subscription
-                </h3>
-                <p className="text-[18px] leading-[20px] text-white/80 mb-4">
+                <div className="min-h-[76px]"> {/* Added fixed height container for title */}
+                  <h3 className="text-[20px] leading-[24px] font-bold text-white">
+                    Master Growbot AI Yearly Subscription
+                  </h3>
+                </div>
+                <p className="text-[18px] leading-[20px] text-white/80 h-[24px]"> {/* Added fixed height */}
                   $199 (Save Over 60%)
                 </p>
                 <a 
