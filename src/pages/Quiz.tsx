@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -174,7 +173,7 @@ export default function Quiz() {
                         Master Growbot AI Weekly Subscription
                       </p>
                       <a 
-                        href="https://square.link/u/IXzCRNdQ?src=embed"
+                        href="https://square.link/u/TgbFtDnS"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
@@ -201,7 +200,7 @@ export default function Quiz() {
                         Master Growbot AI Quarterly Subscription
                       </p>
                       <a 
-                        href="https://square.link/u/1lNhiUuU?src=embed"
+                        href="https://square.link/u/1lNhiUuU"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
@@ -228,7 +227,7 @@ export default function Quiz() {
                         Master Growbot AI Yearly Subscription
                       </p>
                       <a 
-                        href="https://square.link/u/Q8XMeNCj?src=embed"
+                        href="https://square.link/u/Q8XMeNCj"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-[#d936b0] text-center shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset] rounded-[6px] hover:bg-[#c02e9c]"
@@ -237,23 +236,23 @@ export default function Quiz() {
                       </a>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex flex-col items-center gap-6">
-                  <Button
-                    variant="outline"
-                    onClick={() => navigate('/chat')}
-                    className="px-6"
-                  >
-                    Skip for now
-                  </Button>
-                  
-                  <div className="w-full max-w-[600px] space-y-2">
-                    <img 
-                      src="/lovable-uploads/ff2ab745-26e7-4388-a649-035f5b9ca60f.png"
-                      alt="Secure checkout by Square with multiple payment options"
-                      className="w-full h-auto"
-                    />
+                  <div className="flex flex-col items-center gap-6">
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate('/chat')}
+                      className="px-6"
+                    >
+                      Skip for now
+                    </Button>
+                    
+                    <div className="w-full max-w-[600px] space-y-2">
+                      <img 
+                        src="/lovable-uploads/ff2ab745-26e7-4388-a649-035f5b9ca60f.png"
+                        alt="Secure checkout by Square with multiple payment options"
+                        className="w-full h-auto"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
