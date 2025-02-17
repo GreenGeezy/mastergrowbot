@@ -177,8 +177,13 @@ export default function Quiz() {
                         href="https://square.link/u/TgbFtDnS"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto inline-block w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-black text-center rounded-lg transition-colors duration-200 hover:bg-zinc-800 font-medium"
+                        className="mt-auto inline-flex items-center justify-center gap-2 w-full min-w-[212px] text-[18px] leading-[48px] h-[48px] text-white bg-black text-center rounded-lg transition-colors duration-200 hover:bg-zinc-800 font-medium"
                       >
+                        <img 
+                          src="/lovable-uploads/1c997f5b-d14b-4cb5-9e38-c1d0af451602.png"
+                          alt="Square Logo"
+                          className="h-6 w-auto"
+                        />
                         Try for Just $9.99
                       </a>
                     </div>
