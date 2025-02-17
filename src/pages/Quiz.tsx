@@ -171,10 +171,10 @@ export default function Quiz() {
                     </div>
                     <div className="p-5 flex flex-col flex-grow">
                       <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
-                        Subscribe for Just $9.99/Week
+                        Master Growbot AI Weekly Subscription
                       </h3>
                       <p className="text-[18px] leading-[20px] text-white/80 mb-4">
-                        Master Growbot AI Weekly Subscription
+                        Subscribe for Just $9.99/Week
                       </p>
                       <a 
                         href="https://square.link/u/TgbFtDnS"
