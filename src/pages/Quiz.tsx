@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -174,7 +173,7 @@ export default function Quiz() {
                         Master Growbot AI Weekly Subscription
                       </h3>
                       <p className="text-[18px] leading-[20px] text-white/80 mb-4">
-                        Subscribe for Just $9.99/Week
+                        $9.99/Week
                       </p>
                       <a 
                         href="https://square.link/u/TgbFtDnS"
@@ -183,8 +182,8 @@ export default function Quiz() {
                         className="mt-auto"
                       >
                         <img 
-                          src="/lovable-uploads/3276fe48-d726-4d92-a7ba-01600b84c17b.png"
-                          alt="Square Logo"
+                          src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png"
+                          alt="Buy Now with Square"
                           className="w-full h-auto"
                         />
                       </a>
