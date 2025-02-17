@@ -245,7 +245,7 @@ export default function Quiz() {
                   </h3>
                 </div>
                 <p className="text-[18px] leading-[20px] text-white/80 h-[24px]">
-                  $199 (Save Over 60%)
+                  $199 (Save Over 60%) Cancel Anytime
                 </p>
                 <a 
                   href="https://square.link/u/Q8XMeNCj"
