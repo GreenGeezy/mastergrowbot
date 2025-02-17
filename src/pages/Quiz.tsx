@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '@supabase/auth-helpers-react'
@@ -169,7 +170,10 @@ export default function Quiz() {
                       />
                     </div>
                     <div className="p-5 flex flex-col flex-grow">
-                      <p className="text-[18px] leading-[20px] text-white mb-4">
+                      <h3 className="text-[20px] leading-[24px] font-bold text-white mb-2">
+                        Subscribe for Just $9.99/Week
+                      </h3>
+                      <p className="text-[18px] leading-[20px] text-white/80 mb-4">
                         Master Growbot AI Weekly Subscription
                       </p>
                       <a 
