@@ -170,13 +170,13 @@ export default function Quiz() {
             </p>
           </div>
           
-          <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8">
+          <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8 px-0 mx-0 my-0 py-0 rounded">
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/717caf5133f5cf6d865bc3dd16cb11cc4be13d0a/original.png" alt="Master Growbot AI Weekly Subscription" className="w-full h-full object-cover" onError={e => {
+                <img alt="Master Growbot AI Weekly Subscription" onError={e => {
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
-              }} />
+              }} src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-full rounded-lg object-fill" />
               </div>
               <div className="p-5 flex flex-col flex-grow">
                 <div className="min-h-[76px]">
