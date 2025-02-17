@@ -198,7 +198,7 @@ export default function Quiz() {
                 <img alt="Master Growbot AI Quarterly Subscription" onError={e => {
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
-              }} className="w-full h-full object-fill" src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" />
+              }} src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" className="w-full h-full rounded-xl object-fill" />
               </div>
               <div className="p-5 flex flex-col flex-grow">
                 <div className="min-h-[76px] my-0">
