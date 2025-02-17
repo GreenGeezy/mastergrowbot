@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
+
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export default function Quiz() {
     nutrient_type: undefined,
     goals: []
   });
+
   const questions = [{
     question: "How long have you been growing?",
     type: "radio",
@@ -118,6 +120,7 @@ export default function Quiz() {
       value: "all"
     }]
   }];
+
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
@@ -135,11 +138,13 @@ export default function Quiz() {
       handleSubmit();
     }
   };
+
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     if (session?.user?.id) {
@@ -158,8 +163,10 @@ export default function Quiz() {
     setShowSubscription(true);
     setIsSubmitting(false);
   };
+
   if (showSubscription) {
-    return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-8">
           <div className="text-center space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
@@ -178,16 +185,16 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 flex flex-col flex-grow my-[23px] mx-0 px-[8px] py-0">
-                <div className="min-h-[76px]">
+              <div className="p-5 flex flex-col flex-grow">
+                <div className="min-h-[76px] mb-2">
                   <h3 className="leading-[24px] font-bold text-white text-lg">
                     Master Growbot AI Weekly Subscription
                   </h3>
                 </div>
-                <p className="leading-[20px] text-white/80 h-[24px] font-bold text-xl">
+                <p className="leading-[20px] text-white/80 mb-4 font-bold text-xl">
                   $9.99/Week Cancel Anytime
                 </p>
-                <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="mt-auto">
+                <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="mt-2">
                   <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
@@ -200,16 +207,16 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 flex flex-col flex-grow mx-[3px] px-[5px] py-0 my-[14px]">
-                <div className="min-h-[76px]">
-                  <h3 className="leading-[24px] font-bold text-white text-lg mx-0 px-0 py-0 my-[12px]">
+              <div className="p-5 flex flex-col flex-grow">
+                <div className="min-h-[76px] mb-2">
+                  <h3 className="leading-[24px] font-bold text-white text-lg">
                     Master Growbot AI Quarterly Subscription
                   </h3>
                 </div>
-                <p className="leading-[24px] text-white/80 mb-4 font-bold text-xl py-0">
+                <p className="leading-[20px] text-white/80 mb-4 font-bold text-xl">
                   $89 (Save 25%) Cancel Anytime
                 </p>
-                <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="mt-auto">
+                <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="mt-2">
                   <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
@@ -222,16 +229,16 @@ export default function Quiz() {
                 target.style.display = 'none';
               }} />
               </div>
-              <div className="p-5 flex flex-col flex-grow py-[18px] px-[11px]">
-                <div className="min-h-[76px]">
+              <div className="p-5 flex flex-col flex-grow">
+                <div className="min-h-[76px] mb-2">
                   <h3 className="leading-[24px] font-bold text-white text-lg">
                     Master Growbot AI Yearly Subscription
                   </h3>
                 </div>
-                <p className="leading-[20px] text-white/80 h-[24px] text-xl font-bold">
+                <p className="leading-[20px] text-white/80 mb-4 font-bold text-xl">
                   $199 (Save Over 60%) Cancel Anytime
                 </p>
-                <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="mt-auto">
+                <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="mt-2">
                   <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
@@ -239,7 +246,11 @@ export default function Quiz() {
           </div>
 
           <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
-            <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md">
+            <Button
+              variant="outline"
+              onClick={() => navigate('/chat')}
+              className="px-6 w-full max-w-md"
+            >
               Skip for now
             </Button>
             
@@ -248,8 +259,10 @@ export default function Quiz() {
             </div>
           </div>
         </div>
-      </div>;
+      </div>
+    )
   }
+
   const currentQuestion = questions[currentStep];
   return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
       <div className="w-full max-w-2xl">
