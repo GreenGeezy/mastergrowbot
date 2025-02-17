@@ -178,7 +178,7 @@ export default function Quiz() {
             </div>
           </div>
           
-          <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8 rounded py-[7px] px-[12px] my-[4px] mx-0">
+          <div className="flex flex-row gap-4 items-stretch justify-center flex-wrap md:flex-nowrap mb-8 mx-0 my-0 py-0 px-0 rounded">
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
                 <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
