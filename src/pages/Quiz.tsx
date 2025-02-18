@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -8,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
-import { Star, Award } from "lucide-react";
+import { Star, Award, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function Quiz() {
@@ -28,6 +27,7 @@ export default function Quiz() {
     nutrient_type: undefined,
     goals: []
   });
+  const [timeLeft, setTimeLeft] = useState("48:00:00");
 
   const questions = [{
     question: "How long have you been growing?",
@@ -124,6 +124,21 @@ export default function Quiz() {
     }]
   }];
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const [hours, minutes, seconds] = timeLeft.split(':').map(Number);
+      let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+        setTimeLeft(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
@@ -173,21 +188,35 @@ export default function Quiz() {
           <div className="text-center space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
             <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
-            <div className="flex flex-col items-center space-y-0">
-              <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
-                Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
-              </p>
-              <div className="flex items-center justify-center space-x-3">
-                <Award className="w-7 h-7 text-[#FFD700] animate-float will-change-transform" />
-                <div className="flex items-center space-x-1">
-                  {[...Array(5)].map((_, index) => <Star key={index} className="w-6 h-6 fill-[#FFD700] text-[#FFD700]" />)}
+            
+            <div className="flex flex-col items-center space-y-4 mt-4">
+              <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-2xl">
+                <p className="text-white italic">"Master Growbot doubled my yield in 3 months!" – Jane D., CA Grower</p>
+              </div>
+              <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
+                <Users className="w-5 h-5" />
+                <span className="font-semibold">Join 10,000+ Growers Worldwide</span>
+              </div>
+              <div className="flex flex-col items-center space-y-0">
+                <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
+                  Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
+                </p>
+                <div className="flex items-center justify-center space-x-3">
+                  <Award className="w-7 h-7 text-[#FFD700] animate-float will-change-transform" />
+                  <div className="flex items-center space-x-1">
+                    {[...Array(5)].map((_, index) => <Star key={index} className="w-6 h-6 fill-[#FFD700] text-[#FFD700]" />)}
+                  </div>
                 </div>
               </div>
+            </div>
+
+            <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300">
+              <p className="text-white font-bold text-lg">Get 10% off your first month—Offer ends in</p>
+              <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
             </div>
           </div>
           
           <div className="flex flex-row gap-3 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
-            {/* Weekly Subscription */}
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-primary/30 bg-gradient-to-b from-primary/10 to-transparent">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
                 <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
@@ -211,13 +240,12 @@ export default function Quiz() {
                     <span>Cancel Anytime</span>
                   </li>
                 </ul>
-                <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="-mt-1">
-                  <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto" />
+                <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
+                  <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
                 </a>
               </div>
             </div>
 
-            {/* Quarterly Subscription */}
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-secondary/30 bg-gradient-to-b from-secondary/10 to-transparent">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
                 <img alt="Master Growbot AI Quarterly Subscription" src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
@@ -245,13 +273,12 @@ export default function Quiz() {
                     <span>Cancel Anytime</span>
                   </li>
                 </ul>
-                <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="-mt-1">
-                  <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto" />
+                <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
+                  <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
                 </a>
               </div>
             </div>
 
-            {/* Yearly Subscription */}
             <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-[#FFD700]/30 bg-gradient-to-b from-[#FFD700]/10 to-transparent relative">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
                 <Badge className="bg-black text-[#FFD700] border border-[#FFD700] px-3 py-1 text-sm font-semibold">
@@ -284,8 +311,8 @@ export default function Quiz() {
                     <span>Cancel Anytime</span>
                   </li>
                 </ul>
-                <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="-mt-1">
-                  <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto" />
+                <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
+                  <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
                 </a>
               </div>
             </div>
