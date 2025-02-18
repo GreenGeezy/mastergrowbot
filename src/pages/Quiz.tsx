@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -196,6 +197,16 @@ export default function Quiz() {
     return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-6">
           <div className="text-center space-y-2">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+              <div className="relative bg-card p-4 sm:p-6 rounded-full mb-4 sm:mb-6 backdrop-blur-xl ring-1 ring-white/10 hover:ring-accent/30 transition-all duration-500">
+                <img 
+                  src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
+                  alt="Master Growbot Logo" 
+                  className="w-20 h-20 sm:w-28 sm:h-28 transform group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            </div>
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
             <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
             
