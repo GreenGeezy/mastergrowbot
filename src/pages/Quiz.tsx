@@ -9,7 +9,6 @@ import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
 import { Star, Award, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -28,7 +27,6 @@ export default function Quiz() {
     goals: []
   });
   const [timeLeft, setTimeLeft] = useState("48:00:00");
-
   const questions = [{
     question: "How long have you been growing?",
     type: "radio",
@@ -123,7 +121,6 @@ export default function Quiz() {
       value: "all"
     }]
   }];
-
   useEffect(() => {
     const timer = setInterval(() => {
       const [hours, minutes, seconds] = timeLeft.split(':').map(Number);
@@ -131,14 +128,13 @@ export default function Quiz() {
       if (totalSeconds > 0) {
         totalSeconds--;
         const h = Math.floor(totalSeconds / 3600);
-        const m = Math.floor((totalSeconds % 3600) / 60);
+        const m = Math.floor(totalSeconds % 3600 / 60);
         const s = totalSeconds % 60;
         setTimeLeft(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
       }
     }, 1000);
     return () => clearInterval(timer);
   }, [timeLeft]);
-
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
@@ -156,13 +152,11 @@ export default function Quiz() {
       handleSubmit();
     }
   };
-
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
     if (session?.user?.id) {
@@ -181,7 +175,6 @@ export default function Quiz() {
     setShowSubscription(true);
     setIsSubmitting(false);
   };
-
   if (showSubscription) {
     return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-6">
@@ -191,11 +184,11 @@ export default function Quiz() {
             
             <div className="flex flex-col items-center space-y-4 mt-4">
               <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-2xl">
-                <p className="text-white italic">"Master Growbot doubled my yield in 3 months!" – Jane D., CA Grower</p>
+                <p className="text-white italic text-sm">"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
               </div>
               <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
                 <Users className="w-5 h-5" />
-                <span className="font-semibold">Join 10,000+ Growers Worldwide</span>
+                <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
               </div>
               <div className="flex flex-col items-center space-y-0">
                 <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
@@ -323,18 +316,13 @@ export default function Quiz() {
               <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
             </div>
             
-            <Button 
-              variant="outline" 
-              onClick={() => navigate('/chat')} 
-              className="px-6 w-full max-w-md h-12 text-base hover:bg-white/5 border-white/20 transition-colors duration-200"
-            >
+            <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md h-12 text-base hover:bg-white/5 border-white/20 transition-colors duration-200">
               No thanks, I want to stay basic
             </Button>
           </div>
         </div>
       </div>;
   }
-
   const currentQuestion = questions[currentStep];
   return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
       <div className="w-full max-w-2xl">
