@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
 import { Star, Award, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function Quiz() {
     goals: []
   });
   const [timeLeft, setTimeLeft] = useState("48:00:00");
+
   const questions = [{
     question: "How long have you been growing?",
     type: "radio",
@@ -121,6 +123,7 @@ export default function Quiz() {
       value: "all"
     }]
   }];
+
   useEffect(() => {
     const timer = setInterval(() => {
       const [hours, minutes, seconds] = timeLeft.split(':').map(Number);
@@ -135,6 +138,7 @@ export default function Quiz() {
     }, 1000);
     return () => clearInterval(timer);
   }, [timeLeft]);
+
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
@@ -152,11 +156,13 @@ export default function Quiz() {
       handleSubmit();
     }
   };
+
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     if (session?.user?.id) {
@@ -175,6 +181,7 @@ export default function Quiz() {
     setShowSubscription(true);
     setIsSubmitting(false);
   };
+
   if (showSubscription) {
     return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-6">
@@ -204,7 +211,7 @@ export default function Quiz() {
             </div>
 
             <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300">
-              <p className="text-white font-bold text-lg">Get 10% off your first month—Offer ends in</p>
+              <p className="text-white font-bold text-lg">Unlock 25% Off Any Subscription—Offer Ends 7/10/25!</p>
               <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
             </div>
           </div>
@@ -323,6 +330,7 @@ export default function Quiz() {
         </div>
       </div>;
   }
+
   const currentQuestion = questions[currentStep];
   return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
       <div className="w-full max-w-2xl">
