@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -28,7 +27,32 @@ export default function Quiz() {
     nutrient_type: undefined,
     goals: []
   });
-  const [timeLeft, setTimeLeft] = useState("48:00:00");
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    const targetDate = new Date('2025-07-10T05:00:00.000Z'); // 12:00 AM CST (UTC-5)
+    
+    const updateTimer = () => {
+      const now = new Date();
+      const timeDiff = targetDate.getTime() - now.getTime();
+      
+      if (timeDiff > 0) {
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        setTimeLeft(`${days}d ${hours}h ${minutes}m`);
+      } else {
+        setTimeLeft("Offer expired");
+      }
+    };
+
+    // Update immediately and then every minute
+    updateTimer();
+    const timer = setInterval(updateTimer, 60000);
+    
+    return () => clearInterval(timer);
+  }, []);
 
   const questions = [{
     question: "How long have you been growing?",
@@ -124,21 +148,6 @@ export default function Quiz() {
       value: "all"
     }]
   }];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const [hours, minutes, seconds] = timeLeft.split(':').map(Number);
-      let totalSeconds = hours * 3600 + minutes * 60 + seconds;
-      if (totalSeconds > 0) {
-        totalSeconds--;
-        const h = Math.floor(totalSeconds / 3600);
-        const m = Math.floor(totalSeconds % 3600 / 60);
-        const s = totalSeconds % 60;
-        setTimeLeft(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
-      }
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [timeLeft]);
 
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
