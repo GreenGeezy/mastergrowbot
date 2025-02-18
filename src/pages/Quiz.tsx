@@ -9,6 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
 import { Star, Award } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function Quiz() {
   const session = useSession();
@@ -186,7 +187,8 @@ export default function Quiz() {
           </div>
           
           <div className="flex flex-row gap-3 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
-            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
+            {/* Weekly Subscription */}
+            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-primary/30 bg-gradient-to-b from-primary/10 to-transparent">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
                 <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
                 const target = e.target as HTMLImageElement;
@@ -199,16 +201,24 @@ export default function Quiz() {
                     Master Growbot AI Weekly Subscription
                   </h3>
                 </div>
-                <p className="leading-[20px] text-white/80 mb-0 font-bold text-xl">
-                  $9.99/Week Cancel Anytime
-                </p>
+                <ul className="space-y-1 mb-2 text-white/80">
+                  <li className="flex items-center">
+                    <span className="mr-2">–</span>
+                    <span className="font-bold">$9.99/week</span>
+                  </li>
+                  <li className="flex items-center">
+                    <span className="mr-2">–</span>
+                    <span>Cancel Anytime</span>
+                  </li>
+                </ul>
                 <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="-mt-1">
                   <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
             </div>
 
-            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
+            {/* Quarterly Subscription */}
+            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-secondary/30 bg-gradient-to-b from-secondary/10 to-transparent">
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
                 <img alt="Master Growbot AI Quarterly Subscription" src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
                 const target = e.target as HTMLImageElement;
@@ -221,16 +231,33 @@ export default function Quiz() {
                     Master Growbot AI Quarterly Subscription
                   </h3>
                 </div>
-                <p className="leading-[20px] text-white/80 mb-0 font-bold text-xl">
-                  $89 (Save 25%) Cancel Anytime
-                </p>
+                <ul className="space-y-1 mb-2 text-white/80">
+                  <li className="flex items-center">
+                    <span className="mr-2">–</span>
+                    <span className="font-bold">$89/quarter</span>
+                  </li>
+                  <li className="flex items-center">
+                    <span className="mr-2">–</span>
+                    <span>Save 25%</span>
+                  </li>
+                  <li className="flex items-center">
+                    <span className="mr-2">–</span>
+                    <span>Cancel Anytime</span>
+                  </li>
+                </ul>
                 <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="-mt-1">
                   <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
               </div>
             </div>
 
-            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden">
+            {/* Yearly Subscription */}
+            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-[#FFD700]/30 bg-gradient-to-b from-[#FFD700]/10 to-transparent relative">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                <Badge className="bg-black text-[#FFD700] border border-[#FFD700] px-3 py-1 text-sm font-semibold">
+                  Best Value
+                </Badge>
+              </div>
               <div className="aspect-w-16 aspect-h-9 overflow-hidden">
                 <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" alt="Master Growbot AI Yearly Subscription" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
                 const target = e.target as HTMLImageElement;
@@ -243,9 +270,20 @@ export default function Quiz() {
                     Master Growbot AI Yearly Subscription
                   </h3>
                 </div>
-                <p className="leading-[20px] text-white/80 mb-0 font-bold text-xl">
-                  $199 (Save Over 60%) Cancel Anytime
-                </p>
+                <ul className="space-y-1 mb-2 text-white/80">
+                  <li className="flex items-center">
+                    <span className="mr-2">–</span>
+                    <span className="font-bold">$199/year</span>
+                  </li>
+                  <li className="flex items-center">
+                    <span className="mr-2">–</span>
+                    <span>Save Over 60%</span>
+                  </li>
+                  <li className="flex items-center">
+                    <span className="mr-2">–</span>
+                    <span>Cancel Anytime</span>
+                  </li>
+                </ul>
                 <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="-mt-1">
                   <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto" />
                 </a>
