@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -211,7 +212,7 @@ export default function Quiz() {
             </div>
 
             <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300">
-              <p className="text-white font-bold text-lg">Unlock 25% Off Any Subscription—Offer Ends 7/10/25!</p>
+              <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
               <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
             </div>
           </div>
