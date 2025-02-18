@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -8,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
-import { Star, Award, Users } from "lucide-react";
+import { Star, Award, Users, MessageCircle, Camera, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function Quiz() {
@@ -197,14 +196,51 @@ export default function Quiz() {
     return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
         <div className="w-full max-w-[1200px] space-y-6">
           <div className="text-center space-y-2">
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-              <div className="relative bg-card p-4 sm:p-6 rounded-full mb-4 sm:mb-6 backdrop-blur-xl ring-1 ring-white/10 hover:ring-accent/30 transition-all duration-500">
-                <img 
-                  src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
-                  alt="Master Growbot Logo" 
-                  className="w-20 h-20 sm:w-28 sm:h-28 transform group-hover:scale-105 transition-transform duration-500"
-                />
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+                <div className="relative bg-card p-4 sm:p-6 rounded-full backdrop-blur-xl ring-1 ring-white/10 hover:ring-accent/30 transition-all duration-500">
+                  <img 
+                    src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
+                    alt="Master Growbot Logo" 
+                    className="w-20 h-20 sm:w-28 sm:h-28 transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-wrap justify-center gap-2">
+                <Button
+                  variant="ghost"
+                  className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
+                  onClick={() => navigate('/chat')}
+                >
+                  <MessageCircle className="w-5 h-5 text-green-500" />
+                  <div className="flex flex-col items-start">
+                    <span className="font-semibold">Growing Assistant</span>
+                    <span className="text-xs opacity-70">Get expert growing advice</span>
+                  </div>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
+                  onClick={() => navigate('/plant-health')}
+                >
+                  <Camera className="w-5 h-5 text-green-500" />
+                  <div className="flex flex-col items-start">
+                    <span className="font-semibold">Plant Health Check</span>
+                    <span className="text-xs opacity-70">Diagnose plant issues</span>
+                  </div>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
+                  onClick={() => navigate('/grow-guide')}
+                >
+                  <BookOpen className="w-5 h-5 text-green-500" />
+                  <div className="flex flex-col items-start">
+                    <span className="font-semibold">Growing Guide</span>
+                    <span className="text-xs opacity-70">Quick answers to FAQs</span>
+                  </div>
+                </Button>
               </div>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
