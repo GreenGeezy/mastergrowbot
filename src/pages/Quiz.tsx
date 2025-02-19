@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -10,27 +11,39 @@ import type { QuizResponse } from '@/types/quiz';
 import { Star, Award, Users, MessageCircle, Camera, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
+// Storage key for quiz responses
+const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
+
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
-  const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>({
-    experience_level: undefined,
-    growing_method: undefined,
-    challenges: [],
-    monitoring_method: undefined,
-    nutrient_type: undefined,
-    goals: []
+  
+  // Initialize quiz responses from session storage or default values
+  const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
+    const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
+    return savedResponses ? JSON.parse(savedResponses) : {
+      experience_level: undefined,
+      growing_method: undefined,
+      challenges: [],
+      monitoring_method: undefined,
+      nutrient_type: undefined,
+      goals: []
+    };
   });
+  
   const [timeLeft, setTimeLeft] = useState("");
 
+  // Save responses to session storage whenever they change
   useEffect(() => {
-    const targetDate = new Date('2025-07-10T05:00:00.000Z'); // 12:00 AM CST (UTC-5)
+    sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
+  }, [quizResponses]);
+
+  useEffect(() => {
+    const targetDate = new Date('2025-07-10T05:00:00.000Z');
     
     const updateTimer = () => {
       const now = new Date();
@@ -47,7 +60,6 @@ export default function Quiz() {
       }
     };
 
-    // Update immediately and then every minute
     updateTimer();
     const timer = setInterval(updateTimer, 60000);
     
@@ -152,7 +164,8 @@ export default function Quiz() {
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
-    if (!currentAnswer || Array.isArray(currentAnswer) && currentAnswer.length === 0) {
+    
+    if (!currentAnswer || (Array.isArray(currentAnswer) && currentAnswer.length === 0)) {
       toast({
         title: "Please answer the question",
         description: "Select at least one option to continue",
@@ -160,6 +173,7 @@ export default function Quiz() {
       });
       return;
     }
+
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -175,19 +189,23 @@ export default function Quiz() {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    
+    // If user is already logged in, save to Supabase
     if (session?.user?.id) {
       try {
-        const {
-          error
-        } = await supabase.from('quiz_responses').upsert({
-          user_id: session.user.id,
-          ...quizResponses
-        });
+        const { error } = await supabase
+          .from('quiz_responses')
+          .upsert({
+            user_id: session.user.id,
+            ...quizResponses
+          });
         if (error) throw error;
       } catch (error) {
         console.error('Error saving quiz responses:', error);
       }
     }
+    // If not logged in, responses are already saved in sessionStorage
+    
     setShowSubscription(true);
     setIsSubmitting(false);
   };
@@ -399,7 +417,16 @@ export default function Quiz() {
                   Help us personalize your growing experience
                 </h1>
                 <div className="flex items-center justify-center gap-2 mt-4">
-                  {questions.map((_, index) => <div key={index} className={`h-2 w-2 rounded-full ${index === currentStep ? 'bg-accent w-6' : index < currentStep ? 'bg-primary' : 'bg-white/20'}`} />)}
+                  {questions.map((_, index) => (
+                    <div 
+                      key={index} 
+                      className={`h-2 w-2 rounded-full ${
+                        index === currentStep ? 'bg-accent w-6' : 
+                        index < currentStep ? 'bg-primary' : 
+                        'bg-white/20'
+                      }`} 
+                    />
+                  ))}
                 </div>
                 <p className="text-accent/80 mt-2">
                   Question {currentStep + 1} of {questions.length}
@@ -411,56 +438,95 @@ export default function Quiz() {
                   {currentQuestion.question}
                 </h2>
 
-                {currentQuestion.type === "radio" && <RadioGroup value={quizResponses[currentQuestion.field as keyof QuizResponse] as string} onValueChange={value => setQuizResponses(prev => ({
-                ...prev,
-                [currentQuestion.field]: value
-              }))} className="space-y-4">
-                    {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
-                        <RadioGroupItem value={option.value} id={option.value} className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent" />
-                        <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
+                {currentQuestion.type === "radio" && (
+                  <RadioGroup
+                    value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
+                    onValueChange={value => setQuizResponses(prev => ({
+                      ...prev,
+                      [currentQuestion.field]: value
+                    }))}
+                    className="space-y-4"
+                  >
+                    {currentQuestion.options.map(option => (
+                      <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                        <RadioGroupItem 
+                          value={option.value} 
+                          id={option.value}
+                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent"
+                        />
+                        <label 
+                          htmlFor={option.value}
+                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
+                        >
                           {option.label}
                         </label>
-                      </div>)}
-                  </RadioGroup>}
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
 
-                {currentQuestion.type === "checkbox" && <div className="space-y-4">
-                    {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
-                        <Checkbox id={option.value} checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)} onCheckedChange={checked => {
-                    const field = currentQuestion.field as keyof QuizResponse;
-                    const currentValues = quizResponses[field] as string[] || [];
-                    if (checked) {
-                      if (option.value === 'all' || option.value === 'none') {
-                        setQuizResponses(prev => ({
-                          ...prev,
-                          [field]: [option.value]
-                        }));
-                      } else {
-                        setQuizResponses(prev => ({
-                          ...prev,
-                          [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
-                        }));
-                      }
-                    } else {
-                      setQuizResponses(prev => ({
-                        ...prev,
-                        [field]: currentValues.filter(value => value !== option.value)
-                      }));
-                    }
-                  }} className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent" />
-                        <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
+                {currentQuestion.type === "checkbox" && (
+                  <div className="space-y-4">
+                    {currentQuestion.options.map(option => (
+                      <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                        <Checkbox
+                          id={option.value}
+                          checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
+                          onCheckedChange={checked => {
+                            const field = currentQuestion.field as keyof QuizResponse;
+                            const currentValues = quizResponses[field] as string[] || [];
+                            if (checked) {
+                              if (option.value === 'all' || option.value === 'none') {
+                                setQuizResponses(prev => ({
+                                  ...prev,
+                                  [field]: [option.value]
+                                }));
+                              } else {
+                                setQuizResponses(prev => ({
+                                  ...prev,
+                                  [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
+                                }));
+                              }
+                            } else {
+                              setQuizResponses(prev => ({
+                                ...prev,
+                                [field]: currentValues.filter(value => value !== option.value)
+                              }));
+                            }
+                          }}
+                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent"
+                        />
+                        <label
+                          htmlFor={option.value}
+                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
+                        >
                           {option.label}
                         </label>
-                      </div>)}
-                  </div>}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-between pt-6">
-                <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0} className="px-6">
+                <Button 
+                  variant="outline" 
+                  onClick={handlePreviousStep}
+                  disabled={currentStep === 0}
+                  className="px-6"
+                >
                   Previous
                 </Button>
                 
-                <Button onClick={handleNextStep} disabled={isSubmitting} className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover">
-                  {currentStep === questions.length - 1 ? isSubmitting ? "Saving..." : "Complete Quiz" : "Next"}
+                <Button 
+                  onClick={handleNextStep}
+                  disabled={isSubmitting}
+                  className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+                >
+                  {currentStep === questions.length - 1 ? 
+                    (isSubmitting ? "Saving..." : "Complete Quiz") : 
+                    "Next"
+                  }
                 </Button>
               </div>
             </div>
