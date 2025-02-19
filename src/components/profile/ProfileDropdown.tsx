@@ -25,37 +25,87 @@ export function ProfileDropdown() {
     const fetchProfileData = async () => {
       if (!session?.user?.id) return
       
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('username, grow_experience_level')
-        .eq('id', session.user.id)
-        .single()
+      try {
+        // First try to get data from user_profiles
+        const { data: profileData, error: profileError } = await supabase
+          .from('user_profiles')
+          .select('username, grow_experience_level, growing_method, monitoring_method, nutrient_type, challenges, goals')
+          .eq('id', session.user.id)
+          .single()
 
-      if (profileError) {
-        console.error('Error fetching profile:', profileError)
-        return
+        if (profileError && profileError.code !== 'PGRST116') { // PGRST116 is "not found"
+          console.error('Error fetching profile:', profileError)
+          toast({
+            title: "Error loading profile",
+            description: "There was a problem loading your profile data.",
+            variant: "destructive"
+          })
+          return
+        }
+
+        // If no profile data exists, try to get from quiz_responses
+        if (!profileData) {
+          const { data: quizData, error: quizError } = await supabase
+            .from('quiz_responses')
+            .select('experience_level, growing_method, monitoring_method, nutrient_type, challenges, goals')
+            .eq('user_id', session.user.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single()
+
+          if (quizError && quizError.code !== 'PGRST116') {
+            console.error('Error fetching quiz responses:', quizError)
+            return
+          }
+
+          if (quizData) {
+            // If we found quiz data but no profile, create the profile
+            const { error: updateError } = await supabase
+              .from('user_profiles')
+              .upsert({
+                id: session.user.id,
+                grow_experience_level: quizData.experience_level,
+                growing_method: quizData.growing_method,
+                monitoring_method: quizData.monitoring_method,
+                nutrient_type: quizData.nutrient_type,
+                challenges: quizData.challenges,
+                goals: quizData.goals
+              })
+
+            if (updateError) {
+              console.error('Error updating profile from quiz:', updateError)
+              return
+            }
+
+            setProfileData({
+              email: session.user.email,
+              grow_experience_level: quizData.experience_level,
+              growing_method: quizData.growing_method,
+              monitoring_method: quizData.monitoring_method,
+              nutrient_type: quizData.nutrient_type,
+              challenges: quizData.challenges,
+              goals: quizData.goals
+            })
+          }
+        } else {
+          // We found profile data, use it
+          setProfileData({
+            ...profileData,
+            email: session.user.email
+          })
+        }
+      } catch (error) {
+        console.error('Error in fetchProfileData:', error)
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred while loading your profile.",
+          variant: "destructive"
+        })
       }
-
-      const { data: quizData, error: quizError } = await supabase
-        .from('quiz_responses')
-        .select('growing_method, monitoring_method, nutrient_type, challenges, goals')
-        .eq('user_id', session.user.id)
-        .single()
-
-      if (quizError) {
-        console.error('Error fetching quiz responses:', quizError)
-        return
-      }
-
-      setProfileData({
-        ...profileData,
-        ...quizData,
-        email: session.user.email
-      })
     }
 
     fetchProfileData()
-  }, [session?.user?.id, supabase])
+  }, [session?.user?.id, supabase, toast])
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut()
@@ -78,8 +128,10 @@ export function ProfileDropdown() {
 
     const { error } = await supabase
       .from('user_profiles')
-      .update({ grow_experience_level: level })
-      .eq('id', session.user.id)
+      .upsert({
+        id: session.user.id,
+        grow_experience_level: level
+      })
 
     if (error) {
       toast({
