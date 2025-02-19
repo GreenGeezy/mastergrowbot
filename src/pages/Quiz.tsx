@@ -186,11 +186,12 @@ export default function Quiz() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
-    if (session?.user?.id) {
-      try {
+    try {
+      if (session?.user?.id) {
+        // Save to quiz_responses table
         const { error: quizError } = await supabase
           .from('quiz_responses')
-          .upsert({
+          .insert({
             user_id: session.user.id,
             experience_level: quizResponses.experience_level,
             growing_method: quizResponses.growing_method,
@@ -211,24 +212,51 @@ export default function Quiz() {
           return;
         }
 
-        sessionStorage.removeItem(TEMP_QUIZ_RESPONSES_KEY);
+        // Update user_profiles table directly
+        const { error: profileError } = await supabase
+          .from('user_profiles')
+          .upsert({
+            id: session.user.id,
+            grow_experience_level: quizResponses.experience_level,
+            growing_method: quizResponses.growing_method,
+            monitoring_method: quizResponses.monitoring_method,
+            nutrient_type: quizResponses.nutrient_type,
+            challenges: quizResponses.challenges,
+            goals: quizResponses.goals
+          });
 
+        if (profileError) {
+          console.error('Error updating profile:', profileError);
+          toast({
+            title: "Error updating profile",
+            description: "Your responses were saved but profile update failed. Please try again.",
+            variant: "destructive"
+          });
+          setIsSubmitting(false);
+          return;
+        }
+
+        sessionStorage.removeItem(TEMP_QUIZ_RESPONSES_KEY);
+        
         toast({
           title: "Responses saved",
           description: "Your growing preferences have been saved successfully.",
         });
         
         setShowSubscription(true);
-      } catch (error) {
-        console.error('Error in quiz submission:', error);
-        toast({
-          title: "Error",
-          description: "An unexpected error occurred. Please try again.",
-          variant: "destructive"
-        });
-        setIsSubmitting(false);
-        return;
+      } else {
+        sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
+        setShowSubscription(true);
       }
+    } catch (error) {
+      console.error('Error in quiz submission:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+      setIsSubmitting(false);
+      return;
     }
     
     setIsSubmitting(false);
