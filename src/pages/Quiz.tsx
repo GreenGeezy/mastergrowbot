@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -208,13 +207,18 @@ export default function Quiz() {
             description: "There was a problem saving your responses. Please try again.",
             variant: "destructive"
           });
+          setIsSubmitting(false);
           return;
         }
+
+        sessionStorage.removeItem(TEMP_QUIZ_RESPONSES_KEY);
 
         toast({
           title: "Responses saved",
           description: "Your growing preferences have been saved successfully.",
         });
+        
+        setShowSubscription(true);
       } catch (error) {
         console.error('Error in quiz submission:', error);
         toast({
@@ -222,11 +226,11 @@ export default function Quiz() {
           description: "An unexpected error occurred. Please try again.",
           variant: "destructive"
         });
+        setIsSubmitting(false);
         return;
       }
     }
     
-    setShowSubscription(true);
     setIsSubmitting(false);
   };
 
