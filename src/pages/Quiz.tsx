@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -11,7 +10,6 @@ import type { QuizResponse } from '@/types/quiz';
 import { Star, Award, Users, MessageCircle, Camera, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-// Storage key for quiz responses
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 
 export default function Quiz() {
@@ -22,7 +20,6 @@ export default function Quiz() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   
-  // Initialize quiz responses from session storage or default values
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
     const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
     return savedResponses ? JSON.parse(savedResponses) : {
@@ -37,7 +34,6 @@ export default function Quiz() {
   
   const [timeLeft, setTimeLeft] = useState("");
 
-  // Save responses to session storage whenever they change
   useEffect(() => {
     sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
   }, [quizResponses]);
@@ -190,21 +186,44 @@ export default function Quiz() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
-    // If user is already logged in, save to Supabase
     if (session?.user?.id) {
       try {
-        const { error } = await supabase
+        const { error: quizError } = await supabase
           .from('quiz_responses')
           .upsert({
             user_id: session.user.id,
-            ...quizResponses
+            experience_level: quizResponses.experience_level,
+            growing_method: quizResponses.growing_method,
+            challenges: quizResponses.challenges,
+            monitoring_method: quizResponses.monitoring_method,
+            nutrient_type: quizResponses.nutrient_type,
+            goals: quizResponses.goals
           });
-        if (error) throw error;
+
+        if (quizError) {
+          console.error('Error saving quiz responses:', quizError);
+          toast({
+            title: "Error saving responses",
+            description: "There was a problem saving your responses. Please try again.",
+            variant: "destructive"
+          });
+          return;
+        }
+
+        toast({
+          title: "Responses saved",
+          description: "Your growing preferences have been saved successfully.",
+        });
       } catch (error) {
-        console.error('Error saving quiz responses:', error);
+        console.error('Error in quiz submission:', error);
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive"
+        });
+        return;
       }
     }
-    // If not logged in, responses are already saved in sessionStorage
     
     setShowSubscription(true);
     setIsSubmitting(false);
