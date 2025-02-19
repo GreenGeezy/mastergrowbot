@@ -488,23 +488,38 @@ export type Database = {
       }
       user_profiles: {
         Row: {
+          challenges: string[] | null
           created_at: string
+          goals: string[] | null
           grow_experience_level: string | null
+          growing_method: string | null
           id: string
+          monitoring_method: string | null
+          nutrient_type: string | null
           subscription_status: string | null
           username: string | null
         }
         Insert: {
+          challenges?: string[] | null
           created_at?: string
+          goals?: string[] | null
           grow_experience_level?: string | null
+          growing_method?: string | null
           id: string
+          monitoring_method?: string | null
+          nutrient_type?: string | null
           subscription_status?: string | null
           username?: string | null
         }
         Update: {
+          challenges?: string[] | null
           created_at?: string
+          goals?: string[] | null
           grow_experience_level?: string | null
+          growing_method?: string | null
           id?: string
+          monitoring_method?: string | null
+          nutrient_type?: string | null
           subscription_status?: string | null
           username?: string | null
         }
