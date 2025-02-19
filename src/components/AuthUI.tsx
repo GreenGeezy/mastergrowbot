@@ -44,6 +44,12 @@ const AuthUI = () => {
       const redirectUrl = getRedirectUrl();
       
       if (isSignUp) {
+        // Check for pending subscription
+        const { data: pendingSub, error: pendingError } = await supabase
+          .rpc('check_pending_subscription', { check_email: email });
+
+        if (pendingError) throw pendingError;
+
         const { error: signUpError } = await supabase.auth.signUp({
           email,
           password,
@@ -71,6 +77,25 @@ const AuthUI = () => {
           }]);
 
         if (quizError) throw quizError;
+
+        // If there was a pending subscription, consume it and create active subscription
+        if (pendingSub?.length > 0) {
+          const { error: consumeError } = await supabase
+            .rpc('consume_pending_subscription', { sub_email: email });
+
+          if (consumeError) throw consumeError;
+
+          const { error: subError } = await supabase
+            .from('subscriptions')
+            .insert([{
+              user_id: (await supabase.auth.getUser()).data.user?.id,
+              subscription_type: pendingSub[0].subscription_type,
+              expires_at: pendingSub[0].expires_at,
+              status: 'active'
+            }]);
+
+          if (subError) throw subError;
+        }
 
         // Clear temporary storage
         sessionStorage.removeItem('mg_temp_quiz_responses');

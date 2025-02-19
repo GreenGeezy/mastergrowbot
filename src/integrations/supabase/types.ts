@@ -101,6 +101,36 @@ export type Database = {
         }
         Relationships: []
       }
+      pending_subscriptions: {
+        Row: {
+          consumed: boolean | null
+          created_at: string | null
+          email: string
+          expires_at: string
+          id: string
+          square_order_id: string
+          subscription_type: string
+        }
+        Insert: {
+          consumed?: boolean | null
+          created_at?: string | null
+          email: string
+          expires_at: string
+          id?: string
+          square_order_id: string
+          subscription_type: string
+        }
+        Update: {
+          consumed?: boolean | null
+          created_at?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          square_order_id?: string
+          subscription_type?: string
+        }
+        Relationships: []
+      }
       plant_analyses: {
         Row: {
           confidence_level: number | null
@@ -485,6 +515,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_pending_subscription: {
+        Args: {
+          check_email: string
+        }
+        Returns: {
+          has_pending: boolean
+          subscription_type: string
+          expires_at: string
+        }[]
+      }
+      consume_pending_subscription: {
+        Args: {
+          sub_email: string
+        }
+        Returns: boolean
+      }
       has_active_subscription: {
         Args: {
           user_uuid: string
