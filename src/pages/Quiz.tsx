@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -149,7 +150,7 @@ export default function Quiz() {
       label: "Improve quality and potency",
       value: "quality"
     }, {
-      label: "Increase profits",
+      label: "Increase yields and profits",
       value: "profits"
     }, {
       label: "All of the above",
