@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useToast } from '@/hooks/use-toast'
@@ -24,76 +23,56 @@ export function ProfileDropdown() {
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!session?.user?.id) return
-      
+
       try {
-        // First try to get data from user_profiles
-        const { data: profileData, error: profileError } = await supabase
-          .from('user_profiles')
-          .select('username, grow_experience_level, growing_method, monitoring_method, nutrient_type, challenges, goals')
-          .eq('id', session.user.id)
+        // First get the latest quiz response
+        const { data: quizData, error: quizError } = await supabase
+          .from('quiz_responses')
+          .select('experience_level, growing_method, monitoring_method, nutrient_type, challenges, goals')
+          .eq('user_id', session.user.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
           .single()
 
-        if (profileError && profileError.code !== 'PGRST116') { // PGRST116 is "not found"
-          console.error('Error fetching profile:', profileError)
+        if (quizError && quizError.code !== 'PGRST116') {
+          console.error('Error fetching quiz responses:', quizError)
+        }
+
+        // Then get or create profile
+        const { data: profileData, error: profileError } = await supabase
+          .from('user_profiles')
+          .upsert({
+            id: session.user.id,
+            grow_experience_level: quizData?.experience_level,
+            growing_method: quizData?.growing_method,
+            monitoring_method: quizData?.monitoring_method,
+            nutrient_type: quizData?.nutrient_type,
+            challenges: quizData?.challenges,
+            goals: quizData?.goals
+          })
+          .select()
+          .single()
+
+        if (profileError) {
+          console.error('Error updating profile:', profileError)
           toast({
-            title: "Error loading profile",
-            description: "There was a problem loading your profile data.",
+            title: "Error updating profile",
+            description: "There was a problem updating your profile.",
             variant: "destructive"
           })
           return
         }
 
-        // If no profile data exists, try to get from quiz_responses
-        if (!profileData) {
-          const { data: quizData, error: quizError } = await supabase
-            .from('quiz_responses')
-            .select('experience_level, growing_method, monitoring_method, nutrient_type, challenges, goals')
-            .eq('user_id', session.user.id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .single()
-
-          if (quizError && quizError.code !== 'PGRST116') {
-            console.error('Error fetching quiz responses:', quizError)
-            return
-          }
-
-          if (quizData) {
-            // If we found quiz data but no profile, create the profile
-            const { error: updateError } = await supabase
-              .from('user_profiles')
-              .upsert({
-                id: session.user.id,
-                grow_experience_level: quizData.experience_level,
-                growing_method: quizData.growing_method,
-                monitoring_method: quizData.monitoring_method,
-                nutrient_type: quizData.nutrient_type,
-                challenges: quizData.challenges,
-                goals: quizData.goals
-              })
-
-            if (updateError) {
-              console.error('Error updating profile from quiz:', updateError)
-              return
-            }
-
-            setProfileData({
-              email: session.user.email,
-              grow_experience_level: quizData.experience_level,
-              growing_method: quizData.growing_method,
-              monitoring_method: quizData.monitoring_method,
-              nutrient_type: quizData.nutrient_type,
-              challenges: quizData.challenges,
-              goals: quizData.goals
-            })
-          }
-        } else {
-          // We found profile data, use it
-          setProfileData({
-            ...profileData,
-            email: session.user.email
-          })
-        }
+        setProfileData({
+          ...profileData,
+          email: session.user.email,
+          grow_experience_level: quizData?.experience_level || profileData?.grow_experience_level,
+          growing_method: quizData?.growing_method || profileData?.growing_method,
+          monitoring_method: quizData?.monitoring_method || profileData?.monitoring_method,
+          nutrient_type: quizData?.nutrient_type || profileData?.nutrient_type,
+          challenges: quizData?.challenges || profileData?.challenges,
+          goals: quizData?.goals || profileData?.goals
+        })
       } catch (error) {
         console.error('Error in fetchProfileData:', error)
         toast({
