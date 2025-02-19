@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +33,14 @@ const AuthUI = () => {
     setLoading(true);
 
     try {
+      // Check if quiz is completed
+      const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+      if (!quizResponses) {
+        toast.error("Please complete the quiz first before signing up");
+        navigate('/quiz');
+        return;
+      }
+
       const redirectUrl = getRedirectUrl();
       
       if (isSignUp) {
@@ -52,6 +61,20 @@ const AuthUI = () => {
 
         if (response.error) throw new Error(response.error.message);
 
+        // Store quiz responses to database after successful signup
+        const parsedResponses = JSON.parse(quizResponses);
+        const { error: quizError } = await supabase
+          .from('quiz_responses')
+          .insert([{
+            ...parsedResponses,
+            user_id: (await supabase.auth.getUser()).data.user?.id
+          }]);
+
+        if (quizError) throw quizError;
+
+        // Clear temporary storage
+        sessionStorage.removeItem('mg_temp_quiz_responses');
+        
         toast.success("Account created! Please check your email for verification.");
       } else {
         const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -92,6 +115,14 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
+
+  // If quiz hasn't been completed, redirect to quiz
+  useEffect(() => {
+    const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+    if (!quizResponses) {
+      navigate('/quiz');
+    }
+  }, [navigate]);
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
