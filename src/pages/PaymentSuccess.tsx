@@ -110,6 +110,5 @@ export default function PaymentSuccess() {
         </form>
       </div>
     </div>
-  </div>
   );
 }
