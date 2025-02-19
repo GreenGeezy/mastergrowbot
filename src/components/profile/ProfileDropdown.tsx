@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useToast } from '@/hooks/use-toast'
@@ -24,19 +25,31 @@ export function ProfileDropdown() {
     const fetchProfileData = async () => {
       if (!session?.user?.id) return
       
-      const { data, error } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from('user_profiles')
         .select('username, grow_experience_level')
         .eq('id', session.user.id)
         .single()
 
-      if (error) {
-        console.error('Error fetching profile:', error)
+      if (profileError) {
+        console.error('Error fetching profile:', profileError)
+        return
+      }
+
+      const { data: quizData, error: quizError } = await supabase
+        .from('quiz_responses')
+        .select('growing_method, monitoring_method, nutrient_type, challenges, goals')
+        .eq('user_id', session.user.id)
+        .single()
+
+      if (quizError) {
+        console.error('Error fetching quiz responses:', quizError)
         return
       }
 
       setProfileData({
-        ...data,
+        ...profileData,
+        ...quizData,
         email: session.user.email
       })
     }
@@ -88,6 +101,146 @@ export function ProfileDropdown() {
     })
   }
 
+  const updateGrowingMethod = async (method: string) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('quiz_responses')
+      .update({ growing_method: method })
+      .eq('user_id', session.user.id)
+
+    if (error) {
+      toast({
+        title: "Error updating growing method",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      growing_method: method
+    }))
+
+    toast({
+      title: "Growing method updated",
+      description: `Your growing method has been set to ${method}`,
+    })
+  }
+
+  const updateMonitoringMethod = async (method: string) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('quiz_responses')
+      .update({ monitoring_method: method })
+      .eq('user_id', session.user.id)
+
+    if (error) {
+      toast({
+        title: "Error updating monitoring method",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      monitoring_method: method
+    }))
+
+    toast({
+      title: "Monitoring method updated",
+      description: `Your monitoring method has been set to ${method}`,
+    })
+  }
+
+  const updateNutrientType = async (type: string) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('quiz_responses')
+      .update({ nutrient_type: type })
+      .eq('user_id', session.user.id)
+
+    if (error) {
+      toast({
+        title: "Error updating nutrient type",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      nutrient_type: type
+    }))
+
+    toast({
+      title: "Nutrient type updated",
+      description: `Your nutrient type has been set to ${type}`,
+    })
+  }
+
+  const updateChallenges = async (challenges: string[]) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('quiz_responses')
+      .update({ challenges })
+      .eq('user_id', session.user.id)
+
+    if (error) {
+      toast({
+        title: "Error updating challenges",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      challenges
+    }))
+
+    toast({
+      title: "Challenges updated",
+      description: "Your growing challenges have been updated",
+    })
+  }
+
+  const updateGoals = async (goals: string[]) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('quiz_responses')
+      .update({ goals })
+      .eq('user_id', session.user.id)
+
+    if (error) {
+      toast({
+        title: "Error updating goals",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      goals
+    }))
+
+    toast({
+      title: "Goals updated",
+      description: "Your growing goals have been updated",
+    })
+  }
+
   const getInitials = (name?: string) => {
     if (!name) return 'U'
     return name.split(' ').map(n => n[0]).join('').toUpperCase()
@@ -117,6 +270,11 @@ export function ProfileDropdown() {
             <ProfileInfo 
               profileData={profileData}
               updateExperienceLevel={updateExperienceLevel}
+              updateGrowingMethod={updateGrowingMethod}
+              updateMonitoringMethod={updateMonitoringMethod}
+              updateNutrientType={updateNutrientType}
+              updateChallenges={updateChallenges}
+              updateGoals={updateGoals}
             />
             <ProfileSettings 
               notifications={notifications}
