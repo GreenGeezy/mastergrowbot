@@ -12,7 +12,7 @@ export const ChatHeader = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center p-4 border-b border-[#333333] bg-[#1A1A1A] h-[72px]">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center p-4 border-b border-[#333333] bg-[#1A1A1A] h-[80px]">
         <div className="flex items-center space-x-3 mr-4">
           <img 
             src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
@@ -90,13 +90,13 @@ export const ChatHeader = () => {
               </svg>
               Sign in with Google
             </Button>
-            <p className="text-[#FFD700] text-base font-bold ml-2 max-w-[200px] leading-tight">
+            <p className="text-[#FFD700] text-base font-bold ml-2 max-w-[300px] leading-tight mt-1">
               Already subscribed? Sign in to unlock all features and customize your growing preferences!
             </p>
           </div>
         </div>
       </div>
-      <div className="h-[72px]"></div>
+      <div className="h-[80px]"></div>
       <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
     </>
   );
