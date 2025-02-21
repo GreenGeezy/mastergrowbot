@@ -43,11 +43,19 @@ export const ChatHeader = () => {
             />
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <Link to="/">
+        <div className="flex flex-col space-y-2">
+          <Button 
+            variant="secondary" 
+            className="bg-purple-600 hover:bg-purple-700 w-full"
+            onClick={() => setShowSupport(true)}
+          >
+            <MessageSquare className="w-4 h-4 mr-2" />
+            Share Feedback
+          </Button>
+          <Link to="/" className="w-full">
             <Button 
               variant="outline"
-              className="bg-white hover:bg-gray-100 text-gray-800 font-semibold px-4 py-2 border border-gray-400 rounded-lg shadow-sm"
+              className="bg-white hover:bg-gray-100 text-gray-800 font-semibold px-4 py-2 border border-gray-400 rounded-lg shadow-sm w-full"
             >
               Sign In / Register
             </Button>
@@ -60,7 +68,7 @@ export const ChatHeader = () => {
               }
             })}
             variant="outline"
-            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold border border-gray-400 rounded-lg shadow-sm flex items-center gap-2"
+            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold border border-gray-400 rounded-lg shadow-sm flex items-center justify-center gap-2 w-full"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
@@ -81,14 +89,6 @@ export const ChatHeader = () => {
               />
             </svg>
             Sign in with Google
-          </Button>
-          <Button 
-            variant="secondary" 
-            className="bg-purple-600 hover:bg-purple-700"
-            onClick={() => setShowSupport(true)}
-          >
-            <MessageSquare className="w-4 h-4 mr-2" />
-            Share Feedback
           </Button>
         </div>
       </div>
