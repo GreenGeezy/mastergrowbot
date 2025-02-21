@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
+import FeatureSection from '@/components/FeatureSection';
 
 export default function Index() {
   const session = useSession();
@@ -17,6 +18,12 @@ export default function Index() {
     }
   }, [session, navigate, location]);
 
+  const handleFeatureClick = () => {
+    if (!session) {
+      return;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
@@ -27,7 +34,8 @@ export default function Index() {
       ) : (
         <div className="container mx-auto px-4">
           <div className="py-6 md:py-10">
-            <div className="flex flex-col items-center">
+            <FeatureSection onFeatureClick={handleFeatureClick} />
+            <div className="mt-12 flex flex-col items-center">
               <AuthUI />
             </div>
           </div>
