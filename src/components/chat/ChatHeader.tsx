@@ -90,7 +90,7 @@ export const ChatHeader = () => {
               </svg>
               Sign in with Google
             </Button>
-            <p className="text-white text-sm ml-2">
+            <p className="text-[#FFD700] text-base font-bold ml-2 max-w-[200px] leading-tight">
               Already subscribed? Sign in to unlock all features and customize your growing preferences!
             </p>
           </div>
