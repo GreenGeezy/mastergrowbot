@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useToast } from '@/hooks/use-toast'
@@ -23,40 +22,46 @@ export function ProfileDropdown() {
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      if (!session?.user?.id) return
+      if (!session?.user?.id) return;
 
       try {
-        // First get the latest quiz response
-        const { data: quizData, error: quizError } = await supabase
-          .from('quiz_responses')
-          .select('experience_level, growing_method, monitoring_method, nutrient_type, challenges, goals')
-          .eq('user_id', session.user.id)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle()
-
-        if (quizError) {
-          console.error('Error fetching quiz responses:', quizError)
-          return
-        }
-
-        // Then get the profile data
+        console.log('Fetching profile data for user:', session.user.id);
+        
+        // First try to get the profile data
         const { data: profileData, error: profileError } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('id', session.user.id)
-          .single()
+          .maybeSingle();
 
-        if (profileError && profileError.code !== 'PGRST116') {
-          console.error('Error fetching profile:', profileError)
-          return
+        if (profileError) {
+          console.error('Error fetching profile:', profileError);
+          return;
         }
 
-        // If we have quiz data, update the profile
-        if (quizData) {
-          const { error: updateError } = await supabase
-            .from('user_profiles')
-            .upsert({
+        console.log('Profile data:', profileData);
+
+        // If no profile data exists or it's incomplete, check quiz responses
+        if (!profileData || !profileData.grow_experience_level) {
+          console.log('Checking quiz responses...');
+          const { data: quizData, error: quizError } = await supabase
+            .from('quiz_responses')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+          if (quizError) {
+            console.error('Error fetching quiz responses:', quizError);
+            return;
+          }
+
+          console.log('Quiz data:', quizData);
+
+          if (quizData) {
+            // Update profile with quiz data
+            const profileUpdate = {
               id: session.user.id,
               grow_experience_level: quizData.experience_level,
               growing_method: quizData.growing_method,
@@ -64,42 +69,44 @@ export function ProfileDropdown() {
               nutrient_type: quizData.nutrient_type,
               challenges: quizData.challenges,
               goals: quizData.goals
-            })
+            };
 
-          if (updateError) {
-            console.error('Error updating profile:', updateError)
-            return
+            const { error: updateError } = await supabase
+              .from('user_profiles')
+              .upsert(profileUpdate);
+
+            if (updateError) {
+              console.error('Error updating profile:', updateError);
+              return;
+            }
+
+            setProfileData({
+              email: session.user.email,
+              ...profileUpdate
+            });
+            return;
           }
+        }
 
-          // Set profile data with quiz responses
-          setProfileData({
-            email: session.user.email,
-            grow_experience_level: quizData.experience_level,
-            growing_method: quizData.growing_method,
-            monitoring_method: quizData.monitoring_method,
-            nutrient_type: quizData.nutrient_type,
-            challenges: quizData.challenges,
-            goals: quizData.goals
-          })
-        } else if (profileData) {
-          // Use existing profile data if no quiz data
+        // Use existing profile data if available
+        if (profileData) {
           setProfileData({
             email: session.user.email,
             ...profileData
-          })
+          });
         }
       } catch (error) {
-        console.error('Error in fetchProfileData:', error)
+        console.error('Error in fetchProfileData:', error);
         toast({
           title: "Error",
           description: "An unexpected error occurred while loading your profile.",
           variant: "destructive"
-        })
+        });
       }
-    }
+    };
 
-    fetchProfileData()
-  }, [session?.user?.id, supabase, toast])
+    fetchProfileData();
+  }, [session?.user?.id, supabase, toast]);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut()

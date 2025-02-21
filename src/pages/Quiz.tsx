@@ -188,7 +188,6 @@ export default function Quiz() {
     
     try {
       if (session?.user?.id) {
-        // Save to quiz_responses table
         const { error: quizError } = await supabase
           .from('quiz_responses')
           .insert({
@@ -212,7 +211,6 @@ export default function Quiz() {
           return;
         }
 
-        // Update user_profiles table directly
         const { error: profileError } = await supabase
           .from('user_profiles')
           .upsert({
@@ -248,7 +246,7 @@ export default function Quiz() {
         sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
         setShowSubscription(true);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error in quiz submission:', error);
       toast({
         title: "Error",
