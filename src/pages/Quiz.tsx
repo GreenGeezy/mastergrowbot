@@ -280,10 +280,6 @@ export default function Quiz() {
         <ChatHeader />
         <div className="container mx-auto px-4 py-8">
           <div className="w-full max-w-[1200px] space-y-6">
-            <div className="text-center mb-8">
-              <p className="text-white mt-2 text-sm">Sign in to save your growing preferences and access all features</p>
-            </div>
-
             <div className="text-center space-y-2">
               <div className="flex flex-col md:flex-row items-center justify-center gap-4">
                 <div className="relative group">
