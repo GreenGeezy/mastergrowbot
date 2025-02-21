@@ -39,12 +39,12 @@ export function ProfileInfo({
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-200">Experience Level</span>
+          <span className="text-sm text-white">Experience Level</span>
           <Select 
             value={profileData.grow_experience_level} 
             onValueChange={updateExperienceLevel}
           >
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-[140px] text-white bg-transparent border-gray-600">
               <SelectValue placeholder="Select level" />
             </SelectTrigger>
             <SelectContent>
@@ -56,12 +56,12 @@ export function ProfileInfo({
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-200">Growing Method</span>
+          <span className="text-sm text-white">Growing Method</span>
           <Select 
             value={profileData.growing_method} 
             onValueChange={updateGrowingMethod}
           >
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-[140px] text-white bg-transparent border-gray-600">
               <SelectValue placeholder="Select method" />
             </SelectTrigger>
             <SelectContent>
@@ -73,12 +73,12 @@ export function ProfileInfo({
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-200">Monitoring Method</span>
+          <span className="text-sm text-white">Monitoring Method</span>
           <Select 
             value={profileData.monitoring_method} 
             onValueChange={updateMonitoringMethod}
           >
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-[140px] text-white bg-transparent border-gray-600">
               <SelectValue placeholder="Select method" />
             </SelectTrigger>
             <SelectContent>
@@ -90,12 +90,12 @@ export function ProfileInfo({
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-200">Nutrient Type</span>
+          <span className="text-sm text-white">Nutrient Type</span>
           <Select 
             value={profileData.nutrient_type} 
             onValueChange={updateNutrientType}
           >
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-[140px] text-white bg-transparent border-gray-600">
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
             <SelectContent>
@@ -108,10 +108,10 @@ export function ProfileInfo({
         </div>
 
         <div className="space-y-2">
-          <span className="text-sm text-gray-200">Growing Challenges</span>
+          <span className="text-sm text-white">Growing Challenges</span>
           <div className="flex flex-wrap gap-2">
             {profileData.challenges?.map((challenge) => (
-              <Badge key={challenge} variant="outline">
+              <Badge key={challenge} variant="outline" className="text-white border-gray-600">
                 {challenge}
               </Badge>
             ))}
@@ -119,10 +119,10 @@ export function ProfileInfo({
         </div>
 
         <div className="space-y-2">
-          <span className="text-sm text-gray-200">Growing Goals</span>
+          <span className="text-sm text-white">Growing Goals</span>
           <div className="flex flex-wrap gap-2">
             {profileData.goals?.map((goal) => (
-              <Badge key={goal} variant="outline">
+              <Badge key={goal} variant="outline" className="text-white border-gray-600">
                 {goal}
               </Badge>
             ))}
