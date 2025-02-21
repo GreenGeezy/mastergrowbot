@@ -22,10 +22,14 @@ export function ProfileDropdown() {
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      if (!session?.user?.id) return;
+      if (!session?.user?.id) {
+        console.log('No user session found');
+        return;
+      }
 
       try {
-        console.log('Fetching profile data for user:', session.user.id);
+        console.log('Starting profile data fetch for user:', session.user.id);
+        console.log('User email:', session.user.email);
         
         // First try to get the profile data
         const { data: profileData, error: profileError } = await supabase
@@ -39,11 +43,12 @@ export function ProfileDropdown() {
           return;
         }
 
-        console.log('Profile data:', profileData);
+        console.log('Raw profile data from user_profiles:', profileData);
 
-        // If no profile data exists or it's incomplete, check quiz responses
         if (!profileData || !profileData.grow_experience_level) {
-          console.log('Checking quiz responses...');
+          console.log('Profile data missing or incomplete, checking quiz responses...');
+          
+          // Get the most recent quiz response
           const { data: quizData, error: quizError } = await supabase
             .from('quiz_responses')
             .select('*')
@@ -57,9 +62,11 @@ export function ProfileDropdown() {
             return;
           }
 
-          console.log('Quiz data:', quizData);
+          console.log('Most recent quiz response:', quizData);
 
           if (quizData) {
+            console.log('Found quiz data, updating profile...');
+            
             // Update profile with quiz data
             const profileUpdate = {
               id: session.user.id,
@@ -71,29 +78,61 @@ export function ProfileDropdown() {
               goals: quizData.goals
             };
 
+            console.log('Attempting to update profile with:', profileUpdate);
+
             const { error: updateError } = await supabase
               .from('user_profiles')
               .upsert(profileUpdate);
 
             if (updateError) {
               console.error('Error updating profile:', updateError);
+              toast({
+                title: "Error updating profile",
+                description: "Failed to sync your quiz responses with your profile.",
+                variant: "destructive"
+              });
               return;
             }
 
+            console.log('Profile successfully updated with quiz data');
             setProfileData({
               email: session.user.email,
               ...profileUpdate
             });
             return;
+          } else {
+            console.log('No quiz responses found for user');
           }
         }
 
         // Use existing profile data if available
         if (profileData) {
+          console.log('Using existing profile data');
           setProfileData({
             email: session.user.email,
             ...profileData
           });
+        } else {
+          console.log('No profile data available');
+          // Initialize empty profile if nothing exists
+          const emptyProfile = {
+            id: session.user.id,
+            email: session.user.email,
+            grow_experience_level: 'new'
+          };
+          
+          console.log('Initializing empty profile:', emptyProfile);
+          
+          const { error: createError } = await supabase
+            .from('user_profiles')
+            .upsert(emptyProfile);
+
+          if (createError) {
+            console.error('Error creating empty profile:', createError);
+            return;
+          }
+
+          setProfileData(emptyProfile);
         }
       } catch (error) {
         console.error('Error in fetchProfileData:', error);
@@ -106,7 +145,7 @@ export function ProfileDropdown() {
     };
 
     fetchProfileData();
-  }, [session?.user?.id, supabase, toast]);
+  }, [session?.user?.id, session?.user?.email, supabase, toast]);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut()
