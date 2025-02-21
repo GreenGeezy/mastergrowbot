@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, MessageCircle, Camera, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SupportDialog from '@/components/support/SupportDialog';
+import FeatureCard from '@/components/FeatureCard';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 
@@ -22,6 +23,26 @@ export const ChatHeader = () => {
         </div>
         
         <div className="flex items-center justify-center flex-1">
+          <div className="hidden md:flex items-center space-x-2">
+            <FeatureCard
+              icon={MessageCircle}
+              title="Growing Assistant"
+              subtitle="Get expert growing advice"
+              to="/chat"
+            />
+            <FeatureCard
+              icon={Camera}
+              title="Plant Health Check"
+              subtitle="Diagnose plant issues"
+              to="/plant-health"
+            />
+            <FeatureCard
+              icon={BookOpen}
+              title="Growing Guide"
+              subtitle="Quick answers to FAQs"
+              to="/grow-guide"
+            />
+          </div>
           <div className="flex items-center space-x-2 ml-2">
             <Button 
               variant="secondary" 
