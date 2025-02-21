@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { ChatHeader } from '@/components/chat/ChatHeader';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
@@ -274,327 +275,333 @@ export default function Quiz() {
   };
 
   if (showSubscription) {
-    return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
-        <div className="w-full max-w-[1200px] space-y-6">
-          <div className="text-center mb-8">
-            <p className="text-white mt-2 text-sm">Sign in to save your growing preferences and access all features</p>
-          </div>
-
-          <div className="text-center space-y-2">
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-                <div className="relative bg-card p-4 sm:p-6 rounded-full backdrop-blur-xl ring-1 ring-white/10 hover:ring-accent/30 transition-all duration-500">
-                  <img 
-                    src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
-                    alt="Master Growbot Logo" 
-                    className="w-20 h-20 sm:w-28 sm:h-28 transform group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-wrap justify-center gap-2">
-                <Button
-                  variant="ghost"
-                  className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
-                  onClick={() => navigate('/chat')}
-                >
-                  <MessageCircle className="w-5 h-5 text-green-500" />
-                  <div className="flex flex-col items-start">
-                    <span className="font-semibold">Growing Assistant</span>
-                    <span className="text-xs opacity-70">Get expert growing advice</span>
-                  </div>
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
-                  onClick={() => navigate('/plant-health')}
-                >
-                  <Camera className="w-5 h-5 text-green-500" />
-                  <div className="flex flex-col items-start">
-                    <span className="font-semibold">Plant Health Check</span>
-                    <span className="text-xs opacity-70">Diagnose plant issues</span>
-                  </div>
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
-                  onClick={() => navigate('/grow-guide')}
-                >
-                  <BookOpen className="w-5 h-5 text-green-500" />
-                  <div className="flex flex-col items-start">
-                    <span className="font-semibold">Growing Guide</span>
-                    <span className="text-xs opacity-70">Quick answers to FAQs</span>
-                  </div>
-                </Button>
-              </div>
+    return <div className="min-h-screen bg-background circuit-background">
+        <ChatHeader />
+        <div className="container mx-auto px-4 pt-20">
+          <div className="w-full max-w-[1200px] space-y-6">
+            <div className="text-center mb-8">
+              <p className="text-white mt-2 text-sm">Sign in to save your growing preferences and access all features</p>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
-            <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
-            
-            <div className="flex flex-col items-center space-y-4 mt-4">
-              <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-2xl">
-                <p className="text-white italic text-sm">"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
-              </div>
-              <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
-                <Users className="w-5 h-5" />
-                <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
-              </div>
-              <div className="flex flex-col items-center space-y-0">
-                <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
-                  Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
-                </p>
-                <div className="flex items-center justify-center space-x-3">
-                  <Award className="w-7 h-7 text-[#FFD700] animate-float will-change-transform" />
-                  <div className="flex items-center space-x-1">
-                    {[...Array(5)].map((_, index) => <Star key={index} className="w-6 h-6 fill-[#FFD700] text-[#FFD700]" />)}
+
+            <div className="text-center space-y-2">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+                  <div className="relative bg-card p-4 sm:p-6 rounded-full backdrop-blur-xl ring-1 ring-white/10 hover:ring-accent/30 transition-all duration-500">
+                    <img 
+                      src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
+                      alt="Master Growbot Logo" 
+                      className="w-20 h-20 sm:w-28 sm:h-28 transform group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300">
-              <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
-              <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
-            </div>
-          </div>
-          
-          <div className="flex flex-row gap-3 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
-            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-primary/30 bg-gradient-to-b from-primary/10 to-transparent">
-              <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }} />
-              </div>
-              <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
-                <div className="min-h-[60px]">
-                  <h3 className="leading-[20px] font-bold text-white text-lg">
-                    Master Growbot AI Weekly Subscription
-                  </h3>
+                <div className="flex flex-wrap justify-center gap-2">
+                  <Button
+                    variant="ghost"
+                    className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
+                    onClick={() => navigate('/chat')}
+                  >
+                    <MessageCircle className="w-5 h-5 text-green-500" />
+                    <div className="flex flex-col items-start">
+                      <span className="font-semibold">Growing Assistant</span>
+                      <span className="text-xs opacity-70">Get expert growing advice</span>
+                    </div>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
+                    onClick={() => navigate('/plant-health')}
+                  >
+                    <Camera className="w-5 h-5 text-green-500" />
+                    <div className="flex flex-col items-start">
+                      <span className="font-semibold">Plant Health Check</span>
+                      <span className="text-xs opacity-70">Diagnose plant issues</span>
+                    </div>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] text-white w-full md:w-auto min-w-[200px] flex items-center gap-2 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10"
+                    onClick={() => navigate('/grow-guide')}
+                  >
+                    <BookOpen className="w-5 h-5 text-green-500" />
+                    <div className="flex flex-col items-start">
+                      <span className="font-semibold">Growing Guide</span>
+                      <span className="text-xs opacity-70">Quick answers to FAQs</span>
+                    </div>
+                  </Button>
                 </div>
-                <ul className="space-y-1 mb-2 text-white/80">
-                  <li className="flex items-center">
-                    <span className="mr-2">–</span>
-                    <span className="font-bold">$9.99/week</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="mr-2">–</span>
-                    <span>Cancel Anytime</span>
-                  </li>
-                </ul>
-                <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
-                  <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
-                </a>
               </div>
-            </div>
-
-            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-secondary/30 bg-gradient-to-b from-secondary/10 to-transparent">
-              <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                <img alt="Master Growbot AI Quarterly Subscription" src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }} />
-              </div>
-              <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
-                <div className="min-h-[60px]">
-                  <h3 className="leading-[20px] font-bold text-white text-lg">
-                    Master Growbot AI Quarterly Subscription
-                  </h3>
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
+              <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
+              
+              <div className="flex flex-col items-center space-y-4 mt-4">
+                <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-2xl">
+                  <p className="text-white italic text-sm">"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
                 </div>
-                <ul className="space-y-1 mb-2 text-white/80">
-                  <li className="flex items-center">
-                    <span className="mr-2">–</span>
-                    <span className="font-bold">$89/quarter</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="mr-2">–</span>
-                    <span>Save 25%</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="mr-2">–</span>
-                    <span>Cancel Anytime</span>
-                  </li>
-                </ul>
-                <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
-                  <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
-                </a>
-              </div>
-            </div>
-
-            <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-[#FFD700]/30 bg-gradient-to-b from-[#FFD700]/10 to-transparent relative">
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                <Badge className="bg-black text-[#FFD700] border border-[#FFD700] px-3 py-1 text-sm font-semibold">
-                  Best Value
-                </Badge>
-              </div>
-              <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" alt="Master Growbot AI Yearly Subscription" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }} />
-              </div>
-              <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
-                <div className="min-h-[60px]">
-                  <h3 className="leading-[20px] font-bold text-white text-lg">
-                    Master Growbot AI Yearly Subscription
-                  </h3>
+                <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
+                  <Users className="w-5 h-5" />
+                  <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
                 </div>
-                <ul className="space-y-1 mb-2 text-white/80">
-                  <li className="flex items-center">
-                    <span className="mr-2">–</span>
-                    <span className="font-bold">$199/year</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="mr-2">–</span>
-                    <span>Save Over 60%</span>
-                  </li>
-                  <li className="flex items-center">
-                    <span className="mr-2">–</span>
-                    <span>Cancel Anytime</span>
-                  </li>
-                </ul>
-                <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
-                  <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
-                </a>
+                <div className="flex flex-col items-center space-y-0">
+                  <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
+                    Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
+                  </p>
+                  <div className="flex items-center justify-center space-x-3">
+                    <Award className="w-7 h-7 text-[#FFD700] animate-float will-change-transform" />
+                    <div className="flex items-center space-x-1">
+                      {[...Array(5)].map((_, index) => <Star key={index} className="w-6 h-6 fill-[#FFD700] text-[#FFD700]" />)}
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
-            <div className="w-full">
-              <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
+              <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300">
+                <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
+                <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
+              </div>
             </div>
             
-            <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md h-12 text-base hover:bg-white/5 border-white/20 transition-colors duration-200">
-              No thanks, I want to stay basic
-            </Button>
+            <div className="flex flex-row gap-3 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
+              <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-primary/30 bg-gradient-to-b from-primary/10 to-transparent">
+                <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                  <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }} />
+                </div>
+                <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
+                  <div className="min-h-[60px]">
+                    <h3 className="leading-[20px] font-bold text-white text-lg">
+                      Master Growbot AI Weekly Subscription
+                    </h3>
+                  </div>
+                  <ul className="space-y-1 mb-2 text-white/80">
+                    <li className="flex items-center">
+                      <span className="mr-2">–</span>
+                      <span className="font-bold">$9.99/week</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2">–</span>
+                      <span>Cancel Anytime</span>
+                    </li>
+                  </ul>
+                  <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
+                    <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-secondary/30 bg-gradient-to-b from-secondary/10 to-transparent">
+                <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                  <img alt="Master Growbot AI Quarterly Subscription" src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }} />
+                </div>
+                <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
+                  <div className="min-h-[60px]">
+                    <h3 className="leading-[20px] font-bold text-white text-lg">
+                      Master Growbot AI Quarterly Subscription
+                    </h3>
+                  </div>
+                  <ul className="space-y-1 mb-2 text-white/80">
+                    <li className="flex items-center">
+                      <span className="mr-2">–</span>
+                      <span className="font-bold">$89/quarter</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2">–</span>
+                      <span>Save 25%</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2">–</span>
+                      <span>Cancel Anytime</span>
+                    </li>
+                  </ul>
+                  <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
+                    <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-[#FFD700]/30 bg-gradient-to-b from-[#FFD700]/10 to-transparent relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                  <Badge className="bg-black text-[#FFD700] border border-[#FFD700] px-3 py-1 text-sm font-semibold">
+                    Best Value
+                  </Badge>
+                </div>
+                <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                  <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" alt="Master Growbot AI Yearly Subscription" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }} />
+                </div>
+                <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
+                  <div className="min-h-[60px]">
+                    <h3 className="leading-[20px] font-bold text-white text-lg">
+                      Master Growbot AI Yearly Subscription
+                    </h3>
+                  </div>
+                  <ul className="space-y-1 mb-2 text-white/80">
+                    <li className="flex items-center">
+                      <span className="mr-2">–</span>
+                      <span className="font-bold">$199/year</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2">–</span>
+                      <span>Save Over 60%</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-2">–</span>
+                      <span>Cancel Anytime</span>
+                    </li>
+                  </ul>
+                  <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
+                    <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
+              <div className="w-full">
+                <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
+              </div>
+              
+              <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md h-12 text-base hover:bg-white/5 border-white/20 transition-colors duration-200">
+                No thanks, I want to stay basic
+              </Button>
+            </div>
           </div>
         </div>
       </div>;
   }
 
   const currentQuestion = questions[currentStep];
-  return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 circuit-background">
-      <div className="w-full max-w-2xl">
-        <div className="mb-8">
-          <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
-            <div className="space-y-6">
-              <div className="space-y-2 text-center">
-                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
-                  Help us personalize your growing experience
-                </h1>
-                <div className="flex items-center justify-center gap-2 mt-4">
-                  {questions.map((_, index) => (
-                    <div 
-                      key={index} 
-                      className={`h-2 w-2 rounded-full ${
-                        index === currentStep ? 'bg-accent w-6' : 
-                        index < currentStep ? 'bg-primary' : 
-                        'bg-white/20'
-                      }`} 
-                    />
-                  ))}
-                </div>
-                <p className="text-accent/80 mt-2">
-                  Question {currentStep + 1} of {questions.length}
-                </p>
-              </div>
-
+  return <div className="min-h-screen bg-background circuit-background">
+      <ChatHeader />
+      <div className="container mx-auto px-4 pt-20">
+        <div className="w-full max-w-2xl">
+          <div className="mb-8">
+            <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold text-white tech-font">
-                  {currentQuestion.question}
-                </h2>
-
-                {currentQuestion.type === "radio" && (
-                  <RadioGroup
-                    value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
-                    onValueChange={value => setQuizResponses(prev => ({
-                      ...prev,
-                      [currentQuestion.field]: value
-                    }))}
-                    className="space-y-4"
-                  >
-                    {currentQuestion.options.map(option => (
-                      <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
-                        <RadioGroupItem 
-                          value={option.value} 
-                          id={option.value}
-                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent"
-                        />
-                        <label 
-                          htmlFor={option.value}
-                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
-                        >
-                          {option.label}
-                        </label>
-                      </div>
+                <div className="space-y-2 text-center">
+                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
+                    Help us personalize your growing experience
+                  </h1>
+                  <div className="flex items-center justify-center gap-2 mt-4">
+                    {questions.map((_, index) => (
+                      <div 
+                        key={index} 
+                        className={`h-2 w-2 rounded-full ${
+                          index === currentStep ? 'bg-accent w-6' : 
+                          index < currentStep ? 'bg-primary' : 
+                          'bg-white/20'
+                        }`} 
+                      />
                     ))}
-                  </RadioGroup>
-                )}
+                  </div>
+                  <p className="text-accent/80 mt-2">
+                    Question {currentStep + 1} of {questions.length}
+                  </p>
+                </div>
 
-                {currentQuestion.type === "checkbox" && (
-                  <div className="space-y-4">
-                    {currentQuestion.options.map(option => (
-                      <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
-                        <Checkbox
-                          id={option.value}
-                          checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
-                          onCheckedChange={checked => {
-                            const field = currentQuestion.field as keyof QuizResponse;
-                            const currentValues = quizResponses[field] as string[] || [];
-                            if (checked) {
-                              if (option.value === 'all' || option.value === 'none') {
-                                setQuizResponses(prev => ({
-                                  ...prev,
-                                  [field]: [option.value]
-                                }));
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-semibold text-white tech-font">
+                    {currentQuestion.question}
+                  </h2>
+
+                  {currentQuestion.type === "radio" && (
+                    <RadioGroup
+                      value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
+                      onValueChange={value => setQuizResponses(prev => ({
+                        ...prev,
+                        [currentQuestion.field]: value
+                      }))}
+                      className="space-y-4"
+                    >
+                      {currentQuestion.options.map(option => (
+                        <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                          <RadioGroupItem 
+                            value={option.value} 
+                            id={option.value}
+                            className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent"
+                          />
+                          <label 
+                            htmlFor={option.value}
+                            className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
+                          >
+                            {option.label}
+                          </label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  )}
+
+                  {currentQuestion.type === "checkbox" && (
+                    <div className="space-y-4">
+                      {currentQuestion.options.map(option => (
+                        <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                          <Checkbox
+                            id={option.value}
+                            checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
+                            onCheckedChange={checked => {
+                              const field = currentQuestion.field as keyof QuizResponse;
+                              const currentValues = quizResponses[field] as string[] || [];
+                              if (checked) {
+                                if (option.value === 'all' || option.value === 'none') {
+                                  setQuizResponses(prev => ({
+                                    ...prev,
+                                    [field]: [option.value]
+                                  }));
+                                } else {
+                                  setQuizResponses(prev => ({
+                                    ...prev,
+                                    [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
+                                  }));
+                                }
                               } else {
                                 setQuizResponses(prev => ({
                                   ...prev,
-                                  [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
+                                  [field]: currentValues.filter(value => value !== option.value)
                                 }));
                               }
-                            } else {
-                              setQuizResponses(prev => ({
-                                ...prev,
-                                [field]: currentValues.filter(value => value !== option.value)
-                              }));
-                            }
-                          }}
-                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent"
-                        />
-                        <label
-                          htmlFor={option.value}
-                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
-                        >
-                          {option.label}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                            }}
+                            className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent"
+                          />
+                          <label
+                            htmlFor={option.value}
+                            className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
+                          >
+                            {option.label}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-              <div className="flex justify-between pt-6">
-                <Button 
-                  variant="outline" 
-                  onClick={handlePreviousStep}
-                  disabled={currentStep === 0}
-                  className="px-6"
-                >
-                  Previous
-                </Button>
-                
-                <Button 
-                  onClick={handleNextStep}
-                  disabled={isSubmitting}
-                  className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
-                >
-                  {currentStep === questions.length - 1 ? 
-                    (isSubmitting ? "Saving..." : "Complete Quiz") : 
-                    "Next"
-                  }
-                </Button>
+                <div className="flex justify-between pt-6">
+                  <Button 
+                    variant="outline" 
+                    onClick={handlePreviousStep}
+                    disabled={currentStep === 0}
+                    className="px-6"
+                  >
+                    Previous
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleNextStep}
+                    disabled={isSubmitting}
+                    className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+                  >
+                    {currentStep === questions.length - 1 ? 
+                      (isSubmitting ? "Saving..." : "Complete Quiz") : 
+                      "Next"
+                    }
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

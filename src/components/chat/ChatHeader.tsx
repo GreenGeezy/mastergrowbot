@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import SupportDialog from '@/components/support/SupportDialog';
 import FeatureCard from '@/components/FeatureCard';
 import { supabase } from '@/integrations/supabase/client';
+import { Link } from 'react-router-dom';
 
 export const ChatHeader = () => {
   const [showSupport, setShowSupport] = useState(false);
@@ -43,6 +44,14 @@ export const ChatHeader = () => {
           </div>
         </div>
         <div className="flex items-center gap-4">
+          <Link to="/">
+            <Button 
+              variant="outline"
+              className="bg-white hover:bg-gray-100 text-gray-800 font-semibold px-4 py-2 border border-gray-400 rounded-lg shadow-sm"
+            >
+              Sign In / Register
+            </Button>
+          </Link>
           <Button 
             onClick={() => supabase.auth.signInWithOAuth({
               provider: 'google',
@@ -88,4 +97,3 @@ export const ChatHeader = () => {
     </>
   );
 };
-
