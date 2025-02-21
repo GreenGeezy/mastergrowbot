@@ -35,7 +35,7 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <div className="py-6 md:py-10">
             <FeatureSection onFeatureClick={handleFeatureClick} />
-            <div className="mt-12">
+            <div className="mt-12 flex flex-col items-center">
               <AuthUI />
             </div>
           </div>

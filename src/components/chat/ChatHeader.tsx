@@ -90,6 +90,9 @@ export const ChatHeader = () => {
               </svg>
               Sign in with Google
             </Button>
+            <p className="text-white text-sm ml-2">
+              Already subscribed? Sign in to unlock all features and customize your growing preferences!
+            </p>
           </div>
         </div>
       </div>
