@@ -188,6 +188,44 @@ export default function Quiz() {
     
     try {
       if (session?.user?.id) {
+        console.log('Starting quiz submission for user:', session.user.id);
+        console.log('Quiz responses to save:', quizResponses);
+
+        // First, ensure we have a profile
+        const { data: existingProfile, error: profileError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .maybeSingle();
+
+        if (profileError) {
+          console.error('Error checking existing profile:', profileError);
+          throw profileError;
+        }
+
+        // Create or update the profile first
+        const profileData = {
+          id: session.user.id,
+          grow_experience_level: quizResponses.experience_level,
+          growing_method: quizResponses.growing_method,
+          monitoring_method: quizResponses.monitoring_method,
+          nutrient_type: quizResponses.nutrient_type,
+          challenges: quizResponses.challenges,
+          goals: quizResponses.goals
+        };
+
+        console.log('Updating user profile with:', profileData);
+
+        const { error: upsertError } = await supabase
+          .from('user_profiles')
+          .upsert(profileData);
+
+        if (upsertError) {
+          console.error('Error updating profile:', upsertError);
+          throw upsertError;
+        }
+
+        // Then save to quiz_responses
         const { error: quizError } = await supabase
           .from('quiz_responses')
           .insert({
@@ -202,55 +240,30 @@ export default function Quiz() {
 
         if (quizError) {
           console.error('Error saving quiz responses:', quizError);
-          toast({
-            title: "Error saving responses",
-            description: "There was a problem saving your responses. Please try again.",
-            variant: "destructive"
-          });
-          setIsSubmitting(false);
-          return;
+          throw quizError;
         }
 
-        const { error: profileError } = await supabase
-          .from('user_profiles')
-          .upsert({
-            id: session.user.id,
-            grow_experience_level: quizResponses.experience_level,
-            growing_method: quizResponses.growing_method,
-            monitoring_method: quizResponses.monitoring_method,
-            nutrient_type: quizResponses.nutrient_type,
-            challenges: quizResponses.challenges,
-            goals: quizResponses.goals
-          });
-
-        if (profileError) {
-          console.error('Error updating profile:', profileError);
-          toast({
-            title: "Error updating profile",
-            description: "Your responses were saved but profile update failed. Please try again.",
-            variant: "destructive"
-          });
-          setIsSubmitting(false);
-          return;
-        }
+        console.log('Successfully saved quiz responses and updated profile');
 
         sessionStorage.removeItem(TEMP_QUIZ_RESPONSES_KEY);
         
         toast({
-          title: "Responses saved",
-          description: "Your growing preferences have been saved successfully.",
+          title: "Success!",
+          description: "Your growing preferences have been saved.",
         });
         
         setShowSubscription(true);
       } else {
+        // Store responses temporarily if not logged in
+        console.log('User not logged in, storing responses temporarily');
         sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
         setShowSubscription(true);
       }
     } catch (error: any) {
       console.error('Error in quiz submission:', error);
       toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: "Error saving responses",
+        description: "Please try signing out and back in, then complete the quiz again.",
         variant: "destructive"
       });
       setIsSubmitting(false);

@@ -40,105 +40,44 @@ export function ProfileDropdown() {
 
         if (profileError) {
           console.error('Error fetching profile:', profileError);
-          return;
+          throw profileError;
         }
 
         console.log('Raw profile data from user_profiles:', profileData);
 
-        if (!profileData || !profileData.grow_experience_level) {
-          console.log('Profile data missing or incomplete, checking quiz responses...');
-          
-          // Get the most recent quiz response
-          const { data: quizData, error: quizError } = await supabase
-            .from('quiz_responses')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .maybeSingle();
-
-          if (quizError) {
-            console.error('Error fetching quiz responses:', quizError);
-            return;
-          }
-
-          console.log('Most recent quiz response:', quizData);
-
-          if (quizData) {
-            console.log('Found quiz data, updating profile...');
-            
-            // Update profile with quiz data
-            const profileUpdate = {
-              id: session.user.id,
-              grow_experience_level: quizData.experience_level,
-              growing_method: quizData.growing_method,
-              monitoring_method: quizData.monitoring_method,
-              nutrient_type: quizData.nutrient_type,
-              challenges: quizData.challenges,
-              goals: quizData.goals
-            };
-
-            console.log('Attempting to update profile with:', profileUpdate);
-
-            const { error: updateError } = await supabase
-              .from('user_profiles')
-              .upsert(profileUpdate);
-
-            if (updateError) {
-              console.error('Error updating profile:', updateError);
-              toast({
-                title: "Error updating profile",
-                description: "Failed to sync your quiz responses with your profile.",
-                variant: "destructive"
-              });
-              return;
-            }
-
-            console.log('Profile successfully updated with quiz data');
-            setProfileData({
-              email: session.user.email,
-              ...profileUpdate
-            });
-            return;
-          } else {
-            console.log('No quiz responses found for user');
-          }
-        }
-
-        // Use existing profile data if available
-        if (profileData) {
-          console.log('Using existing profile data');
-          setProfileData({
-            email: session.user.email,
-            ...profileData
-          });
-        } else {
-          console.log('No profile data available');
-          // Initialize empty profile if nothing exists
-          const emptyProfile = {
+        // If no profile exists, create one with default values
+        if (!profileData) {
+          console.log('No profile found, creating default profile');
+          const defaultProfile = {
             id: session.user.id,
-            email: session.user.email,
-            grow_experience_level: 'new'
+            grow_experience_level: 'new',
+            email: session.user.email
           };
-          
-          console.log('Initializing empty profile:', emptyProfile);
-          
+
           const { error: createError } = await supabase
             .from('user_profiles')
-            .upsert(emptyProfile);
+            .insert(defaultProfile);
 
           if (createError) {
-            console.error('Error creating empty profile:', createError);
-            return;
+            console.error('Error creating default profile:', createError);
+            throw createError;
           }
 
-          setProfileData(emptyProfile);
+          setProfileData(defaultProfile);
+          return;
         }
+
+        // Set the profile data
+        setProfileData({
+          email: session.user.email,
+          ...profileData
+        });
+
       } catch (error) {
         console.error('Error in fetchProfileData:', error);
         toast({
-          title: "Error",
-          description: "An unexpected error occurred while loading your profile.",
+          title: "Error loading profile",
+          description: "Please try signing out and back in.",
           variant: "destructive"
         });
       }
