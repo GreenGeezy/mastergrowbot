@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -478,10 +479,11 @@ export default function Quiz() {
   }
 
   const currentQuestion = questions[currentStep];
-  return <div className="min-h-screen bg-background circuit-background">
+  return (
+    <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
-      <div className="container mx-auto px-4 pt-20">
-        <div className="w-full max-w-2xl">
+      <div className="container mx-auto px-4 flex items-center justify-center min-h-[calc(100vh-72px)]">
+        <div className="w-full max-w-2xl mt-[72px]">
           <div className="mb-8">
             <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
               <div className="space-y-6">
@@ -607,5 +609,6 @@ export default function Quiz() {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 }
