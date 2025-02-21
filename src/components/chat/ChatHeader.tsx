@@ -11,7 +11,7 @@ export const ChatHeader = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between p-4 border-b border-[#333333] bg-[#1A1A1A]">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-[#333333] bg-[#1A1A1A]">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3">
             <img 
@@ -42,7 +42,7 @@ export const ChatHeader = () => {
             />
           </div>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-4">
           <Button 
             onClick={() => supabase.auth.signInWithOAuth({
               provider: 'google',
@@ -50,9 +50,10 @@ export const ChatHeader = () => {
                 redirectTo: `${window.location.origin}/auth/v1/callback`
               }
             })}
-            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded-lg shadow inline-flex items-center"
+            variant="outline"
+            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold border border-gray-400 rounded-lg shadow-sm flex items-center gap-2"
           >
-            <svg className="h-6 w-6 mr-2" viewBox="0 0 24 24">
+            <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -82,6 +83,7 @@ export const ChatHeader = () => {
           </Button>
         </div>
       </div>
+      <div className="h-[72px]"></div>
       <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
     </>
   );
