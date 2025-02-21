@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -276,9 +275,10 @@ export default function Quiz() {
   };
 
   if (showSubscription) {
-    return <div className="min-h-screen bg-background circuit-background">
+    return (
+      <div className="min-h-screen bg-background circuit-background">
         <ChatHeader />
-        <div className="container mx-auto px-4 pt-20">
+        <div className="container mx-auto px-4 py-8">
           <div className="w-full max-w-[1200px] space-y-6">
             <div className="text-center mb-8">
               <p className="text-white mt-2 text-sm">Sign in to save your growing preferences and access all features</p>
@@ -475,135 +475,134 @@ export default function Quiz() {
             </div>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 
   const currentQuestion = questions[currentStep];
   return (
     <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
-      <div className="container mx-auto px-4 flex items-center justify-center min-h-[calc(100vh-72px)]">
-        <div className="w-full max-w-2xl mt-[72px]">
-          <div className="mb-8">
-            <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
-              <div className="space-y-6">
-                <div className="space-y-2 text-center">
-                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
-                    Help us personalize your growing experience
-                  </h1>
-                  <div className="flex items-center justify-center gap-2 mt-4">
-                    {questions.map((_, index) => (
-                      <div 
-                        key={index} 
-                        className={`h-2 w-2 rounded-full ${
-                          index === currentStep ? 'bg-accent w-6' : 
-                          index < currentStep ? 'bg-primary' : 
-                          'bg-white/20'
-                        }`} 
-                      />
-                    ))}
-                  </div>
-                  <p className="text-accent/80 mt-2">
-                    Question {currentStep + 1} of {questions.length}
-                  </p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
+            <div className="space-y-6">
+              <div className="space-y-2 text-center">
+                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
+                  Help us personalize your growing experience
+                </h1>
+                <div className="flex items-center justify-center gap-2 mt-4">
+                  {questions.map((_, index) => (
+                    <div 
+                      key={index} 
+                      className={`h-2 w-2 rounded-full ${
+                        index === currentStep ? 'bg-accent w-6' : 
+                        index < currentStep ? 'bg-primary' : 
+                        'bg-white/20'
+                      }`} 
+                    />
+                  ))}
                 </div>
+                <p className="text-accent/80 mt-2">
+                  Question {currentStep + 1} of {questions.length}
+                </p>
+              </div>
 
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-semibold text-white tech-font">
-                    {currentQuestion.question}
-                  </h2>
+              <div className="space-y-6">
+                <h2 className="text-2xl font-semibold text-white tech-font">
+                  {currentQuestion.question}
+                </h2>
 
-                  {currentQuestion.type === "radio" && (
-                    <RadioGroup
-                      value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
-                      onValueChange={value => setQuizResponses(prev => ({
-                        ...prev,
-                        [currentQuestion.field]: value
-                      }))}
-                      className="space-y-4"
-                    >
-                      {currentQuestion.options.map(option => (
-                        <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
-                          <RadioGroupItem 
-                            value={option.value} 
-                            id={option.value}
-                            className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent"
-                          />
-                          <label 
-                            htmlFor={option.value}
-                            className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
-                          >
-                            {option.label}
-                          </label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  )}
+                {currentQuestion.type === "radio" && (
+                  <RadioGroup
+                    value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
+                    onValueChange={value => setQuizResponses(prev => ({
+                      ...prev,
+                      [currentQuestion.field]: value
+                    }))}
+                    className="space-y-4"
+                  >
+                    {currentQuestion.options.map(option => (
+                      <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                        <RadioGroupItem 
+                          value={option.value} 
+                          id={option.value}
+                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent"
+                        />
+                        <label 
+                          htmlFor={option.value}
+                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
+                        >
+                          {option.label}
+                        </label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
 
-                  {currentQuestion.type === "checkbox" && (
-                    <div className="space-y-4">
-                      {currentQuestion.options.map(option => (
-                        <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
-                          <Checkbox
-                            id={option.value}
-                            checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
-                            onCheckedChange={checked => {
-                              const field = currentQuestion.field as keyof QuizResponse;
-                              const currentValues = quizResponses[field] as string[] || [];
-                              if (checked) {
-                                if (option.value === 'all' || option.value === 'none') {
-                                  setQuizResponses(prev => ({
-                                    ...prev,
-                                    [field]: [option.value]
-                                  }));
-                                } else {
-                                  setQuizResponses(prev => ({
-                                    ...prev,
-                                    [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
-                                  }));
-                                }
+                {currentQuestion.type === "checkbox" && (
+                  <div className="space-y-4">
+                    {currentQuestion.options.map(option => (
+                      <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                        <Checkbox
+                          id={option.value}
+                          checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
+                          onCheckedChange={checked => {
+                            const field = currentQuestion.field as keyof QuizResponse;
+                            const currentValues = quizResponses[field] as string[] || [];
+                            if (checked) {
+                              if (option.value === 'all' || option.value === 'none') {
+                                setQuizResponses(prev => ({
+                                  ...prev,
+                                  [field]: [option.value]
+                                }));
                               } else {
                                 setQuizResponses(prev => ({
                                   ...prev,
-                                  [field]: currentValues.filter(value => value !== option.value)
+                                  [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
                                 }));
                               }
-                            }}
-                            className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent"
-                          />
-                          <label
-                            htmlFor={option.value}
-                            className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
-                          >
-                            {option.label}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                            } else {
+                              setQuizResponses(prev => ({
+                                ...prev,
+                                [field]: currentValues.filter(value => value !== option.value)
+                              }));
+                            }
+                          }}
+                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent"
+                        />
+                        <label
+                          htmlFor={option.value}
+                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
+                        >
+                          {option.label}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-                <div className="flex justify-between pt-6">
-                  <Button 
-                    variant="outline" 
-                    onClick={handlePreviousStep}
-                    disabled={currentStep === 0}
-                    className="px-6"
-                  >
-                    Previous
-                  </Button>
-                  
-                  <Button 
-                    onClick={handleNextStep}
-                    disabled={isSubmitting}
-                    className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
-                  >
-                    {currentStep === questions.length - 1 ? 
-                      (isSubmitting ? "Saving..." : "Complete Quiz") : 
-                      "Next"
-                    }
-                  </Button>
-                </div>
+              <div className="flex justify-between pt-6">
+                <Button 
+                  variant="outline" 
+                  onClick={handlePreviousStep}
+                  disabled={currentStep === 0}
+                  className="px-6"
+                >
+                  Previous
+                </Button>
+                
+                <Button 
+                  onClick={handleNextStep}
+                  disabled={isSubmitting}
+                  className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+                >
+                  {currentStep === questions.length - 1 ? 
+                    (isSubmitting ? "Saving..." : "Complete Quiz") : 
+                    "Next"
+                  }
+                </Button>
               </div>
             </div>
           </div>
