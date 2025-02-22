@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MessageSquare, Sprout, HelpCircle, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -111,7 +110,7 @@ export const ChatHeader = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 bg-[#1A1A1A] border border-[#333333]">
                 <DropdownMenuItem asChild>
-                  <Link to="/" className="w-full p-3 hover:bg-purple-600">
+                  <Link to="/" className="w-full p-3 hover:bg-purple-600 text-white">
                     Log In with Email
                   </Link>
                 </DropdownMenuItem>
@@ -125,7 +124,7 @@ export const ChatHeader = () => {
                     }
                   })}
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 text-white">
                     <svg className="h-5 w-5" viewBox="0 0 24 24">
                       <path
                         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -149,7 +148,7 @@ export const ChatHeader = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-[#333333]" />
                 <DropdownMenuItem asChild>
-                  <Link to="/" className="w-full p-3 hover:bg-purple-600">
+                  <Link to="/" className="w-full p-3 hover:bg-purple-600 text-white">
                     Register New Account
                   </Link>
                 </DropdownMenuItem>
