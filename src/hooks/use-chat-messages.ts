@@ -41,10 +41,20 @@ export const useChatMessages = (
   }, [currentConversationId, session?.user?.id, toast])
 
   const sendMessage = useCallback(async (message: string) => {
-    if (!message.trim() || !session?.user?.id || !currentConversationId) return
+    if (!message.trim() || !session?.user?.id || !currentConversationId) {
+      console.log('Missing required data:', { 
+        hasMessage: !!message.trim(), 
+        hasUserId: !!session?.user?.id, 
+        hasConversationId: !!currentConversationId 
+      });
+      return;
+    }
 
     setIsLoading(true)
     try {
+      console.log('Sending message:', message);
+      
+      // Add user message to UI immediately
       const userMessage = {
         id: crypto.randomUUID(),
         message: message.trim(),
@@ -55,21 +65,29 @@ export const useChatMessages = (
       
       setMessages(prev => [...prev, userMessage])
       
+      // Save user message to Supabase
       await sendMessageToSupabase(
         session.user.id,
         message.trim(),
         currentConversationId
       )
 
+      // Get AI response
+      console.log('Invoking AI chat...');
       const { data, error } = await invokeAIChat(
         message,
         session.user.id,
         currentConversationId
       )
 
-      if (error) throw error
+      if (error) {
+        console.error('AI chat error:', error);
+        throw error;
+      }
 
       if (data?.response) {
+        console.log('Received AI response:', data.response);
+        
         const aiMessage = {
           id: crypto.randomUUID(),
           message: data.response,
@@ -90,9 +108,12 @@ export const useChatMessages = (
         if (!isMuted) {
           speakResponse(data.response)
         }
+      } else {
+        console.error('No response data from AI');
+        throw new Error('No response received from AI');
       }
     } catch (error: any) {
-      console.error('Error sending message:', error)
+      console.error('Error in sendMessage:', error)
       toast({
         title: 'Error',
         description: error.message || 'Failed to send message',

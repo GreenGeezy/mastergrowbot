@@ -58,11 +58,26 @@ export const invokeAIChat = async (
   userId: string,
   conversationId: string
 ) => {
-  return await supabase.functions.invoke('chat', {
-    body: {
-      message: message.trim(),
-      userId: userId,
-      conversationId: conversationId
-    },
-  })
+  try {
+    console.log('Invoking AI chat with message:', message);
+    
+    const response = await supabase.functions.invoke('chat', {
+      body: {
+        message: message.trim(),
+        userId: userId,
+        conversationId: conversationId
+      },
+    });
+
+    console.log('AI response:', response);
+
+    if (response.error) {
+      throw new Error(`Chat function error: ${response.error.message}`);
+    }
+
+    return response;
+  } catch (error) {
+    console.error('Error in invokeAIChat:', error);
+    throw error;
+  }
 }
