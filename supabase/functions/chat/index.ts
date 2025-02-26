@@ -3,7 +3,6 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
-const ASSISTANT_ID = Deno.env.get('OPENAI_ASSISTANT_ID')!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,122 +10,49 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    if (!OPENAI_API_KEY || !ASSISTANT_ID) {
-      throw new Error('Missing required environment variables');
-    }
-
     const { message, userId, conversationId } = await req.json();
     console.log('Processing request:', { message, userId, conversationId });
 
-    if (!message || !userId || !conversationId) {
-      throw new Error('Missing required parameters');
-    }
-
-    // Create thread
-    const threadResponse = await fetch('https://api.openai.com/v1/threads', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
-      }
-    });
-
-    if (!threadResponse.ok) {
-      throw new Error('Failed to create thread: ' + await threadResponse.text());
-    }
-
-    const thread = await threadResponse.json();
-    console.log('Thread created:', thread.id);
-
-    // Add message to thread
-    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        role: 'user',
-        content: message
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are Master Growbot, an AI assistant specializing in cannabis cultivation. You provide expert advice on growing, plant care, and troubleshooting issues. Your responses are helpful, clear, and focused on best practices in cannabis cultivation.'
+          },
+          {
+            role: 'user',
+            content: message
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 1000
       })
     });
 
-    if (!messageResponse.ok) {
-      throw new Error('Failed to add message: ' + await messageResponse.text());
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('OpenAI API error:', errorData);
+      throw new Error('Failed to get response from AI');
     }
 
-    // Run the assistant
-    const runResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
-      },
-      body: JSON.stringify({
-        assistant_id: ASSISTANT_ID
-      })
-    });
-
-    if (!runResponse.ok) {
-      throw new Error('Failed to start run: ' + await runResponse.text());
-    }
-
-    const run = await runResponse.json();
-    console.log('Run created:', run.id);
-
-    // Poll for completion
-    let runStatus = await checkRunStatus(thread.id, run.id);
-    let attempts = 0;
-    const maxAttempts = 60;
-
-    while (runStatus.status !== 'completed' && attempts < maxAttempts) {
-      if (['failed', 'expired', 'cancelled'].includes(runStatus.status)) {
-        throw new Error(`Run ${runStatus.status}: ${runStatus.last_error?.message || 'Unknown error'}`);
-      }
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      runStatus = await checkRunStatus(thread.id, run.id);
-      attempts++;
-    }
-
-    if (attempts >= maxAttempts) {
-      throw new Error('Response timeout');
-    }
-
-    // Get messages
-    const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
-      headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
-      }
-    });
-
-    if (!messagesResponse.ok) {
-      throw new Error('Failed to retrieve messages: ' + await messagesResponse.text());
-    }
-
-    const messages = await messagesResponse.json();
-    if (!messages.data || messages.data.length === 0) {
-      throw new Error('No response received from assistant');
-    }
-
-    const assistantResponse = messages.data[0].content[0].text.value;
-    console.log('Assistant response:', assistantResponse);
+    const data = await response.json();
+    const aiResponse = data.choices[0].message.content;
+    console.log('AI response:', aiResponse);
 
     return new Response(
-      JSON.stringify({
-        response: assistantResponse,
-        threadId: thread.id
-      }),
+      JSON.stringify({ response: aiResponse }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200
@@ -136,28 +62,11 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in chat function:', error);
     return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : 'An unknown error occurred'
-      }),
+      JSON.stringify({ error: error.message || 'An unknown error occurred' }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 // Return 200 even for errors to prevent the frontend from treating it as a network error
+        status: 200 // Using 200 to prevent frontend from treating it as a network error
       }
     );
   }
 });
-
-async function checkRunStatus(threadId: string, runId: string) {
-  const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${runId}`, {
-    headers: {
-      'Authorization': `Bearer ${OPENAI_API_KEY}`,
-      'OpenAI-Beta': 'assistants=v1'
-    }
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to check run status: ' + await response.text());
-  }
-
-  return await response.json();
-}
