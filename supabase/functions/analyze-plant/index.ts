@@ -1,5 +1,9 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+const ASSISTANT_ID = 'asst_PMlYO6Z4FO2bkPvPrPHbVn1C';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -7,7 +11,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -19,126 +22,135 @@ serve(async (req) => {
       throw new Error('No image URLs provided');
     }
 
-    console.log('Starting analysis for images:', imageUrls);
+    // Create a thread
+    const threadResponse = await fetch('https://api.openai.com/v1/threads', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'assistants=v1'
+      }
+    });
 
-    // Create a combined prompt that includes all images
-    const messages = [
-      {
-        role: "system",
-        content: `You are an expert cannabis cultivation advisor specializing in plant health diagnostics. 
-        Analyze multiple images of cannabis plants and provide detailed, actionable feedback in the following format:
-        1. Growth Stage Assessment: Identify if the plant is in seedling, vegetative, or flowering stage
-        2. Overall Health Score: Rate the plant's health on a scale of 1-10
-        3. Specific Issues: List any visible problems (nutrient deficiencies, pest damage, etc.)
-        4. Environmental Factors: Comment on any visible environmental stress indicators
-        5. Detailed Recommendations: Provide specific, actionable steps to improve plant health
-        Be specific and technical but explain terms when needed.`
+    const thread = await threadResponse.json();
+
+    // Prepare the message with images
+    const imageContent = imageUrls.map(url => ({
+      type: "image_url",
+      image_url: { url }
+    }));
+
+    // Add message with images to thread
+    await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'assistants=v1'
       },
-      {
-        role: "user",
+      body: JSON.stringify({
+        role: 'user',
         content: [
           {
             type: "text",
-            text: "Analyze these cannabis plant images and provide a comprehensive health assessment following the format specified. Consider all angles and details shown in the images."
+            text: "Please analyze these cannabis plant images and provide a detailed health assessment."
           },
-          ...imageUrls.map(url => ({
-            type: "image_url",
-            image_url: { url }
-          }))
+          ...imageContent
         ]
-      }
-    ];
-
-    const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages,
-        max_tokens: 1000
       })
     });
 
-    if (!openaiResponse.ok) {
-      const errorData = await openaiResponse.json();
-      console.error('OpenAI API Error:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
+    // Run the assistant
+    const runResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'assistants=v1'
+      },
+      body: JSON.stringify({
+        assistant_id: ASSISTANT_ID
+      })
+    });
+
+    const run = await runResponse.json();
+
+    // Poll for completion
+    let runStatus = await checkRunStatus(thread.id, run.id);
+    while (runStatus.status !== 'completed') {
+      if (runStatus.status === 'failed') {
+        throw new Error('Assistant run failed');
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      runStatus = await checkRunStatus(thread.id, run.id);
     }
 
-    const analysis = await openaiResponse.json();
-    console.log('OpenAI Analysis received:', analysis);
+    // Get messages
+    const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'OpenAI-Beta': 'assistants=v1'
+      }
+    });
 
-    if (!analysis.choices?.[0]?.message?.content) {
-      throw new Error('Invalid response format from OpenAI');
-    }
+    const messages = await messagesResponse.json();
+    const analysis = messages.data[0].content[0].text.value;
 
-    const analysisText = analysis.choices[0].message.content;
-
-    // Parse the analysis text to extract structured data
-    const structuredAnalysis = {
-      diagnosis: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
-      confidence_level: 0.85,
-      recommended_actions: extractRecommendations(analysisText),
-      detailed_analysis: {
-        growth_stage: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
-        health_score: extractSection(analysisText, "Overall Health Score", "Specific Issues"),
-        specific_issues: extractSection(analysisText, "Specific Issues", "Environmental Factors"),
-        environmental_factors: extractSection(analysisText, "Environmental Factors", "Detailed Recommendations"),
+    // Parse the analysis into the expected format
+    const analysisResult = {
+      analysis: {
+        diagnosis: analysis,
+        confidence_level: 0.95,
+        detailed_analysis: {
+          growth_stage: extractSection(analysis, "Growth Stage:"),
+          health_score: extractSection(analysis, "Health Score:"),
+          specific_issues: extractSection(analysis, "Specific Issues:"),
+          environmental_factors: extractSection(analysis, "Environmental Factors:")
+        },
+        recommended_actions: extractRecommendations(analysis)
       }
     };
 
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        analysis: structuredAnalysis 
-      }),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
-    );
+    return new Response(JSON.stringify(analysisResult), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
 
   } catch (error) {
     console.error('Error in analyze-plant function:', error);
-    return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: error.message 
-      }),
-      { 
-        status: 500, 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
   }
 });
 
-// Helper function to extract sections from the analysis text
-function extractSection(text: string, startMarker: string, endMarker: string): string {
-  const startIndex = text.indexOf(startMarker);
-  const endIndex = text.indexOf(endMarker);
-  
-  if (startIndex === -1) return "";
-  
-  const start = startIndex + startMarker.length;
-  const end = endIndex === -1 ? undefined : endIndex;
-  
-  return text.slice(start, end).trim();
+async function checkRunStatus(threadId: string, runId: string) {
+  const response = await fetch(
+    `https://api.openai.com/v1/threads/${threadId}/runs/${runId}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'OpenAI-Beta': 'assistants=v1'
+      }
+    }
+  );
+  return await response.json();
 }
 
-// Helper function to extract recommendations from the analysis text
+function extractSection(text: string, sectionHeader: string): string {
+  const startIndex = text.indexOf(sectionHeader);
+  if (startIndex === -1) return "";
+  
+  const nextSection = text.indexOf("\n\n", startIndex);
+  return text
+    .slice(startIndex + sectionHeader.length, nextSection === -1 ? undefined : nextSection)
+    .trim();
+}
+
 function extractRecommendations(text: string): string[] {
-  const recommendationsSection = extractSection(text, "Detailed Recommendations", "END");
+  const recommendationsSection = extractSection(text, "Recommended Actions:");
   return recommendationsSection
-    .split(/\d+\.|•|-/)
-    .map(item => item.trim())
+    .split('\n')
+    .map(item => item.replace(/^[•\-]\s*/, '').trim())
     .filter(item => item.length > 0);
 }
