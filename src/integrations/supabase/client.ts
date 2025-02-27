@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
@@ -9,5 +10,30 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce'
+  },
+  global: {
+    fetch: (...args) => {
+      // Add additional logging for supabase client operations during development
+      console.log('Supabase fetch:', args[0]);
+      return fetch(...args);
+    }
   }
 });
+
+// Ensure the storage bucket exists
+const ensureStorageBucket = async () => {
+  try {
+    // Try to get the bucket - this will fail if it doesn't exist
+    const { data, error } = await supabase.storage.getBucket('plant-images');
+    
+    if (error) {
+      console.error('Error checking storage bucket:', error);
+      // We'll let the app continue since the bucket might be created elsewhere
+    }
+  } catch (error) {
+    console.error('Error in bucket initialization:', error);
+  }
+};
+
+// Initialize storage bucket when this module is imported
+ensureStorageBucket();

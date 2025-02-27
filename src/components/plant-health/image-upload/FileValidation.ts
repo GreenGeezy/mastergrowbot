@@ -1,28 +1,22 @@
-import { useToast } from '@/hooks/use-toast';
 
-export const useFileValidation = () => {
-  const { toast } = useToast();
-
+export function useFileValidation() {
   const validateFile = (file: File): boolean => {
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    // Check file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
     if (!validTypes.includes(file.type)) {
-      toast({
-        title: "Invalid file type",
-        description: "Please upload JPEG, PNG, or WebP images only.",
-        variant: "destructive",
-      });
+      console.error('Invalid file type:', file.type);
       return false;
     }
-    if (file.size > 10 * 1024 * 1024) {
-      toast({
-        title: "File too large",
-        description: "Each image must be smaller than 10MB.",
-        variant: "destructive",
-      });
+
+    // Check file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+    if (file.size > maxSize) {
+      console.error('File too large:', file.size);
       return false;
     }
+
     return true;
   };
 
   return { validateFile };
-};
+}
