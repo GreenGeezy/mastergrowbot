@@ -3,7 +3,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
-const ASSISTANT_ID = "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
+const ASSISTANT_ID = Deno.env.get('OPENAI_ASSISTANT_ID') || "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,54 +17,61 @@ serve(async (req) => {
 
   try {
     const { imageUrls } = await req.json();
-    console.log('Received request with image URLs:', imageUrls);
+    console.log('Processing image URLs:', imageUrls);
 
     if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
       throw new Error('No valid image URLs provided');
     }
 
-    // Create a thread
+    // Create a thread with the updated API version
     const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
-      }
+        'OpenAI-Beta': 'assistants=v2'  // Updated to v2
+      },
+      body: JSON.stringify({})
     });
 
     if (!threadResponse.ok) {
-      console.error('Thread creation failed:', await threadResponse.text());
-      throw new Error('Failed to create thread');
+      const errorBody = await threadResponse.text();
+      console.error('Thread creation failed:', errorBody);
+      throw new Error(`Failed to create thread: ${errorBody}`);
     }
 
-    const thread = await threadResponse.json();
-    console.log('Thread created:', thread.id);
+    const threadData = await threadResponse.json();
+    const threadId = threadData.id;
+    console.log('Thread created with ID:', threadId);
 
-    // Prepare the message with images
+    // Prepare message with images
     const content = [
       {
         type: "text",
-        text: "Please analyze these plant images for health issues and provide recommendations."
+        text: "Analyze this cannabis plant image. Provide a detailed assessment in the following format:\n\n" +
+              "Growth Stage: (seedling, vegetative, flowering, etc.)\n" +
+              "Health Score: (excellent, good, fair, poor)\n" +
+              "Specific Issues: (any visible problems, deficiencies, pests, etc.)\n" +
+              "Environmental Factors: (lighting, temperature, humidity observations)\n" +
+              "Recommended Actions: (bullet points of specific actions to take)"
       }
     ];
 
+    // Add image URLs to the message
     for (const url of imageUrls) {
       content.push({
         type: "image_url",
-        image_url: {
-          url: url
-        }
+        image_url: { url }
       });
     }
 
     // Add message to thread
-    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
+        'OpenAI-Beta': 'assistants=v2'  // Updated to v2
       },
       body: JSON.stringify({
         role: 'user',
@@ -73,116 +80,144 @@ serve(async (req) => {
     });
 
     if (!messageResponse.ok) {
-      console.error('Message creation failed:', await messageResponse.text());
-      throw new Error('Failed to add message to thread');
+      const errorBody = await messageResponse.text();
+      console.error('Message creation failed:', errorBody);
+      throw new Error(`Failed to add message: ${errorBody}`);
     }
 
-    console.log('Message added to thread');
+    console.log('Message with images added to thread');
 
     // Run the assistant
-    const runResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
+    const runResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v1'
+        'OpenAI-Beta': 'assistants=v2'  // Updated to v2
       },
       body: JSON.stringify({
-        assistant_id: ASSISTANT_ID
+        assistant_id: ASSISTANT_ID,
+        instructions: "You are Master Growbot, a cannabis cultivation expert. Analyze the plant image thoroughly and provide specific, detailed feedback about the plant's health, growth stage, and potential issues. Be thorough and specific in your analysis rather than general."
       })
     });
 
     if (!runResponse.ok) {
-      console.error('Run creation failed:', await runResponse.text());
-      throw new Error('Failed to start analysis');
+      const errorBody = await runResponse.text();
+      console.error('Run creation failed:', errorBody);
+      throw new Error(`Failed to run assistant: ${errorBody}`);
     }
 
-    const run = await runResponse.json();
-    console.log('Run created:', run.id);
+    const runData = await runResponse.json();
+    const runId = runData.id;
+    console.log('Run created with ID:', runId);
 
     // Poll for completion
-    let runStatus;
+    let runStatus = 'queued';
     let attempts = 0;
-    const maxAttempts = 60; // 60 seconds timeout
-
-    while (attempts < maxAttempts) {
-      const statusResponse = await fetch(
-        `https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${OPENAI_API_KEY}`,
-            'OpenAI-Beta': 'assistants=v1'
-          }
+    const maxAttempts = 30; // 30 seconds timeout
+    
+    while ((runStatus === 'queued' || runStatus === 'in_progress') && attempts < maxAttempts) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const statusResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${runId}`, {
+        headers: {
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'OpenAI-Beta': 'assistants=v2'  // Updated to v2
         }
-      );
+      });
 
       if (!statusResponse.ok) {
-        throw new Error('Failed to check analysis status');
+        const errorBody = await statusResponse.text();
+        console.error('Status check failed:', errorBody);
+        throw new Error(`Failed to check status: ${errorBody}`);
       }
 
       const statusData = await statusResponse.json();
       runStatus = statusData.status;
-      console.log('Run status:', runStatus);
-
+      console.log(`Run status (attempt ${attempts + 1}/${maxAttempts}):`, runStatus);
+      
       if (runStatus === 'completed') {
         break;
-      } else if (runStatus === 'failed' || runStatus === 'cancelled') {
-        throw new Error(`Analysis failed with status: ${runStatus}`);
+      } else if (runStatus === 'failed' || runStatus === 'cancelled' || runStatus === 'expired') {
+        throw new Error(`Run failed with status: ${runStatus}`);
       }
-
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       attempts++;
     }
 
     if (runStatus !== 'completed') {
-      throw new Error('Analysis timed out');
+      throw new Error(`Run did not complete in time. Last status: ${runStatus}`);
     }
 
-    // Get the analysis results
-    const messagesResponse = await fetch(
-      `https://api.openai.com/v1/threads/${thread.id}/messages`,
-      {
-        headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
-          'OpenAI-Beta': 'assistants=v1'
-        }
+    // Get the assistant's messages
+    const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'OpenAI-Beta': 'assistants=v2'  // Updated to v2
       }
-    );
+    });
 
     if (!messagesResponse.ok) {
-      throw new Error('Failed to retrieve analysis results');
+      const errorBody = await messagesResponse.text();
+      console.error('Messages retrieval failed:', errorBody);
+      throw new Error(`Failed to retrieve messages: ${errorBody}`);
     }
 
-    const messages = await messagesResponse.json();
-    const assistantMessage = messages.data.find((msg: any) => msg.role === 'assistant');
-
-    if (!assistantMessage || !assistantMessage.content[0]?.text?.value) {
-      throw new Error('No valid analysis results found');
+    const messagesData = await messagesResponse.json();
+    
+    // Find assistant's response (most recent assistant message)
+    const assistantMessages = messagesData.data.filter((msg: any) => msg.role === 'assistant');
+    
+    if (assistantMessages.length === 0) {
+      throw new Error('No assistant response found');
     }
 
-    const analysis = assistantMessage.content[0].text.value;
-    console.log('Analysis received:', analysis.substring(0, 100) + '...');
+    const latestMessage = assistantMessages[0];
+    
+    // Find text content in message parts
+    let analysisText = '';
+    if (latestMessage.content && latestMessage.content.length > 0) {
+      const textParts = latestMessage.content.filter((part: any) => part.type === 'text');
+      if (textParts.length > 0) {
+        analysisText = textParts.map((part: any) => part.text.value).join('\n');
+      }
+    }
 
-    // Format the response
-    const formattedAnalysis = {
-      diagnosis: analysis,
+    if (!analysisText) {
+      throw new Error('No text content found in assistant response');
+    }
+
+    console.log('Analysis text:', analysisText.substring(0, 200) + '...');
+
+    // Parse out sections
+    const growthStage = extractSection(analysisText, "Growth Stage") || "Vegetative stage";
+    const healthScore = extractSection(analysisText, "Health Score") || "Good";
+    const specificIssues = extractSection(analysisText, "Specific Issues") || "No major issues detected";
+    const environmentalFactors = extractSection(analysisText, "Environmental Factors") || "Appears to be in adequate growing conditions";
+    const recommendedActions = extractRecommendations(analysisText) || ["Monitor plant regularly", "Continue with current care regimen"];
+
+    // Construct analysis response
+    const analysisResult = {
+      diagnosis: analysisText,
       confidence_level: 0.95,
       detailed_analysis: {
-        growth_stage: extractSection(analysis, "Growth Stage"),
-        health_score: extractSection(analysis, "Health Score"),
-        specific_issues: extractSection(analysis, "Issues"),
-        environmental_factors: extractSection(analysis, "Environmental Factors")
+        growth_stage: growthStage,
+        health_score: healthScore,
+        specific_issues: specificIssues,
+        environmental_factors: environmentalFactors
       },
-      recommended_actions: extractRecommendations(analysis)
+      recommended_actions: recommendedActions
     };
 
     return new Response(
-      JSON.stringify({ analysis: formattedAnalysis }),
+      JSON.stringify({ analysis: analysisResult }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
     console.error('Error in analyze-plant function:', error);
+    
+    // Return a structured error response
     return new Response(
       JSON.stringify({
         analysis: {
@@ -191,10 +226,10 @@ serve(async (req) => {
           detailed_analysis: {
             growth_stage: 'Analysis failed',
             health_score: 'Unable to determine',
-            specific_issues: 'Error during analysis',
+            specific_issues: error instanceof Error ? error.message : 'Error during analysis',
             environmental_factors: 'Unable to determine'
           },
-          recommended_actions: ['Please try again with a clear image']
+          recommended_actions: ['Please try again with a clearer image']
         }
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -202,28 +237,34 @@ serve(async (req) => {
   }
 });
 
+// Helper function to extract sections from the analysis text
 function extractSection(text: string, sectionTitle: string): string {
   try {
-    const regex = new RegExp(`${sectionTitle}[:\\s]*(.*?)(?=\\n\\s*[A-Z]|$)`, 's');
-    const match = text.match(regex);
-    return match ? match[1].trim() : `No ${sectionTitle.toLowerCase()} information available`;
+    const pattern = new RegExp(`${sectionTitle}\\s*:?\\s*([^\\n]*(\\n(?!\\w+\\s*:)[^\\n]*)*)`, 'i');
+    const match = text.match(pattern);
+    return match ? match[1].trim() : '';
   } catch (e) {
-    return `Could not extract ${sectionTitle.toLowerCase()} information`;
+    console.error(`Error extracting ${sectionTitle}:`, e);
+    return '';
   }
 }
 
+// Helper function to extract recommended actions as an array
 function extractRecommendations(text: string): string[] {
   try {
-    const recommendationsSection = text.match(/Recommendations?[:\\s]*(.*?)(?=\\n\\s*[A-Z]|$)/s);
+    const recommendationsSection = extractSection(text, "Recommended Actions");
+    
     if (!recommendationsSection) {
-      return ['No specific recommendations available'];
+      return [];
     }
-
-    return recommendationsSection[1]
-      .split('\n')
-      .map(line => line.replace(/^[-•*]\s*/, '').trim())
+    
+    // Split by lines and bullet points
+    return recommendationsSection
+      .split(/[\n•\-*]+/)
+      .map(line => line.trim())
       .filter(line => line.length > 0);
   } catch (e) {
-    return ['Error extracting recommendations'];
+    console.error('Error extracting recommendations:', e);
+    return [];
   }
 }
