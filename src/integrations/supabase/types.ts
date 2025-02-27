@@ -39,68 +39,6 @@ export type Database = {
         }
         Relationships: []
       }
-      guide_progress: {
-        Row: {
-          completed: boolean | null
-          completed_at: string | null
-          created_at: string
-          guide_id: string
-          id: string
-          user_id: string | null
-        }
-        Insert: {
-          completed?: boolean | null
-          completed_at?: string | null
-          created_at?: string
-          guide_id: string
-          id?: string
-          user_id?: string | null
-        }
-        Update: {
-          completed?: boolean | null
-          completed_at?: string | null
-          created_at?: string
-          guide_id?: string
-          id?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "guide_progress_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      openai_chats: {
-        Row: {
-          assistant_id: string | null
-          created_at: string | null
-          id: number
-          prompt: string | null
-          response: string | null
-          user_id: string | null
-        }
-        Insert: {
-          assistant_id?: string | null
-          created_at?: string | null
-          id?: number
-          prompt?: string | null
-          response?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          assistant_id?: string | null
-          created_at?: string | null
-          id?: number
-          prompt?: string | null
-          response?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       pending_subscriptions: {
         Row: {
           consumed: boolean | null
@@ -297,33 +235,6 @@ export type Database = {
           },
         ]
       }
-      site_visitors: {
-        Row: {
-          created_at: string
-          id: number
-          ip_address: string | null
-          page_visited: string
-          referrer: string | null
-          user_agent: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: never
-          ip_address?: string | null
-          page_visited: string
-          referrer?: string | null
-          user_agent?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: never
-          ip_address?: string | null
-          page_visited?: string
-          referrer?: string | null
-          user_agent?: string | null
-        }
-        Relationships: []
-      }
       subscriptions: {
         Row: {
           created_at: string | null
@@ -360,42 +271,6 @@ export type Database = {
         }
         Relationships: []
       }
-      success_stories: {
-        Row: {
-          after_image_url: string | null
-          before_image_url: string | null
-          created_at: string
-          description: string
-          guide_id: string
-          id: string
-          share_count: number | null
-          title: string
-          user_id: string
-        }
-        Insert: {
-          after_image_url?: string | null
-          before_image_url?: string | null
-          created_at?: string
-          description: string
-          guide_id: string
-          id?: string
-          share_count?: number | null
-          title: string
-          user_id: string
-        }
-        Update: {
-          after_image_url?: string | null
-          before_image_url?: string | null
-          created_at?: string
-          description?: string
-          guide_id?: string
-          id?: string
-          share_count?: number | null
-          title?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       support_messages: {
         Row: {
           created_at: string
@@ -423,27 +298,6 @@ export type Database = {
           name?: string
           status?: string | null
           title?: string
-        }
-        Relationships: []
-      }
-      user_achievements: {
-        Row: {
-          achieved_at: string
-          achievement_type: string
-          id: string
-          user_id: string
-        }
-        Insert: {
-          achieved_at?: string
-          achievement_type: string
-          id?: string
-          user_id: string
-        }
-        Update: {
-          achieved_at?: string
-          achievement_type?: string
-          id?: string
-          user_id?: string
         }
         Relationships: []
       }
