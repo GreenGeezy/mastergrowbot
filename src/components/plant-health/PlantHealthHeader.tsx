@@ -1,3 +1,4 @@
+
 import React from 'react';
 import FeatureSection from '../FeatureSection';
 
@@ -10,7 +11,7 @@ const PlantHealthHeader = () => {
           <div className="relative bg-[#1A1A1A]/90 p-4 rounded-full backdrop-blur-xl ring-1 ring-white/10 hover:ring-[#33C3F0]/30 transition-all duration-500">
             <img 
               src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
-              alt="Plant Health Scanner" 
+              alt="Master Growbot - AI Cannabis Cultivation Assistant" 
               className="w-16 h-16"
             />
           </div>
