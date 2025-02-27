@@ -1,56 +1,31 @@
 
 import { supabase } from '@/integrations/supabase/client'
 
-// Cache for conversation history
-const chatHistoryCache = new Map<string, any>()
-
 export const sendMessageToSupabase = async (
   userId: string,
   message: string,
   conversationId: string,
   isAi: boolean = false
 ) => {
-  const response = await supabase.from('chat_history').insert([{
-    user_id: userId,
-    message: message,
-    is_ai: isAi,
-    conversation_id: conversationId
-  }])
-
-  // Update cache if successful
-  if (!response.error && conversationId) {
-    const cachedHistory = chatHistoryCache.get(conversationId) || []
-    chatHistoryCache.set(conversationId, [...cachedHistory, {
-      user_id: userId,
-      message: message,
-      is_ai: isAi,
-      conversation_id: conversationId,
-      created_at: new Date().toISOString()
-    }])
-  }
-
-  return response
+  return await supabase
+    .from('chat_history')
+    .insert([
+      {
+        user_id: userId,
+        message: message,
+        is_ai: isAi,
+        conversation_id: conversationId
+      }
+    ])
 }
 
 export const fetchChatHistory = async (userId: string, conversationId: string) => {
-  // Check cache first
-  if (chatHistoryCache.has(conversationId)) {
-    return { data: chatHistoryCache.get(conversationId), error: null }
-  }
-
-  const response = await supabase
+  return await supabase
     .from('chat_history')
     .select('*')
     .eq('user_id', userId)
     .eq('conversation_id', conversationId)
     .order('created_at', { ascending: true })
-
-  // Update cache if successful
-  if (!response.error && response.data) {
-    chatHistoryCache.set(conversationId, response.data)
-  }
-
-  return response
 }
 
 export const invokeAIChat = async (
@@ -59,25 +34,42 @@ export const invokeAIChat = async (
   conversationId: string
 ) => {
   try {
-    console.log('Invoking AI chat with message:', message);
-    
+    console.log('Invoking AI chat with:', { message, userId, conversationId });
+
     const response = await supabase.functions.invoke('chat', {
-      body: {
-        message: message.trim(),
-        userId: userId,
-        conversationId: conversationId
-      },
+      body: { message, userId, conversationId }
     });
 
     console.log('AI response:', response);
 
     if (response.error) {
-      throw new Error(`Chat function error: ${response.error.message}`);
+      throw new Error(response.error.message || 'Failed to get AI response');
     }
 
-    return response;
+    if (!response.data) {
+      throw new Error('No response data received from AI');
+    }
+
+    // For debugging
+    console.log('Response data structure:', JSON.stringify(response.data, null, 2));
+
+    // Check if response.data.response exists
+    if (!response.data.response) {
+      console.error('Invalid response structure:', response.data);
+      throw new Error('Invalid response structure from AI');
+    }
+
+    return {
+      data: {
+        response: response.data.response
+      },
+      error: null
+    };
   } catch (error) {
     console.error('Error in invokeAIChat:', error);
-    throw error;
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error('Unknown error occurred')
+    };
   }
 }
