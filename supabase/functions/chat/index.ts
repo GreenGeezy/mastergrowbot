@@ -3,7 +3,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
-const ASSISTANT_ID = "asst_PMIYO6Z4FO2bkPvPrPHbVn1C"; // Master Growbot assistant ID
+const ASSISTANT_ID = "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -16,32 +16,32 @@ serve(async (req) => {
   }
 
   try {
-    const { message, userId, conversationId } = await req.json();
-    console.log('Processing request:', { message, userId, conversationId });
+    const { message } = await req.json();
+    console.log('Received message:', message);
 
-    // Create a thread 
+    if (!message) {
+      throw new Error('No message provided');
+    }
+
+    // Create a thread
     const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
         'OpenAI-Beta': 'assistants=v1'
-      },
-      body: JSON.stringify({})
+      }
     });
 
     if (!threadResponse.ok) {
-      const errorText = await threadResponse.text();
-      console.error('Error creating thread:', errorText);
-      throw new Error(`Failed to create thread: ${threadResponse.status}`);
+      throw new Error(`Failed to create thread: ${await threadResponse.text()}`);
     }
 
-    const threadData = await threadResponse.json();
-    const threadId = threadData.id;
-    console.log('Thread created:', threadId);
+    const thread = await threadResponse.json();
+    console.log('Thread created:', thread.id);
 
     // Add message to thread
-    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
@@ -55,15 +55,13 @@ serve(async (req) => {
     });
 
     if (!messageResponse.ok) {
-      const errorText = await messageResponse.text();
-      console.error('Error adding message:', errorText);
-      throw new Error(`Failed to add message: ${messageResponse.status}`);
+      throw new Error(`Failed to add message: ${await messageResponse.text()}`);
     }
 
     console.log('Message added to thread');
 
-    // Run the assistant on the thread
-    const runResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs`, {
+    // Run the assistant
+    const runResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
@@ -76,100 +74,90 @@ serve(async (req) => {
     });
 
     if (!runResponse.ok) {
-      const errorText = await runResponse.text();
-      console.error('Error running assistant:', errorText);
-      throw new Error(`Failed to run assistant: ${runResponse.status}`);
+      throw new Error(`Failed to run assistant: ${await runResponse.text()}`);
     }
 
-    const runData = await runResponse.json();
-    const runId = runData.id;
-    console.log('Run created:', runId);
+    const run = await runResponse.json();
+    console.log('Run created:', run.id);
 
-    // Poll for run completion
-    let runStatus = 'queued';
+    // Poll for completion
+    let runStatus;
     let attempts = 0;
-    let assistantResponse = '';
-    
-    while ((runStatus === 'queued' || runStatus === 'in_progress') && attempts < 30) {
-      // Wait 1 second between polls
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Check run status
-      const statusResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${runId}`, {
-        headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
-          'OpenAI-Beta': 'assistants=v1'
+    const maxAttempts = 30;
+
+    while (attempts < maxAttempts) {
+      const statusResponse = await fetch(
+        `https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${OPENAI_API_KEY}`,
+            'OpenAI-Beta': 'assistants=v1'
+          }
         }
-      });
+      );
 
       if (!statusResponse.ok) {
-        const errorText = await statusResponse.text();
-        console.error('Error checking run status:', errorText);
-        throw new Error(`Failed to check run status: ${statusResponse.status}`);
+        throw new Error(`Failed to check status: ${await statusResponse.text()}`);
       }
 
       const statusData = await statusResponse.json();
       runStatus = statusData.status;
+
       console.log('Run status:', runStatus);
-      
+
+      if (runStatus === 'completed') {
+        break;
+      } else if (runStatus === 'failed' || runStatus === 'cancelled') {
+        throw new Error(`Run failed with status: ${runStatus}`);
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
       attempts++;
     }
 
-    if (runStatus === 'completed') {
-      // Get the assistant's messages
-      const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+    if (runStatus !== 'completed') {
+      throw new Error('Run timed out');
+    }
+
+    // Get messages
+    const messagesResponse = await fetch(
+      `https://api.openai.com/v1/threads/${thread.id}/messages`,
+      {
         headers: {
           'Authorization': `Bearer ${OPENAI_API_KEY}`,
           'OpenAI-Beta': 'assistants=v1'
         }
-      });
-
-      if (!messagesResponse.ok) {
-        const errorText = await messagesResponse.text();
-        console.error('Error retrieving messages:', errorText);
-        throw new Error(`Failed to retrieve messages: ${messagesResponse.status}`);
       }
+    );
 
-      const messagesData = await messagesResponse.json();
-      // Get the most recent assistant message
-      const assistantMessages = messagesData.data.filter((msg: any) => msg.role === 'assistant');
-      
-      if (assistantMessages.length > 0) {
-        // Get the content from the latest assistant message
-        const latestMessage = assistantMessages[0];
-        // The content is an array of content parts
-        if (latestMessage.content && latestMessage.content.length > 0) {
-          // Get text content
-          const textContent = latestMessage.content.find((part: any) => part.type === 'text');
-          if (textContent) {
-            assistantResponse = textContent.text.value;
-          }
-        }
-      }
-    } else {
-      throw new Error(`Run did not complete successfully. Final status: ${runStatus}`);
+    if (!messagesResponse.ok) {
+      throw new Error(`Failed to get messages: ${await messagesResponse.text()}`);
     }
 
-    console.log('Assistant response:', assistantResponse.substring(0, 100) + '...');
+    const messages = await messagesResponse.json();
+    const assistantMessage = messages.data.find((msg: any) => msg.role === 'assistant');
+
+    if (!assistantMessage) {
+      throw new Error('No assistant response found');
+    }
+
+    // Extract the text content from the message
+    const responseText = assistantMessage.content[0].text.value;
+    console.log('Assistant response:', responseText.substring(0, 100) + '...');
 
     return new Response(
-      JSON.stringify({ response: assistantResponse }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200
-      }
+      JSON.stringify({ response: responseText }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
     console.error('Error in chat function:', error);
     return new Response(
       JSON.stringify({ 
-        error: error instanceof Error ? error.message : 'An unknown error occurred' 
+        error: error instanceof Error ? error.message : 'An unknown error occurred',
+        response: "I'm sorry, I encountered an error. Please try again." 
       }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 // Use 200 even for errors to prevent frontend from treating as network error
-      }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
