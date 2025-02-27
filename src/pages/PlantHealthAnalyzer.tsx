@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
@@ -44,6 +45,8 @@ const PlantHealthAnalyzer = () => {
 
     setIsAnalyzing(true);
     try {
+      console.log('Starting analysis...');
+      
       // Upload images to Supabase storage
       const imageUrls = await Promise.all(
         selectedFiles.map(async (file) => {
@@ -52,7 +55,10 @@ const PlantHealthAnalyzer = () => {
             .from('plant-images')
             .upload(fileName, file);
 
-          if (error) throw error;
+          if (error) {
+            console.error('Image upload error:', error);
+            throw error;
+          }
 
           const { data: { publicUrl } } = supabase.storage
             .from('plant-images')
@@ -62,12 +68,24 @@ const PlantHealthAnalyzer = () => {
         })
       );
 
+      console.log('Images uploaded successfully:', imageUrls);
+
       // Call the analyze-plant function
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
         body: { imageUrls },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Function invocation error:', error);
+        throw error;
+      }
+
+      console.log('Analysis data received:', data);
+
+      if (!data || !data.analysis) {
+        console.error('Invalid response data structure:', data);
+        throw new Error('Received invalid analysis data');
+      }
 
       // Save analysis results to the database
       const { data: savedAnalysis, error: saveError } = await supabase
@@ -89,6 +107,7 @@ const PlantHealthAnalyzer = () => {
         throw new Error('Failed to save analysis results');
       }
 
+      console.log('Analysis saved to database:', savedAnalysis);
       setAnalysisResult(savedAnalysis);
       toast({
         title: "Analysis Complete",

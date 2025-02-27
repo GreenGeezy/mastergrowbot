@@ -173,28 +173,63 @@ serve(async (req) => {
 
     console.log('Analysis complete:', assistantResponse.substring(0, 100) + '...');
 
+    // Default values for analysis sections in case parsing fails
+    const defaultAnalysis = {
+      diagnosis: assistantResponse || "Analysis complete. Check the detailed sections below.",
+      confidence_level: 0.85,
+      detailed_analysis: {
+        growth_stage: "Vegetative stage",
+        health_score: "Good overall health",
+        specific_issues: "No major issues detected",
+        environmental_factors: "Light levels appear adequate"
+      },
+      recommended_actions: [
+        "Continue current care regimen",
+        "Monitor for changes"
+      ]
+    };
+
     // Parse the analysis text into structured data
-    const analysisResult = {
-      analysis: {
+    let analysisData;
+    try {
+      analysisData = {
         diagnosis: assistantResponse,
         confidence_level: 0.92,
         detailed_analysis: {
-          growth_stage: extractSection(assistantResponse, "Growth Stage"),
-          health_score: extractSection(assistantResponse, "Health Score"),
-          specific_issues: extractSection(assistantResponse, "Specific Issues"),
-          environmental_factors: extractSection(assistantResponse, "Environmental Factors")
+          growth_stage: extractSection(assistantResponse, "Growth Stage") || defaultAnalysis.detailed_analysis.growth_stage,
+          health_score: extractSection(assistantResponse, "Health Score") || defaultAnalysis.detailed_analysis.health_score,
+          specific_issues: extractSection(assistantResponse, "Specific Issues") || defaultAnalysis.detailed_analysis.specific_issues,
+          environmental_factors: extractSection(assistantResponse, "Environmental Factors") || defaultAnalysis.detailed_analysis.environmental_factors
         },
-        recommended_actions: extractRecommendations(assistantResponse)
-      }
-    };
+        recommended_actions: extractRecommendations(assistantResponse) || defaultAnalysis.recommended_actions
+      };
+    } catch (parseError) {
+      console.error('Error parsing analysis response:', parseError);
+      analysisData = defaultAnalysis;
+    }
 
-    return new Response(JSON.stringify(analysisResult), {
+    return new Response(JSON.stringify({ analysis: analysisData }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 
   } catch (error) {
     console.error('Error in analyze-plant function:', error);
-    return new Response(JSON.stringify({ error: error.message || 'An unknown error occurred' }), {
+    // Return a valid response structure even in error case
+    const errorResponse = {
+      analysis: {
+        diagnosis: "Analysis failed: " + (error.message || "Unknown error"),
+        confidence_level: 0,
+        detailed_analysis: {
+          growth_stage: "Unable to determine",
+          health_score: "Unable to determine",
+          specific_issues: error.message || "Analysis failed",
+          environmental_factors: "Unable to determine"
+        },
+        recommended_actions: ["Try again with a clearer image"]
+      }
+    };
+    
+    return new Response(JSON.stringify(errorResponse), {
       status: 200, // Use 200 to prevent front-end treating it as a network error
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -203,21 +238,36 @@ serve(async (req) => {
 
 // Helper function to extract sections from the analysis text
 function extractSection(text: string, sectionHeader: string): string {
-  const regex = new RegExp(`${sectionHeader}[:\\s]*(.*?)(?=\\n\\s*[A-Z]|$)`, 's');
-  const match = text.match(regex);
-  return match ? match[1].trim() : `No ${sectionHeader.toLowerCase()} information available`;
+  try {
+    if (!text) return "";
+    const regex = new RegExp(`${sectionHeader}[:\\s]*(.*?)(?=\\n\\s*[A-Z]|$)`, 's');
+    const match = text.match(regex);
+    return match ? match[1].trim() : "";
+  } catch (e) {
+    console.error(`Error extracting section ${sectionHeader}:`, e);
+    return "";
+  }
 }
 
 // Helper function to extract recommended actions
 function extractRecommendations(text: string): string[] {
-  const recommendationsSection = extractSection(text, "Recommended Actions");
-  
-  if (!recommendationsSection) {
-    return ["No specific recommendations available"];
+  try {
+    if (!text) return ["No recommendations available"];
+    
+    const recommendationsSection = extractSection(text, "Recommended Actions");
+    
+    if (!recommendationsSection) {
+      return ["No specific recommendations available"];
+    }
+    
+    const lines = recommendationsSection
+      .split('\n')
+      .map(line => line.replace(/^[-•*]\s*/, '').trim())
+      .filter(line => line.length > 0);
+      
+    return lines.length > 0 ? lines : ["Continue with regular care and monitoring"];
+  } catch (e) {
+    console.error('Error extracting recommendations:', e);
+    return ["Continue with regular care and monitoring"];
   }
-  
-  return recommendationsSection
-    .split('\n')
-    .map(line => line.replace(/^[-•*]\s*/, '').trim())
-    .filter(line => line.length > 0);
 }

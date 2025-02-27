@@ -20,20 +20,17 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   }
 });
 
-// Ensure the storage bucket exists
-const ensureStorageBucket = async () => {
+// Initialize storage bucket
+(async () => {
   try {
-    // Try to get the bucket - this will fail if it doesn't exist
-    const { data, error } = await supabase.storage.getBucket('plant-images');
-    
+    // Try to create the bucket via our edge function
+    const { error } = await supabase.functions.invoke('create-storage-bucket');
     if (error) {
-      console.error('Error checking storage bucket:', error);
-      // We'll let the app continue since the bucket might be created elsewhere
+      console.error('Error creating storage bucket:', error);
+    } else {
+      console.log('Storage bucket setup completed');
     }
   } catch (error) {
-    console.error('Error in bucket initialization:', error);
+    console.error('Error initializing storage:', error);
   }
-};
-
-// Initialize storage bucket when this module is imported
-ensureStorageBucket();
+})();
