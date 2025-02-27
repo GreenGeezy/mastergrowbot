@@ -3,6 +3,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
+const ASSISTANT_ID = "asst_PMIYO6Z4FO2bkPvPrPHbVn1C"; // Master Growbot assistant ID
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,41 +19,141 @@ serve(async (req) => {
     const { message, userId, conversationId } = await req.json();
     console.log('Processing request:', { message, userId, conversationId });
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Create a thread 
+    const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'assistants=v1'
+      },
+      body: JSON.stringify({})
+    });
+
+    if (!threadResponse.ok) {
+      const errorText = await threadResponse.text();
+      console.error('Error creating thread:', errorText);
+      throw new Error(`Failed to create thread: ${threadResponse.status}`);
+    }
+
+    const threadData = await threadResponse.json();
+    const threadId = threadData.id;
+    console.log('Thread created:', threadId);
+
+    // Add message to thread
+    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'assistants=v1'
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are Master Growbot, an AI assistant specializing in cannabis cultivation. You provide expert advice on growing, plant care, and troubleshooting issues. Your responses are helpful, clear, and focused on best practices in cannabis cultivation.'
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 1000
+        role: 'user',
+        content: message
       })
     });
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error('OpenAI API error:', errorData);
-      throw new Error('Failed to get response from AI');
+    if (!messageResponse.ok) {
+      const errorText = await messageResponse.text();
+      console.error('Error adding message:', errorText);
+      throw new Error(`Failed to add message: ${messageResponse.status}`);
     }
 
-    const data = await response.json();
-    const aiResponse = data.choices[0].message.content;
-    console.log('AI response:', aiResponse);
+    console.log('Message added to thread');
+
+    // Run the assistant on the thread
+    const runResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'assistants=v1'
+      },
+      body: JSON.stringify({
+        assistant_id: ASSISTANT_ID
+      })
+    });
+
+    if (!runResponse.ok) {
+      const errorText = await runResponse.text();
+      console.error('Error running assistant:', errorText);
+      throw new Error(`Failed to run assistant: ${runResponse.status}`);
+    }
+
+    const runData = await runResponse.json();
+    const runId = runData.id;
+    console.log('Run created:', runId);
+
+    // Poll for run completion
+    let runStatus = 'queued';
+    let attempts = 0;
+    let assistantResponse = '';
+    
+    while ((runStatus === 'queued' || runStatus === 'in_progress') && attempts < 30) {
+      // Wait 1 second between polls
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Check run status
+      const statusResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${runId}`, {
+        headers: {
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'OpenAI-Beta': 'assistants=v1'
+        }
+      });
+
+      if (!statusResponse.ok) {
+        const errorText = await statusResponse.text();
+        console.error('Error checking run status:', errorText);
+        throw new Error(`Failed to check run status: ${statusResponse.status}`);
+      }
+
+      const statusData = await statusResponse.json();
+      runStatus = statusData.status;
+      console.log('Run status:', runStatus);
+      
+      attempts++;
+    }
+
+    if (runStatus === 'completed') {
+      // Get the assistant's messages
+      const messagesResponse = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+        headers: {
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'OpenAI-Beta': 'assistants=v1'
+        }
+      });
+
+      if (!messagesResponse.ok) {
+        const errorText = await messagesResponse.text();
+        console.error('Error retrieving messages:', errorText);
+        throw new Error(`Failed to retrieve messages: ${messagesResponse.status}`);
+      }
+
+      const messagesData = await messagesResponse.json();
+      // Get the most recent assistant message
+      const assistantMessages = messagesData.data.filter((msg: any) => msg.role === 'assistant');
+      
+      if (assistantMessages.length > 0) {
+        // Get the content from the latest assistant message
+        const latestMessage = assistantMessages[0];
+        // The content is an array of content parts
+        if (latestMessage.content && latestMessage.content.length > 0) {
+          // Get text content
+          const textContent = latestMessage.content.find((part: any) => part.type === 'text');
+          if (textContent) {
+            assistantResponse = textContent.text.value;
+          }
+        }
+      }
+    } else {
+      throw new Error(`Run did not complete successfully. Final status: ${runStatus}`);
+    }
+
+    console.log('Assistant response:', assistantResponse.substring(0, 100) + '...');
 
     return new Response(
-      JSON.stringify({ response: aiResponse }),
+      JSON.stringify({ response: assistantResponse }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200
@@ -62,10 +163,12 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in chat function:', error);
     return new Response(
-      JSON.stringify({ error: error.message || 'An unknown error occurred' }),
+      JSON.stringify({ 
+        error: error instanceof Error ? error.message : 'An unknown error occurred' 
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 // Using 200 to prevent frontend from treating it as a network error
+        status: 200 // Use 200 even for errors to prevent frontend from treating as network error
       }
     );
   }

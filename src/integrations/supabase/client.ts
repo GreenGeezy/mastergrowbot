@@ -12,10 +12,10 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     flowType: 'pkce'
   },
   global: {
-    fetch: (...args) => {
+    fetch: (url, options) => {
       // Add additional logging for supabase client operations during development
-      console.log('Supabase fetch:', args[0]);
-      return fetch(...args);
+      console.log('Supabase fetch:', url);
+      return fetch(url, options);
     }
   }
 });
