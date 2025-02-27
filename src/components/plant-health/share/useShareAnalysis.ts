@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -29,7 +30,7 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
       setIsLoading(true);
       
       const shareToken = generateShareToken();
-      const expiresAt = addDays(new Date(), 7);
+      const expiresAt = addDays(new Date(), 14); // Extended from 7 to 14 days
 
       const { error: shareError } = await supabase
         .from('shared_analyses')
@@ -49,6 +50,14 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
         title: "Link copied to clipboard!",
         description: "You can now share this analysis with anyone.",
       });
+
+      // Track the share creation
+      await supabase
+        .from('share_metrics')
+        .insert({
+          analysis_id: analysisId,
+          share_type: 'link_created',
+        });
 
       return shareableUrl;
     } catch (error: any) {
@@ -71,8 +80,8 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
 
       if (navigator.share) {
         await navigator.share({
-          title: 'Plant Analysis Results',
-          text: 'Check out my plant analysis from Master Growbot!',
+          title: 'Plant Analysis from Master Growbot',
+          text: 'Check out my plant analysis from Master Growbot! Get AI-powered insights for your own plants.',
           url
         });
         
@@ -106,6 +115,10 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     }
   };
 
+  const getShareText = () => {
+    return "Check out my plant analysis from Master Growbot! Get AI-powered insights for your own plants. 🌱🤖";
+  };
+
   const shareOptions: ShareOption[] = [
     {
       icon: Link2,
@@ -114,9 +127,11 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     },
     {
       icon: Facebook,
-      label: "Share on Facebook",
+      label: "Facebook",
       action: async () => {
         const url = await createShareableLink();
+        if (!url) return;
+        
         await supabase
           .from('share_metrics')
           .insert({
@@ -133,9 +148,11 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     },
     {
       icon: Linkedin,
-      label: "Share on LinkedIn",
+      label: "LinkedIn",
       action: async () => {
         const url = await createShareableLink();
+        if (!url) return;
+        
         await supabase
           .from('share_metrics')
           .insert({
@@ -143,8 +160,9 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
             share_type: 'linkedin',
           });
         
+        const text = getShareText();
         if (isMobile) {
-          window.location.href = `linkedin://shareArticle?mini=true&url=${encodeURIComponent(url)}`;
+          window.location.href = `linkedin://shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent("Plant Analysis")}&summary=${encodeURIComponent(text)}`;
         } else {
           window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
         }
@@ -152,10 +170,19 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     },
     {
       icon: Twitter,
-      label: "Share on X/Twitter",
+      label: "X/Twitter",
       action: async () => {
         const url = await createShareableLink();
-        const text = "Check out my plant analysis from Master Growbot!";
+        if (!url) return;
+        
+        await supabase
+          .from('share_metrics')
+          .insert({
+            analysis_id: analysisId,
+            share_type: 'twitter',
+          });
+        
+        const text = getShareText();
         if (isMobile) {
           window.location.href = `twitter://post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
         } else {
@@ -165,9 +192,11 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     },
     {
       icon: Instagram,
-      label: "Share on Instagram",
+      label: "Instagram",
       action: async () => {
         const url = await createShareableLink();
+        if (!url) return;
+        
         await supabase
           .from('share_metrics')
           .insert({
@@ -189,9 +218,11 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     },
     {
       icon: Video,
-      label: "Share on TikTok",
+      label: "TikTok",
       action: async () => {
         const url = await createShareableLink();
+        if (!url) return;
+        
         await supabase
           .from('share_metrics')
           .insert({
@@ -213,11 +244,20 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
     },
     {
       icon: Mail,
-      label: "Share via Email",
+      label: "Email",
       action: async () => {
         const url = await createShareableLink();
+        if (!url) return;
+        
+        await supabase
+          .from('share_metrics')
+          .insert({
+            analysis_id: analysisId,
+            share_type: 'email',
+          });
+        
         const subject = "Check out my plant analysis from Master Growbot!";
-        const body = "I wanted to share this plant analysis with you from Master Growbot. Check it out here: " + url;
+        const body = `I wanted to share this plant analysis with you from Master Growbot.\n\nGet AI-powered insights for your own plants at ${url}`;
         window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       }
     }

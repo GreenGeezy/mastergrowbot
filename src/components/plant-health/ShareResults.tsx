@@ -1,3 +1,4 @@
+
 import { useShareAnalysis } from './share/useShareAnalysis';
 import ShareButton from './share/ShareButton';
 import ShareDialog from './share/ShareDialog';
@@ -17,6 +18,8 @@ const ShareResults = ({ analysisId, imageUrls }: ShareResultsProps) => {
         onOpenChange={setIsOpen}
         shareOptions={shareOptions}
         isLoading={isLoading}
+        title="Share Your Plant Analysis"
+        description="Spread the knowledge! Share your plant analysis with friends and fellow growers."
       />
       <ShareButton 
         onClick={() => setIsOpen(true)} 
