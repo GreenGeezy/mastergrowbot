@@ -1,8 +1,12 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Leaf } from 'lucide-react'
+import { Leaf, Volume2 } from 'lucide-react'
 import FeatureCard from './FeatureCard'
 import { MessageCircle, Camera, BookOpen } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from './ui/button'
+import { useState } from 'react'
+import { supabase } from '@/integrations/supabase/client'
+import { useToast } from '@/hooks/use-toast'
 
 interface Message {
   id: string
@@ -19,6 +23,51 @@ interface ChatMessagesProps {
 
 export default function ChatMessages({ messages, handleQuestionClick, starterQuestions }: ChatMessagesProps) {
   const navigate = useNavigate()
+  const { toast } = useToast()
+  const [playingMessageId, setPlayingMessageId] = useState<string | null>(null)
+
+  const handlePlayVoice = async (message: string, messageId: string) => {
+    try {
+      setPlayingMessageId(messageId)
+      
+      const { data, error } = await supabase.functions.invoke('text-to-speech', {
+        body: { text: message, voice: 'alloy' }
+      })
+
+      if (error) {
+        throw error
+      }
+
+      if (data?.audioContent) {
+        const audioSrc = `data:audio/mp3;base64,${data.audioContent}`
+        const audio = new Audio(audioSrc)
+        
+        audio.onended = () => {
+          setPlayingMessageId(null)
+        }
+        
+        audio.onerror = (err) => {
+          console.error('Audio playback error:', err)
+          setPlayingMessageId(null)
+          toast({
+            title: 'Audio Error',
+            description: 'Failed to play audio',
+            variant: 'destructive'
+          })
+        }
+        
+        await audio.play()
+      }
+    } catch (error) {
+      console.error('Text-to-speech error:', error)
+      toast({
+        title: 'Voice Generation Failed',
+        description: error instanceof Error ? error.message : 'Failed to generate voice response',
+        variant: 'destructive'
+      })
+      setPlayingMessageId(null)
+    }
+  }
 
   if (messages.length === 0) {
     return (
@@ -85,6 +134,21 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
             }`}
           >
             {msg.message}
+            
+            {msg.is_ai && (
+              <div className="mt-2 flex justify-end">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => handlePlayVoice(msg.message, msg.id)}
+                  disabled={playingMessageId === msg.id}
+                  className="text-xs text-gray-400 hover:text-white"
+                >
+                  <Volume2 className="w-4 h-4 mr-1" />
+                  {playingMessageId === msg.id ? 'Playing...' : 'Play Voice'}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       ))}
