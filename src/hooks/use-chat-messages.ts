@@ -13,9 +13,7 @@ interface Message {
 }
 
 export const useChatMessages = (
-  currentConversationId: string | null,
-  speakResponse: (text: string) => void,
-  isMuted: boolean
+  currentConversationId: string | null
 ) => {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -104,10 +102,6 @@ export const useChatMessages = (
           currentConversationId,
           true
         )
-        
-        if (!isMuted) {
-          speakResponse(data.response)
-        }
       } else {
         console.error('No response data from AI');
         throw new Error('No response received from AI');
@@ -122,7 +116,7 @@ export const useChatMessages = (
     } finally {
       setIsLoading(false)
     }
-  }, [currentConversationId, session?.user?.id, isMuted, speakResponse, toast])
+  }, [currentConversationId, session?.user?.id, toast])
 
   return {
     messages,

@@ -1,7 +1,7 @@
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Send } from 'lucide-react'
-import AudioControls from './AudioControls'
 
 interface ChatInputProps {
   message: string
@@ -18,13 +18,8 @@ interface ChatInputProps {
 export default function ChatInput({
   message,
   isLoading,
-  isRecording,
-  isMuted,
   onMessageChange,
-  onSubmit,
-  onToggleRecording,
-  onToggleMute,
-  onSpeechResult
+  onSubmit
 }: ChatInputProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,13 +35,6 @@ export default function ChatInput({
           placeholder="Ask about cannabis cultivation..."
           disabled={isLoading}
           className="bg-[#1A1E26] border-[#2A2F3B] text-white placeholder:text-gray-400 focus:border-accent focus:ring-accent"
-        />
-        <AudioControls
-          isRecording={isRecording}
-          isMuted={isMuted}
-          onToggleRecording={onToggleRecording}
-          onToggleMute={onToggleMute}
-          onSpeechResult={onSpeechResult}
         />
         <Button 
           type="submit" 

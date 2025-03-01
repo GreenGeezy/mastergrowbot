@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -7,7 +6,6 @@ import { AppSidebar } from './AppSidebar'
 import ChatInput from './ChatInput'
 import ChatMessages from './ChatMessages'
 import { useChatState } from '@/hooks/use-chat-state'
-import { useAudioState } from '@/hooks/use-audio-state'
 import { ChatHeader } from './chat/ChatHeader'
 import { useChatMessages } from '@/hooks/use-chat-messages'
 import { useConversations } from '@/hooks/use-conversations'
@@ -35,8 +33,10 @@ export default function ChatInterface() {
     currentConversationId 
   } = useChatState()
   
-  const { isMuted, setIsMuted, speakResponse } = useAudioState()
+  // These states are kept for API compatibility but not used functionally
   const [isRecording, setIsRecording] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
+  
   const session = useSession()
   
   const { conversations, isLoading: isLoadingConversations, refreshConversations } = useConversations()
@@ -46,7 +46,7 @@ export default function ChatInterface() {
     isLoading,
     loadChatHistory,
     sendMessage
-  } = useChatMessages(currentConversationId, speakResponse, isMuted)
+  } = useChatMessages(currentConversationId)
 
   // Memoize handlers to prevent unnecessary rerenders
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -58,6 +58,7 @@ export default function ChatInterface() {
     refreshConversations()
   }, [message, sendMessage, setMessage, refreshConversations])
 
+  // Keep these methods for API compatibility
   const handleToggleRecording = useCallback(() => {
     setIsRecording(prev => !prev)
   }, [])
