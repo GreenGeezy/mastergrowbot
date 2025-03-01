@@ -12,7 +12,6 @@ import { useChatMessages } from '@/hooks/use-chat-messages'
 import { useConversations } from '@/hooks/use-conversations'
 import { ProfileDropdown } from './profile/ProfileDropdown'
 import { ConversationList } from './chat/ConversationList'
-import VoiceInterface from './VoiceInterface'
 
 // Memoize starter questions to prevent unnecessary rerenders
 const starterQuestions = [
@@ -38,7 +37,6 @@ export default function ChatInterface() {
   // These states are kept for API compatibility but not used functionally
   const [isRecording, setIsRecording] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
-  const [showVoiceInterface, setShowVoiceInterface] = useState(false)
   
   const session = useSession()
   
@@ -77,13 +75,6 @@ export default function ChatInterface() {
     refreshConversations()
   }, [setMessage, sendMessage, refreshConversations])
 
-  const handleVoiceTranscript = useCallback((text: string) => {
-    if (text.trim()) {
-      sendMessage(text)
-      refreshConversations()
-    }
-  }, [sendMessage, refreshConversations])
-
   const handleConversationSelect = useCallback((conversationId: string) => {
     if (currentConversationId !== conversationId) {
       setMessage('')
@@ -105,11 +96,6 @@ export default function ChatInterface() {
     }
   }, [currentConversationId, startNewChat])
 
-  // Toggle voice interface
-  const toggleVoiceInterface = useCallback(() => {
-    setShowVoiceInterface(prev => !prev)
-  }, [])
-
   // Memoize the sidebar content
   const sidebarContent = useMemo(() => (
     <>
@@ -128,7 +114,7 @@ export default function ChatInterface() {
   // Memoize the main chat area content
   const chatAreaContent = useMemo(() => (
     <div className="flex flex-col flex-1 h-screen w-full bg-[#222222] border border-[#333333] overflow-hidden">
-      <ChatHeader onToggleVoice={toggleVoiceInterface} showVoiceInterface={showVoiceInterface} />
+      <ChatHeader />
       
       <ScrollArea className="flex-1 p-4">
         <ChatMessages 
@@ -138,21 +124,17 @@ export default function ChatInterface() {
         />
       </ScrollArea>
       
-      {showVoiceInterface ? (
-        <VoiceInterface onTranscript={handleVoiceTranscript} />
-      ) : (
-        <ChatInput
-          message={message}
-          isLoading={isLoading}
-          isRecording={isRecording}
-          isMuted={isMuted}
-          onMessageChange={(e) => setMessage(e.target.value)}
-          onSubmit={handleSubmit}
-          onToggleRecording={handleToggleRecording}
-          onToggleMute={handleToggleMute}
-          onSpeechResult={handleSpeechResult}
-        />
-      )}
+      <ChatInput
+        message={message}
+        isLoading={isLoading}
+        isRecording={isRecording}
+        isMuted={isMuted}
+        onMessageChange={(e) => setMessage(e.target.value)}
+        onSubmit={handleSubmit}
+        onToggleRecording={handleToggleRecording}
+        onToggleMute={handleToggleMute}
+        onSpeechResult={handleSpeechResult}
+      />
     </div>
   ), [
     messages,
@@ -160,15 +142,12 @@ export default function ChatInterface() {
     isLoading,
     isRecording,
     isMuted,
-    showVoiceInterface,
     handleQuestionClick,
-    toggleVoiceInterface,
     setMessage,
     handleSubmit,
     handleToggleRecording,
     handleToggleMute,
-    handleSpeechResult,
-    handleVoiceTranscript
+    handleSpeechResult
   ])
 
   return (

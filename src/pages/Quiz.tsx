@@ -7,26 +7,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
-import type { QuizResponse, GrowExperience, GrowingMethod, MonitoringMethod, NutrientType, QuizQuestion } from '@/types/quiz';
-import { Star, Award, Users } from "lucide-react";
+import type { QuizResponse } from '@/types/quiz';
+import { Star, Award, Users, MessageCircle, Camera, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 
-// Safe JSON parser to prevent crashes
-const safelyParseJSON = (jsonString: string | null) => {
-  if (!jsonString) return null;
-  try {
-    return JSON.parse(jsonString);
-  } catch (error) {
-    console.error("Error parsing JSON:", error);
-    return null;
-  }
-};
-
 export default function Quiz() {
-  console.log("Quiz component rendering..."); // Debugging
-  
   const session = useSession();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -34,28 +21,9 @@ export default function Quiz() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   
-  // Initialize quiz responses safely
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
-    try {
-      const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
-      console.log("Loaded saved responses:", savedResponses); // Debugging
-      
-      const parsed = safelyParseJSON(savedResponses);
-      
-      if (parsed) {
-        return {
-          ...parsed,
-          // Ensure challenges and goals are always arrays
-          challenges: Array.isArray(parsed.challenges) ? parsed.challenges : [],
-          goals: Array.isArray(parsed.goals) ? parsed.goals : []
-        };
-      }
-    } catch (error) {
-      console.error("Error initializing quiz responses:", error);
-    }
-    
-    // Default empty values
-    return {
+    const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
+    return savedResponses ? JSON.parse(savedResponses) : {
       experience_level: undefined,
       growing_method: undefined,
       challenges: [],
@@ -67,16 +35,10 @@ export default function Quiz() {
   
   const [timeLeft, setTimeLeft] = useState("");
 
-  // Save responses to session storage whenever they change
   useEffect(() => {
-    try {
-      sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
-    } catch (error) {
-      console.error("Error saving quiz responses to session storage:", error);
-    }
+    sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
   }, [quizResponses]);
 
-  // Timer for promotional countdown
   useEffect(() => {
     const targetDate = new Date('2025-07-10T05:00:00.000Z');
     
@@ -101,156 +63,104 @@ export default function Quiz() {
     return () => clearInterval(timer);
   }, []);
 
-  // Quiz questions configuration
-  const questions: QuizQuestion[] = [
-    {
-      question: "How long have you been growing?",
-      type: "radio",
-      field: "experience_level",
-      options: [
-        {
-          label: "I'm new",
-          value: "new"
-        }, 
-        {
-          label: "6 months - 2 years",
-          value: "intermediate"
-        }, 
-        {
-          label: "Over 2 years",
-          value: "advanced"
-        }
-      ]
-    }, 
-    {
-      question: "How do you plan on growing?",
-      type: "radio",
-      field: "growing_method",
-      options: [
-        {
-          label: "Indoor",
-          value: "indoor"
-        }, 
-        {
-          label: "Outdoor",
-          value: "outdoor"
-        }, 
-        {
-          label: "Greenhouse",
-          value: "greenhouse"
-        }
-      ]
-    }, 
-    {
-      question: "What challenges have you faced in your previous grow cycles?",
-      type: "checkbox",
-      field: "challenges",
-      options: [
-        {
-          label: "Pests",
-          value: "pests"
-        }, 
-        {
-          label: "Nutrient deficiencies",
-          value: "nutrient_deficiencies"
-        }, 
-        {
-          label: "Environmental issues",
-          value: "environmental_issues"
-        }, 
-        {
-          label: "No challenges faced",
-          value: "none"
-        }
-      ]
-    }, 
-    {
-      question: "How do you monitor your growing conditions?",
-      type: "radio",
-      field: "monitoring_method",
-      options: [
-        {
-          label: "Manual checks",
-          value: "manual"
-        }, 
-        {
-          label: "Basic sensors",
-          value: "basic_sensors"
-        }, 
-        {
-          label: "Advanced monitoring systems",
-          value: "advanced_systems"
-        }
-      ]
-    }, 
-    {
-      question: "What type of nutrients do you use for your plants?",
-      type: "radio",
-      field: "nutrient_type",
-      options: [
-        {
-          label: "Organic nutrients",
-          value: "organic"
-        }, 
-        {
-          label: "Synthetic nutrients",
-          value: "synthetic"
-        }, 
-        {
-          label: "Both",
-          value: "both"
-        }, 
-        {
-          label: "I don't use nutrients",
-          value: "none"
-        }
-      ]
-    }, 
-    {
-      question: "What would you like Master Growbot to help you achieve?",
-      type: "checkbox",
-      field: "goals",
-      options: [
-        {
-          label: "Have fun and learn",
-          value: "learn"
-        }, 
-        {
-          label: "Improve quality and potency",
-          value: "quality"
-        }, 
-        {
-          label: "Increase yields and profits",
-          value: "profits"
-        }, 
-        {
-          label: "All of the above",
-          value: "all"
-        }
-      ]
-    }
-  ];
+  const questions = [{
+    question: "How long have you been growing?",
+    type: "radio",
+    field: "experience_level",
+    options: [{
+      label: "I'm new",
+      value: "new"
+    }, {
+      label: "6 months - 2 years",
+      value: "intermediate"
+    }, {
+      label: "Over 2 years",
+      value: "advanced"
+    }]
+  }, {
+    question: "How do you plan on growing?",
+    type: "radio",
+    field: "growing_method",
+    options: [{
+      label: "Indoor",
+      value: "indoor"
+    }, {
+      label: "Outdoor",
+      value: "outdoor"
+    }, {
+      label: "Greenhouse",
+      value: "greenhouse"
+    }]
+  }, {
+    question: "What challenges have you faced in your previous grow cycles?",
+    type: "checkbox",
+    field: "challenges",
+    options: [{
+      label: "Pests",
+      value: "pests"
+    }, {
+      label: "Nutrient deficiencies",
+      value: "nutrient_deficiencies"
+    }, {
+      label: "Environmental issues",
+      value: "environmental_issues"
+    }, {
+      label: "No challenges faced",
+      value: "none"
+    }]
+  }, {
+    question: "How do you monitor your growing conditions?",
+    type: "radio",
+    field: "monitoring_method",
+    options: [{
+      label: "Manual checks",
+      value: "manual"
+    }, {
+      label: "Basic sensors",
+      value: "basic_sensors"
+    }, {
+      label: "Advanced monitoring systems",
+      value: "advanced_systems"
+    }]
+  }, {
+    question: "What type of nutrients do you use for your plants?",
+    type: "radio",
+    field: "nutrient_type",
+    options: [{
+      label: "Organic nutrients",
+      value: "organic"
+    }, {
+      label: "Synthetic nutrients",
+      value: "synthetic"
+    }, {
+      label: "Both",
+      value: "both"
+    }, {
+      label: "I don't use nutrients",
+      value: "none"
+    }]
+  }, {
+    question: "What would you like Master Growbot to help you achieve?",
+    type: "checkbox",
+    field: "goals",
+    options: [{
+      label: "Have fun and learn",
+      value: "learn"
+    }, {
+      label: "Improve quality and potency",
+      value: "quality"
+    }, {
+      label: "Increase yields and profits",
+      value: "profits"
+    }, {
+      label: "All of the above",
+      value: "all"
+    }]
+  }];
 
   const handleNextStep = () => {
-    console.log("Next step clicked, current step:", currentStep); // Debugging
-    
-    if (currentStep >= questions.length) {
-      console.error('Invalid step index:', currentStep);
-      toast({
-        title: "Error",
-        description: "An error occurred with the quiz navigation",
-        variant: "destructive"
-      });
-      return;
-    }
-    
     const currentQuestion = questions[currentStep];
-    if (!currentQuestion) {
-      console.error('Question not found at index:', currentStep);
-      return;
-    }
-    
-    const currentAnswer = quizResponses[currentQuestion.field];
+    const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
     
     if (!currentAnswer || (Array.isArray(currentAnswer) && currentAnswer.length === 0)) {
       toast({
@@ -282,6 +192,7 @@ export default function Quiz() {
         console.log('Starting quiz submission for user:', session.user.id);
         console.log('Quiz responses to save:', quizResponses);
 
+        // First, ensure we have a profile
         const { data: existingProfile, error: profileError } = await supabase
           .from('user_profiles')
           .select('*')
@@ -293,14 +204,15 @@ export default function Quiz() {
           throw profileError;
         }
 
+        // Create or update the profile first
         const profileData = {
           id: session.user.id,
           grow_experience_level: quizResponses.experience_level,
           growing_method: quizResponses.growing_method,
           monitoring_method: quizResponses.monitoring_method,
           nutrient_type: quizResponses.nutrient_type,
-          challenges: quizResponses.challenges || [],
-          goals: quizResponses.goals || []
+          challenges: quizResponses.challenges,
+          goals: quizResponses.goals
         };
 
         console.log('Updating user profile with:', profileData);
@@ -314,16 +226,17 @@ export default function Quiz() {
           throw upsertError;
         }
 
+        // Then save to quiz_responses
         const { error: quizError } = await supabase
           .from('quiz_responses')
           .insert({
             user_id: session.user.id,
             experience_level: quizResponses.experience_level,
             growing_method: quizResponses.growing_method,
-            challenges: quizResponses.challenges || [],
+            challenges: quizResponses.challenges,
             monitoring_method: quizResponses.monitoring_method,
             nutrient_type: quizResponses.nutrient_type,
-            goals: quizResponses.goals || []
+            goals: quizResponses.goals
           });
 
         if (quizError) {
@@ -342,6 +255,7 @@ export default function Quiz() {
         
         setShowSubscription(true);
       } else {
+        // Store responses temporarily if not logged in
         console.log('User not logged in, storing responses temporarily');
         sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
         setShowSubscription(true);
@@ -360,43 +274,12 @@ export default function Quiz() {
     setIsSubmitting(false);
   };
 
-  // Safety check for step index
-  if (currentStep >= questions.length) {
-    console.error('Invalid step index outside render:', currentStep);
-    setCurrentStep(0);
-    return null;
-  }
-
-  const currentQuestion = questions[currentStep];
-  // Safety check for current question
-  if (!currentQuestion) {
-    console.error('Current question not found:', currentStep);
-    return (
-      <div className="min-h-screen bg-background circuit-background">
-        <ChatHeader />
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-2xl mx-auto text-center text-white">
-            <h1 className="text-3xl font-bold">Error Loading Quiz</h1>
-            <p className="mt-4">There was a problem loading the quiz questions.</p>
-            <Button 
-              className="mt-6" 
-              onClick={() => navigate('/')}
-            >
-              Return to Home
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // If we need to show the subscription page
   if (showSubscription) {
     return (
       <div className="min-h-screen bg-background circuit-background">
         <ChatHeader />
         <div className="container mx-auto px-4 py-8">
-          <div className="w-full max-w-[1200px] space-y-6 mx-auto">
+          <div className="w-full max-w-[1200px] space-y-6">
             <div className="text-center space-y-2">
               <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
               <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
@@ -545,8 +428,7 @@ export default function Quiz() {
     );
   }
 
-  // Regular quiz UI
-  console.log("Rendering quiz UI, current step:", currentStep);
+  const currentQuestion = questions[currentStep];
   return (
     <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
@@ -582,7 +464,7 @@ export default function Quiz() {
 
                 {currentQuestion.type === "radio" && (
                   <RadioGroup
-                    value={String(quizResponses[currentQuestion.field] || '')}
+                    value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
                     onValueChange={value => setQuizResponses(prev => ({
                       ...prev,
                       [currentQuestion.field]: value
@@ -613,14 +495,10 @@ export default function Quiz() {
                       <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
                         <Checkbox
                           id={option.value}
-                          checked={Array.isArray(quizResponses[currentQuestion.field]) && 
-                            (quizResponses[currentQuestion.field] as string[] || []).includes(option.value)}
+                          checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
                           onCheckedChange={checked => {
-                            const field = currentQuestion.field;
-                            const currentValues = Array.isArray(quizResponses[field]) 
-                              ? [...quizResponses[field] as string[]] 
-                              : [];
-                              
+                            const field = currentQuestion.field as keyof QuizResponse;
+                            const currentValues = quizResponses[field] as string[] || [];
                             if (checked) {
                               if (option.value === 'all' || option.value === 'none') {
                                 setQuizResponses(prev => ({
