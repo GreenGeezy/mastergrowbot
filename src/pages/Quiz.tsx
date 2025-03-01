@@ -13,6 +13,16 @@ import { Badge } from "@/components/ui/badge";
 
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 
+const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
+  if (!jsonString) return fallback;
+  try {
+    return JSON.parse(jsonString);
+  } catch (e) {
+    console.error('Error parsing JSON from session storage:', e);
+    return fallback;
+  }
+};
+
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -22,21 +32,44 @@ export default function Quiz() {
   const [showSubscription, setShowSubscription] = useState(false);
   
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
-    const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
-    return savedResponses ? JSON.parse(savedResponses) : {
-      experience_level: undefined,
-      growing_method: undefined,
-      challenges: [],
-      monitoring_method: undefined,
-      nutrient_type: undefined,
-      goals: []
-    };
+    try {
+      const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
+      return savedResponses ? safeJsonParse(savedResponses, {
+        experience_level: undefined,
+        growing_method: undefined,
+        challenges: [],
+        monitoring_method: undefined,
+        nutrient_type: undefined,
+        goals: []
+      }) : {
+        experience_level: undefined,
+        growing_method: undefined,
+        challenges: [],
+        monitoring_method: undefined,
+        nutrient_type: undefined,
+        goals: []
+      };
+    } catch (error) {
+      console.error('Error initializing quiz responses:', error);
+      return {
+        experience_level: undefined,
+        growing_method: undefined,
+        challenges: [],
+        monitoring_method: undefined,
+        nutrient_type: undefined,
+        goals: []
+      };
+    }
   });
   
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
-    sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
+    try {
+      sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
+    } catch (error) {
+      console.error('Error saving quiz responses to session storage:', error);
+    }
   }, [quizResponses]);
 
   useEffect(() => {
@@ -160,6 +193,11 @@ export default function Quiz() {
 
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
+    if (!currentQuestion) {
+      console.error('Current question not found for step:', currentStep);
+      return;
+    }
+    
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
     
     if (!currentAnswer || (Array.isArray(currentAnswer) && currentAnswer.length === 0)) {
@@ -192,7 +230,6 @@ export default function Quiz() {
         console.log('Starting quiz submission for user:', session.user.id);
         console.log('Quiz responses to save:', quizResponses);
 
-        // First, ensure we have a profile
         const { data: existingProfile, error: profileError } = await supabase
           .from('user_profiles')
           .select('*')
@@ -204,7 +241,6 @@ export default function Quiz() {
           throw profileError;
         }
 
-        // Create or update the profile first
         const profileData = {
           id: session.user.id,
           grow_experience_level: quizResponses.experience_level,
@@ -226,7 +262,6 @@ export default function Quiz() {
           throw upsertError;
         }
 
-        // Then save to quiz_responses
         const { error: quizError } = await supabase
           .from('quiz_responses')
           .insert({
@@ -255,7 +290,6 @@ export default function Quiz() {
         
         setShowSubscription(true);
       } else {
-        // Store responses temporarily if not logged in
         console.log('User not logged in, storing responses temporarily');
         sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
         setShowSubscription(true);
@@ -429,6 +463,19 @@ export default function Quiz() {
   }
 
   const currentQuestion = questions[currentStep];
+  if (!currentQuestion) {
+    console.error('Current question not found at index:', currentStep);
+    return (
+      <div className="min-h-screen bg-background circuit-background flex items-center justify-center">
+        <div className="text-center p-8 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
+          <h2 className="text-2xl font-semibold mb-4">Something went wrong</h2>
+          <p className="mb-6">We're having trouble loading the quiz questions.</p>
+          <Button onClick={() => navigate('/chat')}>Go to Chat</Button>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
@@ -495,10 +542,10 @@ export default function Quiz() {
                       <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
                         <Checkbox
                           id={option.value}
-                          checked={quizResponses[currentQuestion.field as keyof QuizResponse]?.includes(option.value)}
+                          checked={(quizResponses[currentQuestion.field as keyof QuizResponse] as string[] || []).includes(option.value)}
                           onCheckedChange={checked => {
                             const field = currentQuestion.field as keyof QuizResponse;
-                            const currentValues = quizResponses[field] as string[] || [];
+                            const currentValues = (quizResponses[field] as string[]) || [];
                             if (checked) {
                               if (option.value === 'all' || option.value === 'none') {
                                 setQuizResponses(prev => ({

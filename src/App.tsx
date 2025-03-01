@@ -13,8 +13,8 @@ const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
-const Quiz = lazy(() => import("./pages/Quiz"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+import Quiz from "./pages/Quiz";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -72,11 +72,7 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route 
                 path="/quiz" 
-                element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <Quiz />
-                  </Suspense>
-                } 
+                element={<Quiz />} 
               />
               <Route 
                 path="/payment-success" 
@@ -86,11 +82,9 @@ const App = () => {
                   </Suspense>
                 } 
               />
-              {/* Auth routes - handle all possible callback patterns with v1 */}
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/*" element={<AuthCallback />} />
-              {/* Legacy routes for backward compatibility */}
               <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
               <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
               <Route 
