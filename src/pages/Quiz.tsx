@@ -22,9 +22,24 @@ export default function Quiz() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   
+  // Initialize with empty arrays for array fields
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
-    const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
-    return savedResponses ? JSON.parse(savedResponses) : {
+    try {
+      const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
+      if (savedResponses) {
+        const parsed = JSON.parse(savedResponses);
+        // Ensure arrays are properly initialized
+        return {
+          ...parsed,
+          challenges: Array.isArray(parsed.challenges) ? parsed.challenges : [],
+          goals: Array.isArray(parsed.goals) ? parsed.goals : []
+        };
+      }
+    } catch (error) {
+      console.error("Error parsing saved quiz responses:", error);
+    }
+    
+    return {
       experience_level: undefined,
       growing_method: undefined,
       challenges: [],
@@ -37,7 +52,11 @@ export default function Quiz() {
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
-    sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
+    try {
+      sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
+    } catch (error) {
+      console.error("Error saving quiz responses to session storage:", error);
+    }
   }, [quizResponses]);
 
   useEffect(() => {
@@ -194,6 +213,7 @@ export default function Quiz() {
   ];
 
   const handleNextStep = () => {
+    // Safety check to prevent array access issues
     if (currentStep >= questions.length) {
       console.error('Invalid step index:', currentStep);
       toast({
@@ -261,8 +281,8 @@ export default function Quiz() {
           growing_method: quizResponses.growing_method,
           monitoring_method: quizResponses.monitoring_method,
           nutrient_type: quizResponses.nutrient_type,
-          challenges: quizResponses.challenges,
-          goals: quizResponses.goals
+          challenges: quizResponses.challenges || [],
+          goals: quizResponses.goals || []
         };
 
         console.log('Updating user profile with:', profileData);
@@ -283,10 +303,10 @@ export default function Quiz() {
             user_id: session.user.id,
             experience_level: quizResponses.experience_level,
             growing_method: quizResponses.growing_method,
-            challenges: quizResponses.challenges,
+            challenges: quizResponses.challenges || [],
             monitoring_method: quizResponses.monitoring_method,
             nutrient_type: quizResponses.nutrient_type,
-            goals: quizResponses.goals
+            goals: quizResponses.goals || []
           });
 
         if (quizError) {
@@ -562,8 +582,9 @@ export default function Quiz() {
                             (quizResponses[currentQuestion.field] as string[] || []).includes(option.value)}
                           onCheckedChange={checked => {
                             const field = currentQuestion.field;
+                            // Ensure we're working with an array
                             const currentValues = Array.isArray(quizResponses[field]) 
-                              ? quizResponses[field] as string[] 
+                              ? [...quizResponses[field] as string[]] 
                               : [];
                               
                             if (checked) {
