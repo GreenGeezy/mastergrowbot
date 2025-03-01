@@ -104,8 +104,8 @@ export default function ChatInput({
       mediaRecorder.start()
       setIsRecording(true)
       
-      // Automatically stop after 15 seconds
-      const maxRecordingTime = 15000
+      // Automatically stop after 10 seconds instead of 15 seconds
+      const maxRecordingTime = 10000
       const progressInterval = 100
       const progressIncrement = (progressInterval / maxRecordingTime) * 100
       
