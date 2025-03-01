@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 
+// Safe JSON parser to prevent crashes
 const safelyParseJSON = (jsonString: string | null) => {
   if (!jsonString) return null;
   try {
@@ -24,6 +25,8 @@ const safelyParseJSON = (jsonString: string | null) => {
 };
 
 export default function Quiz() {
+  console.log("Quiz component rendering..."); // Debugging
+  
   const session = useSession();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -31,14 +34,18 @@ export default function Quiz() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   
+  // Initialize quiz responses safely
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
     try {
       const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
+      console.log("Loaded saved responses:", savedResponses); // Debugging
+      
       const parsed = safelyParseJSON(savedResponses);
       
       if (parsed) {
         return {
           ...parsed,
+          // Ensure challenges and goals are always arrays
           challenges: Array.isArray(parsed.challenges) ? parsed.challenges : [],
           goals: Array.isArray(parsed.goals) ? parsed.goals : []
         };
@@ -47,6 +54,7 @@ export default function Quiz() {
       console.error("Error initializing quiz responses:", error);
     }
     
+    // Default empty values
     return {
       experience_level: undefined,
       growing_method: undefined,
@@ -59,6 +67,7 @@ export default function Quiz() {
   
   const [timeLeft, setTimeLeft] = useState("");
 
+  // Save responses to session storage whenever they change
   useEffect(() => {
     try {
       sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
@@ -67,6 +76,7 @@ export default function Quiz() {
     }
   }, [quizResponses]);
 
+  // Timer for promotional countdown
   useEffect(() => {
     const targetDate = new Date('2025-07-10T05:00:00.000Z');
     
@@ -91,6 +101,7 @@ export default function Quiz() {
     return () => clearInterval(timer);
   }, []);
 
+  // Quiz questions configuration
   const questions: QuizQuestion[] = [
     {
       question: "How long have you been growing?",
@@ -221,6 +232,8 @@ export default function Quiz() {
   ];
 
   const handleNextStep = () => {
+    console.log("Next step clicked, current step:", currentStep); // Debugging
+    
     if (currentStep >= questions.length) {
       console.error('Invalid step index:', currentStep);
       toast({
@@ -347,6 +360,7 @@ export default function Quiz() {
     setIsSubmitting(false);
   };
 
+  // Safety check for step index
   if (currentStep >= questions.length) {
     console.error('Invalid step index outside render:', currentStep);
     setCurrentStep(0);
@@ -354,6 +368,7 @@ export default function Quiz() {
   }
 
   const currentQuestion = questions[currentStep];
+  // Safety check for current question
   if (!currentQuestion) {
     console.error('Current question not found:', currentStep);
     return (
@@ -375,6 +390,7 @@ export default function Quiz() {
     );
   }
 
+  // If we need to show the subscription page
   if (showSubscription) {
     return (
       <div className="min-h-screen bg-background circuit-background">
@@ -529,6 +545,8 @@ export default function Quiz() {
     );
   }
 
+  // Regular quiz UI
+  console.log("Rendering quiz UI, current step:", currentStep);
   return (
     <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
