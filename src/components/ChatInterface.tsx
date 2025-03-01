@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -69,7 +70,10 @@ export default function ChatInterface() {
 
   const handleSpeechResult = useCallback((text: string) => {
     setMessage(text)
-  }, [setMessage])
+    // Automatically submit the transcribed message
+    sendMessage(text)
+    refreshConversations()
+  }, [setMessage, sendMessage, refreshConversations])
 
   const handleConversationSelect = useCallback((conversationId: string) => {
     if (currentConversationId !== conversationId) {
