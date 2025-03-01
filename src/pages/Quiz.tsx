@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -63,100 +64,134 @@ export default function Quiz() {
     return () => clearInterval(timer);
   }, []);
 
-  const questions = [{
-    question: "How long have you been growing?",
-    type: "radio",
-    field: "experience_level",
-    options: [{
-      label: "I'm new",
-      value: "new"
-    }, {
-      label: "6 months - 2 years",
-      value: "intermediate"
-    }, {
-      label: "Over 2 years",
-      value: "advanced"
-    }]
-  }, {
-    question: "How do you plan on growing?",
-    type: "radio",
-    field: "growing_method",
-    options: [{
-      label: "Indoor",
-      value: "indoor"
-    }, {
-      label: "Outdoor",
-      value: "outdoor"
-    }, {
-      label: "Greenhouse",
-      value: "greenhouse"
-    }]
-  }, {
-    question: "What challenges have you faced in your previous grow cycles?",
-    type: "checkbox",
-    field: "challenges",
-    options: [{
-      label: "Pests",
-      value: "pests"
-    }, {
-      label: "Nutrient deficiencies",
-      value: "nutrient_deficiencies"
-    }, {
-      label: "Environmental issues",
-      value: "environmental_issues"
-    }, {
-      label: "No challenges faced",
-      value: "none"
-    }]
-  }, {
-    question: "How do you monitor your growing conditions?",
-    type: "radio",
-    field: "monitoring_method",
-    options: [{
-      label: "Manual checks",
-      value: "manual"
-    }, {
-      label: "Basic sensors",
-      value: "basic_sensors"
-    }, {
-      label: "Advanced monitoring systems",
-      value: "advanced_systems"
-    }]
-  }, {
-    question: "What type of nutrients do you use for your plants?",
-    type: "radio",
-    field: "nutrient_type",
-    options: [{
-      label: "Organic nutrients",
-      value: "organic"
-    }, {
-      label: "Synthetic nutrients",
-      value: "synthetic"
-    }, {
-      label: "Both",
-      value: "both"
-    }, {
-      label: "I don't use nutrients",
-      value: "none"
-    }]
-  }, {
-    question: "What would you like Master Growbot to help you achieve?",
-    type: "checkbox",
-    field: "goals",
-    options: [{
-      label: "Have fun and learn",
-      value: "learn"
-    }, {
-      label: "Improve quality and potency",
-      value: "quality"
-    }, {
-      label: "Increase yields and profits",
-      value: "profits"
-    }, {
-      label: "All of the above",
-      value: "all"
-    }]
-  }];
+  const questions = [
+    {
+      question: "How long have you been growing?",
+      type: "radio",
+      field: "experience_level",
+      options: [
+        {
+          label: "I'm new",
+          value: "new"
+        }, 
+        {
+          label: "6 months - 2 years",
+          value: "intermediate"
+        }, 
+        {
+          label: "Over 2 years",
+          value: "advanced"
+        }
+      ]
+    }, 
+    {
+      question: "How do you plan on growing?",
+      type: "radio",
+      field: "growing_method",
+      options: [
+        {
+          label: "Indoor",
+          value: "indoor"
+        }, 
+        {
+          label: "Outdoor",
+          value: "outdoor"
+        }, 
+        {
+          label: "Greenhouse",
+          value: "greenhouse"
+        }
+      ]
+    }, 
+    {
+      question: "What challenges have you faced in your previous grow cycles?",
+      type: "checkbox",
+      field: "challenges",
+      options: [
+        {
+          label: "Pests",
+          value: "pests"
+        }, 
+        {
+          label: "Nutrient deficiencies",
+          value: "nutrient_deficiencies"
+        }, 
+        {
+          label: "Environmental issues",
+          value: "environmental_issues"
+        }, 
+        {
+          label: "No challenges faced",
+          value: "none"
+        }
+      ]
+    }, 
+    {
+      question: "How do you monitor your growing conditions?",
+      type: "radio",
+      field: "monitoring_method",
+      options: [
+        {
+          label: "Manual checks",
+          value: "manual"
+        }, 
+        {
+          label: "Basic sensors",
+          value: "basic_sensors"
+        }, 
+        {
+          label: "Advanced monitoring systems",
+          value: "advanced_systems"
+        }
+      ]
+    }, 
+    {
+      question: "What type of nutrients do you use for your plants?",
+      type: "radio",
+      field: "nutrient_type",
+      options: [
+        {
+          label: "Organic nutrients",
+          value: "organic"
+        }, 
+        {
+          label: "Synthetic nutrients",
+          value: "synthetic"
+        }, 
+        {
+          label: "Both",
+          value: "both"
+        }, 
+        {
+          label: "I don't use nutrients",
+          value: "none"
+        }
+      ]
+    }, 
+    {
+      question: "What would you like Master Growbot to help you achieve?",
+      type: "checkbox",
+      field: "goals",
+      options: [
+        {
+          label: "Have fun and learn",
+          value: "learn"
+        }, 
+        {
+          label: "Improve quality and potency",
+          value: "quality"
+        }, 
+        {
+          label: "Increase yields and profits",
+          value: "profits"
+        }, 
+        {
+          label: "All of the above",
+          value: "all"
+        }
+      ]
+    }
+  ];
 
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
