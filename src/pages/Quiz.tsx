@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
-import type { QuizResponse, GrowExperience, GrowingMethod, MonitoringMethod, NutrientType } from '@/types/quiz';
+import type { QuizResponse, GrowExperience, GrowingMethod, MonitoringMethod, NutrientType, QuizQuestion } from '@/types/quiz';
 import { Star, Award, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -64,11 +64,11 @@ export default function Quiz() {
     return () => clearInterval(timer);
   }, []);
 
-  const questions = [
+  const questions: QuizQuestion[] = [
     {
       question: "How long have you been growing?",
       type: "radio",
-      field: "experience_level" as keyof QuizResponse,
+      field: "experience_level",
       options: [
         {
           label: "I'm new",
@@ -87,7 +87,7 @@ export default function Quiz() {
     {
       question: "How do you plan on growing?",
       type: "radio",
-      field: "growing_method" as keyof QuizResponse,
+      field: "growing_method",
       options: [
         {
           label: "Indoor",
@@ -106,7 +106,7 @@ export default function Quiz() {
     {
       question: "What challenges have you faced in your previous grow cycles?",
       type: "checkbox",
-      field: "challenges" as keyof QuizResponse,
+      field: "challenges",
       options: [
         {
           label: "Pests",
@@ -129,7 +129,7 @@ export default function Quiz() {
     {
       question: "How do you monitor your growing conditions?",
       type: "radio",
-      field: "monitoring_method" as keyof QuizResponse,
+      field: "monitoring_method",
       options: [
         {
           label: "Manual checks",
@@ -148,7 +148,7 @@ export default function Quiz() {
     {
       question: "What type of nutrients do you use for your plants?",
       type: "radio",
-      field: "nutrient_type" as keyof QuizResponse,
+      field: "nutrient_type",
       options: [
         {
           label: "Organic nutrients",
@@ -171,7 +171,7 @@ export default function Quiz() {
     {
       question: "What would you like Master Growbot to help you achieve?",
       type: "checkbox",
-      field: "goals" as keyof QuizResponse,
+      field: "goals",
       options: [
         {
           label: "Have fun and learn",
@@ -205,6 +205,11 @@ export default function Quiz() {
     }
     
     const currentQuestion = questions[currentStep];
+    if (!currentQuestion) {
+      console.error('Question not found at index:', currentStep);
+      return;
+    }
+    
     const currentAnswer = quizResponses[currentQuestion.field];
     
     if (!currentAnswer || (Array.isArray(currentAnswer) && currentAnswer.length === 0)) {
@@ -318,6 +323,13 @@ export default function Quiz() {
     
     setIsSubmitting(false);
   };
+
+  // Safety check to ensure currentStep is valid
+  if (currentStep >= questions.length) {
+    console.error('Invalid step index outside render:', currentStep);
+    setCurrentStep(0); // Reset to the first question
+    return null; // Return null to prevent rendering errors
+  }
 
   if (showSubscription) {
     return (
@@ -473,14 +485,12 @@ export default function Quiz() {
     );
   }
 
-  // Safety check to ensure currentStep is valid
-  if (currentStep >= questions.length) {
-    console.error('Invalid step index outside render:', currentStep);
-    setCurrentStep(0); // Reset to the first question
-    return null; // Return null to prevent rendering errors
-  }
-
+  // Make sure currentQuestion exists before trying to use it
   const currentQuestion = questions[currentStep];
+  if (!currentQuestion) {
+    console.error('Current question not found:', currentStep);
+    return null;
+  }
   
   return (
     <div className="min-h-screen bg-background circuit-background">
@@ -517,7 +527,7 @@ export default function Quiz() {
 
                 {currentQuestion.type === "radio" && (
                   <RadioGroup
-                    value={quizResponses[currentQuestion.field] as string}
+                    value={String(quizResponses[currentQuestion.field] || '')}
                     onValueChange={value => setQuizResponses(prev => ({
                       ...prev,
                       [currentQuestion.field]: value
@@ -549,10 +559,13 @@ export default function Quiz() {
                         <Checkbox
                           id={option.value}
                           checked={Array.isArray(quizResponses[currentQuestion.field]) && 
-                            (quizResponses[currentQuestion.field] as string[])?.includes(option.value)}
+                            (quizResponses[currentQuestion.field] as string[] || []).includes(option.value)}
                           onCheckedChange={checked => {
                             const field = currentQuestion.field;
-                            const currentValues = quizResponses[field] as string[] || [];
+                            const currentValues = Array.isArray(quizResponses[field]) 
+                              ? quizResponses[field] as string[] 
+                              : [];
+                              
                             if (checked) {
                               if (option.value === 'all' || option.value === 'none') {
                                 setQuizResponses(prev => ({

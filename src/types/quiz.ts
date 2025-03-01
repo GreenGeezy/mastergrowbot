@@ -12,3 +12,13 @@ export interface QuizResponse {
   nutrient_type: NutrientType
   goals: string[]
 }
+
+export interface QuizQuestion {
+  question: string
+  type: 'radio' | 'checkbox'
+  field: keyof QuizResponse
+  options: {
+    label: string
+    value: string
+  }[]
+}
