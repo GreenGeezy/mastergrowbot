@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -14,6 +13,16 @@ import { Badge } from "@/components/ui/badge";
 
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 
+const safelyParseJSON = (jsonString: string | null) => {
+  if (!jsonString) return null;
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    return null;
+  }
+};
+
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
@@ -22,13 +31,12 @@ export default function Quiz() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   
-  // Initialize with empty arrays for array fields
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
     try {
       const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
-      if (savedResponses) {
-        const parsed = JSON.parse(savedResponses);
-        // Ensure arrays are properly initialized
+      const parsed = safelyParseJSON(savedResponses);
+      
+      if (parsed) {
         return {
           ...parsed,
           challenges: Array.isArray(parsed.challenges) ? parsed.challenges : [],
@@ -36,7 +44,7 @@ export default function Quiz() {
         };
       }
     } catch (error) {
-      console.error("Error parsing saved quiz responses:", error);
+      console.error("Error initializing quiz responses:", error);
     }
     
     return {
@@ -213,7 +221,6 @@ export default function Quiz() {
   ];
 
   const handleNextStep = () => {
-    // Safety check to prevent array access issues
     if (currentStep >= questions.length) {
       console.error('Invalid step index:', currentStep);
       toast({
@@ -262,7 +269,6 @@ export default function Quiz() {
         console.log('Starting quiz submission for user:', session.user.id);
         console.log('Quiz responses to save:', quizResponses);
 
-        // First, ensure we have a profile
         const { data: existingProfile, error: profileError } = await supabase
           .from('user_profiles')
           .select('*')
@@ -274,7 +280,6 @@ export default function Quiz() {
           throw profileError;
         }
 
-        // Create or update the profile first
         const profileData = {
           id: session.user.id,
           grow_experience_level: quizResponses.experience_level,
@@ -296,7 +301,6 @@ export default function Quiz() {
           throw upsertError;
         }
 
-        // Then save to quiz_responses
         const { error: quizError } = await supabase
           .from('quiz_responses')
           .insert({
@@ -325,7 +329,6 @@ export default function Quiz() {
         
         setShowSubscription(true);
       } else {
-        // Store responses temporarily if not logged in
         console.log('User not logged in, storing responses temporarily');
         sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
         setShowSubscription(true);
@@ -344,11 +347,32 @@ export default function Quiz() {
     setIsSubmitting(false);
   };
 
-  // Safety check to ensure currentStep is valid
   if (currentStep >= questions.length) {
     console.error('Invalid step index outside render:', currentStep);
-    setCurrentStep(0); // Reset to the first question
-    return null; // Return null to prevent rendering errors
+    setCurrentStep(0);
+    return null;
+  }
+
+  const currentQuestion = questions[currentStep];
+  if (!currentQuestion) {
+    console.error('Current question not found:', currentStep);
+    return (
+      <div className="min-h-screen bg-background circuit-background">
+        <ChatHeader />
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto text-center text-white">
+            <h1 className="text-3xl font-bold">Error Loading Quiz</h1>
+            <p className="mt-4">There was a problem loading the quiz questions.</p>
+            <Button 
+              className="mt-6" 
+              onClick={() => navigate('/')}
+            >
+              Return to Home
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (showSubscription) {
@@ -505,13 +529,6 @@ export default function Quiz() {
     );
   }
 
-  // Make sure currentQuestion exists before trying to use it
-  const currentQuestion = questions[currentStep];
-  if (!currentQuestion) {
-    console.error('Current question not found:', currentStep);
-    return null;
-  }
-  
   return (
     <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
@@ -582,7 +599,6 @@ export default function Quiz() {
                             (quizResponses[currentQuestion.field] as string[] || []).includes(option.value)}
                           onCheckedChange={checked => {
                             const field = currentQuestion.field;
-                            // Ensure we're working with an array
                             const currentValues = Array.isArray(quizResponses[field]) 
                               ? [...quizResponses[field] as string[]] 
                               : [];

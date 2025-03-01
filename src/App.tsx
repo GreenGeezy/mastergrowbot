@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -9,11 +10,13 @@ import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 
+// Import Quiz directly instead of using lazy loading to avoid potential issues
+import Quiz from "./pages/Quiz";
+
 const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
-const Quiz = lazy(() => import("./pages/Quiz"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 
 const queryClient = new QueryClient({
@@ -72,11 +75,7 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route 
                 path="/quiz" 
-                element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <Quiz />
-                  </Suspense>
-                } 
+                element={<Quiz />} 
               />
               <Route 
                 path="/payment-success" 
