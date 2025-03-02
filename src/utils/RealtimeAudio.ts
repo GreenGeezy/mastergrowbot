@@ -61,13 +61,23 @@ export class AudioRecorder {
   }
 }
 
+interface SessionSettings {
+  instructions?: string
+  temperature?: number
+  max_tokens?: number
+  voice?: string
+}
+
 export class RealtimeChat {
   private pc: RTCPeerConnection | null = null
   private dc: RTCDataChannel | null = null
   private audioEl: HTMLAudioElement
   private recorder: AudioRecorder | null = null
 
-  constructor(private onMessage: (message: any) => void, private onStatusChange: (status: 'connecting' | 'connected' | 'disconnected') => void) {
+  constructor(
+    private onMessage: (message: any) => void, 
+    private onStatusChange: (status: 'connecting' | 'connected' | 'disconnected') => void
+  ) {
     this.audioEl = document.createElement("audio")
     this.audioEl.autoplay = true
   }
@@ -196,7 +206,7 @@ export class RealtimeChat {
     this.dc.send(JSON.stringify({type: 'response.create'}))
   }
 
-  updateSessionSettings() {
+  updateSessionSettings(settings: SessionSettings = {}) {
     if (!this.dc || this.dc.readyState !== 'open') {
       return
     }
@@ -205,8 +215,12 @@ export class RealtimeChat {
       type: 'session.update',
       session: {
         modalities: ["text", "audio"],
+        instructions: settings.instructions || "You are Master Growbot, an AI cannabis cultivation assistant.",
+        voice: settings.voice || "alloy",
         input_audio_format: "pcm16",
         output_audio_format: "pcm16",
+        temperature: settings.temperature || 0.7,
+        max_response_output_tokens: settings.max_tokens || 1000,
         turn_detection: {
           type: "server_vad",
           threshold: 0.5,
@@ -215,6 +229,14 @@ export class RealtimeChat {
         }
       }
     }))
+  }
+
+  interrupt() {
+    if (this.dc?.readyState === 'open') {
+      this.dc.send(JSON.stringify({
+        type: 'response.interrupt'
+      }))
+    }
   }
 
   disconnect() {

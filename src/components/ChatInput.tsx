@@ -167,7 +167,11 @@ export default function ChatInput({
           type="button" 
           onClick={handleMicClick}
           disabled={isLoading}
-          className={`relative rounded-md from-slate-700 to-slate-900 bg-gradient-to-br shadow-md hover:shadow-lg transition-all duration-200 border border-slate-600/50 ${isRecording ? 'bg-red-500 hover:bg-red-600' : 'hover:from-slate-600 hover:to-slate-800'}`}
+          className={`relative rounded-md shadow-md hover:shadow-lg transition-all duration-200 border border-slate-600/50 ${
+            isRecording 
+              ? 'bg-red-500 hover:bg-red-600' 
+              : 'from-slate-700 to-slate-900 bg-gradient-to-br hover:from-slate-600 hover:to-slate-800'
+          }`}
           title={isRecording ? "Stop recording" : "Record voice message"}
         >
           {isRecording && (
@@ -181,7 +185,6 @@ export default function ChatInput({
         
         <VoiceChatButton 
           onVoiceMessageReceived={onSpeechResult}
-          className="from-blue-700 to-purple-900 bg-gradient-to-br border border-blue-500/30 hover:from-blue-600 hover:to-purple-800 shadow-md hover:shadow-lg transition-all duration-200"
         />
         
         <Button 
