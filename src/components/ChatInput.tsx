@@ -117,11 +117,11 @@ export default function ChatInput({
 
       mediaRecorder.onstop = async () => {
         // If we have a good transcription from the Web Speech API, use that
+        // But we no longer auto-send it - user needs to click the send button manually
         if (transcription.length > 5) {
-          onSpeechResult(transcription)
           toast({
             title: "Voice transcribed",
-            description: "Your voice has been transcribed successfully.",
+            description: "Your voice has been transcribed. Click send to submit.",
           })
         } else {
           // Fallback to Whisper API if Web Speech API gave poor results
@@ -150,10 +150,16 @@ export default function ChatInput({
               }
               
               if (data?.text) {
-                onSpeechResult(data.text)
+                // Update the input field but don't auto-send
+                const event = {
+                  target: { value: data.text }
+                } as React.ChangeEvent<HTMLInputElement>
+                
+                onMessageChange(event)
+                
                 toast({
                   title: "Voice transcribed",
-                  description: "Your voice has been transcribed successfully.",
+                  description: "Your voice has been transcribed. Click send to submit.",
                 })
               } else {
                 throw new Error('No transcription returned')
