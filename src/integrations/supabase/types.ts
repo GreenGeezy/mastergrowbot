@@ -9,6 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      assistant_settings: {
+        Row: {
+          assistant_id: string
+          created_at: string | null
+          id: string
+          max_tokens: number | null
+          system_instructions: string | null
+          temperature: number | null
+          updated_at: string | null
+          user_id: string | null
+          voice_settings: Json | null
+        }
+        Insert: {
+          assistant_id: string
+          created_at?: string | null
+          id?: string
+          max_tokens?: number | null
+          system_instructions?: string | null
+          temperature?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          voice_settings?: Json | null
+        }
+        Update: {
+          assistant_id?: string
+          created_at?: string | null
+          id?: string
+          max_tokens?: number | null
+          system_instructions?: string | null
+          temperature?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          voice_settings?: Json | null
+        }
+        Relationships: []
+      }
       chat_history: {
         Row: {
           conversation_id: string | null
