@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Mic, Send } from 'lucide-react'
 import { supabase } from '@/integrations/supabase/client'
 import { useToast } from '@/hooks/use-toast'
+import VoiceChatButton from './chat/VoiceChatButton'
 
 interface ChatInputProps {
   message: string
@@ -166,22 +167,27 @@ export default function ChatInput({
           type="button" 
           onClick={handleMicClick}
           disabled={isLoading}
-          className={`cyber-button relative ${isRecording ? 'bg-red-500 hover:bg-red-600' : ''}`}
+          className={`relative rounded-md from-slate-700 to-slate-900 bg-gradient-to-br shadow-md hover:shadow-lg transition-all duration-200 border border-slate-600/50 ${isRecording ? 'bg-red-500 hover:bg-red-600' : 'hover:from-slate-600 hover:to-slate-800'}`}
           title={isRecording ? "Stop recording" : "Record voice message"}
         >
           {isRecording && (
             <div 
-              className="absolute inset-0 bg-primary opacity-30 rounded-md"
+              className="absolute inset-0 bg-red-500 opacity-30 rounded-md"
               style={{ width: `${recordingProgress}%` }}
             />
           )}
           <Mic className="w-5 h-5" />
         </Button>
         
+        <VoiceChatButton 
+          onVoiceMessageReceived={onSpeechResult}
+          className="from-blue-700 to-purple-900 bg-gradient-to-br border border-blue-500/30 hover:from-blue-600 hover:to-purple-800 shadow-md hover:shadow-lg transition-all duration-200"
+        />
+        
         <Button 
           type="submit" 
           disabled={isLoading || isRecording}
-          className="cyber-button"
+          className="from-emerald-700 to-emerald-900 bg-gradient-to-br border border-emerald-500/30 hover:from-emerald-600 hover:to-emerald-800 shadow-md hover:shadow-lg transition-all duration-200"
         >
           {isLoading ? (
             <div className="loading-pulse">Sending...</div>
