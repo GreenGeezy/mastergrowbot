@@ -19,9 +19,10 @@ const VoiceChatOverlay: React.FC<VoiceChatOverlayProps> = ({
   onClose
 }) => {
   const [dots, setDots] = useState<number[]>([0, 0, 0, 0]);
+  const [dotColors, setDotColors] = useState<string[]>(['white', 'white', 'white', 'white']);
   const animationRef = useRef<number | null>(null);
   
-  // More dynamic animation for the dots
+  // More dramatic animation for the dots with color changes
   useEffect(() => {
     if (isSpeaking || isListening) {
       const animate = () => {
@@ -29,26 +30,41 @@ const VoiceChatOverlay: React.FC<VoiceChatOverlayProps> = ({
           const newDots = [...prev];
           const time = Date.now() * 0.003; // Base timing
           
-          // Create more dynamic animation with different parameters based on speaking/listening
-          const baseAmplitude = isListening ? 15 : 8; // Higher amplitude when listening (user speaking)
-          const frequency = isListening ? 2.0 : 1.0; // Faster frequency when listening
+          // More dramatic animation with different parameters based on speaking/listening
+          const baseAmplitude = isListening ? 25 : 12; // Higher amplitude when listening (user speaking)
+          const frequency = isListening ? 3.0 : 1.5; // Faster frequency when listening
           
-          // Generate unique wave patterns for each dot
-          // Use different sine/cosine combinations for more organic movement
+          // Generate unique wave patterns for each dot with more dramatic movement
           newDots[0] = Math.abs(Math.sin(time * frequency) * baseAmplitude) + 
-                       Math.abs(Math.cos(time * 0.7) * 4);
+                       Math.abs(Math.cos(time * 0.9) * 6);
           
           newDots[1] = Math.abs(Math.sin((time + 0.8) * frequency) * baseAmplitude) + 
-                       Math.abs(Math.cos((time + 0.4) * 0.7) * 4);
+                       Math.abs(Math.cos((time + 0.4) * 0.9) * 6);
           
           newDots[2] = Math.abs(Math.sin((time + 1.6) * frequency) * baseAmplitude) + 
-                       Math.abs(Math.cos((time + 0.8) * 0.7) * 4);
+                       Math.abs(Math.cos((time + 0.8) * 0.9) * 6);
           
           newDots[3] = Math.abs(Math.sin((time + 2.4) * frequency) * baseAmplitude) + 
-                       Math.abs(Math.cos((time + 1.2) * 0.7) * 4);
+                       Math.abs(Math.cos((time + 1.2) * 0.9) * 6);
           
           return newDots;
         });
+        
+        // Update dot colors when user is speaking
+        if (isListening) {
+          setDotColors(prev => {
+            const time = Date.now() * 0.001;
+            return [
+              `hsl(${(Math.sin(time) * 30 + 240) % 360}, 80%, 70%)`, // Blue variations
+              `hsl(${(Math.sin(time + 1) * 30 + 300) % 360}, 80%, 70%)`, // Purple variations
+              `hsl(${(Math.sin(time + 2) * 30 + 180) % 360}, 80%, 70%)`, // Teal variations
+              `hsl(${(Math.sin(time + 3) * 30 + 270) % 360}, 80%, 70%)`, // Violet variations
+            ];
+          });
+        } else {
+          // Return to white when AI is speaking
+          setDotColors(['white', 'white', 'white', 'white']);
+        }
         
         animationRef.current = requestAnimationFrame(animate);
       };
@@ -63,21 +79,25 @@ const VoiceChatOverlay: React.FC<VoiceChatOverlayProps> = ({
     } else {
       // Reset dots to static state when not speaking or listening
       setDots([0, 0, 0, 0]);
+      setDotColors(['white', 'white', 'white', 'white']);
     }
   }, [isSpeaking, isListening]);
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-95">
-      {/* Enhanced animated dots with more dynamic styling */}
+      {/* Enhanced animated dots with more dramatic styling and color changes */}
       <div className="flex space-x-4 mb-20">
         {dots.map((height, index) => (
           <div 
             key={index}
-            className="w-5 h-5 rounded-full bg-gradient-to-br from-white to-blue-300"
+            className="w-5 h-5 rounded-full"
             style={{ 
-              transform: `scale(${0.8 + (height / 20)}) translateY(${isListening ? -height/3 : 0}px)`,
-              opacity: 0.7 + (height / 30),
-              boxShadow: `0 0 ${8 + height/2}px ${2 + height/5}px rgba(255, 255, 255, 0.${Math.floor(3 + height/5)})`,
+              transform: `scale(${0.8 + (height / 15)}) translateY(${isListening ? -height/2 : height/4}px) ${isListening ? `rotate(${height * 5}deg)` : ''}`,
+              opacity: 0.7 + (height / 25),
+              background: isListening 
+                ? `radial-gradient(circle at 30% 30%, ${dotColors[index]}, rgba(0,0,0,0.3))`
+                : 'radial-gradient(circle at 30% 30%, white, rgba(120,180,255,0.5))',
+              boxShadow: `0 0 ${10 + height/1.5}px ${3 + height/4}px ${isListening ? dotColors[index] : 'rgba(255, 255, 255, 0.6)'}`,
               transition: 'all 0.05s ease-out'
             }}
           />
