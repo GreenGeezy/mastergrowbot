@@ -6,6 +6,9 @@ import { AuthForm } from "./auth/AuthForm";
 import { getRedirectUrl } from "@/utils/urlUtils";
 import { toast } from "sonner";
 
+// Feature flag to control whether quiz completion and subscription are required
+const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+
 const AuthUI = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,11 +17,17 @@ const AuthUI = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [hasPendingSubscription, setHasPendingSubscription] = useState(false);
   const [subscriptionType, setSubscriptionType] = useState("");
-  const [canSignUp, setCanSignUp] = useState(false);
+  const [canSignUp, setCanSignUp] = useState(!REQUIRE_QUIZ_AND_SUBSCRIPTION);
   const navigate = useNavigate();
 
   // Check if quiz has been completed
   useEffect(() => {
+    // If feature flag is off, always allow sign up regardless of quiz
+    if (!REQUIRE_QUIZ_AND_SUBSCRIPTION) {
+      setCanSignUp(true);
+      return;
+    }
+
     const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
     if (!quizResponses && isSignUp) {
       toast.error("Please complete the quiz first before signing up");
@@ -30,6 +39,11 @@ const AuthUI = () => {
 
   // Check if email has a pending subscription when email changes
   useEffect(() => {
+    // If feature flag is off, skip subscription check
+    if (!REQUIRE_QUIZ_AND_SUBSCRIPTION) {
+      return;
+    }
+
     const checkPendingSubscription = async () => {
       if (!email || email.trim() === "") {
         setHasPendingSubscription(false);
@@ -52,7 +66,7 @@ const AuthUI = () => {
         } else {
           setHasPendingSubscription(false);
           setSubscriptionType("");
-          if (isSignUp) {
+          if (isSignUp && REQUIRE_QUIZ_AND_SUBSCRIPTION) {
             toast.error("Please purchase a subscription before signing up");
             // Redirect to quiz which will show subscription options after completion
             navigate('/quiz');
@@ -90,21 +104,23 @@ const AuthUI = () => {
 
     try {
       if (isSignUp) {
-        // Always check if quiz is completed and subscription exists for sign up
-        const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
-        if (!quizResponses) {
-          toast.error("Please complete the quiz first before signing up");
-          navigate('/quiz');
-          setLoading(false);
-          return;
-        }
+        if (REQUIRE_QUIZ_AND_SUBSCRIPTION) {
+          // Always check if quiz is completed and subscription exists for sign up
+          const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+          if (!quizResponses) {
+            toast.error("Please complete the quiz first before signing up");
+            navigate('/quiz');
+            setLoading(false);
+            return;
+          }
 
-        // Check if there's a pending subscription for this email
-        if (!hasPendingSubscription) {
-          toast.error("Please purchase a subscription before signing up");
-          navigate('/quiz');
-          setLoading(false);
-          return;
+          // Check if there's a pending subscription for this email
+          if (!hasPendingSubscription) {
+            toast.error("Please purchase a subscription before signing up");
+            navigate('/quiz');
+            setLoading(false);
+            return;
+          }
         }
 
         const redirectUrl = getRedirectUrl();
@@ -126,19 +142,22 @@ const AuthUI = () => {
 
         if (response.error) throw new Error(response.error.message);
 
-        // Store quiz responses - the updated trigger will handle setting has_completed_quiz
-        const quizResponsesData = JSON.parse(quizResponses);
-        const { error: quizError } = await supabase
-          .from('quiz_responses')
-          .insert([{
-            ...quizResponsesData,
-            user_id: (await supabase.auth.getUser()).data.user?.id
-          }]);
+        // Only save quiz responses if they exist
+        const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+        if (quizResponses) {
+          const quizResponsesData = JSON.parse(quizResponses);
+          const { error: quizError } = await supabase
+            .from('quiz_responses')
+            .insert([{
+              ...quizResponsesData,
+              user_id: (await supabase.auth.getUser()).data.user?.id
+            }]);
 
-        if (quizError) throw quizError;
-        
-        // Clear temporary storage
-        sessionStorage.removeItem('mg_temp_quiz_responses');
+          if (quizError) throw quizError;
+          
+          // Clear temporary storage
+          sessionStorage.removeItem('mg_temp_quiz_responses');
+        }
         
         toast.success("Account created! Please check your email for verification.");
         
@@ -167,7 +186,7 @@ const AuthUI = () => {
     try {
       setLoading(true);
       
-      if (isSignUp) {
+      if (isSignUp && REQUIRE_QUIZ_AND_SUBSCRIPTION) {
         // Check if quiz is completed for sign up via OAuth
         const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
         if (!quizResponses) {
@@ -209,7 +228,7 @@ const AuthUI = () => {
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
-      {isSignUp && !hasPendingSubscription && (
+      {REQUIRE_QUIZ_AND_SUBSCRIPTION && isSignUp && !hasPendingSubscription && (
         <div className="mb-4 p-3 bg-yellow-600/20 rounded-md border border-yellow-600/30">
           <p className="text-white text-sm">
             You need to purchase a subscription before signing up. Please complete the quiz to see subscription options.
