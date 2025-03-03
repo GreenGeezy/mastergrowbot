@@ -12,7 +12,35 @@ const AuthUI = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [hasPendingSubscription, setHasPendingSubscription] = useState(false);
+  const [subscriptionType, setSubscriptionType] = useState("");
   const navigate = useNavigate();
+
+  // Check if email has a pending subscription when email changes
+  useEffect(() => {
+    const checkPendingSubscription = async () => {
+      if (!email || email.trim() === "") return;
+      
+      try {
+        const { data, error } = await supabase
+          .rpc('get_pending_subscription', { email_address: email });
+
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+          setHasPendingSubscription(true);
+          setSubscriptionType(data[0].subscription_type);
+        } else {
+          setHasPendingSubscription(false);
+          setSubscriptionType("");
+        }
+      } catch (error) {
+        console.error('Error checking pending subscription:', error);
+      }
+    };
+
+    checkPendingSubscription();
+  }, [email]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -33,23 +61,20 @@ const AuthUI = () => {
     setLoading(true);
 
     try {
-      // Check if quiz is completed
-      const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
-      if (!quizResponses) {
-        toast.error("Please complete the quiz first before signing up");
-        navigate('/quiz');
-        return;
+      // Always check if quiz is completed for sign up
+      if (isSignUp) {
+        const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+        if (!quizResponses) {
+          toast.error("Please complete the quiz first before signing up");
+          navigate('/quiz');
+          setLoading(false);
+          return;
+        }
       }
 
       const redirectUrl = getRedirectUrl();
       
       if (isSignUp) {
-        // Check for pending subscription
-        const { data: pendingSub, error: pendingError } = await supabase
-          .rpc('check_pending_subscription', { check_email: email });
-
-        if (pendingError) throw pendingError;
-
         const { error: signUpError } = await supabase.auth.signUp({
           email,
           password,
@@ -67,40 +92,31 @@ const AuthUI = () => {
 
         if (response.error) throw new Error(response.error.message);
 
-        // Store quiz responses to database after successful signup
-        const parsedResponses = JSON.parse(quizResponses);
-        const { error: quizError } = await supabase
-          .from('quiz_responses')
-          .insert([{
-            ...parsedResponses,
-            user_id: (await supabase.auth.getUser()).data.user?.id
-          }]);
+        // Store quiz responses - the updated trigger will handle setting has_completed_quiz
+        if (isSignUp) {
+          const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+          if (quizResponses) {
+            const parsedResponses = JSON.parse(quizResponses);
+            const { error: quizError } = await supabase
+              .from('quiz_responses')
+              .insert([{
+                ...parsedResponses,
+                user_id: (await supabase.auth.getUser()).data.user?.id
+              }]);
 
-        if (quizError) throw quizError;
-
-        // If there was a pending subscription, consume it and create active subscription
-        if (pendingSub?.length > 0) {
-          const { error: consumeError } = await supabase
-            .rpc('consume_pending_subscription', { sub_email: email });
-
-          if (consumeError) throw consumeError;
-
-          const { error: subError } = await supabase
-            .from('subscriptions')
-            .insert([{
-              user_id: (await supabase.auth.getUser()).data.user?.id,
-              subscription_type: pendingSub[0].subscription_type,
-              expires_at: pendingSub[0].expires_at,
-              status: 'active'
-            }]);
-
-          if (subError) throw subError;
+            if (quizError) throw quizError;
+            
+            // Clear temporary storage
+            sessionStorage.removeItem('mg_temp_quiz_responses');
+          }
         }
-
-        // Clear temporary storage
-        sessionStorage.removeItem('mg_temp_quiz_responses');
         
         toast.success("Account created! Please check your email for verification.");
+        
+        // Show subscription status if applicable
+        if (hasPendingSubscription) {
+          toast.success(`Your ${subscriptionType} subscription has been activated!`);
+        }
       } else {
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
@@ -120,6 +136,16 @@ const AuthUI = () => {
   const handleOAuthSignIn = async () => {
     try {
       setLoading(true);
+      
+      // Check if quiz is completed for sign up via OAuth
+      const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+      if (!quizResponses) {
+        toast.error("Please complete the quiz first before signing up");
+        navigate('/quiz');
+        setLoading(false);
+        return;
+      }
+      
       const redirectUrl = getRedirectUrl();
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -151,6 +177,13 @@ const AuthUI = () => {
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
+      {hasPendingSubscription && (
+        <div className="mb-4 p-3 bg-primary/20 rounded-md border border-primary/30">
+          <p className="text-white text-sm">
+            A <span className="font-bold">{subscriptionType}</span> subscription is ready to be activated with this email!
+          </p>
+        </div>
+      )}
       <AuthForm
         email={email}
         password={password}
