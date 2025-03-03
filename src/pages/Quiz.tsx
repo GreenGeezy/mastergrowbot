@@ -315,8 +315,8 @@ export default function Quiz() {
         <div className="container mx-auto px-4 py-8">
           <div className="w-full max-w-[1200px] space-y-6">
             <div className="text-center space-y-2">
-              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Unlock Your AI Growing SuperPowers</h1>
-              <p className="text-lg text-white/80">Grow Bigger, Grow Better with Master Growbot</p>
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Subscription Required</h1>
+              <p className="text-lg text-white/80">To access Master Growbot AI, please select a subscription plan</p>
               
               <div className="flex flex-col items-center space-y-4 mt-4">
                 <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-2xl">
@@ -452,9 +452,16 @@ export default function Quiz() {
                 <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
               </div>
               
-              <Button variant="outline" onClick={() => navigate('/chat')} className="px-6 w-full max-w-md h-12 text-base hover:bg-white/5 border-white/20 transition-colors duration-200">
-                No thanks, I want to stay basic
-              </Button>
+              <div className="flex flex-col space-y-4 items-center w-full max-w-md">
+                <p className="text-center text-white/80">After purchase, use the email you provided during checkout to sign up</p>
+                <Button variant="default" onClick={() => navigate('/')} className="w-full px-6 h-12 text-base bg-primary hover:bg-primary/90">
+                  Go to Signup
+                </Button>
+                
+                <Button variant="outline" onClick={() => setShowSubscription(false)} className="px-6 w-full h-12 text-base hover:bg-white/5 border-white/20 transition-colors duration-200">
+                  Back to Quiz
+                </Button>
+              </div>
             </div>
           </div>
         </div>

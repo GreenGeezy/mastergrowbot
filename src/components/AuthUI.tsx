@@ -14,12 +14,28 @@ const AuthUI = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [hasPendingSubscription, setHasPendingSubscription] = useState(false);
   const [subscriptionType, setSubscriptionType] = useState("");
+  const [canSignUp, setCanSignUp] = useState(false);
   const navigate = useNavigate();
+
+  // Check if quiz has been completed
+  useEffect(() => {
+    const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+    if (!quizResponses && isSignUp) {
+      toast.error("Please complete the quiz first before signing up");
+      navigate('/quiz');
+    } else if (quizResponses && isSignUp) {
+      setCanSignUp(true);
+    }
+  }, [isSignUp, navigate]);
 
   // Check if email has a pending subscription when email changes
   useEffect(() => {
     const checkPendingSubscription = async () => {
-      if (!email || email.trim() === "") return;
+      if (!email || email.trim() === "") {
+        setHasPendingSubscription(false);
+        setSubscriptionType("");
+        return;
+      }
       
       try {
         const { data, error } = await supabase
@@ -30,17 +46,28 @@ const AuthUI = () => {
         if (data && data.length > 0) {
           setHasPendingSubscription(true);
           setSubscriptionType(data[0].subscription_type);
+          if (isSignUp) {
+            setCanSignUp(true);
+          }
         } else {
           setHasPendingSubscription(false);
           setSubscriptionType("");
+          if (isSignUp) {
+            toast.error("Please purchase a subscription before signing up");
+            // Redirect to quiz which will show subscription options after completion
+            navigate('/quiz');
+            setCanSignUp(false);
+          }
         }
       } catch (error) {
         console.error('Error checking pending subscription:', error);
       }
     };
 
-    checkPendingSubscription();
-  }, [email]);
+    if (isSignUp) {
+      checkPendingSubscription();
+    }
+  }, [email, isSignUp, navigate]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -62,8 +89,8 @@ const AuthUI = () => {
     setLoading(true);
 
     try {
-      // Always check if quiz is completed for sign up
       if (isSignUp) {
+        // Always check if quiz is completed and subscription exists for sign up
         const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
         if (!quizResponses) {
           toast.error("Please complete the quiz first before signing up");
@@ -71,11 +98,17 @@ const AuthUI = () => {
           setLoading(false);
           return;
         }
-      }
 
-      const redirectUrl = getRedirectUrl();
-      
-      if (isSignUp) {
+        // Check if there's a pending subscription for this email
+        if (!hasPendingSubscription) {
+          toast.error("Please purchase a subscription before signing up");
+          navigate('/quiz');
+          setLoading(false);
+          return;
+        }
+
+        const redirectUrl = getRedirectUrl();
+        
         const { error: signUpError } = await supabase.auth.signUp({
           email,
           password,
@@ -94,23 +127,18 @@ const AuthUI = () => {
         if (response.error) throw new Error(response.error.message);
 
         // Store quiz responses - the updated trigger will handle setting has_completed_quiz
-        if (isSignUp) {
-          const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
-          if (quizResponses) {
-            const parsedResponses = JSON.parse(quizResponses);
-            const { error: quizError } = await supabase
-              .from('quiz_responses')
-              .insert([{
-                ...parsedResponses,
-                user_id: (await supabase.auth.getUser()).data.user?.id
-              }]);
+        const quizResponsesData = JSON.parse(quizResponses);
+        const { error: quizError } = await supabase
+          .from('quiz_responses')
+          .insert([{
+            ...quizResponsesData,
+            user_id: (await supabase.auth.getUser()).data.user?.id
+          }]);
 
-            if (quizError) throw quizError;
-            
-            // Clear temporary storage
-            sessionStorage.removeItem('mg_temp_quiz_responses');
-          }
-        }
+        if (quizError) throw quizError;
+        
+        // Clear temporary storage
+        sessionStorage.removeItem('mg_temp_quiz_responses');
         
         toast.success("Account created! Please check your email for verification.");
         
@@ -119,6 +147,7 @@ const AuthUI = () => {
           toast.success(`Your ${subscriptionType} subscription has been activated!`);
         }
       } else {
+        // For sign in, we don't need to check for quiz or subscription
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -138,13 +167,23 @@ const AuthUI = () => {
     try {
       setLoading(true);
       
-      // Check if quiz is completed for sign up via OAuth
-      const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
-      if (!quizResponses) {
-        toast.error("Please complete the quiz first before signing up");
-        navigate('/quiz');
-        setLoading(false);
-        return;
+      if (isSignUp) {
+        // Check if quiz is completed for sign up via OAuth
+        const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+        if (!quizResponses) {
+          toast.error("Please complete the quiz first before signing up");
+          navigate('/quiz');
+          setLoading(false);
+          return;
+        }
+        
+        // Check if there's a pending subscription for this email
+        if (!hasPendingSubscription) {
+          toast.error("Please purchase a subscription before signing up with Google");
+          navigate('/quiz');
+          setLoading(false);
+          return;
+        }
       }
       
       const redirectUrl = getRedirectUrl();
@@ -168,16 +207,16 @@ const AuthUI = () => {
     }
   };
 
-  // If quiz hasn't been completed, redirect to quiz
-  useEffect(() => {
-    const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
-    if (!quizResponses) {
-      navigate('/quiz');
-    }
-  }, [navigate]);
-
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
+      {isSignUp && !hasPendingSubscription && (
+        <div className="mb-4 p-3 bg-yellow-600/20 rounded-md border border-yellow-600/30">
+          <p className="text-white text-sm">
+            You need to purchase a subscription before signing up. Please complete the quiz to see subscription options.
+          </p>
+        </div>
+      )}
+      
       {hasPendingSubscription && (
         <div className="mb-4 p-3 bg-primary/20 rounded-md border border-primary/30">
           <p className="text-white text-sm">
@@ -185,6 +224,7 @@ const AuthUI = () => {
           </p>
         </div>
       )}
+      
       <AuthForm
         email={email}
         password={password}
