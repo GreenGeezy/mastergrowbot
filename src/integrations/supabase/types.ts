@@ -383,6 +383,7 @@ export type Database = {
           goals: string[] | null
           grow_experience_level: string | null
           growing_method: string | null
+          has_completed_quiz: boolean | null
           id: string
           monitoring_method: string | null
           nutrient_type: string | null
@@ -395,6 +396,7 @@ export type Database = {
           goals?: string[] | null
           grow_experience_level?: string | null
           growing_method?: string | null
+          has_completed_quiz?: boolean | null
           id: string
           monitoring_method?: string | null
           nutrient_type?: string | null
@@ -407,6 +409,7 @@ export type Database = {
           goals?: string[] | null
           grow_experience_level?: string | null
           growing_method?: string | null
+          has_completed_quiz?: boolean | null
           id?: string
           monitoring_method?: string | null
           nutrient_type?: string | null
@@ -417,7 +420,17 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_access_view: {
+        Row: {
+          expires_at: string | null
+          has_active_subscription: boolean | null
+          has_completed_quiz: boolean | null
+          id: string | null
+          subscription_status: string | null
+          subscription_type: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       check_pending_subscription: {
@@ -436,7 +449,23 @@ export type Database = {
         }
         Returns: boolean
       }
+      get_pending_subscription: {
+        Args: {
+          email_address: string
+        }
+        Returns: {
+          has_pending: boolean
+          subscription_type: string
+          expires_at: string
+        }[]
+      }
       has_active_subscription: {
+        Args: {
+          user_uuid: string
+        }
+        Returns: boolean
+      }
+      user_has_access: {
         Args: {
           user_uuid: string
         }

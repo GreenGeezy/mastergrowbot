@@ -45,6 +45,7 @@ const AuthUI = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
+        // Get redirect URL from sessionStorage or default to chat
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
         navigate(redirectTo, { replace: true });
