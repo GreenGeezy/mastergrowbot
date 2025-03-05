@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -13,6 +14,7 @@ const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
 import Quiz from "./pages/Quiz";
 
 const queryClient = new QueryClient({
@@ -72,6 +74,14 @@ const App = () => {
               <Route 
                 path="/quiz" 
                 element={<Quiz />} 
+              />
+              <Route 
+                path="/thank-you" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ThankYou />
+                  </Suspense>
+                } 
               />
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
