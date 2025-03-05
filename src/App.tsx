@@ -13,7 +13,6 @@ const ChatInterface = lazy(() => import("./components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
-const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 import Quiz from "./pages/Quiz";
 
 const queryClient = new QueryClient({
@@ -73,14 +72,6 @@ const App = () => {
               <Route 
                 path="/quiz" 
                 element={<Quiz />} 
-              />
-              <Route 
-                path="/payment-success" 
-                element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <PaymentSuccess />
-                  </Suspense>
-                } 
               />
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
