@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Envelope, ArrowRight } from "lucide-react";
+import { Check, Mail, ArrowRight } from "lucide-react";
 
 const ThankYou = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const ThankYou = () => {
             
             <div className="bg-card-hover p-4 rounded-lg border border-primary/10 mt-4">
               <div className="flex items-center gap-3 text-sm text-white/70">
-                <Envelope className="w-5 h-5 text-primary" />
+                <Mail className="w-5 h-5 text-primary" />
                 <p>Check your email for confirmation details and next steps.</p>
               </div>
             </div>
