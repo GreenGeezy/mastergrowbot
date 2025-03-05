@@ -14,46 +14,60 @@ const ThankYou = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <div className="w-full max-w-md">
-        {/* Success Card */}
-        <Card className="border border-primary/20 bg-card shadow-lg animate-fade-in">
-          <CardHeader className="text-center pb-2">
-            <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="w-8 h-8 text-primary" />
-            </div>
-            <CardTitle className="text-2xl">Thank you for your purchase!</CardTitle>
-          </CardHeader>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background relative overflow-hidden">
+      {/* Background circuit pattern */}
+      <div className="absolute inset-0 circuit-background opacity-30" />
+
+      <div className="w-full max-w-md z-10">
+        {/* Success Card with glowing effect */}
+        <Card className="border border-primary/20 bg-card/90 backdrop-blur-sm shadow-xl animate-fade-in relative overflow-hidden">
+          {/* Glowing border effect */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 via-accent/30 to-secondary/30 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 animate-pulse-glow" />
           
-          <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground">
-              Your subscription is now active. You're one step away from accessing your premium features.
-            </p>
-            
-            <div className="bg-card-hover p-4 rounded-lg border border-primary/10 mt-4">
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <Mail className="w-5 h-5 text-primary" />
-                <p>Check your email for confirmation details and next steps.</p>
+          <div className="relative"> {/* Content wrapper for z-index ordering */}
+            <CardHeader className="text-center pb-2">
+              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 pulse-glow relative">
+                {/* Animated glow effect for check icon */}
+                <div className="absolute inset-0 bg-primary/5 rounded-full animate-pulse-wave" />
+                <Check className="w-10 h-10 text-primary-glow animate-float" />
               </div>
-            </div>
-          </CardContent>
-          
-          <CardFooter className="flex flex-col space-y-4">
-            <Button 
-              onClick={() => navigate("/")} 
-              className="w-full group relative overflow-hidden"
-              size="lg"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                Complete your registration
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Button>
+              <CardTitle className="text-3xl font-bold tech-font bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-white to-primary-glow animate-shimmer">
+                Thank you for your purchase!
+              </CardTitle>
+            </CardHeader>
             
-            <p className="text-sm text-muted-foreground text-center">
-              Your access code has been saved. Use the same email when signing up.
-            </p>
-          </CardFooter>
+            <CardContent className="text-center space-y-6 px-6">
+              <p className="text-white/90 text-lg">
+                Your subscription is now active. You're one step away from accessing your premium features.
+              </p>
+              
+              <div className="bg-card-hover/60 p-5 rounded-lg border border-primary/20 mt-4 backdrop-blur-sm shimmer">
+                <div className="flex items-center gap-3 text-sm text-white/80">
+                  <Mail className="w-5 h-5 text-accent animate-pulse-glow" />
+                  <p>Check your email for confirmation details and next steps.</p>
+                </div>
+              </div>
+            </CardContent>
+            
+            <CardFooter className="flex flex-col space-y-5 px-6 pb-6">
+              <Button 
+                onClick={() => navigate("/")} 
+                className="w-full group relative overflow-hidden cyber-button bg-gradient-primary hover:bg-gradient-secondary transition-all duration-300"
+                size="lg"
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2 text-lg py-1">
+                  Complete your registration
+                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                </span>
+              </Button>
+              
+              <div className="bg-card-hover/40 rounded-md p-3 border border-white/10">
+                <p className="text-sm text-white/60 text-center">
+                  Your access code has been saved. Use the same email when signing up.
+                </p>
+              </div>
+            </CardFooter>
+          </div>
         </Card>
       </div>
     </div>
