@@ -25,8 +25,8 @@ export const sendMessageToSupabase = async (
         }
       ])
     
-    // Execute the query and store the promise
-    const promise = query.then(result => result)
+    // Execute the query and convert to a standard Promise
+    const promise = Promise.resolve(query.then(result => result))
     activeRequests.set(requestKey, promise)
     return await promise
   } finally {
@@ -55,8 +55,8 @@ export const fetchChatHistory = async (userId: string, conversationId: string) =
       .eq('conversation_id', conversationId)
       .order('created_at', { ascending: true })
     
-    // Execute the query and store the promise
-    const promise = query.then(result => result)
+    // Execute the query and convert to a standard Promise
+    const promise = Promise.resolve(query.then(result => result))
     activeRequests.set(requestKey, promise)
     return await promise
   } finally {
