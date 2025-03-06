@@ -1,10 +1,28 @@
 
 /**
- * Utility for compressing images before upload to improve performance
+ * Optimized utility for compressing images before upload to improve performance
+ * Uses Web Workers to prevent UI blocking during compression
  */
+
+// Create a worker instance
+let worker: Worker | null = null;
+
+// Initialize the worker
+function getWorker(): Worker {
+  if (!worker) {
+    // Create the worker only once
+    worker = new Worker(
+      new URL('./compressionWorker.ts', import.meta.url),
+      { type: 'module' }
+    );
+  }
+  return worker;
+}
 
 /**
  * Compresses an image file to reduce its size before uploading
+ * Using a Web Worker to avoid blocking the main thread
+ * 
  * @param file The original image file to compress
  * @param maxSizeMB Maximum size in MB (default: 1MB)
  * @param quality Compression quality (0-1, default: 0.7)
@@ -24,97 +42,144 @@ export const compressImage = async (
     }
 
     // Try to determine the correct mime type
-    let mimeType = file.type;
-    if (!mimeType || mimeType === 'application/octet-stream') {
-      // Try to guess the mime type from extension
-      const extension = file.name.split('.').pop()?.toLowerCase();
-      if (extension === 'jpg' || extension === 'jpeg') {
-        mimeType = 'image/jpeg';
-      } else if (extension === 'png') {
-        mimeType = 'image/png';
-      } else if (extension === 'webp') {
-        mimeType = 'image/webp';
-      } else if (extension === 'gif') {
-        mimeType = 'image/gif';
-      } else if (extension === 'bmp') {
-        mimeType = 'image/bmp';
-      } else if (extension === 'tiff' || extension === 'tif') {
-        mimeType = 'image/tiff';
-      } else {
-        // Default to jpeg if we can't determine
-        mimeType = 'image/jpeg';
-      }
+    let mimeType = getMimeType(file);
+    
+    // Skip compression for unsupported formats
+    const compressibleTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!compressibleTypes.includes(mimeType)) {
+      console.log(`Skipping compression for ${mimeType} - not a compressible format`);
+      return file;
     }
     
-    // Load the image into a canvas
-    try {
-      const image = await createImageBitmap(file);
-      const canvas = document.createElement('canvas');
-      
-      // Maintain aspect ratio while reducing dimensions if needed
-      let { width, height } = image;
-      const MAX_DIMENSION = 1600; // Maximum dimension for any side
-      
-      if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
-        if (width > height) {
-          height = Math.round((height * MAX_DIMENSION) / width);
-          width = MAX_DIMENSION;
-        } else {
-          width = Math.round((width * MAX_DIMENSION) / height);
-          height = MAX_DIMENSION;
-        }
-      }
-      
-      canvas.width = width;
-      canvas.height = height;
-      
-      // Draw and compress the image
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        console.error('Could not get 2D context for canvas');
-        return file;
-      }
-      
-      // Use white background for images with transparency
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, width, height);
-      
-      ctx.drawImage(image, 0, 0, width, height);
-      
-      // Convert to blob with quality parameter
-      return new Promise((resolve, reject) => {
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) {
-              console.error('Canvas toBlob operation failed');
-              reject(new Error('Image compression failed'));
-              return;
-            }
-            
-            // Create a new file from the blob
-            const compressedFile = new File(
-              [blob], 
-              file.name, 
-              {
-                type: mimeType,
-                lastModified: file.lastModified
-              }
-            );
-            
-            console.log(`Image compressed from ${(file.size / 1024 / 1024).toFixed(2)}MB to ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`);
-            resolve(compressedFile);
-          },
-          mimeType,
-          quality
-        );
-      });
-    } catch (imageError) {
-      console.error('Error processing image with createImageBitmap:', imageError);
-      return file; // Return original if we can't process it
-    }
+    // Convert file to base64 for the worker
+    const base64Data = await fileToBase64(file);
+    
+    // Process image in the worker
+    return await compressWithWorker(base64Data, file, mimeType, maxSizeMB, quality);
   } catch (error) {
     console.error('Error during image compression:', error);
     // If compression fails, return the original file
     return file;
+  }
+};
+
+/**
+ * Gets the MIME type from a file, with fallback to extension-based detection
+ */
+function getMimeType(file: File): string {
+  let mimeType = file.type;
+  if (!mimeType || mimeType === 'application/octet-stream') {
+    // Try to guess the mime type from extension
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (extension === 'jpg' || extension === 'jpeg') {
+      mimeType = 'image/jpeg';
+    } else if (extension === 'png') {
+      mimeType = 'image/png';
+    } else if (extension === 'webp') {
+      mimeType = 'image/webp';
+    } else if (extension === 'gif') {
+      mimeType = 'image/gif';
+    } else if (extension === 'bmp') {
+      mimeType = 'image/bmp';
+    } else if (extension === 'tiff' || extension === 'tif') {
+      mimeType = 'image/tiff';
+    } else {
+      // Default to jpeg if we can't determine
+      mimeType = 'image/jpeg';
+    }
+  }
+  return mimeType;
+}
+
+/**
+ * Converts a file to base64 string
+ */
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (e) => reject(new Error(`Error reading file: ${e}`));
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
+ * Uses the web worker to compress an image
+ */
+function compressWithWorker(
+  base64Data: string,
+  originalFile: File,
+  mimeType: string,
+  maxSizeMB: number,
+  quality: number
+): Promise<File> {
+  return new Promise((resolve, reject) => {
+    try {
+      const worker = getWorker();
+      
+      // Set up worker message handler
+      const messageHandler = (event: MessageEvent) => {
+        const response = event.data;
+        
+        // Clean up event listener
+        worker.removeEventListener('message', messageHandler);
+        
+        if (response.success) {
+          // Convert base64 back to a file
+          const base64Response = response.result;
+          const byteCharacters = atob(base64Response.split(',')[1]);
+          const byteNumbers = new Array(byteCharacters.length);
+          
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: mimeType });
+          
+          // Create a new file
+          const compressedFile = new File(
+            [blob],
+            originalFile.name,
+            {
+              type: mimeType,
+              lastModified: originalFile.lastModified
+            }
+          );
+          
+          console.log(`Image compressed from ${(originalFile.size / 1024 / 1024).toFixed(2)}MB to ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`);
+          resolve(compressedFile);
+        } else {
+          console.warn('Compression failed in worker:', response.error);
+          resolve(originalFile); // Fallback to original
+        }
+      };
+      
+      // Add event listener for worker response
+      worker.addEventListener('message', messageHandler);
+      
+      // Send the image data to the worker
+      worker.postMessage({
+        imageData: base64Data,
+        maxSizeMB,
+        quality,
+        mimeType,
+        fileName: originalFile.name
+      });
+    } catch (error) {
+      console.error('Error in worker communication:', error);
+      resolve(originalFile); // Fallback to original
+    }
+  });
+}
+
+/**
+ * Cleanup function to terminate the worker when no longer needed
+ * Call this when your component unmounts
+ */
+export const cleanupCompression = () => {
+  if (worker) {
+    worker.terminate();
+    worker = null;
   }
 };

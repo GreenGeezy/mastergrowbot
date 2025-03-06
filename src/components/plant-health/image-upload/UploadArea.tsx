@@ -7,12 +7,14 @@ interface UploadAreaProps {
   dragActive: boolean;
   isProcessing?: boolean;
   onInvalidFile?: (message: string) => void;
+  supportedFormats?: string[];
 }
 
 const UploadArea = ({ 
   dragActive, 
   isProcessing = false,
-  onInvalidFile
+  onInvalidFile,
+  supportedFormats = ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff']
 }: UploadAreaProps) => {
   const handleClick = () => {
     const fileInput = document.getElementById('file-upload') as HTMLInputElement;
@@ -47,7 +49,7 @@ const UploadArea = ({
                 <li>• Show the whole plant for context</li>
                 <li>• Include close-ups of problem areas</li>
                 <li>• Ensure photos are well-lit</li>
-                <li>• Supported formats: JPG, PNG, WebP, GIF, BMP, TIFF</li>
+                <li>• Supported formats: {supportedFormats.join(', ').toUpperCase()}</li>
               </ul>
             </div>
           </div>

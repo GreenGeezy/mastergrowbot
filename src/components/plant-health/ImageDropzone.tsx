@@ -1,11 +1,10 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import CameraCapture from './CameraCapture';
 import ImagePreviewGrid from './ImagePreviewGrid';
 import { useFileValidation } from './image-upload/FileValidation';
 import UploadArea from './image-upload/UploadArea';
-import { compressImage } from './image-upload/ImageCompression';
+import { compressImage, cleanupCompression } from './image-upload/ImageCompression';
 import { toast } from '@/hooks/use-toast';
 
 interface ImageDropzoneProps {
@@ -24,7 +23,9 @@ const ImageDropzone = ({
   const [dragActive, setDragActive] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const { validateFile } = useFileValidation();
+  const { validateFile, getSupportedFormats } = useFileValidation();
+  
+  const isMounted = useRef(true);
 
   useEffect(() => {
     const handleStartCamera = () => {
@@ -37,6 +38,9 @@ const ImageDropzone = ({
     }
 
     return () => {
+      isMounted.current = false;
+      cleanupCompression();
+      
       if (dropzone) {
         dropzone.removeEventListener('start-camera', handleStartCamera);
       }
@@ -52,7 +56,6 @@ const ImageDropzone = ({
       const validFiles = [];
       const invalidFiles = [];
       
-      // Validate all files first
       for (const file of allFiles) {
         const validation = validateFile(file);
         if (validation.valid) {
@@ -62,9 +65,7 @@ const ImageDropzone = ({
         }
       }
       
-      // Show toast for invalid files
       if (invalidFiles.length > 0) {
-        // Show detailed error for single file
         if (invalidFiles.length === 1) {
           toast({
             title: `Invalid file`,
@@ -72,7 +73,6 @@ const ImageDropzone = ({
             variant: "destructive"
           });
         } else {
-          // Summarize for multiple files
           const fileNames = invalidFiles.length > 2 
             ? `${invalidFiles.slice(0, 2).map(f => f.name).join(', ')} and ${invalidFiles.length - 2} more` 
             : invalidFiles.map(f => f.name).join(', ');
@@ -85,7 +85,6 @@ const ImageDropzone = ({
         }
       }
       
-      // Process valid files
       const filesToProcess = validFiles.slice(0, maxFiles - selectedFiles.length);
       
       if (filesToProcess.length === 0) {
@@ -93,12 +92,13 @@ const ImageDropzone = ({
         return;
       }
 
-      // Compress all valid files
-      const compressedFiles = await Promise.all(
-        filesToProcess.map(file => compressImage(file, 1, 0.7))
+      const compressPromises = filesToProcess.map(file => 
+        compressImage(file, 1, 0.7)
       );
+      
+      const compressedFiles = await Promise.all(compressPromises);
 
-      if (compressedFiles.length > 0) {
+      if (compressedFiles.length > 0 && isMounted.current) {
         onImagesSelected([...selectedFiles, ...compressedFiles]);
         if (compressedFiles.length === 1) {
           toast({
@@ -114,13 +114,17 @@ const ImageDropzone = ({
       }
     } catch (error) {
       console.error('Error processing files:', error);
-      toast({
-        title: "Image processing error",
-        description: "There was a problem preparing your images. Please try again.",
-        variant: "destructive"
-      });
+      if (isMounted.current) {
+        toast({
+          title: "Image processing error",
+          description: "There was a problem preparing your images. Please try again.",
+          variant: "destructive"
+        });
+      }
     } finally {
-      setIsProcessing(false);
+      if (isMounted.current) {
+        setIsProcessing(false);
+      }
     }
   };
 
@@ -194,7 +198,6 @@ const ImageDropzone = ({
           type="file"
           id="file-upload"
           className="hidden"
-          // Important: Remove the accept attribute to allow any file type
           multiple
           onChange={handleChange}
         />
@@ -210,6 +213,7 @@ const ImageDropzone = ({
           <UploadArea 
             dragActive={dragActive} 
             isProcessing={isProcessing}
+            supportedFormats={getSupportedFormats()}
           />
         )}
 
