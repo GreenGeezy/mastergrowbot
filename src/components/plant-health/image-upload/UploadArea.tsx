@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Upload, Loader2 } from 'lucide-react';
+import { Upload, Loader2, Image as ImageIcon } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 interface UploadAreaProps {
   dragActive: boolean;
@@ -8,10 +9,25 @@ interface UploadAreaProps {
 }
 
 const UploadArea = ({ dragActive, isProcessing = false }: UploadAreaProps) => {
+  const handleClick = () => {
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput && !isProcessing) {
+      fileInput.click();
+    }
+  };
+
+  const handleInvalidFile = () => {
+    toast({
+      title: "Unsupported file type",
+      description: "Please upload jpg, png, or other common image formats",
+      variant: "destructive"
+    });
+  };
+
   return (
     <div className="space-y-4">
-      <label
-        htmlFor="file-upload"
+      <div
+        onClick={handleClick}
         className={`cursor-pointer ${isProcessing ? 'opacity-70 pointer-events-none' : ''}`}
       >
         <div className={`border-2 border-dashed ${dragActive ? 'border-primary' : 'border-gray-700'} rounded-xl p-8 hover:border-primary/50 transition-all duration-300`}>
@@ -34,11 +50,12 @@ const UploadArea = ({ dragActive, isProcessing = false }: UploadAreaProps) => {
                 <li>• Show the whole plant for context</li>
                 <li>• Include close-ups of problem areas</li>
                 <li>• Ensure photos are well-lit</li>
+                <li>• Supported formats: JPG, PNG, WebP, etc.</li>
               </ul>
             </div>
           </div>
         </div>
-      </label>
+      </div>
     </div>
   );
 };

@@ -44,12 +44,39 @@ const ImageDropzone = ({
   }, []);
 
   const processFiles = async (files: FileList) => {
+    if (files.length === 0) return;
+    
     setIsProcessing(true);
     try {
-      const filesToProcess = Array.from(files)
-        .filter(validateFile)
-        .slice(0, maxFiles - selectedFiles.length);
-
+      const allFiles = Array.from(files);
+      const validFiles = [];
+      const invalidFiles = [];
+      
+      // Validate all files first
+      for (const file of allFiles) {
+        if (validateFile(file)) {
+          validFiles.push(file);
+        } else {
+          invalidFiles.push(file.name);
+        }
+      }
+      
+      // Show toast for invalid files
+      if (invalidFiles.length > 0) {
+        const fileNames = invalidFiles.length > 2 
+          ? `${invalidFiles.slice(0, 2).join(', ')} and ${invalidFiles.length - 2} more` 
+          : invalidFiles.join(', ');
+          
+        toast({
+          title: `${invalidFiles.length} invalid file(s) skipped`,
+          description: `${fileNames} ${invalidFiles.length > 1 ? 'are' : 'is'} not a supported image format`,
+          variant: "destructive"
+        });
+      }
+      
+      // Process valid files
+      const filesToProcess = validFiles.slice(0, maxFiles - selectedFiles.length);
+      
       if (filesToProcess.length === 0) {
         setIsProcessing(false);
         return;
@@ -93,7 +120,7 @@ const ImageDropzone = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files.length > 0) {
       processFiles(e.target.files);
     }
   };
@@ -156,7 +183,7 @@ const ImageDropzone = ({
           type="file"
           id="file-upload"
           className="hidden"
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/*"
           multiple
           onChange={handleChange}
         />

@@ -1,11 +1,28 @@
 
 export function useFileValidation() {
   const validateFile = (file: File): boolean => {
-    // Check file type
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+    // Check file type - expanded support for more image formats
+    const validTypes = [
+      'image/jpeg', 
+      'image/jpg',
+      'image/png', 
+      'image/webp', 
+      'image/heic', 
+      'image/heif',
+      'image/gif',
+      'image/bmp',
+      'image/tiff'
+    ];
+    
+    // If file type is not directly recognized, check file extension as fallback
     if (!validTypes.includes(file.type)) {
-      console.error('Invalid file type:', file.type);
-      return false;
+      const extension = file.name.split('.').pop()?.toLowerCase();
+      const validExtensions = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'gif', 'bmp', 'tiff'];
+      
+      if (!extension || !validExtensions.includes(extension)) {
+        console.error('Invalid file type:', file.type, 'with extension:', extension);
+        return false;
+      }
     }
 
     // Check file size (max 10MB)
