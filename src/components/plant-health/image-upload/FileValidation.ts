@@ -1,6 +1,6 @@
 
 export function useFileValidation() {
-  const validateFile = (file: File): boolean => {
+  const validateFile = (file: File): { valid: boolean; message?: string } => {
     // Check file type - expanded support for more image formats
     const validTypes = [
       'image/jpeg', 
@@ -20,19 +20,23 @@ export function useFileValidation() {
       const validExtensions = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'gif', 'bmp', 'tiff'];
       
       if (!extension || !validExtensions.includes(extension)) {
-        console.error('Invalid file type:', file.type, 'with extension:', extension);
-        return false;
+        return { 
+          valid: false, 
+          message: `File type "${extension || 'unknown'}" is not supported. Please upload a JPG, PNG, or other common image format.` 
+        };
       }
     }
 
     // Check file size (max 10MB)
     const maxSize = 10 * 1024 * 1024; // 10MB in bytes
     if (file.size > maxSize) {
-      console.error('File too large:', file.size);
-      return false;
+      return { 
+        valid: false, 
+        message: `File is too large (${(file.size / (1024 * 1024)).toFixed(1)}MB). Maximum size is 10MB.` 
+      };
     }
 
-    return true;
+    return { valid: true };
   };
 
   return { validateFile };

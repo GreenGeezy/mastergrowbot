@@ -54,24 +54,35 @@ const ImageDropzone = ({
       
       // Validate all files first
       for (const file of allFiles) {
-        if (validateFile(file)) {
+        const validation = validateFile(file);
+        if (validation.valid) {
           validFiles.push(file);
         } else {
-          invalidFiles.push(file.name);
+          invalidFiles.push({ name: file.name, message: validation.message });
         }
       }
       
       // Show toast for invalid files
       if (invalidFiles.length > 0) {
-        const fileNames = invalidFiles.length > 2 
-          ? `${invalidFiles.slice(0, 2).join(', ')} and ${invalidFiles.length - 2} more` 
-          : invalidFiles.join(', ');
-          
-        toast({
-          title: `${invalidFiles.length} invalid file(s) skipped`,
-          description: `${fileNames} ${invalidFiles.length > 1 ? 'are' : 'is'} not a supported image format`,
-          variant: "destructive"
-        });
+        // Show detailed error for single file
+        if (invalidFiles.length === 1) {
+          toast({
+            title: `Invalid file`,
+            description: invalidFiles[0].message || `"${invalidFiles[0].name}" is not a supported image format`,
+            variant: "destructive"
+          });
+        } else {
+          // Summarize for multiple files
+          const fileNames = invalidFiles.length > 2 
+            ? `${invalidFiles.slice(0, 2).map(f => f.name).join(', ')} and ${invalidFiles.length - 2} more` 
+            : invalidFiles.map(f => f.name).join(', ');
+            
+          toast({
+            title: `${invalidFiles.length} invalid file(s) skipped`,
+            description: `Please upload only supported image formats`,
+            variant: "destructive"
+          });
+        }
       }
       
       // Process valid files
@@ -183,7 +194,7 @@ const ImageDropzone = ({
           type="file"
           id="file-upload"
           className="hidden"
-          accept="image/*"
+          // Important: Remove the accept attribute to allow any file type
           multiple
           onChange={handleChange}
         />
@@ -196,7 +207,10 @@ const ImageDropzone = ({
         )}
 
         {!showCamera && selectedFiles.length === 0 && (
-          <UploadArea dragActive={dragActive} isProcessing={isProcessing} />
+          <UploadArea 
+            dragActive={dragActive} 
+            isProcessing={isProcessing}
+          />
         )}
 
         {!showCamera && selectedFiles.length > 0 && (
