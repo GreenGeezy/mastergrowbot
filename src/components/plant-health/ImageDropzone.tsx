@@ -1,9 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import CameraCapture from './CameraCapture';
 import ImagePreviewGrid from './ImagePreviewGrid';
 import { useFileValidation } from './image-upload/FileValidation';
 import UploadArea from './image-upload/UploadArea';
+import { compressImage } from './image-upload/ImageCompression';
+import { toast } from '@/hooks/use-toast';
 
 interface ImageDropzoneProps {
   onImagesSelected: (files: File[]) => void;
@@ -20,6 +23,7 @@ const ImageDropzone = ({
 }: ImageDropzoneProps) => {
   const [dragActive, setDragActive] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { validateFile } = useFileValidation();
 
   useEffect(() => {
@@ -39,36 +43,82 @@ const ImageDropzone = ({
     };
   }, []);
 
-  const handleFiles = (files: FileList) => {
-    const validFiles = Array.from(files)
-      .filter(validateFile)
-      .slice(0, maxFiles - selectedFiles.length);
+  const processFiles = async (files: FileList) => {
+    setIsProcessing(true);
+    try {
+      const filesToProcess = Array.from(files)
+        .filter(validateFile)
+        .slice(0, maxFiles - selectedFiles.length);
 
-    if (validFiles.length > 0) {
-      onImagesSelected([...selectedFiles, ...validFiles]);
+      if (filesToProcess.length === 0) {
+        setIsProcessing(false);
+        return;
+      }
+
+      // Compress all valid files
+      const compressedFiles = await Promise.all(
+        filesToProcess.map(file => compressImage(file, 1, 0.7))
+      );
+
+      if (compressedFiles.length > 0) {
+        onImagesSelected([...selectedFiles, ...compressedFiles]);
+        if (compressedFiles.length === 1) {
+          toast({
+            title: "Image added",
+            description: "Your image has been optimized for faster analysis."
+          });
+        } else {
+          toast({
+            title: `${compressedFiles.length} images added`,
+            description: "Your images have been optimized for faster analysis."
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error processing files:', error);
+      toast({
+        title: "Image processing error",
+        description: "There was a problem preparing your images. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(false);
-    handleFiles(e.dataTransfer.files);
+    processFiles(e.dataTransfer.files);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      handleFiles(e.target.files);
+      processFiles(e.target.files);
     }
   };
 
-  const handlePhotoCapture = (file: File) => {
+  const handlePhotoCapture = async (file: File) => {
     if (validateFile(file)) {
-      if (onCameraCapture) {
-        onCameraCapture(file);
-      } else {
-        onImagesSelected([...selectedFiles, file]);
+      setIsProcessing(true);
+      try {
+        const compressedFile = await compressImage(file, 1, 0.7);
+        if (onCameraCapture) {
+          onCameraCapture(compressedFile);
+        } else {
+          onImagesSelected([...selectedFiles, compressedFile]);
+        }
+      } catch (error) {
+        console.error('Error compressing camera image:', error);
+        if (onCameraCapture) {
+          onCameraCapture(file);
+        } else {
+          onImagesSelected([...selectedFiles, file]);
+        }
+      } finally {
+        setIsProcessing(false);
+        setShowCamera(false);
       }
-      setShowCamera(false);
     }
   };
 
@@ -80,6 +130,11 @@ const ImageDropzone = ({
       setShowCamera(true);
     } catch (err: any) {
       console.error('Camera initialization error:', err);
+      toast({
+        title: "Camera Error",
+        description: err.message || "Could not access camera",
+        variant: "destructive"
+      });
     }
   };
 
@@ -114,7 +169,7 @@ const ImageDropzone = ({
         )}
 
         {!showCamera && selectedFiles.length === 0 && (
-          <UploadArea dragActive={dragActive} />
+          <UploadArea dragActive={dragActive} isProcessing={isProcessing} />
         )}
 
         {!showCamera && selectedFiles.length > 0 && (
@@ -130,6 +185,7 @@ const ImageDropzone = ({
               if (fileInput) fileInput.click();
             }}
             onStartCamera={startCamera}
+            isProcessing={isProcessing}
           />
         )}
       </div>

@@ -17,6 +17,8 @@ const PlantHealthAnalyzer = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [cameraFile, setCameraFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<{ current: number, total: number } | null>(null);
+  const [analysisStartTime, setAnalysisStartTime] = useState<number | null>(null);
 
   const handleImagesSelected = async (files: File[]) => {
     setSelectedFiles(files);
@@ -44,12 +46,15 @@ const PlantHealthAnalyzer = () => {
     if (selectedFiles.length === 0) return;
 
     setIsAnalyzing(true);
+    setAnalysisStartTime(Date.now());
+    setUploadProgress({ current: 0, total: selectedFiles.length });
+    
     try {
       console.log('Starting analysis...');
       
       // Upload images to Supabase storage
       const imageUrls = await Promise.all(
-        selectedFiles.map(async (file) => {
+        selectedFiles.map(async (file, index) => {
           const fileName = `${Date.now()}-${file.name}`;
           const { data, error } = await supabase.storage
             .from('plant-images')
@@ -63,12 +68,25 @@ const PlantHealthAnalyzer = () => {
           const { data: { publicUrl } } = supabase.storage
             .from('plant-images')
             .getPublicUrl(fileName);
+            
+          // Update progress
+          setUploadProgress(prev => {
+            if (!prev) return { current: index + 1, total: selectedFiles.length };
+            return { ...prev, current: index + 1 };
+          });
 
           return publicUrl;
         })
       );
 
       console.log('Images uploaded successfully:', imageUrls);
+      
+      // Show interim toast for user feedback
+      const elapsedUploadTime = ((Date.now() - (analysisStartTime || 0)) / 1000).toFixed(1);
+      toast({
+        title: "Images Uploaded Successfully",
+        description: `Beginning AI analysis now (uploaded in ${elapsedUploadTime}s)`,
+      });
 
       // Call the analyze-plant function
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
@@ -109,9 +127,13 @@ const PlantHealthAnalyzer = () => {
 
       console.log('Analysis saved to database:', savedAnalysis);
       setAnalysisResult(savedAnalysis);
+      
+      // Calculate total time elapsed
+      const totalTimeElapsed = ((Date.now() - (analysisStartTime || 0)) / 1000).toFixed(1);
+      
       toast({
         title: "Analysis Complete",
-        description: "Your plant health analysis is ready to view.",
+        description: `Your plant health analysis is ready to view (completed in ${totalTimeElapsed}s)`,
       });
     } catch (error: any) {
       console.error('Analysis error:', error);
@@ -124,8 +146,15 @@ const PlantHealthAnalyzer = () => {
       setIsAnalyzing(false);
       setShowConfirmation(false);
       setCameraFile(null);
+      setUploadProgress(null);
+      setAnalysisStartTime(null);
     }
   };
+
+  // Calculate upload progress percentage
+  const uploadProgressPercentage = uploadProgress 
+    ? Math.round((uploadProgress.current / uploadProgress.total) * 100) 
+    : 0;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -141,7 +170,21 @@ const PlantHealthAnalyzer = () => {
         {isAnalyzing && (
           <div className="flex flex-col items-center justify-center p-8 space-y-4">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            <p className="text-white text-lg">Analyzing your plant...</p>
+            {uploadProgress && uploadProgress.current < uploadProgress.total ? (
+              <div className="w-full max-w-xs space-y-2">
+                <p className="text-white text-lg">Uploading images... ({uploadProgressPercentage}%)</p>
+                <div className="w-full bg-gray-700 rounded-full h-2.5">
+                  <div className="bg-green-500 h-2.5 rounded-full" style={{ width: `${uploadProgressPercentage}%` }}></div>
+                </div>
+              </div>
+            ) : (
+              <p className="text-white text-lg">Analyzing your plant...</p>
+            )}
+            {analysisStartTime && (
+              <p className="text-gray-400 text-sm">
+                Time elapsed: {Math.floor((Date.now() - analysisStartTime) / 1000)}s
+              </p>
+            )}
           </div>
         )}
 
