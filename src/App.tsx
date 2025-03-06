@@ -1,5 +1,5 @@
 
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -8,15 +8,19 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
+
+// Eagerly load the Index page for better UX
 import Index from "./pages/Index";
 
-const ChatInterface = lazy(() => import("./components/ChatInterface"));
-const PlantHealthAnalyzer = lazy(() => import("./pages/PlantHealthAnalyzer"));
-const SharedAnalysis = lazy(() => import("./pages/SharedAnalysis"));
-const GrowingGuide = lazy(() => import("./pages/GrowingGuide"));
-const ThankYou = lazy(() => import("./pages/ThankYou"));
-import Quiz from "./pages/Quiz";
+// Lazy load all other components
+const ChatInterface = lazy(() => import(/* webpackChunkName: "chat" */ "./components/ChatInterface"));
+const PlantHealthAnalyzer = lazy(() => import(/* webpackChunkName: "plant-health" */ "./pages/PlantHealthAnalyzer"));
+const SharedAnalysis = lazy(() => import(/* webpackChunkName: "shared-analysis" */ "./pages/SharedAnalysis"));
+const GrowingGuide = lazy(() => import(/* webpackChunkName: "growing-guide" */ "./pages/GrowingGuide"));
+const ThankYou = lazy(() => import(/* webpackChunkName: "thank-you" */ "./pages/ThankYou"));
+const Quiz = lazy(() => import(/* webpackChunkName: "quiz" */ "./pages/Quiz"));
 
+// Create the query client outside of the component to prevent recreation on rerenders
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -28,33 +32,43 @@ const queryClient = new QueryClient({
   },
 });
 
+// Separate loading component for better reuse
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
   </div>
 );
 
+// Auth callback component
 const AuthCallback = () => {
   const session = useSession();
   const location = useLocation();
   
-  if (session) {
-    const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-    sessionStorage.removeItem('redirectTo');
-    return <Navigate to={redirectTo} replace />;
-  }
+  useEffect(() => {
+    // Check session on mount to handle callback completion
+    if (session) {
+      const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+      sessionStorage.removeItem('redirectTo');
+      window.location.href = redirectTo;
+    }
+  }, [session]);
   
   return <LoadingSpinner />;
 };
 
+// Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const location = useLocation();
   
-  if (!session) {
-    if (location.pathname !== '/') {
+  useEffect(() => {
+    // Handle redirect on session change
+    if (!session && location.pathname !== '/') {
       sessionStorage.setItem('redirectTo', location.pathname);
     }
+  }, [session, location.pathname]);
+  
+  if (!session) {
     return <Navigate to="/" replace />;
   }
   
@@ -70,10 +84,17 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <Routes>
+              {/* Eagerly loaded route */}
               <Route path="/" element={<Index />} />
+              
+              {/* Lazy loaded routes */}
               <Route 
                 path="/quiz" 
-                element={<Quiz />} 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Quiz />
+                  </Suspense>
+                } 
               />
               <Route 
                 path="/thank-you" 
@@ -83,11 +104,15 @@ const App = () => {
                   </Suspense>
                 } 
               />
+              
+              {/* Auth routes */}
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/*" element={<AuthCallback />} />
               <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
               <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
+              
+              {/* Protected routes */}
               <Route 
                 path="/chat" 
                 element={
