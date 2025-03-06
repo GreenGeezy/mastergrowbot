@@ -13,7 +13,8 @@ export const sendMessageToSupabase = async (
   const requestKey = `send:${userId}:${conversationId}:${Date.now()}`
   
   try {
-    const promise = supabase
+    // Create the query but don't execute it yet
+    const query = supabase
       .from('chat_history')
       .insert([
         {
@@ -24,6 +25,8 @@ export const sendMessageToSupabase = async (
         }
       ])
     
+    // Execute the query and store the promise
+    const promise = query.then(result => result)
     activeRequests.set(requestKey, promise)
     return await promise
   } finally {
@@ -44,13 +47,16 @@ export const fetchChatHistory = async (userId: string, conversationId: string) =
   }
   
   try {
-    const promise = supabase
+    // Create the query but don't execute it yet
+    const query = supabase
       .from('chat_history')
       .select('*')
       .eq('user_id', userId)
       .eq('conversation_id', conversationId)
       .order('created_at', { ascending: true })
     
+    // Execute the query and store the promise
+    const promise = query.then(result => result)
     activeRequests.set(requestKey, promise)
     return await promise
   } finally {
