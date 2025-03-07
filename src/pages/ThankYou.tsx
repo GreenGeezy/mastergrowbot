@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Mail, InboxIcon } from "lucide-react";
+import { Check, Mail, InboxIcon, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 const ThankYou = () => {
@@ -177,23 +177,16 @@ const ThankYou = () => {
             
             <CardContent className="text-center space-y-6 px-6">
               <p className="text-white/90 text-lg">
-                Your {subscriptionType} subscription is now active. We've sent a confirmation email to complete your registration.
+                Congratulations on taking the first step to become an elite grower with your new AI Superpowers! Your {subscriptionType} subscription is now active, and you're one step away from unlocking the full power of Master Growbot. Get ready to optimize your cannabis cultivation with AI-driven insights and tools built for growers like you.
               </p>
               
               {email && (
                 <div className="bg-card-hover/60 p-5 rounded-lg border border-primary/20 mt-4 backdrop-blur-sm shimmer">
                   <div className="flex flex-col gap-4 text-white/80">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 justify-center">
                       <Mail className="w-5 h-5 text-accent animate-pulse-glow" />
-                      <p className="text-sm">
-                        We've sent an email to <span className="font-semibold text-white">{email}</span>
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                      <InboxIcon className="w-5 h-5 text-secondary animate-pulse-glow" />
-                      <p className="text-sm">
-                        Please check your inbox (and spam folder) to complete your registration
+                      <p className="text-base font-medium flex items-center">
+                        Check Your Email to Start Growing Award Winning Cannabis Today! <ArrowRight className="w-4 h-4 ml-1" />
                       </p>
                     </div>
                   </div>
@@ -204,19 +197,23 @@ const ThankYou = () => {
             <CardFooter className="flex flex-col space-y-5 px-6 pb-6">
               {/* Email countdown animation */}
               <div className="w-full bg-card-hover/40 rounded-md p-4 border border-primary/20 flex flex-col items-center">
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center relative">
                     <div className="absolute inset-0 bg-secondary/10 rounded-full animate-pulse" />
                     <Mail className="w-6 h-6 text-secondary-glow animate-float" />
                   </div>
-                  <div className="text-sm text-white/80">
-                    <p className="font-medium">Check your email now</p>
-                    <p className="text-xs text-white/60">Follow the link in your email to finish setting up your account</p>
+                  <div className="text-sm text-white/90">
+                    <p className="font-medium">We've sent a confirmation email</p>
+                    <p className="text-xs text-white/70">to the address you provided</p>
                   </div>
                 </div>
                 
+                <div className="text-sm text-white/80 text-center mb-3">
+                  Look for an email from Master Growbot with the subject 'Confirm Your Subscription.' Click on the link in the email and just like that your AI Genius Growing Assistant Master Growbot is at your service —just use the same email to sign up.
+                </div>
+                
                 {countdown > 0 && (
-                  <div className="mt-3 flex flex-col items-center">
+                  <div className="mt-2 flex flex-col items-center">
                     <div className="text-xs text-white/60 mb-1">Email should arrive in</div>
                     <div className="text-lg font-bold text-accent">{countdown} seconds</div>
                     <div className="w-full h-1 bg-card mt-1 rounded-full overflow-hidden">
@@ -229,14 +226,14 @@ const ThankYou = () => {
                 )}
                 
                 {countdown === 0 && (
-                  <div className="mt-3 text-white/80 text-sm animate-fade-in">
-                    <p>Still can't find the email? Check your spam folder or contact support.</p>
+                  <div className="mt-2 text-white/80 text-sm animate-fade-in">
+                    <p>If you don't see the email in your inbox, check your spam folder or contact support for assistance by emailing support@futuristiccannabis.ai.</p>
                   </div>
                 )}
               </div>
               
               <div className="bg-card-hover/40 rounded-md p-3 border border-white/10">
-                <p className="text-sm text-white/60 text-center">
+                <p className="text-sm text-white/70 text-center">
                   Use the same email when signing up that you used for your purchase.
                 </p>
               </div>
