@@ -70,6 +70,44 @@ const ThankYou = () => {
     <div className="min-h-screen flex items-center justify-center p-4 bg-background relative overflow-hidden">
       {/* Background circuit pattern */}
       <div className="absolute inset-0 circuit-background opacity-30" />
+      
+      {/* Subtle cannabis-related background elements */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        {/* Large central leaf silhouette */}
+        <div className="absolute transform -translate-y-12 opacity-10">
+          <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary-glow">
+            <path d="M250 40C230 90 200 130 180 150C160 170 130 200 120 240C110 280 110 320 120 350C130 380 150 400 180 420C210 440 240 450 270 450C300 450 330 440 350 420C370 400 390 370 400 340C410 310 410 280 400 250C390 220 370 200 350 180C330 160 300 140 280 120C260 100 240 80 250 40Z" 
+                  fill="currentColor" fillOpacity="0.2" />
+            <path d="M250 100C240 120 230 140 215 160C200 180 180 200 170 220C160 240 150 260 150 280C150 300 160 320 175 335C190 350 210 360 230 360C250 360 270 350 285 335C300 320 310 300 310 280C310 260 300 240 290 220C280 200 260 180 245 160C230 140 220 120 250 100Z" 
+                  fill="currentColor" fillOpacity="0.3" />
+          </svg>
+        </div>
+        
+        {/* Secondary scattered smaller leaves */}
+        <div className="absolute top-1/4 right-1/4 opacity-8">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary rotate-45">
+            <path d="M60 10C55 22 48 31 43 36C38 41 31 48 29 58C27 67 27 77 29 84C31 91 36 96 43 101C50 106 58 108 65 108C72 108 79 106 84 101C89 96 94 89 96 82C98 74 98 67 96 60C94 53 89 48 84 43C79 38 72 34 67 29C62 24 58 19 60 10Z" 
+                  fill="currentColor" fillOpacity="0.15" />
+          </svg>
+        </div>
+        
+        <div className="absolute bottom-1/3 left-1/4 opacity-8">
+          <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-secondary rotate-12">
+            <path d="M50 8C46 18 40 26 36 30C32 34 26 40 24 48C22 56 22 64 24 70C26 76 30 80 36 84C42 88 48 90 54 90C60 90 66 88 70 84C74 80 78 74 80 68C82 62 82 56 80 50C78 44 74 40 70 36C66 32 60 28 56 24C52 20 48 16 50 8Z" 
+                  fill="currentColor" fillOpacity="0.15" />
+          </svg>
+        </div>
+        
+        {/* Abstract growth pattern lines */}
+        <div className="absolute inset-0 opacity-5">
+          <svg width="100%" height="100%" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M500 100C500 300 600 500 700 600C800 700 900 800 900 900" stroke="#2D5A27" strokeWidth="2" strokeDasharray="10 15" />
+            <path d="M500 100C500 300 400 500 300 600C200 700 100 800 100 900" stroke="#2D5A27" strokeWidth="2" strokeDasharray="10 15" />
+            <path d="M500 100C500 400 550 550 600 650C650 750 700 850 750 950" stroke="#663399" strokeWidth="2" strokeDasharray="8 12" strokeOpacity="0.5" />
+            <path d="M500 100C500 400 450 550 400 650C350 750 300 850 250 950" stroke="#663399" strokeWidth="2" strokeDasharray="8 12" strokeOpacity="0.5" />
+          </svg>
+        </div>
+      </div>
 
       <div className="w-full max-w-md z-10 flex flex-col items-center">
         {/* Master Growbot Logo */}
