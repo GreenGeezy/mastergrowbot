@@ -71,9 +71,18 @@ const ThankYou = () => {
       {/* Background circuit pattern */}
       <div className="absolute inset-0 circuit-background opacity-30" />
 
-      <div className="w-full max-w-md z-10">
+      <div className="w-full max-w-md z-10 flex flex-col items-center">
+        {/* Master Growbot Logo */}
+        <div className="mb-8 animate-float">
+          <img 
+            src="/lovable-uploads/5d3166aa-c15c-4e67-9f65-aa1d7109581d.png" 
+            alt="Master Growbot" 
+            className="w-32 h-32 object-contain filter drop-shadow-xl"
+          />
+        </div>
+
         {/* Success Card with glowing effect */}
-        <Card className="border border-primary/20 bg-card/90 backdrop-blur-sm shadow-xl animate-fade-in relative overflow-hidden">
+        <Card className="border border-primary/20 bg-card/90 backdrop-blur-sm shadow-xl animate-fade-in relative overflow-hidden w-full">
           {/* Glowing border effect */}
           <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 via-accent/30 to-secondary/30 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 animate-pulse-glow" />
           
