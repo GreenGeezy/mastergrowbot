@@ -71,31 +71,33 @@ const ThankYou = () => {
       {/* Background circuit pattern */}
       <div className="absolute inset-0 circuit-background opacity-30" />
       
-      {/* Subtle cannabis-related background elements */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-        {/* Large central leaf silhouette */}
-        <div className="absolute transform -translate-y-12 opacity-10">
-          <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary-glow">
-            <path d="M250 40C230 90 200 130 180 150C160 170 130 200 120 240C110 280 110 320 120 350C130 380 150 400 180 420C210 440 240 450 270 450C300 450 330 440 350 420C370 400 390 370 400 340C410 310 410 280 400 250C390 220 370 200 350 180C330 160 300 140 280 120C260 100 240 80 250 40Z" 
-                  fill="currentColor" fillOpacity="0.2" />
-            <path d="M250 100C240 120 230 140 215 160C200 180 180 200 170 220C160 240 150 260 150 280C150 300 160 320 175 335C190 350 210 360 230 360C250 360 270 350 285 335C300 320 310 300 310 280C310 260 300 240 290 220C280 200 260 180 245 160C230 140 220 120 250 100Z" 
-                  fill="currentColor" fillOpacity="0.3" />
-          </svg>
+      {/* Stylized cannabis-related icon elements */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {/* Main branded icon */}
+        <div className="absolute top-[15%] right-[15%] w-40 h-40 opacity-15 animate-float">
+          <img 
+            src="/lovable-uploads/3454df8d-2c33-4d1d-8bcd-71290c3c10a7.png" 
+            alt="Cannabis Science Icon" 
+            className="w-full h-full object-contain"
+          />
         </div>
         
-        {/* Secondary scattered smaller leaves */}
-        <div className="absolute top-1/4 right-1/4 opacity-8">
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary rotate-45">
-            <path d="M60 10C55 22 48 31 43 36C38 41 31 48 29 58C27 67 27 77 29 84C31 91 36 96 43 101C50 106 58 108 65 108C72 108 79 106 84 101C89 96 94 89 96 82C98 74 98 67 96 60C94 53 89 48 84 43C79 38 72 34 67 29C62 24 58 19 60 10Z" 
-                  fill="currentColor" fillOpacity="0.15" />
-          </svg>
+        {/* THC Chemistry icon */}
+        <div className="absolute bottom-[20%] left-[10%] w-32 h-32 opacity-15 animate-float" style={{ animationDelay: "1s" }}>
+          <img 
+            src="/lovable-uploads/d6780d98-10fa-4593-b3e1-ac414fffc91c.png" 
+            alt="THC Chemistry Icon" 
+            className="w-full h-full object-contain"
+          />
         </div>
         
-        <div className="absolute bottom-1/3 left-1/4 opacity-8">
-          <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-secondary rotate-12">
-            <path d="M50 8C46 18 40 26 36 30C32 34 26 40 24 48C22 56 22 64 24 70C26 76 30 80 36 84C42 88 48 90 54 90C60 90 66 88 70 84C74 80 78 74 80 68C82 62 82 56 80 50C78 44 74 40 70 36C66 32 60 28 56 24C52 20 48 16 50 8Z" 
-                  fill="currentColor" fillOpacity="0.15" />
-          </svg>
+        {/* CBD icon */}
+        <div className="absolute top-[25%] left-[20%] w-36 h-36 opacity-15 animate-float" style={{ animationDelay: "2s" }}>
+          <img 
+            src="/lovable-uploads/9d51bc4c-8b3f-4e08-a954-a5fde33a3d9a.png" 
+            alt="CBD Icon" 
+            className="w-full h-full object-contain"
+          />
         </div>
         
         {/* Abstract growth pattern lines */}
