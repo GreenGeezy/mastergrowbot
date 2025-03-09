@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -6,6 +5,7 @@ import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
 import FeatureSection from '@/components/FeatureSection';
+import EmailTester from '@/components/EmailTester';
 
 export default function Index() {
   const session = useSession();
@@ -41,6 +41,12 @@ export default function Index() {
           </div>
         </div>
       )}
+      
+      {/* Add Email Tester section - you can place this wherever it fits best in your layout */}
+      <div className="py-10 px-4 max-w-7xl mx-auto">
+        <h2 className="text-2xl font-bold text-center mb-6">Test Email Functionality</h2>
+        <EmailTester />
+      </div>
     </div>
   );
 }
