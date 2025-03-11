@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase, safeDeleteUser } from '@/integrations/supabase/client';
 import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
@@ -48,20 +47,14 @@ export default function Index() {
     try {
       setLoading(true);
       
-      // First check if current user is admin (in a real app)
-      // For simplicity, we're just showing how this would work
+      // Use the improved safe delete user function
+      const { success, error } = await safeDeleteUser(userId);
       
-      // Call the safely_delete_user function via RPC
-      const { data, error } = await supabase.rpc('safely_delete_user', {
-        user_id_to_delete: userId
-      });
-      
-      if (error) {
+      if (!success) {
         console.error('Error deleting user:', error);
-        toast.error('Failed to delete user: ' + error.message);
+        toast.error('Failed to delete user: ' + (error?.message || 'Unknown error'));
       } else {
         toast.success('User deleted successfully');
-        console.log('User deletion response:', data);
       }
     } catch (err) {
       console.error('Exception when deleting user:', err);
