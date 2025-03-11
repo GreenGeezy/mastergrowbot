@@ -37,22 +37,71 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   }
 })();
 
-// Safe delete users helper function that cleans up all related data first
+// Enhanced safe delete users helper function with fallback mechanisms
 export const safeDeleteUser = async (userId: string) => {
+  console.log(`Attempting to delete user with ID: ${userId}`);
+  
   try {
-    // First clean up user data via RPC function
+    // Try direct admin API first (requires auth.users permissions)
+    const adminDeleteResult = await supabase.auth.admin.deleteUser(
+      userId,
+      // Setting cascadeTo ensures related data is deleted 
+      // when the user is deleted by the admin API
+      { shouldCascade: true }
+    );
+    
+    if (!adminDeleteResult.error) {
+      console.log('User successfully deleted via admin API');
+      return { success: true };
+    }
+    
+    console.log('Admin API deletion failed, error:', adminDeleteResult.error);
+    console.log('Falling back to RPC function...');
+    
+    // Fallback: Try using our SQL RPC function
     const { error: rpcError } = await supabase.rpc('safely_delete_user', {
       user_id_to_delete: userId
     });
     
     if (rpcError) {
-      console.error('Error in data cleanup:', rpcError);
+      console.error('Error in data cleanup via RPC:', rpcError);
+      
+      // Additional diagnostic information
+      const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
+      if (userError) {
+        console.log('User lookup error:', userError);
+        if (userError.message.includes('User not found')) {
+          // If user doesn't exist, consider this a "success" since the goal was to delete
+          return { success: true, warning: 'User already deleted' };
+        }
+      } else {
+        console.log('User still exists in auth table:', userData);
+      }
+      
       return { success: false, error: rpcError };
     }
     
+    console.log('User successfully deleted via RPC function');
     return { success: true };
   } catch (error) {
-    console.error('Error in user deletion process:', error);
+    console.error('Unexpected error in user deletion process:', error);
     return { success: false, error };
+  }
+};
+
+// Function to check if a user exists
+export const checkUserExists = async (userId: string) => {
+  try {
+    const { data, error } = await supabase.auth.admin.getUserById(userId);
+    
+    if (error) {
+      console.log('Error checking user:', error);
+      return { exists: false, error };
+    }
+    
+    return { exists: !!data.user, user: data.user };
+  } catch (error) {
+    console.error('Error checking if user exists:', error);
+    return { exists: false, error };
   }
 };

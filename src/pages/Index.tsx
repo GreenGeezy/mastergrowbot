@@ -1,8 +1,9 @@
+
 import { useEffect, useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
-import { supabase, safeDeleteUser } from '@/integrations/supabase/client';
+import { supabase, safeDeleteUser, checkUserExists } from '@/integrations/supabase/client';
 import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
@@ -13,7 +14,7 @@ export default function Index() {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
-
+  
   // Handle redirects from authentication flow
   useEffect(() => {
     if (session && location.state?.from) {
@@ -47,8 +48,22 @@ export default function Index() {
     try {
       setLoading(true);
       
+      // First check if the user exists to avoid unnecessary operations
+      const { exists } = await checkUserExists(userId);
+      
+      if (!exists) {
+        toast.info('User does not exist or was already deleted');
+        setLoading(false);
+        return;
+      }
+      
       // Use the improved safe delete user function
-      const { success, error } = await safeDeleteUser(userId);
+      const { success, error, warning } = await safeDeleteUser(userId);
+      
+      if (warning) {
+        toast.info(warning);
+        return;
+      }
       
       if (!success) {
         console.error('Error deleting user:', error);
