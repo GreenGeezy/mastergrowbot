@@ -30,18 +30,46 @@ export async function createThread(apiKey: string): Promise<string> {
 export async function addMessageWithImages(
   apiKey: string, 
   threadId: string, 
-  imageUrls: string[]
+  imageUrls: string[],
+  userProfile?: any
 ): Promise<void> {
+  // Prepare base prompt text
+  let promptText = "Analyze this cannabis plant image. Provide a detailed assessment in the following format:\n\n" +
+                  "Growth Stage: (seedling, vegetative, flowering, etc.)\n" +
+                  "Health Score: (excellent, good, fair, poor)\n" +
+                  "Specific Issues: (any visible problems, deficiencies, pests, etc.)\n" +
+                  "Environmental Factors: (lighting, temperature, humidity observations)\n" +
+                  "Recommended Actions: (bullet points of specific actions to take)";
+  
+  // Add user profile context if available
+  if (userProfile) {
+    promptText += "\n\nUser Growing Context:";
+    
+    if (userProfile.growing_method) {
+      promptText += `\n- Growing Method: ${userProfile.growing_method} growing`;
+    }
+    
+    if (userProfile.grow_experience_level) {
+      promptText += `\n- Experience Level: ${userProfile.grow_experience_level}`;
+    }
+    
+    if (userProfile.monitoring_method) {
+      promptText += `\n- Monitoring Method: ${userProfile.monitoring_method}`;
+    }
+    
+    if (userProfile.nutrient_type) {
+      promptText += `\n- Nutrient Type: ${userProfile.nutrient_type}`;
+    }
+    
+    // Add note to tailor response based on profile
+    promptText += "\n\nPlease tailor your analysis and recommendations specifically for this user's growing context.";
+  }
+
   // Prepare message with text prompt
   const content = [
     {
       type: "text",
-      text: "Analyze this cannabis plant image. Provide a detailed assessment in the following format:\n\n" +
-            "Growth Stage: (seedling, vegetative, flowering, etc.)\n" +
-            "Health Score: (excellent, good, fair, poor)\n" +
-            "Specific Issues: (any visible problems, deficiencies, pests, etc.)\n" +
-            "Environmental Factors: (lighting, temperature, humidity observations)\n" +
-            "Recommended Actions: (bullet points of specific actions to take)"
+      text: promptText
     }
   ];
 
@@ -80,8 +108,33 @@ export async function addMessageWithImages(
 export async function runAssistant(
   apiKey: string, 
   threadId: string, 
-  assistantId: string
+  assistantId: string,
+  userProfile?: any
 ): Promise<string> {
+  // Create base instructions
+  let instructions = "You are Master Growbot, a cannabis cultivation expert. Analyze the plant image thoroughly and provide specific, detailed feedback about the plant's health, growth stage, and potential issues. Be thorough and specific in your analysis rather than general.";
+  
+  // Modify instructions based on user profile if available
+  if (userProfile) {
+    if (userProfile.growing_method === 'indoor') {
+      instructions += " Since the user grows indoors, focus on lighting issues, ventilation problems, and temperature/humidity control specific to indoor environments.";
+    } else if (userProfile.growing_method === 'outdoor') {
+      instructions += " Since the user grows outdoors, consider weather impacts, seasonal challenges, pests common in outdoor grows, and sunlight exposure issues.";
+    } else if (userProfile.growing_method === 'greenhouse') {
+      instructions += " Since the user grows in a greenhouse, focus on greenhouse-specific issues like humidity management, temperature regulation, and the balance of natural/supplemental light.";
+    }
+    
+    if (userProfile.grow_experience_level === 'new') {
+      instructions += " Provide beginner-friendly recommendations with detailed steps since the user is new to growing.";
+    } else if (userProfile.grow_experience_level === 'advanced') {
+      instructions += " You can include more technical recommendations since the user has advanced growing experience.";
+    }
+    
+    if (userProfile.nutrient_type) {
+      instructions += ` Tailor nutrient recommendations to the user's preference for ${userProfile.nutrient_type} nutrients.`;
+    }
+  }
+
   const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs`, {
     method: 'POST',
     headers: {
@@ -91,7 +144,7 @@ export async function runAssistant(
     },
     body: JSON.stringify({
       assistant_id: assistantId,
-      instructions: "You are Master Growbot, a cannabis cultivation expert. Analyze the plant image thoroughly and provide specific, detailed feedback about the plant's health, growth stage, and potential issues. Be thorough and specific in your analysis rather than general."
+      instructions
     })
   });
 

@@ -19,6 +19,7 @@ const PlantHealthAnalyzer = () => {
   const [cameraFile, setCameraFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState<{ current: number, total: number } | null>(null);
   const [analysisStartTime, setAnalysisStartTime] = useState<number | null>(null);
+  const [profileUsed, setProfileUsed] = useState<boolean>(false);
 
   const handleImagesSelected = async (files: File[]) => {
     setSelectedFiles(files);
@@ -88,9 +89,12 @@ const PlantHealthAnalyzer = () => {
         description: `Beginning AI analysis now (uploaded in ${elapsedUploadTime}s)`,
       });
 
-      // Call the analyze-plant function
+      // Call the analyze-plant function with user ID for personalization
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
-        body: { imageUrls },
+        body: { 
+          imageUrls,
+          userId: session?.user?.id 
+        },
       });
 
       if (error) {
@@ -104,6 +108,9 @@ const PlantHealthAnalyzer = () => {
         console.error('Invalid response data structure:', data);
         throw new Error('Received invalid analysis data');
       }
+      
+      // Track if profile data was used
+      setProfileUsed(!!data.profileUsed);
 
       // Save analysis results to the database
       const { data: savedAnalysis, error: saveError } = await supabase
@@ -133,7 +140,9 @@ const PlantHealthAnalyzer = () => {
       
       toast({
         title: "Analysis Complete",
-        description: `Your plant health analysis is ready to view (completed in ${totalTimeElapsed}s)`,
+        description: `Your plant health analysis is ready to view (completed in ${totalTimeElapsed}s)${
+          data.profileUsed ? " - Personalized to your growing method" : ""
+        }`,
       });
     } catch (error: any) {
       console.error('Analysis error:', error);
@@ -178,7 +187,9 @@ const PlantHealthAnalyzer = () => {
                 </div>
               </div>
             ) : (
-              <p className="text-white text-lg">Analyzing your plant...</p>
+              <p className="text-white text-lg">
+                Analyzing your plant{session?.user?.id ? " with your growing preferences" : ""}...
+              </p>
             )}
             {analysisStartTime && (
               <p className="text-gray-400 text-sm">
@@ -189,7 +200,15 @@ const PlantHealthAnalyzer = () => {
         )}
 
         {analysisResult && !isAnalyzing && (
-          <AnalysisResults analysisResult={analysisResult} />
+          <>
+            <AnalysisResults analysisResult={analysisResult} />
+            {profileUsed && (
+              <div className="bg-green-900/30 border border-green-700 rounded-md p-3 text-sm text-green-200">
+                <p className="font-medium">Personalized Analysis</p>
+                <p>This analysis was tailored to your growing method and preferences.</p>
+              </div>
+            )}
+          </>
         )}
 
         <AnalysisActions
