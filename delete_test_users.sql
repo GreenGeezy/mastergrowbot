@@ -10,40 +10,50 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- First, get the emails for specific users to clean up pending_subscriptions
-DO $$
+-- Create an improved user deletion function that first identifies and removes all related data
+CREATE OR REPLACE FUNCTION public.safely_delete_user(user_id_to_delete uuid)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
 DECLARE
   user_email TEXT;
 BEGIN
-  -- Process each user ID and clean up pending subscriptions
+  -- Get the user's email for cleanup
+  SELECT email INTO user_email FROM auth.users WHERE id = user_id_to_delete;
   
-  -- For user c3af456b-bf2e-4e7e-b20b-41d818cac0ba
-  SELECT email INTO user_email FROM auth.users WHERE id = 'c3af456b-bf2e-4e7e-b20b-41d818cac0ba';
+  -- Clean up all dependent tables in the correct order
+  -- First remove any pending subscriptions for this user
   IF user_email IS NOT NULL THEN
-    PERFORM check_and_remove_pending_subscriptions(user_email);
+    DELETE FROM public.pending_subscriptions WHERE email = user_email;
   END IF;
   
-  -- For user ec922992-0022-42c0-bd83-6f9acc9ce2e8
-  SELECT email INTO user_email FROM auth.users WHERE id = 'ec922992-0022-42c0-bd83-6f9acc9ce2e8';
-  IF user_email IS NOT NULL THEN
-    PERFORM check_and_remove_pending_subscriptions(user_email);
-  END IF;
+  -- Delete from all related tables that have user_id references
+  DELETE FROM public.assistant_settings WHERE user_id = user_id_to_delete;
+  DELETE FROM public.chat_history WHERE user_id = user_id_to_delete;
+  DELETE FROM public.plant_analyses WHERE user_id = user_id_to_delete;
+  DELETE FROM public.quiz_responses WHERE user_id = user_id_to_delete;
+  DELETE FROM public.subscriptions WHERE user_id = user_id_to_delete;
+  DELETE FROM public.share_metrics WHERE user_id = user_id_to_delete;
+  DELETE FROM public.user_feedback WHERE user_id = user_id_to_delete;
   
-  -- For user 0bcc8fbd-5f98-4204-9900-56d59fa9abcb
-  SELECT email INTO user_email FROM auth.users WHERE id = '0bcc8fbd-5f98-4204-9900-56d59fa9abcb';
-  IF user_email IS NOT NULL THEN
-    PERFORM check_and_remove_pending_subscriptions(user_email);
-  END IF;
+  -- Important: Delete from user_profiles BEFORE deleting from auth.users
+  -- This is critical as the foreign key constraint is causing the error
+  DELETE FROM public.user_profiles WHERE id = user_id_to_delete;
   
-  -- For user 7c5bc430-88cf-43bc-b3c4-c73597894f0b
-  SELECT email INTO user_email FROM auth.users WHERE id = '7c5bc430-88cf-43bc-b3c4-c73597894f0b';
-  IF user_email IS NOT NULL THEN
-    PERFORM check_and_remove_pending_subscriptions(user_email);
-  END IF;
-END $$;
+  -- Finally, after all dependencies are cleaned up, delete the user
+  DELETE FROM auth.users WHERE id = user_id_to_delete;
+END;
+$$;
 
--- Now safely delete the users
-SELECT safely_delete_user('c3af456b-bf2e-4e7e-b20b-41d818cac0ba');
-SELECT safely_delete_user('ec922992-0022-42c0-bd83-6f9acc9ce2e8');
-SELECT safely_delete_user('0bcc8fbd-5f98-4204-9900-56d59fa9abcb');
-SELECT safely_delete_user('7c5bc430-88cf-43bc-b3c4-c73597894f0b');
+-- Now safely delete the users, excluding 945c75d4-f5b3-4eb0-937b-8e76048222f2
+DO $$
+BEGIN
+  -- Try deleting users from the list shown in the dashboard image
+  PERFORM safely_delete_user('0bcc8fbd-5f98-4204-9900-66d99faadcbc');
+  PERFORM safely_delete_user('3de2c0e-d347-424d-9eb7-2b8b9fd22d4d');
+  PERFORM safely_delete_user('7c5ec20-d8c4-431c-b3c4-c73578d4f70b');
+  PERFORM safely_delete_user('e3af4546-bf2d-4a7a-b208-411d81aac5ba');
+  PERFORM safely_delete_user('ec922992-0022-42c0-bd83-6f9acc9ce2e8');
+END
+$$;

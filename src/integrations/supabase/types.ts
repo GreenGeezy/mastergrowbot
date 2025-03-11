@@ -460,6 +460,12 @@ export type Database = {
       }
     }
     Functions: {
+      check_and_remove_pending_subscriptions: {
+        Args: {
+          email_param: string
+        }
+        Returns: undefined
+      }
       check_pending_subscription: {
         Args: {
           check_email: string
