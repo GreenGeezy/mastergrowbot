@@ -52,8 +52,8 @@ DO $$
 BEGIN
   -- Try deleting users from the list shown in the dashboard image
   PERFORM safely_delete_user('0bcc8fbd-5f98-4204-9900-66d99faadcbc');
-  PERFORM safely_delete_user('3de2c0e-d347-424d-9eb7-2b8b9fd22d4d');
-  PERFORM safely_delete_user('7c5ec20-d8c4-431c-b3c4-c73578d4f70b');
+  PERFORM safely_delete_user('03de2c0e-d347-424d-9eb7-2b8b9fd22d4d');
+  PERFORM safely_delete_user('07c5ec20-d8c4-431c-b3c4-c73578d4f70b');
   PERFORM safely_delete_user('e3af4546-bf2d-4a7a-b208-411d81aac5ba');
   PERFORM safely_delete_user('ec922992-0022-42c0-bd83-6f9acc9ce2e8');
 END
