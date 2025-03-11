@@ -496,6 +496,12 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      safely_delete_user: {
+        Args: {
+          user_id_to_delete: string
+        }
+        Returns: undefined
+      }
       user_has_access: {
         Args: {
           user_uuid: string
