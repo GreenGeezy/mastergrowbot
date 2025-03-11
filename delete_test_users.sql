@@ -1,4 +1,5 @@
 
+
 -- More comprehensive user deletion process
 -- This should be run directly in the SQL Editor
 
@@ -57,3 +58,4 @@ BEGIN
   PERFORM safely_delete_user('ec922992-0022-42c0-bd83-6f9acc9ce2e8');
 END
 $$;
+

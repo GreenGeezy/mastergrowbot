@@ -13,8 +13,10 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   },
   global: {
     fetch: (url, options) => {
-      // Add additional logging for supabase client operations during development
-      console.log('Supabase fetch:', url);
+      // Add additional logging for debugging auth and user operations
+      if (url.toString().includes('/auth/') || url.toString().includes('/users/')) {
+        console.log('Auth operation:', url, options?.method);
+      }
       return fetch(url, options);
     }
   }
@@ -34,3 +36,23 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     console.error('Error initializing storage:', error);
   }
 })();
+
+// Safe delete users helper function that cleans up all related data first
+export const safeDeleteUser = async (userId: string) => {
+  try {
+    // First clean up user data via RPC function
+    const { error: rpcError } = await supabase.rpc('safely_delete_user', {
+      user_id_to_delete: userId
+    });
+    
+    if (rpcError) {
+      console.error('Error in data cleanup:', rpcError);
+      return { success: false, error: rpcError };
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Error in user deletion process:', error);
+    return { success: false, error };
+  }
+};
