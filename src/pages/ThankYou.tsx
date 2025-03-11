@@ -177,7 +177,7 @@ const ThankYou = () => {
             
             <CardContent className="text-center space-y-6 px-6">
               <p className="text-white/90 text-lg">
-                Congratulations on taking the first step to become an elite grower with your new AI Superpowers! Your {subscriptionType} subscription is now active, and you're one step away from unlocking the full power of Master Growbot. Get ready to optimize your cannabis cultivation with AI-driven insights and tools built for growers like you.
+                Congratulations on taking the first step to become an elite grower with your new AI Superpowers! Your {subscriptionType} subscription is now active, and you're one step away from unlocking the full power of Master Growbot.
               </p>
               
               {email && (
