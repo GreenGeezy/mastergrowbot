@@ -43,12 +43,8 @@ export const safeDeleteUser = async (userId: string) => {
   
   try {
     // Try direct admin API first (requires auth.users permissions)
-    const adminDeleteResult = await supabase.auth.admin.deleteUser(
-      userId,
-      // Setting cascadeTo ensures related data is deleted 
-      // when the user is deleted by the admin API
-      { shouldCascade: true }
-    );
+    // Fixed: The deleteUser method takes a string userId parameter, not an object
+    const adminDeleteResult = await supabase.auth.admin.deleteUser(userId);
     
     if (!adminDeleteResult.error) {
       console.log('User successfully deleted via admin API');
