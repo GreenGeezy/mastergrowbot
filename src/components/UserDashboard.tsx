@@ -1,11 +1,14 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageCircle, Camera, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   const navigationButtons = [
     {
@@ -27,6 +30,26 @@ const UserDashboard = () => {
       icon: BookOpen,
     },
   ];
+
+  const handleSignOut = async () => {
+    try {
+      setIsSigningOut(true);
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Error signing out:", error.message);
+        toast.error("Sign out failed. Please try again.");
+      } else {
+        // Successfully signed out
+        toast.success("Successfully signed out");
+        // Navigation will happen automatically due to auth state change
+      }
+    } catch (err) {
+      console.error("Unexpected error during sign out:", err);
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
 
   return (
     <div className="w-full max-w-md mx-auto animate-fade-in px-4 circuit-background">
@@ -62,10 +85,11 @@ const UserDashboard = () => {
         </h2>
         
         <Button
-          onClick={() => supabase.auth.signOut()}
+          onClick={handleSignOut}
+          disabled={isSigningOut}
           className="cyber-button w-full glow-accent"
         >
-          Sign Out
+          {isSigningOut ? "Signing Out..." : "Sign Out"}
         </Button>
       </div>
     </div>

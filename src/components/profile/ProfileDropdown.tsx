@@ -22,27 +22,69 @@ export function ProfileDropdown() {
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      if (!session?.user?.id) return
-      
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .select('username, grow_experience_level')
-        .eq('id', session.user.id)
-        .single()
-
-      if (error) {
-        console.error('Error fetching profile:', error)
-        return
+      if (!session?.user?.id) {
+        console.log('No user session found');
+        return;
       }
 
-      setProfileData({
-        ...data,
-        email: session.user.email
-      })
-    }
+      try {
+        console.log('Starting profile data fetch for user:', session.user.id);
+        console.log('User email:', session.user.email);
+        
+        // First try to get the profile data
+        const { data: profileData, error: profileError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .maybeSingle();
 
-    fetchProfileData()
-  }, [session?.user?.id, supabase])
+        if (profileError) {
+          console.error('Error fetching profile:', profileError);
+          throw profileError;
+        }
+
+        console.log('Raw profile data from user_profiles:', profileData);
+
+        // If no profile exists, create one with default values
+        if (!profileData) {
+          console.log('No profile found, creating default profile');
+          const defaultProfile = {
+            id: session.user.id,
+            grow_experience_level: 'new',
+            email: session.user.email
+          };
+
+          const { error: createError } = await supabase
+            .from('user_profiles')
+            .insert(defaultProfile);
+
+          if (createError) {
+            console.error('Error creating default profile:', createError);
+            throw createError;
+          }
+
+          setProfileData(defaultProfile);
+          return;
+        }
+
+        // Set the profile data
+        setProfileData({
+          email: session.user.email,
+          ...profileData
+        });
+
+      } catch (error) {
+        console.error('Error in fetchProfileData:', error);
+        toast({
+          title: "Error loading profile",
+          description: "Please try signing out and back in.",
+          variant: "destructive"
+        });
+      }
+    };
+
+    fetchProfileData();
+  }, [session?.user?.id, session?.user?.email, supabase, toast]);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut()
@@ -65,8 +107,10 @@ export function ProfileDropdown() {
 
     const { error } = await supabase
       .from('user_profiles')
-      .update({ grow_experience_level: level })
-      .eq('id', session.user.id)
+      .upsert({
+        id: session.user.id,
+        grow_experience_level: level
+      })
 
     if (error) {
       toast({
@@ -81,11 +125,131 @@ export function ProfileDropdown() {
       ...prev,
       grow_experience_level: level
     }))
+  }
 
-    toast({
-      title: "Experience level updated",
-      description: `Your growing experience level has been set to ${level}`,
-    })
+  const updateGrowingMethod = async (method: string) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('user_profiles')
+      .upsert({
+        id: session.user.id,
+        growing_method: method
+      })
+
+    if (error) {
+      toast({
+        title: "Error updating growing method",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      growing_method: method
+    }))
+  }
+
+  const updateMonitoringMethod = async (method: string) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('user_profiles')
+      .upsert({
+        id: session.user.id,
+        monitoring_method: method
+      })
+
+    if (error) {
+      toast({
+        title: "Error updating monitoring method",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      monitoring_method: method
+    }))
+  }
+
+  const updateNutrientType = async (type: string) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('user_profiles')
+      .upsert({
+        id: session.user.id,
+        nutrient_type: type
+      })
+
+    if (error) {
+      toast({
+        title: "Error updating nutrient type",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      nutrient_type: type
+    }))
+  }
+
+  const updateChallenges = async (challenges: string[]) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('user_profiles')
+      .upsert({
+        id: session.user.id,
+        challenges
+      })
+
+    if (error) {
+      toast({
+        title: "Error updating challenges",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      challenges
+    }))
+  }
+
+  const updateGoals = async (goals: string[]) => {
+    if (!session?.user?.id) return
+
+    const { error } = await supabase
+      .from('user_profiles')
+      .upsert({
+        id: session.user.id,
+        goals
+      })
+
+    if (error) {
+      toast({
+        title: "Error updating goals",
+        description: error.message,
+        variant: "destructive",
+      })
+      return
+    }
+
+    setProfileData(prev => ({
+      ...prev,
+      goals
+    }))
   }
 
   const getInitials = (name?: string) => {
@@ -117,6 +281,11 @@ export function ProfileDropdown() {
             <ProfileInfo 
               profileData={profileData}
               updateExperienceLevel={updateExperienceLevel}
+              updateGrowingMethod={updateGrowingMethod}
+              updateMonitoringMethod={updateMonitoringMethod}
+              updateNutrientType={updateNutrientType}
+              updateChallenges={updateChallenges}
+              updateGoals={updateGoals}
             />
             <ProfileSettings 
               notifications={notifications}

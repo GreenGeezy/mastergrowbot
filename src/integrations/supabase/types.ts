@@ -9,6 +9,69 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      app_config: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          key: string
+          updated_at: string | null
+          value: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          key: string
+          updated_at?: string | null
+          value: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          key?: string
+          updated_at?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
+      assistant_settings: {
+        Row: {
+          assistant_id: string
+          created_at: string | null
+          id: string
+          max_tokens: number | null
+          system_instructions: string | null
+          temperature: number | null
+          updated_at: string | null
+          user_id: string | null
+          voice_settings: Json | null
+        }
+        Insert: {
+          assistant_id: string
+          created_at?: string | null
+          id?: string
+          max_tokens?: number | null
+          system_instructions?: string | null
+          temperature?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          voice_settings?: Json | null
+        }
+        Update: {
+          assistant_id?: string
+          created_at?: string | null
+          id?: string
+          max_tokens?: number | null
+          system_instructions?: string | null
+          temperature?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          voice_settings?: Json | null
+        }
+        Relationships: []
+      }
       chat_history: {
         Row: {
           conversation_id: string | null
@@ -39,65 +102,33 @@ export type Database = {
         }
         Relationships: []
       }
-      guide_progress: {
+      pending_subscriptions: {
         Row: {
-          completed: boolean | null
-          completed_at: string | null
-          created_at: string
-          guide_id: string
-          id: string
-          user_id: string | null
-        }
-        Insert: {
-          completed?: boolean | null
-          completed_at?: string | null
-          created_at?: string
-          guide_id: string
-          id?: string
-          user_id?: string | null
-        }
-        Update: {
-          completed?: boolean | null
-          completed_at?: string | null
-          created_at?: string
-          guide_id?: string
-          id?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "guide_progress_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      openai_chats: {
-        Row: {
-          assistant_id: string | null
+          consumed: boolean | null
           created_at: string | null
-          id: number
-          prompt: string | null
-          response: string | null
-          user_id: string | null
+          email: string
+          expires_at: string
+          id: string
+          square_order_id: string
+          subscription_type: string
         }
         Insert: {
-          assistant_id?: string | null
+          consumed?: boolean | null
           created_at?: string | null
-          id?: number
-          prompt?: string | null
-          response?: string | null
-          user_id?: string | null
+          email: string
+          expires_at: string
+          id?: string
+          square_order_id: string
+          subscription_type: string
         }
         Update: {
-          assistant_id?: string | null
+          consumed?: boolean | null
           created_at?: string | null
-          id?: number
-          prompt?: string | null
-          response?: string | null
-          user_id?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          square_order_id?: string
+          subscription_type?: string
         }
         Relationships: []
       }
@@ -160,6 +191,45 @@ export type Database = {
           resolution_notes?: string | null
           strain_name?: string | null
           updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      quiz_responses: {
+        Row: {
+          challenges: string[]
+          created_at: string
+          experience_level: Database["public"]["Enums"]["grow_experience"]
+          goals: string[]
+          growing_method: Database["public"]["Enums"]["growing_method"]
+          id: string
+          monitoring_method: Database["public"]["Enums"]["monitoring_method"]
+          nutrient_type: Database["public"]["Enums"]["nutrient_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          challenges: string[]
+          created_at?: string
+          experience_level: Database["public"]["Enums"]["grow_experience"]
+          goals: string[]
+          growing_method: Database["public"]["Enums"]["growing_method"]
+          id?: string
+          monitoring_method: Database["public"]["Enums"]["monitoring_method"]
+          nutrient_type: Database["public"]["Enums"]["nutrient_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          challenges?: string[]
+          created_at?: string
+          experience_level?: Database["public"]["Enums"]["grow_experience"]
+          goals?: string[]
+          growing_method?: Database["public"]["Enums"]["growing_method"]
+          id?: string
+          monitoring_method?: Database["public"]["Enums"]["monitoring_method"]
+          nutrient_type?: Database["public"]["Enums"]["nutrient_type"]
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -228,38 +298,38 @@ export type Database = {
           },
         ]
       }
-      success_stories: {
+      subscriptions: {
         Row: {
-          after_image_url: string | null
-          before_image_url: string | null
-          created_at: string
-          description: string
-          guide_id: string
+          created_at: string | null
+          expires_at: string
           id: string
-          share_count: number | null
-          title: string
+          square_order_id: string | null
+          starts_at: string
+          status: string
+          subscription_type: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
-          after_image_url?: string | null
-          before_image_url?: string | null
-          created_at?: string
-          description: string
-          guide_id: string
+          created_at?: string | null
+          expires_at: string
           id?: string
-          share_count?: number | null
-          title: string
+          square_order_id?: string | null
+          starts_at?: string
+          status: string
+          subscription_type: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
-          after_image_url?: string | null
-          before_image_url?: string | null
-          created_at?: string
-          description?: string
-          guide_id?: string
+          created_at?: string | null
+          expires_at?: string
           id?: string
-          share_count?: number | null
-          title?: string
+          square_order_id?: string | null
+          starts_at?: string
+          status?: string
+          subscription_type?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -291,27 +361,6 @@ export type Database = {
           name?: string
           status?: string | null
           title?: string
-        }
-        Relationships: []
-      }
-      user_achievements: {
-        Row: {
-          achieved_at: string
-          achievement_type: string
-          id: string
-          user_id: string
-        }
-        Insert: {
-          achieved_at?: string
-          achievement_type: string
-          id?: string
-          user_id: string
-        }
-        Update: {
-          achieved_at?: string
-          achievement_type?: string
-          id?: string
-          user_id?: string
         }
         Relationships: []
       }
@@ -356,23 +405,41 @@ export type Database = {
       }
       user_profiles: {
         Row: {
+          challenges: string[] | null
           created_at: string
+          goals: string[] | null
           grow_experience_level: string | null
+          growing_method: string | null
+          has_completed_quiz: boolean | null
           id: string
+          monitoring_method: string | null
+          nutrient_type: string | null
           subscription_status: string | null
           username: string | null
         }
         Insert: {
+          challenges?: string[] | null
           created_at?: string
+          goals?: string[] | null
           grow_experience_level?: string | null
+          growing_method?: string | null
+          has_completed_quiz?: boolean | null
           id: string
+          monitoring_method?: string | null
+          nutrient_type?: string | null
           subscription_status?: string | null
           username?: string | null
         }
         Update: {
+          challenges?: string[] | null
           created_at?: string
+          goals?: string[] | null
           grow_experience_level?: string | null
+          growing_method?: string | null
+          has_completed_quiz?: boolean | null
           id?: string
+          monitoring_method?: string | null
+          nutrient_type?: string | null
           subscription_status?: string | null
           username?: string | null
         }
@@ -380,13 +447,79 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_access_view: {
+        Row: {
+          expires_at: string | null
+          has_active_subscription: boolean | null
+          has_completed_quiz: boolean | null
+          id: string | null
+          subscription_status: string | null
+          subscription_type: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      check_and_remove_pending_subscriptions: {
+        Args: {
+          email_param: string
+        }
+        Returns: undefined
+      }
+      check_pending_subscription: {
+        Args: {
+          check_email: string
+        }
+        Returns: {
+          has_pending: boolean
+          subscription_type: string
+          expires_at: string
+        }[]
+      }
+      consume_pending_subscription: {
+        Args: {
+          sub_email: string
+        }
+        Returns: boolean
+      }
+      get_pending_subscription: {
+        Args: {
+          email_address: string
+        }
+        Returns: {
+          has_pending: boolean
+          subscription_type: string
+          expires_at: string
+        }[]
+      }
+      has_active_subscription: {
+        Args: {
+          user_uuid: string
+        }
+        Returns: boolean
+      }
+      is_quiz_subscription_required: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      safely_delete_user: {
+        Args: {
+          user_id_to_delete: string
+        }
+        Returns: undefined
+      }
+      user_has_access: {
+        Args: {
+          user_uuid: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      grow_experience: "new" | "intermediate" | "advanced"
+      growing_method: "indoor" | "outdoor" | "greenhouse"
+      monitoring_method: "manual" | "basic_sensors" | "advanced_systems"
+      nutrient_type: "organic" | "synthetic" | "both" | "none"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
@@ -16,6 +17,9 @@ const PlantHealthAnalyzer = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [cameraFile, setCameraFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<{ current: number, total: number } | null>(null);
+  const [analysisStartTime, setAnalysisStartTime] = useState<number | null>(null);
+  const [profileUsed, setProfileUsed] = useState<boolean>(false);
 
   const handleImagesSelected = async (files: File[]) => {
     setSelectedFiles(files);
@@ -43,31 +47,70 @@ const PlantHealthAnalyzer = () => {
     if (selectedFiles.length === 0) return;
 
     setIsAnalyzing(true);
+    setAnalysisStartTime(Date.now());
+    setUploadProgress({ current: 0, total: selectedFiles.length });
+    
     try {
+      console.log('Starting analysis...');
+      
       // Upload images to Supabase storage
       const imageUrls = await Promise.all(
-        selectedFiles.map(async (file) => {
+        selectedFiles.map(async (file, index) => {
           const fileName = `${Date.now()}-${file.name}`;
           const { data, error } = await supabase.storage
             .from('plant-images')
             .upload(fileName, file);
 
-          if (error) throw error;
+          if (error) {
+            console.error('Image upload error:', error);
+            throw error;
+          }
 
           const { data: { publicUrl } } = supabase.storage
             .from('plant-images')
             .getPublicUrl(fileName);
+            
+          // Update progress
+          setUploadProgress(prev => {
+            if (!prev) return { current: index + 1, total: selectedFiles.length };
+            return { ...prev, current: index + 1 };
+          });
 
           return publicUrl;
         })
       );
 
-      // Call the analyze-plant function
-      const { data, error } = await supabase.functions.invoke('analyze-plant', {
-        body: { imageUrls },
+      console.log('Images uploaded successfully:', imageUrls);
+      
+      // Show interim toast for user feedback
+      const elapsedUploadTime = ((Date.now() - (analysisStartTime || 0)) / 1000).toFixed(1);
+      toast({
+        title: "Images Uploaded Successfully",
+        description: `Beginning AI analysis now (uploaded in ${elapsedUploadTime}s)`,
       });
 
-      if (error) throw error;
+      // Call the analyze-plant function with user ID for personalization
+      const { data, error } = await supabase.functions.invoke('analyze-plant', {
+        body: { 
+          imageUrls,
+          userId: session?.user?.id 
+        },
+      });
+
+      if (error) {
+        console.error('Function invocation error:', error);
+        throw error;
+      }
+
+      console.log('Analysis data received:', data);
+
+      if (!data || !data.analysis) {
+        console.error('Invalid response data structure:', data);
+        throw new Error('Received invalid analysis data');
+      }
+      
+      // Track if profile data was used
+      setProfileUsed(!!data.profileUsed);
 
       // Save analysis results to the database
       const { data: savedAnalysis, error: saveError } = await supabase
@@ -89,10 +132,17 @@ const PlantHealthAnalyzer = () => {
         throw new Error('Failed to save analysis results');
       }
 
+      console.log('Analysis saved to database:', savedAnalysis);
       setAnalysisResult(savedAnalysis);
+      
+      // Calculate total time elapsed
+      const totalTimeElapsed = ((Date.now() - (analysisStartTime || 0)) / 1000).toFixed(1);
+      
       toast({
         title: "Analysis Complete",
-        description: "Your plant health analysis is ready to view.",
+        description: `Your plant health analysis is ready to view (completed in ${totalTimeElapsed}s)${
+          data.profileUsed ? " - Personalized to your growing method" : ""
+        }`,
       });
     } catch (error: any) {
       console.error('Analysis error:', error);
@@ -105,8 +155,15 @@ const PlantHealthAnalyzer = () => {
       setIsAnalyzing(false);
       setShowConfirmation(false);
       setCameraFile(null);
+      setUploadProgress(null);
+      setAnalysisStartTime(null);
     }
   };
+
+  // Calculate upload progress percentage
+  const uploadProgressPercentage = uploadProgress 
+    ? Math.round((uploadProgress.current / uploadProgress.total) * 100) 
+    : 0;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -122,12 +179,36 @@ const PlantHealthAnalyzer = () => {
         {isAnalyzing && (
           <div className="flex flex-col items-center justify-center p-8 space-y-4">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            <p className="text-white text-lg">Analyzing your plant...</p>
+            {uploadProgress && uploadProgress.current < uploadProgress.total ? (
+              <div className="w-full max-w-xs space-y-2">
+                <p className="text-white text-lg">Uploading images... ({uploadProgressPercentage}%)</p>
+                <div className="w-full bg-gray-700 rounded-full h-2.5">
+                  <div className="bg-green-500 h-2.5 rounded-full" style={{ width: `${uploadProgressPercentage}%` }}></div>
+                </div>
+              </div>
+            ) : (
+              <p className="text-white text-lg">
+                Analyzing your plant{session?.user?.id ? " with your growing preferences" : ""}...
+              </p>
+            )}
+            {analysisStartTime && (
+              <p className="text-gray-400 text-sm">
+                Time elapsed: {Math.floor((Date.now() - analysisStartTime) / 1000)}s
+              </p>
+            )}
           </div>
         )}
 
         {analysisResult && !isAnalyzing && (
-          <AnalysisResults analysisResult={analysisResult} />
+          <>
+            <AnalysisResults analysisResult={analysisResult} />
+            {profileUsed && (
+              <div className="bg-green-900/30 border border-green-700 rounded-md p-3 text-sm text-green-200">
+                <p className="font-medium">Personalized Analysis</p>
+                <p>This analysis was tailored to your growing method and preferences.</p>
+              </div>
+            )}
+          </>
         )}
 
         <AnalysisActions

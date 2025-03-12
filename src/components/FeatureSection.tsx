@@ -1,3 +1,4 @@
+
 import React from "react";
 import { MessageCircle, Camera, BookOpen } from "lucide-react";
 import FeatureCard from "./FeatureCard";
@@ -8,7 +9,7 @@ interface FeatureSectionProps {
 
 const FeatureSection = React.memo(({ onFeatureClick }: FeatureSectionProps) => {
   return (
-    <div className="w-full max-w-6xl mx-auto grid grid-cols-3 gap-2">
+    <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
       <FeatureCard
         icon={MessageCircle}
         title="Growing Assistant"

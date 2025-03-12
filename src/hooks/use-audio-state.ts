@@ -16,10 +16,9 @@ export function useAudioState() {
     }
   }, [])
 
-  const speakResponse = (text: string) => {
-    // Only speak if audio is explicitly unmuted
-    if (isMuted || !window.speakResponse) return
-    window.speakResponse(text)
+  const speakResponse = () => {
+    // No speech functionality
+    return;
   }
 
   return {

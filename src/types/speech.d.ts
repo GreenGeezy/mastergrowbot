@@ -1,31 +1,19 @@
-interface Window {
-  SpeechRecognition: typeof SpeechRecognition;
-  webkitSpeechRecognition: typeof SpeechRecognition;
-  speakResponse?: (text: string) => void;
-}
 
-interface SpeechRecognition {
-  new(): SpeechRecognition;
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  onresult: (event: SpeechRecognitionEvent) => void;
-  onerror: (event: SpeechRecognitionErrorEvent) => void;
-  start(): void;
-  stop(): void;
-}
-
-interface SpeechRecognitionEvent {
+// SpeechRecognition API
+interface SpeechRecognitionEvent extends Event {
+  resultIndex: number;
   results: SpeechRecognitionResultList;
 }
 
 interface SpeechRecognitionResultList {
-  readonly length: number;
+  length: number;
+  item(index: number): SpeechRecognitionResult;
   [index: number]: SpeechRecognitionResult;
 }
 
 interface SpeechRecognitionResult {
-  readonly length: number;
+  length: number;
+  item(index: number): SpeechRecognitionAlternative;
   [index: number]: SpeechRecognitionAlternative;
   isFinal: boolean;
 }
@@ -35,6 +23,25 @@ interface SpeechRecognitionAlternative {
   confidence: number;
 }
 
-interface SpeechRecognitionErrorEvent extends Event {
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: SpeechRecognitionError) => void) | null;
+  onend: ((event: Event) => void) | null;
+  onstart: ((event: Event) => void) | null;
+}
+
+interface SpeechRecognitionError extends Event {
   error: string;
+  message: string;
+}
+
+interface Window {
+  SpeechRecognition: new () => SpeechRecognition;
+  webkitSpeechRecognition: new () => SpeechRecognition;
 }

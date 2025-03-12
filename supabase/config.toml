@@ -1,4 +1,11 @@
+
 project_id = "inbfxduleyhygxatxmre"
+
+[functions.chat]
+verify_jwt = true
 
 [functions.analyze-plant]
 verify_jwt = true
+
+[functions.create-storage-bucket]
+verify_jwt = false

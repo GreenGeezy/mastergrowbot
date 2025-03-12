@@ -1,144 +1,87 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { 
+  createThread, 
+  addMessageWithImages, 
+  runAssistant, 
+  waitForRunCompletion, 
+  getAssistantResponse 
+} from "./openai-client.ts";
+import { 
+  corsHeaders, 
+  parseAnalysisResults, 
+  createErrorResponse 
+} from "./utils.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.47.0";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+// Initialize Supabase client
+const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
+const ASSISTANT_ID = Deno.env.get('OPENAI_ASSISTANT_ID') || "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
 
 serve(async (req) => {
-  // Handle CORS preflight requests
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { imageUrls } = await req.json();
-    
+    // Parse request
+    const { imageUrls, userId } = await req.json();
+    console.log('Processing image URLs:', imageUrls);
+    console.log('User ID:', userId);
+
     if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
-      throw new Error('No image URLs provided');
+      throw new Error('No valid image URLs provided');
     }
 
-    console.log('Starting analysis for images:', imageUrls);
-
-    // Create a combined prompt that includes all images
-    const messages = [
-      {
-        role: "system",
-        content: `You are an expert cannabis cultivation advisor specializing in plant health diagnostics. 
-        Analyze multiple images of cannabis plants and provide detailed, actionable feedback in the following format:
-        1. Growth Stage Assessment: Identify if the plant is in seedling, vegetative, or flowering stage
-        2. Overall Health Score: Rate the plant's health on a scale of 1-10
-        3. Specific Issues: List any visible problems (nutrient deficiencies, pest damage, etc.)
-        4. Environmental Factors: Comment on any visible environmental stress indicators
-        5. Detailed Recommendations: Provide specific, actionable steps to improve plant health
-        Be specific and technical but explain terms when needed.`
-      },
-      {
-        role: "user",
-        content: [
-          {
-            type: "text",
-            text: "Analyze these cannabis plant images and provide a comprehensive health assessment following the format specified. Consider all angles and details shown in the images."
-          },
-          ...imageUrls.map(url => ({
-            type: "image_url",
-            image_url: { url }
-          }))
-        ]
+    // Fetch user profile data if userId is provided
+    let userProfileData = null;
+    if (userId) {
+      const { data: profile, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching user profile:', error);
+      } else {
+        userProfileData = profile;
+        console.log('User profile data:', userProfileData);
       }
-    ];
-
-    const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages,
-        max_tokens: 1000
-      })
-    });
-
-    if (!openaiResponse.ok) {
-      const errorData = await openaiResponse.json();
-      console.error('OpenAI API Error:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
     }
 
-    const analysis = await openaiResponse.json();
-    console.log('OpenAI Analysis received:', analysis);
+    // Step 1: Create a thread
+    const threadId = await createThread(OPENAI_API_KEY);
+    
+    // Step 2: Add message with images to thread and include user profile context
+    await addMessageWithImages(OPENAI_API_KEY, threadId, imageUrls, userProfileData);
+    
+    // Step 3: Run assistant on thread with user-specific instructions
+    const runId = await runAssistant(OPENAI_API_KEY, threadId, ASSISTANT_ID, userProfileData);
+    
+    // Step 4: Wait for run completion (with exponential backoff)
+    await waitForRunCompletion(OPENAI_API_KEY, threadId, runId);
+    
+    // Step 5: Get assistant response
+    const analysisText = await getAssistantResponse(OPENAI_API_KEY, threadId);
+    
+    // Step 6: Parse results into structured format
+    const analysisResult = parseAnalysisResults(analysisText);
 
-    if (!analysis.choices?.[0]?.message?.content) {
-      throw new Error('Invalid response format from OpenAI');
-    }
-
-    const analysisText = analysis.choices[0].message.content;
-
-    // Parse the analysis text to extract structured data
-    const structuredAnalysis = {
-      diagnosis: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
-      confidence_level: 0.85,
-      recommended_actions: extractRecommendations(analysisText),
-      detailed_analysis: {
-        growth_stage: extractSection(analysisText, "Growth Stage Assessment", "Overall Health Score"),
-        health_score: extractSection(analysisText, "Overall Health Score", "Specific Issues"),
-        specific_issues: extractSection(analysisText, "Specific Issues", "Environmental Factors"),
-        environmental_factors: extractSection(analysisText, "Environmental Factors", "Detailed Recommendations"),
-      }
-    };
-
+    // Return successful response
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        analysis: structuredAnalysis 
-      }),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
+      JSON.stringify({ analysis: analysisResult, profileUsed: !!userProfileData }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
-    console.error('Error in analyze-plant function:', error);
-    return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: error.message 
-      }),
-      { 
-        status: 500, 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
-    );
+    // Handle any errors with a consistent response format
+    return createErrorResponse(error);
   }
 });
-
-// Helper function to extract sections from the analysis text
-function extractSection(text: string, startMarker: string, endMarker: string): string {
-  const startIndex = text.indexOf(startMarker);
-  const endIndex = text.indexOf(endMarker);
-  
-  if (startIndex === -1) return "";
-  
-  const start = startIndex + startMarker.length;
-  const end = endIndex === -1 ? undefined : endIndex;
-  
-  return text.slice(start, end).trim();
-}
-
-// Helper function to extract recommendations from the analysis text
-function extractRecommendations(text: string): string[] {
-  const recommendationsSection = extractSection(text, "Detailed Recommendations", "END");
-  return recommendationsSection
-    .split(/\d+\.|•|-/)
-    .map(item => item.trim())
-    .filter(item => item.length > 0);
-}
