@@ -48,6 +48,10 @@ const AuthUI = () => {
       const params = new URLSearchParams(window.location.search);
       const errorParam = params.get('error');
       const errorDescription = params.get('error_description');
+      const code = params.get('code');
+      
+      // Log more details for debugging
+      console.log(`[AuthUI] URL params check - Error: ${errorParam}, Code present: ${!!code}`);
       
       if (errorParam) {
         console.error(`[AuthUI] Auth error from URL: ${errorParam} - ${errorDescription}`);
@@ -138,14 +142,18 @@ const AuthUI = () => {
       // Save the current page to redirect back after login
       sessionStorage.setItem('redirectTo', '/chat');
       
-      // Forcefully clean up any existing sessions to prevent state conflicts
+      // Clear local session to prevent state conflicts
       await supabase.auth.signOut({ scope: 'local' });
+      
+      // Force refresh the auth state before proceeding
+      await supabase.auth.refreshSession();
       
       const { error, data } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: redirectUrl,
           queryParams: {
+            // These ensure a fresh auth flow each time
             access_type: 'offline',
             prompt: 'consent',
           },

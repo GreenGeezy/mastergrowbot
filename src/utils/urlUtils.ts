@@ -10,7 +10,12 @@ export const getRedirectUrl = (): string => {
   const hostname = window.location.hostname;
   const port = window.location.port ? `:${window.location.port}` : '';
   const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-  const isLovablePreview = hostname.includes('lovable.app');
+  
+  // Enhanced preview detection that handles all Lovable preview domains
+  const isLovablePreview = hostname.includes('lovable.app') || 
+                           hostname.includes('lovableproject.com') ||
+                           hostname.includes('lovable-preview');
+  
   const isMasterGrowbot = hostname.includes('mastergrowbot.com');
   
   // Build the base URL
@@ -18,16 +23,19 @@ export const getRedirectUrl = (): string => {
   
   if (isLocalhost) {
     baseUrl = `${protocol}//${hostname}${port}`;
+    console.log(`[AUTH] Using localhost URL: ${baseUrl}`);
   } else if (isLovablePreview) {
-    // Use the exact preview URL for Lovable preview environments
+    // IMPORTANT: Always use the exact full origin for preview environments
     baseUrl = window.location.origin;
     console.log(`[AUTH] Using Lovable preview URL: ${baseUrl}`);
   } else if (isMasterGrowbot) {
-    // IMPORTANT: Always use the www subdomain for consistency
+    // IMPORTANT: Always use the www subdomain for consistency in production
     baseUrl = 'https://www.mastergrowbot.com';
+    console.log(`[AUTH] Using production URL: ${baseUrl}`);
   } else {
-    // Fallback to current origin
+    // Fallback to current origin with detailed logging
     baseUrl = window.location.origin;
+    console.log(`[AUTH] Using fallback URL: ${baseUrl} (unknown environment)`);
   }
   
   // CRITICAL: Use ONLY this callback path, which must match EXACTLY what's

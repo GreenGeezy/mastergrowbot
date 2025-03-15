@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
@@ -11,6 +10,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     autoRefreshToken: true,
     flowType: 'pkce',
     storage: localStorage,
+    debug: true,
   },
 });
 
