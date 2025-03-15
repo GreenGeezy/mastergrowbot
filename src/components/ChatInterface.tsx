@@ -148,7 +148,7 @@ export default function ChatInterface() {
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen w-full mt-[60px]">
+      <div className="flex h-screen w-full">
         <AppSidebar onNewChat={startNewChat}>
           {sidebarContent}
         </AppSidebar>
