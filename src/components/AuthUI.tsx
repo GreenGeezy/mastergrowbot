@@ -85,6 +85,7 @@ const AuthUI = () => {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth state change:", event);
       if (event === 'SIGNED_IN' && session) {
         // Get redirect URL from sessionStorage or default to chat
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
@@ -205,7 +206,11 @@ const AuthUI = () => {
         }
       }
       
+      // Get the redirect URL
       const redirectUrl = getRedirectUrl();
+      console.log("OAuth redirect URL:", redirectUrl);
+      
+      // Sign in with Google
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -218,9 +223,13 @@ const AuthUI = () => {
       });
       
       if (error) throw error;
+      
+      // This toast may not be seen as we're redirecting
+      toast.success("Redirecting to Google authentication...");
+      
     } catch (error) {
-      toast.error("Failed to sign in with Google. Please try again.");
       console.error("Google sign-in error:", error);
+      toast.error("Failed to sign in with Google. Please try again.");
     } finally {
       setLoading(false);
     }

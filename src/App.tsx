@@ -45,13 +45,27 @@ const AuthCallback = () => {
   const location = useLocation();
   
   useEffect(() => {
-    // Check session on mount to handle callback completion
+    // Check hash and search params for auth-related data
+    const hasAuthParams = location.hash || location.search.includes('code=') || location.search.includes('error=');
+    
+    // Process auth callback if needed
+    if (hasAuthParams) {
+      // Let supabase client handle the auth callback
+      console.log("Processing auth callback with params:", location.search);
+      
+      // The hash contains tokens, let's process it to complete the sign-in flow
+      supabase.auth.getSessionFromUrl().catch(error => {
+        console.error("Error processing auth callback:", error);
+      });
+    }
+    
+    // Redirect on successful authentication
     if (session) {
       const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
       sessionStorage.removeItem('redirectTo');
       window.location.href = redirectTo;
     }
-  }, [session]);
+  }, [session, location]);
   
   return <LoadingSpinner />;
 };
@@ -105,12 +119,13 @@ const App = () => {
                 } 
               />
               
-              {/* Auth routes */}
+              {/* Auth routes - Add comprehensive coverage for all possible auth callback patterns */}
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/*" element={<AuthCallback />} />
-              <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
-              <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/auth/callback/*" element={<AuthCallback />} />
+              <Route path="/auth/*" element={<AuthCallback />} />
               
               {/* Protected routes */}
               <Route 

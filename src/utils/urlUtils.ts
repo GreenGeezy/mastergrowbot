@@ -1,3 +1,4 @@
+
 export const getRedirectUrl = () => {
   const hostname = window.location.hostname;
   const origin = window.location.origin;
@@ -22,6 +23,6 @@ export const getRedirectUrl = () => {
     return `${origin}/auth/v1/callback`;
   }
   
-  // Default fallback
+  // Default fallback - ensure we consistently use the v1 path
   return `${origin}/auth/v1/callback`;
 };
