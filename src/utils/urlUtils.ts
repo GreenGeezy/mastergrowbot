@@ -21,15 +21,15 @@ export const getRedirectUrl = (): string => {
   } else if (isLovablePreview) {
     baseUrl = window.location.origin;
   } else if (isMasterGrowbot) {
-    // Explicitly use the production URL with HTTPS
+    // IMPORTANT: Always use the www subdomain for consistency
     baseUrl = 'https://www.mastergrowbot.com';
   } else {
     // Fallback to current origin
     baseUrl = window.location.origin;
   }
   
-  // CRITICAL: Use the exact callback path that is configured in Supabase Auth settings
-  // and in Google Cloud Console OAuth credentials
+  // CRITICAL: Use ONLY this callback path, which must match EXACTLY what's
+  // configured in both Supabase URL Configuration and Google OAuth credentials
   const callbackPath = '/auth/callback';
   
   // Very detailed logging for debugging authentication issues
@@ -38,7 +38,8 @@ export const getRedirectUrl = (): string => {
   console.log(`[AUTH] Using base URL: ${baseUrl}`);
   console.log(`[AUTH] Using callback path: ${callbackPath}`);
   
-  // Standardize the redirect URL - this must match exactly what's configured in Supabase
+  // Standardize the redirect URL - this must match exactly what's configured in both
+  // Supabase URL Configuration and Google OAuth redirect URIs
   const redirectUrl = `${baseUrl}${callbackPath}`;
   
   console.log(`[AUTH] Generated redirect URL: ${redirectUrl}`);

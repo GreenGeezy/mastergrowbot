@@ -60,15 +60,18 @@ const AuthUI = () => {
     
     // Subscribe to auth state changes - critical for OAuth flows
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[AuthUI] Auth state changed:', event, session ? `Session exists for user ${session.user.id}` : 'No session');
+      console.log('[AuthUI] Auth state changed:', event, session ? `Session exists for user ${session?.user?.id || 'unknown'}` : 'No session');
       
       if (event === 'SIGNED_IN' && session) {
         console.log('[AuthUI] User signed in, redirecting to saved location');
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
         console.log('[AuthUI] Redirecting to:', redirectTo);
-        // Force immediate navigation with no delay
-        navigate(redirectTo, { replace: true });
+        
+        // Add a small delay to ensure everything is settled before navigation
+        setTimeout(() => {
+          navigate(redirectTo, { replace: true });
+        }, 100);
       }
     });
 
@@ -134,6 +137,9 @@ const AuthUI = () => {
       
       // Save the current page to redirect back after login
       sessionStorage.setItem('redirectTo', '/chat');
+      
+      // Forcefully clean up any existing sessions to prevent state conflicts
+      await supabase.auth.signOut({ scope: 'local' });
       
       const { error, data } = await supabase.auth.signInWithOAuth({
         provider: 'google',

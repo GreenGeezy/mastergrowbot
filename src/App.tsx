@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -78,9 +77,10 @@ const AuthCallback = () => {
       console.log('[AuthCallback] No session detected in callback handler');
       
       // After a short delay, recheck session - sometimes it takes a moment to be available
-      const timeoutId = setTimeout(() => {
+      const timeoutId = setTimeout(async () => {
         console.log('[AuthCallback] Rechecking session after delay');
-        if (supabase.auth.session) {
+        const { data } = await supabase.auth.getSession();
+        if (data?.session) {
           console.log('[AuthCallback] Session found on recheck');
           const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
           sessionStorage.removeItem('redirectTo');
