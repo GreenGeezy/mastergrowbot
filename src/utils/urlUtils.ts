@@ -5,33 +5,29 @@
  * - In production: Uses the actual domain
  */
 export const getRedirectUrl = (): string => {
-  const isLocalhost = window.location.hostname === 'localhost' 
-    || window.location.hostname === '127.0.0.1';
-  
-  // Special case for Lovable preview URLs
-  const isLovablePreview = window.location.hostname.includes('lovableproject.com');
-  
-  // Get the protocol (http or https)
+  // Get current URL information
   const protocol = window.location.protocol;
-  
-  // Get the port if it's not the default (80 for http, 443 for https)
+  const hostname = window.location.hostname;
   const port = window.location.port ? `:${window.location.port}` : '';
+  const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
+  const isLovablePreview = hostname.includes('lovableproject.com');
   
-  // Build URL for various environments
-  let redirectUrl = '';
+  // Build the base URL
+  let baseUrl = '';
   
   if (isLocalhost) {
-    // For localhost, use the current origin
-    redirectUrl = `${protocol}//${window.location.hostname}${port}`;
+    baseUrl = `${protocol}//${hostname}${port}`;
   } else if (isLovablePreview) {
-    // For Lovable previews, use the full current URL
-    redirectUrl = window.location.origin;
+    baseUrl = window.location.origin;
   } else {
-    // For production, always use the main domain
-    redirectUrl = `https://www.mastergrowbot.com`;
+    // Production environment - mastergrowbot.com
+    baseUrl = `https://www.mastergrowbot.com`;
   }
   
-  console.log(`[urlUtils] Generated redirect URL: ${redirectUrl}`);
+  // Add the correct callback path to ensure auth flow works
+  const redirectUrl = `${baseUrl}/auth/callback`;
+  
+  console.log(`[AUTH] Generated redirect URL: ${redirectUrl}`);
   
   return redirectUrl;
 };

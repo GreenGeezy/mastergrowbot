@@ -17,7 +17,7 @@ import {
 import SupportDialog from '@/components/support/SupportDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useSession } from '@supabase/auth-helpers-react';
 import { toast } from '@/hooks/use-toast';
 import { getRedirectUrl } from '@/utils/urlUtils';
 
@@ -25,38 +25,60 @@ export const ChatHeader = () => {
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const session = useSession();
-  const supabaseClient = useSupabaseClient();
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   // Check authentication status on mount and when session changes
   useEffect(() => {
-    const checkAuth = async () => {
-      const currentSession = await supabaseClient.auth.getSession();
-      console.log('[ChatHeader] Current session:', currentSession?.data?.session ? 'Active' : 'None');
-      
-      setIsAuthenticated(!!currentSession?.data?.session);
-      
-      if (currentSession?.data?.session?.user) {
-        console.log('[ChatHeader] User ID:', currentSession.data.session.user.id);
-        console.log('[ChatHeader] User email:', currentSession.data.session.user.email);
+    async function checkAuth() {
+      try {
+        const { data } = await supabase.auth.getSession();
+        const hasSession = !!data.session;
+        console.log('[ChatHeader] Session check:', hasSession ? 'Found session' : 'No session');
+        
+        if (hasSession !== isAuthenticated) {
+          console.log('[ChatHeader] Updating authentication state:', hasSession);
+          setIsAuthenticated(hasSession);
+        }
+        
+        if (data.session?.user) {
+          console.log('[ChatHeader] User ID:', data.session.user.id);
+        }
+      } catch (err) {
+        console.error('[ChatHeader] Error checking auth:', err);
       }
-    };
+    }
     
     checkAuth();
-  }, [session, supabaseClient]);
-
-  // Additional listener for auth state changes
-  useEffect(() => {
-    const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, newSession) => {
-      console.log('[ChatHeader] Auth event:', event);
-      setIsAuthenticated(!!newSession);
+    
+    // Set up auth state change listener
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, newSession) => {
+      console.log('[ChatHeader] Auth state changed event:', event);
+      const hasSession = !!newSession;
+      
+      if (hasSession !== isAuthenticated) {
+        console.log('[ChatHeader] Updating authentication state from event:', hasSession);
+        setIsAuthenticated(hasSession);
+      }
     });
     
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [supabaseClient]);
+  }, [session, isAuthenticated]);
+
+  // Verify auth state when component mounts
+  useEffect(() => {
+    async function verifyAuthState() {
+      const { data } = await supabase.auth.getSession();
+      const hasSession = !!data.session;
+      
+      console.log('[ChatHeader] Initial auth verification:', hasSession ? 'Authenticated' : 'Not authenticated');
+      setIsAuthenticated(hasSession);
+    }
+    
+    verifyAuthState();
+  }, []);
 
   const growTools = [
     {

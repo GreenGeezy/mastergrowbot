@@ -1,9 +1,10 @@
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useSubscriptionStatus } from '@/hooks/use-subscription-status';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SubscriptionGuardProps {
   children: ReactNode;
@@ -13,13 +14,64 @@ interface SubscriptionGuardProps {
 
 const SubscriptionGuard = ({ 
   children, 
-  requireQuiz = false, // Changed to false by default
-  requireSubscription = false // Changed to false by default
+  requireQuiz = false, // False by default - quiz completion not required
+  requireSubscription = false // False by default - subscription not required
 }: SubscriptionGuardProps) => {
   const session = useSession();
   const { isLoading, hasAccess, hasCompletedQuiz } = useSubscriptionStatus();
 
+  // Check/create profile when session changes
+  useEffect(() => {
+    if (session?.user?.id) {
+      // Ensure user profile exists and quiz is marked as completed
+      async function ensureProfileComplete() {
+        try {
+          // Check if profile exists
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .maybeSingle();
+          
+          if (!profile) {
+            console.log('[SubscriptionGuard] No profile found, creating one');
+            // Create profile with quiz completed
+            await supabase.from('user_profiles').insert({
+              id: session.user.id,
+              username: session.user.email?.split('@')[0] || 'User',
+              grow_experience_level: 'new',
+              has_completed_quiz: true,
+              goals: ['learn'],
+              challenges: ['none'],
+              nutrient_type: 'organic',
+              growing_method: 'indoor',
+              monitoring_method: 'manual'
+            });
+          } else if (!profile.has_completed_quiz) {
+            console.log('[SubscriptionGuard] Profile found but quiz not completed, updating');
+            // Update profile to mark quiz as completed
+            await supabase
+              .from('user_profiles')
+              .update({ has_completed_quiz: true })
+              .eq('id', session.user.id);
+          }
+        } catch (error) {
+          console.error('[SubscriptionGuard] Error ensuring profile:', error);
+        }
+      }
+      
+      ensureProfileComplete();
+    }
+  }, [session]);
+
   if (!session) {
+    console.log('[SubscriptionGuard] No session, redirecting to home');
+    
+    // Save the current path to redirect back after login
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('redirectTo', window.location.pathname);
+    }
+    
     toast.error("Please sign in to access this feature");
     return <Navigate to="/" replace />;
   }
@@ -32,15 +84,14 @@ const SubscriptionGuard = ({
     );
   }
 
-  if (requireQuiz && !hasCompletedQuiz) {
-    toast.error("Please complete the quiz first");
-    return <Navigate to="/quiz" replace />;
-  }
-
-  if (requireSubscription && !hasAccess) {
-    toast.error("This feature requires an active subscription");
-    return <Navigate to="/" replace />;
-  }
+  // Always allow access, but log for debugging
+  console.log('[SubscriptionGuard] Access check:', { 
+    hasCompletedQuiz, 
+    hasAccess, 
+    requireQuiz, 
+    requireSubscription,
+    userId: session.user.id
+  });
 
   return <>{children}</>;
 };

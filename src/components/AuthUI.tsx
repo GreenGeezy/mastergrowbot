@@ -18,49 +18,28 @@ const AuthUI = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [hasPendingSubscription, setHasPendingSubscription] = useState(false);
   const [subscriptionType, setSubscriptionType] = useState("");
-  const [canSignUp, setCanSignUp] = useState(true); // Always true now
   const navigate = useNavigate();
 
-  // Check if email has a pending subscription when email changes
+  // Check for existing session on mount
   useEffect(() => {
-    // If feature flag is off, skip subscription check
-    if (!REQUIRE_QUIZ_AND_SUBSCRIPTION) {
-      return;
-    }
-
-    const checkPendingSubscription = async () => {
-      if (!email || email.trim() === "") {
-        setHasPendingSubscription(false);
-        setSubscriptionType("");
-        return;
-      }
-      
-      try {
-        const { data, error } = await supabase
-          .rpc('get_pending_subscription', { email_address: email });
-
-        if (error) throw error;
-        
-        if (data && data.length > 0) {
-          setHasPendingSubscription(true);
-          setSubscriptionType(data[0].subscription_type);
-        } else {
-          setHasPendingSubscription(false);
-          setSubscriptionType("");
-        }
-      } catch (error) {
-        console.error('Error checking pending subscription:', error);
+    const checkExistingSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data?.session) {
+        // If there's already a session, redirect to chat
+        console.log('[AuthUI] Existing session found, redirecting to chat');
+        navigate('/chat', { replace: true });
       }
     };
-
-    if (isSignUp) {
-      checkPendingSubscription();
-    }
-  }, [email, isSignUp]);
+    
+    checkExistingSession();
+  }, [navigate]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[AuthUI] Auth state changed:', event);
+      
       if (event === 'SIGNED_IN' && session) {
+        console.log('[AuthUI] User signed in, redirecting');
         // Get redirect URL from sessionStorage or default to chat
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
@@ -80,9 +59,9 @@ const AuthUI = () => {
     try {
       if (isSignUp) {
         const redirectUrl = getRedirectUrl();
-        console.log('Using redirect URL for signup:', redirectUrl);
+        console.log('[AuthUI] Using redirect URL for signup:', redirectUrl);
         
-        const { error: signUpError } = await supabase.auth.signUp({
+        const { error: signUpError, data } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -91,6 +70,8 @@ const AuthUI = () => {
         });
 
         if (signUpError) throw signUpError;
+        
+        console.log('[AuthUI] Signup successful, user:', data.user?.id);
 
         // Call the verification email function
         const response = await supabase.functions.invoke('send-verification-email', {
@@ -107,15 +88,23 @@ const AuthUI = () => {
         }
       } else {
         // For sign in, we don't need to check for quiz or subscription
-        const { error: signInError } = await supabase.auth.signInWithPassword({
+        console.log('[AuthUI] Signing in with email:', email);
+        
+        const { error: signInError, data } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
         if (signInError) throw signInError;
+        
+        console.log('[AuthUI] Login successful, user:', data.user?.id);
         toast.success("Welcome back!");
+        
+        // Force navigate to chat after successful login
+        navigate('/chat', { replace: true });
       }
     } catch (error) {
+      console.error('[AuthUI] Auth error:', error);
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -127,7 +116,7 @@ const AuthUI = () => {
       setLoading(true);
       
       const redirectUrl = getRedirectUrl();
-      console.log('Using redirect URL for OAuth:', redirectUrl);
+      console.log('[AuthUI] Using redirect URL for OAuth:', redirectUrl);
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -143,7 +132,7 @@ const AuthUI = () => {
       if (error) throw error;
     } catch (error) {
       toast.error("Failed to sign in with Google. Please try again.");
-      console.error("Google sign-in error:", error);
+      console.error("[AuthUI] Google sign-in error:", error);
     } finally {
       setLoading(false);
     }

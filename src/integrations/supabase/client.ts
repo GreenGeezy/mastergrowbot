@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
@@ -9,12 +10,14 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
+    storage: window.localStorage, // Explicitly use localStorage
   },
 });
 
 // Enhanced logging for auth state changes
 supabase.auth.onAuthStateChange((event, session) => {
   console.log(`[Supabase] Auth state changed: ${event}`, session ? 'User logged in' : 'No user');
+  
   if (session) {
     console.log('[Supabase] User ID:', session.user.id);
     console.log('[Supabase] User email:', session.user.email);
@@ -23,7 +26,34 @@ supabase.auth.onAuthStateChange((event, session) => {
     // Force create profile if we have a user session
     createUserProfileIfNeeded(session.user.id, session.user);
   }
+  
+  // Broadcast the auth state change to all tabs/windows
+  try {
+    localStorage.setItem('supabase.auth.event', JSON.stringify({
+      event,
+      session: session ? { user: { id: session.user.id } } : null,
+      timestamp: new Date().toISOString()
+    }));
+  } catch (error) {
+    console.error('[Supabase] Error broadcasting auth state:', error);
+  }
 });
+
+// Listen for auth changes from other tabs/windows
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'supabase.auth.event') {
+      console.log('[Supabase] Auth state changed in another tab/window');
+      
+      // Force refresh the session
+      supabase.auth.getSession().then(({ data }) => {
+        if (data.session) {
+          console.log('[Supabase] Session refreshed from storage event');
+        }
+      });
+    }
+  });
+}
 
 // Function to create user profile if it doesn't exist
 async function createUserProfileIfNeeded(userId, user) {
@@ -117,6 +147,19 @@ async function createUserProfileIfNeeded(userId, user) {
     }
   } catch (error) {
     console.error('Error initializing storage:', error);
+  }
+})();
+
+// Check current auth state on load
+(async () => {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) {
+    console.error('[Supabase] Error getting session:', error);
+  } else if (data?.session) {
+    console.log('[Supabase] Initial session loaded:', data.session.user.id);
+    createUserProfileIfNeeded(data.session.user.id, data.session.user);
+  } else {
+    console.log('[Supabase] No initial session');
   }
 })();
 
