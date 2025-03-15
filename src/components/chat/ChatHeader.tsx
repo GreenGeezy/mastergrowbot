@@ -18,11 +18,13 @@ import SupportDialog from '@/components/support/SupportDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
+import { toast } from '@/hooks/use-toast';
 
 export const ChatHeader = () => {
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const session = useSession();
+  const [isLoading, setIsLoading] = useState(false);
 
   const growTools = [
     {
@@ -42,16 +44,105 @@ export const ChatHeader = () => {
     },
   ];
 
+  // Initialize user profile in the database if it doesn't exist
+  useEffect(() => {
+    const initializeProfile = async () => {
+      if (!session?.user?.id) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .select('id')
+          .eq('id', session.user.id)
+          .maybeSingle();
+          
+        if (error) {
+          console.error('Error checking profile:', error);
+          return;
+        }
+        
+        // If profile doesn't exist, create it
+        if (!data) {
+          console.log('Creating new user profile');
+          const { error: insertError } = await supabase
+            .from('user_profiles')
+            .insert({
+              id: session.user.id,
+              username: session.user.email,
+              email: session.user.email,
+              grow_experience_level: 'new'
+            });
+            
+          if (insertError) {
+            console.error('Error creating profile:', insertError);
+            toast({
+              title: "Error creating profile",
+              description: "There was an error creating your profile. Please try again.",
+              variant: "destructive",
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Unexpected error initializing profile:', err);
+      }
+    };
+    
+    initializeProfile();
+  }, [session]);
+
   const handleSignOut = async () => {
     try {
+      setIsLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error('Error signing out:', error);
+        toast({
+          title: "Error signing out",
+          description: error.message,
+          variant: "destructive",
+        });
       } else {
         navigate('/');
       }
     } catch (err) {
       console.error('Error during sign out:', err);
+      toast({
+        title: "Error signing out",
+        description: "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsLoading(true);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/v1/callback`
+        }
+      });
+      
+      if (error) {
+        console.error('Google sign in error:', error);
+        toast({
+          title: "Login error",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (err) {
+      console.error('Unexpected error during Google sign in:', err);
+      toast({
+        title: "Login error",
+        description: "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -121,16 +212,22 @@ export const ChatHeader = () => {
                 <Button 
                   variant="outline"
                   className="bg-purple-600 hover:bg-purple-700 text-white border-none flex items-center space-x-2"
+                  disabled={isLoading}
                 >
-                  {session ? (
+                  {isLoading ? (
+                    <span className="font-medium">Processing...</span>
+                  ) : session ? (
                     <>
                       <User className="w-4 h-4" />
                       <span className="font-medium">Signed In</span>
+                      <ChevronDown className="w-4 h-4" />
                     </>
                   ) : (
-                    <span className="font-medium">Log In</span>
+                    <>
+                      <span className="font-medium">Log In</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </>
                   )}
-                  <ChevronDown className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 bg-[#1A1A1A] border border-[#333333]">
@@ -145,8 +242,9 @@ export const ChatHeader = () => {
                     <DropdownMenuItem 
                       className="p-3 hover:bg-purple-600 text-white cursor-pointer"
                       onClick={handleSignOut}
+                      disabled={isLoading}
                     >
-                      Sign Out
+                      {isLoading ? "Signing Out..." : "Sign Out"}
                     </DropdownMenuItem>
                   </>
                 ) : (
@@ -159,12 +257,8 @@ export const ChatHeader = () => {
                     <DropdownMenuSeparator className="bg-[#333333]" />
                     <DropdownMenuItem 
                       className="p-3 hover:bg-purple-600 cursor-pointer"
-                      onClick={() => supabase.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: {
-                          redirectTo: `${window.location.origin}/auth/v1/callback`
-                        }
-                      })}
+                      onClick={handleGoogleSignIn}
+                      disabled={isLoading}
                     >
                       <div className="flex items-center space-x-2 text-white">
                         <svg className="h-5 w-5" viewBox="0 0 24 24">

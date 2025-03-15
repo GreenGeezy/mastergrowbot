@@ -1,3 +1,4 @@
+
 import { Key, Bell, BellOff, Moon, Sun, LogOut } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 
@@ -7,6 +8,7 @@ interface ProfileSettingsProps {
   isDarkMode: boolean
   toggleTheme: () => void
   handleSignOut: () => Promise<void>
+  isLoading?: boolean
 }
 
 export function ProfileSettings({ 
@@ -14,7 +16,8 @@ export function ProfileSettings({
   setNotifications, 
   isDarkMode, 
   toggleTheme,
-  handleSignOut 
+  handleSignOut,
+  isLoading = false
 }: ProfileSettingsProps) {
   return (
     <div className="space-y-4">
@@ -58,9 +61,10 @@ export function ProfileSettings({
       <button
         onClick={handleSignOut}
         className="flex items-center w-full px-3 py-2 text-sm text-red-400 rounded-md hover:bg-red-500/10"
+        disabled={isLoading}
       >
         <LogOut className="w-4 h-4 mr-3" />
-        Sign Out
+        {isLoading ? "Signing Out..." : "Sign Out"}
       </button>
     </div>
   )
