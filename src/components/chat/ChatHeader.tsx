@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { MessageSquare, Sprout, HelpCircle, ChevronDown, User } from 'lucide-react';
+
+import React, { useState } from 'react';
+import { MessageSquare, Sprout, HelpCircle, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -19,13 +20,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
 import { toast } from '@/hooks/use-toast';
 import { ProfileDropdown } from '../profile/ProfileDropdown';
+import { getRedirectUrl } from '@/utils/urlUtils';
 
 export const ChatHeader = () => {
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const session = useSession();
   const [isLoading, setIsLoading] = useState(false);
-  const [isInitializing, setIsInitializing] = useState(true);
 
   const growTools = [
     {
@@ -45,78 +46,12 @@ export const ChatHeader = () => {
     },
   ];
 
-  // Initialize user profile in the database if it doesn't exist
-  useEffect(() => {
-    const initializeProfile = async () => {
-      if (!session?.user?.id) {
-        setIsInitializing(false);
-        return;
-      }
-      
-      try {
-        const { data, error } = await supabase
-          .from('user_profiles')
-          .select('id')
-          .eq('id', session.user.id)
-          .maybeSingle();
-          
-        if (error) {
-          console.error('[ChatHeader] Error checking profile:', error);
-          setIsInitializing(false);
-          return;
-        }
-        
-        // If profile doesn't exist, create it
-        if (!data) {
-          console.log('[ChatHeader] Creating new user profile');
-          
-          // For OAuth users, extract name from user metadata if available
-          let username = session.user.email;
-          if (session.user.user_metadata?.full_name) {
-            username = session.user.user_metadata.full_name;
-          } else if (session.user.user_metadata?.name) {
-            username = session.user.user_metadata.name;
-          }
-          
-          const { error: insertError } = await supabase
-            .from('user_profiles')
-            .insert({
-              id: session.user.id,
-              username: username,
-              email: session.user.email,
-              grow_experience_level: 'new',
-              has_completed_quiz: true // Set to true to avoid quiz requirement issues
-            });
-            
-          if (insertError) {
-            console.error('[ChatHeader] Error creating profile:', insertError);
-            toast({
-              title: "Error creating profile",
-              description: "There was an error creating your profile. Please try again.",
-              variant: "destructive",
-            });
-          } else {
-            console.log('[ChatHeader] Profile created successfully');
-          }
-        } else {
-          console.log('[ChatHeader] Profile already exists for user', session.user.id);
-        }
-      } catch (err) {
-        console.error('[ChatHeader] Unexpected error initializing profile:', err);
-      } finally {
-        setIsInitializing(false);
-      }
-    };
-    
-    initializeProfile();
-  }, [session, supabase, toast]);
-
   const handleSignOut = async () => {
     try {
       setIsLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) {
-        console.error('Error signing out:', error);
+        console.error('[ChatHeader] Error signing out:', error);
         toast({
           title: "Error signing out",
           description: error.message,
@@ -126,7 +61,7 @@ export const ChatHeader = () => {
         navigate('/');
       }
     } catch (err) {
-      console.error('Error during sign out:', err);
+      console.error('[ChatHeader] Error during sign out:', err);
       toast({
         title: "Error signing out",
         description: "An unexpected error occurred.",
@@ -140,15 +75,19 @@ export const ChatHeader = () => {
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
+      // Get a properly formatted redirect URL
+      const redirectTo = getRedirectUrl();
+      console.log('[ChatHeader] Using redirect URL for auth:', redirectTo);
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/v1/callback`
+          redirectTo
         }
       });
       
       if (error) {
-        console.error('Google sign in error:', error);
+        console.error('[ChatHeader] Google sign in error:', error);
         toast({
           title: "Login error",
           description: error.message,
@@ -156,7 +95,7 @@ export const ChatHeader = () => {
         });
       }
     } catch (err) {
-      console.error('Unexpected error during Google sign in:', err);
+      console.error('[ChatHeader] Unexpected error during Google sign in:', err);
       toast({
         title: "Login error",
         description: "An unexpected error occurred.",
@@ -228,15 +167,7 @@ export const ChatHeader = () => {
               <span className="font-medium">Feedback</span>
             </Button>
 
-            {isInitializing ? (
-              <Button 
-                variant="outline"
-                className="bg-purple-600 hover:bg-purple-700 text-white border-none"
-                disabled={true}
-              >
-                <span className="font-medium">Loading...</span>
-              </Button>
-            ) : session ? (
+            {session ? (
               <ProfileDropdown />
             ) : (
               <DropdownMenu>

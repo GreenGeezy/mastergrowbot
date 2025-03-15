@@ -53,7 +53,7 @@ export function useProfile() {
           username: username,
           grow_experience_level: 'new',
           email: session.user.email,
-          has_completed_quiz: false
+          has_completed_quiz: true // Set to true to avoid quiz requirement issues
         };
 
         console.log('[useProfile] Creating profile with data:', defaultProfile);
