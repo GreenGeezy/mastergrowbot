@@ -43,7 +43,9 @@ export function ProfileSettings({
       setIsPasswordResetLoading(true);
       
       // Get the correct redirect URL based on the current domain
-      const redirectUrl = getRedirectUrl().replace('/auth/v1/callback', '/reset-password');
+      const baseRedirectUrl = getRedirectUrl();
+      // Remove /auth/v1/callback and replace with /reset-password
+      const redirectUrl = baseRedirectUrl.replace('/auth/v1/callback', '/reset-password');
       console.log('[ProfileSettings] Password reset redirect URL:', redirectUrl);
       
       const { error } = await supabase.auth.resetPasswordForEmail(email, {

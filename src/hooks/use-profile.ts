@@ -14,6 +14,7 @@ export function useProfile() {
   // Create a more robust fetch function that we can also call manually
   const fetchProfileData = useCallback(async () => {
     if (!session?.user?.id) {
+      console.log('[useProfile] No user session found');
       return { success: false, reason: 'no-session' };
     }
 
@@ -37,9 +38,18 @@ export function useProfile() {
       // If no profile exists, create one with default values
       if (!profileData) {
         console.log('[useProfile] No profile found, creating default profile');
+        
+        // For OAuth users, extract name from user metadata if available
+        let username = session.user.email?.split('@')[0] || 'User';
+        if (session.user.user_metadata?.full_name) {
+          username = session.user.user_metadata.full_name;
+        } else if (session.user.user_metadata?.name) {
+          username = session.user.user_metadata.name;
+        }
+        
         const defaultProfile = {
           id: session.user.id,
-          username: session.user.email?.split('@')[0] || 'User',
+          username: username,
           grow_experience_level: 'new',
           email: session.user.email,
           has_completed_quiz: false
@@ -54,7 +64,9 @@ export function useProfile() {
           throw createError;
         }
 
+        // Set the profile data in the state
         setProfileData(defaultProfile);
+        console.log('[useProfile] Created default profile successfully', defaultProfile);
         return { success: true, data: defaultProfile, created: true };
       }
 
@@ -64,6 +76,7 @@ export function useProfile() {
         ...profileData
       };
       
+      console.log('[useProfile] Profile data loaded successfully', completeProfileData);
       setProfileData(completeProfileData);
       return { success: true, data: completeProfileData, created: false };
     } catch (error) {
@@ -82,11 +95,12 @@ export function useProfile() {
     } finally {
       setIsLoading(false);
     }
-  }, [session?.user?.id, session?.user?.email, supabase, toast]);
+  }, [session?.user?.id, session?.user?.email, session?.user?.user_metadata, supabase, toast]);
 
   // Effect to load profile data when session changes
   useEffect(() => {
     if (session?.user?.id) {
+      console.log('[useProfile] Session changed, loading profile data');
       fetchProfileData();
     } else {
       // Reset profile data when user is not logged in
@@ -100,6 +114,7 @@ export function useProfile() {
 
     try {
       setIsLoading(true);
+      console.log('[useProfile] Updating profile with:', updates);
       
       const { error } = await supabase
         .from('user_profiles')
@@ -123,6 +138,7 @@ export function useProfile() {
         ...updates
       }));
       
+      console.log('[useProfile] Profile updated successfully');
       return true;
     } catch (error) {
       console.error('[useProfile] Error updating profile:', error);
@@ -138,6 +154,7 @@ export function useProfile() {
   };
 
   const refreshProfile = () => {
+    console.log('[useProfile] Manually refreshing profile');
     return fetchProfileData();
   };
 

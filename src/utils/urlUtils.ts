@@ -6,15 +6,18 @@ export const getRedirectUrl = () => {
   // Logger to help with debugging
   console.log(`[getRedirectUrl] Current hostname: ${hostname}, origin: ${origin}`);
   
-  // For production domain
+  // For production domain and its www subdomain
   if (hostname === 'mastergrowbot.com' || hostname === 'www.mastergrowbot.com') {
     const redirectUrl = `${origin}/auth/v1/callback`;
     console.log(`[getRedirectUrl] Using production redirect URL: ${redirectUrl}`);
     return redirectUrl;
   }
   
-  // For development/testing on Lovable or Supabase or Vercel hosted subdomain
-  if (hostname.includes('lovable.app') || hostname.includes('supabase.co') || hostname.includes('vercel.app')) {
+  // For preview domains - both Lovable and Vercel
+  if (hostname.includes('lovable.app') || 
+      hostname.includes('preview--mastergrowbot') || 
+      hostname.includes('supabase.co') || 
+      hostname.includes('vercel.app')) {
     const redirectUrl = `${origin}/auth/v1/callback`;
     console.log(`[getRedirectUrl] Using preview redirect URL: ${redirectUrl}`);
     return redirectUrl;
@@ -39,6 +42,7 @@ export const isAllowedRedirectUrl = (url: string): boolean => {
     'mastergrowbot.com',
     'www.mastergrowbot.com',
     'lovable.app',
+    'preview--mastergrowbot',
     'supabase.co',
     'vercel.app',
     'localhost',
@@ -47,7 +51,7 @@ export const isAllowedRedirectUrl = (url: string): boolean => {
   
   try {
     const urlObj = new URL(url);
-    return allowedDomains.some(domain => urlObj.hostname === domain || urlObj.hostname.endsWith(`.${domain}`));
+    return allowedDomains.some(domain => urlObj.hostname === domain || urlObj.hostname.includes(domain));
   } catch (e) {
     console.error('[isAllowedRedirectUrl] Invalid URL:', url);
     return false;
