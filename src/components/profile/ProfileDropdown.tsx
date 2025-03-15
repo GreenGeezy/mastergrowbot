@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useToast } from '@/hooks/use-toast'
@@ -18,6 +17,7 @@ export function ProfileDropdown() {
   const [notifications, setNotifications] = useState(true)
   const [profileData, setProfileData] = useState<ProfileData>({})
   const [isLoading, setIsLoading] = useState(false)
+  const [hasError, setHasError] = useState(false)
   const session = useSession()
   const supabase = useSupabaseClient()
   const { toast } = useToast()
@@ -31,6 +31,7 @@ export function ProfileDropdown() {
 
       try {
         setIsLoading(true);
+        setHasError(false);
         console.log('Starting profile data fetch for user:', session.user.id);
         
         // First try to get the profile data
@@ -78,6 +79,7 @@ export function ProfileDropdown() {
 
       } catch (error) {
         console.error('Error in fetchProfileData:', error);
+        setHasError(true);
         toast({
           title: "Error loading profile",
           description: "Please try signing out and back in.",
@@ -88,7 +90,9 @@ export function ProfileDropdown() {
       }
     };
 
-    fetchProfileData();
+    if (session?.user?.id) {
+      fetchProfileData();
+    }
   }, [session?.user?.id, session?.user?.email, supabase, toast]);
 
   const handleSignOut = async () => {
@@ -122,26 +126,35 @@ export function ProfileDropdown() {
   const updateExperienceLevel = async (level: string) => {
     if (!session?.user?.id) return
 
-    const { error } = await supabase
-      .from('user_profiles')
-      .upsert({
-        id: session.user.id,
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .upsert({
+          id: session.user.id,
+          grow_experience_level: level
+        })
+
+      if (error) {
+        toast({
+          title: "Error updating experience level",
+          description: error.message,
+          variant: "destructive",
+        })
+        return
+      }
+
+      setProfileData(prev => ({
+        ...prev,
         grow_experience_level: level
-      })
-
-    if (error) {
+      }))
+    } catch (error) {
+      console.error('Error updating experience level:', error);
       toast({
-        title: "Error updating experience level",
-        description: error.message,
+        title: "Error updating profile",
+        description: "An unexpected error occurred",
         variant: "destructive",
-      })
-      return
+      });
     }
-
-    setProfileData(prev => ({
-      ...prev,
-      grow_experience_level: level
-    }))
   }
 
   const updateGrowingMethod = async (method: string) => {
@@ -301,6 +314,18 @@ export function ProfileDropdown() {
             {isLoading ? (
               <div className="flex items-center justify-center p-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+              </div>
+            ) : hasError ? (
+              <div className="p-4 text-center">
+                <p className="text-red-400 mb-4">Error loading profile data</p>
+                <ProfileSettings 
+                  notifications={notifications}
+                  setNotifications={setNotifications}
+                  isDarkMode={isDarkMode}
+                  toggleTheme={toggleTheme}
+                  handleSignOut={handleSignOut}
+                  isLoading={isLoading}
+                />
               </div>
             ) : (
               <>

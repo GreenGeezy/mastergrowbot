@@ -1,6 +1,9 @@
 
 import { Key, Bell, BellOff, Moon, Sun, LogOut } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
+import { useState } from 'react'
+import { toast } from '@/hooks/use-toast'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 interface ProfileSettingsProps {
   notifications: boolean
@@ -19,13 +22,62 @@ export function ProfileSettings({
   handleSignOut,
   isLoading = false
 }: ProfileSettingsProps) {
+  const [isPasswordResetLoading, setIsPasswordResetLoading] = useState(false)
+  const supabase = useSupabaseClient()
+
+  const handleResetPassword = async () => {
+    const email = (await supabase.auth.getUser()).data.user?.email
+    
+    if (!email) {
+      toast({
+        title: "Error",
+        description: "Could not retrieve your email address",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      setIsPasswordResetLoading(true)
+      
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/v1/callback?next=/reset-password`,
+      })
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        })
+        return
+      }
+
+      toast({
+        title: "Password reset email sent",
+        description: "Check your inbox for a password reset link",
+      })
+    } catch (error) {
+      console.error("Password reset error:", error)
+      toast({
+        title: "Error",
+        description: "Failed to send password reset email",
+        variant: "destructive",
+      })
+    } finally {
+      setIsPasswordResetLoading(false)
+    }
+  }
+
   return (
     <div className="space-y-4">
       <button
+        onClick={handleResetPassword}
         className="flex items-center w-full px-3 py-2 text-sm text-gray-200 rounded-md hover:bg-primary/10"
+        disabled={isPasswordResetLoading}
       >
         <Key className="w-4 h-4 mr-3" />
-        Change Password
+        {isPasswordResetLoading ? "Sending Email..." : "Change Password"}
       </button>
 
       <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-200 rounded-md hover:bg-primary/10">
