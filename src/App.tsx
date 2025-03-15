@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -45,13 +44,29 @@ const AuthCallback = () => {
   const location = useLocation();
   
   useEffect(() => {
-    // Check session on mount to handle callback completion
+    console.log("AuthCallback component mounted with pathname:", location.pathname);
+    console.log("Auth callback search params:", location.search);
+    console.log("Current session:", !!session);
+    
+    // Check if there are auth params in the URL
+    const hasAuthParams = 
+      location.hash.includes('access_token') || 
+      location.search.includes('code=') || 
+      location.search.includes('error=');
+    
+    if (hasAuthParams) {
+      console.log("Auth params detected, letting Supabase handle auth");
+      // Supabase should automatically handle this with detectSessionInUrl
+    }
+    
+    // If we have a session after handling the callback, redirect
     if (session) {
       const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+      console.log("Session detected, redirecting to:", redirectTo);
       sessionStorage.removeItem('redirectTo');
       window.location.href = redirectTo;
     }
-  }, [session]);
+  }, [session, location]);
   
   return <LoadingSpinner />;
 };
@@ -105,12 +120,11 @@ const App = () => {
                 } 
               />
               
-              {/* Auth routes */}
+              {/* Auth routes - Add comprehensive coverage for all possible auth patterns */}
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/*" element={<AuthCallback />} />
-              <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
-              <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
+              <Route path="/auth/callback/*" element={<AuthCallback />} />
+              <Route path="/auth/*" element={<AuthCallback />} />
               
               {/* Protected routes */}
               <Route 

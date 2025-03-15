@@ -37,6 +37,18 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   }
 })();
 
+// Listen for auth state changes to help debug auth issues
+supabase.auth.onAuthStateChange((event, session) => {
+  console.log('Auth state changed:', event, session ? 'User signed in' : 'User signed out');
+  
+  // If we're at the root with a code parameter, this means we've just completed OAuth
+  // but the automatic redirect didn't work, so we'll manually redirect
+  if (event === 'SIGNED_IN' && session && window.location.pathname === '/' && window.location.search.includes('code=')) {
+    console.log('Detecting OAuth callback at root, redirecting to /chat');
+    window.location.href = '/chat';
+  }
+});
+
 // Enhanced safe delete users helper function with fallback mechanisms
 export const safeDeleteUser = async (userId: string) => {
   console.log(`Attempting to delete user with ID: ${userId}`);
