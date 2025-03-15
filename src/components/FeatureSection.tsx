@@ -9,7 +9,7 @@ interface FeatureSectionProps {
 
 const FeatureSection = React.memo(({ onFeatureClick }: FeatureSectionProps) => {
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row justify-center items-center gap-6 py-8">
+    <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row justify-center items-center gap-6 mt-6">
       <FeatureCard
         icon={MessageCircle}
         title="Growing Assistant"
