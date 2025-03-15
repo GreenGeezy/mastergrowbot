@@ -3,19 +3,18 @@
 
 This guide provides step-by-step instructions for deploying the paid-version branch to www.mastergrowbot.com through Vercel.
 
-## GitHub: Creating and Merging a Pull Request
+## GitHub: Merging paid-version to main
 
 1. Go to https://github.com/GreenGeezy/mastergrowbot
-2. Click on the green "New pull request" button (visible in the Pull requests tab)
-3. For the "base:" dropdown, select "main" (this is the branch you want to merge INTO)
-4. For the "compare:" dropdown, select "paid-version" (this is the branch WITH your changes)
-5. GitHub will show you the differences between branches. Click the green "Create pull request" button
-6. Add a title like "Merge paid-version to main for deployment"
-7. Add an optional description if needed
+2. Click on "Pull requests" tab near the top of the repository
+3. Click the green "New pull request" button
+4. In the "base:" dropdown, select "main"
+5. In the "compare:" dropdown, select "paid-version"
+6. Click "Create pull request"
+7. Add a title like "Merge paid-version to main for deployment"
 8. Click "Create pull request" button again
 9. On the next screen, if there are no conflicts, click the green "Merge pull request" button
 10. Click "Confirm merge"
-11. You should see a confirmation that the branches were successfully merged
 
 ## Vercel: Monitoring Deployment
 
