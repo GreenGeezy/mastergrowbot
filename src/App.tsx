@@ -39,19 +39,50 @@ const LoadingSpinner = () => (
   </div>
 );
 
-// Auth callback component
+// Auth callback component with better error handling
 const AuthCallback = () => {
   const session = useSession();
   const location = useLocation();
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
+    // Log details for debugging
+    console.log('[AuthCallback] Handling auth callback', { 
+      path: location.pathname,
+      search: location.search,
+      hash: location.hash
+    });
+    
+    // Extract error if present in the URL
+    const params = new URLSearchParams(location.search);
+    const urlError = params.get('error');
+    if (urlError) {
+      setError(urlError);
+      console.error('[AuthCallback] Auth error from URL:', urlError);
+    }
+    
     // Check session on mount to handle callback completion
     if (session) {
+      console.log('[AuthCallback] Session detected, redirecting');
       const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
       sessionStorage.removeItem('redirectTo');
       window.location.href = redirectTo;
     }
-  }, [session]);
+  }, [session, location]);
+  
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="bg-red-500/10 border border-red-500 p-4 rounded-lg max-w-md">
+          <h2 className="text-red-500 font-semibold text-lg mb-2">Authentication Error</h2>
+          <p className="text-white">{error}</p>
+          <a href="/" className="mt-4 inline-block text-primary hover:underline">
+            Return to home page
+          </a>
+        </div>
+      </div>
+    );
+  }
   
   return <LoadingSpinner />;
 };
@@ -105,12 +136,10 @@ const App = () => {
                 } 
               />
               
-              {/* Auth routes */}
+              {/* Auth routes - critical for Google OAuth */}
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/*" element={<AuthCallback />} />
-              <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
-              <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
               
               {/* Protected routes */}
               <Route 

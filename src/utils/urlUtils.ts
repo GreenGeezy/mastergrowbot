@@ -1,4 +1,3 @@
-
 /**
  * Get a properly formatted redirect URL for Supabase authentication
  * - In development: Uses localhost with the correct port
@@ -28,8 +27,9 @@ export const getRedirectUrl = (): string => {
     baseUrl = window.location.origin;
   }
   
-  // For callback paths, make sure to use the exact path that's configured in Supabase
-  const callbackPath = isLovablePreview ? '/auth/callback' : '/auth/callback';
+  // For callback paths, use the exact path that's configured in Supabase
+  // Important: Keep this as '/auth/callback' for proper OAuth redirection
+  const callbackPath = '/auth/callback';
   
   // Standardize for callback URI - Supabase requires the exact path configured in the dashboard
   const redirectUrl = `${baseUrl}${callbackPath}`;
