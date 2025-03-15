@@ -39,7 +39,7 @@ const LoadingSpinner = () => (
   </div>
 );
 
-// Auth callback component with better error handling
+// Auth callback component with better error handling and detailed logging
 const AuthCallback = () => {
   const session = useSession();
   const location = useLocation();
@@ -136,10 +136,13 @@ const App = () => {
                 } 
               />
               
-              {/* Auth routes - critical for Google OAuth */}
+              {/* Auth routes - CRITICAL for Google OAuth */}
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
+              {/* Add catch-all routes to ensure all OAuth callbacks are handled */}
+              <Route path="/auth/v1/*" element={<AuthCallback />} />
+              <Route path="/auth/*" element={<AuthCallback />} />
               
               {/* Protected routes */}
               <Route 

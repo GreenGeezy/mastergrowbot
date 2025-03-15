@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +14,6 @@ const AuthUI = () => {
   const [checkingSession, setCheckingSession] = useState(true);
   const navigate = useNavigate();
 
-  // Check for existing session on mount
   useEffect(() => {
     const checkExistingSession = async () => {
       console.log('[AuthUI] Checking for existing session');
@@ -24,13 +22,9 @@ const AuthUI = () => {
       try {
         const { data } = await supabase.auth.getSession();
         if (data?.session) {
-          // If there's already a session, redirect to chat
           console.log('[AuthUI] Existing session found, redirecting to chat');
-          
-          // Get redirect URL from sessionStorage or default to chat
           const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
           sessionStorage.removeItem('redirectTo');
-          
           console.log('[AuthUI] Redirecting to:', redirectTo);
           navigate(redirectTo, { replace: true });
         } else {
@@ -46,20 +40,15 @@ const AuthUI = () => {
     checkExistingSession();
   }, [navigate]);
 
-  // Set up auth state change listener
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('[AuthUI] Auth state changed:', event);
       
       if (event === 'SIGNED_IN' && session) {
         console.log('[AuthUI] User signed in, redirecting');
-        // Get redirect URL from sessionStorage or default to chat
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
-        
         console.log('[AuthUI] Redirecting to:', redirectTo);
-        
-        // Force a slightly longer delay to ensure profile creation completes
         setTimeout(() => {
           navigate(redirectTo, { replace: true });
         }, 1000);
@@ -93,7 +82,6 @@ const AuthUI = () => {
         console.log('[AuthUI] Signup successful, user:', data.user?.id);
         toast.success("Account created! Please check your email for verification.");
       } else {
-        // For sign in
         console.log('[AuthUI] Signing in with email:', email);
         
         const { error: signInError, data } = await supabase.auth.signInWithPassword({
@@ -105,8 +93,6 @@ const AuthUI = () => {
         
         console.log('[AuthUI] Login successful, user:', data.user?.id);
         toast.success("Welcome back!");
-        
-        // User will be redirected by the auth state change listener
       }
     } catch (error: any) {
       console.error('[AuthUI] Auth error:', error);
