@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthForm } from "./auth/AuthForm";
-import { getRedirectUrl, handleOAuthError } from "@/utils/urlUtils";
+import { getRedirectUrl, handleOAuthError, generateOAuthState } from "@/utils/urlUtils";
 import { toast } from "sonner";
 
 const AuthUI = () => {
@@ -201,9 +201,8 @@ const AuthUI = () => {
       // Temporary bug fix: Clear local session to prevent state conflicts
       await supabase.auth.signOut({ scope: 'local' });
       
-      // Generate a unique state parameter to prevent CSRF attacks
-      const stateParam = Date.now().toString() + Math.random().toString(36).substring(2);
-      sessionStorage.setItem('oauthState', stateParam);
+      // Generate a consistent state parameter to prevent state mismatches
+      const stateParam = generateOAuthState();
       
       // Enhanced OAuth call with detailed query params to ensure fresh flow
       const { error, data } = await supabase.auth.signInWithOAuth({

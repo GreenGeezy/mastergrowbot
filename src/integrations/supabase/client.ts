@@ -4,6 +4,24 @@ import { createClient } from '@supabase/supabase-js'
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluYmZ4ZHVsZXloeWd4YXR4bXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM3NDc2MjksImV4cCI6MjA0OTMyMzYyOX0.l0HrL8MlQrRmIEALGTEOhPz41QhzQ_F73A0C8FsIAeQ";
 
+// Create a stable storage key to prevent state validation issues
+const getStableStorageKey = () => {
+  // Try to get an existing key to maintain consistency
+  let key = localStorage.getItem('supabase-auth-storage-key');
+  
+  if (!key) {
+    // Generate a new key if none exists
+    key = 'sb-auth-token-' + Math.random().toString(36).substring(2);
+    try {
+      localStorage.setItem('supabase-auth-storage-key', key);
+    } catch (e) {
+      console.error('Error setting storage key:', e);
+    }
+  }
+  
+  return key;
+};
+
 export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
     persistSession: true,
@@ -13,9 +31,8 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     storage: localStorage,
     // Debug mode for development - helps identify auth flow issues
     debug: true,
-    // Prevent state errors by skipping localStorage state validation
-    // which can be problematic in preview environments
-    storageKey: 'sb-auth-token-' + Math.random().toString(36).substring(2),
+    // Use a stable storage key to prevent state validation issues
+    storageKey: getStableStorageKey(),
   },
 });
 

@@ -63,7 +63,10 @@ const IndexWrapper = () => {
     });
     
     if (error) {
+      // Display error in UI instead of redirecting
       toast.error(`Authentication error: ${errorDescription || error}`);
+      // Clear error from URL
+      window.history.replaceState({}, document.title, window.location.pathname);
       return;
     }
     
@@ -75,12 +78,20 @@ const IndexWrapper = () => {
       const handleCode = async () => {
         try {
           console.log('[IndexWrapper] Exchanging code for session');
+          
+          // Clear any existing session first to prevent state conflicts
+          await supabase.auth.signOut({ scope: 'local' });
+          await new Promise(resolve => setTimeout(resolve, 300)); // Brief delay
+          
           const { data, error } = await supabase.auth.exchangeCodeForSession(code);
           
           if (error) {
             console.error('[IndexWrapper] Error exchanging code:', error);
             toast.error('Authentication failed: ' + error.message);
             setProcessing(false);
+            
+            // Clear code from URL
+            window.history.replaceState({}, document.title, window.location.pathname);
             return;
           }
           
@@ -90,8 +101,11 @@ const IndexWrapper = () => {
             sessionStorage.removeItem('redirectTo');
             
             // Clean up URL and redirect to intended destination
+            window.history.replaceState({}, document.title, window.location.pathname);
             navigate(redirectTo, { replace: true });
             toast.success('Successfully signed in!');
+          } else {
+            setProcessing(false);
           }
         } catch (err) {
           console.error('[IndexWrapper] Unexpected error during auth:', err);
