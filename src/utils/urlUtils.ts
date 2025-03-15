@@ -28,16 +28,11 @@ export const getRedirectUrl = (): string => {
     baseUrl = window.location.origin;
   }
   
-  // Support multiple callback paths - allowing both /auth/callback and /auth/v1/callback
-  // This ensures compatibility with both the main and paid-version branches
-  // We'll try to detect which one works based on the URL
-  const path = window.location.pathname;
+  // Use a single, consistent callback path that's configured in both 
+  // Supabase dashboard and Google Cloud Console
+  const callbackPath = '/auth/callback';
   
-  // Default callback path - use v1 by default since it's what's fully configured
-  let callbackPath = '/auth/v1/callback';
-  
-  // Add more detailed logging for debugging authentication issues
-  console.log(`[AUTH] Current pathname: ${path}`);
+  // Add detailed logging for debugging authentication issues
   console.log(`[AUTH] Current hostname: ${hostname}`);
   console.log(`[AUTH] Using base URL: ${baseUrl}`);
   console.log(`[AUTH] Using callback path: ${callbackPath}`);

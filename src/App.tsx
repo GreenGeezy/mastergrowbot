@@ -136,13 +136,8 @@ const App = () => {
                 } 
               />
               
-              {/* Auth routes - CRITICAL for Google OAuth */}
+              {/* Auth routes - Consolidate to a single standard path for reliability */}
               <Route path="/auth/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
-              {/* Add catch-all routes to ensure all OAuth callbacks are handled */}
-              <Route path="/auth/v1/*" element={<AuthCallback />} />
-              <Route path="/auth/*" element={<AuthCallback />} />
               
               {/* Protected routes */}
               <Route 
