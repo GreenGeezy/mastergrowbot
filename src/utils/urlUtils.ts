@@ -6,14 +6,7 @@
  * - In preview: Uses the exact current URL
  */
 export const getRedirectUrl = (): string => {
-  // Get current URL information
-  const protocol = window.location.protocol;
-  const hostname = window.location.hostname;
-  const port = window.location.port ? `:${window.location.port}` : '';
-  const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-  
-  // CRITICAL: Always use the CURRENT URL for OAuth redirects
-  // This ensures preview environments always redirect back to themselves
+  // Always use the current origin for the redirect
   const baseUrl = window.location.origin;
   
   // Standard callback path that must match Supabase and Google OAuth settings
@@ -22,16 +15,30 @@ export const getRedirectUrl = (): string => {
   // Detailed logging to help diagnose auth issues
   console.log(`[AUTH] Environment detection:`, {
     origin: window.location.origin,
-    hostname,
-    isLocalhost,
+    hostname: window.location.hostname,
     currentUrl: window.location.href
   });
   console.log(`[AUTH] Using base URL: ${baseUrl}`);
   console.log(`[AUTH] Using callback path: ${callbackPath}`);
   
-  // Always use the current origin for the redirect
   const redirectUrl = `${baseUrl}${callbackPath}`;
   console.log(`[AUTH] Generated redirect URL: ${redirectUrl}`);
   
   return redirectUrl;
+};
+
+/**
+ * Handle OAuth state parameter errors
+ * This helps debug and recover from common OAuth errors
+ */
+export const handleOAuthError = (error: string | null, errorDescription: string | null): string | null => {
+  if (!error) return null;
+  
+  console.error(`[AUTH] OAuth error: ${error}, description: ${errorDescription}`);
+  
+  if (error === 'bad_oauth_state' || error === 'invalid_request') {
+    return "Authentication failed. Please try again and ensure you complete the Google login process.";
+  }
+  
+  return errorDescription || error;
 };

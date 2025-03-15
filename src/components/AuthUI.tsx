@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthForm } from "./auth/AuthForm";
-import { getRedirectUrl } from "@/utils/urlUtils";
+import { getRedirectUrl, handleOAuthError } from "@/utils/urlUtils";
 import { toast } from "sonner";
 
 const AuthUI = () => {
@@ -56,9 +56,13 @@ const AuthUI = () => {
       console.log('[AuthUI] Full current URL:', window.location.href);
       
       if (errorParam) {
+        const formattedError = handleOAuthError(errorParam, errorDescription);
         console.error(`[AuthUI] Auth error from URL: ${errorParam} - ${errorDescription}`);
-        setAuthError(errorDescription || errorParam);
-        toast.error(errorDescription || 'Authentication failed');
+        setAuthError(formattedError);
+        toast.error(formattedError || 'Authentication failed');
+        
+        // Clear the error from URL to prevent showing it again on refresh
+        window.history.replaceState({}, document.title, window.location.pathname);
         return;
       }
       
@@ -197,8 +201,9 @@ const AuthUI = () => {
       // Temporary bug fix: Clear local session to prevent state conflicts
       await supabase.auth.signOut({ scope: 'local' });
       
-      // Force refresh the auth state before proceeding
-      await supabase.auth.refreshSession();
+      // Generate a unique state parameter to prevent CSRF attacks
+      const stateParam = Date.now().toString() + Math.random().toString(36).substring(2);
+      sessionStorage.setItem('oauthState', stateParam);
       
       // Enhanced OAuth call with detailed query params to ensure fresh flow
       const { error, data } = await supabase.auth.signInWithOAuth({
@@ -209,8 +214,7 @@ const AuthUI = () => {
             // These ensure a fresh auth flow each time
             access_type: 'offline',
             prompt: 'consent select_account',  // Force account selection & consent
-            // Additional parameter to help prevent caching issues
-            state: Date.now().toString(),
+            state: stateParam,
           },
         },
       });
