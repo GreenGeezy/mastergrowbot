@@ -18,7 +18,7 @@ import SupportDialog from '@/components/support/SupportDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { getRedirectUrl } from '@/utils/urlUtils';
 
 export const ChatHeader = () => {
@@ -28,9 +28,9 @@ export const ChatHeader = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  // Check authentication status on mount and when session changes
+  // Check authentication status when component mounts and when session changes
   useEffect(() => {
-    async function checkAuth() {
+    const checkAuth = async () => {
       try {
         const { data } = await supabase.auth.getSession();
         const hasSession = !!data.session;
@@ -40,14 +40,10 @@ export const ChatHeader = () => {
           console.log('[ChatHeader] Updating authentication state:', hasSession);
           setIsAuthenticated(hasSession);
         }
-        
-        if (data.session?.user) {
-          console.log('[ChatHeader] User ID:', data.session.user.id);
-        }
       } catch (err) {
         console.error('[ChatHeader] Error checking auth:', err);
       }
-    }
+    };
     
     checkAuth();
     
@@ -66,19 +62,6 @@ export const ChatHeader = () => {
       authListener.subscription.unsubscribe();
     };
   }, [session, isAuthenticated]);
-
-  // Verify auth state when component mounts
-  useEffect(() => {
-    async function verifyAuthState() {
-      const { data } = await supabase.auth.getSession();
-      const hasSession = !!data.session;
-      
-      console.log('[ChatHeader] Initial auth verification:', hasSession ? 'Authenticated' : 'Not authenticated');
-      setIsAuthenticated(hasSession);
-    }
-    
-    verifyAuthState();
-  }, []);
 
   const growTools = [
     {
@@ -101,25 +84,24 @@ export const ChatHeader = () => {
   const handleSignOut = async () => {
     try {
       setIsLoading(true);
+      
+      // First clear any stored session data in localStorage
+      localStorage.removeItem('supabase.auth.token');
+      
       const { error } = await supabase.auth.signOut();
+      
       if (error) {
         console.error('[ChatHeader] Error signing out:', error);
-        toast({
-          title: "Error signing out",
-          description: error.message,
-          variant: "destructive",
-        });
+        toast.error("Error signing out: " + error.message);
       } else {
+        console.log('[ChatHeader] Sign out successful');
         setIsAuthenticated(false);
         navigate('/');
+        toast.success("Successfully signed out");
       }
     } catch (err) {
       console.error('[ChatHeader] Error during sign out:', err);
-      toast({
-        title: "Error signing out",
-        description: "An unexpected error occurred.",
-        variant: "destructive",
-      });
+      toast.error("An unexpected error occurred while signing out");
     } finally {
       setIsLoading(false);
     }
@@ -135,29 +117,40 @@ export const ChatHeader = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
         }
       });
       
       if (error) {
         console.error('[ChatHeader] Google sign in error:', error);
-        toast({
-          title: "Login error",
-          description: error.message,
-          variant: "destructive",
-        });
+        toast.error("Login error: " + error.message);
       }
     } catch (err) {
       console.error('[ChatHeader] Unexpected error during Google sign in:', err);
-      toast({
-        title: "Login error",
-        description: "An unexpected error occurred.",
-        variant: "destructive",
-      });
+      toast.error("An unexpected error occurred during login");
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Check user authentication status frequently to ensure the UI is updated
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const { data } = await supabase.auth.getSession();
+      const hasSession = !!data.session;
+      
+      if (hasSession !== isAuthenticated) {
+        console.log('[ChatHeader] Authentication state changed in interval check:', hasSession);
+        setIsAuthenticated(hasSession);
+      }
+    }, 3000); // Check every 3 seconds
+    
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
 
   return (
     <>

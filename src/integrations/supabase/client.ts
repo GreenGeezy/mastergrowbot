@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
@@ -7,10 +6,10 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
     persistSession: true,
-    autoRefreshToken: true,
     detectSessionInUrl: true,
+    autoRefreshToken: true,
     flowType: 'pkce',
-    storage: window.localStorage, // Explicitly use localStorage
+    storage: localStorage,
   },
 });
 
@@ -25,35 +24,40 @@ supabase.auth.onAuthStateChange((event, session) => {
     
     // Force create profile if we have a user session
     createUserProfileIfNeeded(session.user.id, session.user);
-  }
-  
-  // Broadcast the auth state change to all tabs/windows
-  try {
-    localStorage.setItem('supabase.auth.event', JSON.stringify({
-      event,
-      session: session ? { user: { id: session.user.id } } : null,
-      timestamp: new Date().toISOString()
-    }));
-  } catch (error) {
-    console.error('[Supabase] Error broadcasting auth state:', error);
+    
+    // Broadcast auth state to all tabs/windows 
+    try {
+      localStorage.setItem('supabase.auth.event', JSON.stringify({
+        event,
+        session: { user: { id: session.user.id } },
+        timestamp: new Date().toISOString()
+      }));
+    } catch (error) {
+      console.error('[Supabase] Error broadcasting auth state:', error);
+    }
+  } else {
+    // Clear session indicator when logged out
+    try {
+      localStorage.removeItem('supabase.auth.event');
+    } catch (error) {
+      console.error('[Supabase] Error clearing auth state:', error);
+    }
   }
 });
 
 // Listen for auth changes from other tabs/windows
-if (typeof window !== 'undefined') {
-  window.addEventListener('storage', (event) => {
-    if (event.key === 'supabase.auth.event') {
-      console.log('[Supabase] Auth state changed in another tab/window');
-      
+window.addEventListener('storage', (event) => {
+  if (event.key === 'supabase.auth.event') {
+    console.log('[Supabase] Auth state changed in another tab/window');
+    
+    try {
       // Force refresh the session
-      supabase.auth.getSession().then(({ data }) => {
-        if (data.session) {
-          console.log('[Supabase] Session refreshed from storage event');
-        }
-      });
+      supabase.auth.refreshSession();
+    } catch (error) {
+      console.error('[Supabase] Error refreshing session from storage event:', error);
     }
-  });
-}
+  }
+});
 
 // Function to create user profile if it doesn't exist
 async function createUserProfileIfNeeded(userId, user) {
@@ -107,7 +111,7 @@ async function createUserProfileIfNeeded(userId, user) {
       
       console.log('[Supabase] Created default profile successfully');
     } else {
-      console.log('[Supabase] Profile already exists:', profile);
+      console.log('[Supabase] Profile already exists for user');
       
       // If profile exists but quiz not completed, mark it as completed
       if (!profile.has_completed_quiz) {
@@ -135,6 +139,23 @@ async function createUserProfileIfNeeded(userId, user) {
   }
 }
 
+// Check current auth state on load
+(async () => {
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error('[Supabase] Error getting session:', error);
+    } else if (data?.session) {
+      console.log('[Supabase] Initial session loaded:', data.session.user.id);
+      createUserProfileIfNeeded(data.session.user.id, data.session.user);
+    } else {
+      console.log('[Supabase] No initial session');
+    }
+  } catch (error) {
+    console.error('[Supabase] Error during initial session check:', error);
+  }
+})();
+
 // Initialize storage bucket
 (async () => {
   try {
@@ -150,26 +171,12 @@ async function createUserProfileIfNeeded(userId, user) {
   }
 })();
 
-// Check current auth state on load
-(async () => {
-  const { data, error } = await supabase.auth.getSession();
-  if (error) {
-    console.error('[Supabase] Error getting session:', error);
-  } else if (data?.session) {
-    console.log('[Supabase] Initial session loaded:', data.session.user.id);
-    createUserProfileIfNeeded(data.session.user.id, data.session.user);
-  } else {
-    console.log('[Supabase] No initial session');
-  }
-})();
-
-// Enhanced safe delete users helper function with fallback mechanisms
+// The rest of your existing functions
 export const safeDeleteUser = async (userId: string) => {
   console.log(`Attempting to delete user with ID: ${userId}`);
   
   try {
     // Try direct admin API first (requires auth.users permissions)
-    // Fixed: The deleteUser method takes a string userId parameter, not an object
     const adminDeleteResult = await supabase.auth.admin.deleteUser(userId);
     
     if (!adminDeleteResult.error) {
@@ -211,7 +218,6 @@ export const safeDeleteUser = async (userId: string) => {
   }
 };
 
-// Function to check if a user exists
 export const checkUserExists = async (userId: string) => {
   try {
     const { data, error } = await supabase.auth.admin.getUserById(userId);

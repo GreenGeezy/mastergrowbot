@@ -16,8 +16,6 @@ const AuthUI = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const [hasPendingSubscription, setHasPendingSubscription] = useState(false);
-  const [subscriptionType, setSubscriptionType] = useState("");
   const navigate = useNavigate();
 
   // Check for existing session on mount
@@ -34,6 +32,7 @@ const AuthUI = () => {
     checkExistingSession();
   }, [navigate]);
 
+  // Set up auth state change listener
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('[AuthUI] Auth state changed:', event);
@@ -72,22 +71,9 @@ const AuthUI = () => {
         if (signUpError) throw signUpError;
         
         console.log('[AuthUI] Signup successful, user:', data.user?.id);
-
-        // Call the verification email function
-        const response = await supabase.functions.invoke('send-verification-email', {
-          body: { email },
-        });
-
-        if (response.error) throw new Error(response.error.message);
-        
         toast.success("Account created! Please check your email for verification.");
-        
-        // Show subscription status if applicable
-        if (hasPendingSubscription) {
-          toast.success(`Your ${subscriptionType} subscription has been activated!`);
-        }
       } else {
-        // For sign in, we don't need to check for quiz or subscription
+        // For sign in
         console.log('[AuthUI] Signing in with email:', email);
         
         const { error: signInError, data } = await supabase.auth.signInWithPassword({
@@ -140,22 +126,6 @@ const AuthUI = () => {
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
-      {REQUIRE_QUIZ_AND_SUBSCRIPTION && isSignUp && !hasPendingSubscription && (
-        <div className="mb-4 p-3 bg-yellow-600/20 rounded-md border border-yellow-600/30">
-          <p className="text-white text-sm">
-            You need to purchase a subscription before signing up. Please complete the quiz to see subscription options.
-          </p>
-        </div>
-      )}
-      
-      {hasPendingSubscription && (
-        <div className="mb-4 p-3 bg-primary/20 rounded-md border border-primary/30">
-          <p className="text-white text-sm">
-            A <span className="font-bold">{subscriptionType}</span> subscription is ready to be activated with this email!
-          </p>
-        </div>
-      )}
-      
       <AuthForm
         email={email}
         password={password}

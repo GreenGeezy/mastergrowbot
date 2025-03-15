@@ -14,8 +14,8 @@ interface SubscriptionGuardProps {
 
 const SubscriptionGuard = ({ 
   children, 
-  requireQuiz = false, // False by default - quiz completion not required
-  requireSubscription = false // False by default - subscription not required
+  requireQuiz = false, // Always false by default - quiz completion not required
+  requireSubscription = false // Always false by default - subscription not required
 }: SubscriptionGuardProps) => {
   const session = useSession();
   const { isLoading, hasAccess, hasCompletedQuiz } = useSubscriptionStatus();
@@ -40,7 +40,7 @@ const SubscriptionGuard = ({
               id: session.user.id,
               username: session.user.email?.split('@')[0] || 'User',
               grow_experience_level: 'new',
-              has_completed_quiz: true,
+              has_completed_quiz: true, // Always true
               goals: ['learn'],
               challenges: ['none'],
               nutrient_type: 'organic',
@@ -84,15 +84,7 @@ const SubscriptionGuard = ({
     );
   }
 
-  // Always allow access, but log for debugging
-  console.log('[SubscriptionGuard] Access check:', { 
-    hasCompletedQuiz, 
-    hasAccess, 
-    requireQuiz, 
-    requireSubscription,
-    userId: session.user.id
-  });
-
+  // Always allow access regardless of quiz or subscription status
   return <>{children}</>;
 };
 

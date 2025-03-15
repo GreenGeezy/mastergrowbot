@@ -11,6 +11,7 @@ export const getRedirectUrl = (): string => {
   const port = window.location.port ? `:${window.location.port}` : '';
   const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
   const isLovablePreview = hostname.includes('lovableproject.com');
+  const isMasterGrowbot = hostname.includes('mastergrowbot.com');
   
   // Build the base URL
   let baseUrl = '';
@@ -19,12 +20,15 @@ export const getRedirectUrl = (): string => {
     baseUrl = `${protocol}//${hostname}${port}`;
   } else if (isLovablePreview) {
     baseUrl = window.location.origin;
-  } else {
-    // Production environment - mastergrowbot.com
+  } else if (isMasterGrowbot) {
     baseUrl = `https://www.mastergrowbot.com`;
+  } else {
+    // Fallback to current origin
+    baseUrl = window.location.origin;
   }
   
-  // Add the correct callback path to ensure auth flow works
+  // Standardize for callback URI - Supabase requires /auth/callback 
+  // rather than nested callback URLs like /auth/v1/callback
   const redirectUrl = `${baseUrl}/auth/callback`;
   
   console.log(`[AUTH] Generated redirect URL: ${redirectUrl}`);

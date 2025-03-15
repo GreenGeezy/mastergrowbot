@@ -22,7 +22,6 @@ export function useProfile() {
       setIsLoading(true);
       setHasError(false);
       console.log('[useProfile] Fetching profile for user:', session.user.id);
-      console.log('[useProfile] User metadata:', session.user.user_metadata);
       
       // Try to get the profile data
       const { data: profileData, error: profileError } = await supabase
@@ -58,7 +57,7 @@ export function useProfile() {
           challenges: ['none'],
           goals: ['learn'],
           email: session.user.email,
-          has_completed_quiz: true  // Set to true to avoid quiz requirement
+          has_completed_quiz: true  // Always set to true to avoid quiz requirement
         };
 
         console.log('[useProfile] Creating profile with data:', defaultProfile);
@@ -75,6 +74,7 @@ export function useProfile() {
         // Set the profile data in the state
         setProfileData(defaultProfile);
         console.log('[useProfile] Created default profile successfully', defaultProfile);
+        setIsLoading(false);
         return { success: true, data: defaultProfile, created: true };
       }
 
@@ -84,7 +84,7 @@ export function useProfile() {
         ...profileData
       };
       
-      // Mark quiz as completed if it's not already
+      // Always ensure quiz is marked as completed
       if (!profileData.has_completed_quiz) {
         const { error: updateError } = await supabase
           .from('user_profiles')
@@ -101,24 +101,16 @@ export function useProfile() {
       
       console.log('[useProfile] Profile data loaded successfully', completeProfileData);
       setProfileData(completeProfileData);
+      setIsLoading(false);
       return { success: true, data: completeProfileData, created: false };
     } catch (error) {
       console.error('[useProfile] Error in fetchProfileData:', error);
       setHasError(true);
       setProfileData({});
-      
-      // Only show toast in UI, not on initial load
-      toast({
-        title: "Error loading profile",
-        description: "Please try signing out and back in.",
-        variant: "destructive"
-      });
-      
-      return { success: false, reason: 'error', error };
-    } finally {
       setIsLoading(false);
+      return { success: false, reason: 'error', error };
     }
-  }, [session?.user?.id, session?.user?.email, session?.user?.user_metadata, supabase, toast]);
+  }, [session?.user?.id, session?.user?.email, session?.user?.user_metadata, supabase]);
 
   // Effect to load profile data when session changes
   useEffect(() => {
@@ -127,10 +119,29 @@ export function useProfile() {
       fetchProfileData();
     } else {
       // Reset profile data when user is not logged in
+      console.log('[useProfile] No active session, clearing profile data');
       setProfileData({});
       setHasError(false);
     }
   }, [session?.user?.id, fetchProfileData]);
+
+  // Listen for auth state changes to refresh profile
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        console.log(`[useProfile] Auth event ${event}, refreshing profile`);
+        fetchProfileData();
+      } else if (event === 'SIGNED_OUT') {
+        console.log(`[useProfile] Auth event ${event}, clearing profile`);
+        setProfileData({});
+        setHasError(false);
+      }
+    });
+    
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [fetchProfileData, supabase.auth]);
 
   const updateProfile = async (updates: Partial<ProfileData>) => {
     if (!session?.user?.id) return false;
