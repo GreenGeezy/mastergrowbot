@@ -28,9 +28,20 @@ export const getRedirectUrl = (): string => {
     baseUrl = window.location.origin;
   }
   
-  // CRITICAL: We must use the callback path that's configured in Supabase
-  // Based on the screenshot, we need to ensure we're using /auth/v1/callback
-  const callbackPath = '/auth/v1/callback';
+  // Support multiple callback paths - allowing both /auth/callback and /auth/v1/callback
+  // This ensures compatibility with both the main and paid-version branches
+  // We'll try to detect which one works based on the URL
+  const path = window.location.pathname;
+  
+  // Default callback path - the one that was originally working
+  let callbackPath = '/auth/callback';
+  
+  // If we detect we're on a page that suggests v1 paths are being used, switch to that
+  if (path.includes('/auth/v1/')) {
+    callbackPath = '/auth/v1/callback';
+  }
+  
+  console.log(`[AUTH] Using callback path: ${callbackPath}`);
   
   // Standardize for callback URI - Supabase requires the exact path configured in the dashboard
   const redirectUrl = `${baseUrl}${callbackPath}`;
