@@ -37,6 +37,11 @@ export function ProfileDropdown() {
           description: error.message,
           variant: "destructive",
         })
+      } else {
+        toast({
+          title: "Signed out successfully",
+          description: "You have been signed out of your account",
+        })
       }
     } catch (error) {
       console.error('Error during sign out:', error);
@@ -78,7 +83,7 @@ export function ProfileDropdown() {
   }
 
   const getInitials = (name?: string) => {
-    if (!name) return profileData?.email?.charAt(0).toUpperCase() || 'U';
+    if (!name) return profileData?.email?.charAt(0)?.toUpperCase() || 'U';
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   }
 
@@ -87,11 +92,10 @@ export function ProfileDropdown() {
       <button
         onClick={() => setIsOpen(true)}
         className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-primary/10 transition-colors bg-transparent"
-        disabled={isLoading}
       >
         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
           <span className="text-sm font-medium">
-            {getInitials(profileData?.username)}
+            {isLoading ? "..." : getInitials(profileData?.username)}
           </span>
         </div>
         <span className="text-sm font-medium text-white">

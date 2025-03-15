@@ -58,9 +58,9 @@ const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
             } else {
               console.log('[SubscriptionGuard] Profile created successfully');
             }
-          } else if (!profile.has_completed_quiz) {
+          } else if (!profile.has_completed_quiz && !requireQuizAndSubscription) {
             console.log('[SubscriptionGuard] Profile found but quiz not completed, updating');
-            // Update profile to mark quiz as completed
+            // Update profile to mark quiz as completed when not required
             const { error: updateError } = await supabase
               .from('user_profiles')
               .update({ has_completed_quiz: true })
@@ -105,18 +105,22 @@ const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
 
   // Override checks when quiz and subscription are not required
   if (!requireQuizAndSubscription) {
+    console.log('[SubscriptionGuard] Quiz and subscription not required, allowing access');
     return <>{children}</>;
   }
 
   // Apply checks only when the feature flag is enabled
   if (!hasCompletedQuiz) {
+    console.log('[SubscriptionGuard] Quiz not completed, redirecting to quiz');
     return <Navigate to="/quiz" replace />;
   }
 
   if (!hasAccess) {
+    console.log('[SubscriptionGuard] No subscription access, redirecting to subscribe');
     return <Navigate to="/subscribe" replace />;
   }
 
+  console.log('[SubscriptionGuard] Access granted');
   return <>{children}</>;
 };
 

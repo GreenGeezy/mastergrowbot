@@ -9,7 +9,7 @@ const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRI
 
 export function useProfile() {
   const [profileData, setProfileData] = useState<ProfileData>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Start with loading true
   const [hasError, setHasError] = useState(false);
   const session = useSession();
   const supabase = useSupabaseClient();
@@ -18,6 +18,7 @@ export function useProfile() {
   const fetchProfileData = useCallback(async () => {
     if (!session?.user?.id) {
       console.log('[useProfile] No user session found');
+      setIsLoading(false); // Set loading to false when there's no session
       return { success: false, reason: 'no-session' };
     }
 
@@ -88,7 +89,7 @@ export function useProfile() {
       };
       
       // Always ensure quiz is marked as completed
-      if (!profileData.has_completed_quiz) {
+      if (!profileData.has_completed_quiz && !requireQuizAndSubscription) {
         const { error: updateError } = await supabase
           .from('user_profiles')
           .update({ has_completed_quiz: true })
@@ -125,6 +126,7 @@ export function useProfile() {
       console.log('[useProfile] No active session, clearing profile data');
       setProfileData({});
       setHasError(false);
+      setIsLoading(false); // Make sure to set loading to false
     }
   }, [session?.user?.id, fetchProfileData]);
 
@@ -138,6 +140,7 @@ export function useProfile() {
         console.log(`[useProfile] Auth event ${event}, clearing profile`);
         setProfileData({});
         setHasError(false);
+        setIsLoading(false); // Make sure to set loading to false
       }
     });
     

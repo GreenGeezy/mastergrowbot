@@ -12,25 +12,34 @@ const AuthUI = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const navigate = useNavigate();
 
   // Check for existing session on mount
   useEffect(() => {
     const checkExistingSession = async () => {
       console.log('[AuthUI] Checking for existing session');
-      const { data } = await supabase.auth.getSession();
-      if (data?.session) {
-        // If there's already a session, redirect to chat
-        console.log('[AuthUI] Existing session found, redirecting to chat');
-        
-        // Get redirect URL from sessionStorage or default to chat
-        const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-        sessionStorage.removeItem('redirectTo');
-        
-        console.log('[AuthUI] Redirecting to:', redirectTo);
-        navigate(redirectTo, { replace: true });
-      } else {
-        console.log('[AuthUI] No existing session found');
+      setCheckingSession(true);
+      
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (data?.session) {
+          // If there's already a session, redirect to chat
+          console.log('[AuthUI] Existing session found, redirecting to chat');
+          
+          // Get redirect URL from sessionStorage or default to chat
+          const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+          sessionStorage.removeItem('redirectTo');
+          
+          console.log('[AuthUI] Redirecting to:', redirectTo);
+          navigate(redirectTo, { replace: true });
+        } else {
+          console.log('[AuthUI] No existing session found');
+        }
+      } catch (error) {
+        console.error('[AuthUI] Error checking session:', error);
+      } finally {
+        setCheckingSession(false);
       }
     };
     
@@ -53,7 +62,7 @@ const AuthUI = () => {
         // Force a slightly longer delay to ensure profile creation completes
         setTimeout(() => {
           navigate(redirectTo, { replace: true });
-        }, 500);
+        }, 1000);
       }
     });
 
@@ -99,9 +108,9 @@ const AuthUI = () => {
         
         // User will be redirected by the auth state change listener
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('[AuthUI] Auth error:', error);
-      toast.error(error.message);
+      toast.error(error.message || "Authentication failed");
     } finally {
       setLoading(false);
     }
@@ -126,13 +135,21 @@ const AuthUI = () => {
       });
       
       if (error) throw error;
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Failed to sign in with Google. Please try again.");
       console.error("[AuthUI] Google sign-in error:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  if (checkingSession) {
+    return (
+      <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
