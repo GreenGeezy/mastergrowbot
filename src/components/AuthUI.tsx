@@ -24,7 +24,7 @@ const AuthUI = () => {
       try {
         const { data } = await supabase.auth.getSession();
         if (data?.session) {
-          console.log('[AuthUI] Existing session found, redirecting to chat');
+          console.log('[AuthUI] Existing session found, user ID:', data.session.user.id);
           const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
           sessionStorage.removeItem('redirectTo');
           console.log('[AuthUI] Redirecting to:', redirectTo);
@@ -60,13 +60,14 @@ const AuthUI = () => {
     
     // Subscribe to auth state changes - critical for OAuth flows
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[AuthUI] Auth state changed:', event, session ? 'Session exists' : 'No session');
+      console.log('[AuthUI] Auth state changed:', event, session ? `Session exists for user ${session.user.id}` : 'No session');
       
       if (event === 'SIGNED_IN' && session) {
-        console.log('[AuthUI] User signed in, redirecting');
+        console.log('[AuthUI] User signed in, redirecting to saved location');
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
         console.log('[AuthUI] Redirecting to:', redirectTo);
+        // Force immediate navigation with no delay
         navigate(redirectTo, { replace: true });
       }
     });
@@ -130,6 +131,9 @@ const AuthUI = () => {
       
       // Enhanced logging for Google OAuth
       console.log('[AuthUI] Starting Google OAuth flow', { redirectUrl });
+      
+      // Save the current page to redirect back after login
+      sessionStorage.setItem('redirectTo', '/chat');
       
       const { error, data } = await supabase.auth.signInWithOAuth({
         provider: 'google',

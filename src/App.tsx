@@ -67,14 +67,28 @@ const AuthCallback = () => {
     
     // Check session on mount to handle callback completion
     if (session) {
-      console.log('[AuthCallback] Session detected, redirecting to saved location or chat');
+      console.log('[AuthCallback] Session detected, user ID:', session.user.id);
       const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
       sessionStorage.removeItem('redirectTo');
+      console.log('[AuthCallback] Redirecting to:', redirectTo);
       
       // Force navigation using window.location for a clean redirect
       window.location.href = redirectTo;
     } else {
       console.log('[AuthCallback] No session detected in callback handler');
+      
+      // After a short delay, recheck session - sometimes it takes a moment to be available
+      const timeoutId = setTimeout(() => {
+        console.log('[AuthCallback] Rechecking session after delay');
+        if (supabase.auth.session) {
+          console.log('[AuthCallback] Session found on recheck');
+          const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+          sessionStorage.removeItem('redirectTo');
+          window.location.href = redirectTo;
+        }
+      }, 2000);
+      
+      return () => clearTimeout(timeoutId);
     }
   }, [session, location]);
   
