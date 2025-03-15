@@ -1,40 +1,27 @@
-
-/**
- * Get a properly formatted redirect URL for Supabase authentication
- * - In development: Uses localhost with the correct port
- * - In production: Uses the actual domain
- */
-export const getRedirectUrl = (): string => {
-  // Get current URL information
-  const protocol = window.location.protocol;
+export const getRedirectUrl = () => {
   const hostname = window.location.hostname;
-  const port = window.location.port ? `:${window.location.port}` : '';
-  const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-  const isLovablePreview = hostname.includes('lovableproject.com');
-  const isMasterGrowbot = hostname.includes('mastergrowbot.com');
+  const origin = window.location.origin;
   
-  // Build the base URL
-  let baseUrl = '';
-  
-  if (isLocalhost) {
-    baseUrl = `${protocol}//${hostname}${port}`;
-  } else if (isLovablePreview) {
-    baseUrl = window.location.origin;
-  } else if (isMasterGrowbot) {
-    // Fixed URL for production
-    baseUrl = `https://www.mastergrowbot.com`;
-  } else {
-    // Fallback to current origin
-    baseUrl = window.location.origin;
+  // For production domain
+  if (hostname === 'mastergrowbot.com' || hostname === 'www.mastergrowbot.com') {
+    return `${origin}/auth/v1/callback`;
   }
   
-  // For callback paths, make sure to use the exact path that's configured in Supabase
-  const callbackPath = isLovablePreview ? '/auth/callback' : '/auth/callback';
+  // For development/testing on Lovable subdomain
+  if (hostname.includes('lovable.app')) {
+    return `${origin}/auth/v1/callback`;
+  }
   
-  // Standardize for callback URI - Supabase requires the exact path configured in the dashboard
-  const redirectUrl = `${baseUrl}${callbackPath}`;
+  // For Supabase hosted domain
+  if (hostname.includes('supabase.co')) {
+    return `${origin}/auth/v1/callback`;
+  }
   
-  console.log(`[AUTH] Generated redirect URL: ${redirectUrl}`);
+  // For local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return `${origin}/auth/v1/callback`;
+  }
   
-  return redirectUrl;
+  // Default fallback
+  return `${origin}/auth/v1/callback`;
 };

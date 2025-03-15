@@ -3,9 +3,6 @@ import { useState, useEffect } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { supabase } from '@/integrations/supabase/client';
 
-// Read the environment variable to check if quiz and subscription are required
-const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
-
 interface SubscriptionStatus {
   isLoading: boolean;
   hasAccess: boolean;
@@ -28,22 +25,7 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
 
   useEffect(() => {
     const checkSubscription = async () => {
-      // If subscription checking is disabled, immediately grant access
-      if (!requireQuizAndSubscription) {
-        console.log('[useSubscriptionStatus] Quiz and subscription not required, granting access');
-        setStatus({
-          isLoading: false,
-          hasAccess: true,
-          hasCompletedQuiz: true,
-          subscriptionType: 'free',
-          expiresAt: null,
-          error: null
-        });
-        return;
-      }
-
       if (!session?.user?.id) {
-        console.log('[useSubscriptionStatus] No user session, denying access');
         setStatus({
           isLoading: false,
           hasAccess: false,
@@ -56,7 +38,6 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
       }
 
       try {
-        console.log('[useSubscriptionStatus] Checking access for user:', session.user.id);
         // Get user access from the view we created
         const { data, error } = await supabase
           .from('user_access_view')
@@ -64,12 +45,8 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           .eq('id', session.user.id)
           .single();
 
-        if (error) {
-          console.error('[useSubscriptionStatus] Error checking subscription status:', error);
-          throw error;
-        }
+        if (error) throw error;
 
-        console.log('[useSubscriptionStatus] Access data retrieved:', data);
         setStatus({
           isLoading: false,
           hasAccess: !!data?.has_active_subscription,
@@ -79,33 +56,20 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           error: null
         });
       } catch (error) {
-        console.error('[useSubscriptionStatus] Error checking subscription status:', error);
-        
-        // Even if there's an error, grant access anyway if the feature flag is disabled
-        if (!requireQuizAndSubscription) {
-          setStatus({
-            isLoading: false,
-            hasAccess: true,
-            hasCompletedQuiz: true,
-            subscriptionType: 'free',
-            expiresAt: null,
-            error: null
-          });
-        } else {
-          setStatus({
-            isLoading: false,
-            hasAccess: false,
-            hasCompletedQuiz: false,
-            subscriptionType: null,
-            expiresAt: null,
-            error: error instanceof Error ? error : new Error('Unknown error')
-          });
-        }
+        console.error('Error checking subscription status:', error);
+        setStatus({
+          isLoading: false,
+          hasAccess: false,
+          hasCompletedQuiz: false,
+          subscriptionType: null,
+          expiresAt: null,
+          error: error instanceof Error ? error : new Error('Unknown error')
+        });
       }
     };
 
     checkSubscription();
-  }, [session, requireQuizAndSubscription]);
+  }, [session]);
 
   return status;
 };
