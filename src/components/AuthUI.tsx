@@ -59,12 +59,14 @@ const AuthUI = () => {
         console.error(`[AuthUI] Auth error from URL: ${errorParam} - ${errorDescription}`);
         setAuthError(errorDescription || errorParam);
         toast.error(errorDescription || 'Authentication failed');
+        return;
       }
       
       // If we have a code in the URL but we're on the main page, process it immediately
       if (code && location.pathname === '/') {
         console.log('[AuthUI] Code found in URL on main page, manually handling');
         handleCodeExchange(code);
+        return;
       }
     };
     
@@ -188,7 +190,6 @@ const AuthUI = () => {
       
       const redirectUrl = getRedirectUrl();
       console.log('[AuthUI] Using redirect URL for OAuth:', redirectUrl);
-      console.log('[AuthUI] Starting Google OAuth flow', { redirectUrl });
       
       // Save the current page to redirect back after login
       sessionStorage.setItem('redirectTo', '/chat');
@@ -208,8 +209,8 @@ const AuthUI = () => {
             // These ensure a fresh auth flow each time
             access_type: 'offline',
             prompt: 'consent select_account',  // Force account selection & consent
-            // Additional parameters to help prevent caching issues
-            state: new Date().getTime().toString(),
+            // Additional parameter to help prevent caching issues
+            state: Date.now().toString(),
           },
         },
       });

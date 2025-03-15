@@ -51,6 +51,21 @@ const IndexWrapper = () => {
     // Check if we have a code parameter in the URL (from OAuth redirect)
     const params = new URLSearchParams(location.search);
     const code = params.get('code');
+    const error = params.get('error');
+    const errorDescription = params.get('error_description');
+    
+    // Log all URL parameters to help diagnose issues
+    console.log('[IndexWrapper] URL parameters:', {
+      hasCode: !!code,
+      hasError: !!error,
+      errorDescription,
+      fullUrl: window.location.href
+    });
+    
+    if (error) {
+      toast.error(`Authentication error: ${errorDescription || error}`);
+      return;
+    }
     
     if (code && !session && !processing) {
       console.log('[IndexWrapper] Found OAuth code in URL, handling auth callback');
@@ -74,13 +89,13 @@ const IndexWrapper = () => {
             const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
             sessionStorage.removeItem('redirectTo');
             
-            // Clean up URL
+            // Clean up URL and redirect to intended destination
             navigate(redirectTo, { replace: true });
             toast.success('Successfully signed in!');
           }
         } catch (err) {
           console.error('[IndexWrapper] Unexpected error during auth:', err);
-          toast.error('An unexpected error occurred');
+          toast.error('An unexpected error occurred during login');
           setProcessing(false);
         }
       };
