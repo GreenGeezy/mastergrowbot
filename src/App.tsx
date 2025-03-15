@@ -5,10 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 // Eagerly load the Index page for better UX
 import Index from "./pages/Index";
@@ -40,225 +39,21 @@ const LoadingSpinner = () => (
   </div>
 );
 
-// Enhanced IndexWrapper to handle code parameter in root URL
-const IndexWrapper = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const session = useSession();
-  const [processing, setProcessing] = useState(false);
-  
-  useEffect(() => {
-    // Check if we have a code parameter in the URL (from OAuth redirect)
-    const params = new URLSearchParams(location.search);
-    const code = params.get('code');
-    const error = params.get('error');
-    const errorDescription = params.get('error_description');
-    
-    // Log all URL parameters to help diagnose issues
-    console.log('[IndexWrapper] URL parameters:', {
-      hasCode: !!code,
-      hasError: !!error,
-      errorDescription,
-      fullUrl: window.location.href
-    });
-    
-    if (error) {
-      // Display error in UI instead of redirecting
-      toast.error(`Authentication error: ${errorDescription || error}`);
-      // Clear error from URL
-      window.history.replaceState({}, document.title, window.location.pathname);
-      return;
-    }
-    
-    if (code && !session && !processing) {
-      console.log('[IndexWrapper] Found OAuth code in URL, handling auth callback');
-      setProcessing(true);
-      
-      // Process the auth code
-      const handleCode = async () => {
-        try {
-          console.log('[IndexWrapper] Exchanging code for session');
-          
-          // Clear any existing session first to prevent state conflicts
-          await supabase.auth.signOut({ scope: 'local' });
-          await new Promise(resolve => setTimeout(resolve, 300)); // Brief delay
-          
-          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-          
-          if (error) {
-            console.error('[IndexWrapper] Error exchanging code:', error);
-            toast.error('Authentication failed: ' + error.message);
-            setProcessing(false);
-            
-            // Clear code from URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-            return;
-          }
-          
-          if (data?.session) {
-            console.log('[IndexWrapper] Successfully exchanged code for session');
-            const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-            sessionStorage.removeItem('redirectTo');
-            
-            // Clean up URL and redirect to intended destination
-            window.history.replaceState({}, document.title, window.location.pathname);
-            navigate(redirectTo, { replace: true });
-            toast.success('Successfully signed in!');
-          } else {
-            setProcessing(false);
-          }
-        } catch (err) {
-          console.error('[IndexWrapper] Unexpected error during auth:', err);
-          toast.error('An unexpected error occurred during login');
-          setProcessing(false);
-        }
-      };
-      
-      handleCode();
-    }
-  }, [location, session, navigate, processing]);
-  
-  if (processing) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
-        <p className="text-white">Completing your login...</p>
-      </div>
-    );
-  }
-  
-  return <Index />;
-};
-
-// Auth callback component with better error handling and detailed logging
+// Auth callback component
 const AuthCallback = () => {
   const session = useSession();
   const location = useLocation();
-  const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
-  const [processingCallback, setProcessingCallback] = useState(true);
   
   useEffect(() => {
-    // Enhanced logging for debugging
-    console.log('[AuthCallback] Handling auth callback', { 
-      path: location.pathname,
-      search: location.search,
-      hash: location.hash,
-      fullUrl: window.location.href
-    });
-    
-    const processCallback = async () => {
-      setProcessingCallback(true);
-      try {
-        // Extract error if present in the URL
-        const params = new URLSearchParams(location.search);
-        const urlError = params.get('error');
-        const urlErrorDescription = params.get('error_description');
-        const code = params.get('code');
-        
-        console.log('[AuthCallback] URL parameters:', { 
-          error: urlError, 
-          errorDescription: urlErrorDescription,
-          hasCode: !!code
-        });
-        
-        if (urlError) {
-          const errorMessage = urlErrorDescription || urlError;
-          setError(errorMessage);
-          console.error('[AuthCallback] Auth error from URL:', errorMessage);
-          return;
-        }
-        
-        // If we have a code parameter but no session, explicitly exchange the code for a session
-        if (code && !session) {
-          console.log('[AuthCallback] Has code but no session, manually exchanging code');
-          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-          
-          if (exchangeError) {
-            console.error('[AuthCallback] Error exchanging code for session:', exchangeError);
-            setError(exchangeError.message);
-            return;
-          }
-          
-          if (data?.session) {
-            console.log('[AuthCallback] Successfully exchanged code for session');
-            // If successful, redirect to the saved path or default to chat
-            const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-            sessionStorage.removeItem('redirectTo');
-            console.log('[AuthCallback] Redirecting to:', redirectTo);
-            navigate(redirectTo, { replace: true });
-            return;
-          }
-        }
-        
-        // Session check - if we have a session after processing
-        if (session) {
-          console.log('[AuthCallback] Session detected, user ID:', session.user.id);
-          const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-          sessionStorage.removeItem('redirectTo');
-          console.log('[AuthCallback] Redirecting to:', redirectTo);
-          navigate(redirectTo, { replace: true });
-        } else {
-          console.log('[AuthCallback] No session detected in callback handler');
-          
-          // After a short delay, recheck session - sometimes it takes a moment to be available
-          setTimeout(async () => {
-            console.log('[AuthCallback] Rechecking session after delay');
-            const { data } = await supabase.auth.getSession();
-            if (data?.session) {
-              console.log('[AuthCallback] Session found on recheck');
-              const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-              sessionStorage.removeItem('redirectTo');
-              navigate(redirectTo, { replace: true });
-            } else {
-              setProcessingCallback(false);
-            }
-          }, 2000);
-        }
-      } catch (callbackError) {
-        console.error('[AuthCallback] Error in auth callback processing:', callbackError);
-        setError('An unexpected error occurred while processing your login.');
-        setProcessingCallback(false);
-      }
-    };
-    
-    processCallback();
-  }, [session, location, navigate]);
+    // Check session on mount to handle callback completion
+    if (session) {
+      const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+      sessionStorage.removeItem('redirectTo');
+      window.location.href = redirectTo;
+    }
+  }, [session]);
   
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <div className="bg-red-500/10 border border-red-500 p-4 rounded-lg max-w-md">
-          <h2 className="text-red-500 font-semibold text-lg mb-2">Authentication Error</h2>
-          <p className="text-white">{error}</p>
-          <a href="/" className="mt-4 inline-block text-primary hover:underline">
-            Return to home page
-          </a>
-        </div>
-      </div>
-    );
-  }
-  
-  if (processingCallback) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
-        <p className="text-white">Processing your login...</p>
-      </div>
-    );
-  }
-  
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <div className="bg-yellow-500/10 border border-yellow-500 p-4 rounded-lg max-w-md">
-        <h2 className="text-yellow-500 font-semibold text-lg mb-2">Session Not Found</h2>
-        <p className="text-white">We couldn't complete your login. Please try again.</p>
-        <a href="/" className="mt-4 inline-block text-primary hover:underline">
-          Return to home page
-        </a>
-      </div>
-    </div>
-  );
+  return <LoadingSpinner />;
 };
 
 // Protected route component
@@ -289,8 +84,8 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <Routes>
-              {/* Eagerly loaded route with IndexWrapper to handle OAuth in root path */}
-              <Route path="/" element={<IndexWrapper />} />
+              {/* Eagerly loaded route */}
+              <Route path="/" element={<Index />} />
               
               {/* Lazy loaded routes */}
               <Route 
@@ -310,8 +105,12 @@ const App = () => {
                 } 
               />
               
-              {/* Auth routes - Single standard path for OAuth callback reliability */}
-              <Route path="/auth/callback" element={<AuthCallback />} />
+              {/* Auth routes */}
+              <Route path="/auth/v1/callback" element={<AuthCallback />} />
+              <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
+              <Route path="/auth/v1/*" element={<AuthCallback />} />
+              <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
+              <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
               
               {/* Protected routes */}
               <Route 

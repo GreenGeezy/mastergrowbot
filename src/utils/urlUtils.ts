@@ -1,27 +1,27 @@
-
-/**
- * Get a properly formatted redirect URL for Supabase authentication
- */
-export const getRedirectUrl = (): string => {
-  // Use the current origin for the redirect
-  const baseUrl = window.location.origin;
-  const callbackPath = '/auth/callback';
+export const getRedirectUrl = () => {
+  const hostname = window.location.hostname;
+  const origin = window.location.origin;
   
-  return `${baseUrl}${callbackPath}`;
-};
-
-/**
- * Handle OAuth state parameter errors
- */
-export const handleOAuthError = (error: string | null, errorDescription: string | null): string | null => {
-  if (!error) return null;
+  // For production domain
+  if (hostname === 'mastergrowbot.com' || hostname === 'www.mastergrowbot.com') {
+    return `${origin}/auth/v1/callback`;
+  }
   
-  return errorDescription || error;
-};
-
-/**
- * Generate a consistent state parameter for OAuth
- */
-export const generateOAuthState = (): string => {
-  return Date.now().toString();
+  // For development/testing on Lovable subdomain
+  if (hostname.includes('lovable.app')) {
+    return `${origin}/auth/v1/callback`;
+  }
+  
+  // For Supabase hosted domain
+  if (hostname.includes('supabase.co')) {
+    return `${origin}/auth/v1/callback`;
+  }
+  
+  // For local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return `${origin}/auth/v1/callback`;
+  }
+  
+  // Default fallback
+  return `${origin}/auth/v1/callback`;
 };
