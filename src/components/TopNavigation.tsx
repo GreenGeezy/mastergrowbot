@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
-import { Brain, Seedling, BookOpen } from 'lucide-react';
+import { Brain, Sprout, BookOpen } from 'lucide-react';
 import { toast } from 'sonner';
 import FeatureCard from './FeatureCard';
 import { ProfileDropdown } from './profile/ProfileDropdown';
@@ -49,7 +49,7 @@ export const TopNavigation: React.FC = () => {
           to="/chat"
         />
         <FeatureCard
-          icon={Seedling}
+          icon={Sprout}
           title="Plant Health Check"
           subtitle="Diagnose issues"
           to="/plant-health"
