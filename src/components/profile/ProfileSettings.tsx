@@ -4,6 +4,7 @@ import { Switch } from '@/components/ui/switch'
 import { useState } from 'react'
 import { toast } from '@/hooks/use-toast'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { getRedirectUrl } from '@/utils/urlUtils'
 
 interface ProfileSettingsProps {
   notifications: boolean
@@ -26,7 +27,8 @@ export function ProfileSettings({
   const supabase = useSupabaseClient()
 
   const handleResetPassword = async () => {
-    const email = (await supabase.auth.getUser()).data.user?.email
+    const { data } = await supabase.auth.getUser();
+    const email = data.user?.email;
     
     if (!email) {
       toast({
@@ -34,40 +36,45 @@ export function ProfileSettings({
         description: "Could not retrieve your email address",
         variant: "destructive",
       })
-      return
+      return;
     }
 
     try {
-      setIsPasswordResetLoading(true)
+      setIsPasswordResetLoading(true);
+      
+      // Get the correct redirect URL based on the current domain
+      const redirectUrl = getRedirectUrl().replace('/auth/v1/callback', '/reset-password');
+      console.log('[ProfileSettings] Password reset redirect URL:', redirectUrl);
       
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/v1/callback?next=/reset-password`,
-      })
+        redirectTo: redirectUrl,
+      });
 
       if (error) {
+        console.error('[ProfileSettings] Password reset error:', error);
         toast({
           title: "Error",
           description: error.message,
           variant: "destructive",
-        })
-        return
+        });
+        return;
       }
 
       toast({
         title: "Password reset email sent",
         description: "Check your inbox for a password reset link",
-      })
+      });
     } catch (error) {
-      console.error("Password reset error:", error)
+      console.error("[ProfileSettings] Password reset error:", error);
       toast({
         title: "Error",
         description: "Failed to send password reset email",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsPasswordResetLoading(false)
+      setIsPasswordResetLoading(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
