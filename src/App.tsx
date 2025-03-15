@@ -1,3 +1,4 @@
+
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -43,6 +44,7 @@ const AuthCallback = () => {
   const session = useSession();
   const location = useLocation();
   const [error, setError] = useState<string | null>(null);
+  const [processingCallback, setProcessingCallback] = useState(true);
   
   useEffect(() => {
     // Enhanced logging for debugging
@@ -53,43 +55,83 @@ const AuthCallback = () => {
       fullUrl: window.location.href
     });
     
-    // Extract error if present in the URL
-    const params = new URLSearchParams(location.search);
-    const urlError = params.get('error');
-    const urlErrorDescription = params.get('error_description');
-    
-    if (urlError) {
-      const errorMessage = urlErrorDescription || urlError;
-      setError(errorMessage);
-      console.error('[AuthCallback] Auth error from URL:', errorMessage);
-    }
-    
-    // Check session on mount to handle callback completion
-    if (session) {
-      console.log('[AuthCallback] Session detected, user ID:', session.user.id);
-      const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-      sessionStorage.removeItem('redirectTo');
-      console.log('[AuthCallback] Redirecting to:', redirectTo);
-      
-      // Force navigation using window.location for a clean redirect
-      window.location.href = redirectTo;
-    } else {
-      console.log('[AuthCallback] No session detected in callback handler');
-      
-      // After a short delay, recheck session - sometimes it takes a moment to be available
-      const timeoutId = setTimeout(async () => {
-        console.log('[AuthCallback] Rechecking session after delay');
-        const { data } = await supabase.auth.getSession();
-        if (data?.session) {
-          console.log('[AuthCallback] Session found on recheck');
+    const processCallback = async () => {
+      setProcessingCallback(true);
+      try {
+        // Extract error if present in the URL
+        const params = new URLSearchParams(location.search);
+        const urlError = params.get('error');
+        const urlErrorDescription = params.get('error_description');
+        const code = params.get('code');
+        
+        console.log('[AuthCallback] URL parameters:', { 
+          error: urlError, 
+          errorDescription: urlErrorDescription,
+          hasCode: !!code
+        });
+        
+        if (urlError) {
+          const errorMessage = urlErrorDescription || urlError;
+          setError(errorMessage);
+          console.error('[AuthCallback] Auth error from URL:', errorMessage);
+          return;
+        }
+        
+        // If we have a code parameter but no session, explicitly exchange the code for a session
+        if (code && !session) {
+          console.log('[AuthCallback] Has code but no session, manually exchanging code');
+          // This will trigger the internal Supabase auth exchange
+          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+          
+          if (exchangeError) {
+            console.error('[AuthCallback] Error exchanging code for session:', exchangeError);
+            setError(exchangeError.message);
+            return;
+          }
+          
+          if (data?.session) {
+            console.log('[AuthCallback] Successfully exchanged code for session');
+            // If successful, redirect to the saved path or default to chat
+            const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+            sessionStorage.removeItem('redirectTo');
+            console.log('[AuthCallback] Redirecting to:', redirectTo);
+            window.location.href = redirectTo;
+            return;
+          }
+        }
+        
+        // Session check - if we have a session after processing
+        if (session) {
+          console.log('[AuthCallback] Session detected, user ID:', session.user.id);
           const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
           sessionStorage.removeItem('redirectTo');
+          console.log('[AuthCallback] Redirecting to:', redirectTo);
           window.location.href = redirectTo;
+        } else {
+          console.log('[AuthCallback] No session detected in callback handler');
+          
+          // After a short delay, recheck session - sometimes it takes a moment to be available
+          setTimeout(async () => {
+            console.log('[AuthCallback] Rechecking session after delay');
+            const { data } = await supabase.auth.getSession();
+            if (data?.session) {
+              console.log('[AuthCallback] Session found on recheck');
+              const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+              sessionStorage.removeItem('redirectTo');
+              window.location.href = redirectTo;
+            } else {
+              setProcessingCallback(false);
+            }
+          }, 2000);
         }
-      }, 2000);
-      
-      return () => clearTimeout(timeoutId);
-    }
+      } catch (callbackError) {
+        console.error('[AuthCallback] Error in auth callback processing:', callbackError);
+        setError('An unexpected error occurred while processing your login.');
+        setProcessingCallback(false);
+      }
+    };
+    
+    processCallback();
   }, [session, location]);
   
   if (error) {
@@ -106,7 +148,26 @@ const AuthCallback = () => {
     );
   }
   
-  return <LoadingSpinner />;
+  if (processingCallback) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+        <p className="text-white">Processing your login...</p>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <div className="bg-yellow-500/10 border border-yellow-500 p-4 rounded-lg max-w-md">
+        <h2 className="text-yellow-500 font-semibold text-lg mb-2">Session Not Found</h2>
+        <p className="text-white">We couldn't complete your login. Please try again.</p>
+        <a href="/" className="mt-4 inline-block text-primary hover:underline">
+          Return to home page
+        </a>
+      </div>
+    </div>
+  );
 };
 
 // Protected route component

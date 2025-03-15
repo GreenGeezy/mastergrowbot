@@ -11,10 +11,12 @@ export const getRedirectUrl = (): string => {
   const port = window.location.port ? `:${window.location.port}` : '';
   const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
   
-  // Enhanced preview detection that handles all Lovable preview domains
+  // Enhanced preview detection that handles all Lovable preview domains and temporary domains
   const isLovablePreview = hostname.includes('lovable.app') || 
                            hostname.includes('lovableproject.com') ||
-                           hostname.includes('lovable-preview');
+                           hostname.includes('lovable-preview') ||
+                           // Also detect temporary preview domains that don't match the above patterns
+                           (hostname.includes('.vercel.app') && !hostname.includes('mastergrowbot'));
   
   const isMasterGrowbot = hostname.includes('mastergrowbot.com');
   

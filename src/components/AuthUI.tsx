@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AuthForm } from "./auth/AuthForm";
 import { getRedirectUrl } from "@/utils/urlUtils";
 import { toast } from "sonner";
@@ -15,6 +15,7 @@ const AuthUI = () => {
   const [checkingSession, setCheckingSession] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const checkExistingSession = async () => {
@@ -43,9 +44,9 @@ const AuthUI = () => {
   }, [navigate]);
 
   useEffect(() => {
-    // Check URL for error params from failed OAuth
-    const checkUrlForErrors = () => {
-      const params = new URLSearchParams(window.location.search);
+    // Check URL for error params from failed OAuth or code from successful OAuth
+    const checkUrlForParams = () => {
+      const params = new URLSearchParams(location.search);
       const errorParam = params.get('error');
       const errorDescription = params.get('error_description');
       const code = params.get('code');
@@ -58,9 +59,16 @@ const AuthUI = () => {
         setAuthError(errorDescription || errorParam);
         toast.error(errorDescription || 'Authentication failed');
       }
+      
+      // If we have a code in the URL but we're on the main page (not callback),
+      // we need to manually exchange it - this handles redirects back to "/"
+      if (code && location.pathname === '/') {
+        console.log('[AuthUI] Code found in URL on main page, manually exchanging');
+        handleCodeExchange(code);
+      }
     };
     
-    checkUrlForErrors();
+    checkUrlForParams();
     
     // Subscribe to auth state changes - critical for OAuth flows
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -82,7 +90,42 @@ const AuthUI = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, location]);
+  
+  // Handle code exchange when redirected to main page with code
+  const handleCodeExchange = async (code: string) => {
+    try {
+      setLoading(true);
+      console.log('[AuthUI] Manually exchanging code for session');
+      
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+      
+      if (error) {
+        console.error('[AuthUI] Error exchanging code:', error);
+        toast.error('Failed to complete authentication. Please try again.');
+        setAuthError(error.message);
+        return;
+      }
+      
+      if (data?.session) {
+        console.log('[AuthUI] Successfully exchanged code for session');
+        const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+        sessionStorage.removeItem('redirectTo');
+        
+        // Remove the code from the URL to prevent reuse
+        window.history.replaceState({}, document.title, '/');
+        
+        toast.success('Successfully signed in!');
+        navigate(redirectTo, { replace: true });
+      }
+    } catch (error: any) {
+      console.error('[AuthUI] Exception during code exchange:', error);
+      toast.error('An unexpected error occurred');
+      setAuthError(error.message || 'Failed to complete authentication');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
