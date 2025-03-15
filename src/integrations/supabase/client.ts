@@ -139,34 +139,17 @@ async function createUserProfileIfNeeded(userId, user) {
   }
 }
 
-// Check current auth state on load and try to detect callback hash
+// Check current auth state on load
 (async () => {
   try {
-    // Check if we're on a callback URL with hash params
-    if (window.location.hash && window.location.hash.includes('access_token')) {
-      console.log('[Supabase] Detected OAuth callback with hash params');
-      
-      // Force Supabase to process the hash
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error('[Supabase] Error processing hash params:', error);
-      } else if (data?.session) {
-        console.log('[Supabase] Successfully processed hash params');
-        
-        // Remove the hash to clean up the URL
-        window.location.hash = '';
-      }
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error('[Supabase] Error getting session:', error);
+    } else if (data?.session) {
+      console.log('[Supabase] Initial session loaded:', data.session.user.id);
+      createUserProfileIfNeeded(data.session.user.id, data.session.user);
     } else {
-      // Normal session check
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error('[Supabase] Error getting session:', error);
-      } else if (data?.session) {
-        console.log('[Supabase] Initial session loaded:', data.session.user.id);
-        createUserProfileIfNeeded(data.session.user.id, data.session.user);
-      } else {
-        console.log('[Supabase] No initial session');
-      }
+      console.log('[Supabase] No initial session');
     }
   } catch (error) {
     console.error('[Supabase] Error during initial session check:', error);
