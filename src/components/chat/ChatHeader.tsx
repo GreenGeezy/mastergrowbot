@@ -17,7 +17,7 @@ import {
 import SupportDialog from '@/components/support/SupportDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSession } from '@supabase/auth-helpers-react';
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { toast } from '@/hooks/use-toast';
 import { getRedirectUrl } from '@/utils/urlUtils';
 
@@ -25,16 +25,38 @@ export const ChatHeader = () => {
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const session = useSession();
+  const supabaseClient = useSupabaseClient();
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  // Debug log for session status - helps to troubleshoot authentication state
+  // Check authentication status on mount and when session changes
   useEffect(() => {
-    console.log('[ChatHeader] Session state:', session ? 'Logged in' : 'Not logged in');
-    if (session?.user) {
-      console.log('[ChatHeader] User ID:', session.user.id);
-      console.log('[ChatHeader] User email:', session.user.email);
-    }
-  }, [session]);
+    const checkAuth = async () => {
+      const currentSession = await supabaseClient.auth.getSession();
+      console.log('[ChatHeader] Current session:', currentSession?.data?.session ? 'Active' : 'None');
+      
+      setIsAuthenticated(!!currentSession?.data?.session);
+      
+      if (currentSession?.data?.session?.user) {
+        console.log('[ChatHeader] User ID:', currentSession.data.session.user.id);
+        console.log('[ChatHeader] User email:', currentSession.data.session.user.email);
+      }
+    };
+    
+    checkAuth();
+  }, [session, supabaseClient]);
+
+  // Additional listener for auth state changes
+  useEffect(() => {
+    const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, newSession) => {
+      console.log('[ChatHeader] Auth event:', event);
+      setIsAuthenticated(!!newSession);
+    });
+    
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [supabaseClient]);
 
   const growTools = [
     {
@@ -66,6 +88,7 @@ export const ChatHeader = () => {
           variant: "destructive",
         });
       } else {
+        setIsAuthenticated(false);
         navigate('/');
       }
     } catch (err) {
@@ -175,7 +198,7 @@ export const ChatHeader = () => {
               <span className="font-medium">Feedback</span>
             </Button>
 
-            {session ? (
+            {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 

@@ -52,8 +52,13 @@ export function useProfile() {
           id: session.user.id,
           username: username,
           grow_experience_level: 'new',
+          growing_method: 'indoor',
+          monitoring_method: 'manual',
+          nutrient_type: 'organic',
+          challenges: ['none'],
+          goals: ['learn'],
           email: session.user.email,
-          has_completed_quiz: true // Set to true to avoid quiz requirement issues
+          has_completed_quiz: true  // Set to true to avoid quiz requirement
         };
 
         console.log('[useProfile] Creating profile with data:', defaultProfile);
@@ -78,6 +83,21 @@ export function useProfile() {
         email: session.user.email,
         ...profileData
       };
+      
+      // Mark quiz as completed if it's not already
+      if (!profileData.has_completed_quiz) {
+        const { error: updateError } = await supabase
+          .from('user_profiles')
+          .update({ has_completed_quiz: true })
+          .eq('id', session.user.id);
+        
+        if (updateError) {
+          console.warn('[useProfile] Error updating quiz completion status:', updateError);
+        } else {
+          completeProfileData.has_completed_quiz = true;
+          console.log('[useProfile] Updated profile to mark quiz as completed');
+        }
+      }
       
       console.log('[useProfile] Profile data loaded successfully', completeProfileData);
       setProfileData(completeProfileData);

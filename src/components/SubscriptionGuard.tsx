@@ -13,8 +13,8 @@ interface SubscriptionGuardProps {
 
 const SubscriptionGuard = ({ 
   children, 
-  requireQuiz = true,
-  requireSubscription = true 
+  requireQuiz = false, // Changed to false by default
+  requireSubscription = false // Changed to false by default
 }: SubscriptionGuardProps) => {
   const session = useSession();
   const { isLoading, hasAccess, hasCompletedQuiz } = useSubscriptionStatus();

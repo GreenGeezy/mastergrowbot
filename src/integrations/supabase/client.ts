@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
@@ -10,27 +9,101 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
-    debug: true, // Enable debug mode for auth issues
   },
-  global: {
-    fetch: (url, options) => {
-      // Add additional logging for debugging auth and user operations
-      if (url.toString().includes('/auth/') || url.toString().includes('/users/')) {
-        console.log('Auth operation:', url, options?.method);
-      }
-      return fetch(url, options);
-    }
+});
+
+// Enhanced logging for auth state changes
+supabase.auth.onAuthStateChange((event, session) => {
+  console.log(`[Supabase] Auth state changed: ${event}`, session ? 'User logged in' : 'No user');
+  if (session) {
+    console.log('[Supabase] User ID:', session.user.id);
+    console.log('[Supabase] User email:', session.user.email);
+    console.log('[Supabase] User metadata:', session.user.user_metadata);
+    
+    // Force create profile if we have a user session
+    createUserProfileIfNeeded(session.user.id, session.user);
   }
 });
 
-// Listen for auth state changes
-supabase.auth.onAuthStateChange((event, session) => {
-  console.log(`Auth state changed: ${event}`, session ? 'User logged in' : 'No user');
-  if (session) {
-    console.log('User ID:', session.user.id);
-    console.log('User email:', session.user.email);
+// Function to create user profile if it doesn't exist
+async function createUserProfileIfNeeded(userId, user) {
+  try {
+    console.log('[Supabase] Checking if profile exists for user:', userId);
+    
+    // Check if profile exists
+    const { data: profile, error: profileError } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+    
+    if (profileError) {
+      console.error('[Supabase] Error checking profile:', profileError);
+      return;
+    }
+    
+    if (!profile) {
+      console.log('[Supabase] No profile found, creating default profile');
+      
+      // Extract name from metadata if available
+      let username = user.email?.split('@')[0] || 'User';
+      if (user.user_metadata?.full_name) {
+        username = user.user_metadata.full_name;
+      } else if (user.user_metadata?.name) {
+        username = user.user_metadata.name;
+      }
+      
+      // Create default profile with required fields
+      const defaultProfile = {
+        id: userId,
+        username,
+        grow_experience_level: 'new',
+        has_completed_quiz: true, // Auto-complete quiz
+        goals: ['learn'],
+        challenges: ['none'],
+        nutrient_type: 'organic',
+        growing_method: 'indoor',
+        monitoring_method: 'manual'
+      };
+      
+      const { error: createError } = await supabase
+        .from('user_profiles')
+        .insert(defaultProfile);
+      
+      if (createError) {
+        console.error('[Supabase] Error creating profile:', createError);
+        return;
+      }
+      
+      console.log('[Supabase] Created default profile successfully');
+    } else {
+      console.log('[Supabase] Profile already exists:', profile);
+      
+      // If profile exists but quiz not completed, mark it as completed
+      if (!profile.has_completed_quiz) {
+        const { error: updateError } = await supabase
+          .from('user_profiles')
+          .update({ 
+            has_completed_quiz: true,
+            goals: profile.goals || ['learn'],
+            challenges: profile.challenges || ['none'],
+            nutrient_type: profile.nutrient_type || 'organic',
+            growing_method: profile.growing_method || 'indoor',
+            monitoring_method: profile.monitoring_method || 'manual'
+          })
+          .eq('id', userId);
+          
+        if (updateError) {
+          console.error('[Supabase] Error updating profile quiz status:', updateError);
+        } else {
+          console.log('[Supabase] Updated profile to complete quiz');
+        }
+      }
+    }
+  } catch (error) {
+    console.error('[Supabase] Unexpected error in profile creation:', error);
   }
-});
+}
 
 // Initialize storage bucket
 (async () => {
