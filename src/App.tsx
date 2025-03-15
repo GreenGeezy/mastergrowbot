@@ -53,8 +53,10 @@ const AuthCallback = () => {
       // Let supabase client handle the auth callback
       console.log("Processing auth callback with params:", location.search);
       
-      // The hash contains tokens, let's process it to complete the sign-in flow
-      supabase.auth.getSessionFromUrl().catch(error => {
+      // The Supabase auth client will automatically handle auth callbacks
+      // We don't need to call getSessionFromUrl() as it's not available
+      // Just checking current session is enough
+      supabase.auth.getSession().catch(error => {
         console.error("Error processing auth callback:", error);
       });
     }
