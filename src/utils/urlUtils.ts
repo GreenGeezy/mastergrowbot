@@ -10,7 +10,7 @@ export const getRedirectUrl = (): string => {
   const hostname = window.location.hostname;
   const port = window.location.port ? `:${window.location.port}` : '';
   const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-  const isLovablePreview = hostname.includes('lovableproject.com');
+  const isLovablePreview = hostname.includes('lovable.app');
   const isMasterGrowbot = hostname.includes('mastergrowbot.com');
   
   // Build the base URL
@@ -19,7 +19,9 @@ export const getRedirectUrl = (): string => {
   if (isLocalhost) {
     baseUrl = `${protocol}//${hostname}${port}`;
   } else if (isLovablePreview) {
+    // Use the exact preview URL for Lovable preview environments
     baseUrl = window.location.origin;
+    console.log(`[AUTH] Using Lovable preview URL: ${baseUrl}`);
   } else if (isMasterGrowbot) {
     // IMPORTANT: Always use the www subdomain for consistency
     baseUrl = 'https://www.mastergrowbot.com';
