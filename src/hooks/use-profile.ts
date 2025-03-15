@@ -22,6 +22,7 @@ export function useProfile() {
       setIsLoading(true);
       setHasError(false);
       console.log('[useProfile] Fetching profile for user:', session.user.id);
+      console.log('[useProfile] User metadata:', session.user.user_metadata);
       
       // Try to get the profile data
       const { data: profileData, error: profileError } = await supabase
@@ -54,6 +55,8 @@ export function useProfile() {
           email: session.user.email,
           has_completed_quiz: false
         };
+
+        console.log('[useProfile] Creating profile with data:', defaultProfile);
 
         const { error: createError } = await supabase
           .from('user_profiles')

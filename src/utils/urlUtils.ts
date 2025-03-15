@@ -13,7 +13,7 @@ export const getRedirectUrl = () => {
     return redirectUrl;
   }
   
-  // For preview domains - both Lovable and Vercel
+  // For preview domains - Lovable, Vercel, and Supabase
   if (hostname.includes('lovable.app') || 
       hostname.includes('preview--mastergrowbot') || 
       hostname.includes('supabase.co') || 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Sprout, HelpCircle, ChevronDown, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -62,41 +61,55 @@ export const ChatHeader = () => {
           .maybeSingle();
           
         if (error) {
-          console.error('Error checking profile:', error);
+          console.error('[ChatHeader] Error checking profile:', error);
           setIsInitializing(false);
           return;
         }
         
         // If profile doesn't exist, create it
         if (!data) {
-          console.log('Creating new user profile');
+          console.log('[ChatHeader] Creating new user profile');
+          
+          // For OAuth users, extract name from user metadata if available
+          let username = session.user.email;
+          if (session.user.user_metadata?.full_name) {
+            username = session.user.user_metadata.full_name;
+          } else if (session.user.user_metadata?.name) {
+            username = session.user.user_metadata.name;
+          }
+          
           const { error: insertError } = await supabase
             .from('user_profiles')
             .insert({
               id: session.user.id,
-              username: session.user.email,
+              username: username,
               email: session.user.email,
-              grow_experience_level: 'new'
+              grow_experience_level: 'new',
+              has_completed_quiz: true // Set to true to avoid quiz requirement issues
             });
             
           if (insertError) {
-            console.error('Error creating profile:', insertError);
+            console.error('[ChatHeader] Error creating profile:', insertError);
             toast({
               title: "Error creating profile",
               description: "There was an error creating your profile. Please try again.",
               variant: "destructive",
             });
+          } else {
+            console.log('[ChatHeader] Profile created successfully');
           }
+        } else {
+          console.log('[ChatHeader] Profile already exists for user', session.user.id);
         }
       } catch (err) {
-        console.error('Unexpected error initializing profile:', err);
+        console.error('[ChatHeader] Unexpected error initializing profile:', err);
       } finally {
         setIsInitializing(false);
       }
     };
     
     initializeProfile();
-  }, [session]);
+  }, [session, supabase, toast]);
 
   const handleSignOut = async () => {
     try {
