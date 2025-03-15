@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageSquare, Sprout, HelpCircle, ChevronDown, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +19,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
 import { toast } from '@/hooks/use-toast';
-import { ProfileDropdown } from '../profile/ProfileDropdown';
 import { getRedirectUrl } from '@/utils/urlUtils';
 
 export const ChatHeader = () => {
@@ -27,6 +26,15 @@ export const ChatHeader = () => {
   const navigate = useNavigate();
   const session = useSession();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Debug log for session status - helps to troubleshoot authentication state
+  useEffect(() => {
+    console.log('[ChatHeader] Session state:', session ? 'Logged in' : 'Not logged in');
+    if (session?.user) {
+      console.log('[ChatHeader] User ID:', session.user.id);
+      console.log('[ChatHeader] User email:', session.user.email);
+    }
+  }, [session]);
 
   const growTools = [
     {

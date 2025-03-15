@@ -9,7 +9,8 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    flowType: 'pkce'
+    flowType: 'pkce',
+    debug: true, // Enable debug mode for auth issues
   },
   global: {
     fetch: (url, options) => {
@@ -19,6 +20,15 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       }
       return fetch(url, options);
     }
+  }
+});
+
+// Listen for auth state changes
+supabase.auth.onAuthStateChange((event, session) => {
+  console.log(`Auth state changed: ${event}`, session ? 'User logged in' : 'No user');
+  if (session) {
+    console.log('User ID:', session.user.id);
+    console.log('User email:', session.user.email);
   }
 });
 

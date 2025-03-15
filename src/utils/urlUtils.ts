@@ -1,59 +1,45 @@
 
-export const getRedirectUrl = () => {
-  const hostname = window.location.hostname;
-  const origin = window.location.origin;
+/**
+ * Get a properly formatted redirect URL for Supabase authentication
+ * - In development: Uses localhost with the correct port
+ * - In production: Uses the actual domain
+ */
+export const getRedirectUrl = (): string => {
+  const isLocalhost = window.location.hostname === 'localhost' 
+    || window.location.hostname === '127.0.0.1';
   
-  // Logger to help with debugging
-  console.log(`[getRedirectUrl] Current hostname: ${hostname}, origin: ${origin}`);
+  // Special case for Lovable preview URLs
+  const isLovablePreview = window.location.hostname.includes('lovableproject.com');
   
-  // For production domain and its www subdomain
-  if (hostname === 'mastergrowbot.com' || hostname === 'www.mastergrowbot.com') {
-    const redirectUrl = `${origin}/auth/v1/callback`;
-    console.log(`[getRedirectUrl] Using production redirect URL: ${redirectUrl}`);
-    return redirectUrl;
+  // Get the protocol (http or https)
+  const protocol = window.location.protocol;
+  
+  // Get the port if it's not the default (80 for http, 443 for https)
+  const port = window.location.port ? `:${window.location.port}` : '';
+  
+  // Get the pathname up to the first segment to support subdirectory deployments
+  const pathSegments = window.location.pathname.split('/');
+  const basePath = pathSegments.length > 1 && pathSegments[1] ? `/${pathSegments[1]}` : '';
+  
+  // Build URL for various environments
+  let redirectUrl = '';
+  
+  if (isLocalhost) {
+    // For localhost, use the current origin
+    redirectUrl = `${protocol}//${window.location.hostname}${port}`;
+  } else if (isLovablePreview) {
+    // For Lovable previews, use the full current URL
+    redirectUrl = window.location.origin;
+  } else {
+    // For production, use the main domain with subdirectory if present
+    const isSubdirectory = window.location.pathname.startsWith('/app');
+    redirectUrl = isSubdirectory 
+      ? `https://www.mastergrowbot.com/app` 
+      : `https://www.mastergrowbot.com`;
   }
   
-  // For preview domains - Lovable, Vercel, and Supabase
-  if (hostname.includes('lovable.app') || 
-      hostname.includes('preview--mastergrowbot') || 
-      hostname.includes('supabase.co') || 
-      hostname.includes('vercel.app')) {
-    const redirectUrl = `${origin}/auth/v1/callback`;
-    console.log(`[getRedirectUrl] Using preview redirect URL: ${redirectUrl}`);
-    return redirectUrl;
-  }
+  // Log the redirect URL for debugging
+  console.log(`[urlUtils] Generated redirect URL: ${redirectUrl}`);
   
-  // For local development
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    const redirectUrl = `${origin}/auth/v1/callback`;
-    console.log(`[getRedirectUrl] Using local redirect URL: ${redirectUrl}`);
-    return redirectUrl;
-  }
-  
-  // Default fallback
-  const defaultRedirect = `${origin}/auth/v1/callback`;
-  console.log(`[getRedirectUrl] Using default redirect URL: ${defaultRedirect}`);
-  return defaultRedirect;
-};
-
-// Helper function to check if a URL is in the allowed redirects list
-export const isAllowedRedirectUrl = (url: string): boolean => {
-  const allowedDomains = [
-    'mastergrowbot.com',
-    'www.mastergrowbot.com',
-    'lovable.app',
-    'preview--mastergrowbot',
-    'supabase.co',
-    'vercel.app',
-    'localhost',
-    '127.0.0.1'
-  ];
-  
-  try {
-    const urlObj = new URL(url);
-    return allowedDomains.some(domain => urlObj.hostname === domain || urlObj.hostname.includes(domain));
-  } catch (e) {
-    console.error('[isAllowedRedirectUrl] Invalid URL:', url);
-    return false;
-  }
+  return redirectUrl;
 };
