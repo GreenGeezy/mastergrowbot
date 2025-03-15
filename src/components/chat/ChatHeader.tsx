@@ -5,6 +5,7 @@ import { useSession } from '@supabase/auth-helpers-react';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { supabase } from '@/integrations/supabase/client';
+import { ProfileDropdown } from '@/components/profile/ProfileDropdown';
 
 export function ChatHeader() {
   const session = useSession();
@@ -56,7 +57,7 @@ export function ChatHeader() {
       </div>
       <div className="flex items-center gap-4">
         {isAuthenticated ? (
-          <div className="text-white text-sm">Signed In</div>
+          <ProfileDropdown />
         ) : (
           <Link to="/">
             <Button variant="outline" size="sm" className="bg-primary text-white">

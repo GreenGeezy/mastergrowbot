@@ -6,10 +6,6 @@ import { AuthForm } from "./auth/AuthForm";
 import { getRedirectUrl } from "@/utils/urlUtils";
 import { toast } from "sonner";
 
-// Feature flag to control whether quiz completion and subscription are required
-// Set to false to bypass quiz requirement
-const REQUIRE_QUIZ_AND_SUBSCRIPTION = false;
-
 const AuthUI = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +49,11 @@ const AuthUI = () => {
         sessionStorage.removeItem('redirectTo');
         
         console.log('[AuthUI] Redirecting to:', redirectTo);
-        navigate(redirectTo, { replace: true });
+        
+        // Force a slightly longer delay to ensure profile creation completes
+        setTimeout(() => {
+          navigate(redirectTo, { replace: true });
+        }, 500);
       }
     });
 
@@ -97,8 +97,7 @@ const AuthUI = () => {
         console.log('[AuthUI] Login successful, user:', data.user?.id);
         toast.success("Welcome back!");
         
-        // Force navigate to chat after successful login
-        navigate('/chat', { replace: true });
+        // User will be redirected by the auth state change listener
       }
     } catch (error) {
       console.error('[AuthUI] Auth error:', error);

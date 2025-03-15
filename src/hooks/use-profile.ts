@@ -1,7 +1,11 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { ProfileData } from '@/components/profile/types';
 import { toast } from '@/hooks/use-toast';
+
+// Read the environment variable
+const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
 export function useProfile() {
   const [profileData, setProfileData] = useState<ProfileData>({});

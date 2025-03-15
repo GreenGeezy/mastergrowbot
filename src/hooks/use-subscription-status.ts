@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { supabase } from '@/integrations/supabase/client';
 
+// Read the environment variable to check if quiz and subscription are required
+const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+
 interface SubscriptionStatus {
   isLoading: boolean;
   hasAccess: boolean;
@@ -25,6 +28,19 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
 
   useEffect(() => {
     const checkSubscription = async () => {
+      // If subscription checking is disabled, immediately grant access
+      if (!requireQuizAndSubscription) {
+        setStatus({
+          isLoading: false,
+          hasAccess: true,
+          hasCompletedQuiz: true,
+          subscriptionType: 'free',
+          expiresAt: null,
+          error: null
+        });
+        return;
+      }
+
       if (!session?.user?.id) {
         setStatus({
           isLoading: false,
@@ -57,19 +73,32 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
         });
       } catch (error) {
         console.error('Error checking subscription status:', error);
-        setStatus({
-          isLoading: false,
-          hasAccess: false,
-          hasCompletedQuiz: false,
-          subscriptionType: null,
-          expiresAt: null,
-          error: error instanceof Error ? error : new Error('Unknown error')
-        });
+        
+        // Even if there's an error, grant access anyway if the feature flag is disabled
+        if (!requireQuizAndSubscription) {
+          setStatus({
+            isLoading: false,
+            hasAccess: true,
+            hasCompletedQuiz: true,
+            subscriptionType: 'free',
+            expiresAt: null,
+            error: null
+          });
+        } else {
+          setStatus({
+            isLoading: false,
+            hasAccess: false,
+            hasCompletedQuiz: false,
+            subscriptionType: null,
+            expiresAt: null,
+            error: error instanceof Error ? error : new Error('Unknown error')
+          });
+        }
       }
     };
 
     checkSubscription();
-  }, [session]);
+  }, [session, requireQuizAndSubscription]);
 
   return status;
 };

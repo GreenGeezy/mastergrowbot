@@ -8,15 +8,12 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface SubscriptionGuardProps {
   children: ReactNode;
-  requireQuiz?: boolean;
-  requireSubscription?: boolean;
 }
 
-const SubscriptionGuard = ({ 
-  children, 
-  requireQuiz = false, // Always false by default - quiz completion not required
-  requireSubscription = false // Always false by default - subscription not required
-}: SubscriptionGuardProps) => {
+// Read the environment variable to check if quiz and subscription are required
+const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+
+const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
   const session = useSession();
   const { isLoading, hasAccess, hasCompletedQuiz } = useSubscriptionStatus();
 
@@ -106,7 +103,20 @@ const SubscriptionGuard = ({
     );
   }
 
-  // Always allow access regardless of quiz or subscription status
+  // Override checks when quiz and subscription are not required
+  if (!requireQuizAndSubscription) {
+    return <>{children}</>;
+  }
+
+  // Apply checks only when the feature flag is enabled
+  if (!hasCompletedQuiz) {
+    return <Navigate to="/quiz" replace />;
+  }
+
+  if (!hasAccess) {
+    return <Navigate to="/subscribe" replace />;
+  }
+
   return <>{children}</>;
 };
 
