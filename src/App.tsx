@@ -5,9 +5,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 // Eagerly load the Index page for better UX
 import Index from "./pages/Index";
@@ -39,10 +40,72 @@ const LoadingSpinner = () => (
   </div>
 );
 
+// Enhanced IndexWrapper to handle code parameter in root URL
+const IndexWrapper = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const session = useSession();
+  const [processing, setProcessing] = useState(false);
+  
+  useEffect(() => {
+    // Check if we have a code parameter in the URL (from OAuth redirect)
+    const params = new URLSearchParams(location.search);
+    const code = params.get('code');
+    
+    if (code && !session && !processing) {
+      console.log('[IndexWrapper] Found OAuth code in URL, handling auth callback');
+      setProcessing(true);
+      
+      // Process the auth code
+      const handleCode = async () => {
+        try {
+          console.log('[IndexWrapper] Exchanging code for session');
+          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+          
+          if (error) {
+            console.error('[IndexWrapper] Error exchanging code:', error);
+            toast.error('Authentication failed: ' + error.message);
+            setProcessing(false);
+            return;
+          }
+          
+          if (data?.session) {
+            console.log('[IndexWrapper] Successfully exchanged code for session');
+            const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+            sessionStorage.removeItem('redirectTo');
+            
+            // Clean up URL
+            navigate(redirectTo, { replace: true });
+            toast.success('Successfully signed in!');
+          }
+        } catch (err) {
+          console.error('[IndexWrapper] Unexpected error during auth:', err);
+          toast.error('An unexpected error occurred');
+          setProcessing(false);
+        }
+      };
+      
+      handleCode();
+    }
+  }, [location, session, navigate, processing]);
+  
+  if (processing) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+        <p className="text-white">Completing your login...</p>
+      </div>
+    );
+  }
+  
+  return <Index />;
+};
+
 // Auth callback component with better error handling and detailed logging
 const AuthCallback = () => {
   const session = useSession();
   const location = useLocation();
+  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [processingCallback, setProcessingCallback] = useState(true);
   
@@ -80,7 +143,6 @@ const AuthCallback = () => {
         // If we have a code parameter but no session, explicitly exchange the code for a session
         if (code && !session) {
           console.log('[AuthCallback] Has code but no session, manually exchanging code');
-          // This will trigger the internal Supabase auth exchange
           const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
           
           if (exchangeError) {
@@ -95,7 +157,7 @@ const AuthCallback = () => {
             const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
             sessionStorage.removeItem('redirectTo');
             console.log('[AuthCallback] Redirecting to:', redirectTo);
-            window.location.href = redirectTo;
+            navigate(redirectTo, { replace: true });
             return;
           }
         }
@@ -106,7 +168,7 @@ const AuthCallback = () => {
           const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
           sessionStorage.removeItem('redirectTo');
           console.log('[AuthCallback] Redirecting to:', redirectTo);
-          window.location.href = redirectTo;
+          navigate(redirectTo, { replace: true });
         } else {
           console.log('[AuthCallback] No session detected in callback handler');
           
@@ -118,7 +180,7 @@ const AuthCallback = () => {
               console.log('[AuthCallback] Session found on recheck');
               const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
               sessionStorage.removeItem('redirectTo');
-              window.location.href = redirectTo;
+              navigate(redirectTo, { replace: true });
             } else {
               setProcessingCallback(false);
             }
@@ -132,7 +194,7 @@ const AuthCallback = () => {
     };
     
     processCallback();
-  }, [session, location]);
+  }, [session, location, navigate]);
   
   if (error) {
     return (
@@ -198,8 +260,8 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <Routes>
-              {/* Eagerly loaded route */}
-              <Route path="/" element={<Index />} />
+              {/* Eagerly loaded route with IndexWrapper to handle OAuth in root path */}
+              <Route path="/" element={<IndexWrapper />} />
               
               {/* Lazy loaded routes */}
               <Route 

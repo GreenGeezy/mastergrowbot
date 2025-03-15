@@ -44,15 +44,16 @@ const AuthUI = () => {
   }, [navigate]);
 
   useEffect(() => {
-    // Check URL for error params from failed OAuth or code from successful OAuth
+    // Check URL for auth parameters
     const checkUrlForParams = () => {
       const params = new URLSearchParams(location.search);
       const errorParam = params.get('error');
       const errorDescription = params.get('error_description');
       const code = params.get('code');
       
-      // Log more details for debugging
+      // Enhanced logging for debugging
       console.log(`[AuthUI] URL params check - Error: ${errorParam}, Code present: ${!!code}`);
+      console.log('[AuthUI] Full current URL:', window.location.href);
       
       if (errorParam) {
         console.error(`[AuthUI] Auth error from URL: ${errorParam} - ${errorDescription}`);
@@ -60,17 +61,16 @@ const AuthUI = () => {
         toast.error(errorDescription || 'Authentication failed');
       }
       
-      // If we have a code in the URL but we're on the main page (not callback),
-      // we need to manually exchange it - this handles redirects back to "/"
+      // If we have a code in the URL but we're on the main page, process it immediately
       if (code && location.pathname === '/') {
-        console.log('[AuthUI] Code found in URL on main page, manually exchanging');
+        console.log('[AuthUI] Code found in URL on main page, manually handling');
         handleCodeExchange(code);
       }
     };
     
     checkUrlForParams();
     
-    // Subscribe to auth state changes - critical for OAuth flows
+    // Subscribe to auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('[AuthUI] Auth state changed:', event, session ? `Session exists for user ${session?.user?.id || 'unknown'}` : 'No session');
       
@@ -80,7 +80,7 @@ const AuthUI = () => {
         sessionStorage.removeItem('redirectTo');
         console.log('[AuthUI] Redirecting to:', redirectTo);
         
-        // Add a small delay to ensure everything is settled before navigation
+        // Add a delay to ensure everything is settled before navigation
         setTimeout(() => {
           navigate(redirectTo, { replace: true });
         }, 100);
@@ -92,12 +92,18 @@ const AuthUI = () => {
     };
   }, [navigate, location]);
   
-  // Handle code exchange when redirected to main page with code
+  // Enhanced code exchange handler
   const handleCodeExchange = async (code: string) => {
     try {
       setLoading(true);
+      setAuthError(null);
       console.log('[AuthUI] Manually exchanging code for session');
       
+      // First, clear local session to prevent conflicts
+      await supabase.auth.signOut({ scope: 'local' });
+      await new Promise(resolve => setTimeout(resolve, 300)); // Small delay for cleanup
+      
+      // Now exchange the code for a session
       const { data, error } = await supabase.auth.exchangeCodeForSession(code);
       
       if (error) {
@@ -108,7 +114,7 @@ const AuthUI = () => {
       }
       
       if (data?.session) {
-        console.log('[AuthUI] Successfully exchanged code for session');
+        console.log('[AuthUI] Successfully exchanged code for session:', data.session.user.id);
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
         
@@ -117,6 +123,10 @@ const AuthUI = () => {
         
         toast.success('Successfully signed in!');
         navigate(redirectTo, { replace: true });
+      } else {
+        console.error('[AuthUI] No session returned after code exchange');
+        toast.error('Authentication failed. Please try again.');
+        setAuthError('No session returned from authentication');
       }
     } catch (error: any) {
       console.error('[AuthUI] Exception during code exchange:', error);
@@ -178,19 +188,18 @@ const AuthUI = () => {
       
       const redirectUrl = getRedirectUrl();
       console.log('[AuthUI] Using redirect URL for OAuth:', redirectUrl);
-      
-      // Enhanced logging for Google OAuth
       console.log('[AuthUI] Starting Google OAuth flow', { redirectUrl });
       
       // Save the current page to redirect back after login
       sessionStorage.setItem('redirectTo', '/chat');
       
-      // Clear local session to prevent state conflicts
+      // Temporary bug fix: Clear local session to prevent state conflicts
       await supabase.auth.signOut({ scope: 'local' });
       
       // Force refresh the auth state before proceeding
       await supabase.auth.refreshSession();
       
+      // Enhanced OAuth call with detailed query params to ensure fresh flow
       const { error, data } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -198,7 +207,9 @@ const AuthUI = () => {
           queryParams: {
             // These ensure a fresh auth flow each time
             access_type: 'offline',
-            prompt: 'consent',
+            prompt: 'consent select_account',  // Force account selection & consent
+            // Additional parameters to help prevent caching issues
+            state: new Date().getTime().toString(),
           },
         },
       });
