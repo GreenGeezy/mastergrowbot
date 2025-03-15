@@ -20,7 +20,6 @@ supabase.auth.onAuthStateChange((event, session) => {
   if (session) {
     console.log('[Supabase] User ID:', session.user.id);
     console.log('[Supabase] User email:', session.user.email);
-    console.log('[Supabase] User metadata:', session.user.user_metadata);
     
     // Force create profile if we have a user session
     createUserProfileIfNeeded(session.user.id, session.user);

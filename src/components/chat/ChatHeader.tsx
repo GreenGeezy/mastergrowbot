@@ -1,313 +1,72 @@
 
-import React, { useState, useEffect } from 'react';
-import { MessageSquare, Sprout, HelpCircle, ChevronDown, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import SupportDialog from '@/components/support/SupportDialog';
-import { supabase } from '@/integrations/supabase/client';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
-import { toast } from 'sonner';
-import { getRedirectUrl } from '@/utils/urlUtils';
+import { Button } from '@/components/ui/button';
+import { Sidebar } from '@/components/ui/sidebar';
+import { supabase } from '@/integrations/supabase/client';
 
-export const ChatHeader = () => {
-  const [showSupport, setShowSupport] = useState(false);
-  const navigate = useNavigate();
+export function ChatHeader() {
   const session = useSession();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check authentication status when component mounts and when session changes
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data } = await supabase.auth.getSession();
-        const hasSession = !!data.session;
-        console.log('[ChatHeader] Session check:', hasSession ? 'Found session' : 'No session');
-        
-        if (hasSession !== isAuthenticated) {
-          console.log('[ChatHeader] Updating authentication state:', hasSession);
-          setIsAuthenticated(hasSession);
-        }
-      } catch (err) {
-        console.error('[ChatHeader] Error checking auth:', err);
-      }
-    };
-    
-    checkAuth();
-    
+    // Check session on mount and when session changes
+    setIsAuthenticated(!!session);
+
     // Set up auth state change listener
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, newSession) => {
-      console.log('[ChatHeader] Auth state changed event:', event);
-      const hasSession = !!newSession;
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      console.log('[ChatHeader] Auth state changed:', event);
       
-      if (hasSession !== isAuthenticated) {
-        console.log('[ChatHeader] Updating authentication state from event:', hasSession);
-        setIsAuthenticated(hasSession);
+      if (event === 'SIGNED_IN') {
+        setIsAuthenticated(true);
+      } else if (event === 'SIGNED_OUT') {
+        setIsAuthenticated(false);
       }
     });
-    
+
     return () => {
-      authListener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
-  }, [session, isAuthenticated]);
-
-  const growTools = [
-    {
-      title: "Growing Assistant",
-      description: "Get expert growing advice",
-      path: "/chat",
-    },
-    {
-      title: "Plant Health Check",
-      description: "Diagnose plant issues",
-      path: "/plant-health",
-    },
-    {
-      title: "Growing Guide",
-      description: "Quick answers to FAQs",
-      path: "/grow-guide",
-    },
-  ];
-
-  const handleSignOut = async () => {
-    try {
-      setIsLoading(true);
-      
-      // First clear any stored session data in localStorage
-      localStorage.removeItem('supabase.auth.token');
-      
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        console.error('[ChatHeader] Error signing out:', error);
-        toast.error("Error signing out: " + error.message);
-      } else {
-        console.log('[ChatHeader] Sign out successful');
-        setIsAuthenticated(false);
-        navigate('/');
-        toast.success("Successfully signed out");
-      }
-    } catch (err) {
-      console.error('[ChatHeader] Error during sign out:', err);
-      toast.error("An unexpected error occurred while signing out");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      setIsLoading(true);
-      // Get a properly formatted redirect URL
-      const redirectTo = getRedirectUrl();
-      console.log('[ChatHeader] Using redirect URL for auth:', redirectTo);
-      
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          }
-        }
-      });
-      
-      if (error) {
-        console.error('[ChatHeader] Google sign in error:', error);
-        toast.error("Login error: " + error.message);
-      }
-    } catch (err) {
-      console.error('[ChatHeader] Unexpected error during Google sign in:', err);
-      toast.error("An unexpected error occurred during login");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Check user authentication status frequently to ensure the UI is updated
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      const { data } = await supabase.auth.getSession();
-      const hasSession = !!data.session;
-      
-      if (hasSession !== isAuthenticated) {
-        console.log('[ChatHeader] Authentication state changed in interval check:', hasSession);
-        setIsAuthenticated(hasSession);
-      }
-    }, 3000); // Check every 3 seconds
-    
-    return () => clearInterval(interval);
-  }, [isAuthenticated]);
+  }, [session]);
 
   return (
-    <>
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center p-4 border-b border-[#333333] bg-[#1A1A1A] h-[80px]">
-        <div className="flex items-center space-x-3 mr-4">
-          <a href="https://www.mastergrowbot.com" className="hover:opacity-80 transition-opacity">
-            <img 
-              src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
-              alt="Master Growbot Logo" 
-              className="w-10 h-10 rounded-full"
-            />
-          </a>
-          <h1 className="text-xl font-semibold text-white">Master Growbot</h1>
-        </div>
-        
-        <div className="flex items-center justify-between flex-1 px-4">
-          <div className="flex items-center space-x-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="flex items-center space-x-2 text-green-500 hover:text-green-400 font-bold"
-                >
-                  <Sprout className="w-6 h-6" />
-                  <span>Grow Tools</span>
-                  <ChevronDown className="w-4 h-4 ml-1" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-[#1A1A1A] border border-[#333333]">
-                {growTools.map((tool) => (
-                  <DropdownMenuItem
-                    key={tool.path}
-                    onClick={() => navigate(tool.path)}
-                    className="flex flex-col items-start p-3 hover:bg-[#2D5A27] cursor-pointer"
-                  >
-                    <span className="font-semibold text-white">{tool.title}</span>
-                    <span className="text-xs text-gray-400">{tool.description}</span>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <HelpCircle className="w-5 h-5 text-gray-400 hover:text-gray-300 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs bg-[#1A1A1A] border border-[#333333] p-3">
-                <p className="text-sm">Access our AI-powered growing tools: Get expert advice, diagnose plant issues, and find quick answers to common questions.</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              onClick={() => setShowSupport(true)} 
-              className="flex items-center space-x-2 text-purple-400 hover:text-purple-300"
+    <div className="flex justify-between items-center p-4 border-b border-[#333333]">
+      <div className="flex items-center gap-2">
+        <Sidebar.Trigger>
+          <Button variant="ghost" size="icon" className="md:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-white"
             >
-              <MessageSquare className="w-6 h-6" />
-              <span className="font-medium">Feedback</span>
-            </Button>
-
-            {isAuthenticated ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="outline"
-                    className="bg-purple-600 hover:bg-purple-700 text-white border-none flex items-center space-x-2"
-                  >
-                    <User className="w-5 h-5 mr-1" />
-                    <span className="font-medium">Signed In</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 bg-[#1A1A1A] border border-[#333333]">
-                  <DropdownMenuItem 
-                    onClick={() => navigate('/profile')}
-                    className="p-3 hover:bg-purple-600 cursor-pointer text-white"
-                  >
-                    My Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-[#333333]" />
-                  <DropdownMenuItem 
-                    className="p-3 hover:bg-purple-600 cursor-pointer text-white"
-                    onClick={handleSignOut}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Signing out..." : "Sign Out"}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="outline"
-                    className="bg-purple-600 hover:bg-purple-700 text-white border-none flex items-center space-x-2"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span className="font-medium">Processing...</span>
-                    ) : (
-                      <>
-                        <span className="font-medium">Log In</span>
-                        <ChevronDown className="w-4 h-4" />
-                      </>
-                    )}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 bg-[#1A1A1A] border border-[#333333]">
-                  <DropdownMenuItem asChild>
-                    <Link to="/" className="w-full p-3 hover:bg-purple-600 text-white">
-                      Log In with Email
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-[#333333]" />
-                  <DropdownMenuItem 
-                    className="p-3 hover:bg-purple-600 cursor-pointer"
-                    onClick={handleGoogleSignIn}
-                    disabled={isLoading}
-                  >
-                    <div className="flex items-center space-x-2 text-white">
-                      <svg className="h-5 w-5" viewBox="0 0 24 24">
-                        <path
-                          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                          fill="#4285F4"
-                        />
-                        <path
-                          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                          fill="#34A853"
-                        />
-                        <path
-                          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                          fill="#FBBC05"
-                        />
-                        <path
-                          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                          fill="#EA4335"
-                        />
-                      </svg>
-                      <span>Log In with Google</span>
-                    </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-[#333333]" />
-                  <DropdownMenuItem asChild>
-                    <Link to="/" className="w-full p-3 hover:bg-purple-600 text-white">
-                      Register New Account
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </div>
-        </div>
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+            <span className="sr-only">Toggle menu</span>
+          </Button>
+        </Sidebar.Trigger>
+        <div className="text-lg font-semibold text-white">Master Growbot Chat</div>
       </div>
-      <div className="h-[80px]"></div>
-      <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
-    </>
+      <div className="flex items-center gap-4">
+        {isAuthenticated ? (
+          <div className="text-white text-sm">Signed In</div>
+        ) : (
+          <Link to="/">
+            <Button variant="outline" size="sm" className="bg-primary text-white">
+              Log In
+            </Button>
+          </Link>
+        )}
+      </div>
+    </div>
   );
-};
+}

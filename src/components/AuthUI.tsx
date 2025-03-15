@@ -21,11 +21,20 @@ const AuthUI = () => {
   // Check for existing session on mount
   useEffect(() => {
     const checkExistingSession = async () => {
+      console.log('[AuthUI] Checking for existing session');
       const { data } = await supabase.auth.getSession();
       if (data?.session) {
         // If there's already a session, redirect to chat
         console.log('[AuthUI] Existing session found, redirecting to chat');
-        navigate('/chat', { replace: true });
+        
+        // Get redirect URL from sessionStorage or default to chat
+        const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+        sessionStorage.removeItem('redirectTo');
+        
+        console.log('[AuthUI] Redirecting to:', redirectTo);
+        navigate(redirectTo, { replace: true });
+      } else {
+        console.log('[AuthUI] No existing session found');
       }
     };
     
@@ -42,6 +51,8 @@ const AuthUI = () => {
         // Get redirect URL from sessionStorage or default to chat
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
+        
+        console.log('[AuthUI] Redirecting to:', redirectTo);
         navigate(redirectTo, { replace: true });
       }
     });

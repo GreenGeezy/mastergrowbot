@@ -21,15 +21,18 @@ export const getRedirectUrl = (): string => {
   } else if (isLovablePreview) {
     baseUrl = window.location.origin;
   } else if (isMasterGrowbot) {
+    // Fixed URL for production
     baseUrl = `https://www.mastergrowbot.com`;
   } else {
     // Fallback to current origin
     baseUrl = window.location.origin;
   }
   
-  // Standardize for callback URI - Supabase requires /auth/callback 
-  // rather than nested callback URLs like /auth/v1/callback
-  const redirectUrl = `${baseUrl}/auth/callback`;
+  // For callback paths, make sure to use the exact path that's configured in Supabase
+  const callbackPath = isLovablePreview ? '/auth/callback' : '/auth/callback';
+  
+  // Standardize for callback URI - Supabase requires the exact path configured in the dashboard
+  const redirectUrl = `${baseUrl}${callbackPath}`;
   
   console.log(`[AUTH] Generated redirect URL: ${redirectUrl}`);
   
