@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -45,25 +44,25 @@ const AuthCallback = () => {
   const location = useLocation();
   
   useEffect(() => {
-    // Check hash and search params for auth-related data
-    const hasAuthParams = location.hash || location.search.includes('code=') || location.search.includes('error=');
+    console.log("AuthCallback component mounted with pathname:", location.pathname);
+    console.log("Auth callback search params:", location.search);
+    console.log("Current session:", !!session);
     
-    // Process auth callback if needed
+    // Check if there are auth params in the URL
+    const hasAuthParams = 
+      location.hash.includes('access_token') || 
+      location.search.includes('code=') || 
+      location.search.includes('error=');
+    
     if (hasAuthParams) {
-      // Let supabase client handle the auth callback
-      console.log("Processing auth callback with params:", location.search);
-      
-      // The Supabase auth client will automatically handle auth callbacks
-      // We don't need to call getSessionFromUrl() as it's not available
-      // Just checking current session is enough
-      supabase.auth.getSession().catch(error => {
-        console.error("Error processing auth callback:", error);
-      });
+      console.log("Auth params detected, letting Supabase handle auth");
+      // Supabase should automatically handle this with detectSessionInUrl
     }
     
-    // Redirect on successful authentication
+    // If we have a session after handling the callback, redirect
     if (session) {
       const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+      console.log("Session detected, redirecting to:", redirectTo);
       sessionStorage.removeItem('redirectTo');
       window.location.href = redirectTo;
     }
@@ -121,11 +120,9 @@ const App = () => {
                 } 
               />
               
-              {/* Auth routes - Add comprehensive coverage for all possible auth callback patterns */}
-              <Route path="/auth/v1/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/*" element={<AuthCallback />} />
+              {/* Auth routes - Add comprehensive coverage for all possible auth patterns */}
               <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/callback/*" element={<AuthCallback />} />
               <Route path="/auth/*" element={<AuthCallback />} />
               
