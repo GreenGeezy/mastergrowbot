@@ -33,14 +33,13 @@ export const getRedirectUrl = (): string => {
   // We'll try to detect which one works based on the URL
   const path = window.location.pathname;
   
-  // Default callback path - the one that was originally working
-  let callbackPath = '/auth/callback';
+  // Default callback path - use v1 by default since it's what's fully configured
+  let callbackPath = '/auth/v1/callback';
   
-  // If we detect we're on a page that suggests v1 paths are being used, switch to that
-  if (path.includes('/auth/v1/')) {
-    callbackPath = '/auth/v1/callback';
-  }
-  
+  // Add more detailed logging for debugging authentication issues
+  console.log(`[AUTH] Current pathname: ${path}`);
+  console.log(`[AUTH] Current hostname: ${hostname}`);
+  console.log(`[AUTH] Using base URL: ${baseUrl}`);
   console.log(`[AUTH] Using callback path: ${callbackPath}`);
   
   // Standardize for callback URI - Supabase requires the exact path configured in the dashboard

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ const AuthUI = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +43,21 @@ const AuthUI = () => {
   }, [navigate]);
 
   useEffect(() => {
+    // Check URL for error params from failed OAuth
+    const checkUrlForErrors = () => {
+      const params = new URLSearchParams(window.location.search);
+      const errorParam = params.get('error');
+      const errorDescription = params.get('error_description');
+      
+      if (errorParam) {
+        console.error(`[AuthUI] Auth error from URL: ${errorParam} - ${errorDescription}`);
+        setAuthError(errorDescription || errorParam);
+        toast.error(errorDescription || 'Authentication failed');
+      }
+    };
+    
+    checkUrlForErrors();
+    
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('[AuthUI] Auth state changed:', event);
       
@@ -63,6 +80,7 @@ const AuthUI = () => {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setAuthError(null);
 
     try {
       if (isSignUp) {
@@ -96,6 +114,7 @@ const AuthUI = () => {
       }
     } catch (error: any) {
       console.error('[AuthUI] Auth error:', error);
+      setAuthError(error.message);
       toast.error(error.message || "Authentication failed");
     } finally {
       setLoading(false);
@@ -105,6 +124,7 @@ const AuthUI = () => {
   const handleOAuthSignIn = async () => {
     try {
       setLoading(true);
+      setAuthError(null);
       
       const redirectUrl = getRedirectUrl();
       console.log('[AuthUI] Using redirect URL for OAuth:', redirectUrl);
@@ -122,8 +142,9 @@ const AuthUI = () => {
       
       if (error) throw error;
     } catch (error: any) {
-      toast.error("Failed to sign in with Google. Please try again.");
       console.error("[AuthUI] Google sign-in error:", error);
+      setAuthError(error.message);
+      toast.error("Failed to sign in with Google. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -139,6 +160,11 @@ const AuthUI = () => {
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
+      {authError && (
+        <div className="mb-4 p-3 bg-red-500/20 border border-red-500 rounded-md">
+          <p className="text-red-300 text-sm">{authError}</p>
+        </div>
+      )}
       <AuthForm
         email={email}
         password={password}
