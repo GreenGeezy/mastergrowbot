@@ -1,3 +1,4 @@
+
 export const getRedirectUrl = () => {
   const hostname = window.location.hostname;
   const origin = window.location.origin;
