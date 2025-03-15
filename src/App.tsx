@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
+import TopNavigation from './components/TopNavigation';
 
 // Eagerly load the Index page for better UX
 import Index from "./pages/Index";
@@ -75,6 +76,16 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>;
 };
 
+// Layout component that includes TopNavigation
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      <TopNavigation />
+      {children}
+    </>
+  );
+};
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -83,69 +94,71 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              {/* Eagerly loaded route */}
-              <Route path="/" element={<Index />} />
-              
-              {/* Lazy loaded routes */}
-              <Route 
-                path="/quiz" 
-                element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <Quiz />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/thank-you" 
-                element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ThankYou />
-                  </Suspense>
-                } 
-              />
-              
-              {/* Auth routes */}
-              <Route path="/auth/v1/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
-              <Route path="/auth/v1/*" element={<AuthCallback />} />
-              <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
-              <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
-              
-              {/* Protected routes */}
-              <Route 
-                path="/chat" 
-                element={
-                  <ProtectedRoute>
-                    <ChatInterface />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/plant-health" 
-                element={
-                  <ProtectedRoute>
-                    <PlantHealthAnalyzer />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/shared/:token" 
-                element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <SharedAnalysis />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/grow-guide" 
-                element={
-                  <ProtectedRoute>
-                    <GrowingGuide />
-                  </ProtectedRoute>
-                } 
-              />
-            </Routes>
+            <AppLayout>
+              <Routes>
+                {/* Eagerly loaded route */}
+                <Route path="/" element={<Index />} />
+                
+                {/* Lazy loaded routes */}
+                <Route 
+                  path="/quiz" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <Quiz />
+                    </Suspense>
+                  } 
+                />
+                <Route 
+                  path="/thank-you" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ThankYou />
+                    </Suspense>
+                  } 
+                />
+                
+                {/* Auth routes */}
+                <Route path="/auth/v1/callback" element={<AuthCallback />} />
+                <Route path="/auth/v1/google/callback" element={<AuthCallback />} />
+                <Route path="/auth/v1/*" element={<AuthCallback />} />
+                <Route path="/auth/callback" element={<Navigate to="/auth/v1/callback" replace />} />
+                <Route path="/auth/*" element={<Navigate to="/auth/v1/callback" replace />} />
+                
+                {/* Protected routes */}
+                <Route 
+                  path="/chat" 
+                  element={
+                    <ProtectedRoute>
+                      <ChatInterface />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/plant-health" 
+                  element={
+                    <ProtectedRoute>
+                      <PlantHealthAnalyzer />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/shared/:token" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <SharedAnalysis />
+                    </Suspense>
+                  } 
+                />
+                <Route 
+                  path="/grow-guide" 
+                  element={
+                    <ProtectedRoute>
+                      <GrowingGuide />
+                    </ProtectedRoute>
+                  } 
+                />
+              </Routes>
+            </AppLayout>
           </BrowserRouter>
           <Analytics />
         </TooltipProvider>

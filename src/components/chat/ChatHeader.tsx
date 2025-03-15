@@ -1,36 +1,8 @@
 
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSession } from '@supabase/auth-helpers-react';
-import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { supabase } from '@/integrations/supabase/client';
-import { ProfileDropdown } from '@/components/profile/ProfileDropdown';
 
 export function ChatHeader() {
-  const session = useSession();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    // Check session on mount and when session changes
-    setIsAuthenticated(!!session);
-
-    // Set up auth state change listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      console.log('[ChatHeader] Auth state changed:', event);
-      
-      if (event === 'SIGNED_IN') {
-        setIsAuthenticated(true);
-      } else if (event === 'SIGNED_OUT') {
-        setIsAuthenticated(false);
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [session]);
-
   return (
     <div className="flex justify-between items-center p-4 border-b border-[#333333]">
       <div className="flex items-center gap-2">
@@ -53,18 +25,7 @@ export function ChatHeader() {
           </svg>
           <span className="sr-only">Toggle menu</span>
         </SidebarTrigger>
-        <div className="text-lg font-semibold text-white">Master Growbot Chat</div>
-      </div>
-      <div className="flex items-center gap-4">
-        {isAuthenticated ? (
-          <ProfileDropdown />
-        ) : (
-          <Link to="/">
-            <Button variant="outline" size="sm" className="bg-primary text-white">
-              Log In
-            </Button>
-          </Link>
-        )}
+        <div className="text-lg font-semibold text-white">Chat</div>
       </div>
     </div>
   );

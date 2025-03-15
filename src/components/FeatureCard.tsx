@@ -37,29 +37,27 @@ const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: Fe
   }, [handleClick]);
 
   return (
-    <div className="relative group">
-      {/* Glow effect wrapper */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow/50 via-accent-glow/50 to-secondary-glow/50 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow" />
-      
-      <div
-        onClick={handleClick}
-        role="button"
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
-        className="relative flex items-center p-2 rounded-lg cursor-pointer will-change-transform transition-all duration-300 hover:scale-105 min-w-[180px] bg-card/90 backdrop-blur-sm border border-card-foreground/10 hover:border-primary/20"
-      >
-        <div className="p-1 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg float-effect will-change-transform">
-          <Icon className="w-4 h-4 text-white" />
-        </div>
-        <div className="ml-2 flex flex-col">
-          <h3 className="font-medium text-sm text-white group-hover:text-accent transition-colors duration-300">
+    <div 
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      className="relative group flex justify-between items-center p-3 rounded-lg cursor-pointer border border-[#333333]/80 bg-[#1A1F2C]/90 hover:bg-[#2D3748]/70 transition-all duration-300 hover:scale-105 min-w-[120px] max-w-[140px] h-[65px] overflow-hidden"
+    >
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2 mb-1">
+          <Icon className="w-4 h-4 text-primary" />
+          <h3 className="font-medium text-[11px] text-white group-hover:text-accent transition-colors duration-300">
             {title}
           </h3>
-          <p className="text-gray-400 text-xs">
-            {subtitle}
-          </p>
         </div>
+        <p className="text-gray-400 text-[9px]">
+          {subtitle}
+        </p>
       </div>
+      
+      {/* Glowing accent in bottom right */}
+      <div className="absolute -bottom-6 -right-6 w-12 h-12 rounded-full bg-gradient-to-r from-primary-glow/30 to-secondary-glow/30 blur-md group-hover:from-primary-glow/50 group-hover:to-secondary-glow/50 transition-all duration-300"></div>
     </div>
   );
 });
