@@ -58,17 +58,16 @@ const AuthUI = () => {
     
     checkUrlForErrors();
     
+    // Subscribe to auth state changes - critical for OAuth flows
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[AuthUI] Auth state changed:', event);
+      console.log('[AuthUI] Auth state changed:', event, session ? 'Session exists' : 'No session');
       
       if (event === 'SIGNED_IN' && session) {
         console.log('[AuthUI] User signed in, redirecting');
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
         console.log('[AuthUI] Redirecting to:', redirectTo);
-        setTimeout(() => {
-          navigate(redirectTo, { replace: true });
-        }, 1000);
+        navigate(redirectTo, { replace: true });
       }
     });
 
@@ -129,7 +128,10 @@ const AuthUI = () => {
       const redirectUrl = getRedirectUrl();
       console.log('[AuthUI] Using redirect URL for OAuth:', redirectUrl);
       
-      const { error } = await supabase.auth.signInWithOAuth({
+      // Enhanced logging for Google OAuth
+      console.log('[AuthUI] Starting Google OAuth flow', { redirectUrl });
+      
+      const { error, data } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: redirectUrl,
@@ -139,6 +141,8 @@ const AuthUI = () => {
           },
         },
       });
+      
+      console.log('[AuthUI] OAuth request complete', { error, data });
       
       if (error) throw error;
     } catch (error: any) {

@@ -46,27 +46,35 @@ const AuthCallback = () => {
   const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
-    // Log details for debugging
+    // Enhanced logging for debugging
     console.log('[AuthCallback] Handling auth callback', { 
       path: location.pathname,
       search: location.search,
-      hash: location.hash
+      hash: location.hash,
+      fullUrl: window.location.href
     });
     
     // Extract error if present in the URL
     const params = new URLSearchParams(location.search);
     const urlError = params.get('error');
+    const urlErrorDescription = params.get('error_description');
+    
     if (urlError) {
-      setError(urlError);
-      console.error('[AuthCallback] Auth error from URL:', urlError);
+      const errorMessage = urlErrorDescription || urlError;
+      setError(errorMessage);
+      console.error('[AuthCallback] Auth error from URL:', errorMessage);
     }
     
     // Check session on mount to handle callback completion
     if (session) {
-      console.log('[AuthCallback] Session detected, redirecting');
+      console.log('[AuthCallback] Session detected, redirecting to saved location or chat');
       const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
       sessionStorage.removeItem('redirectTo');
+      
+      // Force navigation using window.location for a clean redirect
       window.location.href = redirectTo;
+    } else {
+      console.log('[AuthCallback] No session detected in callback handler');
     }
   }, [session, location]);
   
@@ -136,7 +144,7 @@ const App = () => {
                 } 
               />
               
-              {/* Auth routes - Consolidate to a single standard path for reliability */}
+              {/* Auth routes - Single standard path for OAuth callback reliability */}
               <Route path="/auth/callback" element={<AuthCallback />} />
               
               {/* Protected routes */}
