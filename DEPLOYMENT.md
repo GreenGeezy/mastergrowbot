@@ -1,46 +1,92 @@
 
 # Deployment Guide for Master Growbot
 
-This guide provides step-by-step instructions for deploying the paid-version branch to www.mastergrowbot.com through Vercel.
+This guide provides step-by-step instructions for deploying changes to www.mastergrowbot.com.
 
-## GitHub: Merging paid-version to main
+## Prerequisites
 
-1. Go to https://github.com/GreenGeezy/mastergrowbot
-2. Click on "Pull requests" tab near the top of the repository
-3. Click the green "New pull request" button
-4. In the "base:" dropdown, select "main"
-5. In the "compare:" dropdown, select "paid-version"
-6. Click "Create pull request"
-7. Add a title like "Merge paid-version to main for deployment"
-8. Click "Create pull request" button again
-9. On the next screen, if there are no conflicts, click the green "Merge pull request" button
-10. Click "Confirm merge"
+- Git installed on your local machine
+- Access to the Master Growbot GitHub repository
+- Access to the Vercel deployment dashboard
 
-## Vercel: Monitoring Deployment
+## Deployment Process
 
-1. Go to https://vercel.com/greengeezys-projects/mastergrowbot/deployments
-2. A new deployment should automatically start after the GitHub merge (may take 1-2 minutes to appear)
-3. The new deployment will show "Building" status initially
-4. Wait until status changes to "Ready" (with a green dot)
-5. Click on the deployment to verify details if needed
+### Step 1: Ensure Your Local Environment Is Up-to-Date
 
-## Verifying Your Changes
+```bash
+# Navigate to your project directory
+cd path/to/mastergrowbot
 
-1. Visit www.mastergrowbot.com in a private/incognito browser window
-2. Verify that your changes from the paid-version branch are now live
-3. Test all functionality to ensure everything works as expected
+# Make sure you have the latest changes from the remote repository
+git fetch --all
+```
 
-## If Deployment Doesn't Start Automatically
+### Step 2: Checkout the Main Branch
 
-1. On Vercel dashboard, click on "mastergrowbot" project
-2. Click "Deployments" in the top navigation
-3. Click the "..." menu button at the top-right
-4. Select "Redeploy" and confirm
+```bash
+# Switch to the main branch
+git checkout main
 
-## If Changes Aren't Visible After Deployment
+# Pull the latest changes from the remote main branch
+git pull origin main
+```
 
-1. Clear your browser cache or use an incognito window
-2. Verify the deployment status is "Ready" in Vercel dashboard
-3. Wait 5-10 minutes for CDN propagation
+### Step 3: Merge Your Changes to Main
 
-Remember: According to your vercel.json configuration, only changes to the main branch trigger production deployments. This is why we need to merge paid-version into main.
+If you're working on a feature branch (e.g., paid-version):
+
+```bash
+# If you're currently on your feature branch
+git checkout main
+
+# Merge your feature branch into main
+git merge your-feature-branch
+
+# Resolve any merge conflicts if they occur
+# After resolving conflicts:
+git add .
+git commit -m "Resolved merge conflicts"
+```
+
+### Step 4: Push Changes to GitHub
+
+```bash
+# Push the updated main branch to GitHub
+git push origin main
+```
+
+### Step 5: Verify Deployment on Vercel
+
+1. Go to your Vercel dashboard: https://vercel.com/greengeezys-projects/mastergrowbot
+2. Navigate to the "Deployments" tab
+3. You should see a new deployment in progress for the main branch
+4. Wait for the deployment to complete (Status: "Ready")
+
+### Step 6: Verify Your Changes on the Production Site
+
+1. Visit www.mastergrowbot.com
+2. Verify that your changes are now live
+3. Test the functionality to ensure everything is working as expected
+
+## Troubleshooting
+
+### If the Deployment Fails:
+
+1. Check the Vercel deployment logs for errors
+2. Make necessary corrections locally
+3. Commit and push the fixes to main
+4. Monitor the new deployment
+
+### If Changes Are Not Reflected:
+
+1. Clear your browser cache
+2. Verify you're looking at the production deployment, not the preview
+3. Check the Vercel dashboard to confirm the latest deployment is active
+
+## Notes
+
+- According to your Vercel configuration (`vercel.json`), only pushes to the main branch trigger production deployments
+- The deployment URL should be www.mastergrowbot.com
+- Always test your changes locally before deploying to production
+
+For any issues or questions, refer to the Vercel documentation or contact your development team.
