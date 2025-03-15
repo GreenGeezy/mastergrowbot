@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { MessageSquare, Sprout, HelpCircle, ChevronDown } from 'lucide-react';
+import { MessageSquare, Sprout, HelpCircle, ChevronDown, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -168,7 +168,34 @@ export const ChatHeader = () => {
             </Button>
 
             {session ? (
-              <ProfileDropdown />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="outline"
+                    className="bg-purple-600 hover:bg-purple-700 text-white border-none flex items-center space-x-2"
+                  >
+                    <User className="w-5 h-5 mr-1" />
+                    <span className="font-medium">Signed In</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 bg-[#1A1A1A] border border-[#333333]">
+                  <DropdownMenuItem 
+                    onClick={() => navigate('/profile')}
+                    className="p-3 hover:bg-purple-600 cursor-pointer text-white"
+                  >
+                    My Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-[#333333]" />
+                  <DropdownMenuItem 
+                    className="p-3 hover:bg-purple-600 cursor-pointer text-white"
+                    onClick={handleSignOut}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Signing out..." : "Sign Out"}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
