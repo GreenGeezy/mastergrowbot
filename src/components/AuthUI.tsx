@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +17,16 @@ const AuthUI = () => {
   const [hasPendingSubscription, setHasPendingSubscription] = useState(false);
   const [subscriptionType, setSubscriptionType] = useState("");
   const [canSignUp, setCanSignUp] = useState(!REQUIRE_QUIZ_AND_SUBSCRIPTION);
+  const [isPreviewDeployment, setIsPreviewDeployment] = useState(false);
   const navigate = useNavigate();
+
+  // Check if this is a preview deployment with double hyphens
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    if (hostname.includes('preview--') && hostname.includes('lovable.app')) {
+      setIsPreviewDeployment(true);
+    }
+  }, []);
 
   // Check if quiz has been completed
   useEffect(() => {
@@ -242,6 +250,14 @@ const AuthUI = () => {
 
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
+      {isPreviewDeployment && (
+        <div className="mb-4 p-3 bg-yellow-600/20 rounded-md border border-yellow-600/30">
+          <p className="text-white text-sm">
+            Note: Google sign-in on preview deployments will redirect to the main site after authentication.
+          </p>
+        </div>
+      )}
+      
       {REQUIRE_QUIZ_AND_SUBSCRIPTION && isSignUp && !hasPendingSubscription && (
         <div className="mb-4 p-3 bg-yellow-600/20 rounded-md border border-yellow-600/30">
           <p className="text-white text-sm">

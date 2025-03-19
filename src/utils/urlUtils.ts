@@ -12,7 +12,14 @@ export const getRedirectUrl = () => {
     return `${origin}/auth/callback`;
   }
   
-  // For development/testing on Lovable subdomain
+  // For Lovable preview deployments with double hyphens
+  // These can't be added to Google Cloud Console due to domain validation rules
+  if (hostname.includes('preview--') && hostname.includes('lovable.app')) {
+    // Fallback to the main domain for OAuth redirects while still on preview deployment
+    return 'https://www.mastergrowbot.com/auth/callback';
+  }
+  
+  // For other Lovable subdomain
   if (hostname.includes('lovable.app')) {
     return `${origin}/auth/callback`;
   }
