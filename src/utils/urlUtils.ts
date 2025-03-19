@@ -1,4 +1,8 @@
 
+/**
+ * Utility to dynamically generate redirect URLs for authentication
+ * based on the current environment and domain
+ */
 export const getRedirectUrl = () => {
   const hostname = window.location.hostname;
   const origin = window.location.origin;
@@ -23,6 +27,6 @@ export const getRedirectUrl = () => {
     return `${origin}/auth/callback`;
   }
   
-  // Default fallback - removed v1 path which was causing issues
+  // Default fallback
   return `${origin}/auth/callback`;
 };
