@@ -1,3 +1,4 @@
+
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -18,6 +19,7 @@ const SharedAnalysis = lazy(() => import(/* webpackChunkName: "shared-analysis" 
 const GrowingGuide = lazy(() => import(/* webpackChunkName: "growing-guide" */ "./pages/GrowingGuide"));
 const ThankYou = lazy(() => import(/* webpackChunkName: "thank-you" */ "./pages/ThankYou"));
 const Quiz = lazy(() => import(/* webpackChunkName: "quiz" */ "./pages/Quiz"));
+const PrivacyPolicy = lazy(() => import(/* webpackChunkName: "privacy-policy" */ "./pages/PrivacyPolicy"));
 
 // Create the query client outside of the component to prevent recreation on rerenders
 const queryClient = new QueryClient({
@@ -101,6 +103,16 @@ const App = () => {
             <Routes>
               {/* Eagerly loaded route */}
               <Route path="/" element={<Index />} />
+              
+              {/* Public routes - No authentication required */}
+              <Route 
+                path="/privacy-policy" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <PrivacyPolicy />
+                  </Suspense>
+                } 
+              />
               
               {/* Lazy loaded routes */}
               <Route 

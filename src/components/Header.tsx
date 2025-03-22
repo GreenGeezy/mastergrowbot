@@ -1,9 +1,12 @@
+
 import React from "react";
 import { Award, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+
 const Header = () => {
-  return <div className="w-full flex flex-col items-center mb-2 sm:mb-4 animate-fade-in circuit-background">
+  return (
+    <div className="w-full flex flex-col items-center mb-2 sm:mb-4 animate-fade-in circuit-background">
       <div className="relative group">
         <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
         <a href="https://www.mastergrowbot.com" className="block">
@@ -41,8 +44,16 @@ const Header = () => {
               Get Started
             </Button>
           </Link>
+          
+          <div className="pt-4 text-sm text-muted-foreground">
+            <Link to="/privacy-policy" className="hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Header;

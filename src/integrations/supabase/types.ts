@@ -498,6 +498,12 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: {
+        Args: {
+          user_id: string
+        }
+        Returns: boolean
+      }
       is_quiz_subscription_required: {
         Args: Record<PropertyKey, never>
         Returns: boolean
