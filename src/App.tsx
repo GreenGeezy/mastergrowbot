@@ -20,6 +20,7 @@ const GrowingGuide = lazy(() => import(/* webpackChunkName: "growing-guide" */ "
 const ThankYou = lazy(() => import(/* webpackChunkName: "thank-you" */ "./pages/ThankYou"));
 const Quiz = lazy(() => import(/* webpackChunkName: "quiz" */ "./pages/Quiz"));
 const PrivacyPolicy = lazy(() => import(/* webpackChunkName: "privacy-policy" */ "./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import(/* webpackChunkName: "terms-of-service" */ "./pages/TermsOfService"));
 
 // Create the query client outside of the component to prevent recreation on rerenders
 const queryClient = new QueryClient({
@@ -110,6 +111,14 @@ const App = () => {
                 element={
                   <Suspense fallback={<LoadingSpinner />}>
                     <PrivacyPolicy />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/terms-of-service" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <TermsOfService />
                   </Suspense>
                 } 
               />

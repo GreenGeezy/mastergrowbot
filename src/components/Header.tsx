@@ -46,8 +46,11 @@ const Header = () => {
           </Link>
           
           <div className="pt-4 text-sm text-muted-foreground">
-            <Link to="/privacy-policy" className="hover:text-primary transition-colors">
+            <Link to="/privacy-policy" className="hover:text-primary transition-colors mr-4">
               Privacy Policy
+            </Link>
+            <Link to="/terms-of-service" className="hover:text-primary transition-colors">
+              Terms of Service
             </Link>
           </div>
         </div>
