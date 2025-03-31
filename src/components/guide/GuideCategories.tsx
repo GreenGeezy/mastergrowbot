@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import {
@@ -36,7 +37,7 @@ const categories = [
     questions: [
       {
         q: "What subscription options are available?",
-        a: "Master Growbot currently offers a limited-time free access period for early adopters. When paid subscription plans launch, all users will clearly see the value they receive: continuous model improvements, guaranteed secure handling of personal information, premium support, and unlimited access to advanced AI cultivation tools. Your personal data remains secure and confidential regardless of your subscription level."
+        a: "Master Growbot currently offers a limited-time free access period for early adopters while we perfect our AI technology. Our upcoming subscription plans will include: Weekly access - $9.99, Quarterly subscription - $89.99 (Save 25%), or Annual subscription - $199.99 (Save Over 60%). Each subscription clearly communicates the value users receive, including continuous AI improvements, guaranteed secure handling of personal information, premium support, and unlimited access to advanced AI cultivation tools. Your personal data remains secure and confidential regardless of your subscription level."
       },
       {
         q: "Why is Master Growbot priced this way?",
