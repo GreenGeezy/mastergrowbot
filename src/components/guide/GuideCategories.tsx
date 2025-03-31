@@ -36,7 +36,7 @@ const categories = [
     questions: [
       {
         q: "What subscription options are available?",
-        a: "Master Growbot currently offers a limited-time free access period for early adopters while we perfect our AI technology. Our upcoming subscription plans will include: Weekly access ($9.99), Quarterly subscription ($89.99), or Annual subscription ($199.99). Each tier provides unlimited access to our enterprise-grade AI technology suite."
+        a: "Master Growbot currently offers a limited-time free access period for early adopters while we perfect our AI technology. Regardless of subscription status, your personal data is never shared or sold without your explicit consent, in alignment with our Privacy Policy. Our upcoming subscription plans will include: Weekly access ($9.99), Quarterly subscription ($89.99), or Annual subscription ($199.99). Each tier provides unlimited access to our enterprise-grade AI technology suite."
       },
       {
         q: "Why is Master Growbot priced this way?",
@@ -95,7 +95,7 @@ const categories = [
       },
       {
         q: "How do I track my growing progress?",
-        a: "Master Growbot's AI creates a comprehensive digital timeline of your growing journey, integrating chat histories, health analyses, and guide progress into actionable insights. Our system identifies patterns and trends in your growing data, helping you optimize your techniques and achieve consistent results."
+        a: "Master Growbot's AI creates a comprehensive digital timeline of your growing journey, integrating chat histories, health analyses, and guide progress into actionable insights. Your growing data remains confidential, securely stored, and fully under your control, accessible only to you, consistent with our Privacy Policy. Our system identifies patterns and trends in your growing data, helping you optimize your techniques and achieve consistent results."
       },
       {
         q: "What's the ideal temperature for growing cannabis?",
@@ -122,7 +122,7 @@ const categories = [
       },
       {
         q: "What are my responsibilities as a user?",
-        a: "Users must: Comply with all applicable laws and regulations, Verify the legality of their growing activities, Consult healthcare professionals for medical guidance, Make independent decisions about their cultivation practices, Follow local regulations and guidelines."
+        a: "Users must: Comply with all applicable laws and regulations, Verify the legality of their growing activities, Consult healthcare professionals for medical guidance, Make independent decisions about their cultivation practices, Follow local regulations and guidelines, and manage personal information responsibly in accordance with the Privacy Policy."
       }
     ]
   },
@@ -133,7 +133,7 @@ const categories = [
     questions: [
       {
         q: "How can I get help with Master Growbot?",
-        a: "We're committed to your success with our platform. For any questions, technical support, or guidance, email us at support@futuristiccannabis.ai. Our dedicated team will respond promptly to help you maximize the benefits of our AI technology."
+        a: "We're committed to your success and protecting your privacy. For questions regarding your personal data, privacy rights, technical support, or growing guidance, email us at support@futuristiccannabis.ai. Our dedicated team will promptly assist you."
       },
       {
         q: "What are the important legal disclaimers?",
