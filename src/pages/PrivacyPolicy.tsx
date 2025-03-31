@@ -138,7 +138,7 @@ const PrivacyPolicy = () => {
                 </p>
               </section>
               
-              {/* User Rights */}
+              {/* User Rights - UPDATED SECTION */}
               <section>
                 <h2 className="text-2xl font-semibold mb-3 text-primary/90">User Rights</h2>
                 <p className="mb-3">
@@ -151,8 +151,10 @@ const PrivacyPolicy = () => {
                   <li>Restriction of processing</li>
                   <li>Data portability</li>
                   <li>Objection to processing</li>
-                  <li>Withdrawal of consent</li>
                 </ul>
+                <p className="mt-3">
+                  Master Growbot respects your privacy and does not share or sell your personal information to third parties without your explicit and affirmative consent. You are always in control of your data. The rights listed above allow you to manage your personal information directly, ensuring your preferences about data use and security are always respected. If you have any questions about exercising your data rights or our commitment to data security, please contact us directly at support@futuristiccannabis.ai.
+                </p>
                 <p className="mt-3">
                   To exercise any of these rights, please contact us at support@futuristiccannabis.ai.
                 </p>
