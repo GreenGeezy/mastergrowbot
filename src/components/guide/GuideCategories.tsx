@@ -36,7 +36,7 @@ const categories = [
     questions: [
       {
         q: "What subscription options are available?",
-        a: "Master Growbot currently offers a limited-time free access period for early adopters while we perfect our AI technology. Regardless of subscription status, your personal data is never shared or sold without your explicit consent, in alignment with our Privacy Policy. Our upcoming subscription plans will include: Weekly access ($9.99), Quarterly subscription ($89.99), or Annual subscription ($199.99). Each tier provides unlimited access to our enterprise-grade AI technology suite."
+        a: "Master Growbot currently offers a limited-time free access period for early adopters. When paid subscription plans launch, all users will clearly see the value they receive: continuous model improvements, guaranteed secure handling of personal information, premium support, and unlimited access to advanced AI cultivation tools. Your personal data remains secure and confidential regardless of your subscription level."
       },
       {
         q: "Why is Master Growbot priced this way?",
@@ -91,11 +91,11 @@ const categories = [
       },
       {
         q: "How can Master Growbot help identify plant problems?",
-        a: "Our proprietary dual-AI approach sets new standards in plant health monitoring. The process begins with our advanced computer vision system analyzing your uploads for immediate insights, followed by our expert AI chat system providing detailed recommendations by leveraging powerful machine learning technology with Master Growbot's vast knowledge of how to grow the world's best cannabis and optimize profits. This revolutionary combination delivers professional-grade diagnostics and personalized solutions previously unavailable to individual growers."
+        a: "Master Growbot's proprietary dual-AI approach helps you quickly and accurately identify plant health issues. After uploading photos, our advanced computer vision provides immediate insights, followed by personalized recommendations from our AI assistant. While Master Growbot significantly improves your plant-monitoring accuracy and results, successful cultivation ultimately relies on combining our technology with your attentive care and judgment."
       },
       {
         q: "How do I track my growing progress?",
-        a: "Master Growbot's AI creates a comprehensive digital timeline of your growing journey, integrating chat histories, health analyses, and guide progress into actionable insights. Your growing data remains confidential, securely stored, and fully under your control, accessible only to you, consistent with our Privacy Policy. Our system identifies patterns and trends in your growing data, helping you optimize your techniques and achieve consistent results."
+        a: "Master Growbot securely and privately creates a comprehensive digital timeline of your growing journey, integrating chat histories, health analyses, and guide progress into actionable insights. Your data is protected and always fully controlled by you, and will never be shared or sold without your explicit consent. Our system identifies patterns and trends in your growing data, helping you optimize your techniques and achieve consistent results."
       },
       {
         q: "What's the ideal temperature for growing cannabis?",
