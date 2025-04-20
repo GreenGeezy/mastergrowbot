@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Header from "@/components/Header";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy } from "lucide-react";
+import { Copy, AlertTriangle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function EmailTest() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ export default function EmailTest() {
   const [loading, setLoading] = useState(false);
   const [verificationLink, setVerificationLink] = useState("");
   const [squareOrderId, setSquareOrderId] = useState("");
+  const [error, setError] = useState("");
 
   const handleGenerateLink = async () => {
     if (!email) {
@@ -25,9 +27,11 @@ export default function EmailTest() {
     }
 
     setLoading(true);
+    setError("");
+    
     try {
       // Generate verification link that can be added to Square emails
-      const { data, error } = await supabase.functions.invoke('send-subscription-email', {
+      const { data, error: functionError } = await supabase.functions.invoke('send-subscription-email', {
         body: { 
           email, 
           subscriptionType,
@@ -35,21 +39,27 @@ export default function EmailTest() {
         }
       });
 
-      if (error) {
-        throw error;
+      if (functionError) {
+        throw functionError;
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
       }
 
       // Display the verification link
       if (data.verificationLink) {
         setVerificationLink(data.verificationLink);
         toast.success(`Verification link generated for ${email}`);
+        setError("");
       } else {
-        toast.error("Could not generate verification link");
+        throw new Error("Could not generate verification link");
       }
       
       console.log("Response:", data);
     } catch (error) {
       console.error("Error generating verification link:", error);
+      setError(error.message || "Unknown error occurred");
       toast.error(`Failed: ${error.message || "Unknown error"}`);
     } finally {
       setLoading(false);
@@ -73,6 +83,14 @@ export default function EmailTest() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {error && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            
             <div className="space-y-2">
               <Label htmlFor="email">Customer Email address</Label>
               <Input
