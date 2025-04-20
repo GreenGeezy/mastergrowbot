@@ -40,6 +40,22 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
       try {
         console.log("Checking subscription status for user:", session.user.id);
         
+        // First check if quiz and subscription are required
+        const requireChecks = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+        
+        // If not required, grant access immediately
+        if (!requireChecks) {
+          setStatus({
+            isLoading: false,
+            hasAccess: true,
+            hasCompletedQuiz: true,
+            subscriptionType: 'basic',
+            expiresAt: null,
+            error: null
+          });
+          return;
+        }
+        
         // Get user access from the view we created
         const { data, error } = await supabase
           .from('user_access_view')
@@ -48,24 +64,58 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           .maybeSingle();
 
         if (error) {
-          console.error("Error fetching user access data:", error);
-          throw error;
+          // Only throw if it's not a "no rows returned" error
+          if (!error.message.includes('JSON object requested, multiple (or no) rows returned')) {
+            console.error("Error fetching user access data:", error);
+            throw error;
+          }
         }
 
         console.log("User access data:", data);
         
-        // For development/testing, default to true if REQUIRE_QUIZ_AND_SUBSCRIPTION is not set
-        const requireChecks = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+        // If no data was returned, let's manually check user_profiles and subscriptions
+        if (!data) {
+          console.log("No data returned from user_access_view, checking individual tables");
+          
+          // Check user profile for quiz completion
+          const { data: profileData, error: profileError } = await supabase
+            .from('user_profiles')
+            .select('has_completed_quiz')
+            .eq('id', session.user.id)
+            .maybeSingle();
+            
+          if (profileError) console.error("Error fetching profile:", profileError);
+          
+          // Check subscriptions for active subscription
+          const { data: subData, error: subError } = await supabase
+            .from('subscriptions')
+            .select('subscription_type, expires_at, status')
+            .eq('user_id', session.user.id)
+            .eq('status', 'active')
+            .gt('expires_at', new Date().toISOString())
+            .maybeSingle();
+            
+          if (subError) console.error("Error fetching subscription:", subError);
+          
+          const hasQuiz = profileData?.has_completed_quiz === true;
+          const hasSubscription = subData && subData.status === 'active';
+          
+          setStatus({
+            isLoading: false,
+            hasAccess: hasSubscription,
+            hasCompletedQuiz: hasQuiz,
+            subscriptionType: subData?.subscription_type || null,
+            expiresAt: subData?.expires_at || null,
+            error: null
+          });
+          
+          return;
+        }
         
-        // Default to true for access if neither access check is required
-        // or if the user has active subscription and has completed quiz
-        const hasAccess = !requireChecks || (data?.has_active_subscription === true);
-        const hasQuiz = !requireChecks || (data?.has_completed_quiz === true);
-
         setStatus({
           isLoading: false,
-          hasAccess,
-          hasCompletedQuiz: hasQuiz,
+          hasAccess: data?.has_active_subscription === true,
+          hasCompletedQuiz: data?.has_completed_quiz === true,
           subscriptionType: data?.subscription_type || null,
           expiresAt: data?.expires_at || null,
           error: null

@@ -24,6 +24,25 @@ const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: Fe
       return;
     }
 
+    // For Google users, ensure quiz is marked as completed
+    if (session.user?.app_metadata?.provider === 'google') {
+      console.log("Google user clicked feature card, ensuring quiz marked as completed");
+      
+      try {
+        const result = await supabase.functions.invoke('mark-quiz-completed', {
+          body: { 
+            user_id: session.user.id,
+            email: session.user.email,
+            subscription_type: "annual" // Default to annual for Google OAuth users
+          }
+        });
+        
+        console.log("Feature card mark quiz completed result:", result);
+      } catch (err) {
+        console.error("Error marking quiz from feature card:", err);
+      }
+    }
+
     // Navigate directly without any additional checks
     // The route guards will handle access control
     if (to) {
