@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
@@ -13,7 +12,6 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   },
   global: {
     fetch: (url, options) => {
-      // Add additional logging for debugging auth and user operations
       if (url.toString().includes('/auth/') || url.toString().includes('/users/')) {
         console.log('Auth operation:', url, options?.method);
       }
@@ -25,7 +23,6 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
 // Initialize storage bucket
 (async () => {
   try {
-    // Try to create the bucket via our edge function
     const { error } = await supabase.functions.invoke('create-storage-bucket');
     if (error) {
       console.error('Error creating storage bucket:', error);
@@ -41,8 +38,6 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
 supabase.auth.onAuthStateChange((event, session) => {
   console.log('Auth state changed:', event, session ? 'User signed in' : 'User signed out');
   
-  // If we're at the root with a code parameter, this means we've just completed OAuth
-  // but the automatic redirect didn't work, so we'll manually redirect
   if (event === 'SIGNED_IN' && session && window.location.pathname === '/' && window.location.search.includes('code=')) {
     console.log('Detecting OAuth callback at root, redirecting to /chat');
     window.location.href = '/chat';
@@ -54,8 +49,6 @@ export const safeDeleteUser = async (userId: string) => {
   console.log(`Attempting to delete user with ID: ${userId}`);
   
   try {
-    // Try direct admin API first (requires auth.users permissions)
-    // Fixed: The deleteUser method takes a string userId parameter, not an object
     const adminDeleteResult = await supabase.auth.admin.deleteUser(userId);
     
     if (!adminDeleteResult.error) {
@@ -66,7 +59,6 @@ export const safeDeleteUser = async (userId: string) => {
     console.log('Admin API deletion failed, error:', adminDeleteResult.error);
     console.log('Falling back to RPC function...');
     
-    // Fallback: Try using our SQL RPC function
     const { error: rpcError } = await supabase.rpc('safely_delete_user', {
       user_id_to_delete: userId
     });
@@ -74,12 +66,10 @@ export const safeDeleteUser = async (userId: string) => {
     if (rpcError) {
       console.error('Error in data cleanup via RPC:', rpcError);
       
-      // Additional diagnostic information
       const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
       if (userError) {
         console.log('User lookup error:', userError);
         if (userError.message.includes('User not found')) {
-          // If user doesn't exist, consider this a "success" since the goal was to delete
           return { success: true, warning: 'User already deleted' };
         }
       } else {
