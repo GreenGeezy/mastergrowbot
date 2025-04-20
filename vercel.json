@@ -59,6 +59,17 @@
       "source": "/square-webhook",
       "destination": "https://inbfxduleyhygxatxmre.supabase.co/functions/v1/square-webhook",
       "permanent": false
+    },
+    {
+      "source": "/auth/callback",
+      "has": [
+        {
+          "type": "host",
+          "value": "auth.mastergrowbot.com"
+        }
+      ],
+      "destination": "https://www.mastergrowbot.com/auth/callback",
+      "permanent": false
     }
   ],
   "rewrites": [
