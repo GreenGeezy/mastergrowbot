@@ -329,7 +329,8 @@ const AuthUI = () => {
       const response = await supabase.functions.invoke('send-verification-email', {
         body: { 
           email, 
-          testMode: true 
+          testMode: true,
+          testPassword: "testPassword123" // Include a test password for direct signup
         },
       });
 
@@ -337,6 +338,13 @@ const AuthUI = () => {
       
       if (response.data) {
         toast.success("Test verification email generated successfully!");
+        
+        // If we have a verification link, display it in the console for easier testing
+        const verificationLink = response.data?.meta?.verificationLink;
+        if (verificationLink) {
+          console.log("Test verification link:", verificationLink);
+          toast.info("Check console for verification link");
+        }
       } else {
         toast.error("Failed to generate test verification email");
       }
@@ -358,7 +366,8 @@ const AuthUI = () => {
       const response = await supabase.functions.invoke('send-verification-email', {
         body: { 
           email: testEmail, 
-          createTestSubscription: true
+          createTestSubscription: true,
+          testPassword: "testPassword123" // Include a test password for direct signup
         },
       });
 
@@ -370,9 +379,10 @@ const AuthUI = () => {
         
         if (verificationLink) {
           console.log("Verification link for testing:", verificationLink);
+          toast.info("Check console for verification link");
         }
         
-        toast.success(`Test subscription created for ${testEmail}! Check logs for verification link.`);
+        toast.success(`Test subscription created for ${testEmail}!`);
         
         // Set the email field to the test email if it wasn't already set
         if (!email) {

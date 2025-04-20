@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.5'
 
@@ -32,11 +31,12 @@ serve(async (req) => {
       throw new Error("Invalid request format: " + parseError.message);
     }
     
-    const { email, testMode = false, createTestSubscription = false } = body;
+    const { email, testMode = false, createTestSubscription = false, testPassword = null } = body;
     console.log("Function parameters:", { 
       email: email ? `${email.substring(0, 3)}...` : "not provided",
       testMode,
-      createTestSubscription
+      createTestSubscription,
+      hasTestPassword: !!testPassword
     });
 
     if (!email) {
@@ -107,13 +107,48 @@ serve(async (req) => {
     // If in test mode or createTestSubscription is true, always generate a signup link
     if (testMode || createTestSubscription) {
       console.log(`Generating test verification link for ${testMode ? 'test mode' : 'test subscription'}`);
-      const { data, error } = await supabaseClient.auth.admin.generateLink({
-        type: 'signup',
+      
+      // For testing, we'll try to use a password if provided
+      const verificationOptions = {
+        type: 'signup' as const,
         email: email,
         options: {
           redirectTo: `${req.headers.get('origin')}/auth/callback`,
         },
-      });
+      };
+      
+      // If we have a test password, use signUp instead of generateLink
+      if (testPassword) {
+        console.log("Using test password for direct signup");
+        
+        const { data, error } = await supabaseClient.auth.admin.createUser({
+          email: email,
+          password: testPassword,
+          email_confirm: true, // Auto-confirm the email for testing
+        });
+        
+        if (error) {
+          console.error("Test signup error:", error);
+          throw error;
+        }
+        
+        console.log("Test user created successfully");
+        return new Response(JSON.stringify({ 
+          data,
+          meta: {
+            timestamp: new Date().toISOString(),
+            origin: req.headers.get('origin'),
+            type: testMode ? 'test-signup' : 'test-subscription-signup',
+            message: 'Test user created with auto-verified email'
+          }
+        }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200,
+        });
+      }
+      
+      // Otherwise use generateLink
+      const { data, error } = await supabaseClient.auth.admin.generateLink(verificationOptions);
 
       if (error) {
         console.error("Test mode link generation error:", error);
