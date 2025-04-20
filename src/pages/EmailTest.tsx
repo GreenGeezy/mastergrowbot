@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -33,35 +32,26 @@ export default function EmailTest() {
     setSuccess(false);
     
     try {
-      // Call the Supabase function to create subscription and generate link
-      const { data, error: functionError } = await supabase.functions.invoke('send-subscription-email', {
+      const { data, error: functionError } = await supabase.functions.invoke('send-verification-email', {
         body: { 
-          email, 
-          subscriptionType,
-          squareOrderId
+          email,
+          testMode: true  // This will create a test subscription
         }
       });
 
-      if (functionError) {
-        throw functionError;
-      }
+      if (functionError) throw functionError;
+      
+      if (data.error) throw new Error(data.error);
 
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      // Display the verification link
-      if (data.verificationLink) {
-        setVerificationLink(data.verificationLink);
-        setIsExistingUser(data.isExistingUser || false);
+      if (data.data?.properties?.action_link) {
+        setVerificationLink(data.data.properties.action_link);
+        setIsExistingUser(data.type === 'magiclink');
         toast.success(`Link generated for ${email}`);
         setSuccess(true);
         setError("");
       } else {
         throw new Error("Could not generate verification link");
       }
-      
-      console.log("Response:", data);
     } catch (error) {
       console.error("Error generating link:", error);
       setError(error.message || "Unknown error occurred");
