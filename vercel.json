@@ -54,6 +54,11 @@
       ],
       "destination": "/:path*",
       "permanent": false
+    },
+    {
+      "source": "/square-webhook",
+      "destination": "https://inbfxduleyhygxatxmre.supabase.co/functions/v1/square-webhook",
+      "permanent": false
     }
   ],
   "rewrites": [
@@ -61,6 +66,7 @@
     { "source": "/auth/(.*)", "destination": "/index.html" },
     { "source": "/privacy-policy", "destination": "/index.html" },
     { "source": "/terms-of-service", "destination": "/index.html" },
+    { "source": "/thank-you", "destination": "/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
