@@ -18,7 +18,7 @@ serve(async (req) => {
   try {
     const { email, subscriptionType } = await req.json();
     
-    console.log(`Sending subscription confirmation email to ${email}`);
+    console.log(`Sending subscription confirmation email to ${email} for ${subscriptionType} subscription`);
 
     const { data, error } = await resend.emails.send({
       from: 'Master Growbot <onboarding@resend.dev>',
@@ -40,10 +40,11 @@ serve(async (req) => {
     });
 
     if (error) {
+      console.error("Error from Resend:", error);
       throw error;
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, message: "Email sent successfully", data }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     });

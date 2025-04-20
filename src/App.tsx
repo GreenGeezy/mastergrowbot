@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -25,6 +24,7 @@ const ThankYou = lazy(() => import(/* webpackChunkName: "thank-you" */ "./pages/
 const Quiz = lazy(() => import(/* webpackChunkName: "quiz" */ "./pages/Quiz"));
 const PrivacyPolicy = lazy(() => import(/* webpackChunkName: "privacy-policy" */ "./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import(/* webpackChunkName: "terms-of-service" */ "./pages/TermsOfService"));
+const EmailTest = lazy(() => import(/* webpackChunkName: "email-test" */ "./pages/EmailTest"));
 
 // Create the query client outside of the component to prevent recreation on rerenders
 const queryClient = new QueryClient({
@@ -189,6 +189,16 @@ const App = () => {
                 element={
                   <Suspense fallback={<LoadingSpinner />}>
                     <TermsOfService />
+                  </Suspense>
+                } 
+              />
+              
+              {/* Test route for subscription email */}
+              <Route 
+                path="/email-test" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <EmailTest />
                   </Suspense>
                 } 
               />
