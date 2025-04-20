@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Sprout, HelpCircle, ChevronDown, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,11 +17,34 @@ import SupportDialog from '@/components/support/SupportDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
+import { useSubscriptionStatus } from '@/hooks/use-subscription-status';
+
+const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
 export const ChatHeader = () => {
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const session = useSession();
+  const { isLoading, hasAccess } = useSubscriptionStatus();
+
+  useEffect(() => {
+    if (!session || !REQUIRE_QUIZ_AND_SUBSCRIPTION) return;
+    
+    const verifySubscription = async () => {
+      try {
+        if (isLoading) return;
+        
+        if (!hasAccess) {
+          await supabase.auth.signOut();
+          navigate('/quiz', { replace: true });
+        }
+      } catch (error) {
+        console.error('Error verifying subscription:', error);
+      }
+    };
+    
+    verifySubscription();
+  }, [session, isLoading, hasAccess, navigate]);
 
   const growTools = [
     {
@@ -159,12 +181,7 @@ export const ChatHeader = () => {
                     <DropdownMenuSeparator className="bg-[#333333]" />
                     <DropdownMenuItem 
                       className="p-3 hover:bg-purple-600 cursor-pointer"
-                      onClick={() => supabase.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: {
-                          redirectTo: `${window.location.origin}/auth/v1/callback`
-                        }
-                      })}
+                      onClick={() => navigate('/')}
                     >
                       <div className="flex items-center space-x-2 text-white">
                         <svg className="h-5 w-5" viewBox="0 0 24 24">

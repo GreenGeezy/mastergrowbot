@@ -5,12 +5,16 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 // Eagerly load the Index page for better UX
 import Index from "./pages/Index";
+
+// Environment variable to control subscription requirement
+const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
 // Lazy load all other components
 const ChatInterface = lazy(() => import(/* webpackChunkName: "chat" */ "./components/ChatInterface"));
@@ -40,6 +44,70 @@ const LoadingSpinner = () => (
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
   </div>
 );
+
+// Global subscription and quiz check component
+const AuthVerification = () => {
+  const session = useSession();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Skip check on public routes
+  const isPublicRoute = [
+    '/', 
+    '/privacy-policy', 
+    '/terms-of-service', 
+    '/quiz', 
+    '/thank-you', 
+    '/auth/callback', 
+    '/auth/v1/callback'
+  ].some(route => 
+    location.pathname === route || 
+    location.pathname.startsWith('/auth/') || 
+    location.pathname.startsWith('/shared/')
+  );
+  
+  useEffect(() => {
+    // Skip if not requiring checks or on public routes
+    if (!REQUIRE_QUIZ_AND_SUBSCRIPTION || isPublicRoute || !session) {
+      return;
+    }
+    
+    const checkRequirements = async () => {
+      try {
+        // Check subscription status
+        const { data: accessData, error: accessError } = await supabase
+          .from('user_access_view')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+        
+        if (accessError) throw accessError;
+        
+        // If user has no subscription or hasn't completed quiz, sign them out
+        if (!accessData?.has_active_subscription || !accessData?.has_completed_quiz) {
+          console.log("User does not meet requirements:", accessData);
+          
+          // Show appropriate message
+          if (!accessData?.has_completed_quiz) {
+            toast.error("Please complete the quiz first");
+            await supabase.auth.signOut();
+            navigate('/quiz', { replace: true });
+          } else if (!accessData?.has_active_subscription) {
+            toast.error("Active subscription required");
+            await supabase.auth.signOut();
+            navigate('/quiz', { replace: true });
+          }
+        }
+      } catch (error) {
+        console.error("Error checking subscription:", error);
+      }
+    };
+    
+    checkRequirements();
+  }, [session, navigate, location.pathname, isPublicRoute]);
+  
+  return null; // This component doesn't render anything
+};
 
 // Auth callback component
 const AuthCallback = () => {
@@ -101,6 +169,8 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            {/* Add the global auth verification component */}
+            <AuthVerification />
             <Routes>
               {/* Eagerly loaded route */}
               <Route path="/" element={<Index />} />

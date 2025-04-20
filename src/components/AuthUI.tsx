@@ -20,6 +20,43 @@ const AuthUI = () => {
   const [canSignUp, setCanSignUp] = useState(!REQUIRE_QUIZ_AND_SUBSCRIPTION);
   const navigate = useNavigate();
 
+  // Check for existing session at startup and enforce requirements
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      // If we have a session and subscription requirements are enabled,
+      // verify the user meets requirements
+      if (session && REQUIRE_QUIZ_AND_SUBSCRIPTION) {
+        try {
+          const { data, error } = await supabase
+            .from('user_access_view')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (error) throw error;
+          
+          if (!data.has_active_subscription || !data.has_completed_quiz) {
+            console.log("User does not meet requirements:", data);
+            await supabase.auth.signOut();
+            if (!data.has_completed_quiz) {
+              toast.error("Please complete the quiz first");
+              navigate('/quiz');
+            } else {
+              toast.error("Active subscription required");
+              navigate('/quiz');
+            }
+          }
+        } catch (error) {
+          console.error("Error checking access:", error);
+        }
+      }
+    };
+    
+    checkSession();
+  }, [navigate]);
+
   // Check if quiz has been completed
   useEffect(() => {
     // If feature flag is off, always allow sign up regardless of quiz
@@ -85,9 +122,45 @@ const AuthUI = () => {
 
   useEffect(() => {
     // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state change in AuthUI:", event);
+      
+      // If we have a sign-in event, check if the user meets requirements before redirecting
       if (event === 'SIGNED_IN' && session) {
+        if (REQUIRE_QUIZ_AND_SUBSCRIPTION) {
+          try {
+            const { data, error } = await supabase
+              .from('user_access_view')
+              .select('*')
+              .eq('id', session.user.id)
+              .single();
+            
+            if (error) throw error;
+            
+            // If the user doesn't have quiz completion or subscription, sign them out
+            if (!data.has_active_subscription || !data.has_completed_quiz) {
+              console.log("New login doesn't meet requirements:", data);
+              
+              // Sign out the user
+              await supabase.auth.signOut();
+              
+              // Show appropriate message
+              if (!data.has_completed_quiz) {
+                toast.error("Please complete the quiz first");
+                navigate('/quiz');
+                return;
+              } else {
+                toast.error("Active subscription required");
+                navigate('/quiz');
+                return;
+              }
+            }
+          } catch (error) {
+            console.error("Error checking access on sign in:", error);
+            // On error, we'll let them through but the SubscriptionGuard will catch them
+          }
+        }
+        
         console.log("User signed in, redirecting...");
         
         // Get redirect URL from sessionStorage or default to chat
@@ -170,7 +243,7 @@ const AuthUI = () => {
           toast.success(`Your ${subscriptionType} subscription has been activated!`);
         }
       } else {
-        // For sign in, we don't need to check for quiz or subscription
+        // For sign in, we will check requirements after the sign-in completes
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -215,6 +288,7 @@ const AuthUI = () => {
       
       // Save the current page to session storage for redirect after auth
       sessionStorage.setItem('redirectTo', '/chat');
+      sessionStorage.setItem('requiresAuthCheck', 'true'); // Flag to force subscription check
       
       // Sign in with Google
       const { error } = await supabase.auth.signInWithOAuth({
