@@ -9,8 +9,11 @@ const corsHeaders = {
 
 serve(async (req) => {
   console.log("==== Email Verification Function Started ====");
+  console.log(`Request method: ${req.method}`);
   
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log("Handling CORS preflight request");
     return new Response('ok', { headers: corsHeaders });
   }
 
@@ -20,67 +23,180 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
     
-    const { email, testMode = false } = await req.json();
+    let body;
+    try {
+      body = await req.json();
+      console.log("Request body parsed successfully");
+    } catch (parseError) {
+      console.error("Error parsing request body:", parseError);
+      throw new Error("Invalid request format: " + parseError.message);
+    }
     
+    const { email, testMode = false, createTestSubscription = false } = body;
+    console.log("Function parameters:", { 
+      email: email ? `${email.substring(0, 3)}...` : "not provided",
+      testMode,
+      createTestSubscription
+    });
+
     if (!email) {
+      console.error("Email is required but was not provided");
       throw new Error('Email is required');
     }
 
-    // Always create a test pending subscription in testMode
-    if (testMode) {
-      console.log("Creating test pending subscription for:", email);
+    // If createTestSubscription is true, create a test pending subscription
+    if (createTestSubscription) {
+      console.log("Creating test pending subscription for email:", email);
       
-      const { data: existingSubs } = await supabaseClient
-        .from('pending_subscriptions')
-        .select('id')
-        .eq('email', email)
-        .eq('consumed', false);
-        
-      if (!existingSubs?.length) {
-        const { error: insertError } = await supabaseClient
+      try {
+        // First, check if there's already a pending subscription
+        const { data: existingSubscriptions } = await supabaseClient
           .from('pending_subscriptions')
-          .insert({
-            email: email,
-            subscription_type: 'basic',
-            expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-            consumed: false,
-            square_order_id: 'test-' + Math.random().toString(36).substring(2, 10)
-          });
+          .select('id')
+          .eq('email', email)
+          .eq('consumed', false);
           
-        if (insertError) throw insertError;
+        if (existingSubscriptions && existingSubscriptions.length > 0) {
+          console.log("Existing pending subscription found, updating instead of creating new");
+          
+          // Update the existing subscription
+          const { data: updatedSub, error: updateError } = await supabaseClient
+            .from('pending_subscriptions')
+            .update({
+              subscription_type: 'basic',
+              expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+              consumed: false,
+              square_order_id: 'test-' + Math.random().toString(36).substring(2, 10)
+            })
+            .eq('email', email)
+            .eq('consumed', false)
+            .select();
+            
+          if (updateError) {
+            console.error("Error updating existing pending subscription:", updateError);
+            throw updateError;
+          }
+          
+          console.log("Successfully updated pending subscription:", updatedSub);
+        } else {
+          // Create a new test pending subscription
+          const { data: newSub, error: insertError } = await supabaseClient
+            .from('pending_subscriptions')
+            .insert({
+              email: email,
+              subscription_type: 'basic',
+              expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+              consumed: false,
+              square_order_id: 'test-' + Math.random().toString(36).substring(2, 10)
+            })
+            .select();
+            
+          if (insertError) {
+            console.error("Error creating test pending subscription:", insertError);
+            throw insertError;
+          }
+          
+          console.log("Successfully created test pending subscription:", newSub);
+        }
+      } catch (subError) {
+        console.error("Subscription creation/update error:", subError);
+        throw new Error(`Failed to create test subscription: ${subError.message}`);
       }
     }
 
-    // Check if user exists
-    const { data: { users }, error: userError } = await supabaseClient.auth.admin.listUsers();
-    const userExists = users.some(user => user.email === email);
+    // If in test mode or createTestSubscription is true, always generate a signup link
+    if (testMode || createTestSubscription) {
+      console.log(`Generating test verification link for ${testMode ? 'test mode' : 'test subscription'}`);
+      const { data, error } = await supabaseClient.auth.admin.generateLink({
+        type: 'signup',
+        email: email,
+        options: {
+          redirectTo: `${req.headers.get('origin')}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        console.error("Test mode link generation error:", error);
+        throw error;
+      }
+
+      console.log("Test verification link generated successfully");
+      console.log("Link URL available:", !!data?.properties?.action_link);
+      
+      return new Response(JSON.stringify({ 
+        data,
+        meta: {
+          timestamp: new Date().toISOString(),
+          origin: req.headers.get('origin'),
+          type: testMode ? 'test-signup' : 'test-subscription-signup',
+          verificationLink: data?.properties?.action_link
+        }
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      });
+    }
+
+    // Existing logic for non-test mode remains the same
+    console.log("Checking if user already exists...");
+    const { data: existingUser, error: userCheckError } = await supabaseClient.auth.admin.listUsers();
     
-    // Generate appropriate link using consistent URL format
+    if (userCheckError) {
+      console.error("Error checking existing users:", userCheckError);
+    } else {
+      const userExists = existingUser.users.some(user => user.email === email);
+      console.log("User exists check result:", userExists);
+      
+      if (userExists) {
+        console.log("User already exists, sending magic link instead of signup link");
+        const { data: magicLinkData, error: magicLinkError } = await supabaseClient.auth.admin.generateLink({
+          type: 'magiclink',
+          email: email,
+          options: {
+            redirectTo: `${req.headers.get('origin')}/auth/callback`,
+          },
+        });
+        
+        if (magicLinkError) {
+          console.error("Magic link generation error:", magicLinkError);
+          throw magicLinkError;
+        }
+        
+        console.log("Magic link generated successfully");
+        return new Response(JSON.stringify({ data: magicLinkData, type: 'magiclink' }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200,
+        });
+      }
+    }
+
+    // Generate signup link
+    console.log("Generating signup link...");
+    console.log("Redirect URL:", `${req.headers.get('origin')}/auth/callback`);
+    
     const { data, error } = await supabaseClient.auth.admin.generateLink({
-      type: userExists ? 'magiclink' : 'signup',
+      type: 'signup',
       email: email,
       options: {
-        redirectTo: `https://www.mastergrowbot.com/auth/callback`,
-        data: {
-          subscriptionActive: true,
-          quizCompleted: true
-        }
+        redirectTo: `${req.headers.get('origin')}/auth/callback`,
       },
     });
 
-    if (error) throw error;
+    if (error) {
+      console.error("Error generating signup link:", error);
+      throw error;
+    }
 
-    console.log(`${userExists ? 'Magic' : 'Signup'} link generated successfully`);
-    
-    // Log the entire data object to verify the URL format
-    console.log("Generated link data:", data);
+    console.log("Signup link generated successfully");
+    console.log("Action URL available:", !!data?.properties?.action_link);
 
-    return new Response(JSON.stringify({
+    // Include detailed information in response for debugging
+    return new Response(JSON.stringify({ 
       data,
-      type: userExists ? 'magiclink' : 'signup',
-      message: `${userExists ? 'Magic' : 'Signup'} link generated successfully`,
       meta: {
-        userExists: userExists
+        timestamp: new Date().toISOString(),
+        origin: req.headers.get('origin'),
+        type: 'signup'
       }
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -88,13 +204,17 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error("Function error:", error);
+    console.error("Stack trace:", error.stack);
     
     return new Response(JSON.stringify({ 
       error: error.message,
+      stack: error.stack,
       timestamp: new Date().toISOString()
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 400,
     });
+  } finally {
+    console.log("==== Email Verification Function Completed ====");
   }
 })

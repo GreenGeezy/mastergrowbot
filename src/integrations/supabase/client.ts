@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
@@ -8,61 +9,23 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    flowType: 'pkce',
-    site: 'https://auth.mastergrowbot.com'
+    flowType: 'pkce'
   },
   global: {
     fetch: (url, options) => {
+      // Add additional logging for debugging auth and user operations
       if (url.toString().includes('/auth/') || url.toString().includes('/users/')) {
-        console.log('Auth operation URL:', url.toString());
-        console.log('Auth operation method:', options?.method);
+        console.log('Auth operation:', url, options?.method);
       }
       return fetch(url, options);
     }
   }
 });
 
-supabase.auth.onAuthStateChange((event, session) => {
-  console.log('Auth state changed:', event);
-  console.log('Session data:', session ? 'User signed in' : 'User signed out');
-  console.log('Session details:', session);
-  
-  if (event === 'SIGNED_IN' && session) {
-    const currentPath = window.location.pathname;
-    const isAuthPath = currentPath.includes('/auth/callback') || 
-                       currentPath.includes('/auth/v1/callback');
-    
-    if (isAuthPath) {
-      console.log('Detecting auth callback completed, redirecting to /chat');
-      window.location.href = '/chat';
-    }
-  }
-});
-
+// Initialize storage bucket
 (async () => {
   try {
-    const { data, error } = await supabase.auth.getSession();
-    if (error) {
-      console.error('Error getting session:', error);
-    } else if (data.session) {
-      console.log('Existing session found:', data.session.user.email);
-      
-      const currentPath = window.location.pathname;
-      const isAuthPath = currentPath.includes('/auth/callback') || 
-                         currentPath.includes('/auth/v1/callback');
-      
-      if (isAuthPath) {
-        console.log('Auth path with session detected, redirecting to /chat');
-        window.location.href = '/chat';
-      }
-    }
-  } catch (err) {
-    console.error('Unexpected error checking session:', err);
-  }
-})();
-
-(async () => {
-  try {
+    // Try to create the bucket via our edge function
     const { error } = await supabase.functions.invoke('create-storage-bucket');
     if (error) {
       console.error('Error creating storage bucket:', error);
@@ -74,10 +37,25 @@ supabase.auth.onAuthStateChange((event, session) => {
   }
 })();
 
+// Listen for auth state changes to help debug auth issues
+supabase.auth.onAuthStateChange((event, session) => {
+  console.log('Auth state changed:', event, session ? 'User signed in' : 'User signed out');
+  
+  // If we're at the root with a code parameter, this means we've just completed OAuth
+  // but the automatic redirect didn't work, so we'll manually redirect
+  if (event === 'SIGNED_IN' && session && window.location.pathname === '/' && window.location.search.includes('code=')) {
+    console.log('Detecting OAuth callback at root, redirecting to /chat');
+    window.location.href = '/chat';
+  }
+});
+
+// Enhanced safe delete users helper function with fallback mechanisms
 export const safeDeleteUser = async (userId: string) => {
   console.log(`Attempting to delete user with ID: ${userId}`);
   
   try {
+    // Try direct admin API first (requires auth.users permissions)
+    // Fixed: The deleteUser method takes a string userId parameter, not an object
     const adminDeleteResult = await supabase.auth.admin.deleteUser(userId);
     
     if (!adminDeleteResult.error) {
@@ -88,6 +66,7 @@ export const safeDeleteUser = async (userId: string) => {
     console.log('Admin API deletion failed, error:', adminDeleteResult.error);
     console.log('Falling back to RPC function...');
     
+    // Fallback: Try using our SQL RPC function
     const { error: rpcError } = await supabase.rpc('safely_delete_user', {
       user_id_to_delete: userId
     });
@@ -95,10 +74,12 @@ export const safeDeleteUser = async (userId: string) => {
     if (rpcError) {
       console.error('Error in data cleanup via RPC:', rpcError);
       
+      // Additional diagnostic information
       const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
       if (userError) {
         console.log('User lookup error:', userError);
         if (userError.message.includes('User not found')) {
+          // If user doesn't exist, consider this a "success" since the goal was to delete
           return { success: true, warning: 'User already deleted' };
         }
       } else {
@@ -116,6 +97,7 @@ export const safeDeleteUser = async (userId: string) => {
   }
 };
 
+// Function to check if a user exists
 export const checkUserExists = async (userId: string) => {
   try {
     const { data, error } = await supabase.auth.admin.getUserById(userId);

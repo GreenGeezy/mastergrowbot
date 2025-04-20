@@ -5,7 +5,7 @@ export const getRedirectUrl = () => {
   
   // For production domain
   if (hostname === 'mastergrowbot.com' || hostname === 'www.mastergrowbot.com') {
-    return `https://www.mastergrowbot.com/auth/callback`;
+    return `${origin}/auth/callback`;
   }
   
   // For development/testing on Lovable subdomain
@@ -23,6 +23,6 @@ export const getRedirectUrl = () => {
     return `${origin}/auth/callback`;
   }
   
-  // Default fallback
+  // Default fallback - removed v1 path which was causing issues
   return `${origin}/auth/callback`;
 };

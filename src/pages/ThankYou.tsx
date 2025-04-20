@@ -1,16 +1,15 @@
+
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Mail, InboxIcon, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 
 const ThankYou = () => {
   const location = useLocation();
   const [email, setEmail] = useState<string>("");
   const [subscriptionType, setSubscriptionType] = useState<string>("basic");
   const [countdown, setCountdown] = useState<number>(60);
-  const [emailSent, setEmailSent] = useState<boolean>(false);
   
   // Parse location search params to get email and subscription info
   useEffect(() => {
@@ -20,11 +19,6 @@ const ThankYou = () => {
     
     if (emailParam) {
       setEmail(emailParam);
-      
-      // Since there's an issue with automatic emails, let's send one directly when this page loads
-      if (emailParam && !emailSent) {
-        sendConfirmationEmail(emailParam, subType);
-      }
     }
     setSubscriptionType(subType);
     
@@ -33,29 +27,6 @@ const ThankYou = () => {
       subscriptionType: subType
     });
   }, [location.search]);
-
-  // Send confirmation email directly as a backup
-  const sendConfirmationEmail = async (emailAddress: string, subType: string) => {
-    try {
-      console.log(`Attempting to send backup confirmation email to ${emailAddress}`);
-      const { data, error } = await supabase.functions.invoke('send-subscription-email', {
-        body: { 
-          email: emailAddress, 
-          subscriptionType: subType
-        }
-      });
-
-      if (error) {
-        console.error("Error sending backup confirmation email:", error);
-        return;
-      }
-
-      console.log("Backup confirmation email sent successfully:", data);
-      setEmailSent(true);
-    } catch (err) {
-      console.error("Exception sending backup confirmation email:", err);
-    }
-  };
 
   // Countdown timer effect
   useEffect(() => {
@@ -257,17 +228,6 @@ const ThankYou = () => {
                 {countdown === 0 && (
                   <div className="mt-2 text-white/80 text-sm animate-fade-in">
                     <p>If you don't see the email in your inbox, check your spam folder or contact support for assistance by emailing support@futuristiccannabis.ai.</p>
-                    <button
-                      onClick={() => {
-                        if (email) {
-                          sendConfirmationEmail(email, subscriptionType);
-                          toast.success("Confirmation email resent. Please check your inbox and spam folder.");
-                        }
-                      }}
-                      className="mt-2 px-4 py-2 bg-primary/20 hover:bg-primary/30 text-white/90 rounded-md transition-colors"
-                    >
-                      Resend Email
-                    </button>
                   </div>
                 )}
               </div>
