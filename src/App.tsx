@@ -119,16 +119,40 @@ const AuthCallback = () => {
     console.log("Auth callback search params:", location.search);
     console.log("Current session:", !!session);
     
-    // Check if there are auth params in the URL
-    const hasAuthParams = 
-      location.hash.includes('access_token') || 
-      location.search.includes('code=') || 
-      location.search.includes('error=');
+    const handleCallbackParams = async () => {
+      // Check if there are auth params in the URL
+      const hasAuthParams = 
+        location.hash.includes('access_token') || 
+        location.search.includes('code=') || 
+        location.search.includes('error=');
+      
+      if (hasAuthParams) {
+        console.log("Auth params detected, letting Supabase handle auth");
+        // Supabase should automatically handle this with detectSessionInUrl
+      }
+      
+      // Check if has_completed_quiz is in the URL
+      const params = new URLSearchParams(location.search);
+      const hasCompletedQuiz = params.get('has_completed_quiz') === 'true';
+      const subscriptionType = params.get('subscription_type');
+      
+      // If we have a session and the quiz flag is set, update the user's profile
+      if (session && hasCompletedQuiz) {
+        try {
+          console.log("Marking user as having completed quiz");
+          const { error } = await supabase.functions.invoke('mark-quiz-completed', {
+            body: { user_id: session.user.id }
+          });
+          
+          if (error) throw error;
+          console.log("Successfully marked user as having completed quiz");
+        } catch (err) {
+          console.error("Error marking quiz as completed:", err);
+        }
+      }
+    };
     
-    if (hasAuthParams) {
-      console.log("Auth params detected, letting Supabase handle auth");
-      // Supabase should automatically handle this with detectSessionInUrl
-    }
+    handleCallbackParams();
     
     // If we have a session after handling the callback, redirect
     if (session) {

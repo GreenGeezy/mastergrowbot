@@ -38,7 +38,9 @@ const ThankYou = () => {
         password,
         options: {
           data: {
-            subscription_type: subscriptionType
+            subscription_type: subscriptionType,
+            // Mark user as having completed the quiz automatically
+            has_completed_quiz: true
           }
         }
       });
@@ -52,6 +54,9 @@ const ThankYou = () => {
           });
 
           if (signInError) throw signInError;
+          
+          // Update user metadata to include has_completed_quiz=true
+          await supabase.rpc('mark_user_completed_quiz', { user_email: email });
           
           toast.success("Welcome back! Your subscription has been activated.");
           navigate('/chat');
@@ -78,7 +83,8 @@ const ThankYou = () => {
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
-            subscription_type: subscriptionType
+            subscription_type: subscriptionType,
+            has_completed_quiz: "true"  // Pass the quiz completion flag
           }
         }
       });
