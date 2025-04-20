@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,7 +15,6 @@ const ThankYou = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   
-  // Parse location search params to get email and subscription info
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const emailParam = searchParams.get("email");
@@ -56,7 +54,9 @@ const ThankYou = () => {
           if (signInError) throw signInError;
           
           // Update user metadata to include has_completed_quiz=true
-          await supabase.rpc('mark_user_completed_quiz', { user_email: email });
+          await supabase.functions.invoke('mark-quiz-completed', {
+            body: { email }
+          });
           
           toast.success("Welcome back! Your subscription has been activated.");
           navigate('/chat');

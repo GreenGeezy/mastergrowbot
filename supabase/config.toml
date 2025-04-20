@@ -9,3 +9,6 @@ verify_jwt = true
 
 [functions.create-storage-bucket]
 verify_jwt = false
+
+[functions.mark-quiz-completed]
+verify_jwt = true

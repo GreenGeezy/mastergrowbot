@@ -500,6 +500,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      mark_user_completed_quiz: {
+        Args: { user_email: string }
+        Returns: boolean
+      }
       safely_delete_user: {
         Args: { user_id_to_delete: string }
         Returns: undefined
