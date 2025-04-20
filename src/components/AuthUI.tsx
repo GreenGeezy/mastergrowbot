@@ -321,74 +321,6 @@ const AuthUI = () => {
     }
   };
 
-  const handleTestEmailVerification = async () => {
-    try {
-      setLoading(true);
-      const email = "eliduffy@gmail.com"; // Hardcoded email for testing
-      
-      const response = await supabase.functions.invoke('send-verification-email', {
-        body: { 
-          email, 
-          testMode: true 
-        },
-      });
-
-      console.log("Test email verification response:", response);
-      
-      if (response.data) {
-        toast.success("Test verification email generated successfully!");
-      } else {
-        toast.error("Failed to generate test verification email");
-      }
-    } catch (error) {
-      console.error("Error in test email verification:", error);
-      toast.error("Error generating test verification email");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCreateTestSubscription = async () => {
-    try {
-      setLoading(true);
-      const testEmail = email || "eliduffy@gmail.com"; // Use entered email or default to test email
-      
-      console.log("Creating test subscription for:", testEmail);
-      
-      const response = await supabase.functions.invoke('send-verification-email', {
-        body: { 
-          email: testEmail, 
-          createTestSubscription: true
-        },
-      });
-
-      console.log("Test subscription response:", response);
-      
-      if (response.data) {
-        // If we have a verification link in the response, display it
-        const verificationLink = response.data?.meta?.verificationLink;
-        
-        if (verificationLink) {
-          console.log("Verification link for testing:", verificationLink);
-        }
-        
-        toast.success(`Test subscription created for ${testEmail}! Check logs for verification link.`);
-        
-        // Set the email field to the test email if it wasn't already set
-        if (!email) {
-          setEmail(testEmail);
-        }
-      } else {
-        toast.error("Failed to create test subscription");
-      }
-    } catch (error) {
-      console.error("Error creating test subscription:", error);
-      toast.error("Error creating test subscription");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
       {REQUIRE_QUIZ_AND_SUBSCRIPTION && isSignUp && !hasPendingSubscription && (
@@ -420,36 +352,6 @@ const AuthUI = () => {
         onToggleMode={() => setIsSignUp(!isSignUp)}
         onGoogleSignIn={handleOAuthSignIn}
       />
-      
-      {import.meta.env.DEV && (
-        <div className="mt-4 space-y-2">
-          <button
-            onClick={handleTestEmailVerification}
-            disabled={loading}
-            className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors"
-          >
-            {loading ? "Processing..." : "Send Test Verification Email"}
-          </button>
-          
-          <button
-            onClick={handleCreateTestSubscription}
-            disabled={loading}
-            className="w-full bg-purple-500 text-white py-2 rounded hover:bg-purple-600 transition-colors"
-          >
-            {loading ? "Processing..." : "Create Test Subscription"}
-          </button>
-          
-          <div className="p-2 bg-yellow-600/20 rounded text-xs text-white/80">
-            <p className="font-semibold">Developer Testing Guide:</p>
-            <ol className="list-decimal pl-4 mt-1 space-y-1">
-              <li>Enter an email (or leave empty for default test email)</li>
-              <li>Click "Create Test Subscription" to simulate a purchase</li>
-              <li>Sign up with the same email (subscription will be activated)</li>
-              <li>Check console logs for full details</li>
-            </ol>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
