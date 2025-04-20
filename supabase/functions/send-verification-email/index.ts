@@ -31,56 +31,17 @@ serve(async (req) => {
       throw new Error("Invalid request format: " + parseError.message);
     }
     
-    const { 
-      email, 
-      testMode = false, 
-      createTestSubscription = false, 
-      testPassword = null,
-      generateRealEmail = false 
-    } = body;
-    
+    const { email, testMode = false, createTestSubscription = false, testPassword = null } = body;
     console.log("Function parameters:", { 
       email: email ? `${email.substring(0, 3)}...` : "not provided",
       testMode,
       createTestSubscription,
-      hasTestPassword: !!testPassword,
-      generateRealEmail
+      hasTestPassword: !!testPassword
     });
 
     if (!email) {
       console.error("Email is required but was not provided");
       throw new Error('Email is required');
-    }
-
-    // If generateRealEmail is true, try to delete the existing user first
-    if (generateRealEmail && testMode) {
-      console.log("Testing full email verification flow - checking for existing user to delete");
-      
-      try {
-        // Check if user exists
-        const { data: existingUsers } = await supabaseClient.auth.admin.listUsers({
-          filter: {
-            email: email
-          }
-        });
-        
-        if (existingUsers && existingUsers.users && existingUsers.users.length > 0) {
-          const userId = existingUsers.users[0].id;
-          console.log(`Deleting existing user with ID: ${userId}`);
-          
-          const { error: deleteError } = await supabaseClient.auth.admin.deleteUser(userId);
-          
-          if (deleteError) {
-            console.error("Error deleting existing user:", deleteError);
-          } else {
-            console.log("Successfully deleted existing user");
-          }
-        } else {
-          console.log("No existing user found with this email");
-        }
-      } catch (userError) {
-        console.error("Error checking/deleting existing user:", userError);
-      }
     }
 
     // If createTestSubscription is true, create a test pending subscription
@@ -155,34 +116,6 @@ serve(async (req) => {
           redirectTo: `${req.headers.get('origin')}/auth/callback`,
         },
       };
-      
-      // If we want to test the full email verification flow
-      if (generateRealEmail) {
-        console.log("Testing full email verification flow");
-        
-        const { data, error } = await supabaseClient.auth.admin.generateLink(verificationOptions);
-        
-        if (error) {
-          console.error("Email verification link generation error:", error);
-          throw error;
-        }
-        
-        console.log("Verification link generated successfully");
-        console.log("Link URL available:", !!data?.properties?.action_link);
-        
-        return new Response(JSON.stringify({ 
-          data,
-          meta: {
-            timestamp: new Date().toISOString(),
-            origin: req.headers.get('origin'),
-            type: 'real-email-verification',
-            verificationLink: data?.properties?.action_link
-          }
-        }), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 200,
-        });
-      }
       
       // If we have a test password, use signUp instead of generateLink
       if (testPassword) {

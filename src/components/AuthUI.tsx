@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -325,7 +324,7 @@ const AuthUI = () => {
   const handleTestEmailVerification = async () => {
     try {
       setLoading(true);
-      const email = "mary@futuristiccannabis.ai"; // Using the test email
+      const email = "eliduffy@gmail.com"; // Hardcoded email for testing
       
       const response = await supabase.functions.invoke('send-verification-email', {
         body: { 
@@ -352,47 +351,6 @@ const AuthUI = () => {
     } catch (error) {
       console.error("Error in test email verification:", error);
       toast.error("Error generating test verification email");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Add new function for testing full email verification flow
-  const handleTestFullEmailVerification = async () => {
-    try {
-      setLoading(true);
-      const email = "mary@futuristiccannabis.ai"; // Using the test email
-      
-      // First try to delete any existing user with this email if needed
-      toast.info("Checking if user exists to delete first...");
-      
-      const response = await supabase.functions.invoke('send-verification-email', {
-        body: { 
-          email, 
-          testMode: true,
-          generateRealEmail: true // New flag to generate a real email instead of auto-verifying
-        },
-      });
-
-      console.log("Full verification flow test response:", response);
-      
-      if (response.data) {
-        toast.success("Verification email sent to " + email);
-        
-        // If we're in test mode and have a verification link, show it
-        const verificationLink = response.data?.meta?.verificationLink;
-        if (verificationLink) {
-          console.log("Verification link (for testing only):", verificationLink);
-          toast.info("Check console for verification link (real emails won't expose this)");
-        } else {
-          toast.info("Check the inbox for " + email);
-        }
-      } else {
-        toast.error("Failed to generate verification email");
-      }
-    } catch (error) {
-      console.error("Error in full email verification test:", error);
-      toast.error("Error processing email verification");
     } finally {
       setLoading(false);
     }
@@ -480,15 +438,7 @@ const AuthUI = () => {
             disabled={loading}
             className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors"
           >
-            {loading ? "Processing..." : "Quick Test (Auto-verified)"}
-          </button>
-          
-          <button
-            onClick={handleTestFullEmailVerification}
-            disabled={loading}
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors"
-          >
-            {loading ? "Processing..." : "Test Full Email Flow"}
+            {loading ? "Processing..." : "Send Test Verification Email"}
           </button>
           
           <button
