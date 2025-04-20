@@ -304,7 +304,13 @@ const AuthUI = () => {
       sessionStorage.setItem('requiresAuthCheck', 'true');
       
       // Prepare query parameters for the OAuth flow
-      const queryParams = {
+      const queryParams: {
+        access_type: string;
+        prompt: string;
+        has_completed_quiz?: string;
+        subscription_type?: string;
+        email?: string;
+      } = {
         access_type: 'offline',
         prompt: 'consent',
       };

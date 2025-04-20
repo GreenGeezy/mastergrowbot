@@ -1,3 +1,4 @@
+
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -8,6 +9,17 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+// Lazy load all page components
+const Index = lazy(() => import("@/pages/Index"));
+const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("@/pages/TermsOfService"));
+const Quiz = lazy(() => import("@/pages/Quiz"));
+const ThankYou = lazy(() => import("@/pages/ThankYou"));
+const ChatInterface = lazy(() => import("@/components/ChatInterface"));
+const PlantHealthAnalyzer = lazy(() => import("@/pages/PlantHealthAnalyzer"));
+const SharedAnalysis = lazy(() => import("@/pages/SharedAnalysis"));
+const GrowingGuide = lazy(() => import("@/pages/GrowingGuide"));
 
 const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
