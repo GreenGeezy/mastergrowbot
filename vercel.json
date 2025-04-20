@@ -1,4 +1,3 @@
-
 {
   "git": {
     "deploymentEnabled": {
@@ -53,11 +52,6 @@
         }
       ],
       "destination": "/:path*",
-      "permanent": false
-    },
-    {
-      "source": "/square-webhook",
-      "destination": "https://inbfxduleyhygxatxmre.supabase.co/functions/v1/square-webhook",
       "permanent": false
     },
     {

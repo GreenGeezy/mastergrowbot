@@ -20,31 +20,14 @@ serve(async (req) => {
       auth: { persistSession: false },
     });
 
-    // Parse the webhook payload
-    const payload = await req.json();
-    console.log("Received Square webhook payload:", payload);
-
-    // Extract order information
-    const orderId = payload.data?.object?.order_id;
-    const customerEmail = payload.data?.object?.customer?.email_address;
-    const orderTotal = payload.data?.object?.total_money?.amount;
-
-    if (!orderId || !customerEmail) {
-      console.error("Missing required fields in webhook payload");
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
-      );
-    }
-
-    // Determine subscription type based on order amount
-    // Assuming annual is anything over $100 (10000 cents)
-    const subscriptionType = (orderTotal && orderTotal >= 10000) ? 'annual' : 'monthly';
+    // Parse the payment data
+    const { email, paymentId, subscriptionType } = await req.json();
+    console.log("Processing payment for:", email, paymentId, subscriptionType);
 
     // Call the database function to handle the payment
     const { data, error } = await supabaseClient.rpc('handle_square_payment', {
-      order_id: orderId,
-      customer_email: customerEmail,
+      order_id: paymentId,
+      customer_email: email,
       subscription_type: subscriptionType,
     });
 
@@ -53,7 +36,7 @@ serve(async (req) => {
       throw error;
     }
 
-    console.log("Successfully processed Square payment for:", customerEmail);
+    console.log("Successfully processed payment for:", email);
     return new Response(
       JSON.stringify({ success: true }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
