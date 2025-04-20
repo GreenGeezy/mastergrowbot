@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.5'
 
@@ -31,18 +32,81 @@ serve(async (req) => {
       throw new Error("Invalid request format: " + parseError.message);
     }
     
-    const { email, testMode = false } = body;
-    console.log("Email from request:", email ? `${email.substring(0, 3)}...` : "not provided");
-    console.log("Test mode:", testMode);
+    const { email, testMode = false, createTestSubscription = false } = body;
+    console.log("Function parameters:", { 
+      email: email ? `${email.substring(0, 3)}...` : "not provided",
+      testMode,
+      createTestSubscription
+    });
 
     if (!email) {
       console.error("Email is required but was not provided");
       throw new Error('Email is required');
     }
 
-    // If in test mode, always generate a signup link
-    if (testMode) {
-      console.log("Generating test verification link...");
+    // If createTestSubscription is true, create a test pending subscription
+    if (createTestSubscription) {
+      console.log("Creating test pending subscription for email:", email);
+      
+      try {
+        // First, check if there's already a pending subscription
+        const { data: existingSubscriptions } = await supabaseClient
+          .from('pending_subscriptions')
+          .select('id')
+          .eq('email', email)
+          .eq('consumed', false);
+          
+        if (existingSubscriptions && existingSubscriptions.length > 0) {
+          console.log("Existing pending subscription found, updating instead of creating new");
+          
+          // Update the existing subscription
+          const { data: updatedSub, error: updateError } = await supabaseClient
+            .from('pending_subscriptions')
+            .update({
+              subscription_type: 'basic',
+              expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+              consumed: false,
+              square_order_id: 'test-' + Math.random().toString(36).substring(2, 10)
+            })
+            .eq('email', email)
+            .eq('consumed', false)
+            .select();
+            
+          if (updateError) {
+            console.error("Error updating existing pending subscription:", updateError);
+            throw updateError;
+          }
+          
+          console.log("Successfully updated pending subscription:", updatedSub);
+        } else {
+          // Create a new test pending subscription
+          const { data: newSub, error: insertError } = await supabaseClient
+            .from('pending_subscriptions')
+            .insert({
+              email: email,
+              subscription_type: 'basic',
+              expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+              consumed: false,
+              square_order_id: 'test-' + Math.random().toString(36).substring(2, 10)
+            })
+            .select();
+            
+          if (insertError) {
+            console.error("Error creating test pending subscription:", insertError);
+            throw insertError;
+          }
+          
+          console.log("Successfully created test pending subscription:", newSub);
+        }
+      } catch (subError) {
+        console.error("Subscription creation/update error:", subError);
+        throw new Error(`Failed to create test subscription: ${subError.message}`);
+      }
+    }
+
+    // If in test mode or createTestSubscription is true, always generate a signup link
+    if (testMode || createTestSubscription) {
+      console.log(`Generating test verification link for ${testMode ? 'test mode' : 'test subscription'}`);
       const { data, error } = await supabaseClient.auth.admin.generateLink({
         type: 'signup',
         email: email,
@@ -57,12 +121,15 @@ serve(async (req) => {
       }
 
       console.log("Test verification link generated successfully");
+      console.log("Link URL available:", !!data?.properties?.action_link);
+      
       return new Response(JSON.stringify({ 
         data,
         meta: {
           timestamp: new Date().toISOString(),
           origin: req.headers.get('origin'),
-          type: 'test-signup'
+          type: testMode ? 'test-signup' : 'test-subscription-signup',
+          verificationLink: data?.properties?.action_link
         }
       }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
