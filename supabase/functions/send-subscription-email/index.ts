@@ -8,20 +8,37 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
+// We need to make sure we're using the API key properly
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+if (!RESEND_API_KEY) {
+  console.error("Missing RESEND_API_KEY environment variable");
+}
+
+const resend = new Resend(RESEND_API_KEY);
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    console.log("Received request to send-subscription-email");
+    
     const { email, subscriptionType } = await req.json();
+    
+    if (!email) {
+      throw new Error("Email is required");
+    }
     
     console.log(`Sending subscription confirmation email to ${email} for ${subscriptionType} subscription`);
 
+    if (!RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY is not configured. Please add it to your Supabase secrets.");
+    }
+
     const { data, error } = await resend.emails.send({
-      from: 'Master Growbot <onboarding@resend.dev>',
+      from: 'Master Growbot <support@mastergrowbot.com>',
       to: [email],
       subject: 'Welcome to Master Growbot! Your Subscription is Active',
       html: `
@@ -43,6 +60,8 @@ serve(async (req) => {
       console.error("Error from Resend:", error);
       throw error;
     }
+
+    console.log("Email sent successfully:", data);
 
     return new Response(JSON.stringify({ success: true, message: "Email sent successfully", data }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
