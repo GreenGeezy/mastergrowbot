@@ -24,5 +24,6 @@ export const getRedirectUrl = () => {
   }
   
   // Default fallback
+  // Always include the origin to avoid redirect_url mismatch errors
   return `${origin}/auth/callback`;
 };

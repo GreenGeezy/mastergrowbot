@@ -36,6 +36,24 @@ serve(async (req) => {
     // If no user_id but email is provided, try to look up the user by email
     if (!userId && email) {
       console.log("Looking up user by email:", email);
+      
+      // First, try to find the user in auth.users
+      const { data: authUser, error: authError } = await supabaseClient.auth.admin.listUsers({
+        filters: {
+          email: email
+        }
+      });
+
+      if (authError) {
+        console.error("Error looking up user by email:", authError);
+      } else if (authUser && authUser.users.length > 0) {
+        userId = authUser.users[0].id;
+        console.log("Found user ID by email:", userId);
+      } else {
+        console.log("No user found with email:", email);
+      }
+      
+      // Check for pending subscription regardless of whether we found a user
       const { data: userData, error: userError } = await supabaseClient
         .from("pending_subscriptions")
         .select("*")
@@ -43,7 +61,7 @@ serve(async (req) => {
         .maybeSingle();
 
       if (userError) {
-        throw userError;
+        console.error("Error finding pending subscription:", userError);
       }
 
       if (userData) {
@@ -64,22 +82,6 @@ serve(async (req) => {
           has_completed_quiz: true
         });
       }
-      
-      // Lookup user ID by email in auth.users
-      const { data: authUser, error: authError } = await supabaseClient.auth.admin.listUsers({
-        filters: {
-          email: email
-        }
-      });
-
-      if (authError) {
-        console.error("Error looking up user by email:", authError);
-      } else if (authUser && authUser.users.length > 0) {
-        userId = authUser.users[0].id;
-        console.log("Found user ID by email:", userId);
-      } else {
-        console.log("No user found with email:", email);
-      }
     }
 
     // If we have a user ID, update the user's metadata
@@ -91,35 +93,55 @@ serve(async (req) => {
       });
 
       if (updateError) {
-        throw updateError;
+        console.error("Error updating user metadata:", updateError);
       }
 
       // Check if there's a pending subscription to activate
-      const { data: pendingSub, error: pendingError } = await supabaseClient
-        .from("pending_subscriptions")
-        .select("*")
-        .eq("email", email)
-        .maybeSingle();
+      let pendingSub;
+      
+      if (email) {
+        const { data, error: pendingError } = await supabaseClient
+          .from("pending_subscriptions")
+          .select("*")
+          .eq("email", email)
+          .maybeSingle();
 
-      if (!pendingError && pendingSub) {
+        if (pendingError) {
+          console.error("Error checking pending subscription:", pendingError);
+        } else {
+          pendingSub = data;
+        }
+      }
+
+      if (pendingSub) {
         console.log("Activating pending subscription:", pendingSub);
         
-        await supabaseClient.from("user_subscriptions").upsert({
-          user_id: userId,
-          subscription_type: pendingSub.subscription_type || subscription_type || "basic",
-          is_active: true,
-          start_date: new Date().toISOString(),
-          // For annual subscriptions, set expiry to 1 year from now
-          end_date: pendingSub.subscription_type === "annual" 
-            ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-        });
-      } else if (!pendingError) {
-        // No pending subscription found, but we'll still create one if subscription_type is provided
-        if (subscription_type) {
-          console.log("Creating new subscription with type:", subscription_type);
+        try {
+          const { error: upsertError } = await supabaseClient.from("user_subscriptions").upsert({
+            user_id: userId,
+            subscription_type: pendingSub.subscription_type || subscription_type || "basic",
+            is_active: true,
+            start_date: new Date().toISOString(),
+            // For annual subscriptions, set expiry to 1 year from now
+            end_date: pendingSub.subscription_type === "annual" 
+              ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+              : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+          });
           
-          await supabaseClient.from("user_subscriptions").upsert({
+          if (upsertError) {
+            console.error("Error upserting subscription:", upsertError);
+          } else {
+            console.log("Successfully activated subscription for user");
+          }
+        } catch (error) {
+          console.error("Exception when activating subscription:", error);
+        }
+      } else if (subscription_type) {
+        // No pending subscription found, but we'll still create one if subscription_type is provided
+        console.log("Creating new subscription with type:", subscription_type);
+        
+        try {
+          const { error: upsertError } = await supabaseClient.from("user_subscriptions").upsert({
             user_id: userId,
             subscription_type: subscription_type,
             is_active: true,
@@ -129,6 +151,14 @@ serve(async (req) => {
               ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
               : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
           });
+          
+          if (upsertError) {
+            console.error("Error creating new subscription:", upsertError);
+          } else {
+            console.log("Successfully created new subscription for user");
+          }
+        } catch (error) {
+          console.error("Exception when creating subscription:", error);
         }
       }
     }

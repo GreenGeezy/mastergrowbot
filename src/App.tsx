@@ -66,26 +66,29 @@ const AuthVerification = () => {
     
     const checkRequirements = async () => {
       try {
+        // Log the user info for debugging
+        console.log("Checking user requirements:", session.user.id);
+        
         const { data: accessData, error: accessError } = await supabase
           .from('user_access_view')
           .select('*')
           .eq('id', session.user.id)
           .single();
         
-        if (accessError) throw accessError;
+        if (accessError) {
+          console.error("Error fetching user access data:", accessError);
+          return;
+        }
         
-        if (!accessData?.has_active_subscription || !accessData?.has_completed_quiz) {
-          console.log("User does not meet requirements:", accessData);
-          
-          if (!accessData?.has_completed_quiz) {
-            toast.error("Please complete the quiz first");
-            await supabase.auth.signOut();
-            navigate('/quiz', { replace: true });
-          } else if (!accessData?.has_active_subscription) {
-            toast.error("Active subscription required");
-            await supabase.auth.signOut();
-            navigate('/quiz', { replace: true });
-          }
+        console.log("User access data:", accessData);
+        
+        // No longer sign out the user, just redirect if needed
+        if (!accessData?.has_completed_quiz) {
+          toast.error("Please complete the quiz first");
+          navigate('/quiz', { replace: true });
+        } else if (!accessData?.has_active_subscription) {
+          toast.error("Active subscription required");
+          navigate('/quiz', { replace: true });
         }
       } catch (error) {
         console.error("Error checking subscription:", error);

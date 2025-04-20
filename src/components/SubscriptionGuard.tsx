@@ -1,10 +1,9 @@
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useSubscriptionStatus } from '@/hooks/use-subscription-status';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
 
 // Environment variable to control subscription requirement
 const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
@@ -23,44 +22,51 @@ const SubscriptionGuard = ({
   const session = useSession();
   const navigate = useNavigate();
   const { isLoading, hasAccess, hasCompletedQuiz } = useSubscriptionStatus();
+  const [isChecking, setIsChecking] = useState(true);
 
   // Add effect to check subscription status on mount and handle unauthorized users
   useEffect(() => {
     if (!session) {
+      setIsChecking(false);
       return;
     }
 
     // Skip checks if not required by the environment flag
     if (!REQUIRE_QUIZ_AND_SUBSCRIPTION) {
+      setIsChecking(false);
       return;
     }
 
     const checkUserAccess = async () => {
-      // If loaded and no subscription when required, sign them out
-      if (!isLoading && requireSubscription && !hasAccess) {
-        toast.error("You need an active subscription to use this feature");
-        await supabase.auth.signOut();
-        navigate('/quiz', { replace: true });
-        return;
-      }
-
-      // If loaded and no quiz when required, redirect to quiz
-      if (!isLoading && requireQuiz && !hasCompletedQuiz) {
-        toast.error("Please complete the quiz first to continue");
-        navigate('/quiz', { replace: true });
-        return;
+      try {
+        // Only show warnings and redirect if needed, don't log the user out
+        if (!isLoading) {
+          if (requireQuiz && !hasCompletedQuiz) {
+            toast.error("Please complete the quiz first to continue");
+            navigate('/quiz', { replace: true });
+          } else if (requireSubscription && !hasAccess) {
+            toast.error("This feature requires an active subscription");
+            navigate('/quiz', { replace: true });
+          }
+          
+          setIsChecking(false);
+        }
+      } catch (error) {
+        console.error("Error checking subscription status:", error);
+        setIsChecking(false);
       }
     };
 
-    checkUserAccess();
+    if (!isLoading) {
+      checkUserAccess();
+    }
   }, [session, isLoading, hasAccess, hasCompletedQuiz, navigate, requireQuiz, requireSubscription]);
 
   if (!session) {
-    toast.error("Please sign in to access this feature");
     return <Navigate to="/" replace />;
   }
 
-  if (isLoading) {
+  if (isLoading || isChecking) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -68,17 +74,18 @@ const SubscriptionGuard = ({
     );
   }
 
-  // Only show the actual content if all requirements are met
-  if (REQUIRE_QUIZ_AND_SUBSCRIPTION) {
-    if (requireQuiz && !hasCompletedQuiz) {
-      toast.error("Please complete the quiz first");
-      return <Navigate to="/quiz" replace />;
-    }
+  // For development/testing, optionally bypass subscription checks
+  if (!REQUIRE_QUIZ_AND_SUBSCRIPTION) {
+    return <>{children}</>;
+  }
 
-    if (requireSubscription && !hasAccess) {
-      toast.error("This feature requires an active subscription");
-      return <Navigate to="/" replace />;
-    }
+  // Only show the actual content if all requirements are met
+  if (requireQuiz && !hasCompletedQuiz) {
+    return <Navigate to="/quiz" replace />;
+  }
+
+  if (requireSubscription && !hasAccess) {
+    return <Navigate to="/quiz" replace />;
   }
 
   return <>{children}</>;

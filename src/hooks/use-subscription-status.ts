@@ -38,6 +38,8 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
       }
 
       try {
+        console.log("Checking subscription status for user:", session.user.id);
+        
         // Get user access from the view we created
         const { data, error } = await supabase
           .from('user_access_view')
@@ -45,12 +47,21 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           .eq('id', session.user.id)
           .single();
 
-        if (error) throw error;
+        if (error) {
+          console.error("Error fetching user access data:", error);
+          throw error;
+        }
 
+        console.log("User access data:", data);
+        
+        // For development/testing, default to true if REQUIRE_QUIZ_AND_SUBSCRIPTION is not set
+        const requireChecks = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+        
         setStatus({
           isLoading: false,
-          hasAccess: !!data?.has_active_subscription,
-          hasCompletedQuiz: !!data?.has_completed_quiz,
+          // If we're not requiring checks, always grant access
+          hasAccess: requireChecks ? !!data?.has_active_subscription : true,
+          hasCompletedQuiz: requireChecks ? !!data?.has_completed_quiz : true,
           subscriptionType: data?.subscription_type || null,
           expiresAt: data?.expires_at || null,
           error: null

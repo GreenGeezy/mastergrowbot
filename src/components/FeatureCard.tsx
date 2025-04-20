@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "@supabase/auth-helpers-react";
 import React from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -17,12 +18,14 @@ const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: Fe
   const navigate = useNavigate();
   const session = useSession();
 
-  const handleClick = React.useCallback(() => {
+  const handleClick = React.useCallback(async () => {
     if (!session) {
       toast.error("Please sign in to access this feature");
       return;
     }
 
+    // Simply navigate to the destination without any subscription checks
+    // The SubscriptionGuard component inside each route will handle access control
     if (to) {
       navigate(to);
     } else if (onClick) {
