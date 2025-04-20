@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +5,6 @@ import { AuthForm } from "./auth/AuthForm";
 import { getRedirectUrl } from "@/utils/urlUtils";
 import { toast } from "sonner";
 
-// Feature flag to control whether quiz completion and subscription are required
 const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
 const AuthUI = () => {
@@ -20,13 +18,10 @@ const AuthUI = () => {
   const [canSignUp, setCanSignUp] = useState(!REQUIRE_QUIZ_AND_SUBSCRIPTION);
   const navigate = useNavigate();
 
-  // Check for existing session at startup and enforce requirements
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       
-      // If we have a session and subscription requirements are enabled,
-      // verify the user meets requirements
       if (session && REQUIRE_QUIZ_AND_SUBSCRIPTION) {
         try {
           const { data, error } = await supabase
@@ -57,9 +52,7 @@ const AuthUI = () => {
     checkSession();
   }, [navigate]);
 
-  // Check if quiz has been completed
   useEffect(() => {
-    // If feature flag is off, always allow sign up regardless of quiz
     if (!REQUIRE_QUIZ_AND_SUBSCRIPTION) {
       setCanSignUp(true);
       return;
@@ -74,9 +67,7 @@ const AuthUI = () => {
     }
   }, [isSignUp, navigate]);
 
-  // Check if email has a pending subscription when email changes
   useEffect(() => {
-    // If feature flag is off, skip subscription check
     if (!REQUIRE_QUIZ_AND_SUBSCRIPTION) {
       return;
     }
@@ -105,7 +96,6 @@ const AuthUI = () => {
           setSubscriptionType("");
           if (isSignUp && REQUIRE_QUIZ_AND_SUBSCRIPTION) {
             toast.error("Please purchase a subscription before signing up");
-            // Redirect to quiz which will show subscription options after completion
             navigate('/quiz');
             setCanSignUp(false);
           }
@@ -121,11 +111,9 @@ const AuthUI = () => {
   }, [email, isSignUp, navigate]);
 
   useEffect(() => {
-    // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state change in AuthUI:", event);
       
-      // If we have a sign-in event, check if the user meets requirements before redirecting
       if (event === 'SIGNED_IN' && session) {
         if (REQUIRE_QUIZ_AND_SUBSCRIPTION) {
           try {
@@ -137,14 +125,11 @@ const AuthUI = () => {
             
             if (error) throw error;
             
-            // If the user doesn't have quiz completion or subscription, sign them out
             if (!data.has_active_subscription || !data.has_completed_quiz) {
               console.log("New login doesn't meet requirements:", data);
               
-              // Sign out the user
               await supabase.auth.signOut();
               
-              // Show appropriate message
               if (!data.has_completed_quiz) {
                 toast.error("Please complete the quiz first");
                 navigate('/quiz');
@@ -157,13 +142,11 @@ const AuthUI = () => {
             }
           } catch (error) {
             console.error("Error checking access on sign in:", error);
-            // On error, we'll let them through but the SubscriptionGuard will catch them
           }
         }
         
         console.log("User signed in, redirecting...");
         
-        // Get redirect URL from sessionStorage or default to chat
         const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
         sessionStorage.removeItem('redirectTo');
         navigate(redirectTo, { replace: true });
@@ -182,7 +165,6 @@ const AuthUI = () => {
     try {
       if (isSignUp) {
         if (REQUIRE_QUIZ_AND_SUBSCRIPTION) {
-          // Always check if quiz is completed and subscription exists for sign up
           const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
           if (!quizResponses) {
             toast.error("Please complete the quiz first before signing up");
@@ -191,7 +173,6 @@ const AuthUI = () => {
             return;
           }
 
-          // Check if there's a pending subscription for this email
           if (!hasPendingSubscription) {
             toast.error("Please purchase a subscription before signing up");
             navigate('/quiz');
@@ -201,49 +182,79 @@ const AuthUI = () => {
         }
 
         const redirectUrl = getRedirectUrl();
+        console.log("Signup attempt with email:", email);
         
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: redirectUrl,
-          }
-        });
+        try {
+          const response = await supabase.functions.invoke('send-verification-email', {
+            body: { email },
+          });
 
-        if (signUpError) throw signUpError;
-
-        // Call the verification email function
-        const response = await supabase.functions.invoke('send-verification-email', {
-          body: { email },
-        });
-
-        if (response.error) throw new Error(response.error.message);
-
-        // Only save quiz responses if they exist
-        const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
-        if (quizResponses) {
-          const quizResponsesData = JSON.parse(quizResponses);
-          const { error: quizError } = await supabase
-            .from('quiz_responses')
-            .insert([{
-              ...quizResponsesData,
-              user_id: (await supabase.auth.getUser()).data.user?.id
-            }]);
-
-          if (quizError) throw quizError;
+          console.log("Verification email function response:", response);
           
-          // Clear temporary storage
-          sessionStorage.removeItem('mg_temp_quiz_responses');
-        }
-        
-        toast.success("Account created! Please check your email for verification.");
-        
-        // Show subscription status if applicable
-        if (hasPendingSubscription) {
-          toast.success(`Your ${subscriptionType} subscription has been activated!`);
+          if (response.error) {
+            throw new Error(`Edge function error: ${response.error.message}`);
+          }
+
+          if (!response.data || !response.data.data) {
+            throw new Error('Invalid response from verification function');
+          }
+
+          const isExistingUser = response.data.type === 'magiclink';
+          
+          if (isExistingUser) {
+            toast.info("We noticed you already have an account. A magic link has been sent to your email.");
+          } else {
+            const { error: signUpError } = await supabase.auth.signUp({
+              email,
+              password,
+              options: {
+                emailRedirectTo: redirectUrl,
+              }
+            });
+
+            if (signUpError) throw signUpError;
+            
+            const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+            if (quizResponses) {
+              const quizResponsesData = JSON.parse(quizResponses);
+              const { error: quizError } = await supabase
+                .from('quiz_responses')
+                .insert([{
+                  ...quizResponsesData,
+                  user_id: (await supabase.auth.getUser()).data.user?.id
+                }]);
+
+              if (quizError) throw quizError;
+              
+              sessionStorage.removeItem('mg_temp_quiz_responses');
+            }
+            
+            toast.success("Account created! Please check your email for verification.");
+            
+            if (hasPendingSubscription) {
+              toast.success(`Your ${subscriptionType} subscription has been activated!`);
+            }
+          }
+        } catch (edgeFunctionError) {
+          console.error("Edge function error:", edgeFunctionError);
+          toast.error(`Email verification error: ${edgeFunctionError.message}`);
+          
+          toast.info("Trying standard signup as fallback...");
+          const { error: signUpError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: redirectUrl,
+            }
+          });
+
+          if (signUpError) {
+            throw signUpError;
+          } else {
+            toast.success("Account created! Please check your email for verification.");
+          }
         }
       } else {
-        // For sign in, we will check requirements after the sign-in completes
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -253,6 +264,7 @@ const AuthUI = () => {
         toast.success("Welcome back!");
       }
     } catch (error) {
+      console.error("Authentication error:", error);
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -264,7 +276,6 @@ const AuthUI = () => {
       setLoading(true);
       
       if (isSignUp && REQUIRE_QUIZ_AND_SUBSCRIPTION) {
-        // Check if quiz is completed for sign up via OAuth
         const quizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
         if (!quizResponses) {
           toast.error("Please complete the quiz first before signing up");
@@ -273,7 +284,6 @@ const AuthUI = () => {
           return;
         }
         
-        // Check if there's a pending subscription for this email
         if (!hasPendingSubscription) {
           toast.error("Please purchase a subscription before signing up with Google");
           navigate('/quiz');
@@ -282,15 +292,12 @@ const AuthUI = () => {
         }
       }
       
-      // Get the redirect URL
       const redirectUrl = getRedirectUrl();
       console.log("OAuth redirect URL:", redirectUrl);
       
-      // Save the current page to session storage for redirect after auth
       sessionStorage.setItem('redirectTo', '/chat');
-      sessionStorage.setItem('requiresAuthCheck', 'true'); // Flag to force subscription check
+      sessionStorage.setItem('requiresAuthCheck', 'true');
       
-      // Sign in with Google
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
