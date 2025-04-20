@@ -61,12 +61,20 @@ serve(async (req) => {
       email: email,
       options: {
         redirectTo: `https://www.mastergrowbot.com/auth/callback`,
+        // Ensure we're using the full project URL with correct parameters
+        data: {
+          subscriptionActive: true,
+          quizCompleted: true
+        }
       },
     });
 
     if (error) throw error;
 
     console.log(`${userExists ? 'Magic' : 'Signup'} link generated successfully`);
+    
+    // Log the entire data object to verify the URL format
+    console.log("Generated link data:", data);
 
     return new Response(JSON.stringify({
       data,

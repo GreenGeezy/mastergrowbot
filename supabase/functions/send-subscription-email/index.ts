@@ -126,10 +126,12 @@ serve(async (req) => {
       }
 
       const verificationData = await verificationResponse.json();
+      console.log("Verification function response:", verificationData);
+      
       const verificationLink = verificationData?.data?.properties?.action_link || null;
-      const isExistingUser = verificationData?.meta?.userExists || false;
+      const isExistingUser = verificationData?.type === 'magiclink';
 
-      console.log(`Generated ${isExistingUser ? 'login' : 'signup'} link for Square integration`);
+      console.log(`Generated ${isExistingUser ? 'login' : 'signup'} link for Square integration:`, verificationLink);
       
       if (!verificationLink) {
         throw new Error("Failed to generate link");

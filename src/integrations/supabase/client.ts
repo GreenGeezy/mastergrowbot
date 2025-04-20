@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
@@ -7,32 +8,63 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: true,
+    detectSessionInUrl: true, // Make sure this is enabled to detect the session in the URL
     flowType: 'pkce'
   },
   global: {
     fetch: (url, options) => {
       // Add additional logging for debugging auth and user operations
       if (url.toString().includes('/auth/') || url.toString().includes('/users/')) {
-        console.log('Auth operation:', url, options?.method);
+        console.log('Auth operation URL:', url.toString());
+        console.log('Auth operation method:', options?.method);
       }
       return fetch(url, options);
     }
   }
 });
 
-// Initialize auth state change logging
+// Initialize auth state change logging with more detailed information
 supabase.auth.onAuthStateChange((event, session) => {
-  console.log('Auth state changed:', event, session ? 'User signed in' : 'User signed out');
-  console.log('Session data:', session);
+  console.log('Auth state changed:', event);
+  console.log('Session data:', session ? 'User signed in' : 'User signed out');
+  console.log('Session details:', session);
   
-  // If we're at the root with a code parameter, this means we've just completed OAuth
-  // but the automatic redirect didn't work, so we'll manually redirect
-  if (event === 'SIGNED_IN' && session && window.location.pathname.includes('/auth/callback')) {
-    console.log('Detecting auth callback completed, redirecting to /chat');
-    window.location.href = '/chat';
+  // If we're at a callback path with a session, manually redirect
+  if (event === 'SIGNED_IN' && session) {
+    const currentPath = window.location.pathname;
+    const isAuthPath = currentPath.includes('/auth/callback') || 
+                       currentPath.includes('/auth/v1/callback');
+    
+    if (isAuthPath) {
+      console.log('Detecting auth callback completed, redirecting to /chat');
+      window.location.href = '/chat';
+    }
   }
 });
+
+// Check for session immediately to fix potential redirect issues
+(async () => {
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error('Error getting session:', error);
+    } else if (data.session) {
+      console.log('Existing session found:', data.session.user.email);
+      
+      // If we're at a callback path with a session, manually redirect
+      const currentPath = window.location.pathname;
+      const isAuthPath = currentPath.includes('/auth/callback') || 
+                         currentPath.includes('/auth/v1/callback');
+      
+      if (isAuthPath) {
+        console.log('Auth path with session detected, redirecting to /chat');
+        window.location.href = '/chat';
+      }
+    }
+  } catch (err) {
+    console.error('Unexpected error checking session:', err);
+  }
+})();
 
 // Initialize storage bucket
 (async () => {

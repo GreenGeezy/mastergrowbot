@@ -61,33 +61,43 @@ const AuthCallback = () => {
     const hasAuthParams = 
       location.hash.includes('access_token') || 
       location.search.includes('code=') || 
-      location.search.includes('error=');
+      location.search.includes('error=') ||
+      location.search.includes('type=');
     
     if (hasAuthParams) {
       console.log("Auth params detected, letting Supabase handle auth");
       // Give Supabase some time to process the auth params
       const checkSession = async () => {
-        // Wait for session to be set
-        const { data } = await supabase.auth.getSession();
-        if (data.session) {
-          console.log("Session detected, redirecting to chat");
-          navigate('/chat', { replace: true });
-        } else {
-          console.log("No session detected yet");
-          // Check again in 1 second if no session was found
-          setTimeout(checkSession, 1000);
+        try {
+          // Wait for session to be set
+          const { data, error } = await supabase.auth.getSession();
+          
+          if (error) {
+            console.error("Error checking session:", error);
+          }
+          
+          if (data.session) {
+            console.log("Session detected, redirecting to chat");
+            navigate('/chat', { replace: true });
+          } else {
+            console.log("No session detected yet, waiting...");
+            // Check again in 1 second if no session was found
+            setTimeout(checkSession, 1000);
+          }
+        } catch (err) {
+          console.error("Error in checkSession:", err);
         }
       };
       
       checkSession();
-    }
-    
-    // If we have a session after handling the callback, redirect
-    if (session) {
+    } else if (session) {
+      // If we already have a session but no auth params, just redirect
       const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-      console.log("Session detected, redirecting to:", redirectTo);
+      console.log("Session already exists, redirecting to:", redirectTo);
       sessionStorage.removeItem('redirectTo');
       navigate(redirectTo, { replace: true });
+    } else {
+      console.log("No auth params and no session, this might be a direct visit to the callback URL");
     }
   }, [session, location, navigate]);
   
