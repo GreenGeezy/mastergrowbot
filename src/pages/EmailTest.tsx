@@ -10,8 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Header from "@/components/Header";
 
 export default function EmailTest() {
-  const [email, setEmail] = useState("");
-  const [subscriptionType, setSubscriptionType] = useState("monthly");
+  const [email, setEmail] = useState("eliduffy@gmail.com");
+  const [subscriptionType, setSubscriptionType] = useState("basic");
   const [loading, setLoading] = useState(false);
 
   const handleSendEmail = async () => {
@@ -52,7 +52,7 @@ export default function EmailTest() {
           <CardHeader>
             <CardTitle>Subscription Email Test</CardTitle>
             <CardDescription>
-              Test the subscription confirmation email functionality
+              Send a subscription confirmation email to test the functionality
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -79,7 +79,7 @@ export default function EmailTest() {
                   <SelectItem value="monthly">Monthly</SelectItem>
                   <SelectItem value="quarterly">Quarterly</SelectItem>
                   <SelectItem value="yearly">Yearly</SelectItem>
-                  <SelectItem value="trial">Trial</SelectItem>
+                  <SelectItem value="basic">Basic</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -90,7 +90,7 @@ export default function EmailTest() {
               disabled={loading} 
               className="w-full"
             >
-              {loading ? "Sending..." : "Send Test Email"}
+              {loading ? "Sending..." : "Send Subscription Email"}
             </Button>
           </CardFooter>
         </Card>
