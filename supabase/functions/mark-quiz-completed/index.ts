@@ -8,189 +8,140 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
+  // Handle preflight requests
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders, status: 204 });
   }
 
   try {
-    // Create a Supabase client with the service role key
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-    );
+    // Initialize Supabase client with service role key to bypass RLS
+    const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+    const supabaseClient = createClient(supabaseUrl, supabaseKey, {
+      auth: { persistSession: false },
+    });
 
-    // Parse the request body
-    const { user_id, email } = await req.json();
+    // Parse request body
+    const requestData = await req.json();
+    const { user_id, email, subscription_type = "basic" } = requestData;
 
-    if (!user_id && !email) {
-      return new Response(
-        JSON.stringify({
-          error: "Either user_id or email must be provided",
-        }),
-        {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-          status: 400,
-        }
-      );
-    }
+    console.log("Mark quiz completed request:", { 
+      user_id, 
+      email, 
+      subscription_type 
+    });
 
     let userId = user_id;
-    let userEmail = email;
 
-    console.log("mark-quiz-completed called with:", { userId, userEmail });
-
-    // If only email is provided, look up the user_id
-    if (!userId && userEmail) {
-      // First try to find the user in user_profiles
+    // If no user_id but email is provided, try to look up the user by email
+    if (!userId && email) {
+      console.log("Looking up user by email:", email);
       const { data: userData, error: userError } = await supabaseClient
-        .from("user_profiles")
-        .select("id")
-        .eq("email", userEmail)
-        .single();
-
-      if (userError) {
-        console.log("User not found in profiles, checking auth.users");
-        // If user profile doesn't exist, lookup in auth.users
-        const { data: authUser, error: authError } = await supabaseClient.auth.admin.getUserByEmail(userEmail);
-        
-        if (authError || !authUser) {
-          console.log("User not found in auth.users either:", authError);
-          return new Response(
-            JSON.stringify({ error: "User not found" }),
-            {
-              headers: { ...corsHeaders, "Content-Type": "application/json" },
-              status: 404,
-            }
-          );
-        }
-        
-        userId = authUser.user.id;
-        console.log("Found user in auth.users:", userId);
-      } else {
-        userId = userData.id;
-        console.log("Found user in profiles:", userId);
-      }
-    } else if (userId && !userEmail) {
-      // If only user_id is provided, look up the email
-      const { data: authUser, error: authError } = await supabaseClient.auth.admin.getUserById(userId);
-      
-      if (authError || !authUser) {
-        return new Response(
-          JSON.stringify({ error: "User not found" }),
-          {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-            status: 404,
-          }
-        );
-      }
-      
-      userEmail = authUser.user.email;
-      console.log("Retrieved email from auth.users:", userEmail);
-    }
-
-    // Check for pending subscriptions for this user based on email
-    if (userEmail) {
-      console.log("Checking for pending subscriptions for:", userEmail);
-      const { data: pendingSubs, error: pendingSubError } = await supabaseClient
         .from("pending_subscriptions")
         .select("*")
-        .eq("email", userEmail)
-        .eq("consumed", false)
-        .gt("expires_at", new Date().toISOString())
-        .order("created_at", { ascending: false })
-        .limit(1);
+        .eq("email", email)
+        .maybeSingle();
 
-      if (!pendingSubError && pendingSubs && pendingSubs.length > 0) {
-        const pendingSub = pendingSubs[0];
-        console.log("Found pending subscription:", pendingSub);
+      if (userError) {
+        throw userError;
+      }
+
+      if (userData) {
+        console.log("Found pending subscription:", userData);
         
-        // Create or update subscription for this user
-        const { error: subscriptionError } = await supabaseClient
-          .from("subscriptions")
-          .upsert({
-            user_id: userId,
-            subscription_type: pendingSub.subscription_type,
-            expires_at: pendingSub.expires_at,
-            status: "active",
-          }, { onConflict: 'user_id' });
-          
-        if (subscriptionError) {
-          console.error("Error creating subscription:", subscriptionError);
-        } else {
-          console.log("Created/updated subscription successfully");
-          
-          // Mark the pending subscription as consumed
-          await supabaseClient
-            .from("pending_subscriptions")
-            .update({ consumed: true })
-            .eq("id", pendingSub.id);
-            
-          console.log("Marked pending subscription as consumed");
-        }
+        // Update pending subscription with completed quiz
+        await supabaseClient
+          .from("pending_subscriptions")
+          .update({ has_completed_quiz: true })
+          .eq("email", email);
       } else {
-        console.log("No pending subscription found or error:", pendingSubError);
+        console.log("No pending subscription found for email, creating one");
+        
+        // Create pending subscription
+        await supabaseClient.from("pending_subscriptions").insert({
+          email: email,
+          subscription_type: subscription_type || "basic",
+          has_completed_quiz: true
+        });
+      }
+      
+      // Lookup user ID by email in auth.users
+      const { data: authUser, error: authError } = await supabaseClient.auth.admin.listUsers({
+        filters: {
+          email: email
+        }
+      });
+
+      if (authError) {
+        console.error("Error looking up user by email:", authError);
+      } else if (authUser && authUser.users.length > 0) {
+        userId = authUser.users[0].id;
+        console.log("Found user ID by email:", userId);
+      } else {
+        console.log("No user found with email:", email);
       }
     }
 
-    // Update user profile to mark quiz as completed
-    const { error: updateError } = await supabaseClient
-      .from("user_profiles")
-      .upsert({
-        id: userId,
-        email: userEmail,
-        has_completed_quiz: true,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'id' });
+    // If we have a user ID, update the user's metadata
+    if (userId) {
+      console.log("Updating user metadata for user ID:", userId);
+      
+      const { error: updateError } = await supabaseClient.auth.admin.updateUserById(userId, {
+        user_metadata: { has_completed_quiz: true }
+      });
 
-    if (updateError) {
-      console.error("Error updating user profile:", updateError);
-      throw updateError;
-    }
-    
-    console.log("Updated user profile - marked quiz as completed");
-
-    // Insert a quiz_responses record if one doesn't exist
-    const { error: quizResponseError } = await supabaseClient
-      .from("quiz_responses")
-      .upsert({
-        user_id: userId,
-        experience_level: "intermediate", // Default values
-        growing_method: "indoor",
-        challenges: ["none"],
-        monitoring_method: "manual",
-        nutrient_type: "organic",
-        goals: ["learn"],
-        created_at: new Date().toISOString()
-      }, { onConflict: 'user_id' });
-
-    if (quizResponseError) {
-      console.error("Error creating quiz response:", quizResponseError);
-      // Continue execution even if this fails
-    } else {
-      console.log("Created default quiz response");
-    }
-
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: "User quiz status and subscription updated",
-        user_id: userId,
-        email: userEmail
-      }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200,
+      if (updateError) {
+        throw updateError;
       }
-    );
+
+      // Check if there's a pending subscription to activate
+      const { data: pendingSub, error: pendingError } = await supabaseClient
+        .from("pending_subscriptions")
+        .select("*")
+        .eq("email", email)
+        .maybeSingle();
+
+      if (!pendingError && pendingSub) {
+        console.log("Activating pending subscription:", pendingSub);
+        
+        await supabaseClient.from("user_subscriptions").upsert({
+          user_id: userId,
+          subscription_type: pendingSub.subscription_type || subscription_type || "basic",
+          is_active: true,
+          start_date: new Date().toISOString(),
+          // For annual subscriptions, set expiry to 1 year from now
+          end_date: pendingSub.subscription_type === "annual" 
+            ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+        });
+      } else if (!pendingError) {
+        // No pending subscription found, but we'll still create one if subscription_type is provided
+        if (subscription_type) {
+          console.log("Creating new subscription with type:", subscription_type);
+          
+          await supabaseClient.from("user_subscriptions").upsert({
+            user_id: userId,
+            subscription_type: subscription_type,
+            is_active: true,
+            start_date: new Date().toISOString(),
+            // For annual subscriptions, set expiry to 1 year from now
+            end_date: subscription_type === "annual" 
+              ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+              : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+          });
+        }
+      }
+    }
+
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 200,
+    });
   } catch (error) {
-    console.error("Error in mark-quiz-completed:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 500,
-      }
-    );
+    console.error("Error in mark-quiz-completed function:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500,
+    });
   }
 });

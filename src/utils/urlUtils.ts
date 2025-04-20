@@ -23,6 +23,6 @@ export const getRedirectUrl = () => {
     return `${origin}/auth/callback`;
   }
   
-  // Default fallback - removed v1 path which was causing issues
+  // Default fallback
   return `${origin}/auth/callback`;
 };

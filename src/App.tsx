@@ -121,12 +121,12 @@ const AuthCallback = () => {
           console.log("Auth params detected, letting Supabase handle auth");
         }
         
-        const params = new URLSearchParams(location.search);
-        const hasCompletedQuiz = params.get('has_completed_quiz') === 'true';
-        const subscriptionType = params.get('subscription_type');
-        const email = params.get('email');
+        // Check session storage for subscription/quiz info instead of URL params
+        const hasCompletedQuiz = sessionStorage.getItem('mg_has_completed_quiz') === 'true';
+        const subscriptionType = sessionStorage.getItem('mg_subscription_type');
+        const email = sessionStorage.getItem('mg_pending_email');
         
-        console.log("Auth callback parameters:", { 
+        console.log("Auth callback parameters from session storage:", { 
           hasCompletedQuiz, 
           subscriptionType, 
           email,
@@ -142,7 +142,8 @@ const AuthCallback = () => {
             const result = await supabase.functions.invoke('mark-quiz-completed', {
               body: { 
                 user_id: session.user.id,
-                email: userEmail
+                email: userEmail,
+                subscription_type: subscriptionType
               }
             });
             
@@ -152,6 +153,11 @@ const AuthCallback = () => {
             
             console.log("Successfully marked user as having completed quiz");
             toast.success("Your account is ready to use!");
+            
+            // Clean up session storage
+            sessionStorage.removeItem('mg_has_completed_quiz');
+            sessionStorage.removeItem('mg_subscription_type');
+            sessionStorage.removeItem('mg_pending_email');
           } catch (err) {
             console.error("Error marking quiz as completed:", err);
             toast.error("There was an issue activating your account");

@@ -56,7 +56,7 @@ const ThankYou = () => {
           
           // Update user metadata to include has_completed_quiz=true
           await supabase.functions.invoke('mark-quiz-completed', {
-            body: { email }
+            body: { email, subscription_type: subscriptionType }
           });
           
           toast.success("Welcome back! Your subscription has been activated.");
@@ -79,15 +79,18 @@ const ThankYou = () => {
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
+      
+      // Store subscription info in session storage instead of passing it in query params
+      sessionStorage.setItem('mg_has_completed_quiz', 'true');
+      sessionStorage.setItem('mg_subscription_type', subscriptionType);
+      if (email) {
+        sessionStorage.setItem('mg_pending_email', email);
+      }
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: {
-            subscription_type: subscriptionType,
-            has_completed_quiz: "true",
-            email: email  // Pass email to help match with the pending subscription
-          }
+          redirectTo: `${window.location.origin}/auth/callback`
         }
       });
       

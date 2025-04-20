@@ -303,28 +303,23 @@ const AuthUI = () => {
       sessionStorage.setItem('redirectTo', '/chat');
       sessionStorage.setItem('requiresAuthCheck', 'true');
       
-      // Prepare query parameters for the OAuth flow
+      // Store subscription info in session storage instead of query params
+      if (hasPendingSubscription) {
+        sessionStorage.setItem('mg_has_completed_quiz', 'true');
+        sessionStorage.setItem('mg_subscription_type', subscriptionType);
+        if (email) {
+          sessionStorage.setItem('mg_pending_email', email);
+        }
+      }
+      
+      // Prepare query parameters for the OAuth flow, but don't include email
       const queryParams: {
         access_type: string;
         prompt: string;
-        has_completed_quiz?: string;
-        subscription_type?: string;
-        email?: string;
       } = {
         access_type: 'offline',
         prompt: 'consent',
       };
-      
-      // If we have subscription info, add it to the query params
-      if (hasPendingSubscription) {
-        queryParams.has_completed_quiz = 'true';
-        queryParams.subscription_type = subscriptionType;
-        
-        // Also include the email so we can match it with the pending subscription
-        if (email) {
-          queryParams.email = email;
-        }
-      }
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
