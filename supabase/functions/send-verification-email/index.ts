@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.5'
 
@@ -18,16 +17,11 @@ serve(async (req) => {
   }
 
   try {
-    // Log Supabase configuration
-    console.log("Creating Supabase client with URL:", Deno.env.get('SUPABASE_URL')?.substring(0, 10) + "...");
-    console.log("Service role key available:", !!Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
-    
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
     
-    // Parse request body with error handling
     let body;
     try {
       body = await req.json();
@@ -37,15 +31,46 @@ serve(async (req) => {
       throw new Error("Invalid request format: " + parseError.message);
     }
     
-    const { email } = body;
+    const { email, testMode = false } = body;
     console.log("Email from request:", email ? `${email.substring(0, 3)}...` : "not provided");
+    console.log("Test mode:", testMode);
 
     if (!email) {
       console.error("Email is required but was not provided");
       throw new Error('Email is required');
     }
 
-    // Check if user already exists
+    // If in test mode, always generate a signup link
+    if (testMode) {
+      console.log("Generating test verification link...");
+      const { data, error } = await supabaseClient.auth.admin.generateLink({
+        type: 'signup',
+        email: email,
+        options: {
+          redirectTo: `${req.headers.get('origin')}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        console.error("Test mode link generation error:", error);
+        throw error;
+      }
+
+      console.log("Test verification link generated successfully");
+      return new Response(JSON.stringify({ 
+        data,
+        meta: {
+          timestamp: new Date().toISOString(),
+          origin: req.headers.get('origin'),
+          type: 'test-signup'
+        }
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      });
+    }
+
+    // Existing logic for non-test mode remains the same
     console.log("Checking if user already exists...");
     const { data: existingUser, error: userCheckError } = await supabaseClient.auth.admin.listUsers();
     
