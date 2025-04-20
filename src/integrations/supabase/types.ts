@@ -488,14 +488,6 @@ export type Database = {
           expires_at: string
         }[]
       }
-      handle_square_payment: {
-        Args: {
-          order_id: string
-          customer_email: string
-          subscription_type?: string
-        }
-        Returns: boolean
-      }
       has_active_subscription: {
         Args: { user_uuid: string }
         Returns: boolean

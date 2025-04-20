@@ -1,3 +1,4 @@
+
 {
   "git": {
     "deploymentEnabled": {
@@ -53,17 +54,6 @@
       ],
       "destination": "/:path*",
       "permanent": false
-    },
-    {
-      "source": "/auth/callback",
-      "has": [
-        {
-          "type": "host",
-          "value": "auth.mastergrowbot.com"
-        }
-      ],
-      "destination": "https://www.mastergrowbot.com/auth/callback",
-      "permanent": false
     }
   ],
   "rewrites": [
@@ -71,7 +61,6 @@
     { "source": "/auth/(.*)", "destination": "/index.html" },
     { "source": "/privacy-policy", "destination": "/index.html" },
     { "source": "/terms-of-service", "destination": "/index.html" },
-    { "source": "/thank-you", "destination": "/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
