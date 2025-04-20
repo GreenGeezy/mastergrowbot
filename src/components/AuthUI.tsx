@@ -321,6 +321,33 @@ const AuthUI = () => {
     }
   };
 
+  const handleTestEmailVerification = async () => {
+    try {
+      setLoading(true);
+      const email = "eliduffy@gmail.com"; // Hardcoded email for testing
+      
+      const response = await supabase.functions.invoke('send-verification-email', {
+        body: { 
+          email, 
+          testMode: true 
+        },
+      });
+
+      console.log("Test email verification response:", response);
+      
+      if (response.data) {
+        toast.success("Test verification email generated successfully!");
+      } else {
+        toast.error("Failed to generate test verification email");
+      }
+    } catch (error) {
+      console.error("Error in test email verification:", error);
+      toast.error("Error generating test verification email");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="w-full max-w-md mx-auto bg-black/40 p-6 rounded-lg backdrop-blur-sm border border-primary/20">
       {REQUIRE_QUIZ_AND_SUBSCRIPTION && isSignUp && !hasPendingSubscription && (
@@ -352,6 +379,18 @@ const AuthUI = () => {
         onToggleMode={() => setIsSignUp(!isSignUp)}
         onGoogleSignIn={handleOAuthSignIn}
       />
+      
+      {import.meta.env.DEV && (
+        <div className="mt-4">
+          <button
+            onClick={handleTestEmailVerification}
+            disabled={loading}
+            className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors"
+          >
+            {loading ? "Generating..." : "Test Email Verification"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
