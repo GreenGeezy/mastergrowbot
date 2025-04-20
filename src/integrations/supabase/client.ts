@@ -8,8 +8,10 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: true, // Make sure this is enabled to detect the session in the URL
-    flowType: 'pkce'
+    detectSessionInUrl: true,
+    flowType: 'pkce',
+    // Define the custom auth domain to match what's configured in Supabase
+    url: 'https://auth.mastergrowbot.com'
   },
   global: {
     fetch: (url, options) => {
@@ -87,7 +89,6 @@ export const safeDeleteUser = async (userId: string) => {
   
   try {
     // Try direct admin API first (requires auth.users permissions)
-    // Fixed: The deleteUser method takes a string userId parameter, not an object
     const adminDeleteResult = await supabase.auth.admin.deleteUser(userId);
     
     if (!adminDeleteResult.error) {

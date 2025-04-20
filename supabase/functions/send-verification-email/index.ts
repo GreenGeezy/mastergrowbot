@@ -60,8 +60,8 @@ serve(async (req) => {
       type: userExists ? 'magiclink' : 'signup',
       email: email,
       options: {
+        // Use the custom auth domain for consistency with Google OAuth
         redirectTo: `https://www.mastergrowbot.com/auth/callback`,
-        // Ensure we're using the full project URL with correct parameters
         data: {
           subscriptionActive: true,
           quizCompleted: true
