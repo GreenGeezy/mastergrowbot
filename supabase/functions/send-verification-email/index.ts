@@ -60,7 +60,7 @@ serve(async (req) => {
       type: userExists ? 'magiclink' : 'signup',
       email: email,
       options: {
-        redirectTo: `${req.headers.get('origin')}/auth/callback`,
+        redirectTo: `https://www.mastergrowbot.com/auth/callback`,
       },
     });
 
@@ -71,7 +71,10 @@ serve(async (req) => {
     return new Response(JSON.stringify({
       data,
       type: userExists ? 'magiclink' : 'signup',
-      message: `${userExists ? 'Magic' : 'Signup'} link generated successfully`
+      message: `${userExists ? 'Magic' : 'Signup'} link generated successfully`,
+      meta: {
+        userExists: userExists
+      }
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,

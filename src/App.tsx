@@ -45,6 +45,55 @@ const LoadingSpinner = () => (
   </div>
 );
 
+// Auth callback component
+const AuthCallback = () => {
+  const session = useSession();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    console.log("AuthCallback component mounted with pathname:", location.pathname);
+    console.log("Auth callback search params:", location.search);
+    console.log("Auth callback hash params:", location.hash);
+    console.log("Current session:", !!session);
+    
+    // Check if there are auth params in the URL
+    const hasAuthParams = 
+      location.hash.includes('access_token') || 
+      location.search.includes('code=') || 
+      location.search.includes('error=');
+    
+    if (hasAuthParams) {
+      console.log("Auth params detected, letting Supabase handle auth");
+      // Give Supabase some time to process the auth params
+      const checkSession = async () => {
+        // Wait for session to be set
+        const { data } = await supabase.auth.getSession();
+        if (data.session) {
+          console.log("Session detected, redirecting to chat");
+          navigate('/chat', { replace: true });
+        } else {
+          console.log("No session detected yet");
+          // Check again in 1 second if no session was found
+          setTimeout(checkSession, 1000);
+        }
+      };
+      
+      checkSession();
+    }
+    
+    // If we have a session after handling the callback, redirect
+    if (session) {
+      const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
+      console.log("Session detected, redirecting to:", redirectTo);
+      sessionStorage.removeItem('redirectTo');
+      navigate(redirectTo, { replace: true });
+    }
+  }, [session, location, navigate]);
+  
+  return <LoadingSpinner />;
+};
+
 // Global subscription and quiz check component
 const AuthVerification = () => {
   const session = useSession();
@@ -107,39 +156,6 @@ const AuthVerification = () => {
   }, [session, navigate, location.pathname, isPublicRoute]);
   
   return null; // This component doesn't render anything
-};
-
-// Auth callback component
-const AuthCallback = () => {
-  const session = useSession();
-  const location = useLocation();
-  
-  useEffect(() => {
-    console.log("AuthCallback component mounted with pathname:", location.pathname);
-    console.log("Auth callback search params:", location.search);
-    console.log("Current session:", !!session);
-    
-    // Check if there are auth params in the URL
-    const hasAuthParams = 
-      location.hash.includes('access_token') || 
-      location.search.includes('code=') || 
-      location.search.includes('error=');
-    
-    if (hasAuthParams) {
-      console.log("Auth params detected, letting Supabase handle auth");
-      // Supabase should automatically handle this with detectSessionInUrl
-    }
-    
-    // If we have a session after handling the callback, redirect
-    if (session) {
-      const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
-      console.log("Session detected, redirecting to:", redirectTo);
-      sessionStorage.removeItem('redirectTo');
-      window.location.href = redirectTo;
-    }
-  }, [session, location]);
-  
-  return <LoadingSpinner />;
 };
 
 // Protected route component
