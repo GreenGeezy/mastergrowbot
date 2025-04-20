@@ -8,13 +8,17 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Header from "@/components/Header";
+import { Textarea } from "@/components/ui/textarea";
+import { Copy } from "lucide-react";
 
 export default function EmailTest() {
-  const [email, setEmail] = useState("eliduffy@gmail.com");
+  const [email, setEmail] = useState("");
   const [subscriptionType, setSubscriptionType] = useState("basic");
   const [loading, setLoading] = useState(false);
+  const [verificationLink, setVerificationLink] = useState("");
+  const [squareOrderId, setSquareOrderId] = useState("");
 
-  const handleSendEmail = async () => {
+  const handleGenerateLink = async () => {
     if (!email) {
       toast.error("Please enter an email address");
       return;
@@ -22,11 +26,12 @@ export default function EmailTest() {
 
     setLoading(true);
     try {
-      // Direct call to our edge function
+      // Generate verification link that can be added to Square emails
       const { data, error } = await supabase.functions.invoke('send-subscription-email', {
         body: { 
           email, 
-          subscriptionType
+          subscriptionType,
+          squareOrderId
         }
       });
 
@@ -34,14 +39,26 @@ export default function EmailTest() {
         throw error;
       }
 
-      toast.success(`Test subscription email sent to ${email}`);
-      console.log("Email sent response:", data);
+      // Display the verification link
+      if (data.verificationLink) {
+        setVerificationLink(data.verificationLink);
+        toast.success(`Verification link generated for ${email}`);
+      } else {
+        toast.error("Could not generate verification link");
+      }
+      
+      console.log("Response:", data);
     } catch (error) {
-      console.error("Error sending test email:", error);
-      toast.error(`Failed to send email: ${error.message || "Unknown error"}`);
+      console.error("Error generating verification link:", error);
+      toast.error(`Failed: ${error.message || "Unknown error"}`);
     } finally {
       setLoading(false);
     }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(verificationLink);
+    toast.success("Verification link copied to clipboard");
   };
 
   return (
@@ -50,18 +67,18 @@ export default function EmailTest() {
       <div className="container mx-auto px-4 py-10">
         <Card className="max-w-md mx-auto">
           <CardHeader>
-            <CardTitle>Subscription Email Test</CardTitle>
+            <CardTitle>Square Email Integration</CardTitle>
             <CardDescription>
-              Send a subscription confirmation email to test the functionality
+              Generate verification links to include in your Square emails
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email address</Label>
+              <Label htmlFor="email">Customer Email address</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="user@example.com"
+                placeholder="customer@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -83,14 +100,50 @@ export default function EmailTest() {
                 </SelectContent>
               </Select>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="order-id">Square Order ID (optional)</Label>
+              <Input
+                id="order-id"
+                type="text"
+                placeholder="Order ID from Square"
+                value={squareOrderId}
+                onChange={(e) => setSquareOrderId(e.target.value)}
+              />
+            </div>
+            
+            {verificationLink && (
+              <div className="space-y-2 mt-4">
+                <Label htmlFor="verification-link">Verification Link (Add to Square Email)</Label>
+                <div className="flex gap-2">
+                  <Textarea 
+                    id="verification-link"
+                    value={verificationLink}
+                    readOnly
+                    rows={3}
+                    className="font-mono text-xs"
+                  />
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    onClick={copyToClipboard}
+                    className="flex-shrink-0"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Copy this link and include it in your Square confirmation emails or marketing messages. When customers click it, they'll be able to sign up with their subscription already activated.
+                </p>
+              </div>
+            )}
           </CardContent>
           <CardFooter>
             <Button 
-              onClick={handleSendEmail} 
+              onClick={handleGenerateLink} 
               disabled={loading} 
               className="w-full"
             >
-              {loading ? "Sending..." : "Send Subscription Email"}
+              {loading ? "Generating..." : "Generate Verification Link"}
             </Button>
           </CardFooter>
         </Card>

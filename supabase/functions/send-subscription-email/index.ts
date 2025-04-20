@@ -1,6 +1,5 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -16,55 +15,59 @@ serve(async (req) => {
   try {
     console.log("Received request to send-subscription-email");
     
-    const { email, subscriptionType } = await req.json();
+    const { email, subscriptionType, squareOrderId } = await req.json();
     
     if (!email) {
       throw new Error("Email is required");
     }
     
-    console.log(`Sending subscription confirmation email to ${email} for ${subscriptionType} subscription`);
+    console.log(`Processing subscription for ${email} (${subscriptionType}) with order ID: ${squareOrderId || 'N/A'}`);
 
-    const client = new SmtpClient();
+    // Instead of trying to send an email directly, we'll return the verification link
+    // that can be included in Square emails or used elsewhere
+    
+    // Generate signup verification link via another edge function
+    const verificationResponse = await fetch(
+      `${Deno.env.get('SUPABASE_URL')}/functions/v1/send-verification-email`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          testMode: true, // This makes it return the link instead of sending an email
+          createTestSubscription: true // This creates a subscription record
+        })
+      }
+    );
 
-    await client.connectTLS({
-      hostname: "smtp.gmail.com",
-      port: 465,
-      username: "support@mastergrowbot.com",
-      password: Deno.env.get('SMTP_PASSWORD'),
-    });
+    if (!verificationResponse.ok) {
+      const errorText = await verificationResponse.text();
+      throw new Error(`Failed to generate verification link: ${errorText}`);
+    }
 
-    const html = `
-      <h1>Thank you for subscribing to Master Growbot!</h1>
-      <p>Your ${subscriptionType} subscription is now active.</p>
-      <p>You can now access all the features included in your subscription:</p>
-      <ul>
-        <li>AI-powered growing advice</li>
-        <li>Plant health analysis</li>
-        <li>Comprehensive grow guide</li>
-      </ul>
-      <p>Get started right away by visiting <a href="https://mastergrowbot.com/app">your dashboard</a>.</p>
-      <p>If you have any questions, feel free to reach out to our support team.</p>
-      <p>Happy Growing!<br>The Master Growbot Team</p>
-    `;
+    const verificationData = await verificationResponse.json();
+    const verificationLink = verificationData?.data?.properties?.action_link || null;
 
-    await client.send({
-      from: "Master Growbot <support@mastergrowbot.com>",
-      to: email,
-      subject: "Welcome to Master Growbot! Your Subscription is Active",
-      content: "Your subscription is now active!",
-      html: html,
-    });
+    console.log("Generated verification link for Square integration");
+    
+    if (!verificationLink) {
+      throw new Error("Failed to generate verification link");
+    }
 
-    await client.close();
-
-    console.log("Email sent successfully to:", email);
-
-    return new Response(JSON.stringify({ success: true, message: "Email sent successfully" }), {
+    return new Response(JSON.stringify({
+      success: true,
+      message: "Subscription created and ready for verification",
+      verificationLink: verificationLink,
+      instructions: "Add this verification link to your Square emails or marketing messages"
+    }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     });
   } catch (error) {
-    console.error('Error sending subscription email:', error);
+    console.error('Error processing subscription:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500,
