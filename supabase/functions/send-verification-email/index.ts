@@ -55,12 +55,11 @@ serve(async (req) => {
     const { data: { users }, error: userError } = await supabaseClient.auth.admin.listUsers();
     const userExists = users.some(user => user.email === email);
     
-    // Generate appropriate link
+    // Generate appropriate link using consistent URL format
     const { data, error } = await supabaseClient.auth.admin.generateLink({
       type: userExists ? 'magiclink' : 'signup',
       email: email,
       options: {
-        // Use the custom auth domain for consistency with Google OAuth
         redirectTo: `https://www.mastergrowbot.com/auth/callback`,
         data: {
           subscriptionActive: true,

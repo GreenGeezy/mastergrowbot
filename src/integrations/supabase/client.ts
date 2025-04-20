@@ -10,8 +10,10 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
-    // Define the custom auth domain to match what's configured in Supabase
-    url: 'https://auth.mastergrowbot.com'
+    // Use the correct property for custom auth URL
+    autoRefreshToken: true,
+    // Set site URL for proper auth redirects
+    site: 'https://auth.mastergrowbot.com'
   },
   global: {
     fetch: (url, options) => {

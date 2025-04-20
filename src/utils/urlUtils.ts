@@ -5,7 +5,7 @@ export const getRedirectUrl = () => {
   
   // For production domain
   if (hostname === 'mastergrowbot.com' || hostname === 'www.mastergrowbot.com') {
-    return `${origin}/auth/callback`;
+    return `https://www.mastergrowbot.com/auth/callback`;
   }
   
   // For development/testing on Lovable subdomain
