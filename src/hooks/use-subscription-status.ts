@@ -45,7 +45,7 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           .from('user_access_view')
           .select('*')
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error("Error fetching user access data:", error);
@@ -57,11 +57,15 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
         // For development/testing, default to true if REQUIRE_QUIZ_AND_SUBSCRIPTION is not set
         const requireChecks = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
         
+        // Default to true for access if neither access check is required
+        // or if the user has active subscription and has completed quiz
+        const hasAccess = !requireChecks || (data?.has_active_subscription === true);
+        const hasQuiz = !requireChecks || (data?.has_completed_quiz === true);
+
         setStatus({
           isLoading: false,
-          // If we're not requiring checks, always grant access
-          hasAccess: requireChecks ? !!data?.has_active_subscription : true,
-          hasCompletedQuiz: requireChecks ? !!data?.has_completed_quiz : true,
+          hasAccess,
+          hasCompletedQuiz: hasQuiz,
           subscriptionType: data?.subscription_type || null,
           expiresAt: data?.expires_at || null,
           error: null

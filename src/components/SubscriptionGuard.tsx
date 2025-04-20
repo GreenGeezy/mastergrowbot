@@ -39,8 +39,15 @@ const SubscriptionGuard = ({
 
     const checkUserAccess = async () => {
       try {
-        // Only show warnings and redirect if needed, don't log the user out
+        // Only continue checks if we have valid data (not loading)
         if (!isLoading) {
+          console.log("SubscriptionGuard access check:", { 
+            hasAccess, 
+            hasCompletedQuiz, 
+            requireQuiz, 
+            requireSubscription 
+          });
+          
           if (requireQuiz && !hasCompletedQuiz) {
             toast.error("Please complete the quiz first to continue");
             navigate('/quiz', { replace: true });

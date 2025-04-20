@@ -24,8 +24,8 @@ const FeatureCard = React.memo(({ icon: Icon, title, subtitle, onClick, to }: Fe
       return;
     }
 
-    // Simply navigate to the destination without any subscription checks
-    // The SubscriptionGuard component inside each route will handle access control
+    // Navigate directly without any additional checks
+    // The route guards will handle access control
     if (to) {
       navigate(to);
     } else if (onClick) {
