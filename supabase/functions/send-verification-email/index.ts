@@ -104,78 +104,30 @@ serve(async (req) => {
       }
     }
 
-    // If in test mode or createTestSubscription is true, always generate a signup link
-    if (testMode || createTestSubscription) {
-      console.log(`Generating test verification link for ${testMode ? 'test mode' : 'test subscription'}`);
-      const { data, error } = await supabaseClient.auth.admin.generateLink({
-        type: 'signup',
-        email: email,
-        options: {
-          redirectTo: `${req.headers.get('origin')}/auth/callback`,
-        },
-      });
-
-      if (error) {
-        console.error("Test mode link generation error:", error);
-        throw error;
-      }
-
-      console.log("Test verification link generated successfully");
-      console.log("Link URL available:", !!data?.properties?.action_link);
-      
-      return new Response(JSON.stringify({ 
-        data,
-        meta: {
-          timestamp: new Date().toISOString(),
-          origin: req.headers.get('origin'),
-          type: testMode ? 'test-signup' : 'test-subscription-signup',
-          verificationLink: data?.properties?.action_link
-        }
-      }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      });
-    }
-
-    // Existing logic for non-test mode remains the same
+    // SIMPLIFICATION: Check if the user already exists and always generate the appropriate link
+    // (either login link for existing users or signup link for new users)
     console.log("Checking if user already exists...");
-    const { data: existingUser, error: userCheckError } = await supabaseClient.auth.admin.listUsers();
+    const { data: existingUsers, error: userCheckError } = await supabaseClient.auth.admin.listUsers();
+    
+    let userExists = false;
+    let linkType = 'signup';
     
     if (userCheckError) {
       console.error("Error checking existing users:", userCheckError);
     } else {
-      const userExists = existingUser.users.some(user => user.email === email);
+      userExists = existingUsers.users.some(user => user.email === email);
       console.log("User exists check result:", userExists);
       
       if (userExists) {
-        console.log("User already exists, sending magic link instead of signup link");
-        const { data: magicLinkData, error: magicLinkError } = await supabaseClient.auth.admin.generateLink({
-          type: 'magiclink',
-          email: email,
-          options: {
-            redirectTo: `${req.headers.get('origin')}/auth/callback`,
-          },
-        });
-        
-        if (magicLinkError) {
-          console.error("Magic link generation error:", magicLinkError);
-          throw magicLinkError;
-        }
-        
-        console.log("Magic link generated successfully");
-        return new Response(JSON.stringify({ data: magicLinkData, type: 'magiclink' }), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 200,
-        });
+        linkType = 'magiclink';
       }
     }
-
-    // Generate signup link
-    console.log("Generating signup link...");
-    console.log("Redirect URL:", `${req.headers.get('origin')}/auth/callback`);
+    
+    // Generate the appropriate link type (magic link for existing users, signup for new users)
+    console.log(`Generating ${linkType} link...`);
     
     const { data, error } = await supabaseClient.auth.admin.generateLink({
-      type: 'signup',
+      type: linkType,
       email: email,
       options: {
         redirectTo: `${req.headers.get('origin')}/auth/callback`,
@@ -183,20 +135,21 @@ serve(async (req) => {
     });
 
     if (error) {
-      console.error("Error generating signup link:", error);
+      console.error(`Error generating ${linkType} link:`, error);
       throw error;
     }
 
-    console.log("Signup link generated successfully");
+    console.log(`${linkType} link generated successfully`);
     console.log("Action URL available:", !!data?.properties?.action_link);
 
     // Include detailed information in response for debugging
     return new Response(JSON.stringify({ 
       data,
       meta: {
+        userExists,
+        linkType,
         timestamp: new Date().toISOString(),
         origin: req.headers.get('origin'),
-        type: 'signup'
       }
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

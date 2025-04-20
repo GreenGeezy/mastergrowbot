@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Header from "@/components/Header";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, AlertTriangle } from "lucide-react";
+import { Copy, AlertTriangle, CheckCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function EmailTest() {
@@ -19,6 +19,8 @@ export default function EmailTest() {
   const [verificationLink, setVerificationLink] = useState("");
   const [squareOrderId, setSquareOrderId] = useState("");
   const [error, setError] = useState("");
+  const [isExistingUser, setIsExistingUser] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleGenerateLink = async () => {
     if (!email) {
@@ -28,9 +30,10 @@ export default function EmailTest() {
 
     setLoading(true);
     setError("");
+    setSuccess(false);
     
     try {
-      // Generate verification link that can be added to Square emails
+      // Call the Supabase function to create subscription and generate link
       const { data, error: functionError } = await supabase.functions.invoke('send-subscription-email', {
         body: { 
           email, 
@@ -50,7 +53,9 @@ export default function EmailTest() {
       // Display the verification link
       if (data.verificationLink) {
         setVerificationLink(data.verificationLink);
-        toast.success(`Verification link generated for ${email}`);
+        setIsExistingUser(data.isExistingUser || false);
+        toast.success(`Link generated for ${email}`);
+        setSuccess(true);
         setError("");
       } else {
         throw new Error("Could not generate verification link");
@@ -58,9 +63,10 @@ export default function EmailTest() {
       
       console.log("Response:", data);
     } catch (error) {
-      console.error("Error generating verification link:", error);
+      console.error("Error generating link:", error);
       setError(error.message || "Unknown error occurred");
       toast.error(`Failed: ${error.message || "Unknown error"}`);
+      setSuccess(false);
     } finally {
       setLoading(false);
     }
@@ -68,7 +74,7 @@ export default function EmailTest() {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(verificationLink);
-    toast.success("Verification link copied to clipboard");
+    toast.success("Link copied to clipboard");
   };
 
   return (
@@ -79,7 +85,7 @@ export default function EmailTest() {
           <CardHeader>
             <CardTitle>Square Email Integration</CardTitle>
             <CardDescription>
-              Generate verification links to include in your Square emails
+              Generate links to include in your Square emails for customers to access the app
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -88,6 +94,18 @@ export default function EmailTest() {
                 <AlertTriangle className="h-4 w-4" />
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            
+            {success && (
+              <Alert className="mb-4 bg-green-50 border-green-200">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <AlertTitle className="text-green-700">Success</AlertTitle>
+                <AlertDescription className="text-green-600">
+                  {isExistingUser 
+                    ? "Login link created for existing user" 
+                    : "Signup link created for new user"}
+                </AlertDescription>
               </Alert>
             )}
             
@@ -107,7 +125,7 @@ export default function EmailTest() {
                 value={subscriptionType}
                 onValueChange={setSubscriptionType}
               >
-                <SelectTrigger>
+                <SelectTrigger id="subscription-type">
                   <SelectValue placeholder="Select subscription type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -131,7 +149,9 @@ export default function EmailTest() {
             
             {verificationLink && (
               <div className="space-y-2 mt-4">
-                <Label htmlFor="verification-link">Verification Link (Add to Square Email)</Label>
+                <Label htmlFor="verification-link">
+                  {isExistingUser ? "Login Link" : "Signup Link"} (Add to Square Email)
+                </Label>
                 <div className="flex gap-2">
                   <Textarea 
                     id="verification-link"
@@ -150,7 +170,8 @@ export default function EmailTest() {
                   </Button>
                 </div>
                 <p className="text-sm text-muted-foreground mt-2">
-                  Copy this link and include it in your Square confirmation emails or marketing messages. When customers click it, they'll be able to sign up with their subscription already activated.
+                  Copy this link and include it in your Square confirmation emails or marketing messages. 
+                  When customers click it, they'll be able to {isExistingUser ? "log in" : "sign up"} with their subscription already activated.
                 </p>
               </div>
             )}
@@ -161,7 +182,7 @@ export default function EmailTest() {
               disabled={loading} 
               className="w-full"
             >
-              {loading ? "Generating..." : "Generate Verification Link"}
+              {loading ? "Generating..." : "Generate Link"}
             </Button>
           </CardFooter>
         </Card>
