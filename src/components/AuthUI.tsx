@@ -295,17 +295,36 @@ const AuthUI = () => {
       const redirectUrl = getRedirectUrl();
       console.log("OAuth redirect URL:", redirectUrl);
       
+      // Store email for subscription activation
+      if (email) {
+        sessionStorage.setItem('mg_pending_email', email);
+      }
+      
       sessionStorage.setItem('redirectTo', '/chat');
       sessionStorage.setItem('requiresAuthCheck', 'true');
+      
+      // Prepare query parameters for the OAuth flow
+      const queryParams = {
+        access_type: 'offline',
+        prompt: 'consent',
+      };
+      
+      // If we have subscription info, add it to the query params
+      if (hasPendingSubscription) {
+        queryParams.has_completed_quiz = 'true';
+        queryParams.subscription_type = subscriptionType;
+        
+        // Also include the email so we can match it with the pending subscription
+        if (email) {
+          queryParams.email = email;
+        }
+      }
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: redirectUrl,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
+          queryParams: queryParams,
         },
       });
       

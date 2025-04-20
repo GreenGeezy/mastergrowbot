@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -84,12 +85,15 @@ const ThankYou = () => {
           redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
             subscription_type: subscriptionType,
-            has_completed_quiz: "true"  // Pass the quiz completion flag
+            has_completed_quiz: "true",
+            email: email  // Pass email to help match with the pending subscription
           }
         }
       });
       
       if (error) throw error;
+      
+      toast.success("Continuing with Google authentication...");
     } catch (error) {
       console.error("Google sign-in error:", error);
       toast.error("Failed to sign in with Google");

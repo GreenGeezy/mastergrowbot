@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -10,23 +9,8 @@ import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-// Eagerly load the Index page for better UX
-import Index from "./pages/Index";
-
-// Environment variable to control subscription requirement
 const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
-// Lazy load all other components
-const ChatInterface = lazy(() => import(/* webpackChunkName: "chat" */ "./components/ChatInterface"));
-const PlantHealthAnalyzer = lazy(() => import(/* webpackChunkName: "plant-health" */ "./pages/PlantHealthAnalyzer"));
-const SharedAnalysis = lazy(() => import(/* webpackChunkName: "shared-analysis" */ "./pages/SharedAnalysis"));
-const GrowingGuide = lazy(() => import(/* webpackChunkName: "growing-guide" */ "./pages/GrowingGuide"));
-const ThankYou = lazy(() => import(/* webpackChunkName: "thank-you" */ "./pages/ThankYou"));
-const Quiz = lazy(() => import(/* webpackChunkName: "quiz" */ "./pages/Quiz"));
-const PrivacyPolicy = lazy(() => import(/* webpackChunkName: "privacy-policy" */ "./pages/PrivacyPolicy"));
-const TermsOfService = lazy(() => import(/* webpackChunkName: "terms-of-service" */ "./pages/TermsOfService"));
-
-// Create the query client outside of the component to prevent recreation on rerenders
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -38,20 +22,17 @@ const queryClient = new QueryClient({
   },
 });
 
-// Separate loading component for better reuse
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
   </div>
 );
 
-// Global subscription and quiz check component
 const AuthVerification = () => {
   const session = useSession();
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Skip check on public routes
   const isPublicRoute = [
     '/', 
     '/privacy-policy', 
@@ -67,14 +48,12 @@ const AuthVerification = () => {
   );
   
   useEffect(() => {
-    // Skip if not requiring checks or on public routes
     if (!REQUIRE_QUIZ_AND_SUBSCRIPTION || isPublicRoute || !session) {
       return;
     }
     
     const checkRequirements = async () => {
       try {
-        // Check subscription status
         const { data: accessData, error: accessError } = await supabase
           .from('user_access_view')
           .select('*')
@@ -83,11 +62,9 @@ const AuthVerification = () => {
         
         if (accessError) throw accessError;
         
-        // If user has no subscription or hasn't completed quiz, sign them out
         if (!accessData?.has_active_subscription || !accessData?.has_completed_quiz) {
           console.log("User does not meet requirements:", accessData);
           
-          // Show appropriate message
           if (!accessData?.has_completed_quiz) {
             toast.error("Please complete the quiz first");
             await supabase.auth.signOut();
@@ -106,13 +83,13 @@ const AuthVerification = () => {
     checkRequirements();
   }, [session, navigate, location.pathname, isPublicRoute]);
   
-  return null; // This component doesn't render anything
+  return null;
 };
 
-// Auth callback component
 const AuthCallback = () => {
   const session = useSession();
   const location = useLocation();
+  const [processing, setProcessing] = useState(false);
   
   useEffect(() => {
     console.log("AuthCallback component mounted with pathname:", location.pathname);
@@ -120,59 +97,89 @@ const AuthCallback = () => {
     console.log("Current session:", !!session);
     
     const handleCallbackParams = async () => {
-      // Check if there are auth params in the URL
-      const hasAuthParams = 
-        location.hash.includes('access_token') || 
-        location.search.includes('code=') || 
-        location.search.includes('error=');
+      setProcessing(true);
       
-      if (hasAuthParams) {
-        console.log("Auth params detected, letting Supabase handle auth");
-        // Supabase should automatically handle this with detectSessionInUrl
-      }
-      
-      // Check if has_completed_quiz is in the URL
-      const params = new URLSearchParams(location.search);
-      const hasCompletedQuiz = params.get('has_completed_quiz') === 'true';
-      const subscriptionType = params.get('subscription_type');
-      
-      // If we have a session and the quiz flag is set, update the user's profile
-      if (session && hasCompletedQuiz) {
-        try {
-          console.log("Marking user as having completed quiz");
-          const { error } = await supabase.functions.invoke('mark-quiz-completed', {
-            body: { user_id: session.user.id }
-          });
-          
-          if (error) throw error;
-          console.log("Successfully marked user as having completed quiz");
-        } catch (err) {
-          console.error("Error marking quiz as completed:", err);
+      try {
+        const hasAuthParams = 
+          location.hash.includes('access_token') || 
+          location.search.includes('code=') || 
+          location.search.includes('error=');
+        
+        if (hasAuthParams) {
+          console.log("Auth params detected, letting Supabase handle auth");
         }
+        
+        const params = new URLSearchParams(location.search);
+        const hasCompletedQuiz = params.get('has_completed_quiz') === 'true';
+        const subscriptionType = params.get('subscription_type');
+        const email = params.get('email');
+        
+        console.log("Auth callback parameters:", { 
+          hasCompletedQuiz, 
+          subscriptionType, 
+          email,
+          session: !!session
+        });
+        
+        if (session) {
+          console.log("Processing with session userId:", session.user.id);
+          const userEmail = email || session.user.email;
+          
+          try {
+            console.log("Marking user as having completed quiz");
+            const result = await supabase.functions.invoke('mark-quiz-completed', {
+              body: { 
+                user_id: session.user.id,
+                email: userEmail
+              }
+            });
+            
+            console.log("Mark quiz completed result:", result);
+            
+            if (result.error) throw new Error(result.error);
+            
+            console.log("Successfully marked user as having completed quiz");
+            toast.success("Your account is ready to use!");
+          } catch (err) {
+            console.error("Error marking quiz as completed:", err);
+            toast.error("There was an issue activating your account");
+          }
+        } else {
+          console.log("No session yet, waiting for auth to complete");
+        }
+      } catch (error) {
+        console.error("Error in AuthCallback:", error);
+      } finally {
+        setProcessing(false);
       }
     };
     
     handleCallbackParams();
     
-    // If we have a session after handling the callback, redirect
-    if (session) {
+    if (session && !processing) {
       const redirectTo = sessionStorage.getItem('redirectTo') || '/chat';
       console.log("Session detected, redirecting to:", redirectTo);
       sessionStorage.removeItem('redirectTo');
-      window.location.href = redirectTo;
+      
+      setTimeout(() => {
+        window.location.href = redirectTo;
+      }, 500);
     }
-  }, [session, location]);
+  }, [session, location, processing]);
   
-  return <LoadingSpinner />;
+  return (
+    <div className="flex items-center justify-center min-h-screen flex-col">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+      <p className="text-primary">Setting up your account...</p>
+    </div>
+  );
 };
 
-// Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const location = useLocation();
   
   useEffect(() => {
-    // Handle redirect on session change
     if (!session && location.pathname !== '/') {
       sessionStorage.setItem('redirectTo', location.pathname);
     }
@@ -193,13 +200,9 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            {/* Add the global auth verification component */}
             <AuthVerification />
             <Routes>
-              {/* Eagerly loaded route */}
               <Route path="/" element={<Index />} />
-              
-              {/* Public routes - No authentication required */}
               <Route 
                 path="/privacy-policy" 
                 element={
@@ -216,8 +219,6 @@ const App = () => {
                   </Suspense>
                 } 
               />
-              
-              {/* Lazy loaded routes */}
               <Route 
                 path="/quiz" 
                 element={
@@ -234,14 +235,10 @@ const App = () => {
                   </Suspense>
                 } 
               />
-              
-              {/* Auth routes - Add comprehensive coverage for all possible auth patterns */}
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/callback" element={<AuthCallback />} />
               <Route path="/auth/callback/*" element={<AuthCallback />} />
               <Route path="/auth/*" element={<AuthCallback />} />
-              
-              {/* Protected routes */}
               <Route 
                 path="/chat" 
                 element={
