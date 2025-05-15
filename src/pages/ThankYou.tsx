@@ -40,7 +40,6 @@ const ThankYou = () => {
             body: {
               user_id: session.user.id,
               email: session.user.email
-              // subscription_type parameter removed
             }
           });
           

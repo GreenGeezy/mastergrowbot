@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -124,14 +123,12 @@ const AuthCallback = () => {
           console.log("Auth params detected, letting Supabase handle auth");
         }
         
-        // Check session storage for subscription/quiz info instead of URL params
+        // Check session storage for quiz completion info
         const hasCompletedQuiz = sessionStorage.getItem('mg_has_completed_quiz') === 'true';
-        const subscriptionType = sessionStorage.getItem('mg_subscription_type');
         const email = sessionStorage.getItem('mg_pending_email');
         
         console.log("Auth callback parameters from session storage:", { 
-          hasCompletedQuiz, 
-          subscriptionType, 
+          hasCompletedQuiz,
           email,
           session: !!session
         });
@@ -145,8 +142,7 @@ const AuthCallback = () => {
             const result = await supabase.functions.invoke('mark-quiz-completed', {
               body: { 
                 user_id: session.user.id,
-                email: userEmail,
-                subscription_type: subscriptionType
+                email: userEmail
               }
             });
             
@@ -159,7 +155,6 @@ const AuthCallback = () => {
             
             // Clean up session storage
             sessionStorage.removeItem('mg_has_completed_quiz');
-            sessionStorage.removeItem('mg_subscription_type');
             sessionStorage.removeItem('mg_pending_email');
           } catch (err) {
             console.error("Error marking quiz as completed:", err);

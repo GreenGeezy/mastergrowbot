@@ -9,7 +9,6 @@ const corsHeaders = {
 
 // Default subscription settings
 const DEFAULT_SUBSCRIPTION_TYPE = "basic";
-const DEFAULT_SUBSCRIPTION_DURATION_DAYS = 30;
 
 serve(async (req) => {
   // Handle preflight requests
@@ -119,7 +118,7 @@ serve(async (req) => {
           console.log("Activating pending subscription:", pendingSub);
           
           try {
-            // Create or update subscription record
+            // Create or update subscription record - Set as indefinitely active (no expiration)
             const { error: subError } = await supabaseClient
               .from("subscriptions")
               .upsert({
@@ -127,9 +126,8 @@ serve(async (req) => {
                 subscription_type: pendingSub.subscription_type || DEFAULT_SUBSCRIPTION_TYPE,
                 status: "active",
                 starts_at: new Date().toISOString(),
-                expires_at: pendingSub.subscription_type === "annual" 
-                  ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-                  : new Date(Date.now() + DEFAULT_SUBSCRIPTION_DURATION_DAYS * 24 * 60 * 60 * 1000).toISOString()
+                // Set to a very far future date (effectively no expiration)
+                expires_at: new Date('9999-12-31').toISOString()
               });
             
             if (subError) {
@@ -158,7 +156,8 @@ serve(async (req) => {
                 subscription_type: DEFAULT_SUBSCRIPTION_TYPE,
                 status: "active",
                 starts_at: new Date().toISOString(),
-                expires_at: new Date(Date.now() + DEFAULT_SUBSCRIPTION_DURATION_DAYS * 24 * 60 * 60 * 1000).toISOString()
+                // Set to a very far future date (effectively no expiration)
+                expires_at: new Date('9999-12-31').toISOString()
               });
             
             if (subError) {
@@ -187,7 +186,8 @@ serve(async (req) => {
             subscription_type: DEFAULT_SUBSCRIPTION_TYPE,
             has_completed_quiz: true,
             consumed: false,
-            expires_at: new Date(Date.now() + DEFAULT_SUBSCRIPTION_DURATION_DAYS * 24 * 60 * 60 * 1000).toISOString()
+            // Set to a very far future date (effectively no expiration)
+            expires_at: new Date('9999-12-31').toISOString()
           });
         
         if (pendingError) {
