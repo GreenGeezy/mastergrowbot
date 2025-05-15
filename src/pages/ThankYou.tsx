@@ -13,7 +13,6 @@ const ThankYou = () => {
   const navigate = useNavigate();
   const session = useSession();
   const [email, setEmail] = useState<string>("");
-  const [subscriptionType, setSubscriptionType] = useState<string>("basic");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -22,11 +21,9 @@ const ThankYou = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const emailParam = searchParams.get("email");
-    const subType = searchParams.get("subscription_type") || "basic";
     if (emailParam) {
       setEmail(emailParam);
     }
-    setSubscriptionType(subType);
   }, [location.search]);
   
   // Handle successful authentication
@@ -42,8 +39,8 @@ const ThankYou = () => {
           const { error } = await supabase.functions.invoke('mark-quiz-completed', {
             body: {
               user_id: session.user.id,
-              email: session.user.email,
-              subscription_type: subscriptionType
+              email: session.user.email
+              // subscription_type parameter removed
             }
           });
           
@@ -66,7 +63,7 @@ const ThankYou = () => {
     };
     
     handleSuccessfulAuth();
-  }, [session, navigate, subscriptionType, processingAuth]);
+  }, [session, navigate, processingAuth]);
   
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,7 +77,6 @@ const ThankYou = () => {
         password,
         options: {
           data: {
-            subscription_type: subscriptionType,
             // Mark user as having completed quiz automatically
             has_completed_quiz: true
           }
@@ -118,9 +114,8 @@ const ThankYou = () => {
     try {
       setLoading(true);
 
-      // Store subscription info in session storage instead of passing it in query params
+      // Store only completed quiz flag and email in session storage
       sessionStorage.setItem('mg_has_completed_quiz', 'true');
-      sessionStorage.setItem('mg_subscription_type', subscriptionType);
       if (email) {
         sessionStorage.setItem('mg_pending_email', email);
       }

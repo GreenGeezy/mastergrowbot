@@ -7,6 +7,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Default subscription settings
+const DEFAULT_SUBSCRIPTION_TYPE = "basic";
+const DEFAULT_SUBSCRIPTION_DURATION_DAYS = 30;
+
 serve(async (req) => {
   // Handle preflight requests
   if (req.method === "OPTIONS") {
@@ -23,12 +27,11 @@ serve(async (req) => {
 
     // Parse request body
     const requestData = await req.json();
-    const { user_id, email, subscription_type = "basic" } = requestData;
+    const { user_id, email } = requestData;
 
     console.log("Mark quiz completed request:", { 
       user_id, 
-      email, 
-      subscription_type 
+      email
     });
 
     let userId = user_id;
@@ -121,12 +124,12 @@ serve(async (req) => {
               .from("subscriptions")
               .upsert({
                 user_id: userId,
-                subscription_type: pendingSub.subscription_type || subscription_type || "basic",
+                subscription_type: pendingSub.subscription_type || DEFAULT_SUBSCRIPTION_TYPE,
                 status: "active",
                 starts_at: new Date().toISOString(),
                 expires_at: pendingSub.subscription_type === "annual" 
                   ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-                  : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+                  : new Date(Date.now() + DEFAULT_SUBSCRIPTION_DURATION_DAYS * 24 * 60 * 60 * 1000).toISOString()
               });
             
             if (subError) {
@@ -143,27 +146,25 @@ serve(async (req) => {
           } catch (error) {
             console.error("Exception when activating subscription:", error);
           }
-        } else if (subscription_type) {
-          // No pending subscription found, but we'll still create one if subscription_type is provided
-          console.log("Creating new subscription with type:", subscription_type);
+        } else {
+          // No pending subscription found, create a default subscription
+          console.log("Creating new default subscription");
           
           try {
             const { error: subError } = await supabaseClient
               .from("subscriptions")
               .upsert({
                 user_id: userId,
-                subscription_type: subscription_type,
+                subscription_type: DEFAULT_SUBSCRIPTION_TYPE,
                 status: "active",
                 starts_at: new Date().toISOString(),
-                expires_at: subscription_type === "annual" 
-                  ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-                  : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+                expires_at: new Date(Date.now() + DEFAULT_SUBSCRIPTION_DURATION_DAYS * 24 * 60 * 60 * 1000).toISOString()
               });
             
             if (subError) {
               console.error("Error creating new subscription:", subError);
             } else {
-              console.log("Successfully created new subscription for user");
+              console.log("Successfully created new default subscription for user");
             }
           } catch (error) {
             console.error("Exception when creating subscription:", error);
@@ -183,10 +184,10 @@ serve(async (req) => {
           .from("pending_subscriptions")
           .upsert({
             email: email,
-            subscription_type: subscription_type || "basic",
+            subscription_type: DEFAULT_SUBSCRIPTION_TYPE,
             has_completed_quiz: true,
             consumed: false,
-            expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+            expires_at: new Date(Date.now() + DEFAULT_SUBSCRIPTION_DURATION_DAYS * 24 * 60 * 60 * 1000).toISOString()
           });
         
         if (pendingError) {
