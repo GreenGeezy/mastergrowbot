@@ -461,8 +461,8 @@ export type Database = {
     }
     Functions: {
       attempt_delete_users: {
-        Args: { user_ids: string[] }
-        Returns: string
+        Args: Record<PropertyKey, never> | { user_ids: string[] }
+        Returns: undefined
       }
       check_and_remove_pending_subscriptions: {
         Args: { email_param: string }
@@ -487,6 +487,14 @@ export type Database = {
           subscription_type: string
           expires_at: string
         }[]
+      }
+      handle_square_payment: {
+        Args: {
+          order_id: string
+          customer_email: string
+          subscription_type?: string
+        }
+        Returns: boolean
       }
       has_active_subscription: {
         Args: { user_uuid: string }

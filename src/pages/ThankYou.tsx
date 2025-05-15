@@ -120,7 +120,7 @@ const ThankYou = () => {
           
           <CardContent className="space-y-4">
             <p className="text-center text-muted-foreground">
-              Your {subscriptionType} subscription is ready to be activated. Please create your account or sign in to continue.
+              Thank you for your purchase! Click the button below to set up your account. Please be sure to use the same email address or Google Account (gmail) you used for your purchase:
             </p>
 
             <AuthForm 
