@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v4 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v5 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -117,11 +117,22 @@ async function verifySquareSignature(payload: string, signature: string, signing
   try {
     console.log("Starting signature verification process");
     
+    // Check if signature exists and has the correct format
+    if (!signature || signature.trim() === "") {
+      console.error("Empty signature");
+      return false;
+    }
+    
     // Square's signature format is t=timestamp,v1=signature
     // Parse the signature components
+    if (!signature.includes(',') || !signature.includes('=')) {
+      console.error("Invalid signature format - missing expected delimiters");
+      return false;
+    }
+    
     const signatureParts = signature.split(',');
     if (signatureParts.length < 2) {
-      console.error("Invalid signature format");
+      console.error("Invalid signature format - not enough parts");
       return false;
     }
     
@@ -165,12 +176,17 @@ async function verifySquareSignature(payload: string, signature: string, signing
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
     
-    console.log("Signature verification:", {
+    console.log("Signature verification comparison:", {
+      actualSignatureLength: actualSignature.length,
+      expectedSignatureLength: expectedSignature.length,
       actualSignaturePrefix: actualSignature.substring(0, 6) + "...",
       expectedSignaturePrefix: expectedSignature.substring(0, 6) + "..." // Log just a prefix for security
     });
     
-    return expectedSignature === actualSignature;
+    const isValid = expectedSignature === actualSignature;
+    console.log("Signature verification result:", isValid ? "VALID" : "INVALID");
+    
+    return isValid;
   } catch (e) {
     console.error("Error verifying signature:", e);
     return false;
