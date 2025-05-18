@@ -1,11 +1,11 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
-import { HmacSha256 } from "https://deno.land/std@0.207.0/crypto/hmac_sha256.ts";
-import { encode as hexEncode } from "https://deno.land/std@0.207.0/encoding/hex.ts";
+import { crypto } from "https://deno.land/std@0.177.0/crypto/mod.ts";
+import { encodeHex } from "https://deno.land/std@0.177.0/encoding/hex.ts";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v2 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v3 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -150,13 +150,21 @@ function verifySquareSignature(payload: string, signature: string, signingKey: s
     const key = new TextEncoder().encode(signingKey);
     const message = new TextEncoder().encode(stringToSign);
     
-    // Create HMAC with SHA-256
-    const hmac = new HmacSha256(key);
-    hmac.update(message);
-    const signature = hmac.digest();
+    // Create HMAC with SHA-256 using Deno's standard crypto library
+    const hmacKey = await crypto.subtle.importKey(
+      "raw",
+      key,
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+    
+    const hmacSignature = new Uint8Array(
+      await crypto.subtle.sign("HMAC", hmacKey, message)
+    );
     
     // Convert to hex string for comparison
-    const expectedSignature = hexEncode(signature);
+    const expectedSignature = encodeHex(hmacSignature);
     
     console.log("Signature verification:", {
       actualSignaturePrefix: actualSignature.substring(0, 6) + "...",
