@@ -149,9 +149,13 @@ const AuthCallback = () => {
             console.log("Mark quiz completed result:", result);
             
             if (result.error) throw new Error(result.error);
-            
-            console.log("Successfully marked user as having completed quiz");
-            toast.success("Your account is ready to use!");
+            if (result.data && !result.data.success && result.data.error) {
+              toast.error(result.data.error);
+              console.error("Subscription activation error:", result.data.error);
+            } else {
+              console.log("Successfully marked user as having completed quiz");
+              toast.success("Your account is ready to use!");
+            }
             
             // Clean up session storage
             sessionStorage.removeItem('mg_has_completed_quiz');

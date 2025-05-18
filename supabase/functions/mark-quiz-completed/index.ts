@@ -34,15 +34,18 @@ serve(async (req) => {
     });
 
     let userId = user_id;
+    let userEmail = email;
+    let subscriptionActivated = false;
+    let hasValidPurchase = false;
 
     // If no user_id but email is provided, try to look up the user by email
-    if (!userId && email) {
-      console.log("Looking up user by email:", email);
+    if (!userId && userEmail) {
+      console.log("Looking up user by email:", userEmail);
       
       // First, try to find the user in auth.users
       const { data: authUser, error: authError } = await supabaseClient.auth.admin.listUsers({
         filters: {
-          email: email
+          email: userEmail
         }
       });
 
@@ -52,12 +55,47 @@ serve(async (req) => {
         userId = authUser.users[0].id;
         console.log("Found user ID by email:", userId);
       } else {
-        console.log("No user found with email:", email);
+        console.log("No user found with email:", userEmail);
+      }
+    }
+    // If we have a userId but no email, get the email from the user record
+    else if (userId && !userEmail) {
+      const { data: userRecord, error: userError } = await supabaseClient.auth.admin.getUserById(userId);
+      if (!userError && userRecord && userRecord.user) {
+        userEmail = userRecord.user.email;
+        console.log("Found user email by ID:", userEmail);
+      }
+    }
+
+    // Check for pending subscriptions if we have an email
+    if (userEmail) {
+      // Look for valid pending subscription
+      const { data: pendingSubs, error: pendingError } = await supabaseClient
+        .from("pending_subscriptions")
+        .select("*")
+        .eq("email", userEmail)
+        .eq("consumed", false)
+        .order('created_at', { ascending: false });
+
+      if (pendingError) {
+        console.error("Error checking pending subscriptions:", pendingError);
+      } else {
+        // Get the most recent pending subscription if multiple exist
+        const pendingSub = pendingSubs && pendingSubs.length > 0 
+          ? pendingSubs[0]
+          : null;
+
+        if (pendingSub) {
+          console.log("Found valid pending subscription:", pendingSub);
+          hasValidPurchase = true;
+        } else {
+          console.log("No valid pending subscription found for email:", userEmail);
+        }
       }
     }
 
     // If we have a user ID, update the user's metadata and profiles table
-    if (userId) {
+    if (userId && hasValidPurchase) {
       console.log("Updating user metadata for user ID:", userId);
       
       // Update auth user metadata
@@ -74,7 +112,6 @@ serve(async (req) => {
         .from("user_profiles")
         .upsert({
           id: userId,
-          email: email,
           has_completed_quiz: true
         });
 
@@ -99,26 +136,27 @@ serve(async (req) => {
         console.error("Error creating quiz responses:", quizError);
       }
 
-      // Check for pending subscriptions - FIXED to handle multiple rows
+      // Check for pending subscriptions again - FIXED to handle multiple rows
       const { data: pendingSubs, error: pendingError } = await supabaseClient
         .from("pending_subscriptions")
         .select("*")
-        .eq("email", email)
-        .eq("consumed", false);
+        .eq("email", userEmail)
+        .eq("consumed", false)
+        .order('created_at', { ascending: false });
 
       if (pendingError) {
         console.error("Error checking pending subscriptions:", pendingError);
       } else {
         // Get the most recent pending subscription if multiple exist
         const pendingSub = pendingSubs && pendingSubs.length > 0 
-          ? pendingSubs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]
+          ? pendingSubs[0]
           : null;
 
         if (pendingSub) {
           console.log("Activating pending subscription:", pendingSub);
           
           try {
-            // Create or update subscription record - Set as indefinitely active (no expiration)
+            // Create or update subscription record - Use details from pending subscription
             const { error: subError } = await supabaseClient
               .from("subscriptions")
               .upsert({
@@ -126,8 +164,8 @@ serve(async (req) => {
                 subscription_type: pendingSub.subscription_type || DEFAULT_SUBSCRIPTION_TYPE,
                 status: "active",
                 starts_at: new Date().toISOString(),
-                // Set to a very far future date (effectively no expiration)
-                expires_at: new Date('9999-12-31').toISOString()
+                // Use expiry from pending subscription, or default to very far future date
+                expires_at: pendingSub.expires_at || new Date('9999-12-31').toISOString()
               });
             
             if (subError) {
@@ -140,49 +178,31 @@ serve(async (req) => {
                 .eq("id", pendingSub.id);
               
               console.log("Successfully activated subscription for user");
+              subscriptionActivated = true;
             }
           } catch (error) {
             console.error("Exception when activating subscription:", error);
           }
         } else {
-          // No pending subscription found, create a default subscription
-          console.log("Creating new default subscription");
-          
-          try {
-            const { error: subError } = await supabaseClient
-              .from("subscriptions")
-              .upsert({
-                user_id: userId,
-                subscription_type: DEFAULT_SUBSCRIPTION_TYPE,
-                status: "active",
-                starts_at: new Date().toISOString(),
-                // Set to a very far future date (effectively no expiration)
-                expires_at: new Date('9999-12-31').toISOString()
-              });
-            
-            if (subError) {
-              console.error("Error creating new subscription:", subError);
-            } else {
-              console.log("Successfully created new default subscription for user");
-            }
-          } catch (error) {
-            console.error("Exception when creating subscription:", error);
-          }
+          console.log("No valid pending subscription found for user");
         }
       }
+    } else if (userId && !hasValidPurchase) {
+      // User authenticated but no valid purchase found
+      console.log("User authenticated but no valid purchase found for:", userId, userEmail);
     }
 
     // For admin/special case: direct database activation without auth
     // This is a special function to directly mark quiz as completed when requested
-    if (email && !userId) {
+    if (userEmail && !userId && hasValidPurchase) {
       try {
-        console.log("Running manual activation for email without user ID:", email);
+        console.log("Running manual activation for email without user ID:", userEmail);
         
         // Create a pending subscription if it doesn't exist
         const { error: pendingError } = await supabaseClient
           .from("pending_subscriptions")
           .upsert({
-            email: email,
+            email: userEmail,
             subscription_type: DEFAULT_SUBSCRIPTION_TYPE,
             has_completed_quiz: true,
             consumed: false,
@@ -200,10 +220,33 @@ serve(async (req) => {
       }
     }
 
-    return new Response(JSON.stringify({ success: true }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
-    });
+    // Return appropriate response
+    if (hasValidPurchase && subscriptionActivated) {
+      return new Response(JSON.stringify({ 
+        success: true, 
+        message: "Subscription activated successfully" 
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
+    } else if (userId && !hasValidPurchase) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: "No active purchase found for this account. Please complete your purchase or contact support." 
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+      });
+    } else {
+      // General success response for other cases
+      return new Response(JSON.stringify({ 
+        success: true, 
+        hasValidPurchase: hasValidPurchase
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
+    }
   } catch (error) {
     console.error("Error in mark-quiz-completed function:", error);
     return new Response(JSON.stringify({ error: error.message }), {

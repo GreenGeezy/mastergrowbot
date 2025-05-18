@@ -36,7 +36,7 @@ const ThankYou = () => {
           toast.info("Setting up your account...");
           
           // Call the edge function to activate subscription
-          const { error } = await supabase.functions.invoke('mark-quiz-completed', {
+          const { data, error } = await supabase.functions.invoke('mark-quiz-completed', {
             body: {
               user_id: session.user.id,
               email: session.user.email
@@ -45,13 +45,19 @@ const ThankYou = () => {
           
           if (error) throw error;
           
-          toast.success("Your subscription has been activated!");
-          console.log("Subscription activated successfully, redirecting to chat...");
-          
-          // Short delay before redirect to ensure toast is visible
-          setTimeout(() => {
-            navigate('/chat');
-          }, 1500);
+          if (data && !data.success && data.error) {
+            // Specific error from the function about no purchase
+            toast.error(data.error);
+            console.error("Subscription activation error:", data.error);
+          } else {
+            toast.success("Your subscription has been activated!");
+            console.log("Subscription activated successfully, redirecting to chat...");
+            
+            // Short delay before redirect to ensure toast is visible
+            setTimeout(() => {
+              navigate('/chat');
+            }, 1500);
+          }
         } catch (error) {
           console.error("Error activating subscription:", error);
           toast.error("There was an issue activating your subscription. Please contact support.");
