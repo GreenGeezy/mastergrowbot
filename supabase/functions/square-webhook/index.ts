@@ -4,6 +4,9 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 import { HmacSha256 } from "https://deno.land/std@0.207.0/crypto/hmac_sha256.ts";
 import { encode as hexEncode } from "https://deno.land/std@0.207.0/encoding/hex.ts";
 
+// Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v2 - ' + new Date().toISOString());
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -11,6 +14,7 @@ const corsHeaders = {
 
 // This secret is now set in the Edge Function settings
 const SQUARE_WEBHOOK_SIGNATURE_KEY = Deno.env.get("SQUARE_WEBHOOK_SIGNATURE_KEY") || "";
+console.log("Signature key loaded:", SQUARE_WEBHOOK_SIGNATURE_KEY ? "YES - key available" : "NO - key missing!");
 
 // Default subscription durations in days
 const SUBSCRIPTION_DURATIONS = {
@@ -22,6 +26,8 @@ const SUBSCRIPTION_DURATIONS = {
 };
 
 serve(async (req) => {
+  console.log("Square webhook received request - " + new Date().toISOString());
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders, status: 204 });
@@ -31,6 +37,15 @@ serve(async (req) => {
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.error("Missing Supabase credentials");
+      return new Response(
+        JSON.stringify({ success: false, error: "Server configuration error" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+      );
+    }
+    
     const supabase = createClient(supabaseUrl, supabaseKey);
     
     // Get the Square-Signature header
@@ -101,6 +116,8 @@ serve(async (req) => {
 // Helper function to verify Square webhook signature using HMAC
 function verifySquareSignature(payload: string, signature: string, signingKey: string): boolean {
   try {
+    console.log("Starting signature verification process");
+    
     // Square's signature format is t=timestamp,v1=signature
     // Parse the signature components
     const signatureParts = signature.split(',');
@@ -121,6 +138,11 @@ function verifySquareSignature(payload: string, signature: string, signingKey: s
     const timestamp = timestampPart.substring(2);
     const actualSignature = signaturePart.substring(3);
     
+    console.log("Signature parts extracted:", {
+      timestamp: timestamp,
+      signatureLength: actualSignature.length
+    });
+    
     // Create the string to sign (timestamp + . + payload)
     const stringToSign = `${timestamp}.${payload}`;
     
@@ -137,7 +159,7 @@ function verifySquareSignature(payload: string, signature: string, signingKey: s
     const expectedSignature = hexEncode(signature);
     
     console.log("Signature verification:", {
-      actualSignature: actualSignature,
+      actualSignaturePrefix: actualSignature.substring(0, 6) + "...",
       expectedSignaturePrefix: expectedSignature.substring(0, 6) + "..." // Log just a prefix for security
     });
     
