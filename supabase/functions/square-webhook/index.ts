@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v12 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v13 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -167,13 +167,11 @@ async function verifySquareSignature(headers: Headers, payload: string, signatur
     
     // Check if signature exists and is not empty
     if (!signature || signature.trim() === "") {
-      console.error("Empty signature header");
+      console.error("Empty signature");
       return false;
     }
     
-    console.log("Full signature header:", signature);
-    
-    // Extract the timestamp from the separate Square-Request-Timestamp header
+    // Extract the timestamp from the Square-Request-Timestamp header
     let timestamp = headers.get('Square-Request-Timestamp') || 
                    headers.get('square-request-timestamp');
                    
