@@ -74,7 +74,8 @@ serve(async (req) => {
     
     // Verify signature if signature key is provided
     if (SQUARE_WEBHOOK_SIGNATURE_KEY) {
-      if (!verifySquareSignature(body, squareSignature, SQUARE_WEBHOOK_SIGNATURE_KEY)) {
+      const signatureValid = await verifySquareSignature(body, squareSignature, SQUARE_WEBHOOK_SIGNATURE_KEY);
+      if (!signatureValid) {
         console.error("Invalid Square webhook signature");
         return new Response(
           JSON.stringify({ success: false, error: "Invalid signature" }),
@@ -114,7 +115,7 @@ serve(async (req) => {
 });
 
 // Helper function to verify Square webhook signature using HMAC
-function verifySquareSignature(payload: string, signature: string, signingKey: string): boolean {
+async function verifySquareSignature(payload: string, signature: string, signingKey: string): Promise<boolean> {
   try {
     console.log("Starting signature verification process");
     
