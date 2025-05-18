@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v5 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v6 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -117,71 +117,85 @@ async function verifySquareSignature(payload: string, signature: string, signing
   try {
     console.log("Starting signature verification process");
     
+    // Detailed logging for the raw signature format
+    console.log("Raw signature format:", signature);
+    
     // Check if signature exists and has the correct format
     if (!signature || signature.trim() === "") {
       console.error("Empty signature");
       return false;
     }
     
-    // Square's signature format is t=timestamp,v1=signature
-    // Parse the signature components
-    if (!signature.includes(',') || !signature.includes('=')) {
-      console.error("Invalid signature format - missing expected delimiters");
+    // Square's webhook signature format typically is: t=1686748700,v1=fbdb56b4ab29e784c1644a35e86c52c63db21fed2df8a15e8ed558f899218ab4
+    // First, we need to parse these components
+    
+    // Check if signature has the format we expect
+    if (!signature.includes('t=') || !signature.includes('v1=')) {
+      console.error("Invalid signature format - missing required t= or v1= components");
+      console.log("Signature received:", signature);
       return false;
     }
     
-    const signatureParts = signature.split(',');
-    if (signatureParts.length < 2) {
-      console.error("Invalid signature format - not enough parts");
+    // Parse the timestamp and signature value
+    // Extract t= value (timestamp)
+    let timestamp = '';
+    try {
+      timestamp = signature.split('t=')[1].split(',')[0];
+      console.log(`Extracted timestamp: ${timestamp}`);
+    } catch (e) {
+      console.error("Failed to extract timestamp from signature:", e);
       return false;
     }
     
-    // Extract timestamp and actual signature
-    const timestampPart = signatureParts[0]; // t=1234567890
-    const signaturePart = signatureParts[1]; // v1=actual_signature
-    
-    if (!timestampPart.startsWith('t=') || !signaturePart.startsWith('v1=')) {
-      console.error("Invalid signature format - missing expected components");
+    // Extract v1= value (signature)
+    let actualSignature = '';
+    try {
+      actualSignature = signature.split('v1=')[1].split(',')[0];
+      console.log(`Extracted signature value (first 6 chars): ${actualSignature.substring(0, 6)}...`);
+    } catch (e) {
+      console.error("Failed to extract v1 signature value:", e);
       return false;
     }
     
-    const timestamp = timestampPart.substring(2);
-    const actualSignature = signaturePart.substring(3);
+    if (!timestamp || !actualSignature) {
+      console.error("Failed to extract required signature components");
+      return false;
+    }
     
-    console.log("Signature parts extracted:", {
-      timestamp: timestamp,
-      signatureLength: actualSignature.length
-    });
-    
-    // Create the string to sign (timestamp + . + payload)
+    // Create the string to sign according to Square's documentation
+    // Format: TIMESTAMP.PAYLOAD
     const stringToSign = `${timestamp}.${payload}`;
+    console.log(`Created string-to-sign with format: timestamp.payload`);
+    console.log(`String-to-sign length: ${stringToSign.length}`);
     
-    // Compute the expected signature using Web Crypto API
+    // Import the signing key as a CryptoKey
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(signingKey);
     const key = await crypto.subtle.importKey(
       "raw",
-      new TextEncoder().encode(signingKey),
+      keyData,
       { name: "HMAC", hash: "SHA-256" },
       false,
       ["sign"]
     );
     
+    // Compute the expected signature
     const signatureBytes = await crypto.subtle.sign(
       "HMAC",
       key,
-      new TextEncoder().encode(stringToSign)
+      encoder.encode(stringToSign)
     );
     
-    // Convert to hex string for comparison
+    // Convert the signature to hex
     const expectedSignature = Array.from(new Uint8Array(signatureBytes))
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
     
-    console.log("Signature verification comparison:", {
-      actualSignatureLength: actualSignature.length,
-      expectedSignatureLength: expectedSignature.length,
-      actualSignaturePrefix: actualSignature.substring(0, 6) + "...",
-      expectedSignaturePrefix: expectedSignature.substring(0, 6) + "..." // Log just a prefix for security
-    });
+    console.log("Signature verification comparison:");
+    console.log(`  Actual signature length: ${actualSignature.length}`);
+    console.log(`  Expected signature length: ${expectedSignature.length}`);
+    console.log(`  Actual signature prefix: ${actualSignature.substring(0, 6)}...`);
+    console.log(`  Expected signature prefix: ${expectedSignature.substring(0, 6)}...`);
     
     const isValid = expectedSignature === actualSignature;
     console.log("Signature verification result:", isValid ? "VALID" : "INVALID");
