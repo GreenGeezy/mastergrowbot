@@ -12,3 +12,7 @@ verify_jwt = false
 
 [functions.mark-quiz-completed]
 verify_jwt = true
+
+[functions.square-webhook]
+verify_jwt = false
+
