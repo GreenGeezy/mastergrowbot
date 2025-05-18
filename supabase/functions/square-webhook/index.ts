@@ -1,9 +1,8 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v6 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v7 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -13,6 +12,9 @@ const corsHeaders = {
 // This secret is now set in the Edge Function settings
 const SQUARE_WEBHOOK_SIGNATURE_KEY = Deno.env.get("SQUARE_WEBHOOK_SIGNATURE_KEY") || "";
 console.log("Signature key loaded:", SQUARE_WEBHOOK_SIGNATURE_KEY ? "YES - key available" : "NO - key missing!");
+
+// The webhook endpoint URL for signature validation
+const WEBHOOK_URL = "https://inbfxduleyhygxatxmre.supabase.co/functions/v1/square-webhook";
 
 // Default subscription durations in days
 const SUBSCRIPTION_DURATIONS = {
@@ -117,56 +119,53 @@ async function verifySquareSignature(payload: string, signature: string, signing
   try {
     console.log("Starting signature verification process");
     
-    // Detailed logging for the raw signature format
-    console.log("Raw signature format:", signature);
-    
-    // Check if signature exists and has the correct format
+    // Check if signature exists
     if (!signature || signature.trim() === "") {
       console.error("Empty signature");
       return false;
     }
     
-    // Square's webhook signature format typically is: t=1686748700,v1=fbdb56b4ab29e784c1644a35e86c52c63db21fed2df8a15e8ed558f899218ab4
-    // First, we need to parse these components
+    console.log("Raw signature format:", signature);
     
-    // Check if signature has the format we expect
-    if (!signature.includes('t=') || !signature.includes('v1=')) {
-      console.error("Invalid signature format - missing required t= or v1= components");
-      console.log("Signature received:", signature);
+    // According to Square's documentation, the signature should have this format:
+    // t=TIMESTAMP,v1=SIGNATURE
+    
+    // Parse the signature components
+    const signatureComponents = signature.split(',');
+    
+    if (signatureComponents.length < 2) {
+      console.error("Invalid signature format - missing components");
       return false;
     }
     
-    // Parse the timestamp and signature value
-    // Extract t= value (timestamp)
     let timestamp = '';
-    try {
-      timestamp = signature.split('t=')[1].split(',')[0];
-      console.log(`Extracted timestamp: ${timestamp}`);
-    } catch (e) {
-      console.error("Failed to extract timestamp from signature:", e);
+    let signatureValue = '';
+    
+    // Extract timestamp and signature value
+    for (const component of signatureComponents) {
+      if (component.startsWith('t=')) {
+        timestamp = component.substring(2);
+      } else if (component.startsWith('v1=')) {
+        signatureValue = component.substring(3);
+      }
+    }
+    
+    if (!timestamp || !signatureValue) {
+      console.error("Invalid signature format - missing t= or v1= values");
+      console.log("Timestamp extracted:", timestamp || "NONE");
+      console.log("Signature value extracted:", signatureValue ? "YES (length: " + signatureValue.length + ")" : "NONE");
       return false;
     }
     
-    // Extract v1= value (signature)
-    let actualSignature = '';
-    try {
-      actualSignature = signature.split('v1=')[1].split(',')[0];
-      console.log(`Extracted signature value (first 6 chars): ${actualSignature.substring(0, 6)}...`);
-    } catch (e) {
-      console.error("Failed to extract v1 signature value:", e);
-      return false;
-    }
+    console.log("Successfully extracted timestamp:", timestamp);
+    console.log("Successfully extracted signature value (first 6 chars):", signatureValue.substring(0, 6) + "...");
     
-    if (!timestamp || !actualSignature) {
-      console.error("Failed to extract required signature components");
-      return false;
-    }
-    
-    // Create the string to sign according to Square's documentation
-    // Format: TIMESTAMP.PAYLOAD
-    const stringToSign = `${timestamp}.${payload}`;
-    console.log(`Created string-to-sign with format: timestamp.payload`);
-    console.log(`String-to-sign length: ${stringToSign.length}`);
+    // According to Square's latest documentation, the string to sign is:
+    // WEBHOOK_URL + REQUEST_BODY
+    // Reference: https://developer.squareup.com/docs/webhooks/step3validate#step-2-validate-the-signature
+    const stringToSign = WEBHOOK_URL + payload;
+    console.log("Using stringToSign format: WEBHOOK_URL + REQUEST_BODY");
+    console.log("String-to-sign length:", stringToSign.length);
     
     // Import the signing key as a CryptoKey
     const encoder = new TextEncoder();
@@ -186,18 +185,18 @@ async function verifySquareSignature(payload: string, signature: string, signing
       encoder.encode(stringToSign)
     );
     
-    // Convert the signature to hex
+    // Convert the signature to lowercase hex
     const expectedSignature = Array.from(new Uint8Array(signatureBytes))
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
     
     console.log("Signature verification comparison:");
-    console.log(`  Actual signature length: ${actualSignature.length}`);
+    console.log(`  Received signature length: ${signatureValue.length}`);
     console.log(`  Expected signature length: ${expectedSignature.length}`);
-    console.log(`  Actual signature prefix: ${actualSignature.substring(0, 6)}...`);
+    console.log(`  Received signature prefix: ${signatureValue.substring(0, 6)}...`);
     console.log(`  Expected signature prefix: ${expectedSignature.substring(0, 6)}...`);
     
-    const isValid = expectedSignature === actualSignature;
+    const isValid = expectedSignature === signatureValue;
     console.log("Signature verification result:", isValid ? "VALID" : "INVALID");
     
     return isValid;
