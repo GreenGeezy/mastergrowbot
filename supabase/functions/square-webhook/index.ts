@@ -1,9 +1,8 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v11 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v12 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -121,7 +120,7 @@ serve(async (req) => {
     
     // Verify signature if signature key is provided
     if (SQUARE_WEBHOOK_SIGNATURE_KEY) {
-      const signatureValid = await verifySquareSignature(body, squareSignature, SQUARE_WEBHOOK_SIGNATURE_KEY);
+      const signatureValid = await verifySquareSignature(req.headers, body, squareSignature, SQUARE_WEBHOOK_SIGNATURE_KEY);
       if (!signatureValid) {
         console.error("Invalid Square webhook signature");
         return new Response(
@@ -161,8 +160,8 @@ serve(async (req) => {
   }
 });
 
-// Helper function to verify Square webhook signature using HMAC
-async function verifySquareSignature(payload: string, signature: string, signingKey: string): Promise<boolean> {
+// Helper function to verify Square webhook signature using HMAC - COMPLETELY REWRITTEN
+async function verifySquareSignature(headers: Headers, payload: string, signature: string, signingKey: string): Promise<boolean> {
   try {
     console.log("Starting signature verification process");
     
@@ -174,57 +173,31 @@ async function verifySquareSignature(payload: string, signature: string, signing
     
     console.log("Full signature header:", signature);
     
-    let timestamp = '';
-    let signatureValue = '';
-    
-    // IMPROVED: Handle both Square's documented format and raw signature format
-    // Square's documented format is "t=TIMESTAMP,v1=SIGNATURE"
-    if (signature.includes(',') && signature.includes('=')) {
-      // Standard format with t= and v1=
-      console.log("Detected standard Square signature format with t= and v1=");
+    // Extract the timestamp from the separate Square-Request-Timestamp header
+    let timestamp = headers.get('Square-Request-Timestamp') || 
+                   headers.get('square-request-timestamp');
+                   
+    if (!timestamp) {
+      // Try to find timestamp in any header that might contain it
+      const allHeaders = Object.fromEntries(headers.entries());
+      const timestampHeaderKey = Object.keys(allHeaders).find(key => 
+        key.toLowerCase().includes('square') && key.toLowerCase().includes('timestamp')
+      );
       
-      const components = signature.split(',').map(part => part.trim());
-      console.log(`Signature split into ${components.length} components:`, components);
-      
-      for (const component of components) {
-        console.log("Processing signature component:", component);
-        
-        if (component.startsWith('t=')) {
-          timestamp = component.substring(2);
-          console.log("Found timestamp:", timestamp);
-        } else if (component.startsWith('v1=')) {
-          signatureValue = component.substring(3);
-          console.log(`Found signature value (length: ${signatureValue.length})`);
-          if (signatureValue.length > 0) {
-            console.log(`Signature prefix: ${signatureValue.substring(0, 6)}...`);
-          }
-        }
-      }
-      
-      if (!timestamp) {
-        console.error("Missing timestamp (t=) in signature header");
-        timestamp = Math.floor(Date.now() / 1000).toString(); // Use current time as fallback
-        console.log("Using current timestamp as fallback:", timestamp);
-      }
-      
-      if (!signatureValue) {
-        console.error("Missing signature value (v1=) in signature header");
-        return false;
-      }
-    } else {
-      // Handle case where signature is just the raw value without t= and v1= format
-      console.log("Detected simplified signature format (raw signature only)");
-      signatureValue = signature.trim();
-      timestamp = Math.floor(Date.now() / 1000).toString(); // Use current time as fallback
-      console.log("Using current timestamp as fallback:", timestamp);
-      console.log(`Raw signature value (length: ${signatureValue.length})`);
-      if (signatureValue.length > 0) {
-        console.log(`Signature prefix: ${signatureValue.substring(0, 6)}...`);
+      if (timestampHeaderKey) {
+        timestamp = allHeaders[timestampHeaderKey];
+        console.log(`Found timestamp in header: ${timestampHeaderKey}`);
       }
     }
     
-    // According to Square's documentation, the string to sign is:
-    // WEBHOOK_URL + REQUEST_BODY
+    if (!timestamp) {
+      console.warn("No Square-Request-Timestamp header found, using current time as fallback");
+      timestamp = Math.floor(Date.now() / 1000).toString();
+    }
+    
+    console.log(`Using timestamp: ${timestamp}`);
+    
+    // According to Square's documentation, the string to sign is: WEBHOOK_URL + REQUEST_BODY
     const stringToSign = WEBHOOK_URL + payload;
     console.log(`String to sign constructed: URL(${WEBHOOK_URL.length} chars) + BODY(${payload.length} chars) = ${stringToSign.length} total chars`);
     
@@ -250,40 +223,88 @@ async function verifySquareSignature(payload: string, signature: string, signing
     );
     
     // Convert the signature to lowercase hex
-    const expectedSignature = Array.from(new Uint8Array(signatureBytes))
+    const computedSignature = Array.from(new Uint8Array(signatureBytes))
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
     
     console.log("Signature verification comparison:");
-    console.log(`  Received signature length: ${signatureValue.length}`);
-    console.log(`  Expected signature length: ${expectedSignature.length}`);
-    console.log(`  Received signature prefix: ${signatureValue.substring(0, 8)}...`);
-    console.log(`  Expected signature prefix: ${expectedSignature.substring(0, 8)}...`);
+    console.log(`  Received signature length: ${signature.length}`);
+    console.log(`  Computed signature length: ${computedSignature.length}`);
+    console.log(`  Received signature prefix: ${signature.substring(0, 8)}...`);
+    console.log(`  Computed signature prefix: ${computedSignature.substring(0, 8)}...`);
     
-    // Try both direct comparison and base64-decoded comparison
-    let isValid = expectedSignature === signatureValue;
+    // Try different comparison methods
     
-    // If direct comparison fails, try decoding base64 if the signature appears to be base64
-    if (!isValid && signatureValue.match(/^[A-Za-z0-9+/=]+$/)) {
-      console.log("Direct comparison failed, attempting base64 comparison...");
+    // Method 1: Direct hexadecimal comparison
+    let isValid = computedSignature === signature;
+    console.log(`Direct hex comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
+    
+    // Method 2: Base64 comparison (if signature appears to be base64)
+    if (!isValid && signature.match(/^[A-Za-z0-9+/=]+$/)) {
       try {
-        // Convert base64 to binary and then to hex
-        const binarySignature = atob(signatureValue);
-        const hexSignature = Array.from(binarySignature, c => 
-          c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+        // Decode the base64 signature to bytes
+        console.log("Attempting base64 signature comparison...");
+        const rawBytes = atob(signature);
         
-        console.log(`  Base64-decoded signature prefix: ${hexSignature.substring(0, 8)}...`);
-        isValid = expectedSignature === hexSignature;
-        console.log("Base64 comparison result:", isValid ? "VALID" : "INVALID");
+        // Convert binary string to byte array
+        const signatureArray = Uint8Array.from(rawBytes, c => c.charCodeAt(0));
+        
+        // Convert our computed signature from hex to bytes for comparison
+        const computedArray = new Uint8Array(computedSignature.length / 2);
+        for (let i = 0; i < computedSignature.length; i += 2) {
+          computedArray[i/2] = parseInt(computedSignature.substring(i, i + 2), 16);
+        }
+        
+        // Compare the byte arrays
+        isValid = signatureArray.length === computedArray.length && 
+                 signatureArray.every((val, i) => val === computedArray[i]);
+        
+        console.log(`Base64 byte comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
+        
+        if (!isValid) {
+          // Convert base64 to hex as another comparison method
+          const hexFromBase64 = Array.from(signatureArray)
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join('');
+            
+          console.log(`  Base64 decoded to hex prefix: ${hexFromBase64.substring(0, 8)}...`);
+          
+          isValid = computedSignature === hexFromBase64;
+          console.log(`Base64->hex comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
+        }
       } catch (e) {
         console.error("Failed to decode base64 signature:", e);
       }
     }
     
-    console.log("Signature verification result:", isValid ? "VALID" : "INVALID");
+    // Method 3: Use Square's exact signature generation algorithm
+    // This approach replicates Square's exact method for generating the signature
+    if (!isValid) {
+      try {
+        console.log("Attempting Square's documented signature algorithm...");
+        
+        // Create an HMAC using the binary key
+        const hmac = await crypto.subtle.sign(
+          "HMAC",
+          key, 
+          encoder.encode(stringToSign)
+        );
+        
+        // Convert the HMAC result to base64
+        const hmacBase64 = btoa(String.fromCharCode(...new Uint8Array(hmac)));
+        console.log(`  Square algorithm computed signature: ${hmacBase64.substring(0, 8)}...`);
+        
+        isValid = hmacBase64 === signature;
+        console.log(`Square algorithm comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
+      } catch (e) {
+        console.error("Failed Square's documented algorithm comparison:", e);
+      }
+    }
+    
+    console.log("Final signature verification result:", isValid ? "VALID" : "INVALID");
     
     if (!isValid) {
-      console.log("First mismatch at position:", findFirstDifferencePosition(expectedSignature, signatureValue));
+      console.log("First mismatch at position:", findFirstDifferencePosition(computedSignature, signature));
     }
     
     return isValid;
