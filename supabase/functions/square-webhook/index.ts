@@ -1,13 +1,14 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
+import { createHmac } from "https://deno.land/std@0.207.0/crypto/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// This secret will need to be set in your Edge Function settings
+// This secret is now set in the Edge Function settings
 const SQUARE_WEBHOOK_SIGNATURE_KEY = Deno.env.get("SQUARE_WEBHOOK_SIGNATURE_KEY") || "";
 
 // Default subscription durations in days
@@ -36,20 +37,34 @@ serve(async (req) => {
     
     // Parse the request body
     const body = await req.text();
-    const eventData = JSON.parse(body);
     
-    console.log("Received Square webhook:", eventData.type);
+    // Log raw signature and request body (for debugging)
+    console.log("Received Square webhook signature:", squareSignature);
+    console.log("Received Square webhook body length:", body.length);
+    
+    let eventData;
+    try {
+      eventData = JSON.parse(body);
+      console.log("Received Square webhook event type:", eventData.type);
+      console.log("Webhook payload sample:", JSON.stringify(eventData).substring(0, 200) + "...");
+    } catch (error) {
+      console.error("Failed to parse webhook JSON:", error);
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid JSON payload" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+      );
+    }
     
     // Verify signature if signature key is provided
     if (SQUARE_WEBHOOK_SIGNATURE_KEY) {
-      // In a production environment, you should verify the webhook signature here
-      // This is a simplified check - implementation depends on Square's signature method
       if (!verifySquareSignature(body, squareSignature, SQUARE_WEBHOOK_SIGNATURE_KEY)) {
         console.error("Invalid Square webhook signature");
         return new Response(
           JSON.stringify({ success: false, error: "Invalid signature" }),
           { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401 }
         );
+      } else {
+        console.log("Square webhook signature verified successfully");
       }
     } else {
       console.warn("Square webhook signature verification skipped - no signature key provided");
@@ -60,10 +75,10 @@ serve(async (req) => {
       return await handlePaymentUpdated(eventData, supabase, corsHeaders);
     } else if (eventData.type === "invoice.payment_made" || eventData.type === "invoice.paid") {
       return await handleInvoicePaid(eventData, supabase, corsHeaders);
-    } else if (eventData.type === "subscription.updated") {
-      return await handleSubscriptionUpdated(eventData, supabase, corsHeaders);
-    } else if (eventData.type === "order.fulfilled") {
-      return await handleOrderFulfilled(eventData, supabase, corsHeaders);
+    } else if (eventData.type === "subscription.updated" || eventData.type === "subscription.created") {
+      return await handleSubscriptionEvent(eventData, supabase, corsHeaders);
+    } else if (eventData.type === "order.fulfilled" || eventData.type === "order.updated") {
+      return await handleOrderEvent(eventData, supabase, corsHeaders);
     } else {
       // Log unhandled event types
       console.log(`Unhandled Square event type: ${eventData.type}`);
@@ -81,15 +96,56 @@ serve(async (req) => {
   }
 });
 
-// Helper function to verify Square webhook signature
+// Helper function to verify Square webhook signature using HMAC
 function verifySquareSignature(payload: string, signature: string, signingKey: string): boolean {
-  // Implementation depends on Square's signature method
-  // This is a placeholder - replace with actual signature verification logic
-  // In production, use crypto APIs to verify the signature
-  console.log("Verifying signature:", { payloadLength: payload.length, signature, keyProvided: !!signingKey });
-  
-  // For now, we'll return true to allow testing
-  return true;
+  try {
+    // Square's signature format is t=timestamp,v1=signature
+    // Parse the signature components
+    const signatureParts = signature.split(',');
+    if (signatureParts.length < 2) {
+      console.error("Invalid signature format");
+      return false;
+    }
+    
+    // Extract timestamp and actual signature
+    const timestampPart = signatureParts[0]; // t=1234567890
+    const signaturePart = signatureParts[1]; // v1=actual_signature
+    
+    if (!timestampPart.startsWith('t=') || !signaturePart.startsWith('v1=')) {
+      console.error("Invalid signature format - missing expected components");
+      return false;
+    }
+    
+    const timestamp = timestampPart.substring(2);
+    const actualSignature = signaturePart.substring(3);
+    
+    // Create the string to sign (timestamp + . + payload)
+    const stringToSign = `${timestamp}.${payload}`;
+    
+    // Compute the expected signature
+    const encoder = new TextEncoder();
+    const key = encoder.encode(signingKey);
+    const message = encoder.encode(stringToSign);
+    
+    const hmac = createHmac("sha256", key);
+    hmac.update(message);
+    const digest = hmac.digest();
+    
+    // Convert to hex string for comparison
+    const expectedSignature = Array.from(new Uint8Array(digest))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+    
+    console.log("Signature verification:", {
+      actualSignature: actualSignature,
+      expectedSignaturePrefix: expectedSignature.substring(0, 6) + "..." // Log just a prefix for security
+    });
+    
+    return expectedSignature === actualSignature;
+  } catch (e) {
+    console.error("Error verifying signature:", e);
+    return false;
+  }
 }
 
 // Helper function to determine subscription type from Square data
@@ -111,17 +167,26 @@ function determineSubscriptionType(eventData: any): string {
   }
   
   // Check subscription plan if available
-  if (eventData.data?.object?.subscription?.planId) {
-    const planId = eventData.data.object.subscription.planId;
+  if (eventData.data?.object?.subscription?.plan_id) {
+    const planId = eventData.data.object.subscription.plan_id;
     if (planId.includes("annual")) return "annual";
     if (planId.includes("quarter")) return "quarterly";
     if (planId.includes("month")) return "monthly";
     if (planId.includes("week")) return "weekly";
   }
   
+  // Check subscription cadence if available
+  if (eventData.data?.object?.subscription?.cadence) {
+    const cadence = eventData.data.object.subscription.cadence.toLowerCase();
+    if (cadence.includes("annual")) return "annual";
+    if (cadence.includes("quarterly")) return "quarterly";
+    if (cadence.includes("month")) return "monthly";
+    if (cadence.includes("week")) return "weekly";
+  }
+  
   // Check invoice items if available
-  if (eventData.data?.object?.invoice?.lineItems) {
-    const lineItems = eventData.data.object.invoice.lineItems;
+  if (eventData.data?.object?.invoice?.line_items) {
+    const lineItems = eventData.data.object.invoice.line_items;
     for (const item of lineItems) {
       const description = item.description?.toLowerCase() || "";
       if (description.includes("annual") || description.includes("yearly")) return "annual";
@@ -140,30 +205,29 @@ function extractCustomerEmail(eventData: any): string | null {
   // Try to extract email from different possible locations in the payload
   
   // Check customer object if available
-  if (eventData.data?.object?.customer?.emailAddress) {
-    return eventData.data.object.customer.emailAddress;
+  if (eventData.data?.object?.customer?.email_address) {
+    return eventData.data.object.customer.email_address;
   }
   
   // Check order fulfillment recipients if available
   if (eventData.data?.object?.order?.fulfillments) {
     for (const fulfillment of eventData.data.object.order.fulfillments) {
-      if (fulfillment.recipient?.emailAddress) {
-        return fulfillment.recipient.emailAddress;
+      if (fulfillment.recipient?.email_address) {
+        return fulfillment.recipient.email_address;
       }
     }
   }
   
   // Check invoice recipient if available
-  if (eventData.data?.object?.invoice?.primaryRecipient?.emailAddress) {
-    return eventData.data.object.invoice.primaryRecipient.emailAddress;
+  if (eventData.data?.object?.invoice?.primary_recipient?.email_address) {
+    return eventData.data.object.invoice.primary_recipient.email_address;
   }
   
   // Check subscription customer if available
-  if (eventData.data?.object?.subscription?.customerId) {
+  if (eventData.data?.object?.subscription?.customer_id) {
     // Note: This would require an additional API call to Square to get the customer's email
-    // For now, we'll return null if we can't find the email directly in the webhook data
     console.log("Customer ID found but email not available in webhook payload:", 
-                eventData.data.object.subscription.customerId);
+                eventData.data.object.subscription.customer_id);
   }
   
   // No email found
@@ -200,7 +264,7 @@ async function handlePaymentUpdated(eventData: any, supabase: any, corsHeaders: 
   
   const subscriptionType = determineSubscriptionType(eventData);
   const expiryDate = calculateExpiryDate(subscriptionType);
-  const orderId = eventData.data?.object?.payment?.orderId || 
+  const orderId = eventData.data?.object?.payment?.order_id || 
                   eventData.data?.object?.payment?.id || 
                   "unknown_order";
   
@@ -242,8 +306,8 @@ async function handleInvoicePaid(eventData: any, supabase: any, corsHeaders: any
   );
 }
 
-// Handler for subscription.updated events
-async function handleSubscriptionUpdated(eventData: any, supabase: any, corsHeaders: any) {
+// Handler for subscription.updated and subscription.created events
+async function handleSubscriptionEvent(eventData: any, supabase: any, corsHeaders: any) {
   // Only process active subscriptions
   if (eventData.data?.object?.subscription?.status !== "ACTIVE") {
     console.log("Subscription not active, skipping");
@@ -262,7 +326,10 @@ async function handleSubscriptionUpdated(eventData: any, supabase: any, corsHead
   }
   
   const subscriptionType = determineSubscriptionType(eventData);
-  const expiryDate = calculateExpiryDate(subscriptionType);
+  
+  // For subscriptions, we'll use a far future expiry date since Square handles billing
+  const farFutureDate = new Date('9999-12-31');
+  
   const orderId = eventData.data?.object?.subscription?.id || 
                   eventData.data?.id || 
                   "unknown_subscription";
@@ -271,15 +338,15 @@ async function handleSubscriptionUpdated(eventData: any, supabase: any, corsHead
   return await createPendingSubscription(
     customerEmail, 
     subscriptionType, 
-    expiryDate, 
+    farFutureDate,  // Use far future date for subscriptions
     orderId, 
     supabase, 
     corsHeaders
   );
 }
 
-// Handler for order.fulfilled events
-async function handleOrderFulfilled(eventData: any, supabase: any, corsHeaders: any) {
+// Handler for order.fulfilled and order.updated events
+async function handleOrderEvent(eventData: any, supabase: any, corsHeaders: any) {
   const customerEmail = extractCustomerEmail(eventData);
   if (!customerEmail) {
     return new Response(
