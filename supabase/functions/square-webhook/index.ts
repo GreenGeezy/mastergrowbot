@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v8 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v9 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -49,12 +49,38 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    // Get the Square-Signature header
-    // Check both possible header names - Square-Signature or X-Square-Signature
-    let squareSignature = req.headers.get("Square-Signature") || "";
-    if (!squareSignature) {
-      squareSignature = req.headers.get("X-Square-Signature") || "";
+    // Get the Square-Signature header - log all headers to debug
+    const headersObj = Object.fromEntries(req.headers.entries());
+    console.log("All request headers:", JSON.stringify(headersObj));
+    
+    // Try multiple possible header names
+    let squareSignature = "";
+    const possibleHeaderNames = [
+      "Square-Signature", 
+      "X-Square-Signature", 
+      "square-signature", 
+      "x-square-signature"
+    ];
+    
+    for (const headerName of possibleHeaderNames) {
+      const value = req.headers.get(headerName);
+      if (value) {
+        console.log(`Found signature in header: ${headerName}`);
+        squareSignature = value;
+        break;
+      }
     }
+    
+    if (!squareSignature) {
+      console.error("Square webhook signature header not found in request headers");
+      console.log("Available headers:", Object.keys(headersObj).join(", "));
+      return new Response(
+        JSON.stringify({ success: false, error: "Missing signature header" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401 }
+      );
+    }
+    
+    console.log("Square signature header found:", squareSignature);
     
     // Parse the request body
     const body = await req.text();
@@ -124,62 +150,56 @@ async function verifySquareSignature(payload: string, signature: string, signing
   try {
     console.log("Starting signature verification process");
     
-    // Check if signature exists
+    // Check if signature exists and is not empty
     if (!signature || signature.trim() === "") {
-      console.error("Empty signature");
+      console.error("Empty signature header");
       return false;
     }
     
-    console.log("Raw signature header:", signature);
+    console.log("Full signature header:", signature);
     
-    // Parse the signature components - Square uses format "t=TIMESTAMP,v1=SIGNATURE"
-    // First, split by comma to separate the t= and v1= parts
-    const signatureParts = signature.split(',');
-    
-    if (signatureParts.length < 2) {
-      console.error("Invalid signature format - missing components, parts count:", signatureParts.length);
-      return false;
-    }
+    // Square uses format "t=TIMESTAMP,v1=SIGNATURE"
+    // First, parse the signature header into components
+    const components = signature.split(',').map(part => part.trim());
     
     let timestamp = '';
     let signatureValue = '';
     
-    // Extract timestamp and signature value
-    for (const part of signatureParts) {
-      const trimmedPart = part.trim();
+    for (const component of components) {
+      console.log("Processing signature component:", component);
       
-      if (trimmedPart.startsWith('t=')) {
-        timestamp = trimmedPart.substring(2);
-        console.log("Extracted timestamp:", timestamp);
-      } else if (trimmedPart.startsWith('v1=')) {
-        signatureValue = trimmedPart.substring(3);
-        console.log("Extracted signature value (first 6 chars):", 
-                   signatureValue.length >= 6 ? signatureValue.substring(0, 6) + "..." : "TOO SHORT");
+      if (component.startsWith('t=')) {
+        timestamp = component.substring(2);
+        console.log("Found timestamp:", timestamp);
+      } else if (component.startsWith('v1=')) {
+        signatureValue = component.substring(3);
+        console.log(`Found signature value (length: ${signatureValue.length})`);
+        if (signatureValue.length > 0) {
+          console.log(`Signature prefix: ${signatureValue.substring(0, 6)}...`);
+        }
       }
     }
     
     if (!timestamp) {
-      console.error("Invalid signature format - missing timestamp (t= part)");
+      console.error("Missing timestamp (t=) in signature header");
       return false;
     }
     
     if (!signatureValue) {
-      console.error("Invalid signature format - missing signature value (v1= part)");
+      console.error("Missing signature value (v1=) in signature header");
       return false;
     }
-    
-    console.log("Successfully extracted timestamp:", timestamp);
-    console.log("Successfully extracted signature value length:", signatureValue.length);
     
     // According to Square's documentation, the string to sign is:
     // WEBHOOK_URL + REQUEST_BODY
     const stringToSign = WEBHOOK_URL + payload;
-    console.log("Using stringToSign format: WEBHOOK_URL + REQUEST_BODY");
-    console.log("String-to-sign length:", stringToSign.length);
+    console.log(`String to sign constructed: URL(${WEBHOOK_URL.length} chars) + BODY(${payload.length} chars) = ${stringToSign.length} total chars`);
     
     // Import the signing key as a CryptoKey
     const encoder = new TextEncoder();
     const keyData = encoder.encode(signingKey);
+    console.log(`Importing signing key (${signingKey.length} chars) for HMAC-SHA256`);
+    
     const key = await crypto.subtle.importKey(
       "raw",
       keyData,
@@ -189,6 +209,7 @@ async function verifySquareSignature(payload: string, signature: string, signing
     );
     
     // Compute the expected signature
+    console.log("Computing HMAC-SHA256...");
     const signatureBytes = await crypto.subtle.sign(
       "HMAC",
       key,
@@ -203,17 +224,38 @@ async function verifySquareSignature(payload: string, signature: string, signing
     console.log("Signature verification comparison:");
     console.log(`  Received signature length: ${signatureValue.length}`);
     console.log(`  Expected signature length: ${expectedSignature.length}`);
-    console.log(`  Received signature prefix: ${signatureValue.substring(0, 6)}...`);
-    console.log(`  Expected signature prefix: ${expectedSignature.substring(0, 6)}...`);
+    console.log(`  Received signature prefix: ${signatureValue.substring(0, 8)}...`);
+    console.log(`  Expected signature prefix: ${expectedSignature.substring(0, 8)}...`);
     
     const isValid = expectedSignature === signatureValue;
     console.log("Signature verification result:", isValid ? "VALID" : "INVALID");
+    
+    if (!isValid) {
+      console.log("First mismatch at position:", findFirstDifferencePosition(expectedSignature, signatureValue));
+    }
     
     return isValid;
   } catch (e) {
     console.error("Error verifying signature:", e);
     return false;
   }
+}
+
+// Helper function to find the first position where two strings differ
+function findFirstDifferencePosition(str1: string, str2: string): string {
+  const minLength = Math.min(str1.length, str2.length);
+  
+  for (let i = 0; i < minLength; i++) {
+    if (str1[i] !== str2[i]) {
+      return `Position ${i}: '${str1[i]}' vs '${str2[i]}'`;
+    }
+  }
+  
+  if (str1.length !== str2.length) {
+    return `Strings match up to position ${minLength} but have different lengths`;
+  }
+  
+  return "Strings are identical";
 }
 
 // Helper function to determine subscription type from Square data
