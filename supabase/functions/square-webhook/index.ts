@@ -1,8 +1,9 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v13 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v14 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -160,7 +161,7 @@ serve(async (req) => {
   }
 });
 
-// Helper function to verify Square webhook signature using HMAC - COMPLETELY REWRITTEN
+// COMPLETELY REWRITTEN verifySquareSignature function to correctly handle raw signatures
 async function verifySquareSignature(headers: Headers, payload: string, signature: string, signingKey: string): Promise<boolean> {
   try {
     console.log("Starting signature verification process");
@@ -275,36 +276,63 @@ async function verifySquareSignature(headers: Headers, payload: string, signatur
       }
     }
     
-    // Method 3: Use Square's exact signature generation algorithm
-    // This approach replicates Square's exact method for generating the signature
+    // Method 3: Create a base64 version of our computed signature for comparison
     if (!isValid) {
       try {
-        console.log("Attempting Square's documented signature algorithm...");
+        const computedBinaryString = Array.from(new Uint8Array(signatureBytes))
+          .map(byte => String.fromCharCode(byte))
+          .join('');
         
-        // Create an HMAC using the binary key
-        const hmac = await crypto.subtle.sign(
-          "HMAC",
-          key, 
-          encoder.encode(stringToSign)
-        );
+        const computedBase64 = btoa(computedBinaryString);
+        console.log(`  Computed base64 signature: ${computedBase64.substring(0, 8)}...`);
         
-        // Convert the HMAC result to base64
-        const hmacBase64 = btoa(String.fromCharCode(...new Uint8Array(hmac)));
-        console.log(`  Square algorithm computed signature: ${hmacBase64.substring(0, 8)}...`);
-        
-        isValid = hmacBase64 === signature;
-        console.log(`Square algorithm comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
+        isValid = computedBase64 === signature;
+        console.log(`Computed base64 comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
       } catch (e) {
-        console.error("Failed Square's documented algorithm comparison:", e);
+        console.error("Failed base64 conversion comparison:", e);
+      }
+    }
+    
+    // Method 4: Try Square's specific signature format
+    // Some API versions of Square use raw base64 and others use t=timestamp,v1=signature format
+    if (!isValid && signature.includes(',') && signature.includes('=')) {
+      try {
+        console.log("Attempting to parse Square's formatted signature (t=,v1=)...");
+        // If the signature is in the format t=timestamp,v1=signature
+        const parts = signature.split(',');
+        let actualSignature = '';
+        
+        for (const part of parts) {
+          if (part.startsWith('v1=')) {
+            actualSignature = part.substring(3);
+            break;
+          }
+        }
+        
+        if (actualSignature) {
+          console.log(`Extracted v1 signature part: ${actualSignature.substring(0, 8)}...`);
+          
+          // Compare with our computed signature (hex)
+          isValid = computedSignature === actualSignature;
+          console.log(`v1= extracted comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
+          
+          // Also try base64 comparison
+          if (!isValid) {
+            const computedBinaryString = Array.from(new Uint8Array(signatureBytes))
+              .map(byte => String.fromCharCode(byte))
+              .join('');
+            
+            const computedBase64 = btoa(computedBinaryString);
+            isValid = computedBase64 === actualSignature;
+            console.log(`v1= with base64 comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
+          }
+        }
+      } catch (e) {
+        console.error("Failed parsing formatted signature:", e);
       }
     }
     
     console.log("Final signature verification result:", isValid ? "VALID" : "INVALID");
-    
-    if (!isValid) {
-      console.log("First mismatch at position:", findFirstDifferencePosition(computedSignature, signature));
-    }
-    
     return isValid;
   } catch (e) {
     console.error("Error verifying signature:", e);
