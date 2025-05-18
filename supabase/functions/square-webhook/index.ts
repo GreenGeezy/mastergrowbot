@@ -1,8 +1,9 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v7 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v8 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -49,7 +50,11 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseKey);
     
     // Get the Square-Signature header
-    const squareSignature = req.headers.get("Square-Signature") || "";
+    // Check both possible header names - Square-Signature or X-Square-Signature
+    let squareSignature = req.headers.get("Square-Signature") || "";
+    if (!squareSignature) {
+      squareSignature = req.headers.get("X-Square-Signature") || "";
+    }
     
     // Parse the request body
     const body = await req.text();
@@ -125,16 +130,14 @@ async function verifySquareSignature(payload: string, signature: string, signing
       return false;
     }
     
-    console.log("Raw signature format:", signature);
+    console.log("Raw signature header:", signature);
     
-    // According to Square's documentation, the signature should have this format:
-    // t=TIMESTAMP,v1=SIGNATURE
+    // Parse the signature components - Square uses format "t=TIMESTAMP,v1=SIGNATURE"
+    // First, split by comma to separate the t= and v1= parts
+    const signatureParts = signature.split(',');
     
-    // Parse the signature components
-    const signatureComponents = signature.split(',');
-    
-    if (signatureComponents.length < 2) {
-      console.error("Invalid signature format - missing components");
+    if (signatureParts.length < 2) {
+      console.error("Invalid signature format - missing components, parts count:", signatureParts.length);
       return false;
     }
     
@@ -142,27 +145,34 @@ async function verifySquareSignature(payload: string, signature: string, signing
     let signatureValue = '';
     
     // Extract timestamp and signature value
-    for (const component of signatureComponents) {
-      if (component.startsWith('t=')) {
-        timestamp = component.substring(2);
-      } else if (component.startsWith('v1=')) {
-        signatureValue = component.substring(3);
+    for (const part of signatureParts) {
+      const trimmedPart = part.trim();
+      
+      if (trimmedPart.startsWith('t=')) {
+        timestamp = trimmedPart.substring(2);
+        console.log("Extracted timestamp:", timestamp);
+      } else if (trimmedPart.startsWith('v1=')) {
+        signatureValue = trimmedPart.substring(3);
+        console.log("Extracted signature value (first 6 chars):", 
+                   signatureValue.length >= 6 ? signatureValue.substring(0, 6) + "..." : "TOO SHORT");
       }
     }
     
-    if (!timestamp || !signatureValue) {
-      console.error("Invalid signature format - missing t= or v1= values");
-      console.log("Timestamp extracted:", timestamp || "NONE");
-      console.log("Signature value extracted:", signatureValue ? "YES (length: " + signatureValue.length + ")" : "NONE");
+    if (!timestamp) {
+      console.error("Invalid signature format - missing timestamp (t= part)");
+      return false;
+    }
+    
+    if (!signatureValue) {
+      console.error("Invalid signature format - missing signature value (v1= part)");
       return false;
     }
     
     console.log("Successfully extracted timestamp:", timestamp);
-    console.log("Successfully extracted signature value (first 6 chars):", signatureValue.substring(0, 6) + "...");
+    console.log("Successfully extracted signature value length:", signatureValue.length);
     
-    // According to Square's latest documentation, the string to sign is:
+    // According to Square's documentation, the string to sign is:
     // WEBHOOK_URL + REQUEST_BODY
-    // Reference: https://developer.squareup.com/docs/webhooks/step3validate#step-2-validate-the-signature
     const stringToSign = WEBHOOK_URL + payload;
     console.log("Using stringToSign format: WEBHOOK_URL + REQUEST_BODY");
     console.log("String-to-sign length:", stringToSign.length);
