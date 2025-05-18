@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v10 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v11 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -174,43 +174,53 @@ async function verifySquareSignature(payload: string, signature: string, signing
     
     console.log("Full signature header:", signature);
     
-    // Analyze the signature format in detail before parsing
-    if (!signature.includes(',') || !signature.includes('=')) {
-      console.error("Invalid signature format - missing commas or equals signs");
-      return false;
-    }
-    
-    // Square uses format "t=TIMESTAMP,v1=SIGNATURE"
-    // First, parse the signature header into components
-    const components = signature.split(',').map(part => part.trim());
-    console.log(`Signature split into ${components.length} components:`, components);
-    
     let timestamp = '';
     let signatureValue = '';
     
-    for (const component of components) {
-      console.log("Processing signature component:", component);
+    // IMPROVED: Handle both Square's documented format and raw signature format
+    // Square's documented format is "t=TIMESTAMP,v1=SIGNATURE"
+    if (signature.includes(',') && signature.includes('=')) {
+      // Standard format with t= and v1=
+      console.log("Detected standard Square signature format with t= and v1=");
       
-      if (component.startsWith('t=')) {
-        timestamp = component.substring(2);
-        console.log("Found timestamp:", timestamp);
-      } else if (component.startsWith('v1=')) {
-        signatureValue = component.substring(3);
-        console.log(`Found signature value (length: ${signatureValue.length})`);
-        if (signatureValue.length > 0) {
-          console.log(`Signature prefix: ${signatureValue.substring(0, 6)}...`);
+      const components = signature.split(',').map(part => part.trim());
+      console.log(`Signature split into ${components.length} components:`, components);
+      
+      for (const component of components) {
+        console.log("Processing signature component:", component);
+        
+        if (component.startsWith('t=')) {
+          timestamp = component.substring(2);
+          console.log("Found timestamp:", timestamp);
+        } else if (component.startsWith('v1=')) {
+          signatureValue = component.substring(3);
+          console.log(`Found signature value (length: ${signatureValue.length})`);
+          if (signatureValue.length > 0) {
+            console.log(`Signature prefix: ${signatureValue.substring(0, 6)}...`);
+          }
         }
       }
-    }
-    
-    if (!timestamp) {
-      console.error("Missing timestamp (t=) in signature header");
-      return false;
-    }
-    
-    if (!signatureValue) {
-      console.error("Missing signature value (v1=) in signature header");
-      return false;
+      
+      if (!timestamp) {
+        console.error("Missing timestamp (t=) in signature header");
+        timestamp = Math.floor(Date.now() / 1000).toString(); // Use current time as fallback
+        console.log("Using current timestamp as fallback:", timestamp);
+      }
+      
+      if (!signatureValue) {
+        console.error("Missing signature value (v1=) in signature header");
+        return false;
+      }
+    } else {
+      // Handle case where signature is just the raw value without t= and v1= format
+      console.log("Detected simplified signature format (raw signature only)");
+      signatureValue = signature.trim();
+      timestamp = Math.floor(Date.now() / 1000).toString(); // Use current time as fallback
+      console.log("Using current timestamp as fallback:", timestamp);
+      console.log(`Raw signature value (length: ${signatureValue.length})`);
+      if (signatureValue.length > 0) {
+        console.log(`Signature prefix: ${signatureValue.substring(0, 6)}...`);
+      }
     }
     
     // According to Square's documentation, the string to sign is:
@@ -250,7 +260,26 @@ async function verifySquareSignature(payload: string, signature: string, signing
     console.log(`  Received signature prefix: ${signatureValue.substring(0, 8)}...`);
     console.log(`  Expected signature prefix: ${expectedSignature.substring(0, 8)}...`);
     
-    const isValid = expectedSignature === signatureValue;
+    // Try both direct comparison and base64-decoded comparison
+    let isValid = expectedSignature === signatureValue;
+    
+    // If direct comparison fails, try decoding base64 if the signature appears to be base64
+    if (!isValid && signatureValue.match(/^[A-Za-z0-9+/=]+$/)) {
+      console.log("Direct comparison failed, attempting base64 comparison...");
+      try {
+        // Convert base64 to binary and then to hex
+        const binarySignature = atob(signatureValue);
+        const hexSignature = Array.from(binarySignature, c => 
+          c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+        
+        console.log(`  Base64-decoded signature prefix: ${hexSignature.substring(0, 8)}...`);
+        isValid = expectedSignature === hexSignature;
+        console.log("Base64 comparison result:", isValid ? "VALID" : "INVALID");
+      } catch (e) {
+        console.error("Failed to decode base64 signature:", e);
+      }
+    }
+    
     console.log("Signature verification result:", isValid ? "VALID" : "INVALID");
     
     if (!isValid) {
