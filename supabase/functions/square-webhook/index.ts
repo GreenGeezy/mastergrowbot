@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v9 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v10 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -29,6 +29,10 @@ const SUBSCRIPTION_DURATIONS = {
 serve(async (req) => {
   console.log("Square webhook received request - " + new Date().toISOString());
   
+  // ENHANCED DEBUGGING: Log all request headers to identify what Square is actually sending
+  const headersObj = Object.fromEntries(req.headers.entries());
+  console.log("All request headers:", JSON.stringify(headersObj));
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders, status: 204 });
@@ -49,25 +53,37 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    // Get the Square-Signature header - log all headers to debug
-    const headersObj = Object.fromEntries(req.headers.entries());
-    console.log("All request headers:", JSON.stringify(headersObj));
-    
-    // Try multiple possible header names
+    // ENHANCED HEADER EXTRACTION: Try all possible signature header names with case variations
     let squareSignature = "";
     const possibleHeaderNames = [
       "Square-Signature", 
       "X-Square-Signature", 
       "square-signature", 
-      "x-square-signature"
+      "x-square-signature",
+      // Add more variations if needed
     ];
     
+    // Try to find the signature in any of the possible header names
     for (const headerName of possibleHeaderNames) {
       const value = req.headers.get(headerName);
       if (value) {
         console.log(`Found signature in header: ${headerName}`);
         squareSignature = value;
         break;
+      }
+    }
+    
+    // If still not found, try to search case-insensitively across all headers
+    if (!squareSignature) {
+      console.log("Signature not found in standard header names, searching all headers...");
+      const headerEntries = Array.from(req.headers.entries());
+      for (const [key, value] of headerEntries) {
+        const lowerKey = key.toLowerCase();
+        if (lowerKey.includes('square') && lowerKey.includes('signature')) {
+          console.log(`Found signature in non-standard header: ${key}`);
+          squareSignature = value;
+          break;
+        }
       }
     }
     
@@ -158,9 +174,16 @@ async function verifySquareSignature(payload: string, signature: string, signing
     
     console.log("Full signature header:", signature);
     
+    // Analyze the signature format in detail before parsing
+    if (!signature.includes(',') || !signature.includes('=')) {
+      console.error("Invalid signature format - missing commas or equals signs");
+      return false;
+    }
+    
     // Square uses format "t=TIMESTAMP,v1=SIGNATURE"
     // First, parse the signature header into components
     const components = signature.split(',').map(part => part.trim());
+    console.log(`Signature split into ${components.length} components:`, components);
     
     let timestamp = '';
     let signatureValue = '';
