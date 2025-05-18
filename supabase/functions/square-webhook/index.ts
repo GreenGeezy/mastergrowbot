@@ -1,7 +1,8 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
-import { create as createHmac } from "https://deno.land/std@0.207.0/crypto/hmac.ts";
+import { HmacSha256 } from "https://deno.land/std@0.207.0/crypto/hmac_sha256.ts";
+import { encode as hexEncode } from "https://deno.land/std@0.207.0/encoding/hex.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -123,18 +124,17 @@ function verifySquareSignature(payload: string, signature: string, signingKey: s
     // Create the string to sign (timestamp + . + payload)
     const stringToSign = `${timestamp}.${payload}`;
     
-    // Compute the expected signature using updated Deno crypto APIs
+    // Compute the expected signature using Deno's crypto API
     const key = new TextEncoder().encode(signingKey);
     const message = new TextEncoder().encode(stringToSign);
     
-    // Create an HMAC with SHA-256
-    const hmac = createHmac("sha256", key);
-    const signature = hmac.update(message).digest();
+    // Create HMAC with SHA-256
+    const hmac = new HmacSha256(key);
+    hmac.update(message);
+    const signature = hmac.digest();
     
     // Convert to hex string for comparison
-    const expectedSignature = Array.from(new Uint8Array(signature))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
+    const expectedSignature = hexEncode(signature);
     
     console.log("Signature verification:", {
       actualSignature: actualSignature,
