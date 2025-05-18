@@ -1,17 +1,13 @@
 
+# A string used to distinguish different Supabase projects on the same host. Defaults to the project reference.
 project_id = "inbfxduleyhygxatxmre"
 
-[functions.chat]
-verify_jwt = true
-
-[functions.analyze-plant]
-verify_jwt = true
-
-[functions.create-storage-bucket]
-verify_jwt = false
-
-[functions.mark-quiz-completed]
-verify_jwt = true
+# This is a JWT secret that will be used to sign JWT tokens for authenticated requests.
+# You may use this to authenticate users into your Edge Functions. To get the JWT token,
+# use Supabase Auth and select 'Generate JWT Token' in the dashboard.
+jwt_secret = ""
+anon_key = ""
+service_role_key = ""
 
 [functions.square-webhook]
 verify_jwt = false

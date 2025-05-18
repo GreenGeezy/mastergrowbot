@@ -1,11 +1,9 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
-import { crypto } from "https://deno.land/std@0.177.0/crypto/mod.ts";
-import { encodeHex } from "https://deno.land/std@0.177.0/encoding/hex.ts";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v3 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v4 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -147,25 +145,25 @@ async function verifySquareSignature(payload: string, signature: string, signing
     // Create the string to sign (timestamp + . + payload)
     const stringToSign = `${timestamp}.${payload}`;
     
-    // Compute the expected signature using Deno's crypto API
-    const key = new TextEncoder().encode(signingKey);
-    const message = new TextEncoder().encode(stringToSign);
-    
-    // Create HMAC with SHA-256 using Deno's standard crypto library
-    const hmacKey = await crypto.subtle.importKey(
+    // Compute the expected signature using Web Crypto API
+    const key = await crypto.subtle.importKey(
       "raw",
-      key,
+      new TextEncoder().encode(signingKey),
       { name: "HMAC", hash: "SHA-256" },
       false,
       ["sign"]
     );
     
-    const hmacSignature = new Uint8Array(
-      await crypto.subtle.sign("HMAC", hmacKey, message)
+    const signatureBytes = await crypto.subtle.sign(
+      "HMAC",
+      key,
+      new TextEncoder().encode(stringToSign)
     );
     
     // Convert to hex string for comparison
-    const expectedSignature = encodeHex(hmacSignature);
+    const expectedSignature = Array.from(new Uint8Array(signatureBytes))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
     
     console.log("Signature verification:", {
       actualSignaturePrefix: actualSignature.substring(0, 6) + "...",
