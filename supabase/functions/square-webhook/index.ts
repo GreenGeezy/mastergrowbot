@@ -1,7 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
-import { createHmac } from "https://deno.land/std@0.207.0/crypto/mod.ts";
+import { create as createHmac } from "https://deno.land/std@0.207.0/crypto/hmac.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -41,6 +41,7 @@ serve(async (req) => {
     // Log raw signature and request body (for debugging)
     console.log("Received Square webhook signature:", squareSignature);
     console.log("Received Square webhook body length:", body.length);
+    console.log("Signature key available:", !!SQUARE_WEBHOOK_SIGNATURE_KEY);
     
     let eventData;
     try {
@@ -122,17 +123,16 @@ function verifySquareSignature(payload: string, signature: string, signingKey: s
     // Create the string to sign (timestamp + . + payload)
     const stringToSign = `${timestamp}.${payload}`;
     
-    // Compute the expected signature
-    const encoder = new TextEncoder();
-    const key = encoder.encode(signingKey);
-    const message = encoder.encode(stringToSign);
+    // Compute the expected signature using updated Deno crypto APIs
+    const key = new TextEncoder().encode(signingKey);
+    const message = new TextEncoder().encode(stringToSign);
     
+    // Create an HMAC with SHA-256
     const hmac = createHmac("sha256", key);
-    hmac.update(message);
-    const digest = hmac.digest();
+    const signature = hmac.update(message).digest();
     
     // Convert to hex string for comparison
-    const expectedSignature = Array.from(new Uint8Array(digest))
+    const expectedSignature = Array.from(new Uint8Array(signature))
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
     
