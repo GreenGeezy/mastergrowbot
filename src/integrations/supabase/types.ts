@@ -461,8 +461,8 @@ export type Database = {
     }
     Functions: {
       attempt_delete_users: {
-        Args: { user_ids: string[] }
-        Returns: string
+        Args: Record<PropertyKey, never> | { user_ids: string[] }
+        Returns: undefined
       }
       check_and_remove_pending_subscriptions: {
         Args: { email_param: string }

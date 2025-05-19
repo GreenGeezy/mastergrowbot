@@ -17,6 +17,8 @@ interface AuthFormProps {
   onSubmit: (e: React.FormEvent) => void;
   onToggleMode: () => void;
   onGoogleSignIn: () => void;
+  disabled?: boolean;
+  onDisabledClick?: () => void;
 }
 
 export const AuthForm = ({
@@ -31,6 +33,8 @@ export const AuthForm = ({
   onSubmit,
   onToggleMode,
   onGoogleSignIn,
+  disabled = false,
+  onDisabledClick,
 }: AuthFormProps) => {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -81,7 +85,11 @@ export const AuthForm = ({
       <Button 
         type="submit" 
         className="w-full"
-        disabled={loading}
+        disabled={loading || disabled}
+        onClick={disabled && onDisabledClick ? (e) => {
+          e.preventDefault();
+          onDisabledClick();
+        } : undefined}
       >
         {loading ? "Loading..." : (isSignUp ? "Sign Up" : "Sign In")}
       </Button>
@@ -99,8 +107,8 @@ export const AuthForm = ({
         type="button"
         variant="outline"
         className="w-full flex items-center justify-center gap-2"
-        onClick={onGoogleSignIn}
-        disabled={loading}
+        onClick={disabled && onDisabledClick ? onDisabledClick : onGoogleSignIn}
+        disabled={loading || disabled}
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24">
           <path
@@ -127,7 +135,8 @@ export const AuthForm = ({
         <button
           type="button"
           className="text-sm text-gray-400 hover:text-white"
-          onClick={onToggleMode}
+          onClick={disabled && onDisabledClick ? onDisabledClick : onToggleMode}
+          disabled={disabled}
         >
           {isSignUp 
             ? "Already have an account? Sign in" 

@@ -6,6 +6,7 @@ import { Check } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
+import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
 
 const ThankYou = () => {
   const location = useLocation();
@@ -15,11 +16,17 @@ const ThankYou = () => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [hasValidToken, setHasValidToken] = useState(false);
   
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const emailParam = searchParams.get("email");
     const subType = searchParams.get("subscription_type") || "basic";
+    const codeParam = searchParams.get("code");
+    
+    // Check if we have either email or code in the URL
+    setHasValidToken(!!(emailParam || codeParam));
     
     if (emailParam) {
       setEmail(emailParam);
@@ -105,6 +112,10 @@ const ThankYou = () => {
     }
   };
 
+  const handleDisabledButtonClick = () => {
+    setShowPurchaseModal(true);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md">
@@ -135,9 +146,17 @@ const ThankYou = () => {
               onSubmit={handleAuth}
               onToggleMode={() => {}} // Disabled for this flow
               onGoogleSignIn={handleGoogleSignIn}
+              disabled={!hasValidToken}
+              onDisabledClick={handleDisabledButtonClick}
             />
           </CardContent>
         </Card>
+        
+        {/* Purchase notification modal */}
+        <PurchaseNotificationModal 
+          isOpen={showPurchaseModal} 
+          onClose={() => setShowPurchaseModal(false)} 
+        />
       </div>
     </div>
   );
