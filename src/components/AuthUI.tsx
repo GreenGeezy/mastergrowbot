@@ -101,7 +101,7 @@ const AuthUI = () => {
       <Card className="border border-primary/20">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center font-bold">
-            {isSignUp ? "Create an account" : "Login to your account"}
+            Sign In or Create an account
           </CardTitle>
           <CardDescription className="text-center text-amber-50">
             New user? Click the Get Started button and take the AI Grow Optimizer Quiz or Purchase a Master Growbot subscription first directly from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI
