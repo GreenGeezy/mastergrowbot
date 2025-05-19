@@ -27,13 +27,16 @@ const AuthUI = () => {
     const hasCode = urlParams.has('code') || urlParams.has('email');
     setHasValidToken(isThankYouPage && hasCode);
   }, []);
+  
   const handleDisabledButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowPurchaseModal(true);
   };
+  
   const handleToggleMode = () => {
     setIsSignUp(!isSignUp);
   };
+  
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -67,6 +70,7 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
+  
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
@@ -87,9 +91,11 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
+  
   const handleSquareSubscription = () => {
     window.location.href = "https://www.aihighstore.com/shop/ai-tech-software/RYSLC7NKKOOL4Q64NBYA7GJD";
   };
+  
   return <div className="w-full max-w-md mx-auto">
       <Card className="border border-primary/20">
         <CardHeader className="space-y-1">
@@ -99,11 +105,14 @@ const AuthUI = () => {
           <CardDescription className="text-center text-amber-50">
             New user? Click the Get Started button and take the AI Grow Optimizer Quiz or Purchase a Master Growbot subscription first directly from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI
           </CardDescription>
-          <div className="flex items-center mt-2 px-2">
-            <p className="text-left font-medium text-white text-lg">Subscribe with Square</p>
-            <div className="ml-auto">
-              <img src="/lovable-uploads/60d6eaab-1e5e-4d64-95e3-aa382c87322f.png" alt="Square Secure Checkout" onClick={handleSquareSubscription} className="h-12 cursor-pointer hover:opacity-90 transition-opacity object-fill" />
-            </div>
+          <div className="flex items-center justify-center gap-4 mt-3">
+            <p className="font-medium text-white text-lg">Subscribe with Square</p>
+            <img 
+              src="/lovable-uploads/60d6eaab-1e5e-4d64-95e3-aa382c87322f.png" 
+              alt="Square Secure Checkout" 
+              onClick={handleSquareSubscription} 
+              className="h-12 cursor-pointer hover:opacity-90 transition-opacity object-fill" 
+            />
           </div>
         </CardHeader>
         <CardContent>
