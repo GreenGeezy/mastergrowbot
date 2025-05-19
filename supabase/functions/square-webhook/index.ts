@@ -1,9 +1,8 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 // Force fresh deployment with latest SQUARE_WEBHOOK_SIGNATURE_KEY secret value
-console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v14 - ' + new Date().toISOString());
+console.log('Square webhook function starting - FORCED FRESH DEPLOYMENT v15 - ' + new Date().toISOString());
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -53,42 +52,11 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    // ENHANCED HEADER EXTRACTION: Try all possible signature header names with case variations
-    let squareSignature = "";
-    const possibleHeaderNames = [
-      "Square-Signature", 
-      "X-Square-Signature", 
-      "square-signature", 
-      "x-square-signature",
-      // Add more variations if needed
-    ];
-    
-    // Try to find the signature in any of the possible header names
-    for (const headerName of possibleHeaderNames) {
-      const value = req.headers.get(headerName);
-      if (value) {
-        console.log(`Found signature in header: ${headerName}`);
-        squareSignature = value;
-        break;
-      }
-    }
-    
-    // If still not found, try to search case-insensitively across all headers
-    if (!squareSignature) {
-      console.log("Signature not found in standard header names, searching all headers...");
-      const headerEntries = Array.from(req.headers.entries());
-      for (const [key, value] of headerEntries) {
-        const lowerKey = key.toLowerCase();
-        if (lowerKey.includes('square') && lowerKey.includes('signature')) {
-          console.log(`Found signature in non-standard header: ${key}`);
-          squareSignature = value;
-          break;
-        }
-      }
-    }
+    // Extract the signature from the X-Square-HmacSha256-Signature header
+    const squareSignature = req.headers.get("X-Square-HmacSha256-Signature");
     
     if (!squareSignature) {
-      console.error("Square webhook signature header not found in request headers");
+      console.error("Square webhook signature header not found");
       console.log("Available headers:", Object.keys(headersObj).join(", "));
       return new Response(
         JSON.stringify({ success: false, error: "Missing signature header" }),
@@ -98,17 +66,17 @@ serve(async (req) => {
     
     console.log("Square signature header found:", squareSignature);
     
-    // Parse the request body
-    const body = await req.text();
+    // Parse the request body as raw text to preserve exact bytes for signature verification
+    const rawBody = await req.text();
     
-    // Log raw signature and request body (for debugging)
-    console.log("Received Square webhook signature:", squareSignature);
-    console.log("Received Square webhook body length:", body.length);
+    // Log the signature and request details
+    console.log("Received Square webhook signature length:", squareSignature.length);
+    console.log("Received webhook body length:", rawBody.length);
     console.log("Signature key available:", !!SQUARE_WEBHOOK_SIGNATURE_KEY);
     
     let eventData;
     try {
-      eventData = JSON.parse(body);
+      eventData = JSON.parse(rawBody);
       console.log("Received Square webhook event type:", eventData.type);
       console.log("Webhook payload sample:", JSON.stringify(eventData).substring(0, 200) + "...");
     } catch (error) {
@@ -121,7 +89,7 @@ serve(async (req) => {
     
     // Verify signature if signature key is provided
     if (SQUARE_WEBHOOK_SIGNATURE_KEY) {
-      const signatureValid = await verifySquareSignature(req.headers, body, squareSignature, SQUARE_WEBHOOK_SIGNATURE_KEY);
+      const signatureValid = await verifySquareSignature(rawBody, squareSignature, SQUARE_WEBHOOK_SIGNATURE_KEY);
       if (!signatureValid) {
         console.error("Invalid Square webhook signature");
         return new Response(
@@ -161,176 +129,54 @@ serve(async (req) => {
   }
 });
 
-// COMPLETELY REWRITTEN verifySquareSignature function to correctly handle raw signatures
-async function verifySquareSignature(headers: Headers, payload: string, signature: string, signingKey: string): Promise<boolean> {
+// Simple and straightforward signature verification function following Square's documentation
+async function verifySquareSignature(rawBody: string, signature: string, signingKey: string): Promise<boolean> {
   try {
     console.log("Starting signature verification process");
     
-    // Check if signature exists and is not empty
     if (!signature || signature.trim() === "") {
       console.error("Empty signature");
       return false;
     }
     
-    // Extract the timestamp from the Square-Request-Timestamp header
-    let timestamp = headers.get('Square-Request-Timestamp') || 
-                   headers.get('square-request-timestamp');
-                   
-    if (!timestamp) {
-      // Try to find timestamp in any header that might contain it
-      const allHeaders = Object.fromEntries(headers.entries());
-      const timestampHeaderKey = Object.keys(allHeaders).find(key => 
-        key.toLowerCase().includes('square') && key.toLowerCase().includes('timestamp')
-      );
-      
-      if (timestampHeaderKey) {
-        timestamp = allHeaders[timestampHeaderKey];
-        console.log(`Found timestamp in header: ${timestampHeaderKey}`);
-      }
-    }
+    // Decode the base64 signing key to bytes
+    const keyBytes = Uint8Array.from(atob(signingKey), c => c.charCodeAt(0));
+    console.log(`Decoded signing key to ${keyBytes.length} bytes`);
     
-    if (!timestamp) {
-      console.warn("No Square-Request-Timestamp header found, using current time as fallback");
-      timestamp = Math.floor(Date.now() / 1000).toString();
-    }
-    
-    console.log(`Using timestamp: ${timestamp}`);
-    
-    // According to Square's documentation, the string to sign is: WEBHOOK_URL + REQUEST_BODY
-    const stringToSign = WEBHOOK_URL + payload;
-    console.log(`String to sign constructed: URL(${WEBHOOK_URL.length} chars) + BODY(${payload.length} chars) = ${stringToSign.length} total chars`);
+    // The string to sign is: WEBHOOK_URL + REQUEST_BODY (raw, unparsed)
+    const stringToSign = WEBHOOK_URL + rawBody;
+    console.log(`String to sign: URL(${WEBHOOK_URL.length} chars) + BODY(${rawBody.length} chars) = ${stringToSign.length} total chars`);
     
     // Import the signing key as a CryptoKey
-    const encoder = new TextEncoder();
-    const keyData = encoder.encode(signingKey);
-    console.log(`Importing signing key (${signingKey.length} chars) for HMAC-SHA256`);
-    
-    const key = await crypto.subtle.importKey(
-      "raw",
-      keyData,
+    const cryptoKey = await crypto.subtle.importKey(
+      "raw", 
+      keyBytes.buffer, 
       { name: "HMAC", hash: "SHA-256" },
       false,
       ["sign"]
     );
     
-    // Compute the expected signature
-    console.log("Computing HMAC-SHA256...");
+    // Compute the HMAC
     const signatureBytes = await crypto.subtle.sign(
       "HMAC",
-      key,
-      encoder.encode(stringToSign)
+      cryptoKey,
+      new TextEncoder().encode(stringToSign)
     );
     
-    // Convert the signature to lowercase hex
-    const computedSignature = Array.from(new Uint8Array(signatureBytes))
-      .map(b => b.toString(16).padStart(2, '0'))
+    // Convert signature bytes to base64 for comparison with the received signature
+    const computedBinaryString = Array.from(new Uint8Array(signatureBytes))
+      .map(byte => String.fromCharCode(byte))
       .join('');
     
+    const computedBase64 = btoa(computedBinaryString);
+    
+    // Log verification details
     console.log("Signature verification comparison:");
-    console.log(`  Received signature length: ${signature.length}`);
-    console.log(`  Computed signature length: ${computedSignature.length}`);
-    console.log(`  Received signature prefix: ${signature.substring(0, 8)}...`);
-    console.log(`  Computed signature prefix: ${computedSignature.substring(0, 8)}...`);
+    console.log(`  Received signature: ${signature}`);
+    console.log(`  Computed signature: ${computedBase64}`);
     
-    // Try different comparison methods
-    
-    // Method 1: Direct hexadecimal comparison
-    let isValid = computedSignature === signature;
-    console.log(`Direct hex comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
-    
-    // Method 2: Base64 comparison (if signature appears to be base64)
-    if (!isValid && signature.match(/^[A-Za-z0-9+/=]+$/)) {
-      try {
-        // Decode the base64 signature to bytes
-        console.log("Attempting base64 signature comparison...");
-        const rawBytes = atob(signature);
-        
-        // Convert binary string to byte array
-        const signatureArray = Uint8Array.from(rawBytes, c => c.charCodeAt(0));
-        
-        // Convert our computed signature from hex to bytes for comparison
-        const computedArray = new Uint8Array(computedSignature.length / 2);
-        for (let i = 0; i < computedSignature.length; i += 2) {
-          computedArray[i/2] = parseInt(computedSignature.substring(i, i + 2), 16);
-        }
-        
-        // Compare the byte arrays
-        isValid = signatureArray.length === computedArray.length && 
-                 signatureArray.every((val, i) => val === computedArray[i]);
-        
-        console.log(`Base64 byte comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
-        
-        if (!isValid) {
-          // Convert base64 to hex as another comparison method
-          const hexFromBase64 = Array.from(signatureArray)
-            .map(b => b.toString(16).padStart(2, '0'))
-            .join('');
-            
-          console.log(`  Base64 decoded to hex prefix: ${hexFromBase64.substring(0, 8)}...`);
-          
-          isValid = computedSignature === hexFromBase64;
-          console.log(`Base64->hex comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
-        }
-      } catch (e) {
-        console.error("Failed to decode base64 signature:", e);
-      }
-    }
-    
-    // Method 3: Create a base64 version of our computed signature for comparison
-    if (!isValid) {
-      try {
-        const computedBinaryString = Array.from(new Uint8Array(signatureBytes))
-          .map(byte => String.fromCharCode(byte))
-          .join('');
-        
-        const computedBase64 = btoa(computedBinaryString);
-        console.log(`  Computed base64 signature: ${computedBase64.substring(0, 8)}...`);
-        
-        isValid = computedBase64 === signature;
-        console.log(`Computed base64 comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
-      } catch (e) {
-        console.error("Failed base64 conversion comparison:", e);
-      }
-    }
-    
-    // Method 4: Try Square's specific signature format
-    // Some API versions of Square use raw base64 and others use t=timestamp,v1=signature format
-    if (!isValid && signature.includes(',') && signature.includes('=')) {
-      try {
-        console.log("Attempting to parse Square's formatted signature (t=,v1=)...");
-        // If the signature is in the format t=timestamp,v1=signature
-        const parts = signature.split(',');
-        let actualSignature = '';
-        
-        for (const part of parts) {
-          if (part.startsWith('v1=')) {
-            actualSignature = part.substring(3);
-            break;
-          }
-        }
-        
-        if (actualSignature) {
-          console.log(`Extracted v1 signature part: ${actualSignature.substring(0, 8)}...`);
-          
-          // Compare with our computed signature (hex)
-          isValid = computedSignature === actualSignature;
-          console.log(`v1= extracted comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
-          
-          // Also try base64 comparison
-          if (!isValid) {
-            const computedBinaryString = Array.from(new Uint8Array(signatureBytes))
-              .map(byte => String.fromCharCode(byte))
-              .join('');
-            
-            const computedBase64 = btoa(computedBinaryString);
-            isValid = computedBase64 === actualSignature;
-            console.log(`v1= with base64 comparison: ${isValid ? "MATCH" : "NO MATCH"}`);
-          }
-        }
-      } catch (e) {
-        console.error("Failed parsing formatted signature:", e);
-      }
-    }
+    // Compare the signatures
+    const isValid = computedBase64 === signature;
     
     console.log("Final signature verification result:", isValid ? "VALID" : "INVALID");
     return isValid;
@@ -338,23 +184,6 @@ async function verifySquareSignature(headers: Headers, payload: string, signatur
     console.error("Error verifying signature:", e);
     return false;
   }
-}
-
-// Helper function to find the first position where two strings differ
-function findFirstDifferencePosition(str1: string, str2: string): string {
-  const minLength = Math.min(str1.length, str2.length);
-  
-  for (let i = 0; i < minLength; i++) {
-    if (str1[i] !== str2[i]) {
-      return `Position ${i}: '${str1[i]}' vs '${str2[i]}'`;
-    }
-  }
-  
-  if (str1.length !== str2.length) {
-    return `Strings match up to position ${minLength} but have different lengths`;
-  }
-  
-  return "Strings are identical";
 }
 
 // Helper function to determine subscription type from Square data
