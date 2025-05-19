@@ -90,15 +90,20 @@ const AuthUI = () => {
   const handleSquareSubscription = () => {
     window.location.href = "https://www.aihighstore.com/shop/ai-tech-software/RYSLC7NKKOOL4Q64NBYA7GJD";
   };
-  return <div className="w-full max-w-md mx-auto">
+  return <div className="w-full max-w-3xl mx-auto">
       <Card className="border border-primary/20">
-        <CardHeader className="space-y-1">
+        <CardHeader className="space-y-1 px-6 py-4">
           <CardTitle className="text-2xl text-center font-bold">
             Sign In or Create an account
           </CardTitle>
-          <CardDescription className="text-center text-amber-50">New user? Click the AI Grow Optimizer Quiz or Click the Button Below to Subscribe to Master Growbot from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI</CardDescription>
-          <div className="flex items-center justify-center gap-4 mt-3 my-[2px] w-full">
-            <img src="/lovable-uploads/385ffa4e-201d-40f2-9b65-0003aa856b7b.png" alt="Square secure checkout with payment options" onClick={handleSquareSubscription} className="h-[25%] w-full object-cover cursor-pointer hover:opacity-90 transition-opacity" />
+          <CardDescription className="text-center text-amber-50 text-sm">New user? Click the AI Grow Optimizer Quiz or Click the Button Below to Subscribe to Master Growbot from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI</CardDescription>
+          <div className="flex items-center justify-center mt-2 w-full">
+            <img 
+              src="/lovable-uploads/385ffa4e-201d-40f2-9b65-0003aa856b7b.png" 
+              alt="Square secure checkout with payment options" 
+              onClick={handleSquareSubscription} 
+              className="h-16 w-full object-contain cursor-pointer hover:opacity-90 transition-opacity" 
+            />
           </div>
         </CardHeader>
         <CardContent>
