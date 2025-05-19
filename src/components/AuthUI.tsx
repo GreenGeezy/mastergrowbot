@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -107,10 +108,10 @@ const AuthUI = () => {
           </CardDescription>
           <div className="flex items-center justify-center gap-4 mt-3">
             <img 
-              src="/lovable-uploads/a2ea9bc0-889f-478e-bd20-c3c8e3eea84e.png" 
-              alt="Square" 
+              src="/lovable-uploads/44caf6da-dbe1-4c05-95e1-536d044239ea.png" 
+              alt="Secure checkout by Square" 
               onClick={handleSquareSubscription} 
-              className="h-12 cursor-pointer hover:opacity-90 transition-opacity" 
+              className="h-auto w-full max-w-[300px] cursor-pointer hover:opacity-90 transition-opacity" 
             />
           </div>
         </CardHeader>
