@@ -8,7 +8,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
-
 const AuthUI = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -27,16 +26,13 @@ const AuthUI = () => {
     const hasCode = urlParams.has('code') || urlParams.has('email');
     setHasValidToken(isThankYouPage && hasCode);
   }, []);
-  
   const handleDisabledButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowPurchaseModal(true);
   };
-  
   const handleToggleMode = () => {
     setIsSignUp(!isSignUp);
   };
-  
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -70,7 +66,6 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
-  
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
@@ -91,11 +86,9 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
-  
   const handleSquareSubscription = () => {
     window.location.href = "https://www.aihighstore.com/shop/ai-tech-software/RYSLC7NKKOOL4Q64NBYA7GJD";
   };
-  
   return <div className="w-full max-w-3xl mx-auto">
       <Card className="border border-primary/20">
         <CardHeader className="space-y-1 px-6 py-4">
@@ -104,15 +97,10 @@ const AuthUI = () => {
           
           <div className="flex items-center justify-between mt-2 w-full">
             <div className="w-3/4 pr-4">
-              <p className="font-medium text-lg text-right">Subscribe with Square Secure Checkout</p>
+              <p className="text-right font-semibold text-xl">Subscribe with Square Secure Checkout</p>
             </div>
             <div className="w-1/4">
-              <img 
-                src="/lovable-uploads/49f2b526-4d9d-4597-bf88-3ef8f0e9b9b2.png" 
-                alt="Square secure checkout with payment options" 
-                onClick={handleSquareSubscription} 
-                className="w-full object-contain cursor-pointer hover:opacity-90 transition-opacity" 
-              />
+              <img src="/lovable-uploads/49f2b526-4d9d-4597-bf88-3ef8f0e9b9b2.png" alt="Square secure checkout with payment options" onClick={handleSquareSubscription} className="w-full object-contain cursor-pointer hover:opacity-90 transition-opacity" />
             </div>
           </div>
         </CardHeader>
@@ -169,5 +157,4 @@ const AuthUI = () => {
       <PurchaseNotificationModal isOpen={showPurchaseModal} onClose={() => setShowPurchaseModal(false)} />
     </div>;
 };
-
 export default AuthUI;
