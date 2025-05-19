@@ -8,14 +8,12 @@ import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
 import FeatureSection from '@/components/FeatureSection';
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 export default function Index() {
   const session = useSession();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
-  const [showAuthDrawer, setShowAuthDrawer] = useState(false);
   
   // Handle redirects from authentication flow
   useEffect(() => {
@@ -34,24 +32,8 @@ export default function Index() {
     }
   }, [session, navigate, location]);
 
-  // Listen for plant-health button click from the Header component
-  useEffect(() => {
-    const handlePlantHealthClick = () => {
-      if (!session) {
-        setShowAuthDrawer(true);
-        return;
-      }
-    };
-
-    // Clean up event listener
-    return () => {
-      // Any cleanup if needed
-    };
-  }, [session]);
-
   const handleFeatureClick = () => {
     if (!session) {
-      setShowAuthDrawer(true);
       return;
     }
   };
@@ -108,16 +90,9 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <div className="py-6 md:py-10">
             <FeatureSection onFeatureClick={handleFeatureClick} />
-            
-            {/* Hidden auth drawer that appears when user clicks CTA */}
-            <Drawer open={showAuthDrawer} onOpenChange={setShowAuthDrawer}>
-              <DrawerContent className="max-h-[85vh]">
-                <div className="px-4 py-6">
-                  <h3 className="text-xl font-semibold mb-4 text-center">Sign in to continue</h3>
-                  <AuthUI />
-                </div>
-              </DrawerContent>
-            </Drawer>
+            <div className="mt-12 flex flex-col items-center">
+              <AuthUI />
+            </div>
           </div>
         </div>
       )}
