@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,13 +28,16 @@ const AuthUI = () => {
     const hasCode = urlParams.has('code') || urlParams.has('email');
     setHasValidToken(isThankYouPage && hasCode);
   }, []);
+  
   const handleDisabledButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowPurchaseModal(true);
   };
+  
   const handleToggleMode = () => {
     setIsSignUp(!isSignUp);
   };
+  
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -67,6 +71,7 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
+  
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
@@ -87,21 +92,29 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
+  
   const handleSquareSubscription = () => {
     window.location.href = "https://www.aihighstore.com/shop/ai-tech-software/RYSLC7NKKOOL4Q64NBYA7GJD";
   };
+  
   return <div className="w-full max-w-3xl mx-auto">
       <Card className="border border-primary/20">
         <CardHeader className="space-y-1 px-6 py-4">
           <CardTitle className="text-2xl text-center font-bold">Sign In or Create an account to use Master Growbot AI</CardTitle>
           <CardDescription className="text-center text-amber-50 text-base">New user? Click the AI Grow Optimizer Quiz or Click the Button Below to Subscribe to Master Growbot from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI</CardDescription>
-          <div className="flex items-center justify-center mt-2 w-full">
-            <img 
-              src="/lovable-uploads/763e7583-18ee-41c9-96b4-bd1b51471ea6.png" 
-              alt="Square secure checkout with payment options" 
-              onClick={handleSquareSubscription} 
-              className="w-full object-contain cursor-pointer hover:opacity-90 transition-opacity" 
-            />
+          
+          <div className="flex items-center justify-between mt-2 w-full">
+            <div className="w-3/4 pr-4">
+              {/* Empty div to take up space */}
+            </div>
+            <div className="w-1/4">
+              <img 
+                src="/lovable-uploads/763e7583-18ee-41c9-96b4-bd1b51471ea6.png" 
+                alt="Square secure checkout with payment options" 
+                onClick={handleSquareSubscription} 
+                className="w-full object-contain cursor-pointer hover:opacity-90 transition-opacity" 
+              />
+            </div>
           </div>
         </CardHeader>
         <CardContent>
