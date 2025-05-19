@@ -1,8 +1,6 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { nanoid } from 'nanoid';
 import { addDays } from 'date-fns';
 import { Share2, Mail, Twitter, Link2, Instagram, Video, Facebook, Linkedin } from 'lucide-react';
 import type { ShareOption } from './types';
@@ -14,7 +12,7 @@ export const useShareAnalysis = (analysisId: string, imageUrls: string[]) => {
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
-  const generateShareToken = () => nanoid(32);
+  const generateShareToken = () => crypto.randomUUID();
 
   const createShareableLink = async () => {
     if (!analysisId) {
