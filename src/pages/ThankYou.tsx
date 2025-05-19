@@ -6,107 +6,68 @@ import { Check } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
-import { useSession } from "@supabase/auth-helpers-react";
 
 const ThankYou = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const session = useSession();
   const [email, setEmail] = useState<string>("");
+  const [subscriptionType, setSubscriptionType] = useState<string>("basic");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [processingAuth, setProcessingAuth] = useState(false);
   
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const emailParam = searchParams.get("email");
+    const subType = searchParams.get("subscription_type") || "basic";
+    
     if (emailParam) {
       setEmail(emailParam);
     }
+    setSubscriptionType(subType);
   }, [location.search]);
-  
-  // Handle successful authentication
-  useEffect(() => {
-    const handleSuccessfulAuth = async () => {
-      if (session && !processingAuth) {
-        setProcessingAuth(true);
-        try {
-          console.log("Authentication successful, activating subscription...");
-          toast.info("Setting up your account...");
-          
-          // Call the edge function to activate subscription
-          const { data, error } = await supabase.functions.invoke('mark-quiz-completed', {
-            body: {
-              user_id: session.user.id,
-              email: session.user.email
-            }
-          });
-          
-          if (error) throw error;
-          
-          if (data && !data.success && data.error) {
-            // Specific error from the function about no purchase
-            toast.error(data.error);
-            console.error("Subscription activation error:", data.error);
-          } else {
-            toast.success("Your subscription has been activated!");
-            console.log("Subscription activated successfully, redirecting to chat...");
-            
-            // Short delay before redirect to ensure toast is visible
-            setTimeout(() => {
-              navigate('/chat');
-            }, 1500);
-          }
-        } catch (error) {
-          console.error("Error activating subscription:", error);
-          toast.error("There was an issue activating your subscription. Please contact support.");
-        } finally {
-          setProcessingAuth(false);
-        }
-      }
-    };
-    
-    handleSuccessfulAuth();
-  }, [session, navigate, processingAuth]);
-  
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const {
-        data: signUpData,
-        error: signUpError
-      } = await supabase.auth.signUp({
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            // Mark user as having completed quiz automatically
+            subscription_type: subscriptionType,
+            // Mark user as having completed the quiz automatically
             has_completed_quiz: true
           }
         }
       });
-      
+
       if (signUpError) {
         // If user already exists, try to sign in
         if (signUpError.message.includes('User already registered')) {
-          const {
-            error: signInError
-          } = await supabase.auth.signInWithPassword({
+          const { error: signInError } = await supabase.auth.signInWithPassword({
             email,
-            password
+            password,
           });
-          if (signInError) throw signInError;
 
-          toast.success("Welcome back! Your subscription will be activated.");
+          if (signInError) throw signInError;
+          
+          // Update user metadata to include has_completed_quiz=true
+          await supabase.functions.invoke('mark-quiz-completed', {
+            body: { email, subscription_type: subscriptionType }
+          });
+          
+          toast.success("Welcome back! Your subscription has been activated.");
+          navigate('/chat');
           return;
         }
         throw signUpError;
       }
-      
+
       toast.success("Account created successfully!");
-      toast.info("Please check your email for a confirmation link.");
+      navigate('/chat');
     } catch (error) {
       console.error("Authentication error:", error);
       toast.error(error.message);
@@ -114,20 +75,19 @@ const ThankYou = () => {
       setLoading(false);
     }
   };
-  
+
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
-
-      // Store only completed quiz flag and email in session storage
+      
+      // Store subscription info in session storage instead of passing it in query params
       sessionStorage.setItem('mg_has_completed_quiz', 'true');
+      sessionStorage.setItem('mg_subscription_type', subscriptionType);
       if (email) {
         sessionStorage.setItem('mg_pending_email', email);
       }
       
-      const {
-        error
-      } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`
@@ -135,6 +95,7 @@ const ThankYou = () => {
       });
       
       if (error) throw error;
+      
       toast.success("Continuing with Google authentication...");
     } catch (error) {
       console.error("Google sign-in error:", error);
@@ -143,8 +104,9 @@ const ThankYou = () => {
       setLoading(false);
     }
   };
-  
-  return <div className="min-h-screen flex items-center justify-center p-4 bg-background">
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md">
         <Card className="border border-primary/20">
           <CardHeader className="text-center pb-2">
@@ -157,25 +119,28 @@ const ThankYou = () => {
           </CardHeader>
           
           <CardContent className="space-y-4">
-            <p className="text-center text-muted-foreground">Thank you for your purchase! Enter your Email and Password and Click the Sign Up button or Click the Sign in with Google button below to set up your account. Please be sure to use the same email address or Google Account (gmail) you used for your purchase:</p>
+            <p className="text-center text-muted-foreground">
+              Your {subscriptionType} subscription is ready to be activated. Please create your account or sign in to continue.
+            </p>
 
             <AuthForm 
-              email={email} 
-              password={password} 
-              loading={loading || processingAuth} 
-              showPassword={showPassword} 
-              isSignUp={true} 
-              onEmailChange={setEmail} 
-              onPasswordChange={setPassword} 
-              onTogglePassword={() => setShowPassword(!showPassword)} 
-              onSubmit={handleAuth} 
+              email={email}
+              password={password}
+              loading={loading}
+              showPassword={showPassword}
+              isSignUp={true}
+              onEmailChange={setEmail}
+              onPasswordChange={setPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+              onSubmit={handleAuth}
               onToggleMode={() => {}} // Disabled for this flow
-              onGoogleSignIn={handleGoogleSignIn} 
+              onGoogleSignIn={handleGoogleSignIn}
             />
           </CardContent>
         </Card>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default ThankYou;

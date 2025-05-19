@@ -1,3 +1,4 @@
+
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -123,12 +124,14 @@ const AuthCallback = () => {
           console.log("Auth params detected, letting Supabase handle auth");
         }
         
-        // Check session storage for quiz completion info
+        // Check session storage for subscription/quiz info instead of URL params
         const hasCompletedQuiz = sessionStorage.getItem('mg_has_completed_quiz') === 'true';
+        const subscriptionType = sessionStorage.getItem('mg_subscription_type');
         const email = sessionStorage.getItem('mg_pending_email');
         
         console.log("Auth callback parameters from session storage:", { 
-          hasCompletedQuiz,
+          hasCompletedQuiz, 
+          subscriptionType, 
           email,
           session: !!session
         });
@@ -142,23 +145,21 @@ const AuthCallback = () => {
             const result = await supabase.functions.invoke('mark-quiz-completed', {
               body: { 
                 user_id: session.user.id,
-                email: userEmail
+                email: userEmail,
+                subscription_type: subscriptionType
               }
             });
             
             console.log("Mark quiz completed result:", result);
             
             if (result.error) throw new Error(result.error);
-            if (result.data && !result.data.success && result.data.error) {
-              toast.error(result.data.error);
-              console.error("Subscription activation error:", result.data.error);
-            } else {
-              console.log("Successfully marked user as having completed quiz");
-              toast.success("Your account is ready to use!");
-            }
+            
+            console.log("Successfully marked user as having completed quiz");
+            toast.success("Your account is ready to use!");
             
             // Clean up session storage
             sessionStorage.removeItem('mg_has_completed_quiz');
+            sessionStorage.removeItem('mg_subscription_type');
             sessionStorage.removeItem('mg_pending_email');
           } catch (err) {
             console.error("Error marking quiz as completed:", err);
