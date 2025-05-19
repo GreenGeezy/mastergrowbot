@@ -8,6 +8,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
+
 const AuthUI = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -99,7 +100,12 @@ const AuthUI = () => {
             New user? Click the AI Grow Optimizer Quiz or Purchase a Master Growbot subscription first directly from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI
           </CardDescription>
           <div className="flex items-center justify-center gap-4 mt-3">
-            <img src="/lovable-uploads/44caf6da-dbe1-4c05-95e1-536d044239ea.png" alt="Secure checkout by Square" onClick={handleSquareSubscription} className="h-auto w-full max-w-[300px] cursor-pointer hover:opacity-90 transition-opacity object-fill" />
+            <img 
+              src="/lovable-uploads/385ffa4e-201d-40f2-9b65-0003aa856b7b.png" 
+              alt="Square secure checkout with payment options" 
+              onClick={handleSquareSubscription} 
+              className="h-auto w-full max-w-[300px] cursor-pointer hover:opacity-90 transition-opacity object-fill" 
+            />
           </div>
         </CardHeader>
         <CardContent>
