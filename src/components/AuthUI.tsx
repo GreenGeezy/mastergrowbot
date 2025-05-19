@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +8,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
-
 const AuthUI = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -28,16 +26,13 @@ const AuthUI = () => {
     const hasCode = urlParams.has('code') || urlParams.has('email');
     setHasValidToken(isThankYouPage && hasCode);
   }, []);
-  
   const handleDisabledButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowPurchaseModal(true);
   };
-  
   const handleToggleMode = () => {
     setIsSignUp(!isSignUp);
   };
-  
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -71,7 +66,6 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
-  
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
@@ -92,11 +86,9 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
-  
   const handleSquareSubscription = () => {
     window.location.href = "https://www.aihighstore.com/shop/ai-tech-software/RYSLC7NKKOOL4Q64NBYA7GJD";
   };
-  
   return <div className="w-full max-w-md mx-auto">
       <Card className="border border-primary/20">
         <CardHeader className="space-y-1">
@@ -107,12 +99,7 @@ const AuthUI = () => {
             New user? Click the AI Grow Optimizer Quiz or Purchase a Master Growbot subscription first directly from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI
           </CardDescription>
           <div className="flex items-center justify-center gap-4 mt-3">
-            <img 
-              src="/lovable-uploads/44caf6da-dbe1-4c05-95e1-536d044239ea.png" 
-              alt="Secure checkout by Square" 
-              onClick={handleSquareSubscription} 
-              className="h-auto w-full max-w-[300px] cursor-pointer hover:opacity-90 transition-opacity" 
-            />
+            <img src="/lovable-uploads/44caf6da-dbe1-4c05-95e1-536d044239ea.png" alt="Secure checkout by Square" onClick={handleSquareSubscription} className="h-auto w-full max-w-[300px] cursor-pointer hover:opacity-90 transition-opacity object-fill" />
           </div>
         </CardHeader>
         <CardContent>
@@ -132,7 +119,7 @@ const AuthUI = () => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading || (isSignUp && !hasValidToken)} onClick={(isSignUp && !hasValidToken) ? handleDisabledButtonClick : undefined}>
+            <Button type="submit" className="w-full" disabled={loading || isSignUp && !hasValidToken} onClick={isSignUp && !hasValidToken ? handleDisabledButtonClick : undefined}>
               {loading ? "Loading..." : "Sign In"}
             </Button>
 
@@ -168,5 +155,4 @@ const AuthUI = () => {
       <PurchaseNotificationModal isOpen={showPurchaseModal} onClose={() => setShowPurchaseModal(false)} />
     </div>;
 };
-
 export default AuthUI;
