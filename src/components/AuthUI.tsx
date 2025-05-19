@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -92,6 +93,10 @@ const AuthUI = () => {
     }
   };
 
+  const handleSquareSubscription = () => {
+    window.location.href = "https://www.aihighstore.com/shop/ai-tech-software/RYSLC7NKKOOL4Q64NBYA7GJD";
+  };
+
   return (
     <div className="w-full max-w-md mx-auto">
       <Card className="border border-primary/20">
@@ -100,10 +105,17 @@ const AuthUI = () => {
             {isSignUp ? "Create an account" : "Login to your account"}
           </CardTitle>
           <CardDescription className="text-center">
-            {isSignUp
-              ? "Enter your email below to create an account"
-              : "Enter your email and password to login"}
+            New user? Click the Get Started button and take the AI Grow Optimizer Quiz or Purchase a Master Growbot subscription first directly from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI
           </CardDescription>
+          <p className="text-center font-medium text-primary pt-2">Subscribe with Square</p>
+          <div className="flex justify-center mt-2">
+            <img 
+              src="/lovable-uploads/60d6eaab-1e5e-4d64-95e3-aa382c87322f.png"
+              alt="Square Secure Checkout" 
+              className="h-12 cursor-pointer hover:opacity-90 transition-opacity"
+              onClick={handleSquareSubscription}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleAuth} className="space-y-4">
