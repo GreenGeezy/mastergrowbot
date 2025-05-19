@@ -97,7 +97,7 @@ const AuthUI = () => {
           <CardDescription className="text-center text-amber-50 text-base">New user? Click the AI Grow Optimizer Quiz or Click the Button Below to Subscribe to Master Growbot from Square Secure Checkout— you'll get a special sign-up link to gain access to Master Growbot AI</CardDescription>
           <div className="flex items-center justify-center mt-2 w-full">
             <img 
-              src="/lovable-uploads/2495a542-8760-40a9-acc4-b5eb2cff9394.png" 
+              src="/lovable-uploads/763e7583-18ee-41c9-96b4-bd1b51471ea6.png" 
               alt="Square secure checkout with payment options" 
               onClick={handleSquareSubscription} 
               className="w-full object-contain cursor-pointer hover:opacity-90 transition-opacity" 
