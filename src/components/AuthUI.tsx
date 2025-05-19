@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -105,11 +104,11 @@ const AuthUI = () => {
           
           <div className="flex items-center justify-between mt-2 w-full">
             <div className="w-3/4 pr-4">
-              {/* Empty div to take up space */}
+              <p className="font-medium text-lg text-right">Subscribe with Square Secure Checkout</p>
             </div>
             <div className="w-1/4">
               <img 
-                src="/lovable-uploads/763e7583-18ee-41c9-96b4-bd1b51471ea6.png" 
+                src="/lovable-uploads/49f2b526-4d9d-4597-bf88-3ef8f0e9b9b2.png" 
                 alt="Square secure checkout with payment options" 
                 onClick={handleSquareSubscription} 
                 className="w-full object-contain cursor-pointer hover:opacity-90 transition-opacity" 
