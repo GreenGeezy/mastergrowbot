@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
@@ -18,6 +18,7 @@ const ThankYou = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [hasValidToken, setHasValidToken] = useState(false);
+  const [isValidating, setIsValidating] = useState(true);
   
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -25,14 +26,27 @@ const ThankYou = () => {
     const subType = searchParams.get("subscription_type") || "basic";
     const codeParam = searchParams.get("code");
     
-    // Check if we have either email or code in the URL
-    setHasValidToken(!!(emailParam || codeParam));
+    // Validate token against environment variable
+    const expectedToken = import.meta.env.VITE_THANKYOU_TOKEN;
+    const isTokenValid = codeParam === expectedToken;
     
+    // Set validation state
+    setHasValidToken(isTokenValid);
+    setIsValidating(false);
+    
+    // Redirect if token is invalid
+    if (!isTokenValid) {
+      toast.error("Invalid access token");
+      navigate('/', { replace: true });
+      return;
+    }
+    
+    // If token is valid, set the email and subscription type
     if (emailParam) {
       setEmail(emailParam);
     }
     setSubscriptionType(subType);
-  }, [location.search]);
+  }, [location.search, navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,13 +130,26 @@ const ThankYou = () => {
     setShowPurchaseModal(true);
   };
 
+  // Show loading state while validating token
+  if (isValidating) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 bg-background">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md">
         <Card className="border border-primary/20">
           <CardHeader className="text-center pb-2">
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="w-10 h-10 text-primary" />
+              {hasValidToken ? (
+                <Check className="w-10 h-10 text-primary" />
+              ) : (
+                <AlertCircle className="w-10 h-10 text-destructive" />
+              )}
             </div>
             <CardTitle className="text-2xl font-bold">
               Thank you for your purchase!
