@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from
 import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import SubscriptionGuard from "@/components/SubscriptionGuard";
 
 // Lazy load all page components
 const Index = lazy(() => import("@/pages/Index"));
@@ -264,7 +265,9 @@ const App = () => {
                 path="/chat" 
                 element={
                   <ProtectedRoute>
-                    <ChatInterface />
+                    <SubscriptionGuard>
+                      <ChatInterface />
+                    </SubscriptionGuard>
                   </ProtectedRoute>
                 } 
               />
@@ -272,7 +275,9 @@ const App = () => {
                 path="/plant-health" 
                 element={
                   <ProtectedRoute>
-                    <PlantHealthAnalyzer />
+                    <SubscriptionGuard>
+                      <PlantHealthAnalyzer />
+                    </SubscriptionGuard>
                   </ProtectedRoute>
                 } 
               />
@@ -288,7 +293,9 @@ const App = () => {
                 path="/grow-guide" 
                 element={
                   <ProtectedRoute>
-                    <GrowingGuide />
+                    <SubscriptionGuard>
+                      <GrowingGuide />
+                    </SubscriptionGuard>
                   </ProtectedRoute>
                 } 
               />

@@ -55,6 +55,19 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           });
           return;
         }
+
+        // Special case for test user
+        if (session.user.id === '48f51ffd-7e63-4ee8-8789-0be75018ea01') {
+          setStatus({
+            isLoading: false,
+            hasAccess: true,
+            hasCompletedQuiz: true,
+            subscriptionType: 'annual',
+            expiresAt: null,
+            error: null
+          });
+          return;
+        }
         
         // Get user access from the view we created
         const { data, error } = await supabase
@@ -77,10 +90,10 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
         if (!data) {
           console.log("No data returned from user_access_view, checking individual tables");
           
-          // Check user profile for quiz completion
+          // Check user profile for quiz completion and subscription status
           const { data: profileData, error: profileError } = await supabase
             .from('user_profiles')
-            .select('has_completed_quiz')
+            .select('has_completed_quiz, subscription_status')
             .eq('id', session.user.id)
             .maybeSingle();
             
@@ -98,7 +111,7 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           if (subError) console.error("Error fetching subscription:", subError);
           
           const hasQuiz = profileData?.has_completed_quiz === true;
-          const hasSubscription = subData && subData.status === 'active';
+          const hasSubscription = profileData?.subscription_status === 'active';
           
           setStatus({
             isLoading: false,
