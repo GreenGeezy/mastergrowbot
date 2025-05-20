@@ -19,7 +19,9 @@ const ThankYou = () => {
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [hasValidToken, setHasValidToken] = useState(false);
   const [isValidating, setIsValidating] = useState(true);
+  const [hasInvokedFunction, setHasInvokedFunction] = useState(false);
   
+  // Get token parameters from URL
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const emailParam = searchParams.get("email");
@@ -48,6 +50,50 @@ const ThankYou = () => {
     setSubscriptionType(subType);
   }, [location.search, navigate]);
 
+  // Listen for auth state changes and invoke function on SIGNED_IN
+  useEffect(() => {
+    if (!hasValidToken) return;
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event, session ? 'User signed in' : 'User signed out');
+      
+      // Check if user just signed in and we haven't invoked the function yet
+      if (event === 'SIGNED_IN' && session?.user && !hasInvokedFunction) {
+        try {
+          console.log('Invoking mark-quiz-completed for user:', session.user.email || session.user.id);
+          setHasInvokedFunction(true);
+          
+          const { data, error } = await supabase.functions.invoke('mark-quiz-completed', {
+            body: { 
+              user_id: session.user.id,
+              email: session.user.email || email, // Use session email or form email
+              subscription_type: subscriptionType 
+            }
+          });
+          
+          if (error) {
+            console.error('Error invoking mark-quiz-completed:', error);
+          } else {
+            console.log('Successfully invoked mark-quiz-completed:', data);
+            toast.success('Your subscription has been activated!');
+            
+            // Navigate to chat after a short delay
+            setTimeout(() => {
+              navigate('/chat');
+            }, 1500);
+          }
+        } catch (err) {
+          console.error('Exception when invoking function:', err);
+        }
+      }
+    });
+    
+    // Clean up subscription when component unmounts
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [hasValidToken, hasInvokedFunction, email, subscriptionType, navigate]);
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -75,20 +121,15 @@ const ThankYou = () => {
 
           if (signInError) throw signInError;
           
-          // Update user metadata to include has_completed_quiz=true
-          await supabase.functions.invoke('mark-quiz-completed', {
-            body: { email, subscription_type: subscriptionType }
-          });
-          
           toast.success("Welcome back! Your subscription has been activated.");
-          navigate('/chat');
+          // Don't navigate here - let the auth listener handle it
           return;
         }
         throw signUpError;
       }
 
       toast.success("Account created successfully!");
-      navigate('/chat');
+      // Don't navigate here - let the auth listener handle it
     } catch (error) {
       console.error("Authentication error:", error);
       toast.error(error.message);
