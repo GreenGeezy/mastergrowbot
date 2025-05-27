@@ -30,35 +30,39 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
         </div>
         
         {/* Top row - 3 cards in a row, wider and shorter */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-6">
           {/* Growth Stage Card */}
-          <Card className="p-4 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
             <div className="flex items-start gap-3 h-full">
               <Leaf className="text-green-500 w-6 h-6 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-bold text-white mb-2 leading-tight">Growth Stage</h3>
-                <p className="text-gray-300 leading-relaxed text-sm line-clamp-3">
-                  {analysisResult.detailed_analysis.growth_stage}
-                </p>
+                <div className="h-20 overflow-y-auto">
+                  <p className="text-gray-300 leading-relaxed text-sm">
+                    {analysisResult.detailed_analysis.growth_stage}
+                  </p>
+                </div>
               </div>
             </div>
           </Card>
 
           {/* Health Score Card */}
-          <Card className="p-4 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
             <div className="flex items-start gap-3 h-full">
               <Heart className="text-green-500 w-6 h-6 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-bold text-white mb-2 leading-tight">Health Score</h3>
-                <p className="text-gray-300 leading-relaxed text-sm line-clamp-3">
-                  {analysisResult.detailed_analysis.health_score}
-                </p>
+                <div className="h-20 overflow-y-auto">
+                  <p className="text-gray-300 leading-relaxed text-sm">
+                    {analysisResult.detailed_analysis.health_score}
+                  </p>
+                </div>
               </div>
             </div>
           </Card>
 
           {/* Confidence Level Card */}
-          <Card className="p-4 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
             <div className="flex items-start gap-3 h-full">
               <TrendingUp className="text-purple-500 w-6 h-6 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -78,9 +82,9 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
         </div>
 
         {/* Second row - Issues and Environmental cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
           {/* Specific Issues Card - Wider */}
-          <Card className="p-4 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
             <div className="flex items-start gap-3 h-full">
               <AlertCircle className="text-yellow-500 w-6 h-6 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -95,21 +99,23 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
           </Card>
 
           {/* Environmental Factors Card */}
-          <Card className="p-4 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
             <div className="flex items-start gap-3 h-full">
               <Lightbulb className="text-blue-500 w-6 h-6 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-bold text-white mb-2 leading-tight">Environmental Factors</h3>
-                <p className="text-gray-300 leading-relaxed text-sm line-clamp-4">
-                  {analysisResult.detailed_analysis.environmental_factors}
-                </p>
+                <div className="h-20 overflow-y-auto">
+                  <p className="text-gray-300 leading-relaxed text-sm">
+                    {analysisResult.detailed_analysis.environmental_factors}
+                  </p>
+                </div>
               </div>
             </div>
           </Card>
         </div>
 
         {/* Bottom row - Full width Recommended Actions */}
-        <Card className="p-4 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200">
+        <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200">
           <div className="flex items-start gap-3 mb-4">
             <CheckCircle className="text-green-500 w-6 h-6 mt-1 flex-shrink-0" />
             <h3 className="text-lg font-bold text-white leading-tight">Recommended Actions</h3>
