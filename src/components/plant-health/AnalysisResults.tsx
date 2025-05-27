@@ -21,18 +21,18 @@ interface AnalysisResultsProps {
 
 const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   return (
-    <div className="w-full px-4 py-6">
-      {/* Centered container with max-width for desktop */}
-      <div className="mx-auto max-w-7xl">
+    <div className="w-full px-6">
+      {/* Container matching header width with max-w-6xl */}
+      <div className="mx-auto max-w-6xl">
         <div className="flex items-center gap-3 mb-8">
           <CheckCircle className="text-green-500 w-7 h-7" />
           <h2 className="text-3xl lg:text-4xl font-bold text-white">Analysis Complete</h2>
         </div>
         
-        {/* Top row - 3 cards in a row on desktop, stacked on mobile */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Top row - Responsive grid: 3 cards desktop, 2 cards tablet, 1 card mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           {/* Growth Stage Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 min-w-[320px]">
             <div className="flex items-start gap-4">
               <Leaf className="text-green-500 w-8 h-8 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -45,7 +45,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
           </Card>
 
           {/* Health Score Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 min-w-[320px]">
             <div className="flex items-start gap-4">
               <Heart className="text-green-500 w-8 h-8 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -58,7 +58,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
           </Card>
 
           {/* Confidence Level Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 min-w-[320px]">
             <div className="flex items-start gap-4">
               <TrendingUp className="text-purple-500 w-8 h-8 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -77,10 +77,10 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
           </Card>
         </div>
 
-        {/* Second row - 2 wider cards on desktop, stacked on mobile */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* Second row - Same responsive grid for remaining cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           {/* Specific Issues Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 min-w-[320px] md:col-span-2 lg:col-span-2">
             <div className="flex items-start gap-4">
               <AlertCircle className="text-yellow-500 w-8 h-8 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -95,7 +95,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
           </Card>
 
           {/* Environmental Factors Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200">
+          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 min-w-[320px]">
             <div className="flex items-start gap-4">
               <Lightbulb className="text-blue-500 w-8 h-8 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -122,7 +122,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
               const description = descriptionParts.join(':').trim();
               
               return (
-                <div key={index} className="flex items-start gap-4 p-6 bg-gray-800/40 rounded-lg border border-gray-700 hover:bg-gray-800/60 transition-all duration-200">
+                <div key={index} className="flex items-start gap-4 p-6 bg-gray-800/40 rounded-lg border border-gray-700 hover:bg-gray-800/60 transition-all duration-200 min-w-[320px]">
                   <CheckCircle className="w-6 h-6 text-green-500 mt-1 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
                     {description ? (
