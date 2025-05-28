@@ -130,14 +130,18 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
               return (
                 <div key={index} className="flex items-start gap-3 p-4 bg-gray-800/40 rounded-lg border border-gray-700 hover:bg-gray-800/60 transition-all duration-200 h-24">
                   <CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 h-full">
                     {description ? (
                       <>
                         <h4 className="font-semibold text-white mb-1 leading-tight text-sm">{title}</h4>
-                        <p className="text-gray-300 leading-relaxed text-xs line-clamp-2">{description}</p>
+                        <div className="h-12 overflow-y-auto">
+                          <p className="text-gray-300 leading-relaxed text-xs">{description}</p>
+                        </div>
                       </>
                     ) : (
-                      <p className="text-gray-300 leading-relaxed text-sm line-clamp-3">{action}</p>
+                      <div className="h-16 overflow-y-auto">
+                        <p className="text-gray-300 leading-relaxed text-sm">{action}</p>
+                      </div>
                     )}
                   </div>
                 </div>
