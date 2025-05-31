@@ -345,103 +345,100 @@ export default function Quiz() {
               </div>
             </div>
             
-            <div className="flex flex-row gap-3 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
-              <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-primary/30 bg-gradient-to-b from-primary/10 to-transparent">
-                <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                  <img alt="Master Growbot AI Weekly Subscription" src="/lovable-uploads/11c38940-4f96-4ad6-b79b-fe4d9552e390.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }} />
-                </div>
-                <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
-                  <div className="min-h-[60px]">
-                    <h3 className="leading-[20px] font-bold text-white text-lg">
-                      Master Growbot AI Weekly Subscription
-                    </h3>
+            <div className="flex flex-row gap-6 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
+              {/* Weekly Plan */}
+              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300">
+                <div className="p-6 text-center">
+                  <div className="mb-4">
+                    <h3 className="text-white text-xl font-bold mb-2">Weekly Plan</h3>
+                    <div className="text-white/80 text-sm mb-4">Master Growbot</div>
                   </div>
-                  <ul className="space-y-1 mb-2 text-white/80">
-                    <li className="flex items-center">
-                      <span className="mr-2">–</span>
-                      <span className="font-bold">$8/week</span>
-                    </li>
-                    <li className="flex items-center">
-                      <span className="mr-2">–</span>
-                      <span>Cancel Anytime</span>
-                    </li>
-                  </ul>
-                  <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
-                    <img src="/lovable-uploads/818204f9-154f-424e-a8e6-945a4c0b601e.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
+                  
+                  <div className="text-center mb-6">
+                    <div className="text-white text-4xl font-bold">$8</div>
+                    <div className="text-white/60 text-sm">/week</div>
+                  </div>
+                  
+                  <div className="space-y-3 mb-6 text-left">
+                    <div className="flex items-center text-white/80 text-sm">
+                      <span className="mr-2">•</span>
+                      <span>No-risk: cancel anytime</span>
+                    </div>
+                  </div>
+                  
+                  <a href="https://square.link/u/TgbFtDnS" target="_blank" rel="noopener noreferrer" className="block">
+                    <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+                      Unlock Growbot →
+                    </button>
                   </a>
                 </div>
               </div>
 
-              <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-secondary/30 bg-gradient-to-b from-secondary/10 to-transparent">
-                <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                  <img alt="Master Growbot AI Quarterly Subscription" src="/lovable-uploads/adb60fe7-fe3d-4e0c-a42c-ac3f1617f4d0.png" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }} />
-                </div>
-                <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
-                  <div className="min-h-[60px]">
-                    <h3 className="leading-[20px] font-bold text-white text-lg">
-                      Master Growbot AI Quarterly Subscription
-                    </h3>
+              {/* Quarterly Plan */}
+              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300">
+                <div className="p-6 text-center">
+                  <div className="mb-4">
+                    <h3 className="text-white text-xl font-bold mb-2">Save Your Seconds</h3>
+                    <div className="text-white/80 text-sm mb-4">Master Growbot Quarterly</div>
                   </div>
-                  <ul className="space-y-1 mb-2 text-white/80">
-                    <li className="flex items-center">
-                      <span className="mr-2">–</span>
-                      <span className="font-bold">$89/quarter</span>
-                    </li>
-                    <li className="flex items-center">
-                      <span className="mr-2">–</span>
+                  
+                  <div className="text-center mb-6">
+                    <div className="text-white text-4xl font-bold">$89</div>
+                    <div className="text-white/60 text-sm">/quarter</div>
+                  </div>
+                  
+                  <div className="space-y-3 mb-6 text-left">
+                    <div className="flex items-center text-white/80 text-sm">
+                      <span className="mr-2">•</span>
                       <span>Save 25%</span>
-                    </li>
-                    <li className="flex items-center">
-                      <span className="mr-2">–</span>
-                      <span>Cancel Anytime</span>
-                    </li>
-                  </ul>
-                  <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
-                    <img src="/lovable-uploads/31c87611-9760-4dfe-815c-d80e9344827d.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
+                    </div>
+                    <div className="flex items-center text-white/80 text-sm">
+                      <span className="mr-2">•</span>
+                      <span>No-risk: cancel anytime</span>
+                    </div>
+                  </div>
+                  
+                  <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="block">
+                    <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+                      Unlock Growbot →
+                    </button>
                   </a>
                 </div>
               </div>
 
-              <div className="w-[259px] flex flex-col font-['Rubik'] bg-card rounded-lg overflow-hidden border-2 border-[#FFD700]/30 bg-gradient-to-b from-[#FFD700]/10 to-transparent relative">
+              {/* Yearly Plan - Best Value */}
+              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border-2 border-[#FFD700] shadow-2xl transform hover:scale-105 transition-all duration-300 relative">
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                  <Badge className="bg-black text-[#FFD700] border border-[#FFD700] px-3 py-1 text-sm font-semibold">
+                  <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-3 py-1 text-sm font-bold">
                     Best Value
                   </Badge>
                 </div>
-                <div className="aspect-w-16 aspect-h-9 overflow-hidden">
-                  <img src="https://items-images-production.s3.us-west-2.amazonaws.com/files/f79453c5b8c01e6fe4805b6ac378f6e2568cc993/original.png" alt="Master Growbot AI Yearly Subscription" className="w-full h-[146px] object-cover rounded-t-lg" onError={e => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }} />
-                </div>
-                <div className="p-3 pt-2 pb-2 flex flex-col flex-grow">
-                  <div className="min-h-[60px]">
-                    <h3 className="leading-[20px] font-bold text-white text-lg">
-                      Master Growbot AI Yearly Subscription
-                    </h3>
+                <div className="p-6 text-center">
+                  <div className="mb-4">
+                    <h3 className="text-white text-xl font-bold mb-2">Yearly Quarterly</h3>
+                    <div className="text-white/80 text-sm mb-4">Master Growbot</div>
                   </div>
-                  <ul className="space-y-1 mb-2 text-white/80">
-                    <li className="flex items-center">
-                      <span className="mr-2">–</span>
-                      <span className="font-bold">$199/year</span>
-                    </li>
-                    <li className="flex items-center">
-                      <span className="mr-2">–</span>
+                  
+                  <div className="text-center mb-6">
+                    <div className="text-white text-4xl font-bold">$199</div>
+                    <div className="text-white/60 text-sm">/year</div>
+                  </div>
+                  
+                  <div className="space-y-3 mb-6 text-left">
+                    <div className="flex items-center text-white/80 text-sm">
+                      <span className="mr-2">•</span>
                       <span>Save Over 60%</span>
-                    </li>
-                    <li className="flex items-center">
-                      <span className="mr-2">–</span>
-                      <span>Cancel Anytime</span>
-                    </li>
-                  </ul>
-                  <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="-mt-1 transform hover:scale-105 transition-transform duration-300">
-                    <img src="/lovable-uploads/1127ed9a-5b10-4fd5-b958-7bb28a392335.png" alt="Buy Now with Square" className="w-full h-auto scale-110" />
+                    </div>
+                    <div className="flex items-center text-white/80 text-sm">
+                      <span className="mr-2">•</span>
+                      <span>No-risk: cancel anytime</span>
+                    </div>
+                  </div>
+                  
+                  <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="block">
+                    <button className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black font-bold py-3 px-6 rounded-lg transition-colors duration-300">
+                      Unlock Growbot →
+                    </button>
                   </a>
                 </div>
               </div>
