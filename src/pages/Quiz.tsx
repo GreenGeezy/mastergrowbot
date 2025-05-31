@@ -362,7 +362,7 @@ export default function Quiz() {
                   <ul className="space-y-1 mb-2 text-white/80">
                     <li className="flex items-center">
                       <span className="mr-2">–</span>
-                      <span className="font-bold">$9.99/week</span>
+                      <span className="font-bold">$8/week</span>
                     </li>
                     <li className="flex items-center">
                       <span className="mr-2">–</span>
