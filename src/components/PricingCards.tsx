@@ -58,7 +58,10 @@ export default function PricingCards() {
             
             <div className="text-center mb-6">
               <div className="price-line">
-                <div className="text-white text-4xl font-bold">$8</div>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="text-white/50 text-2xl font-bold line-through">$12</div>
+                  <div className="text-white text-4xl font-bold">$9.99</div>
+                </div>
                 <div className="text-white/60 text-sm">/week</div>
               </div>
             </div>
