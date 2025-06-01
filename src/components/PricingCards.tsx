@@ -31,17 +31,7 @@ export default function PricingCards() {
           <Users className="w-5 h-5" />
           <span className="font-semibold text-center">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
         </div>
-        <div className="flex flex-col items-center space-y-0">
-          <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
-            Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
-          </p>
-          <div className="flex items-center justify-center space-x-3">
-            <Award className="w-7 h-7 text-[#FFD700] animate-float will-change-transform" />
-            <div className="flex items-center space-x-1">
-              {[...Array(5)].map((_, index) => <Star key={index} className="w-6 h-6 fill-[#FFD700] text-[#FFD700]" />)}
-            </div>
-          </div>
-        </div>
+        
       </div>
 
       <div className="bg-[#9b87f5] rounded-lg p-4 text-center transform hover:scale-105 transition-transform duration-300 relative">
