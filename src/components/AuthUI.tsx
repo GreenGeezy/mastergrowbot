@@ -104,7 +104,7 @@ const AuthUI = () => {
       </div>
 
       <div className="text-center space-y-4">
-        <h2 className="text-xl font-semibold text-white">Select a Plan and Subscribed with Square Checkout. Already Subscribed? Sign in at the Bottom of the Page</h2>
+        <h2 className="font-semibold text-white text-lg">Select a Plan and Subscribed with Square Checkout. Already Subscribed? Sign in at the Bottom of the Page</h2>
         
         <PricingCards />
       </div>
