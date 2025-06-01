@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -288,3 +289,35 @@ h1, h2, h3, .tech-font {
   75% { background: #0FA0CE; }
   100% { background: #8B5CF6; }
 }
+
+/* Trust icon styling */
+.trust-stamp {
+  width: 36px;
+  height: 36px;
+  margin: 8px auto 4px;
+  opacity: 0.9;
+  transition: transform 0.3s;
+}
+
+.plan-card:hover .trust-stamp {
+  transform: scale(1.1);
+}
+
+.risk-ribbon {
+  height: 40px;
+  margin-left: 12px;
+}
+
+@media(max-width: 767px) {
+  .risk-ribbon {
+    display: block;
+    margin: 8px auto 0;
+  }
+}
+
+.trusted-shield {
+  width: 64px;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.4));
+  margin-bottom: 12px;
+}
+

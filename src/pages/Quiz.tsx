@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -75,7 +73,7 @@ export default function Quiz() {
   }, [quizResponses]);
 
   useEffect(() => {
-    const targetDate = new Date('2025-07-10T05:00:00.000Z');
+    const targetDate = new Date('2025-07-01T23:59:59.000Z');
     
     const updateTimer = () => {
       const now = new Date();
@@ -341,15 +339,27 @@ export default function Quiz() {
                 </div>
               </div>
 
-              <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300 relative">
                 <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
                 <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
+                <img 
+                  src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png"
+                  className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2"
+                  style={{height: '40px', marginLeft: '12px'}}
+                  alt="Risk-Free – Cancel Anytime" 
+                />
+                <img 
+                  src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png"
+                  className="risk-ribbon md:hidden block mx-auto mt-2"
+                  style={{height: '40px', margin: '8px auto 0'}}
+                  alt="Risk-Free – Cancel Anytime" 
+                />
               </div>
             </div>
             
             <div className="flex flex-row gap-6 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
               {/* Weekly Plan */}
-              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300">
+              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card">
                 <div className="p-6 text-center">
                   <div className="mb-4">
                     <h3 className="text-white text-xl font-bold mb-2">Weekly Plan</h3>
@@ -357,13 +367,18 @@ export default function Quiz() {
                   </div>
                   
                   <div className="text-center mb-6">
-                    <div className="flex items-center justify-center gap-2 mb-1">
-                      <span className="text-white/60 text-lg line-through">$9.99</span>
-                      <span className="bg-[#FFD700] text-black text-xs font-bold px-2 py-1 rounded">ON SALE</span>
+                    <div className="price-line">
+                      <div className="text-white text-4xl font-bold">$8</div>
+                      <div className="text-white/60 text-sm">/week</div>
                     </div>
-                    <div className="text-white text-4xl font-bold">$8</div>
-                    <div className="text-white/60 text-sm">/week</div>
                   </div>
+                  
+                  <img 
+                    src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
+                    className="trust-stamp"
+                    style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
+                    alt="Cancel Anytime – No Fee" 
+                  />
                   
                   <div className="space-y-3 mb-6 text-left">
                     <div className="flex items-center text-white/80 text-sm">
@@ -381,7 +396,7 @@ export default function Quiz() {
               </div>
 
               {/* Quarterly Plan */}
-              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300">
+              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card">
                 <div className="p-6 text-center">
                   <div className="mb-4">
                     <h3 className="text-white text-xl font-bold mb-2">Save Your Seconds</h3>
@@ -389,9 +404,18 @@ export default function Quiz() {
                   </div>
                   
                   <div className="text-center mb-6">
-                    <div className="text-white text-4xl font-bold">$89</div>
-                    <div className="text-white/60 text-sm">/quarter</div>
+                    <div className="price-line">
+                      <div className="text-white text-4xl font-bold">$79</div>
+                      <div className="text-white/60 text-sm">/quarter</div>
+                    </div>
                   </div>
+                  
+                  <img 
+                    src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
+                    className="trust-stamp"
+                    style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
+                    alt="Cancel Anytime – No Fee" 
+                  />
                   
                   <div className="space-y-3 mb-6 text-left">
                     <div className="flex items-center text-white/80 text-sm">
@@ -413,7 +437,7 @@ export default function Quiz() {
               </div>
 
               {/* Yearly Plan - Best Value */}
-              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border-2 border-[#FFD700] shadow-2xl transform hover:scale-105 transition-all duration-300 relative">
+              <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border-2 border-[#FFD700] shadow-2xl transform hover:scale-105 transition-all duration-300 relative plan-card">
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
                   <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-3 py-1 text-sm font-bold">
                     Best Value
@@ -426,9 +450,18 @@ export default function Quiz() {
                   </div>
                   
                   <div className="text-center mb-6">
-                    <div className="text-white text-4xl font-bold">$199</div>
-                    <div className="text-white/60 text-sm">/year</div>
+                    <div className="price-line">
+                      <div className="text-white text-4xl font-bold">$199</div>
+                      <div className="text-white/60 text-sm">/year</div>
+                    </div>
                   </div>
+                  
+                  <img 
+                    src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
+                    className="trust-stamp"
+                    style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
+                    alt="Cancel Anytime – No Fee" 
+                  />
                   
                   <div className="space-y-3 mb-6 text-left">
                     <div className="flex items-center text-white/80 text-sm">
@@ -451,6 +484,15 @@ export default function Quiz() {
             </div>
 
             <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
+              <div className="text-center">
+                <img 
+                  src="/lovable-uploads/b85202e0-8c62-45ec-9a0b-b7604644fd7c.png"
+                  className="trusted-shield mx-auto"
+                  style={{width: '64px', filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.4))', marginBottom: '12px'}}
+                  alt="Trusted Seller" 
+                />
+              </div>
+              
               <div className="w-full">
                 <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
               </div>
@@ -617,4 +659,3 @@ export default function Quiz() {
     </div>
   );
 }
-
