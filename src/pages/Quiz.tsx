@@ -398,7 +398,7 @@ export default function Quiz() {
                     </div>
                   </div>
                   
-                  <a href="https://square.link/u/5Re3cMLs" target="_blank" rel="noopener noreferrer" className="block">
+                  <a href="https://square.link/u/mG7rXjby" target="_blank" rel="noopener noreferrer" className="block">
                     <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
                       Unlock Growbot →
                     </button>
