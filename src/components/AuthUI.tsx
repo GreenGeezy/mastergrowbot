@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import PurchaseNotificationModal from './PurchaseNotificationModal';
+import PurchaseNotificationModal from './auth/PurchaseNotificationModal';
 import PricingCards from './PricingCards';
 
 const AuthUI = () => {
