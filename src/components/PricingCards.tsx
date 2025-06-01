@@ -105,7 +105,7 @@ export default function PricingCards() {
             
             <div className="text-center mb-6">
               <div className="price-line">
-                <div className="text-white text-4xl font-bold">$79</div>
+                <div className="text-white text-4xl font-bold">$89</div>
                 <div className="text-white/60 text-sm">/quarter</div>
               </div>
             </div>
