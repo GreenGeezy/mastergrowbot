@@ -31,14 +31,14 @@ export default function PricingCards() {
   }, []);
 
   return (
-    <div className="w-full max-w-[1200px] space-y-6 mx-auto">
+    <div className="w-full space-y-6">
       <div className="flex flex-col items-center space-y-4">
-        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-2xl">
-          <p className="text-white italic text-sm">"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
+        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-4xl w-full">
+          <p className="text-white italic text-sm text-center">"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
         </div>
         <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
           <Users className="w-5 h-5" />
-          <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
+          <span className="font-semibold text-center">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
         </div>
         <div className="flex flex-col items-center space-y-0">
           <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
@@ -70,9 +70,9 @@ export default function PricingCards() {
         />
       </div>
       
-      <div className="flex flex-row gap-6 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
+      <div className="flex flex-col lg:flex-row gap-6 items-stretch justify-center w-full">
         {/* Weekly Plan */}
-        <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card">
+        <div className="flex-1 max-w-sm lg:max-w-none bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card">
           <div className="p-6 text-center">
             <div className="mb-4">
               <h3 className="text-white text-xl font-bold mb-2">Weekly Plan</h3>
@@ -109,7 +109,7 @@ export default function PricingCards() {
         </div>
 
         {/* Quarterly Plan */}
-        <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card">
+        <div className="flex-1 max-w-sm lg:max-w-none bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card">
           <div className="p-6 text-center">
             <div className="mb-4">
               <h3 className="text-white text-xl font-bold mb-2">Save Your Seconds</h3>
@@ -150,7 +150,7 @@ export default function PricingCards() {
         </div>
 
         {/* Yearly Plan - Best Value */}
-        <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border-2 border-[#FFD700] shadow-2xl transform hover:scale-105 transition-all duration-300 relative plan-card">
+        <div className="flex-1 max-w-sm lg:max-w-none bg-gradient-to-b from-gray-900 to-black rounded-2xl border-2 border-[#FFD700] shadow-2xl transform hover:scale-105 transition-all duration-300 relative plan-card">
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
             <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-3 py-1 text-sm font-bold">
               Best Value
@@ -196,7 +196,7 @@ export default function PricingCards() {
         </div>
       </div>
 
-      <div className="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
+      <div className="flex flex-col items-center space-y-6 w-full">
         <div className="text-center">
           <img 
             src="/lovable-uploads/b85202e0-8c62-45ec-9a0b-b7604644fd7c.png"

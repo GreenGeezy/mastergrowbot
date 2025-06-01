@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Label } from "@/components/ui/label";
@@ -13,6 +12,7 @@ const AuthUI = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const supabase = useSupabaseClient();
 
   const handleSignIn = async () => {
@@ -103,7 +103,7 @@ const AuthUI = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-6">
+    <div className="w-full max-w-6xl mx-auto space-y-6">
       <div className="text-center space-y-2">
         <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
           Master Growbot
@@ -124,7 +124,7 @@ const AuthUI = () => {
       </div>
 
       {/* Authentication Form */}
-      <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl p-6">
+      <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl p-6 max-w-md mx-auto">
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -199,7 +199,10 @@ const AuthUI = () => {
         </div>
       </div>
 
-      <PurchaseNotificationModal />
+      <PurchaseNotificationModal 
+        isOpen={showPurchaseModal} 
+        onClose={() => setShowPurchaseModal(false)} 
+      />
     </div>
   );
 };
