@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import PurchaseNotificationModal from './auth/PurchaseNotificationModal';
 import PricingCards from './PricingCards';
 
 const AuthUI = () => {
@@ -12,7 +11,6 @@ const AuthUI = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const supabase = useSupabaseClient();
 
   const handleSignIn = async () => {
@@ -117,10 +115,6 @@ const AuthUI = () => {
         <h2 className="text-xl font-semibold text-white">Subscribe with Square Checkout</h2>
         
         <PricingCards />
-        
-        <div className="w-full">
-          <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
-        </div>
       </div>
 
       {/* Authentication Form */}
@@ -198,11 +192,6 @@ const AuthUI = () => {
           </Button>
         </div>
       </div>
-
-      <PurchaseNotificationModal 
-        isOpen={showPurchaseModal} 
-        onClose={() => setShowPurchaseModal(false)} 
-      />
     </div>
   );
 };
