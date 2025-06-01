@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -435,7 +436,7 @@ export default function Quiz() {
                     </div>
                   </div>
                   
-                  <a href="https://square.link/u/1lsuAJjC" target="_blank" rel="noopener noreferrer" className="block">
+                  <a href="https://square.link/u/pa9x0yXT" target="_blank" rel="noopener noreferrer" className="block">
                     <button className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black font-bold py-3 px-6 rounded-lg transition-colors duration-300">
                       Unlock Growbot →
                     </button>
