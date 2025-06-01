@@ -1,40 +1,31 @@
-
 import React, { useState, useEffect } from 'react';
 import { Star, Award, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
 export default function PricingCards() {
   const [timeLeft, setTimeLeft] = useState("");
-
   useEffect(() => {
     const targetDate = new Date('2025-07-01T23:59:59.000Z');
-    
     const updateTimer = () => {
       const now = new Date();
       const timeDiff = targetDate.getTime() - now.getTime();
-      
       if (timeDiff > 0) {
         const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        
+        const hours = Math.floor(timeDiff % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
+        const minutes = Math.floor(timeDiff % (1000 * 60 * 60) / (1000 * 60));
         setTimeLeft(`${days}d ${hours}h ${minutes}m`);
       } else {
         setTimeLeft("Offer expired");
       }
     };
-
     updateTimer();
     const timer = setInterval(updateTimer, 60000);
-    
     return () => clearInterval(timer);
   }, []);
-
-  return (
-    <div className="w-full space-y-6">
+  return <div className="w-full space-y-6">
       <div className="flex flex-col items-center space-y-4">
         <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-4xl w-full">
-          <p className="text-white italic text-sm text-center">"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
+          <p className="text-white italic text-center text-lg font-extrabold">TESTIMONIAL: 
+&quot;Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time.&quot; – Dr. Sergio, Licensed Medical Practitioner &amp; Grower</p>
         </div>
         <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
           <Users className="w-5 h-5" />
@@ -56,18 +47,14 @@ export default function PricingCards() {
       <div className="bg-[#9b87f5] rounded-lg p-4 text-center transform hover:scale-105 transition-transform duration-300 relative">
         <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
         <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
-        <img 
-          src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png"
-          className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2"
-          style={{height: '40px', marginLeft: '12px'}}
-          alt="Risk-Free – Cancel Anytime" 
-        />
-        <img 
-          src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png"
-          className="risk-ribbon md:hidden block mx-auto mt-2"
-          style={{height: '40px', margin: '8px auto 0'}}
-          alt="Risk-Free – Cancel Anytime" 
-        />
+        <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2" style={{
+        height: '40px',
+        marginLeft: '12px'
+      }} alt="Risk-Free – Cancel Anytime" />
+        <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
+        height: '40px',
+        margin: '8px auto 0'
+      }} alt="Risk-Free – Cancel Anytime" />
       </div>
       
       <div className="flex flex-col lg:flex-row gap-6 items-stretch justify-center w-full">
@@ -86,12 +73,13 @@ export default function PricingCards() {
               </div>
             </div>
             
-            <img 
-              src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
-              className="trust-stamp"
-              style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
-              alt="Cancel Anytime – No Fee" 
-            />
+            <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
+            width: '36px',
+            height: '36px',
+            margin: '8px auto 4px',
+            opacity: 0.9,
+            transition: 'transform 0.3s'
+          }} alt="Cancel Anytime – No Fee" />
             
             <div className="space-y-3 mb-6 text-left">
               <div className="flex items-center text-white/80 text-sm">
@@ -123,12 +111,13 @@ export default function PricingCards() {
               </div>
             </div>
             
-            <img 
-              src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
-              className="trust-stamp"
-              style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
-              alt="Cancel Anytime – No Fee" 
-            />
+            <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
+            width: '36px',
+            height: '36px',
+            margin: '8px auto 4px',
+            opacity: 0.9,
+            transition: 'transform 0.3s'
+          }} alt="Cancel Anytime – No Fee" />
             
             <div className="space-y-3 mb-6 text-left">
               <div className="flex items-center text-white/80 text-sm">
@@ -169,12 +158,13 @@ export default function PricingCards() {
               </div>
             </div>
             
-            <img 
-              src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
-              className="trust-stamp"
-              style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
-              alt="Cancel Anytime – No Fee" 
-            />
+            <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
+            width: '36px',
+            height: '36px',
+            margin: '8px auto 4px',
+            opacity: 0.9,
+            transition: 'transform 0.3s'
+          }} alt="Cancel Anytime – No Fee" />
             
             <div className="space-y-3 mb-6 text-left">
               <div className="flex items-center text-white/80 text-sm">
@@ -198,14 +188,8 @@ export default function PricingCards() {
 
       <div className="flex flex-col items-center space-y-6 w-full">
         <div className="text-center">
-          <img 
-            src="/lovable-uploads/b85202e0-8c62-45ec-9a0b-b7604644fd7c.png"
-            className="trusted-shield mx-auto"
-            style={{width: '64px', filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.4))', marginBottom: '12px'}}
-            alt="Trusted Seller" 
-          />
+          
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
