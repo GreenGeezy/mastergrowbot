@@ -104,10 +104,7 @@ const AuthUI = () => {
       </div>
 
       <div className="text-center space-y-4">
-        <h2 className="text-xl font-semibold text-white">New User?  - Select a Plan and Subscribe with Square Checkout 
-
-
- Existing User? - Sign in At the Bottom of the Page with Email or Google Oauth</h2>
+        <h2 className="text-xl font-semibold text-white">Select a Plan and Subscribed with Square Checkout. Already Subscribed? Sign in at the Bottom of the Page</h2>
         
         <PricingCards />
       </div>
