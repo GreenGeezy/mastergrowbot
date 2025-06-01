@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -356,6 +357,10 @@ export default function Quiz() {
                   </div>
                   
                   <div className="text-center mb-6">
+                    <div className="flex items-center justify-center gap-2 mb-1">
+                      <span className="text-white/60 text-lg line-through">$9.99</span>
+                      <span className="bg-[#FFD700] text-black text-xs font-bold px-2 py-1 rounded">ON SALE</span>
+                    </div>
                     <div className="text-white text-4xl font-bold">$8</div>
                     <div className="text-white/60 text-sm">/week</div>
                   </div>
@@ -612,3 +617,4 @@ export default function Quiz() {
     </div>
   );
 }
+
