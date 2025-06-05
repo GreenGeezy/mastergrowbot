@@ -1,11 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Star, Award, Users, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
 export default function PricingCards() {
   const [timeLeft, setTimeLeft] = useState("");
-  
   useEffect(() => {
     const targetDate = new Date('2025-07-01T23:59:59.000Z');
     const updateTimer = () => {
@@ -24,7 +21,6 @@ export default function PricingCards() {
     const timer = setInterval(updateTimer, 60000);
     return () => clearInterval(timer);
   }, []);
-  
   return <div className="w-full space-y-6">
       <div className="flex flex-col items-center space-y-4">
         <div className="flex items-center gap-4 w-full">
@@ -32,32 +28,18 @@ export default function PricingCards() {
             <p className="text-white italic text-center text-lg font-extrabold">TESTIMONIAL: 
 &quot;Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time.&quot; – Dr. Sergio, Licensed Medical Practitioner &amp; Grower</p>
           </div>
-          <img 
-            className="flex-shrink-0" 
-            style={{
-              height: '160px',
-              backgroundColor: 'transparent',
-              filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
-            }} 
-            alt="Trusted Seller" 
-            src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
-          />
+          <img className="flex-shrink-0" style={{
+          height: '160px',
+          backgroundColor: 'transparent',
+          filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
+        }} alt="Trusted Seller" src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" />
         </div>
         <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
           <Users className="w-5 h-5" />
           <span className="font-semibold text-center">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
         </div>
         <div className="flex items-center justify-center space-x-4 text-[#FFD700]">
-          <img 
-            src="/lovable-uploads/8ecdeabd-365b-4f3e-aefb-c0ffdacbce66.png"
-            className="flex-shrink-0" 
-            style={{
-              height: '160px',
-              backgroundColor: 'transparent',
-              filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
-            }} 
-            alt="Risk Free - Cancel Anytime" 
-          />
+          
           <p className="text-sm sm:text-base text-center font-medium text-[#FFD700]">
             Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
           </p>
