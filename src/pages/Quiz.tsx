@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -12,9 +11,7 @@ import type { QuizResponse } from '@/types/quiz';
 import { Star, Award, Users, MessageCircle, Camera, BookOpen, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import TestimonialCarousel from '@/components/TestimonialCarousel';
-
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
-
 const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
   if (!jsonString) return fallback;
   try {
@@ -24,15 +21,15 @@ const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
     return fallback;
   }
 };
-
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
-  
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
     try {
       const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
@@ -63,9 +60,7 @@ export default function Quiz() {
       };
     }
   });
-  
   const [timeLeft, setTimeLeft] = useState("");
-
   useEffect(() => {
     try {
       sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
@@ -73,31 +68,24 @@ export default function Quiz() {
       console.error('Error saving quiz responses to session storage:', error);
     }
   }, [quizResponses]);
-
   useEffect(() => {
     const targetDate = new Date('2025-07-01T23:59:59.000Z');
-    
     const updateTimer = () => {
       const now = new Date();
       const timeDiff = targetDate.getTime() - now.getTime();
-      
       if (timeDiff > 0) {
         const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        
+        const hours = Math.floor(timeDiff % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
+        const minutes = Math.floor(timeDiff % (1000 * 60 * 60) / (1000 * 60));
         setTimeLeft(`${days}d ${hours}h ${minutes}m`);
       } else {
         setTimeLeft("Offer expired");
       }
     };
-
     updateTimer();
     const timer = setInterval(updateTimer, 60000);
-    
     return () => clearInterval(timer);
   }, []);
-
   const questions = [{
     question: "How long have you been growing?",
     type: "radio",
@@ -192,17 +180,14 @@ export default function Quiz() {
       value: "all"
     }]
   }];
-
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     if (!currentQuestion) {
       console.error('Current question not found for step:', currentStep);
       return;
     }
-    
     const currentAnswer = quizResponses[currentQuestion.field as keyof QuizResponse];
-    
-    if (!currentAnswer || (Array.isArray(currentAnswer) && currentAnswer.length === 0)) {
+    if (!currentAnswer || Array.isArray(currentAnswer) && currentAnswer.length === 0) {
       toast({
         title: "Please answer the question",
         description: "Select at least one option to continue",
@@ -210,39 +195,31 @@ export default function Quiz() {
       });
       return;
     }
-
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
       handleSubmit();
     }
   };
-
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    
     try {
       if (session?.user?.id) {
         console.log('Starting quiz submission for user:', session.user.id);
         console.log('Quiz responses to save:', quizResponses);
-
-        const { data: existingProfile, error: profileError } = await supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
+        const {
+          data: existingProfile,
+          error: profileError
+        } = await supabase.from('user_profiles').select('*').eq('id', session.user.id).maybeSingle();
         if (profileError) {
           console.error('Error checking existing profile:', profileError);
           throw profileError;
         }
-
         const profileData = {
           id: session.user.id,
           grow_experience_level: quizResponses.experience_level,
@@ -252,44 +229,35 @@ export default function Quiz() {
           challenges: quizResponses.challenges,
           goals: quizResponses.goals
         };
-
         console.log('Updating user profile with:', profileData);
-
-        const { error: upsertError } = await supabase
-          .from('user_profiles')
-          .upsert(profileData);
-
+        const {
+          error: upsertError
+        } = await supabase.from('user_profiles').upsert(profileData);
         if (upsertError) {
           console.error('Error updating profile:', upsertError);
           throw upsertError;
         }
-
-        const { error: quizError } = await supabase
-          .from('quiz_responses')
-          .insert({
-            user_id: session.user.id,
-            experience_level: quizResponses.experience_level,
-            growing_method: quizResponses.growing_method,
-            challenges: quizResponses.challenges,
-            monitoring_method: quizResponses.monitoring_method,
-            nutrient_type: quizResponses.nutrient_type,
-            goals: quizResponses.goals
-          });
-
+        const {
+          error: quizError
+        } = await supabase.from('quiz_responses').insert({
+          user_id: session.user.id,
+          experience_level: quizResponses.experience_level,
+          growing_method: quizResponses.growing_method,
+          challenges: quizResponses.challenges,
+          monitoring_method: quizResponses.monitoring_method,
+          nutrient_type: quizResponses.nutrient_type,
+          goals: quizResponses.goals
+        });
         if (quizError) {
           console.error('Error saving quiz responses:', quizError);
           throw quizError;
         }
-
         console.log('Successfully saved quiz responses and updated profile');
-
         sessionStorage.removeItem(TEMP_QUIZ_RESPONSES_KEY);
-        
         toast({
           title: "Success!",
-          description: "Your growing preferences have been saved.",
+          description: "Your growing preferences have been saved."
         });
-        
         setShowSubscription(true);
       } else {
         console.log('User not logged in, storing responses temporarily');
@@ -306,13 +274,10 @@ export default function Quiz() {
       setIsSubmitting(false);
       return;
     }
-    
     setIsSubmitting(false);
   };
-
   if (showSubscription) {
-    return (
-      <div className="min-h-screen bg-background circuit-background">
+    return <div className="min-h-screen bg-background circuit-background">
         <ChatHeader />
         <div className="container mx-auto px-4 py-8">
           <div className="w-full max-w-[1200px] space-y-6">
@@ -325,18 +290,11 @@ export default function Quiz() {
               <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300 relative">
                 <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
                 <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
-                <img 
-                  src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png"
-                  className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2"
-                  style={{height: '40px', marginLeft: '12px'}}
-                  alt="Risk-Free – Cancel Anytime" 
-                />
-                <img 
-                  src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png"
-                  className="risk-ribbon md:hidden block mx-auto mt-2"
-                  style={{height: '40px', margin: '8px auto 0'}}
-                  alt="Risk-Free – Cancel Anytime" 
-                />
+                
+                <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
+                height: '40px',
+                margin: '8px auto 0'
+              }} alt="Risk-Free – Cancel Anytime" />
               </div>
             </div>
             
@@ -365,12 +323,13 @@ export default function Quiz() {
                     </div>
                   </div>
                   
-                  <img 
-                    src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
-                    className="trust-stamp"
-                    style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
-                    alt="Cancel Anytime – No Fee" 
-                  />
+                  <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
+                  width: '36px',
+                  height: '36px',
+                  margin: '8px auto 4px',
+                  opacity: 0.9,
+                  transition: 'transform 0.3s'
+                }} alt="Cancel Anytime – No Fee" />
                   
                   <div className="space-y-3 mb-6 text-left">
                     <div className="flex items-center text-white/80 text-sm">
@@ -402,12 +361,13 @@ export default function Quiz() {
                     </div>
                   </div>
                   
-                  <img 
-                    src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
-                    className="trust-stamp"
-                    style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
-                    alt="Cancel Anytime – No Fee" 
-                  />
+                  <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
+                  width: '36px',
+                  height: '36px',
+                  margin: '8px auto 4px',
+                  opacity: 0.9,
+                  transition: 'transform 0.3s'
+                }} alt="Cancel Anytime – No Fee" />
                   
                   <div className="space-y-3 mb-6 text-left">
                     <div className="flex items-center text-white/80 text-sm">
@@ -448,12 +408,13 @@ export default function Quiz() {
                     </div>
                   </div>
                   
-                  <img 
-                    src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png"
-                    className="trust-stamp"
-                    style={{width: '36px', height: '36px', margin: '8px auto 4px', opacity: 0.9, transition: 'transform 0.3s'}}
-                    alt="Cancel Anytime – No Fee" 
-                  />
+                  <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
+                  width: '36px',
+                  height: '36px',
+                  margin: '8px auto 4px',
+                  opacity: 0.9,
+                  transition: 'transform 0.3s'
+                }} alt="Cancel Anytime – No Fee" />
                   
                   <div className="space-y-3 mb-6 text-left">
                     <div className="flex items-center text-white/80 text-sm">
@@ -479,31 +440,17 @@ export default function Quiz() {
               <div className="flex flex-col lg:flex-row items-center justify-center gap-4 w-full max-w-5xl mx-auto">
                 {/* Cancel Anytime Badge */}
                 <div className="flex-shrink-0">
-                  <img 
-                    src="/lovable-uploads/0b625d46-6a8a-4ae6-a395-2ea7b1034b04.png" 
-                    alt="Cancel Anytime Zero Fees Badge" 
-                    className="w-32 h-32 md:w-40 md:h-40 object-contain"
-                    loading="lazy"
-                  />
+                  <img src="/lovable-uploads/0b625d46-6a8a-4ae6-a395-2ea7b1034b04.png" alt="Cancel Anytime Zero Fees Badge" className="w-32 h-32 md:w-40 md:h-40 object-contain" loading="lazy" />
                 </div>
 
                 {/* Secure Checkout Image */}
                 <div className="flex-shrink-0">
-                  <img 
-                    alt="Secure checkout by Square with multiple payment options" 
-                    className="w-full max-w-md h-auto object-contain rounded-lg" 
-                    src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" 
-                  />
+                  <img alt="Secure checkout by Square with multiple payment options" className="w-full max-w-md h-auto object-contain rounded-lg" src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" />
                 </div>
 
                 {/* Trusted Seller Badge */}
                 <div className="flex-shrink-0">
-                  <img 
-                    src="/lovable-uploads/30767198-f9b4-42cb-b632-0b9fbb0b856a.png" 
-                    alt="Trusted Seller Badge" 
-                    className="w-32 h-32 md:w-40 md:h-40 object-contain"
-                    loading="lazy"
-                  />
+                  <img src="/lovable-uploads/30767198-f9b4-42cb-b632-0b9fbb0b856a.png" alt="Trusted Seller Badge" className="w-32 h-32 md:w-40 md:h-40 object-contain" loading="lazy" />
                 </div>
               </div>
               
@@ -519,52 +466,28 @@ export default function Quiz() {
               </div>
 
               <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
-                <img 
-                  src="/lovable-uploads/61f42e0f-6e69-435b-b181-dc50cbb9b324.png"
-                  className="flex-shrink-0" 
-                  style={{
-                    height: '160px',
-                    backgroundColor: 'transparent',
-                    filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
-                  }} 
-                  alt="Cancel Anytime - Zero Fees" 
-                />
+                
                 <Users className="w-5 h-5" />
                 <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
-                <img 
-                  className="flex-shrink-0" 
-                  style={{
-                    height: '160px',
-                    backgroundColor: 'transparent',
-                    filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
-                  }} 
-                  alt="Trusted Seller" 
-                  src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
-                />
+                
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
   const currentQuestion = questions[currentStep];
   if (!currentQuestion) {
     console.error('Current question not found at index:', currentStep);
-    return (
-      <div className="min-h-screen bg-background circuit-background flex items-center justify-center">
+    return <div className="min-h-screen bg-background circuit-background flex items-center justify-center">
         <div className="text-center p-8 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
           <h2 className="text-2xl font-semibold mb-4">Something went wrong</h2>
           <p className="mb-6">We're having trouble loading the quiz questions.</p>
           <Button onClick={() => navigate('/chat')}>Go to Chat</Button>
         </div>
-      </div>
-    );
+      </div>;
   }
-  
-  return (
-    <div className="min-h-screen bg-background circuit-background">
+  return <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
@@ -575,16 +498,7 @@ export default function Quiz() {
                   Help us personalize your growing experience
                 </h1>
                 <div className="flex items-center justify-center gap-2 mt-4">
-                  {questions.map((_, index) => (
-                    <div 
-                      key={index} 
-                      className={`h-2 w-2 rounded-full ${
-                        index === currentStep ? 'bg-accent w-6' : 
-                        index < currentStep ? 'bg-primary' : 
-                        'bg-white/20'
-                      }`} 
-                    />
-                  ))}
+                  {questions.map((_, index) => <div key={index} className={`h-2 w-2 rounded-full ${index === currentStep ? 'bg-accent w-6' : index < currentStep ? 'bg-primary' : 'bg-white/20'}`} />)}
                 </div>
                 <p className="text-accent/80 mt-2">
                   Question {currentStep + 1} of {questions.length}
@@ -596,101 +510,61 @@ export default function Quiz() {
                   {currentQuestion.question}
                 </h2>
 
-                {currentQuestion.type === "radio" && (
-                  <RadioGroup
-                    value={quizResponses[currentQuestion.field as keyof QuizResponse] as string}
-                    onValueChange={value => setQuizResponses(prev => ({
-                      ...prev,
-                      [currentQuestion.field]: value
-                    }))}
-                    className="space-y-4"
-                  >
-                    {currentQuestion.options.map(option => (
-                      <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
-                        <RadioGroupItem 
-                          value={option.value} 
-                          id={option.value}
-                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent"
-                        />
-                        <label 
-                          htmlFor={option.value}
-                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
-                        >
+                {currentQuestion.type === "radio" && <RadioGroup value={quizResponses[currentQuestion.field as keyof QuizResponse] as string} onValueChange={value => setQuizResponses(prev => ({
+                ...prev,
+                [currentQuestion.field]: value
+              }))} className="space-y-4">
+                    {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                        <RadioGroupItem value={option.value} id={option.value} className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent" />
+                        <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
                           {option.label}
                         </label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                )}
+                      </div>)}
+                  </RadioGroup>}
 
-                {currentQuestion.type === "checkbox" && (
-                  <div className="space-y-4">
-                    {currentQuestion.options.map(option => (
-                      <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
-                        <Checkbox
-                          id={option.value}
-                          checked={(quizResponses[currentQuestion.field as keyof QuizResponse] as string[] || []).includes(option.value)}
-                          onCheckedChange={checked => {
-                            const field = currentQuestion.field as keyof QuizResponse;
-                            const currentValues = (quizResponses[field] as string[]) || [];
-                            if (checked) {
-                              if (option.value === 'all' || option.value === 'none') {
-                                setQuizResponses(prev => ({
-                                  ...prev,
-                                  [field]: [option.value]
-                                }));
-                              } else {
-                                setQuizResponses(prev => ({
-                                  ...prev,
-                                  [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
-                                }));
-                              }
-                            } else {
-                              setQuizResponses(prev => ({
-                                ...prev,
-                                [field]: currentValues.filter(value => value !== option.value)
-                              }));
-                            }
-                          }}
-                          className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent"
-                        />
-                        <label
-                          htmlFor={option.value}
-                          className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent"
-                        >
+                {currentQuestion.type === "checkbox" && <div className="space-y-4">
+                    {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                        <Checkbox id={option.value} checked={(quizResponses[currentQuestion.field as keyof QuizResponse] as string[] || []).includes(option.value)} onCheckedChange={checked => {
+                    const field = currentQuestion.field as keyof QuizResponse;
+                    const currentValues = quizResponses[field] as string[] || [];
+                    if (checked) {
+                      if (option.value === 'all' || option.value === 'none') {
+                        setQuizResponses(prev => ({
+                          ...prev,
+                          [field]: [option.value]
+                        }));
+                      } else {
+                        setQuizResponses(prev => ({
+                          ...prev,
+                          [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
+                        }));
+                      }
+                    } else {
+                      setQuizResponses(prev => ({
+                        ...prev,
+                        [field]: currentValues.filter(value => value !== option.value)
+                      }));
+                    }
+                  }} className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent" />
+                        <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
                           {option.label}
                         </label>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      </div>)}
+                  </div>}
               </div>
 
               <div className="flex justify-between pt-6">
-                <Button 
-                  variant="outline" 
-                  onClick={handlePreviousStep}
-                  disabled={currentStep === 0}
-                  className="px-6"
-                >
+                <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0} className="px-6">
                   Previous
                 </Button>
                 
-                <Button 
-                  onClick={handleNextStep}
-                  disabled={isSubmitting}
-                  className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
-                >
-                  {currentStep === questions.length - 1 ? 
-                    (isSubmitting ? "Saving..." : "Complete Quiz") : 
-                    "Next"
-                  }
+                <Button onClick={handleNextStep} disabled={isSubmitting} className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover">
+                  {currentStep === questions.length - 1 ? isSubmitting ? "Saving..." : "Complete Quiz" : "Next"}
                 </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
