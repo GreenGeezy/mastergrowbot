@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Star, Award, Users, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -34,7 +33,8 @@ export default function PricingCards() {
             style={{
               height: '160px',
               backgroundColor: 'transparent',
-              mixBlendMode: 'multiply'
+              filter: 'brightness(1.4) contrast(1.3) saturate(1.2)',
+              dropShadow: '0 0 8px rgba(255, 215, 0, 0.5)'
             }} 
             alt="Trusted Seller" 
             src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
