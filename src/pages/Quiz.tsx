@@ -538,6 +538,31 @@ export default function Quiz() {
                   Back to Quiz
                 </Button>
               </div>
+
+              <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
+                <img 
+                  src="/lovable-uploads/61f42e0f-6e69-435b-b181-dc50cbb9b324.png"
+                  className="flex-shrink-0" 
+                  style={{
+                    height: '160px',
+                    backgroundColor: 'transparent',
+                    filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
+                  }} 
+                  alt="Cancel Anytime - Zero Fees" 
+                />
+                <Users className="w-5 h-5" />
+                <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
+                <img 
+                  className="flex-shrink-0" 
+                  style={{
+                    height: '160px',
+                    backgroundColor: 'transparent',
+                    filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
+                  }} 
+                  alt="Trusted Seller" 
+                  src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
+                />
+              </div>
             </div>
           </div>
         </div>
