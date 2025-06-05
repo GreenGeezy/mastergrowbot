@@ -33,8 +33,7 @@ export default function PricingCards() {
             style={{
               height: '160px',
               backgroundColor: 'transparent',
-              filter: 'brightness(1.4) contrast(1.3) saturate(1.2)',
-              dropShadow: '0 0 8px rgba(255, 215, 0, 0.5)'
+              filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
             }} 
             alt="Trusted Seller" 
             src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
