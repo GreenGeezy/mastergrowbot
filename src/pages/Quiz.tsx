@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -327,9 +328,21 @@ export default function Quiz() {
                   <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
                 </div>
                 <div className="flex flex-col items-center space-y-0">
-                  <p className="text-sm sm:text-base text-center font-medium text-[#FFD700] mb-1">
-                    Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
-                  </p>
+                  <div className="flex items-center justify-center space-x-3 mb-1">
+                    <p className="text-sm sm:text-base text-center font-medium text-[#FFD700]">
+                      Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
+                    </p>
+                    <img 
+                      className="flex-shrink-0" 
+                      style={{
+                        height: '40px',
+                        backgroundColor: 'transparent',
+                        filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
+                      }} 
+                      alt="Trusted Seller" 
+                      src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
+                    />
+                  </div>
                   <div className="flex items-center justify-center space-x-3">
                     <Award className="w-7 h-7 text-[#FFD700] animate-float will-change-transform" />
                     <div className="flex items-center space-x-1">
