@@ -485,7 +485,7 @@ export default function Quiz() {
               </div>
               
               <div className="w-full">
-                <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/21835d64-7d9a-49c8-b6e4-b59d95ce4a18.png" />
+                <img alt="Secure checkout by Square with multiple payment options" className="w-full h-auto object-contain rounded-lg" src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" />
               </div>
               
               <div className="flex flex-col space-y-4 items-center w-full max-w-md">

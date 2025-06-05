@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Label } from "@/components/ui/label";
@@ -141,6 +140,15 @@ const AuthUI = () => {
         <TestimonialCarousel />
         
         <PricingCards />
+      </div>
+
+      {/* Secure Checkout Image */}
+      <div className="flex justify-center">
+        <img 
+          alt="Secure checkout by Square with multiple payment options" 
+          className="w-full max-w-md h-auto object-contain rounded-lg" 
+          src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" 
+        />
       </div>
 
       {/* Authentication Section with Badge */}
