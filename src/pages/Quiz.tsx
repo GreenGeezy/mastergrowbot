@@ -328,6 +328,16 @@ export default function Quiz() {
                 </div>
                 <div className="flex flex-col items-center space-y-0">
                   <div className="flex items-center justify-center space-x-3 mb-1">
+                    <img 
+                      src="/lovable-uploads/8ecdeabd-365b-4f3e-aefb-c0ffdacbce66.png"
+                      className="flex-shrink-0" 
+                      style={{
+                        height: '160px',
+                        backgroundColor: 'transparent',
+                        filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
+                      }} 
+                      alt="Risk Free - Cancel Anytime" 
+                    />
                     <p className="text-sm sm:text-base text-center font-medium text-[#FFD700]">
                       Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
                     </p>

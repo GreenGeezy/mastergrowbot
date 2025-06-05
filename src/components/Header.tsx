@@ -32,6 +32,23 @@ const Header = () => {
             Save Your Cannabis Plants in Seconds—Snap a Pic, AI Spots Issues Before They Cost You $336 per Plant!
           </h2>
           
+          <div className="flex items-center gap-4 w-full max-w-4xl mx-auto">
+            <img 
+              src="/lovable-uploads/8ecdeabd-365b-4f3e-aefb-c0ffdacbce66.png"
+              className="flex-shrink-0" 
+              style={{
+                height: '160px',
+                backgroundColor: 'transparent',
+                filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
+              }} 
+              alt="Risk Free - Cancel Anytime" 
+            />
+            <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 flex-1">
+              <p className="text-white italic text-center text-lg font-extrabold">TESTIMONIAL: 
+"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
+            </div>
+          </div>
+          
           <div>
             <Link 
               to="/quiz" 
