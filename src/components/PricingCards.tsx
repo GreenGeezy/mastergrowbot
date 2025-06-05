@@ -23,9 +23,21 @@ export default function PricingCards() {
   }, []);
   return <div className="w-full space-y-6">
       <div className="flex flex-col items-center space-y-4">
-        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-4xl w-full">
-          <p className="text-white italic text-center text-lg font-extrabold">TESTIMONIAL: 
+        <div className="flex items-center gap-4 w-full max-w-4xl">
+          <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 flex-1">
+            <p className="text-white italic text-center text-lg font-extrabold">TESTIMONIAL: 
 &quot;Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time.&quot; – Dr. Sergio, Licensed Medical Practitioner &amp; Grower</p>
+          </div>
+          <img 
+            className="risk-ribbon flex-shrink-0" 
+            style={{
+              height: '160px',
+              backgroundColor: 'transparent',
+              mixBlendMode: 'multiply'
+            }} 
+            alt="Trusted Seller" 
+            src="/lovable-uploads/7e42faed-98c6-4108-9bb4-0c3a09a18c37.png" 
+          />
         </div>
         <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
           <Users className="w-5 h-5" />
@@ -34,21 +46,9 @@ export default function PricingCards() {
         
       </div>
 
-      <div className="bg-[#9b87f5] rounded-lg p-4 text-center transform hover:scale-105 transition-transform duration-300 relative">
+      <div className="bg-[#9b87f5] rounded-lg p-4 text-center transform hover:scale-105 transition-transform duration-300">
         <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
         <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
-        <img className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2" style={{
-        height: '160px',
-        marginLeft: '12px',
-        backgroundColor: 'transparent',
-        mixBlendMode: 'multiply'
-      }} alt="Trusted Seller" src="/lovable-uploads/7e42faed-98c6-4108-9bb4-0c3a09a18c37.png" />
-        <img src="/lovable-uploads/7e42faed-98c6-4108-9bb4-0c3a09a18c37.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
-        height: '160px',
-        margin: '8px auto 0',
-        backgroundColor: 'transparent',
-        mixBlendMode: 'multiply'
-      }} alt="Trusted Seller" />
       </div>
       
       <div className="flex flex-col lg:flex-row gap-6 items-stretch justify-center w-full">
