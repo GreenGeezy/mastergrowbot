@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Star, Award, Users, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +37,7 @@ export default function PricingCards() {
               mixBlendMode: 'multiply'
             }} 
             alt="Trusted Seller" 
-            src="/lovable-uploads/7e42faed-98c6-4108-9bb4-0c3a09a18c37.png" 
+            src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
           />
         </div>
         <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
