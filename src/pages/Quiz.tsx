@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -335,7 +334,7 @@ export default function Quiz() {
                     <img 
                       className="flex-shrink-0" 
                       style={{
-                        height: '40px',
+                        height: '160px',
                         backgroundColor: 'transparent',
                         filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
                       }} 
