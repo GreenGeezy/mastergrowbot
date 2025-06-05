@@ -37,10 +37,10 @@ export default function PricingCards() {
       <div className="bg-[#9b87f5] rounded-lg p-4 text-center transform hover:scale-105 transition-transform duration-300 relative">
         <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
         <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
-        <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2" style={{
+        <img className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2" style={{
         height: '40px',
         marginLeft: '12px'
-      }} alt="Risk-Free – Cancel Anytime" />
+      }} alt="Risk-Free – Cancel Anytime" src="/lovable-uploads/974d362d-8d68-46a6-8bf1-44e0fa0935b0.png" />
         <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
         height: '40px',
         margin: '8px auto 0'
