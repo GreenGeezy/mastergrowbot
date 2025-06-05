@@ -90,6 +90,41 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <div className="py-6 md:py-10">
             <FeatureSection onFeatureClick={handleFeatureClick} />
+            
+            {/* Testimonial Section */}
+            <div className="mt-12 mb-8 text-center">
+              <p className="text-lg text-white mb-6">
+                Select a Plan and Subscribed with Square Checkout. Already Subscribed? Sign in at the Bottom of the Page
+              </p>
+              
+              <div className="flex items-center gap-4 w-full max-w-4xl mx-auto justify-center">
+                <img 
+                  src="/lovable-uploads/61f42e0f-6e69-435b-b181-dc50cbb9b324.png"
+                  className="flex-shrink-0" 
+                  style={{
+                    height: '160px',
+                    backgroundColor: 'transparent',
+                    filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
+                  }} 
+                  alt="Cancel Anytime - Zero Fees" 
+                />
+                <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 flex-1 max-w-2xl">
+                  <p className="text-white italic text-center text-lg font-extrabold">TESTIMONIAL: 
+"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
+                </div>
+                <img 
+                  className="flex-shrink-0" 
+                  style={{
+                    height: '160px',
+                    backgroundColor: 'transparent',
+                    filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
+                  }} 
+                  alt="Trusted Seller" 
+                  src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
+                />
+              </div>
+            </div>
+            
             <div className="mt-12 flex flex-col items-center">
               <AuthUI />
             </div>
