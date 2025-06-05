@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
 import { Star, Award, Users, MessageCircle, Camera, BookOpen, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import TestimonialCarousel from '@/components/TestimonialCarousel';
 
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 
@@ -318,48 +319,7 @@ export default function Quiz() {
               <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Subscription Required</h1>
               <p className="text-lg text-white/80">To access Master Growbot AI, please select a subscription plan</p>
               
-              <div className="flex flex-col items-center space-y-4 mt-4">
-                <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 max-w-2xl">
-                  <p className="text-white italic text-sm">"Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time." – Dr. Sergio, Licensed Medical Practitioner & Grower</p>
-                </div>
-                <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
-                  <Users className="w-5 h-5" />
-                  <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
-                </div>
-                <div className="flex flex-col items-center space-y-0">
-                  <div className="flex items-center justify-center space-x-3 mb-1">
-                    <img 
-                      src="/lovable-uploads/61f42e0f-6e69-435b-b181-dc50cbb9b324.png"
-                      className="flex-shrink-0" 
-                      style={{
-                        height: '160px',
-                        backgroundColor: 'transparent',
-                        filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
-                      }} 
-                      alt="Cancel Anytime - Zero Fees" 
-                    />
-                    <p className="text-sm sm:text-base text-center font-medium text-[#FFD700]">
-                      Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
-                    </p>
-                    <img 
-                      className="flex-shrink-0" 
-                      style={{
-                        height: '160px',
-                        backgroundColor: 'transparent',
-                        filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
-                      }} 
-                      alt="Trusted Seller" 
-                      src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" 
-                    />
-                  </div>
-                  <div className="flex items-center justify-center space-x-3">
-                    <Award className="w-7 h-7 text-[#FFD700] animate-float will-change-transform" />
-                    <div className="flex items-center space-x-1">
-                      {[...Array(5)].map((_, index) => <Star key={index} className="w-6 h-6 fill-[#FFD700] text-[#FFD700]" />)}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <TestimonialCarousel />
 
               <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300 relative">
                 <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>

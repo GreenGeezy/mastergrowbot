@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Eye, EyeOff } from "lucide-react";
 import PricingCards from './PricingCards';
+import TestimonialCarousel from './TestimonialCarousel';
+
 const AuthUI = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,6 +16,7 @@ const AuthUI = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const supabase = useSupabaseClient();
+
   const handleSignIn = async () => {
     setError(null);
     setLoading(true);
@@ -43,6 +46,7 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
+
   const handleSignUp = async () => {
     setError(null);
     setLoading(true);
@@ -75,6 +79,7 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
+
   const handleGoogleSignIn = async () => {
     setError(null);
     setLoading(true);
@@ -99,6 +104,7 @@ const AuthUI = () => {
       setLoading(false);
     }
   };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isSignUp) {
@@ -107,14 +113,18 @@ const AuthUI = () => {
       handleSignIn();
     }
   };
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   const toggleMode = () => {
     setIsSignUp(!isSignUp);
     setError(null);
   };
-  return <div className="w-full max-w-6xl mx-auto space-y-6">
+
+  return (
+    <div className="w-full max-w-6xl mx-auto space-y-6">
       <div className="text-center space-y-2">
         <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
           Master Growbot
@@ -127,22 +137,7 @@ const AuthUI = () => {
       <div className="text-center space-y-4">
         <h2 className="font-semibold text-white text-lg">Select a Plan and Subscribe with Square Checkout. Already Subscribed? Sign in at the Bottom of the Page</h2>
         
-        {/* Testimonial section with flanking icons */}
-        <div className="flex items-center gap-4 w-full max-w-4xl mx-auto">
-          <img src="/lovable-uploads/61f42e0f-6e69-435b-b181-dc50cbb9b324.png" className="flex-shrink-0" style={{
-          height: '160px',
-          backgroundColor: 'transparent',
-          filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
-        }} alt="Cancel Anytime - Zero Fees" />
-          <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 flex-1">
-            <p className="text-white italic text-center font-extrabold text-3xl">&quot;Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time.&quot; – Dr. Sergio, Licensed Medical Doctor &amp; Grower</p>
-          </div>
-          <img className="flex-shrink-0" style={{
-          height: '160px',
-          backgroundColor: 'transparent',
-          filter: 'brightness(1.4) contrast(1.3) saturate(1.2) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))'
-        }} alt="Trusted Seller" src="/lovable-uploads/72c8715f-f973-49a5-a653-cb3400fe9dd7.png" />
-        </div>
+        <TestimonialCarousel />
         
         <PricingCards />
       </div>
@@ -152,14 +147,39 @@ const AuthUI = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} className="bg-background/50 border-white/20" required autoComplete="email" />
+            <Input 
+              id="email" 
+              name="email" 
+              type="email" 
+              placeholder="Enter your email" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              className="bg-background/50 border-white/20" 
+              required 
+              autoComplete="email" 
+            />
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
-              <Input id="password" name="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} className="bg-background/50 border-white/20 pr-10" required autoComplete={isSignUp ? "new-password" : "current-password"} />
-              <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors" aria-label={showPassword ? "Hide password" : "Show password"}>
+              <Input 
+                id="password" 
+                name="password" 
+                type={showPassword ? "text" : "password"} 
+                placeholder="Enter your password" 
+                value={password} 
+                onChange={e => setPassword(e.target.value)} 
+                className="bg-background/50 border-white/20 pr-10" 
+                required 
+                autoComplete={isSignUp ? "new-password" : "current-password"} 
+              />
+              <button 
+                type="button" 
+                onClick={togglePasswordVisibility} 
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors" 
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
                 {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
               </button>
             </div>
@@ -167,7 +187,11 @@ const AuthUI = () => {
 
           {error && <div className="text-red-400 text-sm">{error}</div>}
 
-          <Button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover">
+          <Button 
+            type="submit" 
+            disabled={loading} 
+            className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+          >
             {loading ? 'Loading...' : isSignUp ? 'Create Account' : 'Sign In'}
           </Button>
 
@@ -180,7 +204,13 @@ const AuthUI = () => {
             </div>
           </div>
 
-          <Button type="button" onClick={handleGoogleSignIn} disabled={loading} variant="outline" className="w-full hover:bg-white/5 border-white/20">
+          <Button 
+            type="button" 
+            onClick={handleGoogleSignIn} 
+            disabled={loading} 
+            variant="outline" 
+            className="w-full hover:bg-white/5 border-white/20"
+          >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
               <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
               <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -191,12 +221,18 @@ const AuthUI = () => {
           </Button>
 
           <div className="text-center mt-4">
-            <button type="button" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={toggleMode}>
+            <button 
+              type="button" 
+              className="text-sm text-gray-400 hover:text-white transition-colors" 
+              onClick={toggleMode}
+            >
               {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
             </button>
           </div>
         </form>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default AuthUI;
