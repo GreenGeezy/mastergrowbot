@@ -69,13 +69,7 @@ export default function PricingCards() {
               </div>
             </div>
             
-            <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
-            width: '36px',
-            height: '36px',
-            margin: '8px auto 4px',
-            opacity: 0.9,
-            transition: 'transform 0.3s'
-          }} alt="Cancel Anytime – No Fee" />
+            
             
             <div className="space-y-3 mb-6 text-left">
               <div className="flex items-center text-white/80 text-sm">
@@ -107,13 +101,7 @@ export default function PricingCards() {
               </div>
             </div>
             
-            <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
-            width: '36px',
-            height: '36px',
-            margin: '8px auto 4px',
-            opacity: 0.9,
-            transition: 'transform 0.3s'
-          }} alt="Cancel Anytime – No Fee" />
+            
             
             <div className="space-y-3 mb-6 text-left">
               <div className="flex items-center text-white/80 text-sm">
@@ -154,13 +142,7 @@ export default function PricingCards() {
               </div>
             </div>
             
-            <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
-            width: '36px',
-            height: '36px',
-            margin: '8px auto 4px',
-            opacity: 0.9,
-            transition: 'transform 0.3s'
-          }} alt="Cancel Anytime – No Fee" />
+            
             
             <div className="space-y-3 mb-6 text-left">
               <div className="flex items-center text-white/80 text-sm">
