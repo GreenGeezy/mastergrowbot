@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Star, Award, Users, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -40,17 +38,17 @@ export default function PricingCards() {
         <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
         <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
         <img className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2" style={{
-        height: '200px',
+        height: '160px',
         marginLeft: '12px',
         backgroundColor: 'transparent',
         mixBlendMode: 'multiply'
-      }} alt="Risk-Free – Cancel Anytime" src="/lovable-uploads/974d362d-8d68-46a6-8bf1-44e0fa0935b0.png" />
-        <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
-        height: '200px',
+      }} alt="Trusted Seller" src="/lovable-uploads/7e42faed-98c6-4108-9bb4-0c3a09a18c37.png" />
+        <img src="/lovable-uploads/7e42faed-98c6-4108-9bb4-0c3a09a18c37.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
+        height: '160px',
         margin: '8px auto 0',
         backgroundColor: 'transparent',
         mixBlendMode: 'multiply'
-      }} alt="Risk-Free – Cancel Anytime" />
+      }} alt="Trusted Seller" />
       </div>
       
       <div className="flex flex-col lg:flex-row gap-6 items-stretch justify-center w-full">
@@ -198,4 +196,3 @@ export default function PricingCards() {
       </div>
     </div>;
 }
-
