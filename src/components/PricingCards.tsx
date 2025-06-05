@@ -23,7 +23,7 @@ export default function PricingCards() {
   }, []);
   return <div className="w-full space-y-6">
       <div className="flex flex-col items-center space-y-4">
-        <div className="flex items-center gap-4 w-full max-w-4xl">
+        <div className="flex items-center gap-4 w-full">
           <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 flex-1">
             <p className="text-white italic text-center text-lg font-extrabold">TESTIMONIAL: 
 &quot;Brilliant Technology! Master Growbot saved my new strain from dying, saving me thousands of dollars and time.&quot; – Dr. Sergio, Licensed Medical Practitioner &amp; Grower</p>
