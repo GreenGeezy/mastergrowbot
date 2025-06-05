@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Star, Award, Users, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -40,11 +41,15 @@ export default function PricingCards() {
         <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
         <img className="risk-ribbon hidden md:inline-block absolute right-4 top-1/2 transform -translate-y-1/2" style={{
         height: '200px',
-        marginLeft: '12px'
+        marginLeft: '12px',
+        backgroundColor: 'transparent',
+        mixBlendMode: 'multiply'
       }} alt="Risk-Free – Cancel Anytime" src="/lovable-uploads/974d362d-8d68-46a6-8bf1-44e0fa0935b0.png" />
         <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
         height: '200px',
-        margin: '8px auto 0'
+        margin: '8px auto 0',
+        backgroundColor: 'transparent',
+        mixBlendMode: 'multiply'
       }} alt="Risk-Free – Cancel Anytime" />
       </div>
       
@@ -193,3 +198,4 @@ export default function PricingCards() {
       </div>
     </div>;
 }
+
