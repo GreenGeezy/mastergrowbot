@@ -11,7 +11,10 @@ import type { QuizResponse } from '@/types/quiz';
 import { Star, Award, Users, MessageCircle, Camera, BookOpen, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import TestimonialCarousel from '@/components/TestimonialCarousel';
+import IntroCover from '@/components/quiz/IntroCover';
+
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
+
 const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
   if (!jsonString) return fallback;
   try {
@@ -21,12 +24,12 @@ const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
     return fallback;
   }
 };
+
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+  const [showIntroCover, setShowIntroCover] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
@@ -61,6 +64,7 @@ export default function Quiz() {
     }
   });
   const [timeLeft, setTimeLeft] = useState("");
+
   useEffect(() => {
     try {
       sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
@@ -86,100 +90,77 @@ export default function Quiz() {
     const timer = setInterval(updateTimer, 60000);
     return () => clearInterval(timer);
   }, []);
-  const questions = [{
-    question: "How long have you been growing?",
-    type: "radio",
-    field: "experience_level",
-    options: [{
-      label: "I'm new",
-      value: "new"
-    }, {
-      label: "6 months - 2 years",
-      value: "intermediate"
-    }, {
-      label: "Over 2 years",
-      value: "advanced"
-    }]
-  }, {
-    question: "How do you plan on growing?",
-    type: "radio",
-    field: "growing_method",
-    options: [{
-      label: "Indoor",
-      value: "indoor"
-    }, {
-      label: "Outdoor",
-      value: "outdoor"
-    }, {
-      label: "Greenhouse",
-      value: "greenhouse"
-    }]
-  }, {
-    question: "What challenges have you faced in your previous grow cycles?",
-    type: "checkbox",
-    field: "challenges",
-    options: [{
-      label: "Pests",
-      value: "pests"
-    }, {
-      label: "Nutrient deficiencies",
-      value: "nutrient_deficiencies"
-    }, {
-      label: "Environmental issues",
-      value: "environmental_issues"
-    }, {
-      label: "No challenges faced",
-      value: "none"
-    }]
-  }, {
-    question: "How do you monitor your growing conditions?",
-    type: "radio",
-    field: "monitoring_method",
-    options: [{
-      label: "Manual checks",
-      value: "manual"
-    }, {
-      label: "Basic sensors",
-      value: "basic_sensors"
-    }, {
-      label: "Advanced monitoring systems",
-      value: "advanced_systems"
-    }]
-  }, {
-    question: "What type of nutrients do you use for your plants?",
-    type: "radio",
-    field: "nutrient_type",
-    options: [{
-      label: "Organic nutrients",
-      value: "organic"
-    }, {
-      label: "Synthetic nutrients",
-      value: "synthetic"
-    }, {
-      label: "Both",
-      value: "both"
-    }, {
-      label: "I don't use nutrients",
-      value: "none"
-    }]
-  }, {
-    question: "What would you like Master Growbot to help you achieve?",
-    type: "checkbox",
-    field: "goals",
-    options: [{
-      label: "Have fun and learn",
-      value: "learn"
-    }, {
-      label: "Improve quality and potency",
-      value: "quality"
-    }, {
-      label: "Increase yields and profits",
-      value: "profits"
-    }, {
-      label: "All of the above",
-      value: "all"
-    }]
-  }];
+
+  const questions = [
+    {
+      question: "How long have you been growing?",
+      type: "radio",
+      field: "experience_level",
+      options: [
+        { label: "I'm new", value: "new" },
+        { label: "6 months - 2 years", value: "intermediate" },
+        { label: "Over 2 years", value: "advanced" }
+      ]
+    },
+    {
+      question: "How do you plan on growing?",
+      type: "radio",
+      field: "growing_method",
+      options: [
+        { label: "Indoor", value: "indoor" },
+        { label: "Outdoor", value: "outdoor" },
+        { label: "Greenhouse", value: "greenhouse" }
+      ]
+    },
+    {
+      question: "What challenges have you faced in your previous grow cycles?",
+      type: "checkbox",
+      field: "challenges",
+      options: [
+        { label: "Pests", value: "pests" },
+        { label: "Nutrient deficiencies", value: "nutrient_deficiencies" },
+        { label: "Environmental issues", value: "environmental_issues" },
+        { label: "No challenges faced", value: "none" }
+      ]
+    },
+    {
+      question: "How do you monitor your growing conditions?",
+      type: "radio",
+      field: "monitoring_method",
+      options: [
+        { label: "Manual checks", value: "manual" },
+        { label: "Basic sensors", value: "basic_sensors" },
+        { label: "Advanced monitoring systems", value: "advanced_systems" }
+      ]
+    },
+    {
+      question: "What type of nutrients do you use for your plants?",
+      type: "radio",
+      field: "nutrient_type",
+      options: [
+        { label: "Organic nutrients", value: "organic" },
+        { label: "Synthetic nutrients", value: "synthetic" },
+        { label: "Both", value: "both" },
+        { label: "I don't use nutrients", value: "none" }
+      ]
+    },
+    {
+      question: "What would you like Master Growbot to help you achieve?",
+      type: "checkbox",
+      field: "goals",
+      options: [
+        { label: "Have fun and learn", value: "learn" },
+        { label: "Improve quality and potency", value: "quality" },
+        { label: "Increase yields and profits", value: "profits" },
+        { label: "All of the above", value: "all" }
+      ]
+    }
+  ];
+
+  const handleStartQuiz = () => {
+    setShowIntroCover(false);
+  };
+
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     if (!currentQuestion) {
@@ -201,11 +182,13 @@ export default function Quiz() {
       handleSubmit();
     }
   };
+
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -276,6 +259,11 @@ export default function Quiz() {
     }
     setIsSubmitting(false);
   };
+
+  if (showIntroCover) {
+    return <IntroCover onStartQuiz={handleStartQuiz} />;
+  }
+
   if (showSubscription) {
     return <div className="min-h-screen bg-background circuit-background">
         <ChatHeader />
@@ -476,17 +464,21 @@ export default function Quiz() {
         </div>
       </div>;
   }
+
   const currentQuestion = questions[currentStep];
   if (!currentQuestion) {
     console.error('Current question not found at index:', currentStep);
-    return <div className="min-h-screen bg-background circuit-background flex items-center justify-center">
+    return (
+      <div className="min-h-screen bg-background circuit-background flex items-center justify-center">
         <div className="text-center p-8 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
           <h2 className="text-2xl font-semibold mb-4">Something went wrong</h2>
           <p className="mb-6">We're having trouble loading the quiz questions.</p>
           <Button onClick={() => navigate('/chat')}>Go to Chat</Button>
         </div>
-      </div>;
+      </div>
+    );
   }
+
   return <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
       <div className="container mx-auto px-4 py-8">
