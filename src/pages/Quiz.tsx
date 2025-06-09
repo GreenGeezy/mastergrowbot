@@ -8,8 +8,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import type { QuizResponse } from '@/types/quiz';
-import { Star, Award, Users, MessageCircle, Camera, BookOpen, Tag } from "lucide-react";
+import { Star, Award, Users, MessageCircle, Camera, BookOpen, Tag, HelpCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import IntroCover from '@/components/quiz/IntroCover';
 
@@ -33,37 +34,44 @@ export default function Quiz() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
+  const [currentProofIndex, setCurrentProofIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(45);
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
     try {
       const savedResponses = sessionStorage.getItem(TEMP_QUIZ_RESPONSES_KEY);
       return savedResponses ? safeJsonParse(savedResponses, {
+        goals: [],
         experience_level: undefined,
         growing_method: undefined,
         challenges: [],
         monitoring_method: undefined,
-        nutrient_type: undefined,
-        goals: []
+        nutrient_type: undefined
       }) : {
+        goals: [],
         experience_level: undefined,
         growing_method: undefined,
         challenges: [],
         monitoring_method: undefined,
-        nutrient_type: undefined,
-        goals: []
+        nutrient_type: undefined
       };
     } catch (error) {
       console.error('Error initializing quiz responses:', error);
       return {
+        goals: [],
         experience_level: undefined,
         growing_method: undefined,
         challenges: [],
         monitoring_method: undefined,
-        nutrient_type: undefined,
-        goals: []
+        nutrient_type: undefined
       };
     }
   });
-  const [timeLeft, setTimeLeft] = useState("");
+  const [globalTimeLeft, setGlobalTimeLeft] = useState("");
+
+  const proofTickers = [
+    "📈 2022 Univ. of Guelph greenhouse trial: AI tools ↑ yield 8–12 % & cut labour 18 %.",
+    "💸 One unchecked mite outbreak = –$336/plant. Stop it before it starts."
+  ];
 
   useEffect(() => {
     try {
@@ -72,6 +80,7 @@ export default function Quiz() {
       console.error('Error saving quiz responses to session storage:', error);
     }
   }, [quizResponses]);
+
   useEffect(() => {
     const targetDate = new Date('2025-07-01T23:59:59.000Z');
     const updateTimer = () => {
@@ -81,9 +90,9 @@ export default function Quiz() {
         const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
         const hours = Math.floor(timeDiff % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
         const minutes = Math.floor(timeDiff % (1000 * 60 * 60) / (1000 * 60));
-        setTimeLeft(`${days}d ${hours}h ${minutes}m`);
+        setGlobalTimeLeft(`${days}d ${hours}h ${minutes}m`);
       } else {
-        setTimeLeft("Offer expired");
+        setGlobalTimeLeft("Offer expired");
       }
     };
     updateTimer();
@@ -91,7 +100,37 @@ export default function Quiz() {
     return () => clearInterval(timer);
   }, []);
 
+  // Proof ticker rotation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentProofIndex((prev) => (prev + 1) % proofTickers.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Quiz timer countdown
+  useEffect(() => {
+    if (!showIntroCover && !showSubscription && timeLeft > 0) {
+      const interval = setInterval(() => {
+        setTimeLeft((prev) => Math.max(0, prev - 1));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [showIntroCover, showSubscription, timeLeft]);
+
   const questions = [
+    {
+      question: "What's your #1 grow goal right now?",
+      type: "radio",
+      field: "goals",
+      options: [
+        { label: "Max yield", value: "profits" },
+        { label: "Better terp power", value: "quality" },
+        { label: "Slash costs", value: "costs" },
+        { label: "Stay 100% compliant", value: "compliance" }
+      ],
+      tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
+    },
     {
       question: "How long have you been growing?",
       type: "radio",
@@ -121,38 +160,6 @@ export default function Quiz() {
         { label: "Nutrient deficiencies", value: "nutrient_deficiencies" },
         { label: "Environmental issues", value: "environmental_issues" },
         { label: "No challenges faced", value: "none" }
-      ]
-    },
-    {
-      question: "How do you monitor your growing conditions?",
-      type: "radio",
-      field: "monitoring_method",
-      options: [
-        { label: "Manual checks", value: "manual" },
-        { label: "Basic sensors", value: "basic_sensors" },
-        { label: "Advanced monitoring systems", value: "advanced_systems" }
-      ]
-    },
-    {
-      question: "What type of nutrients do you use for your plants?",
-      type: "radio",
-      field: "nutrient_type",
-      options: [
-        { label: "Organic nutrients", value: "organic" },
-        { label: "Synthetic nutrients", value: "synthetic" },
-        { label: "Both", value: "both" },
-        { label: "I don't use nutrients", value: "none" }
-      ]
-    },
-    {
-      question: "What would you like Master Growbot to help you achieve?",
-      type: "checkbox",
-      field: "goals",
-      options: [
-        { label: "Have fun and learn", value: "learn" },
-        { label: "Improve quality and potency", value: "quality" },
-        { label: "Increase yields and profits", value: "profits" },
-        { label: "All of the above", value: "all" }
       ]
     }
   ];
@@ -210,7 +217,7 @@ export default function Quiz() {
           monitoring_method: quizResponses.monitoring_method,
           nutrient_type: quizResponses.nutrient_type,
           challenges: quizResponses.challenges,
-          goals: quizResponses.goals
+          goals: Array.isArray(quizResponses.goals) ? quizResponses.goals : [quizResponses.goals].filter(Boolean)
         };
         console.log('Updating user profile with:', profileData);
         const {
@@ -229,7 +236,7 @@ export default function Quiz() {
           challenges: quizResponses.challenges,
           monitoring_method: quizResponses.monitoring_method,
           nutrient_type: quizResponses.nutrient_type,
-          goals: quizResponses.goals
+          goals: Array.isArray(quizResponses.goals) ? quizResponses.goals : [quizResponses.goals].filter(Boolean)
         });
         if (quizError) {
           console.error('Error saving quiz responses:', quizError);
@@ -277,7 +284,7 @@ export default function Quiz() {
 
               <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300 relative">
                 <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
-                <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
+                <p className="text-[#FFD700] font-mono font-bold text-xl">{globalTimeLeft}</p>
                 
                 <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
                 height: '40px',
@@ -493,19 +500,47 @@ export default function Quiz() {
                   {questions.map((_, index) => <div key={index} className={`h-2 w-2 rounded-full ${index === currentStep ? 'bg-accent w-6' : index < currentStep ? 'bg-primary' : 'bg-white/20'}`} />)}
                 </div>
                 <p className="text-accent/80 mt-2">
-                  Question {currentStep + 1} of {questions.length}
+                  Step {currentStep + 1} / 4 · {timeLeft} s left
                 </p>
               </div>
 
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold text-white tech-font">
-                  {currentQuestion.question}
-                </h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl font-semibold text-white tech-font">
+                    {currentQuestion.question}
+                  </h2>
+                  {currentQuestion.tooltip && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-6 w-6 text-white/60 hover:text-white">
+                            <HelpCircle className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="max-w-xs">{currentQuestion.tooltip}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
 
-                {currentQuestion.type === "radio" && <RadioGroup value={quizResponses[currentQuestion.field as keyof QuizResponse] as string} onValueChange={value => setQuizResponses(prev => ({
-                ...prev,
-                [currentQuestion.field]: value
-              }))} className="space-y-4">
+                {currentQuestion.type === "radio" && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
+                  (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
+                  quizResponses[currentQuestion.field as keyof QuizResponse] as string} 
+                  onValueChange={value => {
+                    if (currentQuestion.field === "goals") {
+                      setQuizResponses(prev => ({
+                        ...prev,
+                        [currentQuestion.field]: [value]
+                      }));
+                    } else {
+                      setQuizResponses(prev => ({
+                        ...prev,
+                        [currentQuestion.field]: value
+                      }));
+                    }
+                  }} className="space-y-4">
                     {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
                         <RadioGroupItem value={option.value} id={option.value} className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent" />
                         <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
@@ -543,6 +578,15 @@ export default function Quiz() {
                         </label>
                       </div>)}
                   </div>}
+
+                {/* Proof ticker for first question only */}
+                {currentStep === 0 && (
+                  <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+                    <p className="text-sm text-white/80 text-center animate-pulse">
+                      {proofTickers[currentProofIndex]}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-between pt-6">
