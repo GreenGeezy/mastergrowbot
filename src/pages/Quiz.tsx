@@ -142,24 +142,26 @@ export default function Quiz() {
       ]
     },
     {
-      question: "How do you plan on growing?",
+      question: "How many runs under your belt?",
       type: "radio",
       field: "growing_method",
       options: [
-        { label: "Indoor", value: "indoor" },
-        { label: "Outdoor", value: "outdoor" },
-        { label: "Greenhouse", value: "greenhouse" }
-      ]
+        { label: "New", value: "indoor" },
+        { label: "Intermediate", value: "outdoor" },
+        { label: "Advanced", value: "greenhouse" }
+      ],
+      tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
     },
     {
-      question: "What challenges have you faced in your previous grow cycles?",
+      question: "Where are your plants living?",
       type: "checkbox",
       field: "challenges",
       options: [
-        { label: "Pests", value: "pests" },
-        { label: "Nutrient deficiencies", value: "nutrient_deficiencies" },
-        { label: "Environmental issues", value: "environmental_issues" },
-        { label: "No challenges faced", value: "none" }
+        { label: "Indoor", value: "pests" },
+        { label: "Greenhouse", value: "nutrient_deficiencies" },
+        { label: "Outdoor", value: "environmental_issues" },
+        { label: "Both", value: "none" },
+        { label: "Micro-grow", value: "micro_grow" }
       ]
     }
   ];
@@ -496,7 +498,7 @@ export default function Quiz() {
       case 2:
         return "Step 3 / 4 · 15 s left";
       case 3:
-        return "Step 4 / 4 · 10 s left";
+        return "Step 4 / 4 · 5 s left";
       default:
         return `Step ${currentStep + 1} / 4 · ${timeLeft} s left`;
     }
@@ -541,7 +543,7 @@ export default function Quiz() {
                   )}
                 </div>
 
-                {currentQuestion.type === "radio" && (currentStep === 0 || currentStep === 1) && (
+                {currentQuestion.type === "radio" && (currentStep === 0 || currentStep === 1 || currentStep === 2) && (
                   <div className="flex flex-col gap-4">
                     {currentQuestion.options.map(option => (
                       <div 
@@ -588,7 +590,7 @@ export default function Quiz() {
                   </div>
                 )}
 
-                {currentQuestion.type === "radio" && currentStep !== 0 && currentStep !== 1 && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
+                {currentQuestion.type === "radio" && currentStep !== 0 && currentStep !== 1 && currentStep !== 2 && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
                   (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
                   quizResponses[currentQuestion.field as keyof QuizResponse] as string} 
                   onValueChange={value => {
@@ -642,8 +644,8 @@ export default function Quiz() {
                       </div>)}
                   </div>}
 
-                {/* Proof ticker for first two questions */}
-                {(currentStep === 0 || currentStep === 1) && (
+                {/* Proof ticker for first three questions */}
+                {(currentStep === 0 || currentStep === 1 || currentStep === 2) && (
                   <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
                     <p className="text-sm text-white/80 text-center animate-pulse">
                       {proofTickers[currentProofIndex]}
@@ -656,6 +658,15 @@ export default function Quiz() {
                   <div className="mt-4 text-center">
                     <p className="text-sm text-white/70">
                       ⚡ 68% of growers recover ROI in ≤14 days after solving the #1 pain-point (Guide p. 5).
+                    </p>
+                  </div>
+                )}
+
+                {/* Mini-fact for fourth question */}
+                {currentStep === 3 && (
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-white/70">
+                      🌱 57% of micro-grows using AI hit craft-grade terps in ≤3 cycles (Guide p. 7).
                     </p>
                   </div>
                 )}
