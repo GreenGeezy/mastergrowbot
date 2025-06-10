@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import IntroCover from '@/components/quiz/IntroCover';
+import PreviewStep from '@/components/quiz/PreviewStep';
 
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 
@@ -32,6 +33,7 @@ export default function Quiz() {
   const { toast } = useToast();
   const [showIntroCover, setShowIntroCover] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
+  const [showPreview, setShowPreview] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   const [currentProofIndex, setCurrentProofIndex] = useState(0);
@@ -188,7 +190,8 @@ export default function Quiz() {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      handleSubmit();
+      // After completing all questions, show preview step
+      setShowPreview(true);
     }
   };
 
@@ -196,6 +199,15 @@ export default function Quiz() {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
+  };
+
+  const handleContinueToCheckout = () => {
+    handleSubmit();
+  };
+
+  const handleBackToQuestions = () => {
+    setShowPreview(false);
+    setCurrentStep(questions.length - 1); // Go back to last question
   };
 
   const handleSubmit = async () => {
@@ -271,6 +283,24 @@ export default function Quiz() {
 
   if (showIntroCover) {
     return <IntroCover onStartQuiz={handleStartQuiz} />;
+  }
+
+  if (showPreview) {
+    return (
+      <div className="min-h-screen bg-background circuit-background">
+        <ChatHeader />
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
+              <PreviewStep 
+                onContinueToCheckout={handleContinueToCheckout}
+                onBackToQuestions={handleBackToQuestions}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (showSubscription) {
