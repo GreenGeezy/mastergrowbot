@@ -74,7 +74,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
             {/* Testimonial Ribbon */}
             <div className="pt-8 flex justify-center">
               <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-black px-6 py-2 rounded-full text-sm font-bold shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                ⭐ "Increased my yield 23% in first cycle!" - Sarah M.
+                ⭐ "Brilliant technology—letting AI watch over the plants is a total game-changer." — Legacy Cultivator
               </div>
             </div>
             
