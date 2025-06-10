@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -133,7 +132,7 @@ export default function Quiz() {
       tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
     },
     {
-      question: "How long have you been growing?",
+      question: "Biggest headache this cycle?",
       type: "radio",
       field: "experience_level",
       options: [
@@ -487,6 +486,22 @@ export default function Quiz() {
     );
   }
 
+  // Dynamic timer based on step
+  const getTimerText = () => {
+    switch (currentStep) {
+      case 0:
+        return "Step 1 / 4 · 45 s left";
+      case 1:
+        return "Step 2 / 4 · 30 s left";
+      case 2:
+        return "Step 3 / 4 · 15 s left";
+      case 3:
+        return "Step 4 / 4 · 10 s left";
+      default:
+        return `Step ${currentStep + 1} / 4 · ${timeLeft} s left`;
+    }
+  };
+
   return <div className="min-h-screen bg-background circuit-background">
       <ChatHeader />
       <div className="container mx-auto px-4 py-8">
@@ -501,7 +516,7 @@ export default function Quiz() {
                   {questions.map((_, index) => <div key={index} className={`h-2 w-2 rounded-full ${index === currentStep ? 'bg-accent w-6' : index < currentStep ? 'bg-primary' : 'bg-white/20'}`} />)}
                 </div>
                 <p className="text-slate-400 mt-2 tracking-wide">
-                  Step {currentStep + 1} / 4 · {timeLeft} s left
+                  {getTimerText()}
                 </p>
               </div>
 
@@ -526,7 +541,7 @@ export default function Quiz() {
                   )}
                 </div>
 
-                {currentQuestion.type === "radio" && currentStep === 0 && (
+                {currentQuestion.type === "radio" && (currentStep === 0 || currentStep === 1) && (
                   <div className="flex flex-col gap-4">
                     {currentQuestion.options.map(option => (
                       <div 
@@ -573,7 +588,7 @@ export default function Quiz() {
                   </div>
                 )}
 
-                {currentQuestion.type === "radio" && currentStep !== 0 && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
+                {currentQuestion.type === "radio" && currentStep !== 0 && currentStep !== 1 && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
                   (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
                   quizResponses[currentQuestion.field as keyof QuizResponse] as string} 
                   onValueChange={value => {
@@ -627,11 +642,20 @@ export default function Quiz() {
                       </div>)}
                   </div>}
 
-                {/* Proof ticker for first question only */}
-                {currentStep === 0 && (
+                {/* Proof ticker for first two questions */}
+                {(currentStep === 0 || currentStep === 1) && (
                   <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
                     <p className="text-sm text-white/80 text-center animate-pulse">
                       {proofTickers[currentProofIndex]}
+                    </p>
+                  </div>
+                )}
+
+                {/* Mini-fact for second question */}
+                {currentStep === 1 && (
+                  <div className="mt-4 text-center">
+                    <p className="text-sm text-white/70">
+                      ⚡ 68% of growers recover ROI in ≤14 days after solving the #1 pain-point (Guide p. 5).
                     </p>
                   </div>
                 )}
