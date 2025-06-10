@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -499,14 +500,14 @@ export default function Quiz() {
                 <div className="flex items-center justify-center gap-2 mt-4">
                   {questions.map((_, index) => <div key={index} className={`h-2 w-2 rounded-full ${index === currentStep ? 'bg-accent w-6' : index < currentStep ? 'bg-primary' : 'bg-white/20'}`} />)}
                 </div>
-                <p className="text-accent/80 mt-2">
+                <p className="text-slate-400 mt-2 tracking-wide">
                   Step {currentStep + 1} / 4 · {timeLeft} s left
                 </p>
               </div>
 
               <div className="space-y-6">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-2xl font-semibold text-white tech-font">
+                  <h2 className="text-xl font-semibold text-white tech-font">
                     {currentQuestion.question}
                   </h2>
                   {currentQuestion.tooltip && (
@@ -525,7 +526,54 @@ export default function Quiz() {
                   )}
                 </div>
 
-                {currentQuestion.type === "radio" && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
+                {currentQuestion.type === "radio" && currentStep === 0 && (
+                  <div className="flex flex-col gap-4">
+                    {currentQuestion.options.map(option => (
+                      <div 
+                        key={option.value} 
+                        className={`rounded-lg bg-white/5 backdrop-blur ring-1 ring-white/10 py-4 px-5 hover:ring-purple-400 transition cursor-pointer ${
+                          (Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
+                            (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
+                            quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value 
+                            ? 'ring-purple-400 bg-purple-400/10' : ''
+                        }`}
+                        onClick={() => {
+                          if (currentQuestion.field === "goals") {
+                            setQuizResponses(prev => ({
+                              ...prev,
+                              [currentQuestion.field]: [option.value]
+                            }));
+                          } else {
+                            setQuizResponses(prev => ({
+                              ...prev,
+                              [currentQuestion.field]: option.value
+                            }));
+                          }
+                        }}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className={`w-4 h-4 rounded-full border-2 ${
+                            (Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
+                              (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
+                              quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value 
+                              ? 'border-purple-400 bg-purple-400' : 'border-white/30'
+                          }`}>
+                            {(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
+                              (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
+                              quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value && (
+                              <div className="w-full h-full rounded-full bg-white"></div>
+                            )}
+                          </div>
+                          <label className="text-lg font-medium leading-none cursor-pointer w-full text-white">
+                            {option.label}
+                          </label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {currentQuestion.type === "radio" && currentStep !== 0 && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
                   (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
                   quizResponses[currentQuestion.field as keyof QuizResponse] as string} 
                   onValueChange={value => {
@@ -590,11 +638,20 @@ export default function Quiz() {
               </div>
 
               <div className="flex justify-between pt-6">
-                <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0} className="px-6">
+                <Button 
+                  variant="outline" 
+                  onClick={handlePreviousStep} 
+                  disabled={currentStep === 0} 
+                  className="px-6 rounded-full"
+                >
                   Previous
                 </Button>
                 
-                <Button onClick={handleNextStep} disabled={isSubmitting} className="px-6 bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover">
+                <Button 
+                  onClick={handleNextStep} 
+                  disabled={isSubmitting} 
+                  className="px-6 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500"
+                >
                   {currentStep === questions.length - 1 ? isSubmitting ? "Saving..." : "Complete Quiz" : "Next"}
                 </Button>
               </div>
