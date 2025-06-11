@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
+import PricingCards from '@/components/PricingCards';
 
 const testimonials = [
   {
@@ -101,15 +102,13 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ onContinueToCheckout, onBackT
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="space-y-4">
-        <Button 
-          onClick={onContinueToCheckout}
-          className="w-full max-w-md mx-auto h-12 text-base bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500 rounded-full"
-        >
-          Unlock My Action Card
-        </Button>
-        
+      {/* Pricing Cards Section */}
+      <div className="max-w-4xl mx-auto">
+        <PricingCards />
+      </div>
+
+      {/* Back to Questions Link */}
+      <div className="mt-8">
         <button 
           onClick={onBackToQuestions}
           className="flex items-center gap-2 text-white/70 hover:text-white transition-colors mx-auto"
