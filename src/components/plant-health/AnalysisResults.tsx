@@ -2,6 +2,7 @@
 import { Card } from '@/components/ui/card';
 import { CheckCircle, AlertCircle, Leaf, Heart, Lightbulb, TrendingUp } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { motion } from 'framer-motion';
 
 interface AnalysisResult {
   diagnosis: string;
@@ -20,135 +21,195 @@ interface AnalysisResultsProps {
 }
 
 const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
     <div className="w-full px-6">
-      {/* Container matching header width with max-w-6xl */}
       <div className="mx-auto max-w-6xl">
-        <div className="flex items-center gap-3 mb-6">
-          <CheckCircle className="text-green-500 w-6 h-6" />
-          <h2 className="text-2xl lg:text-3xl font-bold text-white">Analysis Complete</h2>
-        </div>
-        
-        {/* Top row - 3 cards in a row, wider and shorter */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-6">
-          {/* Growth Stage Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
-            <div className="flex items-start gap-3 h-full">
-              <Leaf className="text-green-500 w-6 h-6 mt-1 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-white mb-2 leading-tight">Growth Stage</h3>
-                <div className="h-20 overflow-y-auto">
-                  <p className="text-gray-300 leading-relaxed text-sm">
-                    {analysisResult.detailed_analysis.growth_stage}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Card>
+        {/* Header with modern styling */}
+        <motion.div 
+          className="flex items-center gap-3 mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="relative">
+            <CheckCircle className="text-green-500 w-8 h-8" />
+            <div className="absolute inset-0 bg-green-500/20 rounded-full blur animate-pulse"></div>
+          </div>
+          <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+            Analysis Complete
+          </h2>
+        </motion.div>
 
-          {/* Health Score Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
-            <div className="flex items-start gap-3 h-full">
-              <Heart className="text-green-500 w-6 h-6 mt-1 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-white mb-2 leading-tight">Health Score</h3>
-                <div className="h-20 overflow-y-auto">
-                  <p className="text-gray-300 leading-relaxed text-sm">
-                    {analysisResult.detailed_analysis.health_score}
-                  </p>
+        {/* Main Analysis Grid */}
+        <motion.div 
+          className="space-y-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Top section - Key metrics in a modern card layout */}
+          <motion.div 
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+            variants={cardVariants}
+          >
+            {/* Growth Stage Card */}
+            <Card className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-gray-700/50 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-transparent"></div>
+              <div className="relative p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-green-500/20 rounded-lg backdrop-blur-sm">
+                    <Leaf className="text-green-400 w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Growth Stage</h3>
                 </div>
+                <p className="text-gray-300 leading-relaxed">
+                  {analysisResult.detailed_analysis.growth_stage}
+                </p>
               </div>
-            </div>
-          </Card>
+            </Card>
 
-          {/* Confidence Level Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
-            <div className="flex items-start gap-3 h-full">
-              <TrendingUp className="text-purple-500 w-6 h-6 mt-1 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-white mb-2 leading-tight">Confidence Level</h3>
-                <div className="space-y-2">
+            {/* Health Score Card */}
+            <Card className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-gray-700/50 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent"></div>
+              <div className="relative p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-blue-500/20 rounded-lg backdrop-blur-sm">
+                    <Heart className="text-blue-400 w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Health Score</h3>
+                </div>
+                <p className="text-gray-300 leading-relaxed">
+                  {analysisResult.detailed_analysis.health_score}
+                </p>
+              </div>
+            </Card>
+
+            {/* Confidence Level Card */}
+            <Card className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-gray-700/50 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent"></div>
+              <div className="relative p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-purple-500/20 rounded-lg backdrop-blur-sm">
+                    <TrendingUp className="text-purple-400 w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Confidence</h3>
+                </div>
+                <div className="space-y-3">
                   <Progress 
                     value={analysisResult.confidence_level * 100} 
-                    className="h-2"
+                    className="h-3 bg-gray-700"
                   />
-                  <p className="text-gray-300 leading-relaxed text-sm">
-                    {Math.round(analysisResult.confidence_level * 100)}% confidence
+                  <p className="text-2xl font-bold text-purple-400">
+                    {Math.round(analysisResult.confidence_level * 100)}%
                   </p>
                 </div>
               </div>
-            </div>
-          </Card>
-        </div>
+            </Card>
+          </motion.div>
 
-        {/* Second row - Issues and Environmental cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
-          {/* Specific Issues Card - Wider */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
-            <div className="flex items-start gap-3 h-full">
-              <AlertCircle className="text-yellow-500 w-6 h-6 mt-1 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-white mb-2 leading-tight">Specific Issues</h3>
-                <div className="bg-yellow-900/20 border border-yellow-500/20 rounded-lg p-3 h-20 overflow-y-auto">
-                  <p className="text-gray-300 leading-relaxed text-sm">
+          {/* Issues and Environmental Section */}
+          <motion.div 
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+            variants={cardVariants}
+          >
+            {/* Specific Issues Card */}
+            <Card className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-yellow-700/50 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 to-transparent"></div>
+              <div className="relative p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-yellow-500/20 rounded-lg backdrop-blur-sm">
+                    <AlertCircle className="text-yellow-400 w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Specific Issues</h3>
+                </div>
+                <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-4 backdrop-blur-sm">
+                  <p className="text-gray-300 leading-relaxed">
                     {analysisResult.detailed_analysis.specific_issues}
                   </p>
                 </div>
               </div>
-            </div>
-          </Card>
+            </Card>
 
-          {/* Environmental Factors Card */}
-          <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200 h-32 min-w-[320px]">
-            <div className="flex items-start gap-3 h-full">
-              <Lightbulb className="text-blue-500 w-6 h-6 mt-1 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-white mb-2 leading-tight">Environmental Factors</h3>
-                <div className="h-20 overflow-y-auto">
-                  <p className="text-gray-300 leading-relaxed text-sm">
-                    {analysisResult.detailed_analysis.environmental_factors}
-                  </p>
+            {/* Environmental Factors Card */}
+            <Card className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-cyan-700/50 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-transparent"></div>
+              <div className="relative p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-cyan-500/20 rounded-lg backdrop-blur-sm">
+                    <Lightbulb className="text-cyan-400 w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Environmental</h3>
+                </div>
+                <p className="text-gray-300 leading-relaxed">
+                  {analysisResult.detailed_analysis.environmental_factors}
+                </p>
+              </div>
+            </Card>
+          </motion.div>
+
+          {/* Recommended Actions - Full Width Modern Layout */}
+          <motion.div variants={cardVariants}>
+            <Card className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-emerald-700/50 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent"></div>
+              <div className="relative p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-emerald-500/20 rounded-xl backdrop-blur-sm">
+                    <CheckCircle className="text-emerald-400 w-7 h-7" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Recommended Actions</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {analysisResult.recommended_actions.map((action: string, index: number) => {
+                    const [title, ...descriptionParts] = action.split(':');
+                    const description = descriptionParts.join(':').trim();
+                    
+                    return (
+                      <motion.div 
+                        key={index} 
+                        className="group relative overflow-hidden bg-gradient-to-br from-gray-800/60 to-gray-700/60 rounded-xl p-5 border border-gray-600/30 hover:border-emerald-500/50 transition-all duration-300 backdrop-blur-sm"
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="relative flex items-start gap-3">
+                          <div className="mt-1 p-2 bg-emerald-500/20 rounded-lg backdrop-blur-sm">
+                            <CheckCircle className="w-5 h-5 text-emerald-400" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            {description ? (
+                              <>
+                                <h4 className="font-bold text-white mb-2 leading-tight">{title}</h4>
+                                <p className="text-gray-300 leading-relaxed text-sm">{description}</p>
+                              </>
+                            ) : (
+                              <p className="text-gray-300 leading-relaxed">{action}</p>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Bottom row - Full width Recommended Actions */}
-        <Card className="p-6 backdrop-blur-lg bg-gray-900/60 border border-gray-800 hover:bg-gray-900/70 transition-all duration-200">
-          <div className="flex items-start gap-3 mb-4">
-            <CheckCircle className="text-green-500 w-6 h-6 mt-1 flex-shrink-0" />
-            <h3 className="text-lg font-bold text-white leading-tight">Recommended Actions</h3>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {analysisResult.recommended_actions.map((action: string, index: number) => {
-              // Split action into title and description if it contains a colon
-              const [title, ...descriptionParts] = action.split(':');
-              const description = descriptionParts.join(':').trim();
-              
-              return (
-                <div key={index} className="flex items-start gap-3 p-4 bg-gray-800/40 rounded-lg border border-gray-700 hover:bg-gray-800/60 transition-all duration-200 h-24">
-                  <CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                  <div className="flex-1 min-w-0 h-full">
-                    {description ? (
-                      <>
-                        <h4 className="font-semibold text-white mb-1 leading-tight text-sm">{title}</h4>
-                        <div className="h-12 overflow-y-auto">
-                          <p className="text-gray-300 leading-relaxed text-xs">{description}</p>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="h-16 overflow-y-auto">
-                        <p className="text-gray-300 leading-relaxed text-sm">{action}</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Card>
+            </Card>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
