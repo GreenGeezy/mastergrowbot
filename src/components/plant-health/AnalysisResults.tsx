@@ -1,6 +1,6 @@
 
 import { Card } from '@/components/ui/card';
-import { CheckCircle, AlertCircle, Leaf, Heart, Lightbulb, TrendingUp } from 'lucide-react';
+import { CheckCircle, AlertCircle, Leaf, Heart, Lightbulb } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { motion } from 'framer-motion';
 
@@ -36,12 +36,29 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
     visible: { opacity: 1, y: 0 }
   };
 
+  // Extract first sentences from Growth Stage and Health Score
+  const getFirstSentence = (text: string) => {
+    const match = text.match(/^[^.!?]*[.!?]/);
+    return match ? match[0].trim() : text.split(' ').slice(0, 15).join(' ') + '...';
+  };
+
+  const getRemainingText = (text: string) => {
+    const firstSentence = getFirstSentence(text);
+    return text.substring(firstSentence.length).trim();
+  };
+
+  const growthStageFirstSentence = getFirstSentence(analysisResult.detailed_analysis.growth_stage);
+  const growthStageRemainingText = getRemainingText(analysisResult.detailed_analysis.growth_stage);
+  
+  const healthScoreFirstSentence = getFirstSentence(analysisResult.detailed_analysis.health_score);
+  const healthScoreRemainingText = getRemainingText(analysisResult.detailed_analysis.health_score);
+
   return (
     <div className="w-full px-6">
       <div className="mx-auto max-w-6xl">
         {/* Header with modern styling */}
         <motion.div 
-          className="flex items-center gap-3 mb-8"
+          className="flex items-center gap-3 mb-6"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -55,6 +72,43 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
           </h2>
         </motion.div>
 
+        {/* Confidence Level and Summary Section */}
+        <motion.div 
+          className="mb-8 space-y-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          {/* Confidence Level */}
+          <div className="flex items-center gap-4">
+            <span className="text-lg text-gray-300">Confidence:</span>
+            <div className="flex items-center gap-3">
+              <Progress 
+                value={analysisResult.confidence_level * 100} 
+                className="h-3 bg-gray-700 w-32"
+              />
+              <span className="text-2xl font-bold text-purple-400">
+                {Math.round(analysisResult.confidence_level * 100)}%
+              </span>
+            </div>
+          </div>
+
+          {/* Summary Section */}
+          <div className="bg-gradient-to-r from-gray-900/50 to-gray-800/50 rounded-xl p-6 border border-gray-700/30 backdrop-blur-sm">
+            <h3 className="text-xl font-bold text-white mb-4">Analysis Summary</h3>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <Leaf className="text-green-400 w-5 h-5 mt-1 flex-shrink-0" />
+                <p className="text-gray-300 leading-relaxed">{growthStageFirstSentence}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <Heart className="text-blue-400 w-5 h-5 mt-1 flex-shrink-0" />
+                <p className="text-gray-300 leading-relaxed">{healthScoreFirstSentence}</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Main Analysis Grid */}
         <motion.div 
           className="space-y-8"
@@ -62,9 +116,9 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
           initial="hidden"
           animate="visible"
         >
-          {/* Top section - Key metrics in a modern card layout */}
+          {/* Growth Stage and Health Score Cards */}
           <motion.div 
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
             variants={cardVariants}
           >
             {/* Growth Stage Card */}
@@ -77,9 +131,11 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   </div>
                   <h3 className="text-xl font-bold text-white">Growth Stage</h3>
                 </div>
-                <p className="text-gray-300 leading-relaxed">
-                  {analysisResult.detailed_analysis.growth_stage}
-                </p>
+                {growthStageRemainingText && (
+                  <p className="text-gray-300 leading-relaxed">
+                    {growthStageRemainingText}
+                  </p>
+                )}
               </div>
             </Card>
 
@@ -93,31 +149,11 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   </div>
                   <h3 className="text-xl font-bold text-white">Health Score</h3>
                 </div>
-                <p className="text-gray-300 leading-relaxed">
-                  {analysisResult.detailed_analysis.health_score}
-                </p>
-              </div>
-            </Card>
-
-            {/* Confidence Level Card */}
-            <Card className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-gray-700/50 shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent"></div>
-              <div className="relative p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-purple-500/20 rounded-lg backdrop-blur-sm">
-                    <TrendingUp className="text-purple-400 w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Confidence</h3>
-                </div>
-                <div className="space-y-3">
-                  <Progress 
-                    value={analysisResult.confidence_level * 100} 
-                    className="h-3 bg-gray-700"
-                  />
-                  <p className="text-2xl font-bold text-purple-400">
-                    {Math.round(analysisResult.confidence_level * 100)}%
+                {healthScoreRemainingText && (
+                  <p className="text-gray-300 leading-relaxed">
+                    {healthScoreRemainingText}
                   </p>
-                </div>
+                )}
               </div>
             </Card>
           </motion.div>
