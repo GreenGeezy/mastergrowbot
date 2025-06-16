@@ -53,10 +53,10 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const healthScoreFirstSentence = getFirstSentence(analysisResult.detailed_analysis.health_score);
   const healthScoreRemainingText = getRemainingText(analysisResult.detailed_analysis.health_score);
 
-  // Filter out empty or very short actions
-  const validActions = analysisResult.recommended_actions.filter(action => 
-    action && action.trim().length > 5
-  );
+  // Filter out empty or very short actions and limit to 9
+  const validActions = analysisResult.recommended_actions
+    .filter(action => action && action.trim().length > 5)
+    .slice(0, 9); // Limit to maximum 9 actions
 
   return (
     <div className="w-full px-6">
@@ -203,7 +203,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
             </Card>
           </motion.div>
 
-          {/* Recommended Actions - Improved Grid Layout */}
+          {/* Recommended Actions - Updated to 3 cards per row and max 9 cards */}
           <motion.div variants={cardVariants}>
             <Card className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-emerald-700/50 shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent"></div>
@@ -215,7 +215,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   <h3 className="text-2xl font-bold text-white">Recommended Actions</h3>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {validActions.map((action: string, index: number) => {
                     const [title, ...descriptionParts] = action.split(':');
                     const description = descriptionParts.join(':').trim();
@@ -223,27 +223,27 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                     return (
                       <motion.div 
                         key={index} 
-                        className="group relative overflow-hidden bg-gradient-to-br from-gray-800/80 to-gray-700/80 rounded-lg p-4 border border-gray-600/40 hover:border-emerald-500/60 transition-all duration-300 backdrop-blur-sm min-h-[140px] flex flex-col"
+                        className="group relative overflow-hidden bg-gradient-to-br from-gray-800/80 to-gray-700/80 rounded-lg p-5 border border-gray-600/40 hover:border-emerald-500/60 transition-all duration-300 backdrop-blur-sm min-h-[160px] flex flex-col"
                         whileHover={{ scale: 1.02, y: -2 }}
                         transition={{ type: "spring", stiffness: 300 }}
                       >
                         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="relative flex-1 flex flex-col">
                           <div className="flex items-start gap-3 mb-3">
-                            <div className="mt-0.5 p-1.5 bg-emerald-500/20 rounded-md backdrop-blur-sm flex-shrink-0">
+                            <div className="mt-0.5 p-2 bg-emerald-500/20 rounded-md backdrop-blur-sm flex-shrink-0">
                               <CheckCircle className="w-4 h-4 text-emerald-400" />
                             </div>
                             <div className="flex-1 min-w-0">
                               {description ? (
-                                <h4 className="font-semibold text-white text-sm mb-2 leading-tight line-clamp-2">{title}</h4>
+                                <h4 className="font-semibold text-white text-sm mb-3 leading-tight">{title}</h4>
                               ) : (
-                                <h4 className="font-semibold text-white text-sm leading-tight line-clamp-2">{action}</h4>
+                                <h4 className="font-semibold text-white text-sm leading-tight">{action}</h4>
                               )}
                             </div>
                           </div>
                           {description && (
                             <div className="flex-1">
-                              <p className="text-gray-300 text-xs leading-relaxed line-clamp-4">{description}</p>
+                              <p className="text-gray-300 text-sm leading-relaxed">{description}</p>
                             </div>
                           )}
                         </div>
