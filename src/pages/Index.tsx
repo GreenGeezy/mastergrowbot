@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -8,6 +7,7 @@ import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
 import FeatureSection from '@/components/FeatureSection';
+import { SparklesCore } from '@/components/ui/sparkles';
 
 export default function Index() {
   const session = useSession();
@@ -80,22 +80,41 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
-      <Header />
+    <div className="min-h-screen bg-background relative">
+      {/* Sparkles Background */}
+      <div className="fixed inset-0 w-full h-full">
+        <SparklesCore
+          id="homepage-sparkles"
+          background="transparent"
+          minSize={0.6}
+          maxSize={1.4}
+          particleDensity={50}
+          className="w-full h-full"
+          particleColor="#36d399"
+          speed={0.8}
+        />
+      </div>
       
-      {session ? (
-        <UserDashboard />
-      ) : (
-        <div className="container mx-auto px-4">
-          <div className="py-6 md:py-10">
-            <FeatureSection onFeatureClick={handleFeatureClick} />
-            <div className="mt-12 flex flex-col items-center">
-              <AuthUI />
+      {/* Existing gradient background overlay */}
+      <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
+      
+      {/* Content with higher z-index */}
+      <div className="relative z-10">
+        <Header />
+        
+        {session ? (
+          <UserDashboard />
+        ) : (
+          <div className="container mx-auto px-4">
+            <div className="py-6 md:py-10">
+              <FeatureSection onFeatureClick={handleFeatureClick} />
+              <div className="mt-12 flex flex-col items-center">
+                <AuthUI />
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
