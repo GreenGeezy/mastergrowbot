@@ -22,9 +22,7 @@ const Header = () => {
           
           <p className="text-lg text-accent max-w-2xl mx-auto leading-relaxed animate-fade-in font-bold sm:text-2xl">Grow Award Winning Cannabis Profitably with AI</p>
 
-          <h2 className="text-[clamp(1.8rem,4.2vw,3rem)] font-bold leading-tight max-w-[720px] mx-auto text-white">
-            Save Your Cannabis Plants in Seconds—Snap a Pic, AI Spots Issues Before They Cost You $336 per Plant!
-          </h2>
+          <h2 className="font-bold leading-tight max-w-[720px] mx-auto text-white text-4xl">Save Your Cannabis Plants in Seconds—Snap a Pic, AI Fixes Issues Before They Cost You $336 per Plant or $100,000 per Harvest!</h2>
           
           <div>
             <Link to="/quiz" className="inline-block transform transition-transform duration-300 mt-5 min-w-[260px]" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
