@@ -121,7 +121,7 @@ const SharedAnalysis = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur-xl opacity-60"></div>
           <div className="relative bg-card rounded-full p-6 backdrop-blur-xl ring-1 ring-white/10 shadow-2xl">
             <img 
-              src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png" 
+              src="/lovable-uploads/12181060-eb5d-4d45-859c-106ff98ca653.png" 
               alt="Master Growbot" 
               className="w-28 h-28" 
             />

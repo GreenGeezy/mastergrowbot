@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Search, ArrowLeft, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -39,7 +40,7 @@ const GrowingGuide = () => {
             </Button>
             <div className="flex items-center gap-3">
               <img
-                src="/lovable-uploads/a72be8e9-0fb6-49e8-985d-127ba951fee7.png"
+                src="/lovable-uploads/12181060-eb5d-4d45-859c-106ff98ca653.png"
                 alt="Master Growbot Logo"
                 className="w-8 h-8"
               />
