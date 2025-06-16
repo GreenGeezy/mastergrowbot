@@ -13,7 +13,7 @@ const Header = () => {
         <div className="absolute -inset-1 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
         <a href="https://www.mastergrowbot.com" className="block">
           <div className="relative bg-card p-4 sm:p-6 rounded-full mb-6 sm:mb-8 backdrop-blur-xl ring-1 ring-white/10 hover:ring-accent/30 transition-all duration-500">
-            <img src="/lovable-uploads/12181060-eb5d-4d45-859c-106ff98ca653.png" alt="Master Growbot Logo" className="w-20 h-20 sm:w-28 sm:h-28 transform group-hover:scale-105 transition-transform duration-500" loading="eager" width={112} height={112} fetchPriority="high" />
+            <img src="/lovable-uploads/c346bc72-2133-49aa-a5c8-b0773e68ef3b.png" alt="Master Growbot Logo" className="w-20 h-20 sm:w-28 sm:h-28 transform group-hover:scale-105 transition-transform duration-500" loading="eager" width={112} height={112} fetchPriority="high" />
           </div>
         </a>
       </div>

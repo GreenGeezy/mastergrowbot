@@ -40,7 +40,7 @@ const GrowingGuide = () => {
             </Button>
             <div className="flex items-center gap-3">
               <img
-                src="/lovable-uploads/12181060-eb5d-4d45-859c-106ff98ca653.png"
+                src="/lovable-uploads/c346bc72-2133-49aa-a5c8-b0773e68ef3b.png"
                 alt="Master Growbot Logo"
                 className="w-8 h-8"
               />

@@ -84,7 +84,7 @@ export const ChatHeader = () => {
         <div className="flex items-center space-x-3 mr-4">
           <a href="https://www.mastergrowbot.com" className="hover:opacity-80 transition-opacity">
             <img 
-              src="/lovable-uploads/12181060-eb5d-4d45-859c-106ff98ca653.png" 
+              src="/lovable-uploads/c346bc72-2133-49aa-a5c8-b0773e68ef3b.png" 
               alt="Master Growbot Logo" 
               className="w-10 h-10 rounded-full"
             />
