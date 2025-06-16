@@ -58,6 +58,11 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
     .filter(action => action && action.trim().length > 5)
     .slice(0, 9); // Limit to maximum 9 actions
 
+  // Find the most detailed recommended action (longest text)
+  const mostDetailedAction = validActions.reduce((longest, current) => {
+    return current.length > longest.length ? current : longest;
+  }, '');
+
   return (
     <div className="w-full px-6">
       <div className="mx-auto max-w-6xl">
@@ -110,6 +115,12 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                 <Heart className="text-blue-400 w-5 h-5 mt-1 flex-shrink-0" />
                 <p className="text-gray-300 leading-relaxed">{healthScoreFirstSentence}</p>
               </div>
+              {mostDetailedAction && (
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="text-emerald-400 w-5 h-5 mt-1 flex-shrink-0" />
+                  <p className="text-gray-300 leading-relaxed">{mostDetailedAction}</p>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
