@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
@@ -45,13 +46,9 @@ const IntroCover: React.FC<IntroCoverProps> = ({
             {/* Sub-headline */}
             <p className="text-slate-300 max-w-3xl mx-auto leading-relaxed text-xl font-medium">Answer four quick questions to unlock your first personalized AI Plant Health Analysis for Bigger Yields, Potency, and Profits —and Save yourself from Losing anywhere between $336 per plant to over $100,000 per Harvest!</p>
             
-            {/* Primary CTA Button with Glassmorphism */}
+            {/* Primary CTA Button with bright green color */}
             <div className="pt-8">
-              <Button onClick={onStartQuiz} className="px-12 py-6 text-xl font-bold bg-white/10 backdrop-blur border border-white/20 shadow-lg hover:bg-gradient-to-r hover:from-green-500 hover:via-teal-500 hover:to-purple-500 transform hover:scale-105 transition-all duration-300 text-white ring-1 ring-white/20" style={{
-              background: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.2)'
-            }}>
+              <Button onClick={onStartQuiz} className="px-12 py-6 text-xl font-bold bg-[#00FF41] hover:bg-[#00E63A] text-black transform hover:scale-105 transition-all duration-300 shadow-lg border-0 font-black">
                 Start 60-Second Quiz
               </Button>
             </div>
