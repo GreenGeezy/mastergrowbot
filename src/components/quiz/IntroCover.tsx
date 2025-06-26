@@ -43,7 +43,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({
             </div>
             
             {/* Sub-headline */}
-            <p className="text-slate-300 max-w-3xl mx-auto leading-relaxed text-xl font-medium">Answer four quick questions to unlock your first personalised AI Action Card for Bigger Yields, Potency, and Profits —and Save yourself from Losing anywhere between $336 per plant to over $100,000 per Harvest!</p>
+            <p className="text-slate-300 max-w-3xl mx-auto leading-relaxed text-xl font-medium">Answer four quick questions to unlock your first personalized AI Plant Health Analysis for Bigger Yields, Potency, and Profits —and Save yourself from Losing anywhere between $336 per plant to over $100,000 per Harvest!</p>
             
             {/* Primary CTA Button with Glassmorphism */}
             <div className="pt-8">
