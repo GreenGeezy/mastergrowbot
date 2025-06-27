@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChatHeader } from '@/components/chat/ChatHeader';
+import TestimonialCarousel from '@/components/TestimonialCarousel';
 
 interface IntroCoverProps {
   onStartQuiz: () => void;
@@ -47,7 +48,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text'
                   }}>
-                6 clicks • 60 s → uncover the hidden leak costing growers up to <span className="text-[#00D4FF]">$336 per plant</span>
+                Stop Losing <span className="text-[#00D4FF]">$336 per plant</span> and up to <span className="text-[#00D4FF]">$100,000 per Harvest</span> in 10 Seconds with just a pic
               </h1>
             </div>
             
@@ -60,22 +61,19 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
             <div className="pt-8">
               <Button 
                 onClick={onStartQuiz}
-                className="px-12 py-6 text-xl font-bold bg-white/10 backdrop-blur border border-white/20 shadow-lg hover:bg-gradient-to-r hover:from-green-500 hover:via-teal-500 hover:to-purple-500 transform hover:scale-105 transition-all duration-300 text-white ring-1 ring-white/20"
+                className="px-12 py-6 text-xl font-bold text-black hover:scale-105 transform transition-all duration-300"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)'
+                  backgroundColor: '#00FF41',
+                  border: 'none'
                 }}
               >
                 Start 60-Second Quiz
               </Button>
             </div>
             
-            {/* Testimonial Ribbon */}
-            <div className="pt-8 flex justify-center">
-              <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-black px-6 py-2 rounded-full text-sm font-bold shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                ⭐ "Brilliant technology—letting AI watch over the plants is a total game-changer." — Legacy Cultivator
-              </div>
+            {/* Testimonial Carousel */}
+            <div className="pt-8">
+              <TestimonialCarousel />
             </div>
             
             {/* Additional visual elements */}
