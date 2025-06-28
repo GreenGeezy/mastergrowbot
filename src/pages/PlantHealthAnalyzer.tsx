@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
@@ -8,6 +7,7 @@ import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { MobileNavigation } from "@/components/mobile/MobileNavigation";
 
 const PlantHealthAnalyzer = () => {
   const session = useSession();
@@ -166,9 +166,14 @@ const PlantHealthAnalyzer = () => {
     : 0;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background text-white relative overflow-x-hidden">
       <PlantHealthHeader />
       
+      {/* Mobile Navigation - Only show on mobile */}
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 xs:block md:hidden">
+        <MobileNavigation />
+      </div>
+
       <div className="max-w-4xl mx-auto space-y-8">
         <ImageDropzone
           onImagesSelected={handleImagesSelected}

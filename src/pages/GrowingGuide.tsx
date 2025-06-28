@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Search, ArrowLeft, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import GuideCategories from "@/components/guide/GuideCategories";
 import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
 import FeatureSection from "@/components/FeatureSection";
+import { MobileNavigation } from "@/components/mobile/MobileNavigation";
 
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,6 +59,11 @@ const GrowingGuide = () => {
           </div>
         </div>
       </header>
+
+      {/* Mobile Navigation - Only show on mobile */}
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 xs:block md:hidden">
+        <MobileNavigation />
+      </div>
 
       {/* Main Content */}
       <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
