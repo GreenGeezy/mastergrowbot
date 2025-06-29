@@ -11,18 +11,21 @@ const FeatureSection = React.memo(({ onFeatureClick }: FeatureSectionProps) => {
   return (
     <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
       <FeatureCard
+        id="card-chat"
         icon={MessageCircle}
         title="Growing Assistant"
         subtitle="Get expert growing advice"
         to="/chat"
       />
       <FeatureCard
+        id="card-plant"
         icon={Camera}
         title="Plant Health Check"
         subtitle="Diagnose plant issues"
         to="/plant-health"
       />
       <FeatureCard
+        id="card-guide"
         icon={BookOpen}
         title="Growing Guide"
         subtitle="Quick answers to FAQs"
