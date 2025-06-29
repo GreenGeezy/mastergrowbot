@@ -48,7 +48,7 @@ const FeatureSection = React.memo(({ onFeatureClick }: FeatureSectionProps) => {
   return (
     <div className="w-full max-w-screen-md mx-auto px-4">
       <div className="flex flex-col items-center w-full">
-        <div className={cn("flex flex-col xs:flex-row xs:space-x-4 space-y-4 xs:space-y-0 rounded-full w-full justify-center")}>
+        <div className={cn("flex flex-row space-x-4 rounded-full w-full justify-center")}>
           {featureTabs.map((tab, index) => {
             const Icon = tab.icon;
             return (
@@ -60,13 +60,13 @@ const FeatureSection = React.memo(({ onFeatureClick }: FeatureSectionProps) => {
                   onFeatureClick();
                 }}
                 style={{ textDecoration: "none", display: "block" }}
-                className="flex-1 xs:flex-initial"
+                className="flex-1"
               >
                 <motion.button
                   whileTap="tapped"
                   whileHover="hovered"
                   className={cn(
-                    "relative w-full xs:w-auto px-4 py-3 tracking-[0.01em] cursor-pointer transition focus-visible:outline-1 focus-visible:ring-1 focus-visible:outline-none flex flex-col xs:flex-row gap-3 xs:gap-2 items-center rounded-lg border border-primary/20 bg-card/90 backdrop-blur-sm",
+                    "relative w-full px-4 py-3 tracking-[0.01em] cursor-pointer transition focus-visible:outline-1 focus-visible:ring-1 focus-visible:outline-none flex flex-col gap-3 items-center rounded-lg border border-primary/20 bg-card/90 backdrop-blur-sm",
                     activeTab === tab.id
                       ? "text-accent font-medium tracking-normal border-accent/40"
                       : "text-gray-300 hover:text-accent hover:border-accent/30"
@@ -116,7 +116,7 @@ const FeatureSection = React.memo(({ onFeatureClick }: FeatureSectionProps) => {
                   >
                     <Icon className="w-6 h-6 text-white" />
                   </motion.div>
-                  <div className="flex flex-col items-center xs:items-start relative z-10">
+                  <div className="flex flex-col items-center relative z-10">
                     <span className="font-medium text-sm">{tab.label}</span>
                     <span className="text-xs opacity-80">{tab.subtitle}</span>
                   </div>
