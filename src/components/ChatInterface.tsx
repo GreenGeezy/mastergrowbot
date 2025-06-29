@@ -31,13 +31,14 @@ interface Message {
 
 const ChatInterface = () => {
   const session = useSession();
-  const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages();
   const { message, setMessage, handleQuestionClick, startNewChat, currentConversationId } = useChatState();
+  const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages(currentConversationId);
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
   const { conversations, isLoading: isLoadingConversations } = useConversations();
 
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -87,7 +88,17 @@ const ChatInterface = () => {
   const stopVoiceChat = () => {
     setIsVoiceChatActive(false);
     setIsListening(false);
+    setIsSpeaking(false);
     setTranscript("");
+  };
+
+  const handleInterrupt = () => {
+    setIsSpeaking(false);
+  };
+
+  const handleStopVoice = () => {
+    setIsListening(false);
+    setIsSpeaking(false);
   };
 
   const toggleMute = () => {
@@ -102,6 +113,10 @@ const ChatInterface = () => {
   const handleConversationSelect = (conversationId: string) => {
     // Load conversation messages
     console.log("Loading conversation:", conversationId);
+  };
+
+  const handleVoiceMessageReceived = (voiceMessage: string) => {
+    setMessage(voiceMessage);
   };
 
   const quickQuestions = [
@@ -135,10 +150,7 @@ const ChatInterface = () => {
         {/* Main content area */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* Header */}
-          <ChatHeader 
-            onNewChat={handleNewChat}
-            currentConversationId={currentConversationId}
-          />
+          <ChatHeader />
 
           {/* Messages area */}
           <div className="flex-1 overflow-hidden flex flex-col">
@@ -206,9 +218,8 @@ const ChatInterface = () => {
                 </div>
                 <div className="flex gap-2">
                   <VoiceChatButton
-                    onClick={startVoiceChat}
-                    isListening={isListening}
-                    disabled={isLoading}
+                    onVoiceMessageReceived={handleVoiceMessageReceived}
+                    className="min-w-[44px] h-[44px]"
                   />
                   <Button
                     onClick={() => handleSendMessage()}
@@ -228,6 +239,9 @@ const ChatInterface = () => {
           <VoiceChatOverlay
             onClose={stopVoiceChat}
             isListening={isListening}
+            isSpeaking={isSpeaking}
+            onInterrupt={handleInterrupt}
+            onStop={handleStopVoice}
           />
         )}
 
