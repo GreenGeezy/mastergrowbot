@@ -4,14 +4,15 @@
  */
 
 /**
- * Returns true only when running in iOS preview mode
- * Checks for VITE_IOS_PREVIEW='1' environment variable
- * Note: In a real iOS context, you might also check for commit ref 'ios-main'
- * but in Vite/browser context we rely on the environment variable set during build
+ * Returns true only when BOTH conditions are met:
+ * 1) VITE_IOS_PREVIEW === '1' 
+ * 2) VITE_VERCEL_GIT_COMMIT_REF === 'ios-main'
  */
 export const isIOSPreview = (): boolean => {
   const iosPreviewFlag = import.meta.env.VITE_IOS_PREVIEW;
-  return iosPreviewFlag === '1';
+  const gitCommitRef = import.meta.env.VITE_VERCEL_GIT_COMMIT_REF;
+  
+  return iosPreviewFlag === '1' && gitCommitRef === 'ios-main';
 };
 
 /**
