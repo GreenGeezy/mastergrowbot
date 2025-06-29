@@ -3,12 +3,6 @@ import { LucideIcon } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-document.addEventListener('click', e => {
-  // only log clicks inside FeatureCards
-  const el = (e.target as HTMLElement).closest('[data-featurecard]');
-  if (el) console.log('CLICK reached', el.id, '— defaultPrevented?', e.defaultPrevented);
-});
-
 interface FeatureCardProps {
   icon: LucideIcon;
   title: string;
@@ -18,18 +12,10 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = React.memo(({ icon: Icon, title, subtitle, to, id }: FeatureCardProps) => {
-  if (process.env.NODE_ENV === 'development') {
-    setTimeout(() => {
-      // wait one tick for render
-      console.log('FEATURECARD DOM', document
-        .getElementById(id || 'root')?.innerHTML);
-    }, 0);
-  }
-
   return (
     <div className="relative group">
       {/* Glow effect wrapper */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow/50 via-accent-glow/50 to-secondary-glow/50 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow" />
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow/50 via-accent-glow/50 to-secondary-glow/50 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow pointer-events-none" />
       
       <Link to={to} style={{ textDecoration: "none", display: "block" }} onClick={() => console.log("CARD→", to)} data-featurecard id={id}>
         <article className="cursor-pointer select-none">
