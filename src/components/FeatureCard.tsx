@@ -1,9 +1,6 @@
 
 import { LucideIcon } from "lucide-react";
-import { useSession } from "@supabase/auth-helpers-react";
 import React from "react";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 
 interface FeatureCardProps {
@@ -13,42 +10,13 @@ interface FeatureCardProps {
   to: string;
 }
 
-// Trigger rebuild for router navigation fix
 const FeatureCard = React.memo(({ icon: Icon, title, subtitle, to }: FeatureCardProps) => {
-  const session = useSession();
-
-  const handleClick = React.useCallback(async () => {
-    if (!session) {
-      toast.error("Please sign in to access this feature");
-      return;
-    }
-
-    // For Google users, ensure quiz is marked as completed
-    if (session.user?.app_metadata?.provider === 'google') {
-      console.log("Google user clicked feature card, ensuring quiz marked as completed");
-      
-      try {
-        const result = await supabase.functions.invoke('mark-quiz-completed', {
-          body: { 
-            user_id: session.user.id,
-            email: session.user.email,
-            subscription_type: "annual" // Default to annual for Google OAuth users
-          }
-        });
-        
-        console.log("Feature card mark quiz completed result:", result);
-      } catch (err) {
-        console.error("Error marking quiz from feature card:", err);
-      }
-    }
-  }, [session]);
-
   return (
     <div className="relative group">
       {/* Glow effect wrapper */}
       <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow/50 via-accent-glow/50 to-secondary-glow/50 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow" />
       
-      <Link to={to} style={{ textDecoration: "none" }} onClick={handleClick}>
+      <Link to={to} style={{ textDecoration: "none", display: "block" }}>
         <article className="cursor-pointer select-none">
           <div className="relative flex items-center p-2 rounded-lg will-change-transform transition-all duration-300 hover:scale-105 min-w-[180px] bg-card/90 backdrop-blur-sm border border-card-foreground/10 hover:border-primary/20">
             <div className="p-1 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg float-effect will-change-transform">

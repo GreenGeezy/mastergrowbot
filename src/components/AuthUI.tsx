@@ -11,7 +11,7 @@ import { isIOSPreview } from '@/utils/flags';
 
 const AuthUI = ({ children }) => {
   // Skip Supabase login when in preview
-  if (isIOSPreview) return <>{children}</>;
+  if (isIOSPreview) return <>{children ?? null}</>;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
