@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -143,7 +144,9 @@ export default function Index() {
             <div className="py-6 md:py-10">
               <FeatureSection onFeatureClick={handleFeatureClick} />
               <div className="mt-12 flex flex-col items-center">
-                <AuthUI />
+                <AuthUI>
+                  <div></div>
+                </AuthUI>
               </div>
             </div>
           </div>
