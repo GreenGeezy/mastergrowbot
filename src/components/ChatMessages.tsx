@@ -1,8 +1,8 @@
+
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Leaf } from 'lucide-react'
 import FeatureCard from './FeatureCard'
 import { MessageCircle, Camera, BookOpen } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 
 interface Message {
   id: string
@@ -18,8 +18,6 @@ interface ChatMessagesProps {
 }
 
 export default function ChatMessages({ messages, handleQuestionClick, starterQuestions }: ChatMessagesProps) {
-  const navigate = useNavigate()
-
   if (messages.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center">
@@ -36,19 +34,19 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
             icon={MessageCircle}
             title="Growing Assistant"
             subtitle="Get expert growing advice"
-            onClick={() => navigate('/chat')}
+            to="/chat"
           />
           <FeatureCard
             icon={Camera}
             title="Plant Health Check"
             subtitle="Diagnose plant issues"
-            onClick={() => navigate('/plant-health')}
+            to="/plant-health"
           />
           <FeatureCard
             icon={BookOpen}
             title="Growing Guide"
             subtitle="Quick answers to FAQs"
-            onClick={() => navigate('/grow-guide')}
+            to="/grow-guide"
           />
         </div>
 
