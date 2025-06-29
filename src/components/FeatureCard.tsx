@@ -13,6 +13,7 @@ interface FeatureCardProps {
   to: string;
 }
 
+// Trigger rebuild for router navigation fix
 const FeatureCard = React.memo(({ icon: Icon, title, subtitle, to }: FeatureCardProps) => {
   const session = useSession();
 
