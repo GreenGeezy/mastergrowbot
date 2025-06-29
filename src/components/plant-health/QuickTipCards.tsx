@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Camera, Share2, History } from 'lucide-react';
 import AnalysisHistory from './AnalysisHistory';
 import ShareResults from './ShareResults';
 import { useSession } from '@supabase/auth-helpers-react';
+import { isIOSPreview } from '@/utils/flags';
 
 interface QuickTip {
   icon: React.ElementType;
@@ -16,6 +18,9 @@ interface QuickTip {
 
 const QuickTipCards = () => {
   const session = useSession();
+
+  // Skip rendering subscription-related components in iOS preview
+  if (isIOSPreview) return null;
 
   const handleTakePhoto = () => {
     const fileInput = document.getElementById('file-upload');

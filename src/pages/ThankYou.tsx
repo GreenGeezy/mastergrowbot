@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
+import { isIOSPreview } from "@/utils/flags";
 
 const ThankYou = () => {
   const location = useLocation();
@@ -20,6 +21,9 @@ const ThankYou = () => {
   const [hasValidToken, setHasValidToken] = useState(false);
   const [isValidating, setIsValidating] = useState(true);
   const [hasInvokedFunction, setHasInvokedFunction] = useState(false);
+  
+  // Skip paywall in iOS preview
+  if (isIOSPreview) return null;
   
   // Get token parameters from URL
   useEffect(() => {
