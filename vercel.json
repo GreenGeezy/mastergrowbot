@@ -61,6 +61,9 @@
     { "source": "/auth/(.*)", "destination": "/index.html" },
     { "source": "/privacy-policy", "destination": "/index.html" },
     { "source": "/terms-of-service", "destination": "/index.html" },
+    { "source": "/chat", "destination": "/index.html" },
+    { "source": "/plant-health", "destination": "/index.html" },
+    { "source": "/grow-guide", "destination": "/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
