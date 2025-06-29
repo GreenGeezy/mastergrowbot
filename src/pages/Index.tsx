@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -114,7 +115,7 @@ export default function Index() {
   }
 
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-background relative flex flex-col">
       {/* Sparkles Background */}
       <div className="fixed inset-0 w-full h-full">
         <SparklesCore
@@ -133,20 +134,25 @@ export default function Index() {
       <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
       
       {/* Content with higher z-index */}
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         
         {session ? (
           <UserDashboard />
         ) : (
-          <div className="container mx-auto px-4">
-            <div className="py-6 md:py-10">
-              <FeatureSection onFeatureClick={handleFeatureClick} />
-              <div className="mt-12 flex flex-col items-center">
+          <div className="flex flex-col flex-1">
+            {/* Main content area */}
+            <div className="flex-1 container mx-auto px-4 flex flex-col justify-center">
+              <div className="py-6 md:py-10 flex flex-col items-center justify-center min-h-[60vh]">
                 <AuthUI>
                   <div></div>
                 </AuthUI>
               </div>
+            </div>
+            
+            {/* Feature cards at bottom - mobile optimized with sticky positioning */}
+            <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-accent/20 py-4 safe-area-pb">
+              <FeatureSection onFeatureClick={handleFeatureClick} />
             </div>
           </div>
         )}
