@@ -1,15 +1,8 @@
-/**
- * Feature flag utilities
- */
 
-/**
- * Returns true only when BOTH conditions are met:
- * 1) VITE_IOS_PREVIEW === '1' 
- * 2) VITE_VERCEL_GIT_COMMIT_REF === 'ios-main'
- */
-export const isIOSPreview = 
+// src/utils/flags.ts
+export const isIOSPreview =
   import.meta.env.VITE_IOS_PREVIEW === '1' &&
-  import.meta.env.VITE_VERCEL_GIT_COMMIT_REF === 'ios-main';
+  import.meta.env.VERCEL_GIT_COMMIT_REF === 'ios-main';
 
 /**
  * Generic feature flag checker
