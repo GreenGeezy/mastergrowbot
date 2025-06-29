@@ -1,5 +1,5 @@
 
-import { Component } from "@/components/mobile/3d-icon-tabs-1";
+import { Component } from "@/components/ui/3d-icon-tabs-1";
 
 const DemoOne = () => {
   return (
