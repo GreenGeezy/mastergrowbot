@@ -3,6 +3,7 @@ import { useSession } from '@supabase/auth-helpers-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { supabase, safeDeleteUser, checkUserExists } from '@/integrations/supabase/client';
+import { isIOSPreview } from '@/utils/flags';
 import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
@@ -14,6 +15,9 @@ export default function Index() {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+  
+  // Check if we're in iOS preview mode
+  const isIOSPreviewMode = isIOSPreview();
   
   // Handle redirects from authentication flow
   useEffect(() => {
@@ -33,14 +37,14 @@ export default function Index() {
   }, [session, navigate, location]);
 
   const handleFeatureClick = () => {
-    if (!session) {
+    if (!session && !isIOSPreviewMode) {
       return;
     }
   };
 
   // Admin function to delete test users (should be removed in production)
   const deleteTestUser = async (userId) => {
-    if (!session) {
+    if (!session && !isIOSPreviewMode) {
       toast.error('You must be logged in as an admin to perform this action');
       return;
     }
@@ -78,6 +82,36 @@ export default function Index() {
       setLoading(false);
     }
   };
+
+  // If in iOS preview mode, show UserDashboard directly
+  if (isIOSPreviewMode) {
+    return (
+      <div className="min-h-screen bg-background relative">
+        {/* Sparkles Background */}
+        <div className="fixed inset-0 w-full h-full">
+          <SparklesCore
+            id="homepage-sparkles"
+            background="transparent"
+            minSize={0.6}
+            maxSize={1.4}
+            particleDensity={50}
+            className="w-full h-full"
+            particleColor="#36d399"
+            speed={0.8}
+          />
+        </div>
+        
+        {/* Existing gradient background overlay */}
+        <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
+        
+        {/* Content with higher z-index */}
+        <div className="relative z-10">
+          <Header />
+          <UserDashboard />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background relative">

@@ -21,27 +21,42 @@ const AuthUI = () => {
   const handleSignIn = async () => {
     setError(null);
     setLoading(true);
+    
     if (!email || !password) {
       setError('Please enter your email and password.');
       setLoading(false);
       return;
     }
+    
     try {
-      const {
-        error
-      } = await supabase.auth.signInWithPassword({
-        email: email,
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
         password: password
       });
+      
       if (error) {
-        setError(error.message || 'Sign-in failed. Please check your credentials.');
+        console.error('Sign-in error:', error);
+        
+        // Handle specific error cases
+        if (error.message.includes('Invalid login credentials')) {
+          setError('Invalid email or password. Please check your credentials and try again.');
+        } else if (error.message.includes('Email not confirmed')) {
+          setError('Please check your email and click the confirmation link before signing in.');
+        } else if (error.message.includes('Too many requests')) {
+          setError('Too many sign-in attempts. Please wait a moment before trying again.');
+        } else {
+          setError(error.message);
+        }
         toast.error(error.message);
       } else {
         toast.success('Signed in successfully!');
+        // Clear form
+        setEmail('');
+        setPassword('');
       }
     } catch (err) {
-      console.error('Sign-in error:', err);
-      setError('An unexpected error occurred during sign-in.');
+      console.error('Unexpected sign-in error:', err);
+      setError('An unexpected error occurred during sign-in. Please try again.');
       toast.error('An unexpected error occurred during sign-in.');
     } finally {
       setLoading(false);
@@ -51,30 +66,52 @@ const AuthUI = () => {
   const handleSignUp = async () => {
     setError(null);
     setLoading(true);
+    
     if (!email || !password) {
       setError('Please enter your email and password.');
       setLoading(false);
       return;
     }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      setLoading(false);
+      return;
+    }
+    
     try {
-      const {
-        error
-      } = await supabase.auth.signUp({
-        email: email,
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
         password: password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`
         }
       });
+      
       if (error) {
-        setError(error.message || 'Sign-up failed. Please try again.');
+        console.error('Sign-up error:', error);
+        
+        // Handle specific error cases
+        if (error.message.includes('User already registered')) {
+          setError('An account with this email already exists. Please sign in instead.');
+          setIsSignUp(false); // Switch to sign-in mode
+        } else if (error.message.includes('Password should be at least')) {
+          setError('Password must be at least 6 characters long.');
+        } else if (error.message.includes('Invalid email')) {
+          setError('Please enter a valid email address.');
+        } else {
+          setError(error.message);
+        }
         toast.error(error.message);
       } else {
-        toast.success('Account created successfully! Please check your email to verify.');
+        toast.success('Account created successfully! Please check your email to verify your account.');
+        // Clear form
+        setEmail('');
+        setPassword('');
       }
     } catch (err) {
-      console.error('Sign-up error:', err);
-      setError('An unexpected error occurred during sign-up.');
+      console.error('Unexpected sign-up error:', err);
+      setError('An unexpected error occurred during sign-up. Please try again.');
       toast.error('An unexpected error occurred during sign-up.');
     } finally {
       setLoading(false);
@@ -84,22 +121,23 @@ const AuthUI = () => {
   const handleGoogleSignIn = async () => {
     setError(null);
     setLoading(true);
+    
     try {
-      const {
-        error
-      } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`
         }
       });
+      
       if (error) {
-        setError(error.message || 'Google sign-in failed. Please try again.');
-        toast.error(error.message);
+        console.error('Google sign-in error:', error);
+        setError('Google sign-in failed. Please try again or use email/password.');
+        toast.error('Google sign-in failed. Please try again.');
       }
     } catch (err) {
-      console.error('Google sign-in error:', err);
-      setError('An unexpected error occurred during Google sign-in.');
+      console.error('Unexpected Google sign-in error:', err);
+      setError('An unexpected error occurred during Google sign-in. Please try again.');
       toast.error('An unexpected error occurred during Google sign-in.');
     } finally {
       setLoading(false);
@@ -122,6 +160,9 @@ const AuthUI = () => {
   const toggleMode = () => {
     setIsSignUp(!isSignUp);
     setError(null);
+    // Clear form when switching modes
+    setEmail('');
+    setPassword('');
   };
 
   return (
@@ -207,7 +248,8 @@ const AuthUI = () => {
                   onChange={e => setPassword(e.target.value)} 
                   className="bg-background/50 border-white/20 pr-10" 
                   required 
-                  autoComplete={isSignUp ? "new-password" : "current-password"} 
+                  autoComplete={isSignUp ? "new-password" : "current-password"}
+                  minLength={6}
                 />
                 <button 
                   type="button" 
@@ -220,12 +262,16 @@ const AuthUI = () => {
               </div>
             </div>
 
-            {error && <div className="text-red-400 text-sm">{error}</div>}
+            {error && (
+              <div className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg p-3">
+                {error}
+              </div>
+            )}
 
             <Button 
               type="submit" 
-              disabled={loading} 
-              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover"
+              disabled={loading || !email.trim() || !password} 
+              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Loading...' : isSignUp ? 'Create Account' : 'Sign In'}
             </Button>
@@ -244,7 +290,7 @@ const AuthUI = () => {
               onClick={handleGoogleSignIn} 
               disabled={loading} 
               variant="outline" 
-              className="w-full hover:bg-white/5 border-white/20"
+              className="w-full hover:bg-white/5 border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

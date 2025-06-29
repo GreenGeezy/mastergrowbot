@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
@@ -12,7 +11,7 @@ import ChatMessages from "@/components/ChatMessages";
 import ChatInput from "@/components/ChatInput";
 import { ConversationList } from "@/components/chat/ConversationList";
 import { ProfileDropdown } from "@/components/profile/ProfileDropdown";
-import ChatHeader from "@/components/chat/ChatHeader";
+import { ChatHeader } from "@/components/chat/ChatHeader";
 import VoiceChatButton from "@/components/chat/VoiceChatButton";
 import VoiceChatOverlay from "@/components/chat/VoiceChatOverlay";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -35,14 +34,14 @@ const ChatInterface = () => {
   const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages();
   const { message, setMessage, handleQuestionClick, startNewChat, currentConversationId } = useChatState();
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
-  const { conversations, isLoadingConversations } = useConversations();
+  const { conversations, isLoading: isLoadingConversations } = useConversations();
 
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -130,7 +129,7 @@ const ChatInterface = () => {
       <div className="flex h-screen w-full bg-background text-white relative overflow-hidden">
         {/* Sidebar for desktop */}
         <div className="hidden md:block">
-          <AppSidebar />
+          <AppSidebar onNewChat={handleNewChat} />
         </div>
 
         {/* Main content area */}
@@ -179,7 +178,11 @@ const ChatInterface = () => {
             ) : (
               <div className="flex-1 overflow-y-auto px-4">
                 <div className="max-w-4xl mx-auto py-4">
-                  <ChatMessages messages={messages} />
+                  <ChatMessages 
+                    messages={messages}
+                    handleQuestionClick={handleQuestionClick}
+                    starterQuestions={quickQuestions}
+                  />
                   <div ref={messagesEndRef} />
                 </div>
               </div>
@@ -203,7 +206,7 @@ const ChatInterface = () => {
                 </div>
                 <div className="flex gap-2">
                   <VoiceChatButton
-                    onStartVoiceChat={startVoiceChat}
+                    onClick={startVoiceChat}
                     isListening={isListening}
                     disabled={isLoading}
                   />
@@ -225,7 +228,6 @@ const ChatInterface = () => {
           <VoiceChatOverlay
             onClose={stopVoiceChat}
             isListening={isListening}
-            transcript={transcript}
           />
         )}
 

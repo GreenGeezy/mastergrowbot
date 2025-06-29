@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { isIOSPreview } from '@/utils/flags';
 
 interface SubscriptionGuardProps {
   children: ReactNode;
@@ -15,8 +16,18 @@ const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
 
+  // Check if we're in iOS preview mode
+  const isIOSPreviewMode = isIOSPreview();
+
   // Check subscription status on mount
   useEffect(() => {
+    // If in iOS preview mode, skip subscription check
+    if (isIOSPreviewMode) {
+      setHasActiveSubscription(true);
+      setIsLoading(false);
+      return;
+    }
+
     if (!session) {
       setIsLoading(false);
       return;
@@ -54,7 +65,12 @@ const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
     };
 
     checkSubscriptionStatus();
-  }, [session, navigate]);
+  }, [session, navigate, isIOSPreviewMode]);
+
+  // Skip authentication check in iOS preview mode
+  if (isIOSPreviewMode) {
+    return <>{children}</>;
+  }
 
   if (!session) {
     return <Navigate to="/" replace />;
