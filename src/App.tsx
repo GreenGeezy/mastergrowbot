@@ -215,9 +215,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  const loc = useLocation();
-  console.log("⇢ ROUTE", loc.pathname);
-
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase}>
@@ -225,6 +222,10 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            {process.env.NODE_ENV === 'development' && <Route
+              path="*"
+              element={<DebugRoute />}
+            />}
             <AuthVerification />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -309,6 +310,12 @@ const App = () => {
       </SessionContextProvider>
     </QueryClientProvider>
   );
+};
+
+const DebugRoute = () => {
+  const loc = useLocation();
+  console.log("⇢ ROUTE", loc.pathname);
+  return null;
 };
 
 export default App;
