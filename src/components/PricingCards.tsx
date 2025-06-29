@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Star, Award, Users, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +5,7 @@ import { isIOSPreview } from "@/utils/flags";
 
 export default function PricingCards() {
   const [timeLeft, setTimeLeft] = useState("");
-  const isIOSPreviewMode = isIOSPreview();
+  const isIOSPreviewMode = isIOSPreview;
 
   useEffect(() => {
     const targetDate = new Date('2025-07-01T23:59:59.000Z');

@@ -17,7 +17,7 @@ export default function Index() {
   const [loading, setLoading] = useState(false);
   
   // Check if we're in iOS preview mode
-  const isIOSPreviewMode = isIOSPreview();
+  const isIOSPreviewMode = isIOSPreview;
   
   // Handle redirects from authentication flow
   useEffect(() => {
