@@ -8,9 +8,18 @@ interface FeatureCardProps {
   title: string;
   subtitle: string;
   to: string;
+  id?: string;
 }
 
-const FeatureCard = React.memo(({ icon: Icon, title, subtitle, to }: FeatureCardProps) => {
+const FeatureCard = React.memo(({ icon: Icon, title, subtitle, to, id }: FeatureCardProps) => {
+  if (process.env.NODE_ENV === 'development') {
+    setTimeout(() => {
+      // wait one tick for render
+      console.log('FEATURECARD DOM', document
+        .getElementById(id || 'root')?.innerHTML);
+    }, 0);
+  }
+
   return (
     <div className="relative group">
       {/* Glow effect wrapper */}
