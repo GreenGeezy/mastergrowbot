@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -222,12 +221,11 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            {process.env.NODE_ENV === 'development' && <Route
-              path="*"
-              element={<DebugRoute />}
-            />}
             <AuthVerification />
             <Routes>
+              {process.env.NODE_ENV === 'development' && (
+                <Route path="*" element={<DebugRoute />} />
+              )}
               <Route path="/" element={<Index />} />
               <Route 
                 path="/privacy-policy" 
