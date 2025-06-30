@@ -1,6 +1,6 @@
 
 import React from "react";
-import { MessageCircle, Camera, BookOpen } from "lucide-react";
+import { MessageCircle, Camera, BookOpen, Settings } from "lucide-react";
 import { motion } from "motion/react";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -31,6 +31,13 @@ const featureTabs = [
     subtitle: "Quick answers to FAQs", 
     to: "/grow-guide",
     icon: BookOpen,
+  },
+  {
+    id: 3,
+    label: "Settings",
+    subtitle: "Profile & preferences",
+    to: "/profile",
+    icon: Settings,
   },
 ];
 
