@@ -223,9 +223,6 @@ const App = () => {
           <BrowserRouter>
             <AuthVerification />
             <Routes>
-              {process.env.NODE_ENV === 'development' && (
-                <Route path="*" element={<DebugRoute />} />
-              )}
               <Route path="/" element={<Index />} />
               <Route 
                 path="/privacy-policy" 
