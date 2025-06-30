@@ -1,8 +1,8 @@
 
 // src/utils/flags.ts
 export const isIOSPreview =
-  import.meta.env.VITE_IOS_PREVIEW === '1' &&
-  import.meta.env.VERCEL_GIT_COMMIT_REF === 'ios-main';
+  import.meta.env.VITE_IOS_PREVIEW === '1' ||
+  window.location.hostname.includes('mastergrowbot-git-ios-main');
 
 /**
  * Generic feature flag checker

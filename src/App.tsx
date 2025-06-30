@@ -1,3 +1,4 @@
+
 import { Suspense, lazy, useState, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
@@ -9,6 +10,7 @@ import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import SubscriptionGuard from "@/components/SubscriptionGuard";
+import { isIOSPreview } from "@/utils/flags";
 
 // Lazy load all page components
 const Index = lazy(() => import("@/pages/Index"));
@@ -21,7 +23,7 @@ const PlantHealthAnalyzer = lazy(() => import("@/pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("@/pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("@/pages/GrowingGuide"));
 
-const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true' && !isIOSPreview;
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,13 +62,13 @@ const AuthVerification = () => {
   );
   
   useEffect(() => {
-    if (!REQUIRE_QUIZ_AND_SUBSCRIPTION || isPublicRoute || !session) {
+    // Skip all auth verification in iOS preview mode
+    if (isIOSPreview || !REQUIRE_QUIZ_AND_SUBSCRIPTION || isPublicRoute || !session) {
       return;
     }
     
     const checkRequirements = async () => {
       try {
-        // Log the user info for debugging
         console.log("Checking user requirements:", session.user.id);
         
         const { data: accessData, error: accessError } = await supabase
@@ -82,7 +84,6 @@ const AuthVerification = () => {
         
         console.log("User access data:", accessData);
         
-        // No longer sign out the user, just redirect if needed
         if (!accessData?.has_completed_quiz) {
           toast.error("Please complete the quiz first");
           navigate('/quiz', { replace: true });
@@ -200,6 +201,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const location = useLocation();
   
+  // Skip authentication in iOS preview mode
+  if (isIOSPreview) {
+    return <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>;
+  }
+  
   useEffect(() => {
     if (!session && location.pathname !== '/') {
       sessionStorage.setItem('redirectTo', location.pathname);
@@ -264,9 +270,13 @@ const App = () => {
                 path="/chat" 
                 element={
                   <ProtectedRoute>
-                    <SubscriptionGuard>
+                    {isIOSPreview ? (
                       <ChatInterface />
-                    </SubscriptionGuard>
+                    ) : (
+                      <SubscriptionGuard>
+                        <ChatInterface />
+                      </SubscriptionGuard>
+                    )}
                   </ProtectedRoute>
                 } 
               />
@@ -274,9 +284,13 @@ const App = () => {
                 path="/plant-health" 
                 element={
                   <ProtectedRoute>
-                    <SubscriptionGuard>
+                    {isIOSPreview ? (
                       <PlantHealthAnalyzer />
-                    </SubscriptionGuard>
+                    ) : (
+                      <SubscriptionGuard>
+                        <PlantHealthAnalyzer />
+                      </SubscriptionGuard>
+                    )}
                   </ProtectedRoute>
                 } 
               />
@@ -292,9 +306,13 @@ const App = () => {
                 path="/grow-guide" 
                 element={
                   <ProtectedRoute>
-                    <SubscriptionGuard>
+                    {isIOSPreview ? (
                       <GrowingGuide />
-                    </SubscriptionGuard>
+                    ) : (
+                      <SubscriptionGuard>
+                        <GrowingGuide />
+                      </SubscriptionGuard>
+                    )}
                   </ProtectedRoute>
                 } 
               />
@@ -305,12 +323,6 @@ const App = () => {
       </SessionContextProvider>
     </QueryClientProvider>
   );
-};
-
-const DebugRoute = () => {
-  const loc = useLocation();
-  console.log("⇢ ROUTE", loc.pathname);
-  return null;
 };
 
 export default App;
