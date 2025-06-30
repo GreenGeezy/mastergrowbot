@@ -21,6 +21,7 @@ import { useChatState } from "@/hooks/use-chat-state";
 import { useAudioState } from "@/hooks/use-audio-state";
 import { useConversations } from "@/hooks/use-conversations";
 import { MobileNavigation } from "@/components/mobile/MobileNavigation";
+import { isIOSPreview } from "@/utils/flags";
 
 interface Message {
   id: string;
@@ -128,7 +129,8 @@ const ChatInterface = () => {
     "What's the ideal temperature range?"
   ];
 
-  if (!session) {
+  // Skip authentication check in iOS preview mode
+  if (!isIOSPreview && !session) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8 text-center">
