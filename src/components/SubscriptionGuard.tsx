@@ -11,6 +11,7 @@ interface SubscriptionGuardProps {
 }
 
 const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
+  // Skip all subscription checks in iOS preview mode
   if (isIOSPreview) return <>{children ?? null}</>;
   
   const session = useSession();

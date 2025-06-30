@@ -10,7 +10,7 @@ import TestimonialCarousel from './TestimonialCarousel';
 import { isIOSPreview } from '@/utils/flags';
 
 const AuthUI = ({ children }) => {
-  // Skip Supabase login when in preview
+  // Skip Supabase login when in iOS preview mode
   if (isIOSPreview) return <>{children ?? null}</>;
 
   const [email, setEmail] = useState('');

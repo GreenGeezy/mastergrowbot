@@ -19,8 +19,8 @@ interface QuickTip {
 const QuickTipCards = () => {
   const session = useSession();
 
-  // Skip rendering subscription-related components in iOS preview
-  if (isIOSPreview) return null;
+  // In iOS preview mode, we can render the cards but won't have session-dependent features
+  const shouldRenderSessionComponents = session && !isIOSPreview;
 
   const handleTakePhoto = () => {
     const fileInput = document.getElementById('file-upload');
@@ -83,7 +83,7 @@ const QuickTipCards = () => {
 
   return (
     <>
-      {session && (
+      {shouldRenderSessionComponents && (
         <>
           <div data-share-dialog>
             <ShareResults analysisId="" imageUrls={[]} />
