@@ -9,6 +9,7 @@ import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
 import FeatureSection from '@/components/FeatureSection';
+import BottomNavigation from '@/components/navigation/BottomNavigation';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { useIsMobile } from '@/hooks/use-mobile';
 
