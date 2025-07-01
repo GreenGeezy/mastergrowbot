@@ -1,7 +1,7 @@
+
 import { useSession } from '@supabase/auth-helpers-react'
-import { Plus, MessageCircle, Camera, BookOpen, Settings } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useLocation, Link, useNavigate } from 'react-router-dom'
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +11,6 @@ import {
   SidebarGroupContent,
 } from '@/components/ui/sidebar'
 import { ProfileDropdown } from './profile/ProfileDropdown'
-import { ExpandableTabs } from '@/components/ui/expandable-tabs'
 
 interface AppSidebarProps {
   onNewChat?: () => void
@@ -20,30 +19,6 @@ interface AppSidebarProps {
 
 export function AppSidebar({ onNewChat, children }: AppSidebarProps) {
   const session = useSession()
-  const location = useLocation()
-  const navigate = useNavigate()
-  const currentPath = location.pathname
-
-  const isActive = (path: string) => currentPath === path
-
-  // Create tabs for ExpandableTabs component
-  const tabs = navigationItems.map((item) => ({
-    title: item.title,
-    icon: item.icon,
-    type: "tab" as const,
-    to: item.to,
-  }))
-
-  const handleTabChange = (index: number | null) => {
-    if (index !== null && tabs[index]) {
-      navigate(tabs[index].to)
-    }
-  }
-
-  const getActiveTabIndex = () => {
-    const activeIndex = navigationItems.findIndex(item => isActive(item.to))
-    return activeIndex >= 0 ? activeIndex : null
-  }
 
   return (
     <Sidebar className="border-r border-[#333333]" collapsible="icon">
