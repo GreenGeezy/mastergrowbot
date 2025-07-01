@@ -283,7 +283,7 @@ const ChatInterface = () => {
             </div>
           </div>
 
-          {/* Bottom Navigation */}
+          {/* Single Bottom Navigation - only navigation on all device sizes */}
           <div className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-sm border-t border-white/10">
             <div className="flex justify-center p-4">
               <ExpandableTabs 
