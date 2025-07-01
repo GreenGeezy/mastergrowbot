@@ -1,5 +1,6 @@
 
 import { supabase } from '@/integrations/supabase/client'
+import { isIOSPreview } from '@/utils/flags'
 
 // Track in-flight requests to prevent duplicates
 const activeRequests = new Map<string, Promise<any>>()
@@ -10,6 +11,12 @@ export const sendMessageToSupabase = async (
   conversationId: string,
   isAi: boolean = false
 ) => {
+  // Skip database operations in iOS preview mode
+  if (isIOSPreview) {
+    console.log('iOS preview mode: skipping database save')
+    return { data: null, error: null }
+  }
+
   const requestKey = `send:${userId}:${conversationId}:${Date.now()}`
   
   try {
@@ -38,6 +45,12 @@ export const sendMessageToSupabase = async (
 }
 
 export const fetchChatHistory = async (userId: string, conversationId: string) => {
+  // Skip database operations in iOS preview mode
+  if (isIOSPreview) {
+    console.log('iOS preview mode: skipping chat history fetch')
+    return { data: [], error: null }
+  }
+
   const requestKey = `fetch:${userId}:${conversationId}`
   
   // Check if this exact request is already in flight

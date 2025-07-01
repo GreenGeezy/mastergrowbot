@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast'
 import { sendMessageToSupabase, fetchChatHistory, invokeAIChat } from '@/services/messageService'
 import { MessageCache } from '@/utils/message-cache'
 import { debounce } from '@/utils/debounce'
+import { isIOSPreview } from '@/utils/flags'
 
 interface Message {
   id: string
@@ -23,6 +24,14 @@ export const useChatMessages = (
   const { toast } = useToast()
   const pendingRequests = useRef(new Set<string>())
   const isMounted = useRef(true)
+
+  // Create mock user for iOS preview
+  const getUserId = () => {
+    if (isIOSPreview) {
+      return 'ios-preview-user'
+    }
+    return session?.user?.id
+  }
 
   // Clean up pending requests on unmount
   useEffect(() => {
@@ -43,11 +52,18 @@ export const useChatMessages = (
 
   const loadChatHistory = useCallback(async () => {
     try {
-      if (!currentConversationId || !session?.user?.id) return
+      const userId = getUserId()
+      if (!currentConversationId || !userId) return
+
+      // In iOS preview mode, skip loading from database
+      if (isIOSPreview) {
+        console.log('iOS preview mode: skipping chat history load')
+        return
+      }
 
       // Check cache first
       const cachedMessages = MessageCache.get<Message[]>(
-        session.user.id,
+        userId,
         currentConversationId
       )
 
@@ -58,7 +74,7 @@ export const useChatMessages = (
       }
 
       // If we're already fetching this conversation, don't duplicate requests
-      const requestId = `${session.user.id}:${currentConversationId}`
+      const requestId = `${userId}:${currentConversationId}`
       if (pendingRequests.current.has(requestId)) {
         console.log('Skipping duplicate history request')
         return
@@ -66,7 +82,7 @@ export const useChatMessages = (
 
       pendingRequests.current.add(requestId)
       console.log('Fetching chat history for:', currentConversationId)
-      const { data, error } = await fetchChatHistory(session.user.id, currentConversationId)
+      const { data, error } = await fetchChatHistory(userId, currentConversationId)
 
       // Remove from pending requests
       pendingRequests.current.delete(requestId)
@@ -75,7 +91,7 @@ export const useChatMessages = (
       
       if (data && isMounted.current) {
         // Store in cache and update state
-        MessageCache.set(session.user.id, currentConversationId, data)
+        MessageCache.set(userId, currentConversationId, data)
         setMessages(data)
       }
     } catch (error) {
@@ -89,10 +105,11 @@ export const useChatMessages = (
   }, [currentConversationId, session?.user?.id, toast])
 
   const sendMessage = useCallback(async (message: string) => {
-    if (!message.trim() || !session?.user?.id || !currentConversationId) {
+    const userId = getUserId()
+    if (!message.trim() || !userId || !currentConversationId) {
       console.log('Missing required data:', { 
         hasMessage: !!message.trim(), 
-        hasUserId: !!session?.user?.id, 
+        hasUserId: !!userId, 
         hasConversationId: !!currentConversationId 
       });
       return;
@@ -115,34 +132,26 @@ export const useChatMessages = (
       // Update UI immediately for better responsiveness
       setMessages(prev => [...prev, userMessage])
       
-      // Invalidate cache
-      if (session?.user?.id) {
-        MessageCache.invalidate(session.user.id, currentConversationId)
+      // In iOS preview mode, skip database operations but still call AI
+      if (!isIOSPreview) {
+        // Invalidate cache
+        MessageCache.invalidate(userId, currentConversationId)
+        
+        // Save user message to Supabase
+        await sendMessageToSupabase(
+          userId,
+          message.trim(),
+          currentConversationId
+        )
       }
-      
-      // Save user message to Supabase
-      const savePromise = sendMessageToSupabase(
-        session.user.id,
-        message.trim(),
-        currentConversationId
-      )
 
-      // Start AI request in parallel
+      // Start AI request
       console.log('Invoking AI chat...');
-      const aiPromise = invokeAIChat(
+      const { data, error } = await invokeAIChat(
         message,
-        session.user.id,
+        userId,
         currentConversationId
       )
-
-      // Wait for both operations to complete
-      const [_, aiResult] = await Promise.allSettled([savePromise, aiPromise])
-
-      if (aiResult.status === 'rejected') {
-        throw aiResult.reason;
-      }
-
-      const { data, error } = aiResult.value;
 
       if (error) {
         console.error('AI chat error:', error);
@@ -163,15 +172,17 @@ export const useChatMessages = (
         // Update state with AI response
         setMessages(prev => [...prev, aiMessage])
         
-        // Save AI response to Supabase asynchronously
-        sendMessageToSupabase(
-          session.user.id,
-          data.response,
-          currentConversationId,
-          true
-        ).catch(error => {
-          console.error('Failed to save AI message:', error)
-        })
+        // Save AI response to Supabase asynchronously (skip in iOS preview)
+        if (!isIOSPreview) {
+          sendMessageToSupabase(
+            userId,
+            data.response,
+            currentConversationId,
+            true
+          ).catch(error => {
+            console.error('Failed to save AI message:', error)
+          })
+        }
       } else {
         console.error('No response data from AI');
         throw new Error('No response received from AI');
@@ -190,7 +201,8 @@ export const useChatMessages = (
 
   // Effect to load chat history when conversation changes
   useEffect(() => {
-    if (currentConversationId && session?.user?.id) {
+    const userId = getUserId()
+    if (currentConversationId && userId) {
       loadChatHistory()
     } else {
       // Clear messages when conversation ID changes to null
