@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -7,7 +6,6 @@ import { supabase, safeDeleteUser, checkUserExists } from '@/integrations/supaba
 import { isIOSPreview } from '@/utils/flags';
 import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
-import Header from '@/components/Header';
 import FeatureSection from '@/components/FeatureSection';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import { SparklesCore } from '@/components/ui/sparkles';
@@ -110,7 +108,6 @@ export default function Index() {
         
         {/* Content with higher z-index */}
         <div className="relative z-10">
-          <Header />
           <UserDashboard />
         </div>
       </div>
@@ -138,8 +135,6 @@ export default function Index() {
       
       {/* Content with higher z-index */}
       <div className="relative z-10 flex flex-col min-h-screen">
-        <Header />
-        
         {session ? (
           <UserDashboard />
         ) : (
@@ -153,7 +148,7 @@ export default function Index() {
               </div>
             </div>
             
-            {/* Feature cards at bottom - show on all devices */}
+            {/* Feature cards at bottom */}
             <div className="sticky bottom-20 bg-background/95 backdrop-blur-sm border-t border-accent/20 py-6 safe-area-pb">
               <FeatureSection onFeatureClick={handleFeatureClick} />
             </div>
@@ -161,7 +156,7 @@ export default function Index() {
         )}
       </div>
       
-      {/* Bottom Navigation - show on all devices */}
+      {/* Bottom Navigation */}
       <BottomNavigation />
     </div>
   );
