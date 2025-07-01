@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import CameraCapture from '@/components/plant-health/CameraCapture';
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const PlantHealthAnalyzer = () => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -18,6 +18,7 @@ const PlantHealthAnalyzer = () => {
   const [showCamera, setShowCamera] = useState(false);
   const session = useSession();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const handleCapture = useCallback((imageSrc: string | null) => {
     setCapturedImage(imageSrc);
@@ -60,7 +61,7 @@ const PlantHealthAnalyzer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-white pb-20">
+    <div className={`min-h-screen bg-background text-white ${isMobile ? 'pb-4' : 'pb-20'}`}>
       <PlantHealthHeader />
 
       <main className="container mx-auto px-4 py-8">
@@ -126,7 +127,8 @@ const PlantHealthAnalyzer = () => {
         )}
       </main>
       
-      <BottomNavigation />
+      {/* Only show bottom navigation on desktop */}
+      {!isMobile && <BottomNavigation />}
     </div>
   );
 };

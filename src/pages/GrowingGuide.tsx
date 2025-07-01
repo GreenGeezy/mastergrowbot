@@ -6,13 +6,14 @@ import { Input } from "@/components/ui/input";
 import GuideCategories from "@/components/guide/GuideCategories";
 import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
-import { MobileNavigation } from "@/components/mobile/MobileNavigation";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   return (
     <div className="min-h-screen bg-background text-white pb-20">
@@ -61,11 +62,6 @@ const GrowingGuide = () => {
         </div>
       </header>
 
-      {/* Mobile Navigation - Only show on mobile */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 xs:block md:hidden">
-        <MobileNavigation />
-      </div>
-
       {/* Main Content */}
       <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
         <div className="text-center mb-8 animate-fade-in">
@@ -101,8 +97,8 @@ const GrowingGuide = () => {
         onOpenChange={setShowSupport} 
       />
 
-      {/* Add bottom navigation */}
-      <BottomNavigation />
+      {/* Only show bottom navigation on desktop */}
+      {!isMobile && <BottomNavigation />}
     </div>
   );
 };

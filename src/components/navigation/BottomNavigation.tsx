@@ -1,12 +1,18 @@
-
 import React from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MessageCircle, Camera, BookOpen, Settings } from "lucide-react";
 import { ExpandableTabs } from "@/components/ui/expandable-tabs";
 
 const BottomNavigation = () => {
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Don't render anything on mobile devices
+  if (isMobile) {
+    return null;
+  }
 
   // Navigation items for bottom tabs
   const navigationItems = [

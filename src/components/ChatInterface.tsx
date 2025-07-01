@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +22,7 @@ import { useAudioState } from "@/hooks/use-audio-state";
 import { useConversations } from "@/hooks/use-conversations";
 import { isIOSPreview } from "@/utils/flags";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Message {
   id: string;
@@ -35,6 +35,7 @@ const ChatInterface = () => {
   const session = useSession();
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const { message, setMessage, handleQuestionClick, startNewChat, currentConversationId, ensureConversationId } = useChatState();
   const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages(currentConversationId);
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
@@ -159,8 +160,8 @@ const ChatInterface = () => {
           {/* Header */}
           <ChatHeader />
 
-          {/* Messages area - adjusted for bottom navigation */}
-          <div className="flex-1 overflow-hidden flex flex-col pb-20">
+          {/* Messages area - adjusted for mobile without bottom navigation */}
+          <div className={`flex-1 overflow-hidden flex flex-col ${isMobile ? 'pb-4' : 'pb-20'}`}>
             {messages.length === 0 ? (
               <div className="flex-1 flex items-center justify-center p-4">
                 <div className="max-w-2xl mx-auto text-center space-y-8">
@@ -208,8 +209,8 @@ const ChatInterface = () => {
             )}
           </div>
 
-          {/* Input area - adjusted for bottom navigation */}
-          <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
+          {/* Input area - adjusted for mobile without bottom navigation */}
+          <div className={`border-t border-white/10 bg-card/50 backdrop-blur-sm ${isMobile ? 'pb-4' : 'pb-20'}`}>
             <div className="max-w-4xl mx-auto p-4">
               <div className="flex items-end gap-2">
                 <div className="flex-1">
@@ -253,8 +254,8 @@ const ChatInterface = () => {
         )}
       </div>
 
-      {/* Shared Bottom Navigation */}
-      <BottomNavigation />
+      {/* Only show bottom navigation on desktop */}
+      {!isMobile && <BottomNavigation />}
     </SidebarProvider>
   );
 };

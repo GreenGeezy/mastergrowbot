@@ -10,12 +10,14 @@ import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
 import FeatureSection from '@/components/FeatureSection';
 import { SparklesCore } from '@/components/ui/sparkles';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function Index() {
   const session = useSession();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+  const isMobile = useIsMobile();
   
   // Check if we're in iOS preview mode
   const isIOSPreviewMode = isIOSPreview;
@@ -150,10 +152,12 @@ export default function Index() {
               </div>
             </div>
             
-            {/* Feature cards at bottom - mobile optimized with sticky positioning */}
-            <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-accent/20 py-4 safe-area-pb">
-              <FeatureSection onFeatureClick={handleFeatureClick} />
-            </div>
+            {/* Feature cards at bottom - only show on desktop */}
+            {!isMobile && (
+              <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-accent/20 py-4 safe-area-pb">
+                <FeatureSection onFeatureClick={handleFeatureClick} />
+              </div>
+            )}
           </div>
         )}
       </div>
