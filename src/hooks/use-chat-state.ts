@@ -1,34 +1,43 @@
-import { useState } from 'react'
 
-interface Message {
-  id: string
-  message: string
-  is_ai: boolean
-  created_at: string
-}
+import { useState, useCallback } from 'react'
+import { isIOSPreview } from '@/utils/flags'
 
-export function useChatState() {
+export const useChatState = () => {
   const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState<Message[]>([])
-  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(() => {
+    // Always create a conversation ID for iOS preview mode
+    if (isIOSPreview) {
+      return crypto.randomUUID()
+    }
+    return null
+  })
 
-  const handleQuestionClick = (question: string) => {
+  const handleQuestionClick = useCallback((question: string) => {
     setMessage(question)
-  }
+  }, [])
 
-  const startNewChat = () => {
-    setMessages([])
-    setCurrentConversationId(crypto.randomUUID())
+  const startNewChat = useCallback(() => {
+    const newConversationId = crypto.randomUUID()
+    setCurrentConversationId(newConversationId)
     setMessage('')
-  }
+  }, [])
+
+  // Ensure we always have a conversation ID
+  const ensureConversationId = useCallback(() => {
+    if (!currentConversationId) {
+      const newId = crypto.randomUUID()
+      setCurrentConversationId(newId)
+      return newId
+    }
+    return currentConversationId
+  }, [currentConversationId])
 
   return {
     message,
     setMessage,
-    messages,
-    setMessages,
     handleQuestionClick,
     startNewChat,
-    currentConversationId
+    currentConversationId: currentConversationId || ensureConversationId(),
+    ensureConversationId
   }
 }

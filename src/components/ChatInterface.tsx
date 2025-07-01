@@ -32,7 +32,7 @@ interface Message {
 
 const ChatInterface = () => {
   const session = useSession();
-  const { message, setMessage, handleQuestionClick, startNewChat, currentConversationId } = useChatState();
+  const { message, setMessage, handleQuestionClick, startNewChat, currentConversationId, ensureConversationId } = useChatState();
   const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages(currentConversationId);
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
   const { conversations, isLoading: isLoadingConversations } = useConversations();
@@ -54,10 +54,10 @@ const ChatInterface = () => {
   }, [messages]);
 
   useEffect(() => {
-    if (session?.user) {
+    if (session?.user || isIOSPreview) {
       loadChatHistory();
     }
-  }, [session, loadChatHistory]);
+  }, [session, loadChatHistory, isIOSPreview]);
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) {
@@ -67,6 +67,10 @@ const ChatInterface = () => {
     if (!message.trim() || isLoading) return;
 
     try {
+      // Ensure we have a conversation ID before sending
+      const conversationId = ensureConversationId();
+      console.log('Sending message with conversation ID:', conversationId);
+      
       await sendMessage(message);
       setMessage("");
     } catch (error) {
