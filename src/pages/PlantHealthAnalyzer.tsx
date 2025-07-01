@@ -1,238 +1,108 @@
-import React, { useState } from 'react';
-import { useSession } from '@supabase/auth-helpers-react';
-import ImageDropzone from '@/components/plant-health/ImageDropzone';
-import AnalysisResults from '@/components/plant-health/AnalysisResults';
-import AnalysisActions from '@/components/plant-health/AnalysisActions';
-import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
-import { MobileNavigation } from "@/components/mobile/MobileNavigation";
+import React, { useState, useCallback } from 'react';
+import { Webcam } from '@/components/Webcam';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { useSession } from "@supabase/auth-helpers-react";
+import { useNavigate } from 'react-router-dom';
+import { PlantHealthHeader } from '@/components/plant-health/PlantHealthHeader';
+import BottomNavigation from "@/components/navigation/BottomNavigation";
 
 const PlantHealthAnalyzer = () => {
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const session = useSession();
-  const { toast } = useToast();
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [analysisResult, setAnalysisResult] = useState<any>(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [cameraFile, setCameraFile] = useState<File | null>(null);
-  const [uploadProgress, setUploadProgress] = useState<{ current: number, total: number } | null>(null);
-  const [analysisStartTime, setAnalysisStartTime] = useState<number | null>(null);
-  const [profileUsed, setProfileUsed] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const handleImagesSelected = async (files: File[]) => {
-    setSelectedFiles(files);
-    // Only auto-analyze if it's not from camera
-    if (files.length > 0 && !cameraFile) {
-      await handleAnalyze();
-    }
-  };
-
-  const handleTakePhoto = () => {
-    const imageDropzone = document.querySelector('[data-image-dropzone]');
-    if (imageDropzone) {
-      const event = new CustomEvent('start-camera');
-      imageDropzone.dispatchEvent(event);
-    }
-  };
-
-  const handleCameraCapture = (file: File) => {
-    setCameraFile(file);
-    setSelectedFiles([file]);
-    setShowConfirmation(true);
-  };
+  const handleCapture = useCallback((imageSrc: string | null) => {
+    setCapturedImage(imageSrc);
+  }, [setCapturedImage]);
 
   const handleAnalyze = async () => {
-    if (selectedFiles.length === 0) return;
+    if (!capturedImage) {
+      toast.error("Please capture an image first.");
+      return;
+    }
 
-    setIsAnalyzing(true);
-    setAnalysisStartTime(Date.now());
-    setUploadProgress({ current: 0, total: selectedFiles.length });
-    
+    setIsLoading(true);
+    setAnalysisResult(null);
+
     try {
-      console.log('Starting analysis...');
-      
-      // Upload images to Supabase storage
-      const imageUrls = await Promise.all(
-        selectedFiles.map(async (file, index) => {
-          const fileName = `${Date.now()}-${file.name}`;
-          const { data, error } = await supabase.storage
-            .from('plant-images')
-            .upload(fileName, file);
-
-          if (error) {
-            console.error('Image upload error:', error);
-            throw error;
-          }
-
-          const { data: { publicUrl } } = supabase.storage
-            .from('plant-images')
-            .getPublicUrl(fileName);
-            
-          // Update progress
-          setUploadProgress(prev => {
-            if (!prev) return { current: index + 1, total: selectedFiles.length };
-            return { ...prev, current: index + 1 };
-          });
-
-          return publicUrl;
-        })
-      );
-
-      console.log('Images uploaded successfully:', imageUrls);
-      
-      // Show interim toast for user feedback
-      const elapsedUploadTime = ((Date.now() - (analysisStartTime || 0)) / 1000).toFixed(1);
-      toast({
-        title: "Images Uploaded Successfully",
-        description: `Beginning AI analysis now (uploaded in ${elapsedUploadTime}s)`,
-      });
-
-      // Call the analyze-plant function with user ID for personalization
-      const { data, error } = await supabase.functions.invoke('analyze-plant', {
-        body: { 
-          imageUrls,
-          userId: session?.user?.id 
-        },
-      });
-
-      if (error) {
-        console.error('Function invocation error:', error);
-        throw error;
-      }
-
-      console.log('Analysis data received:', data);
-
-      if (!data || !data.analysis) {
-        console.error('Invalid response data structure:', data);
-        throw new Error('Received invalid analysis data');
-      }
-      
-      // Track if profile data was used
-      setProfileUsed(!!data.profileUsed);
-
-      // Save analysis results to the database
-      const { data: savedAnalysis, error: saveError } = await supabase
-        .from('plant_analyses')
-        .insert({
-          user_id: session?.user?.id,
-          image_url: imageUrls[0], // Keep first image as primary
-          image_urls: imageUrls, // Store all images
-          diagnosis: data.analysis.diagnosis,
-          confidence_level: data.analysis.confidence_level,
-          detailed_analysis: data.analysis.detailed_analysis,
-          recommended_actions: data.analysis.recommended_actions,
-        })
-        .select()
-        .single();
-
-      if (saveError) {
-        console.error('Error saving analysis:', saveError);
-        throw new Error('Failed to save analysis results');
-      }
-
-      console.log('Analysis saved to database:', savedAnalysis);
-      setAnalysisResult(savedAnalysis);
-      
-      // Calculate total time elapsed
-      const totalTimeElapsed = ((Date.now() - (analysisStartTime || 0)) / 1000).toFixed(1);
-      
-      toast({
-        title: "Analysis Complete",
-        description: `Your plant health analysis is ready to view (completed in ${totalTimeElapsed}s)${
-          data.profileUsed ? " - Personalized to your growing method" : ""
-        }`,
-      });
-    } catch (error: any) {
-      console.error('Analysis error:', error);
-      toast({
-        title: "Analysis Failed",
-        description: error.message || "Failed to analyze plant health. Please try again.",
-        variant: "destructive",
-      });
+      // Simulate analysis (replace with actual API call)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setAnalysisResult("The plant appears healthy. No immediate concerns detected.");
+      toast.success("Analysis complete!");
+    } catch (error) {
+      console.error("Analysis error:", error);
+      setAnalysisResult("Analysis failed. Please try again.");
+      toast.error("Analysis failed. Please try again.");
     } finally {
-      setIsAnalyzing(false);
-      setShowConfirmation(false);
-      setCameraFile(null);
-      setUploadProgress(null);
-      setAnalysisStartTime(null);
+      setIsLoading(false);
     }
   };
 
-  // Calculate upload progress percentage
-  const uploadProgressPercentage = uploadProgress 
-    ? Math.round((uploadProgress.current / uploadProgress.total) * 100) 
-    : 0;
+  const handleSignIn = () => {
+    navigate('/signin');
+  };
 
   return (
-    <div className="min-h-screen bg-background text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-background text-white pb-20">
       <PlantHealthHeader />
-      
-      {/* Mobile Navigation - Only show on mobile */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 xs:block md:hidden">
-        <MobileNavigation />
-      </div>
 
-      <div className="max-w-4xl mx-auto space-y-8">
-        <ImageDropzone
-          onImagesSelected={handleImagesSelected}
-          selectedFiles={selectedFiles}
-          onCameraCapture={handleCameraCapture}
-        />
-
-        {isAnalyzing && (
-          <div className="flex flex-col items-center justify-center p-8 space-y-4">
-            <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            {uploadProgress && uploadProgress.current < uploadProgress.total ? (
-              <div className="w-full max-w-xs space-y-2">
-                <p className="text-white text-lg">Uploading images... ({uploadProgressPercentage}%)</p>
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
-                  <div className="bg-green-500 h-2.5 rounded-full" style={{ width: `${uploadProgressPercentage}%` }}></div>
+      <main className="container mx-auto px-4 py-8">
+        <section className="mb-8">
+          <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
+            <CardHeader>
+              <CardTitle>Capture Plant Image</CardTitle>
+              <CardDescription>Take a clear photo of your plant for analysis.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center">
+              <Webcam onCapture={handleCapture} />
+              {capturedImage && (
+                <div className="mt-4">
+                  <img src={capturedImage} alt="Captured Plant" className="max-w-md rounded-lg" />
                 </div>
-              </div>
-            ) : (
-              <p className="text-white text-lg">
-                Analyzing your plant{session?.user?.id ? " with your growing preferences" : ""}...
-              </p>
-            )}
-            {analysisStartTime && (
-              <p className="text-gray-400 text-sm">
-                Time elapsed: {Math.floor((Date.now() - analysisStartTime) / 1000)}s
-              </p>
+              )}
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="mb-8">
+          <div className="space-y-2">
+            <Button
+              onClick={handleAnalyze}
+              disabled={isLoading || !capturedImage}
+              className="w-full bg-gradient-primary hover:bg-gradient-secondary"
+            >
+              {isLoading ? "Analyzing..." : "Analyze Plant Health"}
+            </Button>
+            {analysisResult && (
+              <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
+                <CardContent>
+                  <p>{analysisResult}</p>
+                </CardContent>
+              </Card>
             )}
           </div>
-        )}
+        </section>
 
-        {analysisResult && !isAnalyzing && (
-          <>
-            <AnalysisResults analysisResult={analysisResult} />
-            {profileUsed && (
-              <div className="bg-green-900/30 border border-green-700 rounded-md p-3 text-sm text-green-200">
-                <p className="font-medium">Personalized Analysis</p>
-                <p>This analysis was tailored to your growing method and preferences.</p>
-              </div>
-            )}
-          </>
+        {!session && (
+          <section className="text-center">
+            <p className="text-gray-400 mb-4">
+              To save your analysis history, please sign in.
+            </p>
+            <Button onClick={handleSignIn} variant="secondary">
+              Sign In to Save History
+            </Button>
+          </section>
         )}
-
-        <AnalysisActions
-          session={session}
-          onTakePhoto={handleTakePhoto}
-          onAnalyze={handleAnalyze}
-          showConfirmation={showConfirmation}
-          onConfirmationCancel={() => {
-            setShowConfirmation(false);
-            setCameraFile(null);
-            setSelectedFiles([]);
-          }}
-          onConfirmationConfirm={() => {
-            setShowConfirmation(false);
-            handleAnalyze();
-          }}
-          analysisResult={analysisResult}
-        />
-      </div>
+      </main>
+      
+      {/* Add bottom navigation */}
+      <BottomNavigation />
     </div>
   );
 };

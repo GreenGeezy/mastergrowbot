@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
 import FeatureSection from "@/components/FeatureSection";
 import { MobileNavigation } from "@/components/mobile/MobileNavigation";
+import BottomNavigation from "@/components/navigation/BottomNavigation";
 
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,7 +15,7 @@ const GrowingGuide = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-background text-white pb-20">
       <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
       
       {/* Decorative accent lines */}
@@ -104,6 +105,9 @@ const GrowingGuide = () => {
         isOpen={showSupport} 
         onOpenChange={setShowSupport} 
       />
+
+      {/* Add bottom navigation */}
+      <BottomNavigation />
     </div>
   );
 };
