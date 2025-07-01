@@ -106,8 +106,12 @@ const ChatInterface = () => {
           <ChatInput 
             message=""
             isLoading={false}
+            isRecording={false}
+            isMuted={false}
             onMessageChange={() => {}}
             onSubmit={() => {}}
+            onToggleRecording={() => {}}
+            onToggleMute={() => {}}
             onSpeechResult={() => {}}
           />
         </div>
