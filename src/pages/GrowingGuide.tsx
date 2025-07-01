@@ -97,8 +97,8 @@ const GrowingGuide = () => {
         onOpenChange={setShowSupport} 
       />
 
-      {/* Only show bottom navigation on desktop */}
-      {!isMobile && <BottomNavigation />}
+      {/* Bottom Navigation - show on all devices */}
+      <BottomNavigation />
     </div>
   );
 };

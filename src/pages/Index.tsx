@@ -142,7 +142,7 @@ export default function Index() {
         {session ? (
           <UserDashboard />
         ) : (
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 pb-20">
             {/* Main content area */}
             <div className="flex-1 container mx-auto px-4 flex flex-col justify-center">
               <div className="py-6 md:py-10 flex flex-col items-center justify-center min-h-[60vh]">
@@ -152,15 +152,16 @@ export default function Index() {
               </div>
             </div>
             
-            {/* Feature cards at bottom - only show on desktop */}
-            {!isMobile && (
-              <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-accent/20 py-4 safe-area-pb">
-                <FeatureSection onFeatureClick={handleFeatureClick} />
-              </div>
-            )}
+            {/* Feature cards at bottom - show on all devices */}
+            <div className="sticky bottom-20 bg-background/95 backdrop-blur-sm border-t border-accent/20 py-6 safe-area-pb">
+              <FeatureSection onFeatureClick={handleFeatureClick} />
+            </div>
           </div>
         )}
       </div>
+      
+      {/* Bottom Navigation - show on all devices */}
+      <BottomNavigation />
     </div>
   );
 }

@@ -61,7 +61,7 @@ const PlantHealthAnalyzer = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background text-white ${isMobile ? 'pb-4' : 'pb-20'}`}>
+    <div className="min-h-screen bg-background text-white pb-20">
       <PlantHealthHeader />
 
       <main className="container mx-auto px-4 py-8">
@@ -127,8 +127,8 @@ const PlantHealthAnalyzer = () => {
         )}
       </main>
       
-      {/* Only show bottom navigation on desktop */}
-      {!isMobile && <BottomNavigation />}
+      {/* Bottom Navigation - show on all devices */}
+      <BottomNavigation />
     </div>
   );
 };

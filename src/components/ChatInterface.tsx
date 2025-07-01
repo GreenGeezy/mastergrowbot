@@ -160,8 +160,8 @@ const ChatInterface = () => {
           {/* Header */}
           <ChatHeader />
 
-          {/* Messages area - adjusted for mobile without bottom navigation */}
-          <div className={`flex-1 overflow-hidden flex flex-col ${isMobile ? 'pb-4' : 'pb-20'}`}>
+          {/* Messages area - adjusted for bottom navigation on all devices */}
+          <div className="flex-1 overflow-hidden flex flex-col pb-20">
             {messages.length === 0 ? (
               <div className="flex-1 flex items-center justify-center p-4">
                 <div className="max-w-2xl mx-auto text-center space-y-8">
@@ -209,8 +209,8 @@ const ChatInterface = () => {
             )}
           </div>
 
-          {/* Input area - adjusted for mobile without bottom navigation */}
-          <div className={`border-t border-white/10 bg-card/50 backdrop-blur-sm ${isMobile ? 'pb-4' : 'pb-20'}`}>
+          {/* Input area - adjusted for bottom navigation on all devices */}
+          <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
             <div className="max-w-4xl mx-auto p-4">
               <div className="flex items-end gap-2">
                 <div className="flex-1">
@@ -254,8 +254,8 @@ const ChatInterface = () => {
         )}
       </div>
 
-      {/* Only show bottom navigation on desktop */}
-      {!isMobile && <BottomNavigation />}
+      {/* Bottom Navigation - show on all devices */}
+      <BottomNavigation />
     </SidebarProvider>
   );
 };
