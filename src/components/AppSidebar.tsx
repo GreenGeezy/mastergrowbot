@@ -1,4 +1,3 @@
-
 import { useSession } from '@supabase/auth-helpers-react'
 import { Plus, MessageCircle, Camera, BookOpen, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -18,33 +17,6 @@ interface AppSidebarProps {
   onNewChat?: () => void
   children?: React.ReactNode
 }
-
-const navigationItems = [
-  {
-    title: "Growing Assistant",
-    subtitle: "Get expert growing advice", 
-    to: "/chat",
-    icon: MessageCircle,
-  },
-  {
-    title: "Plant Health Check",
-    subtitle: "Diagnose plant issues",
-    to: "/plant-health", 
-    icon: Camera,
-  },
-  {
-    title: "Growing Guide",
-    subtitle: "Quick answers to FAQs",
-    to: "/grow-guide",
-    icon: BookOpen,
-  },
-  {
-    title: "Settings",
-    subtitle: "Profile & preferences",
-    to: "/profile",
-    icon: Settings,
-  },
-]
 
 export function AppSidebar({ onNewChat, children }: AppSidebarProps) {
   const session = useSession()
@@ -102,14 +74,7 @@ export function AppSidebar({ onNewChat, children }: AppSidebarProps) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <div className="p-4">
-              <ExpandableTabs 
-                tabs={tabs}
-                className="flex-col gap-2 bg-transparent border-0 p-0"
-                activeColor="text-accent"
-                onChange={handleTabChange}
-              />
-            </div>
+            
           </SidebarGroupContent>
         </SidebarGroup>
 

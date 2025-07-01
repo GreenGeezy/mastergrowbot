@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Send, Plus, Mic, MicOff, Volume2, VolumeX, MessageSquare, Settings } from "lucide-react";
+import { Send, Plus, Mic, MicOff, Volume2, VolumeX, MessageSquare, Settings, MessageCircle, Camera, BookOpen } from "lucide-react";
 import ChatMessages from "@/components/ChatMessages";
 import ChatInput from "@/components/ChatInput";
 import { ConversationList } from "@/components/chat/ConversationList";
@@ -16,11 +16,13 @@ import VoiceChatButton from "@/components/chat/VoiceChatButton";
 import VoiceChatOverlay from "@/components/chat/VoiceChatOverlay";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { ExpandableTabs } from "@/components/ui/expandable-tabs";
 import { useChatMessages } from "@/hooks/use-chat-messages";
 import { useChatState } from "@/hooks/use-chat-state";
 import { useAudioState } from "@/hooks/use-audio-state";
 import { useConversations } from "@/hooks/use-conversations";
 import { isIOSPreview } from "@/utils/flags";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface Message {
   id: string;
@@ -31,6 +33,8 @@ interface Message {
 
 const ChatInterface = () => {
   const session = useSession();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { message, setMessage, handleQuestionClick, startNewChat, currentConversationId, ensureConversationId } = useChatState();
   const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages(currentConversationId);
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
@@ -43,6 +47,30 @@ const ChatInterface = () => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Navigation items for bottom tabs
+  const navigationItems = [
+    {
+      title: "Growing Assistant",
+      to: "/chat",
+      icon: MessageCircle,
+    },
+    {
+      title: "Plant Health Check",
+      to: "/plant-health", 
+      icon: Camera,
+    },
+    {
+      title: "Growing Guide",
+      to: "/grow-guide",
+      icon: BookOpen,
+    },
+    {
+      title: "Settings",
+      to: "/profile",
+      icon: Settings,
+    },
+  ];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -123,6 +151,25 @@ const ChatInterface = () => {
     setMessage(voiceMessage);
   };
 
+  // Handle bottom navigation tab changes
+  const handleTabChange = (index: number | null) => {
+    if (index !== null && navigationItems[index]) {
+      navigate(navigationItems[index].to);
+    }
+  };
+
+  const getActiveTabIndex = () => {
+    const activeIndex = navigationItems.findIndex(item => location.pathname === item.to);
+    return activeIndex >= 0 ? activeIndex : null;
+  };
+
+  // Create tabs for ExpandableTabs component
+  const tabs = navigationItems.map((item) => ({
+    title: item.title,
+    icon: item.icon,
+    type: "tab" as const,
+  }));
+
   const quickQuestions = [
     "What's the best soil pH for cannabis?",
     "How often should I water my plants?",
@@ -147,7 +194,7 @@ const ChatInterface = () => {
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full bg-background text-white relative overflow-hidden">
-        {/* Sidebar for all devices */}
+        {/* Sidebar for conversations and profile only */}
         <AppSidebar onNewChat={handleNewChat} />
 
         {/* Main content area */}
@@ -155,8 +202,8 @@ const ChatInterface = () => {
           {/* Header */}
           <ChatHeader />
 
-          {/* Messages area */}
-          <div className="flex-1 overflow-hidden flex flex-col">
+          {/* Messages area - adjusted for bottom navigation */}
+          <div className="flex-1 overflow-hidden flex flex-col pb-20">
             {messages.length === 0 ? (
               <div className="flex-1 flex items-center justify-center p-4">
                 <div className="max-w-2xl mx-auto text-center space-y-8">
@@ -204,8 +251,8 @@ const ChatInterface = () => {
             )}
           </div>
 
-          {/* Input area */}
-          <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm">
+          {/* Input area - adjusted for bottom navigation */}
+          <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
             <div className="max-w-4xl mx-auto p-4">
               <div className="flex items-end gap-2">
                 <div className="flex-1">
@@ -233,6 +280,18 @@ const ChatInterface = () => {
                   </Button>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Bottom Navigation */}
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-sm border-t border-white/10">
+            <div className="flex justify-center p-4">
+              <ExpandableTabs 
+                tabs={tabs}
+                className="flex-row gap-2 bg-black/50 border-white/20 p-2"
+                activeColor="text-accent"
+                onChange={handleTabChange}
+              />
             </div>
           </div>
         </div>
