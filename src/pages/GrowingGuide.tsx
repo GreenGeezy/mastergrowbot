@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Search, ArrowLeft, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import GuideCategories from "@/components/guide/GuideCategories";
 import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
-import FeatureSection from "@/components/FeatureSection";
 import { MobileNavigation } from "@/components/mobile/MobileNavigation";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 
@@ -68,11 +68,6 @@ const GrowingGuide = () => {
 
       {/* Main Content */}
       <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
-        {/* Navigation Cards */}
-        <div className="mb-8">
-          <FeatureSection onFeatureClick={() => {}} />
-        </div>
-
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
             Growing Guide & FAQ

@@ -1,10 +1,5 @@
 
 import React from "react";
-import { MessageCircle, Camera, BookOpen, Settings } from "lucide-react";
-import { motion } from "motion/react";
-import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { cn } from "@/lib/utils";
 
 interface FeatureSectionProps {
   onFeatureClick: () => void;
@@ -18,7 +13,7 @@ const FeatureSection = React.memo(({ onFeatureClick }: FeatureSectionProps) => {
           Welcome to Master Growbot
         </h2>
         <p className="text-gray-400">
-          Your AI-powered cannabis cultivation assistant. Use the sidebar navigation to explore all features.
+          Your AI-powered cannabis cultivation assistant. Use the bottom navigation to explore all features.
         </p>
       </div>
     </div>
