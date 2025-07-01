@@ -1,5 +1,5 @@
+
 import React, { useState, useCallback } from 'react';
-import { Webcam } from '@/components/Webcam';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,19 +7,30 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from 'react-router-dom';
-import { PlantHealthHeader } from '@/components/plant-health/PlantHealthHeader';
+import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import BottomNavigation from "@/components/navigation/BottomNavigation";
+import CameraCapture from '@/components/plant-health/CameraCapture';
 
 const PlantHealthAnalyzer = () => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
   const session = useSession();
   const navigate = useNavigate();
 
   const handleCapture = useCallback((imageSrc: string | null) => {
     setCapturedImage(imageSrc);
-  }, [setCapturedImage]);
+    setShowCamera(false);
+  }, []);
+
+  const handlePhotoCapture = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setCapturedImage(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleAnalyze = async () => {
     if (!capturedImage) {
@@ -60,11 +71,25 @@ const PlantHealthAnalyzer = () => {
               <CardDescription>Take a clear photo of your plant for analysis.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center">
-              <Webcam onCapture={handleCapture} />
-              {capturedImage && (
-                <div className="mt-4">
-                  <img src={capturedImage} alt="Captured Plant" className="max-w-md rounded-lg" />
+              {!showCamera ? (
+                <div className="space-y-4">
+                  <Button
+                    onClick={() => setShowCamera(true)}
+                    className="w-full bg-gradient-primary hover:bg-gradient-secondary"
+                  >
+                    Open Camera
+                  </Button>
+                  {capturedImage && (
+                    <div className="mt-4">
+                      <img src={capturedImage} alt="Captured Plant" className="max-w-md rounded-lg" />
+                    </div>
+                  )}
                 </div>
+              ) : (
+                <CameraCapture
+                  onPhotoCapture={handlePhotoCapture}
+                  onClose={() => setShowCamera(false)}
+                />
               )}
             </CardContent>
           </Card>
@@ -101,7 +126,6 @@ const PlantHealthAnalyzer = () => {
         )}
       </main>
       
-      {/* Add bottom navigation */}
       <BottomNavigation />
     </div>
   );
