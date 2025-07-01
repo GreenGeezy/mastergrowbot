@@ -20,7 +20,6 @@ import { useChatMessages } from "@/hooks/use-chat-messages";
 import { useChatState } from "@/hooks/use-chat-state";
 import { useAudioState } from "@/hooks/use-audio-state";
 import { useConversations } from "@/hooks/use-conversations";
-import { MobileNavigation } from "@/components/mobile/MobileNavigation";
 import { isIOSPreview } from "@/utils/flags";
 
 interface Message {
@@ -148,10 +147,8 @@ const ChatInterface = () => {
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full bg-background text-white relative overflow-hidden">
-        {/* Sidebar for desktop */}
-        <div className="hidden md:block">
-          <AppSidebar onNewChat={handleNewChat} />
-        </div>
+        {/* Sidebar for all devices */}
+        <AppSidebar onNewChat={handleNewChat} />
 
         {/* Main content area */}
         <div className="flex-1 flex flex-col min-w-0">
@@ -250,11 +247,6 @@ const ChatInterface = () => {
             onStop={handleStopVoice}
           />
         )}
-
-        {/* Mobile Navigation - Only show on mobile */}
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 xs:block md:hidden">
-          <MobileNavigation />
-        </div>
       </div>
     </SidebarProvider>
   );

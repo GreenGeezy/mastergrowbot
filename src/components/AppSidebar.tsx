@@ -57,7 +57,7 @@ export function AppSidebar({ onNewChat, children }: AppSidebarProps) {
   const isActive = (path: string) => currentPath === path
 
   return (
-    <Sidebar className="border-r border-[#333333]">
+    <Sidebar className="border-r border-[#333333]" collapsible="icon">
       <SidebarHeader>
         <div className="p-2">
           <div className="flex items-center justify-center mb-6">
@@ -66,17 +66,17 @@ export function AppSidebar({ onNewChat, children }: AppSidebarProps) {
               alt="Master Growbot"
               className="w-8 h-8"
             />
-            <span className="ml-2 text-lg font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+            <span className="ml-2 text-lg font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent group-data-[collapsible=icon]:hidden">
               Master Growbot
             </span>
           </div>
           {onNewChat && (
             <Button 
               onClick={onNewChat}
-              className="w-full cyber-button flex items-center gap-2"
+              className="w-full cyber-button flex items-center gap-2 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:p-0"
             >
               <Plus className="h-4 w-4" />
-              New Chat
+              <span className="group-data-[collapsible=icon]:hidden">New Chat</span>
             </Button>
           )}
         </div>
@@ -88,17 +88,17 @@ export function AppSidebar({ onNewChat, children }: AppSidebarProps) {
             <SidebarMenu>
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={isActive(item.to)}>
+                  <SidebarMenuButton asChild isActive={isActive(item.to)} size="lg">
                     <Link 
                       to={item.to}
                       className={cn(
-                        "flex flex-col items-start p-4 rounded-lg transition-all duration-200 min-h-[60px]",
+                        "flex flex-col items-start p-4 rounded-lg transition-all duration-200 min-h-[60px] group-data-[collapsible=icon]:min-h-[44px] group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:justify-center",
                         isActive(item.to) 
                           ? "bg-accent/10 border-l-2 border-accent text-accent" 
                           : "hover:bg-card/70 text-gray-300 hover:text-accent"
                       )}
                     >
-                      <div className="flex items-center gap-3 w-full">
+                      <div className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center">
                         <div className={cn(
                           "p-2 rounded-lg transition-colors",
                           isActive(item.to) 
@@ -107,7 +107,7 @@ export function AppSidebar({ onNewChat, children }: AppSidebarProps) {
                         )}>
                           <item.icon className="w-4 h-4 text-white" />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col group-data-[collapsible=icon]:hidden">
                           <span className="font-medium text-sm">{item.title}</span>
                           <span className="text-xs opacity-80">{item.subtitle}</span>
                         </div>
