@@ -16,13 +16,11 @@ const Header = () => {
       
       <div className="max-w-4xl mx-auto text-center px-4">
         <div className="space-y-6">
-          <h1 className="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-accent to-secondary-glow animate-fade-in tracking-tight tech-font will-change-transform leading-tight">
-            Master Growbot
-          </h1>
+          <h1 className="sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-accent to-secondary-glow animate-fade-in tracking-tight tech-font will-change-transform leading-tight text-3xl">MasterGrowbot AI</h1>
           
-          <p className="text-lg text-accent max-w-2xl mx-auto leading-relaxed animate-fade-in font-bold sm:text-2xl">Grow Award Winning Cannabis Profitably with AI</p>
+          
 
-          <h2 className="font-bold leading-tight max-w-[720px] mx-auto text-white text-4xl">Save Your Cannabis Plants in Seconds—Snap a Pic, AI Fixes Issues Before They Cost You $336 per Plant or $100,000 per Harvest!</h2>
+          <h2 className="font-bold leading-tight max-w-[720px] mx-auto text-white text-4xl">Grow Award Winning Cannabis and Save Your Plants in Secs with Just a Pic </h2>
           
           <div>
             <Link to="/quiz" className="inline-block transform transition-transform duration-300 mt-5 min-w-[260px]" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
