@@ -32,7 +32,20 @@ const BottomNavigation = () => {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-sm border-t border-white/10">
       <div className="flex justify-center p-4">
-        <div className="flex gap-4 w-full max-w-md">
+        <div className="flex gap-4 w-full max-w-md items-center">
+          {/* Logo button to navigate home */}
+          <button
+            onClick={() => navigate('/')}
+            className="flex-shrink-0 p-3 rounded-xl transition-all duration-200 hover:bg-card/70"
+          >
+            <img
+              src="/lovable-uploads/f3f24387-a344-47bd-b46b-d5996b6c9afd.png"
+              alt="Master Growbot Logo"
+              className="w-8 h-8"
+            />
+          </button>
+          
+          {/* Navigation items */}
           {navigationItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.to;
