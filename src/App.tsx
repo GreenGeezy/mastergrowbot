@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter,
   Routes,
@@ -6,13 +7,13 @@ import {
 import { Toaster } from "sonner";
 
 import Index from "./pages/Index";
-import ChatInterface from "./pages/Chat";
-import PlantHealthAnalyzer from "./pages/PlantHealth";
+import ChatInterface from "./pages/ChatInterface";
+import PlantHealthAnalyzer from "./pages/PlantHealthAnalyzer";
 import GrowingGuide from "./pages/GrowingGuide";
 import Quiz from "./pages/Quiz";
 import SharedAnalysis from "./pages/SharedAnalysis";
-import PrivacyPolicy from "./pages/Privacy";
-import TermsOfService from "./pages/Terms";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import ThankYou from "./pages/ThankYou";
 import {
   QueryClient,
