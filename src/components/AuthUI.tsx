@@ -174,9 +174,6 @@ const AuthUI = ({ children }) => {
         <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
           Master Growbot
         </h1>
-        <p className="text-white/80 text-lg">
-          AI-Powered Cannabis Cultivation Assistant
-        </p>
       </div>
 
       <div className="text-center space-y-4">
