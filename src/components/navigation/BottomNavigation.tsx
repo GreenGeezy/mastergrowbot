@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { MessageCircle, Camera, BookOpen } from "lucide-react";
+import { MessageCircle, Camera, BookOpen, Settings } from "lucide-react";
 
 const BottomNavigation = () => {
   const navigate = useNavigate();
@@ -69,6 +69,19 @@ const BottomNavigation = () => {
               </button>
             );
           })}
+
+          {/* Settings gear icon */}
+          <button
+            onClick={() => navigate('/settings')}
+            className={`flex-shrink-0 flex flex-col items-center p-3 rounded-xl transition-all duration-200 ${
+              location.pathname === '/settings'
+                ? 'bg-primary text-white' 
+                : 'bg-card/50 hover:bg-card/70 text-gray-300 hover:text-white'
+            }`}
+          >
+            <Settings className="w-6 h-6 mb-1" />
+            <span className="text-xs font-medium">Settings</span>
+          </button>
         </div>
       </div>
     </div>
