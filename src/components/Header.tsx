@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Award, Star, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -24,7 +23,7 @@ const Header = () => {
             </p>
           </div>
           
-          <h2 className="font-bold leading-tight max-w-[720px] mx-auto text-white text-4xl">Grow Award Winning Cannabis and Save Your Plants in Secs with Just a Pic </h2>
+          <h2 className="font-bold leading-tight max-w-[720px] mx-auto text-white text-2xl">Grow Award Winning Cannabis and Save Your Plants in Secs Just by Snapping a Pic</h2>
           
           <div>
             <Link to="/quiz" className="inline-block transform transition-transform duration-300 mt-5 min-w-[260px]" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
