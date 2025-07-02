@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Award, Star, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -25,15 +26,6 @@ const Header = () => {
           
           <h2 className="font-bold leading-tight max-w-[720px] mx-auto text-white text-2xl">Grow Award Winning Cannabis and Save Your Plants in Secs Just by Snapping a Pic</h2>
           
-          <div>
-            <Link to="/quiz" className="inline-block transform transition-transform duration-300 mt-5 min-w-[260px]" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-              <button className="relative overflow-hidden font-semibold text-[1.05rem] py-4 px-8 rounded-[10px] min-w-[260px] text-black bg-gradient-to-b from-[#00ff95] to-[#4cff79] transition-all duration-300 animate-pulse-soft flex items-center justify-center">
-                Save My Plants
-                <ArrowRight className={`ml-2 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
-              </button>
-            </Link>
-          </div>
-          
           <div className="space-y-4">
             <p className="text-base sm:text-lg text-center font-medium text-gold">
               Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
@@ -45,6 +37,15 @@ const Header = () => {
                 {[...Array(5)].map((_, index) => <Star key={index} className="w-6 h-6 fill-gold text-gold" />)}
               </div>
             </div>
+          </div>
+          
+          <div>
+            <Link to="/quiz" className="inline-block transform transition-transform duration-300 mt-5 min-w-[260px]" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+              <button className="relative overflow-hidden font-semibold text-[1.05rem] py-4 px-8 rounded-[10px] min-w-[260px] text-black bg-gradient-to-b from-[#00ff95] to-[#4cff79] transition-all duration-300 animate-pulse-soft flex items-center justify-center">
+                Save My Plants
+                <ArrowRight className={`ml-2 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
+              </button>
+            </Link>
           </div>
 
           <div className="pt-4 text-sm text-muted-foreground">
