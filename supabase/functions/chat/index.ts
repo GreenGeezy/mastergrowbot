@@ -24,230 +24,100 @@ serve(async (req) => {
       throw new Error('No message provided');
     }
 
-    // Validate attachment URLs for images
-    const validAttachments = attachments.filter(attachment => {
+    // Filter and validate image attachments
+    const imageAttachments = attachments.filter(attachment => {
       if (attachment.type && attachment.type.startsWith('image/')) {
         const url = attachment.url;
         // Check if it's a valid URL (starts with http/https)
         const isValidUrl = url && (url.startsWith('http://') || url.startsWith('https://'));
-        console.log('Attachment URL validation:', { url, isValidUrl });
+        console.log('Image attachment validation:', { url, isValidUrl });
         return isValidUrl;
       }
-      return true; // Keep non-image attachments
+      return false;
     });
 
-    console.log('Valid attachments after filtering:', validAttachments);
+    console.log('Valid image attachments:', imageAttachments);
 
-    // Create a thread
-    const threadResponse = await fetch('https://api.openai.com/v1/threads', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v2'
-      }
+    // Prepare message content
+    let messageContent = [];
+
+    // Add text message
+    messageContent.push({
+      type: 'text',
+      text: message
     });
-
-    if (!threadResponse.ok) {
-      const errorText = await threadResponse.text();
-      console.error('Thread creation failed:', errorText);
-      throw new Error(`Failed to create thread: ${errorText}`);
-    }
-
-    const thread = await threadResponse.json();
-    console.log('Thread created:', thread.id);
-
-    // Prepare message content with attachments
-    let messageContent = [
-      {
-        type: 'text',
-        text: message
-      }
-    ];
 
     // Add image attachments if present
-    for (const attachment of validAttachments) {
-      if (attachment.type && attachment.type.startsWith('image/')) {
-        console.log('Adding image attachment:', attachment.url);
-        messageContent.push({
-          type: 'image_url',
-          image_url: {
-            url: attachment.url
-          }
-        });
-      }
+    for (const attachment of imageAttachments) {
+      console.log('Adding image to message content:', attachment.url);
+      messageContent.push({
+        type: 'image_url',
+        image_url: {
+          url: attachment.url,
+          detail: 'high' // Use high detail for better analysis
+        }
+      });
     }
 
-    console.log('Final message content:', JSON.stringify(messageContent, null, 2));
+    console.log('Final message content structure:', JSON.stringify(messageContent.map(c => ({ type: c.type, hasUrl: !!c.image_url })), null, 2));
 
-    // Add message to thread
-    const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+    // Always use GPT-4o for consistency, especially when images are present
+    console.log('Using GPT-4o for message processing');
+    
+    // Prepare system message with enhanced cannabis expertise
+    const systemMessage = imageAttachments.length > 0 
+      ? `You are Master Growbot, an expert cannabis cultivation specialist with advanced plant health analysis capabilities. When analyzing plant images, provide detailed observations about:
+
+1. **Overall Plant Health**: General appearance, vigor, and growth stage
+2. **Leaf Analysis**: Color, texture, spots, burns, or discoloration 
+3. **Growth Patterns**: Node spacing, branching, height
+4. **Environmental Stress Indicators**: Heat stress, light burn, overwatering/underwatering signs
+5. **Nutrient Status**: Deficiency or toxicity symptoms
+6. **Pest/Disease Detection**: Any visible insects, mold, or disease symptoms
+7. **Actionable Recommendations**: Specific steps to improve plant health
+
+Always be thorough in your image analysis and provide practical, actionable advice. If you see multiple images, analyze each one and provide comprehensive feedback.`
+      : `You are Master Growbot, a cannabis cultivation expert. Provide helpful, detailed advice about growing cannabis. Be thorough in your explanations but concise enough for chat.`;
+
+    const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-        'OpenAI-Beta': 'assistants=v2'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        role: 'user',
-        content: messageContent
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content: systemMessage
+          },
+          {
+            role: 'user',
+            content: messageContent
+          }
+        ],
+        max_tokens: 1000,
+        temperature: 0.7
       })
     });
 
-    if (!messageResponse.ok) {
-      const errorText = await messageResponse.text();
-      console.error('Message creation failed:', errorText);
-      throw new Error(`Failed to add message: ${errorText}`);
+    if (!gptResponse.ok) {
+      const errorText = await gptResponse.text();
+      console.error('GPT-4o request failed:', errorText);
+      throw new Error(`Failed to get GPT-4o response: ${errorText}`);
     }
 
-    console.log('Message added to thread');
-
-    // Use gpt-4o for image analysis if images are present, otherwise use the assistant
-    let aiResponse;
+    const gptData = await gptResponse.json();
+    console.log('GPT-4o response received');
     
-    if (validAttachments.some(att => att.type && att.type.startsWith('image/'))) {
-      console.log('Using GPT-4o for image analysis');
-      
-      const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are Master Growbot, a cannabis cultivation expert. Analyze plant images and provide detailed growing advice. Be thorough in your explanations but concise enough for chat.'
-            },
-            {
-              role: 'user',
-              content: messageContent
-            }
-          ],
-          max_tokens: 1000
-        })
-      });
-
-      if (!gptResponse.ok) {
-        const errorText = await gptResponse.text();
-        console.error('GPT-4o request failed:', errorText);
-        throw new Error(`Failed to get GPT-4o response: ${errorText}`);
-      }
-
-      const gptData = await gptResponse.json();
-      aiResponse = gptData.choices[0].message.content;
-    } else {
-      // Use assistant for text-only messages
-      console.log('Using assistant for text-only message');
-      
-      // Run the assistant
-      const runResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/runs`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-          'OpenAI-Beta': 'assistants=v2'
-        },
-        body: JSON.stringify({
-          assistant_id: ASSISTANT_ID,
-          instructions: "You are Master Growbot, a cannabis cultivation expert. Provide helpful, detailed advice about growing cannabis. Be thorough in your explanations but concise enough for chat."
-        })
-      });
-
-      if (!runResponse.ok) {
-        const errorText = await runResponse.text();
-        console.error('Run creation failed:', errorText);
-        throw new Error(`Failed to run assistant: ${errorText}`);
-      }
-
-      const run = await runResponse.json();
-      console.log('Run created:', run.id);
-
-      // Poll for completion
-      let runStatus;
-      let attempts = 0;
-      const maxAttempts = 30;
-
-      while (attempts < maxAttempts) {
-        const statusResponse = await fetch(
-          `https://api.openai.com/v1/threads/${thread.id}/runs/${run.id}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${OPENAI_API_KEY}`,
-              'OpenAI-Beta': 'assistants=v2'
-            }
-          }
-        );
-
-        if (!statusResponse.ok) {
-          const errorText = await statusResponse.text();
-          console.error('Status check failed:', errorText);
-          throw new Error(`Failed to check status: ${errorText}`);
-        }
-
-        const statusData = await statusResponse.json();
-        runStatus = statusData.status;
-
-        console.log(`Run status (attempt ${attempts + 1}/${maxAttempts}):`, runStatus);
-
-        if (runStatus === 'completed') {
-          break;
-        } else if (runStatus === 'failed' || runStatus === 'cancelled' || runStatus === 'expired') {
-          throw new Error(`Run failed with status: ${runStatus}`);
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        attempts++;
-      }
-
-      if (runStatus !== 'completed') {
-        throw new Error(`Run did not complete in time. Last status: ${runStatus}`);
-      }
-
-      // Get messages
-      const messagesResponse = await fetch(
-        `https://api.openai.com/v1/threads/${thread.id}/messages`,
-        {
-          headers: {
-            'Authorization': `Bearer ${OPENAI_API_KEY}`,
-            'OpenAI-Beta': 'assistants=v2'
-          }
-        }
-      );
-
-      if (!messagesResponse.ok) {
-        const errorText = await messagesResponse.text();
-        console.error('Messages retrieval failed:', errorText);
-        throw new Error(`Failed to get messages: ${errorText}`);
-      }
-
-      const messages = await messagesResponse.json();
-      
-      // Find assistant's response (most recent assistant message)
-      const assistantMessages = messages.data.filter((msg: any) => msg.role === 'assistant');
-      
-      if (assistantMessages.length === 0) {
-        throw new Error('No assistant response found');
-      }
-
-      const latestMessage = assistantMessages[0];
-      
-      // Find text content in message parts
-      if (latestMessage.content && latestMessage.content.length > 0) {
-        const textParts = latestMessage.content.filter((part: any) => part.type === 'text');
-        if (textParts.length > 0) {
-          aiResponse = textParts.map((part: any) => part.text.value).join('\n');
-        }
-      }
-
-      if (!aiResponse) {
-        throw new Error('No text content found in assistant response');
-      }
+    if (!gptData.choices || !gptData.choices[0] || !gptData.choices[0].message) {
+      console.error('Invalid GPT response structure:', gptData);
+      throw new Error('Invalid response structure from GPT-4o');
     }
 
-    console.log('AI response:', aiResponse.substring(0, 100) + '...');
+    const aiResponse = gptData.choices[0].message.content;
+    console.log('AI response length:', aiResponse.length);
 
     return new Response(
       JSON.stringify({ response: aiResponse }),
@@ -259,7 +129,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         error: error instanceof Error ? error.message : 'An unknown error occurred',
-        response: "I'm sorry, I encountered an error. Please try again." 
+        response: "I'm sorry, I encountered an error processing your request. Please try again." 
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

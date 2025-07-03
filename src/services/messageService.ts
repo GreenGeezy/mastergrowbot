@@ -117,8 +117,32 @@ export const invokeAIChat = async (
   try {
     console.log('Invoking AI chat with:', { message, userId, conversationId, attachments });
 
+    // Ensure image URLs are absolute and valid
+    const processedAttachments = attachments.map(attachment => {
+      if (attachment.type && attachment.type.startsWith('image/')) {
+        // Make sure the URL is absolute
+        let url = attachment.url;
+        
+        // If URL is relative or incomplete, try to construct full URL
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          // This shouldn't happen with our upload process, but as a fallback
+          console.warn('Found relative image URL, this should not happen:', url);
+          return null; // Filter out invalid URLs
+        }
+        
+        console.log('Processing image attachment:', url);
+        return {
+          ...attachment,
+          url: url
+        };
+      }
+      return attachment;
+    }).filter(Boolean); // Remove any null values
+
+    console.log('Processed attachments:', processedAttachments);
+
     const promise = supabase.functions.invoke('chat', {
-      body: { message, userId, conversationId, attachments }
+      body: { message, userId, conversationId, attachments: processedAttachments }
     }).then(response => {
       console.log('AI response:', response);
 
