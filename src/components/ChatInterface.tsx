@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -153,19 +154,16 @@ const ChatInterface = () => {
             <div className="flex-1 flex items-center justify-center p-4">
               <div className="max-w-2xl mx-auto text-center space-y-8">
                 <div className="space-y-4">
-                  <div className="flex items-center justify-center mb-6">
+                  <div className="flex items-center justify-center gap-4 mb-6">
                     <img
                       src="/lovable-uploads/c346bc72-2133-49aa-a5c8-b0773e68ef3b.png"
                       alt="Master Growbot"
-                      className="w-16 h-16"
+                      className="w-16 h-16 flex-shrink-0"
                     />
+                    <p className="text-gray-300 text-lg text-left">
+                      Your AI-powered cannabis cultivation expert. Ask me anything about growing, plant health, nutrients, and more!
+                    </p>
                   </div>
-                  <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                    Master Growbot Assistant
-                  </h1>
-                  <p className="text-gray-300 text-lg">
-                    Your AI-powered cannabis cultivation expert. Ask me anything about growing, plant health, nutrients, and more!
-                  </p>
                 </div>
               </div>
             </div>
