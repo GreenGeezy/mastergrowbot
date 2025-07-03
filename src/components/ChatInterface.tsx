@@ -148,7 +148,7 @@ const ChatInterface = () => {
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 ml-12">
         {/* Messages area - adjusted for bottom navigation on all devices */}
-        <div className="flex-1 overflow-hidden flex flex-col pb-20">
+        <div className="flex-1 overflow-hidden flex flex-col pb-32">
           {messages.length === 0 ? (
             <div className="flex-1 flex items-center justify-center p-4">
               <div className="max-w-2xl mx-auto text-center space-y-8">
@@ -183,18 +183,10 @@ const ChatInterface = () => {
           )}
         </div>
 
-        {/* Input area - adjusted for bottom navigation on all devices */}
-        <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
+        {/* Input area - raised 15% higher and adjusted for bottom navigation */}
+        <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20" style={{ transform: 'translateY(-15%)' }}>
           <div className="max-w-4xl mx-auto p-4">
-            {/* Voice button above input */}
-            <div className="flex justify-center mb-2">
-              <VoiceChatButton
-                onVoiceMessageReceived={handleVoiceMessageReceived}
-                className="min-w-[44px] h-[44px]"
-              />
-            </div>
-            
-            {/* Chat input with send button */}
+            {/* Chat input with voice and send buttons */}
             <div className="flex items-end gap-2">
               <div className="flex-1">
                 <ChatInput
@@ -205,30 +197,37 @@ const ChatInterface = () => {
                   loading={isLoading}
                   className="bg-background/50 border-white/20 text-white w-full"
                 >
-                  <div className="flex items-end gap-2 w-full">
+                  <div className="flex flex-col gap-2 w-full">
                     <ChatInputTextArea 
                       placeholder="Ask about growing techniques, plant health, nutrients..."
-                      className="text-white placeholder:text-gray-400 focus:border-accent/50 flex-1"
+                      className="text-white placeholder:text-gray-400 focus:border-accent/50 flex-1 min-h-[60px]"
                       disabled={isLoading}
+                      rows={2}
                     />
-                    <ChatInputSubmit className="bg-gradient-primary hover:bg-gradient-secondary" />
+                    <div className="flex items-center justify-between">
+                      <VoiceChatButton
+                        onVoiceMessageReceived={handleVoiceMessageReceived}
+                        className="min-w-[44px] h-[44px]"
+                      />
+                      <ChatInputSubmit className="bg-gradient-primary hover:bg-gradient-secondary" />
+                    </div>
                   </div>
                 </ChatInput>
               </div>
             </div>
 
-            {/* Suggested questions - below input */}
+            {/* Suggested questions - below input with more space */}
             {messages.length === 0 && (
-              <div className="mt-4">
-                <div className="grid grid-cols-2 gap-2 max-w-2xl mx-auto">
-                  {quickQuestions.slice(0, 4).map((question, index) => (
+              <div className="mt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-3xl mx-auto">
+                  {quickQuestions.map((question, index) => (
                     <button
                       key={index}
                       onClick={() => handleQuestionClick(question)}
-                      className="p-2 bg-card/30 hover:bg-card/50 border border-white/10 rounded-lg text-left transition-all duration-200 hover:border-accent/30 text-xs"
+                      className="p-3 bg-card/30 hover:bg-card/50 border border-white/10 rounded-lg text-left transition-all duration-200 hover:border-accent/30 text-sm"
                       disabled={isLoading}
                     >
-                      <p className="text-gray-300 truncate">{question}</p>
+                      <p className="text-gray-300">{question}</p>
                     </button>
                   ))}
                 </div>
