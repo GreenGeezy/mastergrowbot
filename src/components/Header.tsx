@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Award, Star, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -18,7 +19,9 @@ const Header = () => {
         <div className="space-y-6">
           <div className="space-y-2">
             <h1 className="sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-accent to-secondary-glow animate-fade-in tracking-tight tech-font will-change-transform leading-tight text-3xl">MasterGrowbot AI</h1>
-            <p className="text-white/80 text-lg font-extrabold">AI Cannabis Cultivation Assistant</p>
+            <p className="text-white/80 text-lg">
+              AI-Powered Cannabis Cultivation Assistant
+            </p>
           </div>
           
           <h2 className="font-bold leading-tight max-w-[720px] mx-auto text-white text-2xl">Grow Award Winning Cannabis and Save Your Plants in Secs Just by Snapping a Pic</h2>
