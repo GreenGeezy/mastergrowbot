@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -151,9 +152,10 @@ const ChatInterface = () => {
         {/* Messages area - adjusted for bottom navigation on all devices */}
         <div className="flex-1 overflow-hidden flex flex-col pb-32">
           {messages.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center p-4">
-              <div className="max-w-2xl mx-auto text-center space-y-8">
-                <div className="space-y-4">
+            <div className="flex-1 flex flex-col">
+              {/* Logo and description section */}
+              <div className="flex items-center justify-center p-4 pt-8">
+                <div className="max-w-4xl mx-auto">
                   <div className="flex items-center justify-center gap-4 mb-6">
                     <img
                       src="/lovable-uploads/c346bc72-2133-49aa-a5c8-b0773e68ef3b.png"
@@ -163,6 +165,24 @@ const ChatInterface = () => {
                     <p className="text-gray-300 text-lg text-left">
                       Your AI-powered cannabis cultivation expert. Ask me anything about growing, plant health, nutrients, and more!
                     </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Suggested questions section - moved to separate area */}
+              <div className="flex-1 flex items-center justify-center px-4">
+                <div className="max-w-4xl mx-auto w-full">
+                  <div className="grid grid-cols-2 gap-2 max-w-4xl mx-auto">
+                    {quickQuestions.map((question, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleQuestionClick(question)}
+                        className="p-2 bg-card/30 hover:bg-card/50 border border-white/10 rounded-lg text-left transition-all duration-200 hover:border-accent/30 text-xs"
+                        disabled={isLoading}
+                      >
+                        <p className="text-gray-300">{question}</p>
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -181,8 +201,8 @@ const ChatInterface = () => {
           )}
         </div>
 
-        {/* Input area - raised 15% higher and adjusted for bottom navigation */}
-        <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20" style={{ transform: 'translateY(-15%)' }}>
+        {/* Input area - moved lower and adjusted for bottom navigation */}
+        <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
           <div className="max-w-4xl mx-auto p-4">
             {/* Chat input with voice and send buttons */}
             <div className="flex items-end gap-2">
@@ -213,24 +233,6 @@ const ChatInterface = () => {
                 </ChatInput>
               </div>
             </div>
-
-            {/* Suggested questions - below input with more space */}
-            {messages.length === 0 && (
-              <div className="mt-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-3xl mx-auto">
-                  {quickQuestions.map((question, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleQuestionClick(question)}
-                      className="p-3 bg-card/30 hover:bg-card/50 border border-white/10 rounded-lg text-left transition-all duration-200 hover:border-accent/30 text-sm"
-                      disabled={isLoading}
-                    >
-                      <p className="text-gray-300">{question}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -253,3 +255,4 @@ const ChatInterface = () => {
 };
 
 export default ChatInterface;
+
