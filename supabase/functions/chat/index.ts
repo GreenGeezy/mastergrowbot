@@ -24,6 +24,20 @@ serve(async (req) => {
       throw new Error('No message provided');
     }
 
+    // Validate attachment URLs for images
+    const validAttachments = attachments.filter(attachment => {
+      if (attachment.type && attachment.type.startsWith('image/')) {
+        const url = attachment.url;
+        // Check if it's a valid URL (starts with http/https)
+        const isValidUrl = url && (url.startsWith('http://') || url.startsWith('https://'));
+        console.log('Attachment URL validation:', { url, isValidUrl });
+        return isValidUrl;
+      }
+      return true; // Keep non-image attachments
+    });
+
+    console.log('Valid attachments after filtering:', validAttachments);
+
     // Create a thread
     const threadResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
@@ -52,8 +66,9 @@ serve(async (req) => {
     ];
 
     // Add image attachments if present
-    for (const attachment of attachments) {
+    for (const attachment of validAttachments) {
       if (attachment.type && attachment.type.startsWith('image/')) {
+        console.log('Adding image attachment:', attachment.url);
         messageContent.push({
           type: 'image_url',
           image_url: {
@@ -62,6 +77,8 @@ serve(async (req) => {
         });
       }
     }
+
+    console.log('Final message content:', JSON.stringify(messageContent, null, 2));
 
     // Add message to thread
     const messageResponse = await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
@@ -88,7 +105,7 @@ serve(async (req) => {
     // Use gpt-4o for image analysis if images are present, otherwise use the assistant
     let aiResponse;
     
-    if (attachments.some(att => att.type && att.type.startsWith('image/'))) {
+    if (validAttachments.some(att => att.type && att.type.startsWith('image/'))) {
       console.log('Using GPT-4o for image analysis');
       
       const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {

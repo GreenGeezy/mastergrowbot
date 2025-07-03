@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client'
 import { isIOSPreview } from '@/utils/flags'
 
@@ -19,10 +20,12 @@ export const uploadAttachment = async (file: File, userId: string): Promise<stri
 
   if (error) throw error
 
+  // Get the full public URL instead of just the path
   const { data: { publicUrl } } = supabase.storage
     .from('plant-images')
     .getPublicUrl(fileName)
 
+  console.log('Generated public URL:', publicUrl)
   return publicUrl
 }
 
