@@ -14,18 +14,32 @@ export const uploadAttachment = async (file: File, userId: string): Promise<stri
   const fileExt = file.name.split('.').pop()
   const fileName = `${userId}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
   
+  console.log('Uploading file with name:', fileName)
+  
   const { data, error } = await supabase.storage
     .from('plant-images')
     .upload(fileName, file)
 
-  if (error) throw error
+  if (error) {
+    console.error('Upload error:', error)
+    throw error
+  }
 
-  // Get the full public URL instead of just the path
+  console.log('Upload successful, data:', data)
+
+  // Get the full public URL
   const { data: { publicUrl } } = supabase.storage
     .from('plant-images')
     .getPublicUrl(fileName)
 
   console.log('Generated public URL:', publicUrl)
+  
+  // Validate the URL is accessible
+  if (!publicUrl || (!publicUrl.startsWith('http://') && !publicUrl.startsWith('https://'))) {
+    console.error('Invalid public URL generated:', publicUrl)
+    throw new Error('Failed to generate valid public URL for uploaded image')
+  }
+
   return publicUrl
 }
 
@@ -115,22 +129,23 @@ export const invokeAIChat = async (
   const requestKey = `ai:${userId}:${conversationId}:${Date.now()}`
   
   try {
-    console.log('Invoking AI chat with:', { message, userId, conversationId, attachments });
+    console.log('Invoking AI chat with message:', message);
+    console.log('Attachments being sent:', attachments);
 
-    // Ensure image URLs are absolute and valid
+    // Process and validate image attachments
     const processedAttachments = attachments.map(attachment => {
+      console.log('Processing attachment:', attachment);
+      
       if (attachment.type && attachment.type.startsWith('image/')) {
-        // Make sure the URL is absolute
-        let url = attachment.url;
+        const url = attachment.url;
         
-        // If URL is relative or incomplete, try to construct full URL
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-          // This shouldn't happen with our upload process, but as a fallback
-          console.warn('Found relative image URL, this should not happen:', url);
-          return null; // Filter out invalid URLs
+        // Validate the URL is absolute and accessible
+        if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+          console.error('Invalid image URL found:', url);
+          return null;
         }
         
-        console.log('Processing image attachment:', url);
+        console.log('Valid image attachment processed:', url);
         return {
           ...attachment,
           url: url
@@ -139,27 +154,33 @@ export const invokeAIChat = async (
       return attachment;
     }).filter(Boolean); // Remove any null values
 
-    console.log('Processed attachments:', processedAttachments);
+    console.log('Final processed attachments for AI:', processedAttachments);
 
     const promise = supabase.functions.invoke('chat', {
-      body: { message, userId, conversationId, attachments: processedAttachments }
+      body: { 
+        message, 
+        userId, 
+        conversationId, 
+        attachments: processedAttachments 
+      }
     }).then(response => {
-      console.log('AI response:', response);
+      console.log('AI response received:', response);
 
       if (response.error) {
+        console.error('AI response error:', response.error);
         throw new Error(response.error.message || 'Failed to get AI response');
       }
 
       if (!response.data) {
+        console.error('No response data received from AI');
         throw new Error('No response data received from AI');
       }
 
-      // For debugging
-      console.log('Response data structure:', JSON.stringify(response.data, null, 2));
+      console.log('AI response data:', response.data);
 
       // Check if response.data.response exists
       if (!response.data.response) {
-        console.error('Invalid response structure:', response.data);
+        console.error('Invalid response structure from AI:', response.data);
         throw new Error('Invalid response structure from AI');
       }
 
