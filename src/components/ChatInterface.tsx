@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +9,7 @@ import ChatMessages from "@/components/ChatMessages";
 import { ConversationList } from "@/components/chat/ConversationList";
 import { ProfileDropdown } from "@/components/profile/ProfileDropdown";
 import VoiceChatButton from "@/components/chat/VoiceChatButton";
+import AttachmentButton from "@/components/chat/AttachmentButton";
 import VoiceChatOverlay from "@/components/chat/VoiceChatOverlay";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -46,6 +45,7 @@ const ChatInterface = () => {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -71,8 +71,17 @@ const ChatInterface = () => {
       const conversationId = ensureConversationId();
       console.log('Sending message with conversation ID:', conversationId);
       
-      await sendMessage(message);
+      // If there are attached files, we could process them here
+      // For now, we'll just mention them in the message
+      let messageWithAttachments = message;
+      if (attachedFiles.length > 0) {
+        const fileNames = attachedFiles.map(f => f.name).join(', ');
+        messageWithAttachments += `\n\n[Attached files: ${fileNames}]`;
+      }
+      
+      await sendMessage(messageWithAttachments);
       setMessage("");
+      setAttachedFiles([]);
     } catch (error) {
       console.error("Error sending message:", error);
       toast.error("Failed to send message. Please try again.");
@@ -119,6 +128,14 @@ const ChatInterface = () => {
 
   const handleVoiceMessageReceived = (voiceMessage: string) => {
     setMessage(voiceMessage);
+  };
+
+  const handleFileSelect = (files: File[]) => {
+    setAttachedFiles(prev => [...prev, ...files]);
+  };
+
+  const removeAttachedFile = (index: number) => {
+    setAttachedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   const quickQuestions = [
@@ -204,6 +221,23 @@ const ChatInterface = () => {
         {/* Input area - moved lower and adjusted for bottom navigation */}
         <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
           <div className="max-w-4xl mx-auto p-4">
+            {/* Show attached files */}
+            {attachedFiles.length > 0 && (
+              <div className="mb-3 flex flex-wrap gap-2">
+                {attachedFiles.map((file, index) => (
+                  <div key={index} className="flex items-center bg-background/70 rounded-lg px-3 py-1 text-sm">
+                    <span className="mr-2">{file.name}</span>
+                    <button
+                      onClick={() => removeAttachedFile(index)}
+                      className="text-red-400 hover:text-red-300"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Chat input with voice and send buttons */}
             <div className="flex items-end gap-2">
               <div className="flex-1">
@@ -223,10 +257,17 @@ const ChatInterface = () => {
                       rows={2}
                     />
                     <div className="flex items-center justify-between">
-                      <VoiceChatButton
-                        onVoiceMessageReceived={handleVoiceMessageReceived}
-                        className="min-w-[44px] h-[44px]"
-                      />
+                      <div className="flex items-center gap-2">
+                        <AttachmentButton
+                          onFileSelect={handleFileSelect}
+                          disabled={isLoading}
+                          className="min-w-[44px] h-[44px]"
+                        />
+                        <VoiceChatButton
+                          onVoiceMessageReceived={handleVoiceMessageReceived}
+                          className="min-w-[44px] h-[44px]"
+                        />
+                      </div>
                       <ChatInputSubmit className="bg-gradient-primary hover:bg-gradient-secondary" />
                     </div>
                   </div>
@@ -255,4 +296,3 @@ const ChatInterface = () => {
 };
 
 export default ChatInterface;
-
