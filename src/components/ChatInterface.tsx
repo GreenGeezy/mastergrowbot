@@ -177,6 +177,11 @@ const ChatInterface = () => {
                 questions={quickQuestions}
                 onQuestionClick={handleHeroQuestionClick}
                 onFeedbackClick={() => setShowFeedback(true)}
+                message={message}
+                onMessageChange={setMessage}
+                onSendMessage={handleSendMessage}
+                isLoading={isLoading}
+                onVoiceMessageReceived={handleVoiceMessageReceived}
               />
             </div>
           ) : (
@@ -184,7 +189,7 @@ const ChatInterface = () => {
               {/* Header */}
               <ChatHeader />
 
-              {/* Messages area - adjusted for bottom navigation on all devices */}
+              {/* Messages area - full height when messages exist */}
               <div className="flex-1 overflow-hidden flex flex-col pb-20">
                 <div className="flex-1 overflow-y-auto px-4">
                   <div className="max-w-4xl mx-auto py-4">
@@ -197,41 +202,39 @@ const ChatInterface = () => {
                   </div>
                 </div>
               </div>
-            </>
-          )}
 
-          {/* Input area - only show when there are messages or when message is being typed */}
-          {(messages.length > 0 || message.trim()) && (
-            <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
-              <div className="max-w-4xl mx-auto p-4">
-                <div className="flex items-end gap-2">
-                  <div className="flex-1">
-                    <Textarea
-                      ref={inputRef}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder="Ask about growing techniques, plant health, nutrients..."
-                      className="min-h-[44px] max-h-32 resize-none bg-background/50 border-white/20 text-white placeholder:text-gray-400 focus:border-accent/50"
-                      disabled={isLoading}
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <VoiceChatButton
-                      onVoiceMessageReceived={handleVoiceMessageReceived}
-                      className="min-w-[44px] h-[44px]"
-                    />
-                    <Button
-                      onClick={() => handleSendMessage()}
-                      disabled={isLoading || !message.trim()}
-                      className="min-w-[44px] h-[44px] bg-gradient-primary hover:bg-gradient-secondary"
-                    >
-                      <Send className="w-4 h-4" />
-                    </Button>
+              {/* Input area - only show when there are messages */}
+              <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
+                <div className="max-w-4xl mx-auto p-4">
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <Textarea
+                        ref={inputRef}
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Ask about growing techniques, plant health, nutrients..."
+                        className="min-h-[44px] max-h-32 resize-none bg-background/50 border-white/20 text-white placeholder:text-gray-400 focus:border-accent/50"
+                        disabled={isLoading}
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <VoiceChatButton
+                        onVoiceMessageReceived={handleVoiceMessageReceived}
+                        className="min-w-[44px] h-[44px]"
+                      />
+                      <Button
+                        onClick={() => handleSendMessage()}
+                        disabled={isLoading || !message.trim()}
+                        className="min-w-[44px] h-[44px] bg-gradient-primary hover:bg-gradient-secondary"
+                      >
+                        <Send className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
         </div>
 

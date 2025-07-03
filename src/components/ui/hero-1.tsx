@@ -2,15 +2,38 @@
 "use client";
 
 import * as React from "react";
-import { Paperclip, Sparkles, MessageSquare } from "lucide-react";
+import { Paperclip, Sparkles, MessageSquare, Send } from "lucide-react";
+import VoiceChatButton from "@/components/chat/VoiceChatButton";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Hero1Props {
   onQuestionClick?: (question: string) => void;
   onFeedbackClick?: () => void;
   questions?: string[];
+  message?: string;
+  onMessageChange?: (message: string) => void;
+  onSendMessage?: () => void;
+  isLoading?: boolean;
+  onVoiceMessageReceived?: (message: string) => void;
 }
 
-const Hero1 = ({ onQuestionClick, onFeedbackClick, questions = [] }: Hero1Props) => {
+const Hero1 = ({ 
+  onQuestionClick, 
+  onFeedbackClick, 
+  questions = [],
+  message = "",
+  onMessageChange,
+  onSendMessage,
+  isLoading = false,
+  onVoiceMessageReceived
+}: Hero1Props) => {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      onSendMessage?.();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0c0414] text-white flex flex-col relative overflow-x-hidden">
       {/* Gradient */}
@@ -74,20 +97,46 @@ const Hero1 = ({ onQuestionClick, onFeedbackClick, questions = [] }: Hero1Props)
             Your AI-powered cannabis cultivation expert. Ask me anything about growing, plant health, nutrients, and more!
           </p>
 
-          {/* Search bar */}
-          <div className="relative max-w-2xl mx-auto w-full">
-            <div className="bg-[#1c1528] rounded-full p-3 flex items-center">
-              <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
-                <Paperclip className="w-5 h-5 text-gray-400" />
-              </button>
-              <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
-                <Sparkles className="w-5 h-5 text-purple-400" />
-              </button>
-              <input
-                type="text"
-                placeholder="Ask about growing techniques, plant health, nutrients..."
-                className="bg-transparent flex-1 outline-none text-gray-300 pl-4 min-h-[44px]"
-              />
+          {/* Enhanced Search/Chat Input - 4x larger */}
+          <div className="relative max-w-4xl mx-auto w-full">
+            <div className="bg-[#1c1528] rounded-2xl p-6 flex flex-col gap-4">
+              <div className="flex items-start gap-3">
+                <button className="p-3 rounded-full hover:bg-[#2a1f3d] transition-all min-h-[44px] min-w-[44px]">
+                  <Paperclip className="w-6 h-6 text-gray-400" />
+                </button>
+                <button className="p-3 rounded-full hover:bg-[#2a1f3d] transition-all min-h-[44px] min-w-[44px]">
+                  <Sparkles className="w-6 h-6 text-purple-400" />
+                </button>
+                <div className="flex-1">
+                  <Textarea
+                    value={message}
+                    onChange={(e) => onMessageChange?.(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Ask about growing techniques, plant health, nutrients..."
+                    className="min-h-[120px] max-h-64 resize-none bg-transparent border-none text-white placeholder:text-gray-400 text-lg leading-relaxed focus:ring-0 focus:border-none p-4"
+                    disabled={isLoading}
+                  />
+                </div>
+              </div>
+              
+              {/* Action buttons row */}
+              <div className="flex justify-between items-center pt-2 border-t border-gray-600">
+                <div className="flex gap-3">
+                  {onVoiceMessageReceived && (
+                    <VoiceChatButton
+                      onVoiceMessageReceived={onVoiceMessageReceived}
+                      className="min-w-[44px] h-[44px] bg-gray-700 hover:bg-gray-600"
+                    />
+                  )}
+                </div>
+                <button
+                  onClick={onSendMessage}
+                  disabled={isLoading || !message.trim()}
+                  className="min-w-[44px] h-[44px] bg-gradient-to-r from-primary to-accent hover:from-primary/80 hover:to-accent/80 rounded-full flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <Send className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
 
