@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,7 +12,6 @@ import ChatMessages from "@/components/ChatMessages";
 import ChatInput from "@/components/ChatInput";
 import { ConversationList } from "@/components/chat/ConversationList";
 import { ProfileDropdown } from "@/components/profile/ProfileDropdown";
-import { ChatHeader } from "@/components/chat/ChatHeader";
 import VoiceChatButton from "@/components/chat/VoiceChatButton";
 import VoiceChatOverlay from "@/components/chat/VoiceChatOverlay";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -158,9 +158,6 @@ const ChatInterface = () => {
 
         {/* Main content area */}
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Header */}
-          <ChatHeader />
-
           {/* Messages area - adjusted for bottom navigation on all devices */}
           <div className="flex-1 overflow-hidden flex flex-col pb-20">
             {messages.length === 0 ? (
@@ -267,3 +264,4 @@ const ChatInterface = () => {
 };
 
 export default ChatInterface;
+
