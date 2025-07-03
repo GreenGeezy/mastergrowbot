@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -187,6 +186,15 @@ const ChatInterface = () => {
         {/* Input area - adjusted for bottom navigation on all devices */}
         <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
           <div className="max-w-4xl mx-auto p-4">
+            {/* Voice button above input */}
+            <div className="flex justify-center mb-2">
+              <VoiceChatButton
+                onVoiceMessageReceived={handleVoiceMessageReceived}
+                className="min-w-[44px] h-[44px]"
+              />
+            </div>
+            
+            {/* Chat input with send button */}
             <div className="flex items-end gap-2">
               <div className="flex-1">
                 <ChatInput
@@ -195,7 +203,7 @@ const ChatInterface = () => {
                   onChange={handleMessageChange}
                   onSubmit={handleSendMessage}
                   loading={isLoading}
-                  className="bg-background/50 border-white/20 text-white"
+                  className="bg-background/50 border-white/20 text-white w-full"
                 >
                   <div className="flex items-end gap-2 w-full">
                     <ChatInputTextArea 
@@ -203,13 +211,7 @@ const ChatInterface = () => {
                       className="text-white placeholder:text-gray-400 focus:border-accent/50 flex-1"
                       disabled={isLoading}
                     />
-                    <div className="flex gap-2 items-end">
-                      <VoiceChatButton
-                        onVoiceMessageReceived={handleVoiceMessageReceived}
-                        className="min-w-[44px] h-[44px]"
-                      />
-                      <ChatInputSubmit className="bg-gradient-primary hover:bg-gradient-secondary" />
-                    </div>
+                    <ChatInputSubmit className="bg-gradient-primary hover:bg-gradient-secondary" />
                   </div>
                 </ChatInput>
               </div>
