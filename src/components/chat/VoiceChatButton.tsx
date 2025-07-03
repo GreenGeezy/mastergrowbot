@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Mic, MicOff, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { RealtimeChat } from '@/utils/RealtimeAudio'
 import { supabase } from '@/integrations/supabase/client'
 import VoiceChatOverlay from './VoiceChatOverlay'
 import { useSession } from '@supabase/auth-helpers-react'
+import VoiceIcon from '@/components/icons/VoiceIcon'
 
 interface VoiceChatButtonProps {
   onVoiceMessageReceived: (message: string) => void
@@ -176,10 +177,10 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
     buttonIcon = <Loader2 className="h-5 w-5 animate-spin" />
     buttonClass += ' bg-amber-500 hover:bg-amber-600'
   } else if (chatStatus === 'connected') {
-    buttonIcon = <Mic className={`h-5 w-5 ${isSpeaking ? 'animate-pulse text-red-500' : ''}`} />
+    buttonIcon = <VoiceIcon className={`h-5 w-5 ${isSpeaking ? 'animate-pulse text-red-500' : ''}`} />
     buttonClass += ' bg-blue-600 hover:bg-blue-700 from-blue-700 to-purple-900 bg-gradient-to-br border border-blue-500/30'
   } else {
-    buttonIcon = <Mic className="h-5 w-5" />
+    buttonIcon = <VoiceIcon className="h-5 w-5" />
     buttonClass += ' from-blue-700 to-purple-900 bg-gradient-to-br border border-blue-500/30 hover:from-blue-600 hover:to-purple-800 shadow-md hover:shadow-lg transition-all duration-200'
   }
 
