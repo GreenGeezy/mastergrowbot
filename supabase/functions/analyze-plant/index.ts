@@ -13,7 +13,7 @@ import {
   parseAnalysisResults, 
   createErrorResponse 
 } from "./utils.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.47.0";
+import { createClient } from "https://deno.land/x/supabase@1.0.0/mod.ts";
 
 // Initialize Supabase client
 const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
