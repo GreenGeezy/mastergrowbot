@@ -4,11 +4,9 @@ import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Send, Plus, Mic, MicOff, Volume2, VolumeX, MessageSquare, Settings, MessageCircle, Camera, BookOpen } from "lucide-react";
 import ChatMessages from "@/components/ChatMessages";
-import ChatInput from "@/components/ChatInput";
 import { ConversationList } from "@/components/chat/ConversationList";
 import { ProfileDropdown } from "@/components/profile/ProfileDropdown";
 import VoiceChatButton from "@/components/chat/VoiceChatButton";
@@ -17,6 +15,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { ChatHistorySidebar } from "@/components/chat/ChatHistorySidebar";
+import { ChatInput, ChatInputTextArea, ChatInputSubmit } from "@/components/ui/chat-input";
 import { useChatMessages } from "@/hooks/use-chat-messages";
 import { useChatState } from "@/hooks/use-chat-state";
 import { useAudioState } from "@/hooks/use-audio-state";
@@ -48,7 +47,6 @@ const ChatInterface = () => {
   const [transcript, setTranscript] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -64,11 +62,7 @@ const ChatInterface = () => {
     }
   }, [session, loadChatHistory, isIOSPreview]);
 
-  const handleSendMessage = async (e?: React.FormEvent) => {
-    if (e) {
-      e.preventDefault();
-    }
-    
+  const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
 
     try {
@@ -84,11 +78,8 @@ const ChatInterface = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
   };
 
   const startVoiceChat = () => {
@@ -198,28 +189,29 @@ const ChatInterface = () => {
           <div className="max-w-4xl mx-auto p-4">
             <div className="flex items-end gap-2">
               <div className="flex-1">
-                <Textarea
-                  ref={inputRef}
+                <ChatInput
+                  variant="default"
                   value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask about growing techniques, plant health, nutrients..."
-                  className="min-h-[44px] max-h-32 resize-none bg-background/50 border-white/20 text-white placeholder:text-gray-400 focus:border-accent/50"
-                  disabled={isLoading}
-                />
-              </div>
-              <div className="flex gap-2">
-                <VoiceChatButton
-                  onVoiceMessageReceived={handleVoiceMessageReceived}
-                  className="min-w-[44px] h-[44px]"
-                />
-                <Button
-                  onClick={() => handleSendMessage()}
-                  disabled={isLoading || !message.trim()}
-                  className="min-w-[44px] h-[44px] bg-gradient-primary hover:bg-gradient-secondary"
+                  onChange={handleMessageChange}
+                  onSubmit={handleSendMessage}
+                  loading={isLoading}
+                  className="bg-background/50 border-white/20 text-white"
                 >
-                  <Send className="w-4 h-4" />
-                </Button>
+                  <div className="flex items-end gap-2 w-full">
+                    <ChatInputTextArea 
+                      placeholder="Ask about growing techniques, plant health, nutrients..."
+                      className="text-white placeholder:text-gray-400 focus:border-accent/50 flex-1"
+                      disabled={isLoading}
+                    />
+                    <div className="flex gap-2 items-end">
+                      <VoiceChatButton
+                        onVoiceMessageReceived={handleVoiceMessageReceived}
+                        className="min-w-[44px] h-[44px]"
+                      />
+                      <ChatInputSubmit className="bg-gradient-primary hover:bg-gradient-secondary" />
+                    </div>
+                  </div>
+                </ChatInput>
               </div>
             </div>
 
