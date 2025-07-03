@@ -1,15 +1,37 @@
-
 import { supabase } from '@/integrations/supabase/client'
 import { isIOSPreview } from '@/utils/flags'
 
 // Track in-flight requests to prevent duplicates
 const activeRequests = new Map<string, Promise<any>>()
 
+export const uploadAttachment = async (file: File, userId: string): Promise<string> => {
+  if (isIOSPreview) {
+    console.log('iOS preview mode: skipping file upload')
+    return `mock-url-${file.name}`
+  }
+
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${userId}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+  
+  const { data, error } = await supabase.storage
+    .from('plant-images')
+    .upload(fileName, file)
+
+  if (error) throw error
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('plant-images')
+    .getPublicUrl(fileName)
+
+  return publicUrl
+}
+
 export const sendMessageToSupabase = async (
   userId: string,
   message: string,
   conversationId: string,
-  isAi: boolean = false
+  isAi: boolean = false,
+  attachments: any[] = []
 ) => {
   // Skip database operations in iOS preview mode
   if (isIOSPreview) {
@@ -28,7 +50,8 @@ export const sendMessageToSupabase = async (
           user_id: userId,
           message: message,
           is_ai: isAi,
-          conversation_id: conversationId
+          conversation_id: conversationId,
+          attachments: attachments
         }
       ])
     
@@ -83,15 +106,16 @@ export const fetchChatHistory = async (userId: string, conversationId: string) =
 export const invokeAIChat = async (
   message: string,
   userId: string,
-  conversationId: string
+  conversationId: string,
+  attachments: any[] = []
 ) => {
   const requestKey = `ai:${userId}:${conversationId}:${Date.now()}`
   
   try {
-    console.log('Invoking AI chat with:', { message, userId, conversationId });
+    console.log('Invoking AI chat with:', { message, userId, conversationId, attachments });
 
     const promise = supabase.functions.invoke('chat', {
-      body: { message, userId, conversationId }
+      body: { message, userId, conversationId, attachments }
     }).then(response => {
       console.log('AI response:', response);
 

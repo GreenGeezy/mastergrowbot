@@ -2,7 +2,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
 import { useToast } from '@/hooks/use-toast'
-import { sendMessageToSupabase, fetchChatHistory, invokeAIChat } from '@/services/messageService'
+import { sendMessageToSupabase, fetchChatHistory, invokeAIChat, uploadAttachment } from '@/services/messageService'
 import { MessageCache } from '@/utils/message-cache'
 import { debounce } from '@/utils/debounce'
 import { isIOSPreview } from '@/utils/flags'
@@ -13,6 +13,7 @@ interface Message {
   is_ai: boolean
   created_at: string
   conversation_id?: string
+  attachments?: any[]
 }
 
 export const useChatMessages = (
@@ -104,7 +105,7 @@ export const useChatMessages = (
     }
   }, [currentConversationId, session?.user?.id, toast])
 
-  const sendMessage = useCallback(async (message: string) => {
+  const sendMessage = useCallback(async (message: string, attachedFiles: File[] = []) => {
     const userId = getUserId()
     if (!message.trim() || !userId || !currentConversationId) {
       console.log('Missing required data:', { 
@@ -119,6 +120,27 @@ export const useChatMessages = (
     try {
       console.log('Sending message:', message);
       
+      // Upload attachments if any
+      const attachments = []
+      for (const file of attachedFiles) {
+        try {
+          const url = await uploadAttachment(file, userId)
+          attachments.push({
+            url,
+            filename: file.name,
+            type: file.type,
+            size: file.size
+          })
+        } catch (error) {
+          console.error('Failed to upload attachment:', error)
+          toast({
+            title: 'Upload Error',
+            description: `Failed to upload ${file.name}`,
+            variant: 'destructive',
+          })
+        }
+      }
+      
       // Create message objects with unique IDs
       const messageId = crypto.randomUUID()
       const userMessage = {
@@ -126,7 +148,8 @@ export const useChatMessages = (
         message: message.trim(),
         is_ai: false,
         created_at: new Date().toISOString(),
-        conversation_id: currentConversationId
+        conversation_id: currentConversationId,
+        attachments
       }
       
       // Update UI immediately for better responsiveness
@@ -141,7 +164,9 @@ export const useChatMessages = (
         await sendMessageToSupabase(
           userId,
           message.trim(),
-          currentConversationId
+          currentConversationId,
+          false,
+          attachments
         )
       }
 
@@ -150,7 +175,8 @@ export const useChatMessages = (
       const { data, error } = await invokeAIChat(
         message,
         userId,
-        currentConversationId
+        currentConversationId,
+        attachments
       )
 
       if (error) {
@@ -166,7 +192,8 @@ export const useChatMessages = (
           message: data.response,
           is_ai: true,
           created_at: new Date().toISOString(),
-          conversation_id: currentConversationId
+          conversation_id: currentConversationId,
+          attachments: []
         }
         
         // Update state with AI response
@@ -178,7 +205,8 @@ export const useChatMessages = (
             userId,
             data.response,
             currentConversationId,
-            true
+            true,
+            []
           ).catch(error => {
             console.error('Failed to save AI message:', error)
           })

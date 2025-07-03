@@ -71,15 +71,7 @@ const ChatInterface = () => {
       const conversationId = ensureConversationId();
       console.log('Sending message with conversation ID:', conversationId);
       
-      // If there are attached files, we could process them here
-      // For now, we'll just mention them in the message
-      let messageWithAttachments = message;
-      if (attachedFiles.length > 0) {
-        const fileNames = attachedFiles.map(f => f.name).join(', ');
-        messageWithAttachments += `\n\n[Attached files: ${fileNames}]`;
-      }
-      
-      await sendMessage(messageWithAttachments);
+      await sendMessage(message, attachedFiles);
       setMessage("");
       setAttachedFiles([]);
     } catch (error) {

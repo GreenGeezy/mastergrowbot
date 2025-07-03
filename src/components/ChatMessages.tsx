@@ -1,6 +1,6 @@
 
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Leaf } from 'lucide-react'
+import { Leaf, Paperclip } from 'lucide-react'
 import FeatureCard from './FeatureCard'
 import { MessageCircle, Camera, BookOpen } from 'lucide-react'
 
@@ -9,6 +9,7 @@ interface Message {
   message: string
   is_ai: boolean
   created_at: string
+  attachments?: any[]
 }
 
 interface ChatMessagesProps {
@@ -82,7 +83,36 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
                 : 'bg-gradient-primary hover:bg-gradient-secondary'
             }`}
           >
-            {msg.message}
+            {/* Show attachments if present */}
+            {msg.attachments && msg.attachments.length > 0 && (
+              <div className="mb-3 space-y-2">
+                {msg.attachments.map((attachment, index) => (
+                  <div key={index} className="flex items-center gap-2 text-sm opacity-80">
+                    {attachment.type && attachment.type.startsWith('image/') ? (
+                      <div className="space-y-2">
+                        <img 
+                          src={attachment.url} 
+                          alt={attachment.filename}
+                          className="max-w-full h-auto rounded-lg max-h-64 object-contain"
+                        />
+                        <div className="flex items-center gap-1 text-xs">
+                          <Paperclip className="w-3 h-3" />
+                          <span>{attachment.filename}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1">
+                        <Paperclip className="w-3 h-3" />
+                        <span>{attachment.filename}</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="whitespace-pre-wrap">
+              {msg.message}
+            </div>
           </div>
         </div>
       ))}
