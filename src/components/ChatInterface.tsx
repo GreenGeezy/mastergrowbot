@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -180,19 +181,6 @@ const ChatInterface = () => {
                       Your AI-powered cannabis cultivation expert. Ask me anything about growing, plant health, nutrients, and more!
                     </p>
                   </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-4xl mx-auto">
-                    {quickQuestions.map((question, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleQuestionClick(question)}
-                        className="p-4 bg-card/50 hover:bg-card/70 border border-white/10 rounded-lg text-left transition-all duration-200 hover:border-accent/30"
-                        disabled={isLoading}
-                      >
-                        <p className="text-sm text-gray-300">{question}</p>
-                      </button>
-                    ))}
-                  </div>
                 </div>
               </div>
             ) : (
@@ -238,6 +226,24 @@ const ChatInterface = () => {
                   </Button>
                 </div>
               </div>
+
+              {/* Suggested questions - moved below input and made smaller */}
+              {messages.length === 0 && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-2 gap-2 max-w-2xl mx-auto">
+                    {quickQuestions.map((question, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleQuestionClick(question)}
+                        className="p-2 bg-card/30 hover:bg-card/50 border border-white/10 rounded-lg text-left transition-all duration-200 hover:border-accent/30 text-xs"
+                        disabled={isLoading}
+                      >
+                        <p className="text-gray-300 truncate">{question}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
