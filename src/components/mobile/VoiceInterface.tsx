@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Mic, MicOff, Volume2, VolumeX, Sparkles, Loader2 } from "lucide-react";
+import { Mic, MicOff, Volume2, VolumeX, Sparkles, Loader2, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -156,8 +156,23 @@ export function VoiceInterface({
     return window.innerWidth < 768 ? "w-8 h-8" : "w-12 h-12";
   };
 
+  const handleCloseClick = () => {
+    console.log('Close button clicked in VoiceInterface');
+    onClose();
+  };
+
   return (
     <div className={cn("flex flex-col items-center justify-center h-full bg-background relative overflow-hidden", className)}>
+      {/* Close button - positioned at top right */}
+      <motion.button
+        onClick={handleCloseClick}
+        className="absolute top-4 right-4 z-10 w-12 h-12 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-full text-red-400 transition-colors duration-200 flex items-center justify-center"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <X className="w-6 h-6" />
+      </motion.button>
+
       {/* Ambient particles - optimized for mobile */}
       <div className="absolute inset-0 overflow-hidden">
         {particles.map(particle => (
@@ -359,15 +374,15 @@ export function VoiceInterface({
           <span>AI Voice Assistant</span>
         </motion.div>
 
-        {/* Close button */}
-        <motion.button
-          onClick={onClose}
-          className="mt-4 px-6 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-full text-red-400 text-sm transition-colors duration-200"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        {/* Close button text instruction */}
+        <motion.p
+          className="text-xs text-muted-foreground text-center mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
         >
-          Close
-        </motion.button>
+          Tap X to close voice chat
+        </motion.p>
       </div>
     </div>
   );

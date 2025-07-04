@@ -87,6 +87,7 @@ const ChatInterface = () => {
   };
 
   const stopVoiceChat = () => {
+    console.log('Stopping voice chat and closing interface');
     setIsVoiceChatActive(false);
     setIsListening(false);
     setIsSpeaking(false);
@@ -122,10 +123,19 @@ const ChatInterface = () => {
 
   // Handle voice chat state updates from VoiceChatButton
   const handleVoiceChatStateChange = (listening: boolean, speaking: boolean) => {
+    console.log('Voice chat state change:', { listening, speaking });
     setIsListening(listening);
     setIsSpeaking(speaking);
     // Show voice interface when either listening or speaking
-    setIsVoiceChatActive(listening || speaking);
+    if (listening || speaking) {
+      setIsVoiceChatActive(true);
+    }
+  };
+
+  // Handle voice interface close
+  const handleVoiceInterfaceClose = () => {
+    console.log('Voice interface close requested');
+    stopVoiceChat();
   };
 
   const quickQuestions = [
@@ -249,19 +259,19 @@ const ChatInterface = () => {
 
       {/* Voice Interface Overlay - Show when voice chat is active */}
       {isVoiceChatActive && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm">
           <VoiceInterface
             isListening={isListening}
             isSpeaking={isSpeaking}
             onToggleListening={() => {
+              console.log('Toggle listening from voice interface');
               // Toggle the voice chat state
               if (isListening || isSpeaking) {
                 setIsListening(false);
                 setIsSpeaking(false);
-                setIsVoiceChatActive(false);
               }
             }}
-            onClose={stopVoiceChat}
+            onClose={handleVoiceInterfaceClose}
             className="h-full w-full"
           />
         </div>
