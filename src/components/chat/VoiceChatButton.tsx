@@ -10,6 +10,7 @@ import VoiceIcon from '@/components/icons/VoiceIcon'
 
 interface VoiceChatButtonProps {
   onVoiceMessageReceived: (message: string) => void
+  onStateChange?: (isListening: boolean, isSpeaking: boolean) => void
   className?: string
 }
 
@@ -24,6 +25,7 @@ interface AssistantSettings {
 
 const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({ 
   onVoiceMessageReceived,
+  onStateChange,
   className 
 }) => {
   const [chatStatus, setChatStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected')
@@ -40,6 +42,11 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   const chatRef = useRef<RealtimeChat | null>(null)
   const { toast } = useToast()
   const session = useSession()
+
+  // Notify parent of state changes
+  useEffect(() => {
+    onStateChange?.(isListening, isSpeaking)
+  }, [isListening, isSpeaking, onStateChange])
 
   const fetchAssistantSettings = async () => {
     if (!session?.user?.id) return

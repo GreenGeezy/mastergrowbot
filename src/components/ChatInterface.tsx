@@ -11,6 +11,7 @@ import { ConversationList } from "@/components/chat/ConversationList";
 import { ProfileDropdown } from "@/components/profile/ProfileDropdown";
 import VoiceChatButton from "@/components/chat/VoiceChatButton";
 import VoiceChatOverlay from "@/components/chat/VoiceChatOverlay";
+import { VoiceInterface } from "@/components/mobile/VoiceInterface";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
@@ -120,6 +121,13 @@ const ChatInterface = () => {
     setMessage(voiceMessage);
   };
 
+  // Handle voice chat state updates from VoiceChatButton
+  const handleVoiceChatStateChange = (listening: boolean, speaking: boolean) => {
+    setIsListening(listening);
+    setIsSpeaking(speaking);
+    setIsVoiceChatActive(listening || speaking);
+  };
+
   const quickQuestions = [
     "What's the best soil pH for cannabis?",
     "How often should I water my plants?",
@@ -148,7 +156,7 @@ const ChatInterface = () => {
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 ml-12">
-        {/* Messages area - adjusted for bottom navigation on all devices */}
+        {/* Messages area - adjusted for voice interface and bottom navigation */}
         <div className="flex-1 overflow-hidden flex flex-col pb-32">
           {messages.length === 0 ? (
             <div className="flex-1 flex flex-col">
@@ -200,6 +208,19 @@ const ChatInterface = () => {
           )}
         </div>
 
+        {/* Voice Interface - Show when voice chat is active */}
+        {isVoiceChatActive && (
+          <div className="fixed inset-x-0 bottom-20 top-1/3 z-40 bg-background/95 backdrop-blur-sm border-t border-white/10">
+            <VoiceInterface
+              isListening={isListening}
+              isSpeaking={isSpeaking}
+              onToggleListening={() => {}}
+              onClose={stopVoiceChat}
+              className="h-full"
+            />
+          </div>
+        )}
+
         {/* Input area - moved lower and adjusted for bottom navigation */}
         <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
           <div className="max-w-4xl mx-auto p-4">
@@ -225,6 +246,7 @@ const ChatInterface = () => {
                       <div className="flex items-center gap-2">
                         <VoiceChatButton
                           onVoiceMessageReceived={handleVoiceMessageReceived}
+                          onStateChange={handleVoiceChatStateChange}
                           className="min-w-[44px] h-[44px]"
                         />
                       </div>
@@ -238,7 +260,7 @@ const ChatInterface = () => {
         </div>
       </div>
 
-      {/* Voice Chat Overlay */}
+      {/* Voice Chat Overlay - only show when explicitly requested */}
       {isVoiceChatActive && (
         <VoiceChatOverlay
           onClose={stopVoiceChat}
