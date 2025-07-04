@@ -76,42 +76,55 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
           key={msg.id}
           className={`flex ${msg.is_ai ? 'justify-start' : 'justify-end'}`}
         >
-          <div
-            className={`max-w-[80%] p-4 rounded-2xl ${
-              msg.is_ai
-                ? 'bg-card hover:bg-card-hover border border-accent/20 shimmer'
-                : 'bg-gradient-primary hover:bg-gradient-secondary'
-            }`}
-          >
-            {/* Show attachments if present */}
-            {msg.attachments && msg.attachments.length > 0 && (
-              <div className="mb-3 space-y-2">
-                {msg.attachments.map((attachment, index) => (
-                  <div key={index} className="flex items-center gap-2 text-sm opacity-80">
-                    {attachment.type && attachment.type.startsWith('image/') ? (
-                      <div className="space-y-2">
-                        <img 
-                          src={attachment.url} 
-                          alt={attachment.filename}
-                          className="max-w-full h-auto rounded-lg max-h-64 object-contain"
-                        />
-                        <div className="flex items-center gap-1 text-xs">
+          <div className={`flex items-start gap-3 max-w-[80%] ${msg.is_ai ? 'flex-row' : 'flex-row-reverse'}`}>
+            {/* Avatar for AI messages */}
+            {msg.is_ai && (
+              <div className="flex-shrink-0 mt-1">
+                <img
+                  src="/lovable-uploads/a151dde4-1cfb-4488-a036-e547a4e8c941.png"
+                  alt="Master Growbot"
+                  className="w-8 h-8 rounded-full"
+                />
+              </div>
+            )}
+            
+            <div
+              className={`p-4 rounded-2xl ${
+                msg.is_ai
+                  ? 'bg-card hover:bg-card-hover border border-accent/20 shimmer'
+                  : 'bg-gradient-primary hover:bg-gradient-secondary'
+              }`}
+            >
+              {/* Show attachments if present */}
+              {msg.attachments && msg.attachments.length > 0 && (
+                <div className="mb-3 space-y-2">
+                  {msg.attachments.map((attachment, index) => (
+                    <div key={index} className="flex items-center gap-2 text-sm opacity-80">
+                      {attachment.type && attachment.type.startsWith('image/') ? (
+                        <div className="space-y-2">
+                          <img 
+                            src={attachment.url} 
+                            alt={attachment.filename}
+                            className="max-w-full h-auto rounded-lg max-h-64 object-contain"
+                          />
+                          <div className="flex items-center gap-1 text-xs">
+                            <Paperclip className="w-3 h-3" />
+                            <span>{attachment.filename}</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1">
                           <Paperclip className="w-3 h-3" />
                           <span>{attachment.filename}</span>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1">
-                        <Paperclip className="w-3 h-3" />
-                        <span>{attachment.filename}</span>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="whitespace-pre-wrap">
+                {msg.message}
               </div>
-            )}
-            <div className="whitespace-pre-wrap">
-              {msg.message}
             </div>
           </div>
         </div>
