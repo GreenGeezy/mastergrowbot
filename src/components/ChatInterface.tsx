@@ -45,6 +45,7 @@ const ChatInterface = () => {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [forceCloseVoiceChat, setForceCloseVoiceChat] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -84,6 +85,7 @@ const ChatInterface = () => {
 
   const startVoiceChat = () => {
     setIsVoiceChatActive(true);
+    setForceCloseVoiceChat(false);
   };
 
   const stopVoiceChat = () => {
@@ -92,6 +94,7 @@ const ChatInterface = () => {
     setIsListening(false);
     setIsSpeaking(false);
     setTranscript("");
+    setForceCloseVoiceChat(true);
   };
 
   const handleInterrupt = () => {
@@ -126,17 +129,24 @@ const ChatInterface = () => {
     console.log('Voice chat state change:', { listening, speaking });
     setIsListening(listening);
     setIsSpeaking(speaking);
-    // Show voice interface when either listening or speaking
-    if (listening || speaking) {
+    // Show voice interface when either listening or speaking, but not if force close is active
+    if ((listening || speaking) && !forceCloseVoiceChat) {
       setIsVoiceChatActive(true);
     }
   };
 
   // Handle voice interface close
   const handleVoiceInterfaceClose = () => {
-    console.log('Voice interface close requested');
+    console.log('Voice interface close requested - forcing close');
     stopVoiceChat();
   };
+
+  // Reset force close when voice chat becomes inactive
+  useEffect(() => {
+    if (!isVoiceChatActive) {
+      setForceCloseVoiceChat(false);
+    }
+  }, [isVoiceChatActive]);
 
   const quickQuestions = [
     "What's the best soil pH for cannabis?",
@@ -245,6 +255,7 @@ const ChatInterface = () => {
                           onVoiceMessageReceived={handleVoiceMessageReceived}
                           onStateChange={handleVoiceChatStateChange}
                           className="min-w-[44px] h-[44px]"
+                          forceClose={forceCloseVoiceChat}
                         />
                       </div>
                       <ChatInputSubmit className="bg-gradient-primary hover:bg-gradient-secondary" />

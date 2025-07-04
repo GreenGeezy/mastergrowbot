@@ -12,6 +12,7 @@ interface VoiceChatButtonProps {
   onVoiceMessageReceived: (message: string) => void
   onStateChange?: (isListening: boolean, isSpeaking: boolean) => void
   className?: string
+  forceClose?: boolean
 }
 
 interface AssistantSettings {
@@ -26,7 +27,8 @@ interface AssistantSettings {
 const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({ 
   onVoiceMessageReceived,
   onStateChange,
-  className 
+  className,
+  forceClose = false
 }) => {
   const [chatStatus, setChatStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected')
   const [isSpeaking, setIsSpeaking] = useState(false)
@@ -41,6 +43,14 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   const chatRef = useRef<RealtimeChat | null>(null)
   const { toast } = useToast()
   const session = useSession()
+
+  // Handle force close from parent
+  useEffect(() => {
+    if (forceClose && (chatStatus === 'connected' || isListening || isSpeaking)) {
+      console.log('Force closing voice chat due to parent request');
+      disconnectVoiceChat();
+    }
+  }, [forceClose, chatStatus, isListening, isSpeaking]);
 
   // Notify parent of state changes
   useEffect(() => {
@@ -145,6 +155,7 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   }
 
   const disconnectVoiceChat = () => {
+    console.log('Disconnecting voice chat');
     chatRef.current?.disconnect()
     chatRef.current = null
     setChatStatus('disconnected')
