@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect, useRef } from 'react'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { RealtimeChat } from '@/utils/RealtimeAudio'
 import { supabase } from '@/integrations/supabase/client'
-import VoiceChatOverlay from './VoiceChatOverlay'
 import { useSession } from '@supabase/auth-helpers-react'
 import VoiceIcon from '@/components/icons/VoiceIcon'
 
@@ -31,7 +31,6 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   const [chatStatus, setChatStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected')
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isListening, setIsListening] = useState(false)
-  const [showOverlay, setShowOverlay] = useState(false)
   const [transcription, setTranscription] = useState('')
   const [settings, setSettings] = useState<AssistantSettings>({
     system_instructions: "You are Master Growbot, an AI cannabis cultivation assistant. Help users with growing advice, plant health, and answer questions clearly and accurately.",
@@ -114,13 +113,15 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   const toggleVoiceChat = async () => {
     try {
       if (chatStatus === 'disconnected') {
+        // Start voice chat - this will trigger the voice interface
+        setIsListening(true)
+        setChatStatus('connecting')
+        
         chatRef.current = new RealtimeChat(
           handleMessage,
           setChatStatus
         )
         await chatRef.current.init()
-        
-        setShowOverlay(true)
         
         toast({
           title: "Voice Chat Connected",
@@ -132,7 +133,8 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
     } catch (error) {
       console.error('Error with voice chat:', error)
       setChatStatus('disconnected')
-      setShowOverlay(false)
+      setIsListening(false)
+      setIsSpeaking(false)
       
       toast({
         title: "Voice Chat Error",
@@ -148,7 +150,6 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
     setChatStatus('disconnected')
     setIsSpeaking(false)
     setIsListening(false)
-    setShowOverlay(false)
     
     toast({
       title: "Voice Chat Disconnected",
@@ -160,13 +161,6 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
     // Send interrupt signal to stop AI from speaking
     chatRef.current?.interrupt()
     setIsSpeaking(false)
-  }
-
-  const handleStopButton = () => {
-    // Temporarily stop the conversation but keep connection
-    if (isSpeaking) {
-      handleInterrupt()
-    }
   }
 
   // Clean up on unmount
@@ -183,8 +177,8 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   if (chatStatus === 'connecting') {
     buttonIcon = <Loader2 className="h-5 w-5 animate-spin" />
     buttonClass += ' bg-amber-500 hover:bg-amber-600'
-  } else if (chatStatus === 'connected') {
-    buttonIcon = <VoiceIcon className={`h-5 w-5 ${isSpeaking ? 'animate-pulse text-red-500' : ''}`} />
+  } else if (chatStatus === 'connected' || isListening || isSpeaking) {
+    buttonIcon = <VoiceIcon className={`h-5 w-5 ${isSpeaking ? 'animate-pulse text-red-500' : isListening ? 'text-blue-500' : ''}`} />
     buttonClass += ' bg-blue-600 hover:bg-blue-700 from-blue-700 to-purple-900 bg-gradient-to-br border border-blue-500/30'
   } else {
     buttonIcon = <VoiceIcon className="h-5 w-5" />
@@ -192,27 +186,15 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   }
 
   return (
-    <>
-      <Button
-        type="button"
-        onClick={toggleVoiceChat}
-        className={`cyber-button relative ${buttonClass}`}
-        title={chatStatus === 'connected' ? "Stop voice chat" : "Start voice chat"}
-        disabled={chatStatus === 'connecting'}
-      >
-        {buttonIcon}
-      </Button>
-
-      {showOverlay && (
-        <VoiceChatOverlay
-          isListening={isListening}
-          isSpeaking={isSpeaking}
-          onInterrupt={handleInterrupt}
-          onStop={handleStopButton}
-          onClose={disconnectVoiceChat}
-        />
-      )}
-    </>
+    <Button
+      type="button"
+      onClick={toggleVoiceChat}
+      className={`cyber-button relative ${buttonClass}`}
+      title={chatStatus === 'connected' || isListening || isSpeaking ? "Stop voice chat" : "Start voice chat"}
+      disabled={chatStatus === 'connecting'}
+    >
+      {buttonIcon}
+    </Button>
   )
 }
 
