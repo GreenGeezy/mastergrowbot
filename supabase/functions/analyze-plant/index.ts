@@ -30,28 +30,46 @@ serve(async (req) => {
   }
 
   const startTime = Date.now();
-  console.log('Analyze plant function called at:', new Date().toISOString());
+  console.log('=== ANALYZE PLANT FUNCTION START ===');
+  console.log('Request method:', req.method);
+  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
   
   try {
-    // Parse request
-    const body = await req.json();
+    // Parse request with better error handling
+    let body;
+    try {
+      body = await req.json();
+    } catch (parseError) {
+      console.error('Failed to parse request body:', parseError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON in request body', success: false }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { imageUrls, userId } = body;
     
-    console.log('Request body:', { 
+    console.log('Parsed request:', { 
       imageUrlsCount: imageUrls?.length, 
-      userId: userId || 'anonymous',
+      userId: userId || 'not provided',
       timestamp: new Date().toISOString()
     });
 
     // Validate required parameters
     if (!OPENAI_API_KEY) {
       console.error('OpenAI API key not configured');
-      throw new Error('OpenAI API key not configured');
+      return new Response(
+        JSON.stringify({ error: 'OpenAI API key not configured', success: false }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
       console.error('No valid image URLs provided');
-      throw new Error('No valid image URLs provided');
+      return new Response(
+        JSON.stringify({ error: 'No valid image URLs provided', success: false }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     console.log('Processing image URLs:', imageUrls);
@@ -135,6 +153,7 @@ serve(async (req) => {
 
     const totalTime = Date.now() - startTime;
     console.log('Total analysis time:', totalTime, 'ms');
+    console.log('=== ANALYZE PLANT FUNCTION SUCCESS ===');
 
     // Return successful response
     const response = { 
@@ -145,7 +164,6 @@ serve(async (req) => {
       success: true
     };
 
-    console.log('Returning successful response');
     return new Response(
       JSON.stringify(response),
       { 
@@ -156,8 +174,10 @@ serve(async (req) => {
 
   } catch (error) {
     const totalTime = Date.now() - startTime;
+    console.error('=== ANALYZE PLANT FUNCTION ERROR ===');
     console.error('Error in analyze-plant function:', error);
     console.error('Error occurred after:', totalTime, 'ms');
+    console.error('Error stack:', error.stack);
     
     // Create detailed error response
     const errorResponse = {

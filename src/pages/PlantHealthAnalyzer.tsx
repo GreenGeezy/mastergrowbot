@@ -40,6 +40,7 @@ const PlantHealthAnalyzer = () => {
       return;
     }
 
+    console.log('=== STARTING PLANT ANALYSIS ===');
     setIsLoading(true);
     setAnalysisResult(null);
 
@@ -57,7 +58,12 @@ const PlantHealthAnalyzer = () => {
       
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
-        console.log(`Uploading file ${i + 1}:`, file.name, file.size, file.type);
+        console.log(`Processing file ${i + 1}:`, {
+          name: file.name,
+          size: file.size, 
+          type: file.type,
+          lastModified: file.lastModified
+        });
         
         // Create unique filename with timestamp to avoid conflicts
         const timestamp = Date.now();
@@ -66,6 +72,8 @@ const PlantHealthAnalyzer = () => {
         const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
         
         try {
+          console.log(`Uploading file ${i + 1} with name:`, fileName);
+          
           // Use the upload edge function with timeout
           const uploadPromise = supabase.functions.invoke('upload-plant-image', {
             body: {
@@ -84,6 +92,8 @@ const PlantHealthAnalyzer = () => {
             uploadTimeout
           ]) as any;
 
+          console.log(`Upload response for file ${i + 1}:`, { uploadResult, uploadError });
+
           if (uploadError) {
             console.error(`Upload error for file ${i + 1}:`, uploadError);
             throw new Error(`Failed to upload ${file.name}: ${uploadError.message}`);
@@ -93,6 +103,7 @@ const PlantHealthAnalyzer = () => {
             console.log(`Upload successful for file ${i + 1}:`, uploadResult.publicUrl);
             imageUrls.push(uploadResult.publicUrl);
           } else {
+            console.error(`No public URL received for file ${i + 1}:`, uploadResult);
             throw new Error(`No public URL received for ${file.name}`);
           }
         } catch (uploadAttemptError) {
@@ -105,7 +116,8 @@ const PlantHealthAnalyzer = () => {
         throw new Error('No images were successfully uploaded');
       }
 
-      console.log('All images uploaded, calling analyze-plant function with URLs:', imageUrls);
+      console.log('All images uploaded successfully:', imageUrls);
+      console.log('Calling analyze-plant function...');
 
       // Call the analyze-plant edge function with timeout protection
       const analysisPromise = supabase.functions.invoke('analyze-plant', {
@@ -119,23 +131,31 @@ const PlantHealthAnalyzer = () => {
         setTimeout(() => reject(new Error('Analysis timeout - OpenAI request took too long')), 90000)
       );
 
+      console.log('Waiting for analysis response...');
       const { data, error } = await Promise.race([
         analysisPromise,
         analysisTimeout
       ]) as any;
 
-      console.log('Analysis function response:', { data, error });
+      console.log('Analysis function response received:', { 
+        hasData: !!data, 
+        hasError: !!error,
+        dataKeys: data ? Object.keys(data) : [],
+        errorDetails: error
+      });
 
       if (error) {
         console.error('Analysis function error:', error);
-        throw new Error(`Analysis failed: ${error.message}`);
+        throw new Error(`Analysis failed: ${error.message || 'Unknown error from analysis function'}`);
       }
 
       if (!data) {
-        throw new Error('No analysis data received');
+        console.error('No analysis data received');
+        throw new Error('No analysis data received from function');
       }
 
       if (!data.success) {
+        console.error('Analysis function returned failure:', data);
         throw new Error(data.error || 'Analysis failed with unknown error');
       }
 
@@ -148,6 +168,7 @@ const PlantHealthAnalyzer = () => {
       // Store the analysis in the database only if user is authenticated
       if (session?.user?.id) {
         try {
+          console.log('Saving analysis to database...');
           const { error: saveError } = await supabase
             .from('plant_analyses')
             .insert({
@@ -173,8 +194,12 @@ const PlantHealthAnalyzer = () => {
         console.log('User not authenticated, skipping analysis save');
       }
 
+      console.log('=== PLANT ANALYSIS COMPLETED SUCCESSFULLY ===');
+
     } catch (error) {
+      console.error('=== PLANT ANALYSIS FAILED ===');
       console.error("Analysis error:", error);
+      console.error("Error stack:", error.stack);
       const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
       setAnalysisResult(`Analysis failed: ${errorMessage}`);
       toast.error(errorMessage);
