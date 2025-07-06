@@ -43,6 +43,7 @@ const PlantHealthAnalyzer = () => {
     console.log('=== STARTING PLANT ANALYSIS ===');
     console.log('Current URL:', window.location.href);
     console.log('Branch/Environment check');
+    console.log('Files to analyze:', selectedFiles.length);
     
     setIsLoading(true);
     setAnalysisResult(null);
@@ -56,7 +57,7 @@ const PlantHealthAnalyzer = () => {
     try {
       console.log('Starting analysis with', selectedFiles.length, 'files');
       
-      // Upload images to storage with improved error handling
+      // Upload images to storage with enhanced error handling
       const imageUrls = [];
       
       for (let i = 0; i < selectedFiles.length; i++) {
