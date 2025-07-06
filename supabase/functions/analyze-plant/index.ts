@@ -15,7 +15,7 @@ import {
 } from "./utils.ts";
 import { createClient } from "https://deno.land/x/supabase@1.0.0/mod.ts";
 
-// Enhanced CORS headers specifically for Vercel preview and production
+// Enhanced CORS headers with specific origin support
 const enhancedCorsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-requested-with, accept',
@@ -24,29 +24,14 @@ const enhancedCorsHeaders = {
   'Access-Control-Allow-Credentials': 'false',
 };
 
-// Initialize Supabase client with service role for admin access
-const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
-let supabase;
-
-try {
-  supabase = createClient(supabaseUrl, supabaseServiceKey);
-} catch (supabaseError) {
-  console.error('Failed to initialize Supabase client:', supabaseError);
-}
-
-const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
-const ASSISTANT_ID = Deno.env.get('OPENAI_ASSISTANT_ID') || "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
-
 serve(async (req) => {
   console.log('=== ANALYZE PLANT FUNCTION START ===');
   console.log('Request method:', req.method);
   console.log('Request URL:', req.url);
-  console.log('User Agent:', req.headers.get('user-agent'));
   console.log('Origin:', req.headers.get('origin'));
-  console.log('Referer:', req.headers.get('referer'));
+  console.log('User-Agent:', req.headers.get('user-agent'));
 
-  // Handle CORS preflight with proper response
+  // Handle CORS preflight with immediate response
   if (req.method === 'OPTIONS') {
     console.log('Handling CORS preflight request');
     return new Response(null, { 
@@ -58,12 +43,18 @@ serve(async (req) => {
   const startTime = Date.now();
   
   try {
+    // Environment validation
+    const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+    const ASSISTANT_ID = Deno.env.get('OPENAI_ASSISTANT_ID') || "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
     console.log('Environment check:');
     console.log('- OPENAI_API_KEY exists:', !!OPENAI_API_KEY);
-    console.log('- SUPABASE_URL:', !!supabaseUrl);
+    console.log('- SUPABASE_URL exists:', !!supabaseUrl);
+    console.log('- SERVICE_KEY exists:', !!supabaseServiceKey);
     console.log('- ASSISTANT_ID:', ASSISTANT_ID);
 
-    // Validate environment
     if (!OPENAI_API_KEY) {
       console.error('OpenAI API key not configured');
       return new Response(
@@ -75,8 +66,23 @@ serve(async (req) => {
       );
     }
 
-    if (!supabase) {
-      console.error('Supabase client not initialized');
+    if (!supabaseUrl || !supabaseServiceKey) {
+      console.error('Supabase configuration missing');
+      return new Response(
+        JSON.stringify({ error: 'Database configuration error', success: false }),
+        { 
+          status: 500, 
+          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Initialize Supabase client
+    let supabase;
+    try {
+      supabase = createClient(supabaseUrl, supabaseServiceKey);
+    } catch (supabaseError) {
+      console.error('Failed to initialize Supabase client:', supabaseError);
       return new Response(
         JSON.stringify({ error: 'Database connection error', success: false }),
         { 
@@ -86,7 +92,7 @@ serve(async (req) => {
       );
     }
 
-    // Parse request with enhanced error handling
+    // Parse request body
     let body;
     try {
       const textBody = await req.text();
@@ -158,7 +164,7 @@ serve(async (req) => {
       console.log('Anonymous user or no userId provided, proceeding without profile data');
     }
 
-    // OpenAI Analysis with timeout and error handling
+    // OpenAI Analysis with comprehensive error handling
     try {
       // Step 1: Create a thread
       console.log('Creating OpenAI thread...');
@@ -253,7 +259,7 @@ serve(async (req) => {
     console.error('Error occurred after:', totalTime, 'ms');
     console.error('Error stack:', error.stack);
     
-    // Create detailed error response
+    // Create detailed error response with proper CORS headers
     const errorResponse = {
       error: 'Internal server error occurred',
       success: false,

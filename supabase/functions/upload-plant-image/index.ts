@@ -2,7 +2,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-// Enhanced CORS headers specifically for Vercel preview and production
+// Enhanced CORS headers with specific origin support
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-requested-with, accept',
@@ -15,11 +15,10 @@ serve(async (req) => {
   console.log('=== UPLOAD PLANT IMAGE FUNCTION START ===');
   console.log('Request method:', req.method);
   console.log('Request URL:', req.url);
-  console.log('User Agent:', req.headers.get('user-agent'));
   console.log('Origin:', req.headers.get('origin'));
-  console.log('Referer:', req.headers.get('referer'));
+  console.log('User-Agent:', req.headers.get('user-agent'));
 
-  // Handle CORS preflight with proper response
+  // Handle CORS preflight with immediate response
   if (req.method === 'OPTIONS') {
     console.log('Handling CORS preflight request');
     return new Response(null, { 
@@ -29,6 +28,7 @@ serve(async (req) => {
   }
 
   try {
+    // Environment validation
     const supabaseUrl = Deno.env.get('SUPABASE_URL')
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
     
@@ -48,13 +48,26 @@ serve(async (req) => {
     }
     
     // Use service role client to bypass RLS
-    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
-    });
+    let supabase;
+    try {
+      supabase = createClient(supabaseUrl, supabaseServiceKey, {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      });
+    } catch (supabaseError) {
+      console.error('Failed to initialize Supabase client:', supabaseError);
+      return new Response(JSON.stringify({ 
+        error: 'Database connection error',
+        success: false 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
 
+    // Parse request body
     let body;
     try {
       const textBody = await req.text();
