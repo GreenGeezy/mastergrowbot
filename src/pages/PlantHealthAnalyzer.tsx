@@ -53,9 +53,15 @@ const PlantHealthAnalyzer = () => {
         console.warn('Bucket creation warning:', bucketError);
       }
       
-      // Upload images to storage with anonymous support
+      // Upload images to storage using service role client for anonymous access
       const imageUrls = [];
       const userId = session?.user?.id || `anonymous-${Date.now()}`;
+      
+      // Create a separate supabase client without authentication for file uploads
+      const publicSupabase = createClient(
+        'https://inbfxduleyhygxatxmre.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluYmZ4ZHVsZXloeWd4YXR4bXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM3NDc2MjksImV4cCI6MjA0OTMyMzYyOX0.l0HrL8MlQrRmIEALGTEOhPz41QhzQ_F73A0C8FsIAeQ'
+      );
       
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
@@ -65,54 +71,59 @@ const PlantHealthAnalyzer = () => {
         const timestamp = Date.now();
         const randomId = Math.random().toString(36).substring(7);
         const fileExtension = file.name.split('.').pop() || 'jpg';
-        const fileName = `${userId}/plant-analysis-${timestamp}-${randomId}.${fileExtension}`;
+        const fileName = `public/plant-analysis-${timestamp}-${randomId}.${fileExtension}`;
         
-        // Use upsert to avoid conflicts and handle anonymous uploads
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('plant-images')
-          .upload(fileName, file, {
-            cacheControl: '3600',
-            upsert: true, // Allow overwriting
-            contentType: file.type || 'image/jpeg'
-          });
-
-        if (uploadError) {
-          console.error(`Upload error for file ${i + 1}:`, uploadError);
-          
-          // Try alternative upload approach for anonymous users
-          console.log('Trying alternative upload approach...');
-          const altFileName = `anonymous/plant-${timestamp}-${i}-${randomId}.${fileExtension}`;
-          const { data: altUploadData, error: altUploadError } = await supabase.storage
+        try {
+          // Try upload with public supabase client
+          const { data: uploadData, error: uploadError } = await publicSupabase.storage
             .from('plant-images')
-            .upload(altFileName, file, {
+            .upload(fileName, file, {
               cacheControl: '3600',
-              upsert: true
+              upsert: true,
+              contentType: file.type || 'image/jpeg'
             });
-            
-          if (altUploadError) {
-            console.error('Alternative upload also failed:', altUploadError);
-            throw new Error(`Failed to upload ${file.name}: ${altUploadError.message}`);
-          }
-          
-          console.log(`Alternative upload successful for file ${i + 1}:`, altUploadData);
-          
-          // Get public URL for alternative upload
-          const { data: { publicUrl } } = supabase.storage
-            .from('plant-images')
-            .getPublicUrl(altFileName);
-          
-          console.log(`Alternative public URL for file ${i + 1}:`, publicUrl);
-          imageUrls.push(publicUrl);
-        } else {
-          console.log(`Upload successful for file ${i + 1}:`, uploadData);
 
-          // Get public URL
-          const { data: { publicUrl } } = supabase.storage
-            .from('plant-images')
-            .getPublicUrl(fileName);
-          
-          console.log(`Public URL for file ${i + 1}:`, publicUrl);
-          imageUrls.push(publicUrl);
+          if (uploadError) {
+            console.error(`Upload error for file ${i + 1}:`, uploadError);
+            
+            // Try alternative approach with different path
+            const altFileName = `anonymous/plant-${timestamp}-${i}-${randomId}.${fileExtension}`;
+            const { data: altUploadData, error: altUploadError } = await publicSupabase.storage
+              .from('plant-images')
+              .upload(altFileName, file, {
+                cacheControl: '3600',
+                upsert: true,
+                contentType: file.type || 'image/jpeg'
+              });
+              
+            if (altUploadError) {
+              console.error('Alternative upload also failed:', altUploadError);
+              throw new Error(`Failed to upload ${file.name}: ${altUploadError.message}`);
+            }
+            
+            console.log(`Alternative upload successful for file ${i + 1}:`, altUploadData);
+            
+            // Get public URL for alternative upload
+            const { data: { publicUrl } } = publicSupabase.storage
+              .from('plant-images')
+              .getPublicUrl(altFileName);
+            
+            console.log(`Alternative public URL for file ${i + 1}:`, publicUrl);
+            imageUrls.push(publicUrl);
+          } else {
+            console.log(`Upload successful for file ${i + 1}:`, uploadData);
+
+            // Get public URL
+            const { data: { publicUrl } } = publicSupabase.storage
+              .from('plant-images')
+              .getPublicUrl(fileName);
+            
+            console.log(`Public URL for file ${i + 1}:`, publicUrl);
+            imageUrls.push(publicUrl);
+          }
+        } catch (uploadAttemptError) {
+          console.error(`Upload attempt failed for file ${i + 1}:`, uploadAttemptError);
+          throw new Error(`Failed to upload ${file.name}: ${uploadAttemptError.message}`);
         }
       }
 

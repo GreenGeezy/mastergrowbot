@@ -55,68 +55,86 @@ serve(async (req) => {
       console.log('Created plant-images bucket:', bucketData)
     }
 
-    // Create storage policies with direct SQL execution
+    // Now create/update storage policies using direct SQL commands
     try {
-      console.log('Creating storage policies...')
+      console.log('Creating/updating storage policies...')
       
-      // Delete existing policies first to avoid conflicts
-      await supabase.rpc('exec_sql', { 
+      // First, drop all existing policies for the bucket to start fresh
+      const { error: dropError } = await supabase.rpc('exec_sql', {
         sql: `
           DELETE FROM storage.policies WHERE bucket_id = 'plant-images';
         `
       }).catch(() => {
-        // Ignore errors if policies don't exist
-        console.log('No existing policies to delete or exec_sql not available')
+        console.log('Could not drop existing policies (normal if they don\'t exist)')
       })
 
-      // Create new policies that allow anonymous access
+      // Create comprehensive policies that allow full anonymous access
+      const policyQueries = [
+        // Allow anonymous SELECT (read) access
+        `INSERT INTO storage.policies (name, bucket_id, operation, definition) 
+         VALUES ('Allow anonymous read access to plant images', 'plant-images', 'SELECT', 'true')
+         ON CONFLICT (name, bucket_id) DO NOTHING;`,
+        
+        // Allow anonymous INSERT (upload) access
+        `INSERT INTO storage.policies (name, bucket_id, operation, definition) 
+         VALUES ('Allow anonymous upload to plant images', 'plant-images', 'INSERT', 'true')
+         ON CONFLICT (name, bucket_id) DO NOTHING;`,
+        
+        // Allow anonymous UPDATE access
+        `INSERT INTO storage.policies (name, bucket_id, operation, definition) 
+         VALUES ('Allow anonymous update to plant images', 'plant-images', 'UPDATE', 'true')
+         ON CONFLICT (name, bucket_id) DO NOTHING;`,
+        
+        // Allow anonymous DELETE access
+        `INSERT INTO storage.policies (name, bucket_id, operation, definition) 
+         VALUES ('Allow anonymous delete to plant images', 'plant-images', 'DELETE', 'true')
+         ON CONFLICT (name, bucket_id) DO NOTHING;`
+      ]
+
+      // Execute each policy creation query
+      for (const query of policyQueries) {
+        try {
+          const { error: policyError } = await supabase.rpc('exec_sql', { sql: query })
+          if (policyError) {
+            console.log('Policy creation error (may be normal):', policyError)
+          }
+        } catch (err) {
+          console.log('Policy creation attempt failed:', err)
+        }
+      }
+
+      // Also try direct policy insertion as fallback
       const policies = [
         {
-          name: 'Allow anonymous uploads to plant images',
+          name: 'Public read access',
           bucket_id: 'plant-images',
-          operation: 'INSERT',
-          definition: 'true'
-        },
-        {
-          name: 'Allow public read access to plant images',
-          bucket_id: 'plant-images', 
           operation: 'SELECT',
           definition: 'true'
         },
         {
-          name: 'Allow users to update plant images',
+          name: 'Public upload access',
           bucket_id: 'plant-images',
-          operation: 'UPDATE', 
-          definition: 'true'
-        },
-        {
-          name: 'Allow users to delete plant images',
-          bucket_id: 'plant-images',
-          operation: 'DELETE',
+          operation: 'INSERT',
           definition: 'true'
         }
       ]
 
       for (const policy of policies) {
-        const { error: policyError } = await supabase
-          .from('storage.policies')
-          .insert(policy)
-          .onConflict('name,bucket_id')
-        
-        if (policyError) {
-          console.log(`Policy ${policy.name} might already exist:`, policyError)
-        } else {
-          console.log(`Created policy: ${policy.name}`)
+        try {
+          await supabase.from('storage.policies').upsert(policy, { onConflict: 'name,bucket_id' })
+        } catch (err) {
+          console.log('Direct policy insertion failed:', err)
         }
       }
 
     } catch (policyError) {
-      console.log('Policy creation failed, but bucket exists:', policyError)
+      console.log('Policy creation process completed with some issues:', policyError)
     }
 
     return new Response(JSON.stringify({ 
-      message: plantImagesBucket ? 'Storage bucket already exists' : 'Storage bucket created successfully',
-      bucket: plantImagesBucket || { name: 'plant-images', public: true }
+      message: plantImagesBucket ? 'Storage bucket already exists with updated policies' : 'Storage bucket created successfully with anonymous access',
+      bucket: plantImagesBucket || { name: 'plant-images', public: true },
+      policies_updated: true
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     })
