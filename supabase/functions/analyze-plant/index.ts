@@ -29,14 +29,19 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  console.log('Analyze plant function called at:', new Date().toISOString());
+  
   try {
-    console.log('Analyze plant function called');
-    
     // Parse request
     const body = await req.json();
     const { imageUrls, userId } = body;
     
-    console.log('Request body:', { imageUrlsCount: imageUrls?.length, userId: userId || 'anonymous' });
+    console.log('Request body:', { 
+      imageUrlsCount: imageUrls?.length, 
+      userId: userId || 'anonymous',
+      timestamp: new Date().toISOString()
+    });
 
     // Validate required parameters
     if (!OPENAI_API_KEY) {
@@ -56,11 +61,15 @@ serve(async (req) => {
     if (userId && userId !== 'anonymous' && !userId.startsWith('anonymous-')) {
       try {
         console.log('Fetching user profile for:', userId);
+        const profileStartTime = Date.now();
+        
         const { data: profile, error } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('id', userId)
           .single();
+        
+        console.log('Profile fetch took:', Date.now() - profileStartTime, 'ms');
         
         if (error) {
           console.log('No user profile found or error fetching profile:', error.message);
@@ -78,28 +87,43 @@ serve(async (req) => {
 
     // Step 1: Create a thread
     console.log('Creating OpenAI thread...');
+    const threadStartTime = Date.now();
     const threadId = await createThread(OPENAI_API_KEY);
-    console.log('Thread created:', threadId);
+    console.log('Thread created:', threadId, 'took:', Date.now() - threadStartTime, 'ms');
     
     // Step 2: Add message with images to thread and include user profile context
     console.log('Adding message with images to thread...');
+    const messageStartTime = Date.now();
     await addMessageWithImages(OPENAI_API_KEY, threadId, imageUrls, userProfileData);
-    console.log('Message added to thread');
+    console.log('Message added to thread, took:', Date.now() - messageStartTime, 'ms');
     
     // Step 3: Run assistant on thread with user-specific instructions
     console.log('Running assistant...');
+    const runStartTime = Date.now();
     const runId = await runAssistant(OPENAI_API_KEY, threadId, ASSISTANT_ID, userProfileData);
-    console.log('Assistant run started:', runId);
+    console.log('Assistant run started:', runId, 'took:', Date.now() - runStartTime, 'ms');
     
-    // Step 4: Wait for run completion (with exponential backoff)
+    // Step 4: Wait for run completion (with exponential backoff and timeout)
     console.log('Waiting for run completion...');
-    await waitForRunCompletion(OPENAI_API_KEY, threadId, runId);
-    console.log('Run completed');
+    const completionStartTime = Date.now();
+    
+    // Set a hard timeout for the entire OpenAI process
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error('OpenAI analysis timed out after 60 seconds'));
+      }, 60000); // 60 second timeout
+    });
+    
+    const completionPromise = waitForRunCompletion(OPENAI_API_KEY, threadId, runId);
+    
+    await Promise.race([completionPromise, timeoutPromise]);
+    console.log('Run completed, took:', Date.now() - completionStartTime, 'ms');
     
     // Step 5: Get assistant response
     console.log('Getting assistant response...');
+    const responseStartTime = Date.now();
     const analysisText = await getAssistantResponse(OPENAI_API_KEY, threadId);
-    console.log('Analysis text received, length:', analysisText?.length);
+    console.log('Analysis text received, length:', analysisText?.length, 'took:', Date.now() - responseStartTime, 'ms');
     
     if (!analysisText) {
       throw new Error('No analysis text received from OpenAI');
@@ -109,11 +133,15 @@ serve(async (req) => {
     const analysisResult = parseAnalysisResults(analysisText);
     console.log('Analysis parsed successfully');
 
+    const totalTime = Date.now() - startTime;
+    console.log('Total analysis time:', totalTime, 'ms');
+
     // Return successful response
     const response = { 
       analysis: analysisResult, 
       diagnosis: analysisText,
       profileUsed: !!userProfileData,
+      processingTime: totalTime,
       success: true
     };
 
@@ -127,12 +155,15 @@ serve(async (req) => {
     );
 
   } catch (error) {
+    const totalTime = Date.now() - startTime;
     console.error('Error in analyze-plant function:', error);
+    console.error('Error occurred after:', totalTime, 'ms');
     
     // Create detailed error response
     const errorResponse = {
       error: error.message || 'Unknown error occurred',
       success: false,
+      processingTime: totalTime,
       timestamp: new Date().toISOString()
     };
 

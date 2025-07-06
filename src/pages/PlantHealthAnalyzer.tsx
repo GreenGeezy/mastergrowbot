@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,6 +44,12 @@ const PlantHealthAnalyzer = () => {
     setIsLoading(true);
     setAnalysisResult(null);
 
+    // Set a timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+      toast.error("Analysis timed out. Please try again with a smaller image or check your connection.");
+    }, 120000); // 2 minute timeout
+
     try {
       console.log('Starting analysis with', selectedFiles.length, 'files');
       
@@ -53,7 +60,7 @@ const PlantHealthAnalyzer = () => {
         console.warn('Bucket creation warning:', bucketError);
       }
       
-      // Upload images to storage with simplified approach
+      // Upload images to storage with improved error handling
       const imageUrls = [];
       
       for (let i = 0; i < selectedFiles.length; i++) {
@@ -67,14 +74,23 @@ const PlantHealthAnalyzer = () => {
         const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
         
         try {
-          // Use the main supabase client with service role permissions via edge function
-          const { data: uploadResult, error: uploadError } = await supabase.functions.invoke('upload-plant-image', {
+          // Use the upload edge function with timeout
+          const uploadPromise = supabase.functions.invoke('upload-plant-image', {
             body: {
               fileName,
               fileData: await fileToBase64(file),
               contentType: file.type || 'image/jpeg'
             }
           });
+
+          const uploadTimeout = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Upload timeout')), 30000)
+          );
+
+          const { data: uploadResult, error: uploadError } = await Promise.race([
+            uploadPromise,
+            uploadTimeout
+          ]) as any;
 
           if (uploadError) {
             console.error(`Upload error for file ${i + 1}:`, uploadError);
@@ -99,13 +115,22 @@ const PlantHealthAnalyzer = () => {
 
       console.log('All images uploaded, calling analyze-plant function with URLs:', imageUrls);
 
-      // Call the analyze-plant edge function
-      const { data, error } = await supabase.functions.invoke('analyze-plant', {
+      // Call the analyze-plant edge function with timeout protection
+      const analysisPromise = supabase.functions.invoke('analyze-plant', {
         body: { 
           imageUrls,
           userId: session?.user?.id || null // Allow null for anonymous users
         }
       });
+
+      const analysisTimeout = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Analysis timeout - OpenAI request took too long')), 90000)
+      );
+
+      const { data, error } = await Promise.race([
+        analysisPromise,
+        analysisTimeout
+      ]) as any;
 
       console.log('Analysis function response:', { data, error });
 
@@ -158,6 +183,7 @@ const PlantHealthAnalyzer = () => {
       setAnalysisResult(`Analysis failed: ${errorMessage}`);
       toast.error(errorMessage);
     } finally {
+      clearTimeout(timeoutId);
       setIsLoading(false);
     }
   };
