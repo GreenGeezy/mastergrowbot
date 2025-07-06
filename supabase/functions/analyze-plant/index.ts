@@ -29,9 +29,8 @@ serve(async (req) => {
   console.log('Request method:', req.method);
   console.log('Request URL:', req.url);
   console.log('Origin:', req.headers.get('origin'));
-  console.log('User-Agent:', req.headers.get('user-agent'));
 
-  // Handle CORS preflight with immediate response
+  // Handle CORS preflight with immediate response - CRITICAL FIX
   if (req.method === 'OPTIONS') {
     console.log('Handling CORS preflight request');
     return new Response(null, { 
@@ -43,7 +42,7 @@ serve(async (req) => {
   const startTime = Date.now();
   
   try {
-    // Environment validation
+    // Environment validation with detailed logging
     const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
     const ASSISTANT_ID = Deno.env.get('OPENAI_ASSISTANT_ID') || "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
@@ -51,8 +50,6 @@ serve(async (req) => {
     
     console.log('Environment check:');
     console.log('- OPENAI_API_KEY exists:', !!OPENAI_API_KEY);
-    console.log('- SUPABASE_URL exists:', !!supabaseUrl);
-    console.log('- SERVICE_KEY exists:', !!supabaseServiceKey);
     console.log('- ASSISTANT_ID:', ASSISTANT_ID);
 
     if (!OPENAI_API_KEY) {
@@ -66,33 +63,19 @@ serve(async (req) => {
       );
     }
 
-    if (!supabaseUrl || !supabaseServiceKey) {
-      console.error('Supabase configuration missing');
-      return new Response(
-        JSON.stringify({ error: 'Database configuration error', success: false }),
-        { 
-          status: 500, 
-          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
+    // Initialize Supabase client only if credentials exist
+    let supabase = null;
+    if (supabaseUrl && supabaseServiceKey) {
+      try {
+        supabase = createClient(supabaseUrl, supabaseServiceKey);
+        console.log('Supabase client initialized successfully');
+      } catch (supabaseError) {
+        console.error('Failed to initialize Supabase client:', supabaseError);
+        // Continue without Supabase - analysis can still work
+      }
     }
 
-    // Initialize Supabase client
-    let supabase;
-    try {
-      supabase = createClient(supabaseUrl, supabaseServiceKey);
-    } catch (supabaseError) {
-      console.error('Failed to initialize Supabase client:', supabaseError);
-      return new Response(
-        JSON.stringify({ error: 'Database connection error', success: false }),
-        { 
-          status: 500, 
-          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    // Parse request body
+    // Parse request body with better error handling
     let body;
     try {
       const textBody = await req.text();
@@ -135,82 +118,57 @@ serve(async (req) => {
 
     console.log('Processing image URLs:', imageUrls);
 
-    // Fetch user profile data if userId is provided and not anonymous
+    // Fetch user profile data if available
     let userProfileData = null;
-    if (userId && userId !== 'anonymous' && !userId.startsWith('anonymous-')) {
+    if (supabase && userId && userId !== 'anonymous' && !userId.startsWith('anonymous-')) {
       try {
         console.log('Fetching user profile for:', userId);
-        const profileStartTime = Date.now();
-        
         const { data: profile, error } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('id', userId)
           .single();
         
-        console.log('Profile fetch took:', Date.now() - profileStartTime, 'ms');
-        
         if (error) {
-          console.log('No user profile found or error fetching profile:', error.message);
+          console.log('No user profile found:', error.message);
         } else {
           userProfileData = profile;
           console.log('User profile data loaded successfully');
         }
       } catch (profileError) {
         console.log('Error fetching user profile:', profileError);
-        // Continue without profile data
       }
-    } else {
-      console.log('Anonymous user or no userId provided, proceeding without profile data');
     }
 
-    // OpenAI Analysis with comprehensive error handling
+    // OpenAI Analysis with timeout protection
     try {
-      // Step 1: Create a thread
-      console.log('Creating OpenAI thread...');
-      const threadStartTime = Date.now();
+      console.log('Starting OpenAI analysis...');
+      
+      // Create thread
       const threadId = await createThread(OPENAI_API_KEY);
-      console.log('Thread created:', threadId, 'took:', Date.now() - threadStartTime, 'ms');
+      console.log('Thread created:', threadId);
       
-      // Step 2: Add message with images to thread
-      console.log('Adding message with images to thread...');
-      const messageStartTime = Date.now();
+      // Add message with images
       await addMessageWithImages(OPENAI_API_KEY, threadId, imageUrls, userProfileData);
-      console.log('Message added to thread, took:', Date.now() - messageStartTime, 'ms');
+      console.log('Message added to thread');
       
-      // Step 3: Run assistant on thread
-      console.log('Running assistant...');
-      const runStartTime = Date.now();
+      // Run assistant
       const runId = await runAssistant(OPENAI_API_KEY, threadId, ASSISTANT_ID, userProfileData);
-      console.log('Assistant run started:', runId, 'took:', Date.now() - runStartTime, 'ms');
+      console.log('Assistant run started:', runId);
       
-      // Step 4: Wait for run completion with timeout
-      console.log('Waiting for run completion...');
-      const completionStartTime = Date.now();
+      // Wait for completion with timeout
+      await waitForRunCompletion(OPENAI_API_KEY, threadId, runId);
+      console.log('Run completed');
       
-      // Set a hard timeout for the entire OpenAI process
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => {
-          reject(new Error('OpenAI analysis timed out after 90 seconds'));
-        }, 90000); // 90 second timeout
-      });
-      
-      const completionPromise = waitForRunCompletion(OPENAI_API_KEY, threadId, runId);
-      
-      await Promise.race([completionPromise, timeoutPromise]);
-      console.log('Run completed, took:', Date.now() - completionStartTime, 'ms');
-      
-      // Step 5: Get assistant response
-      console.log('Getting assistant response...');
-      const responseStartTime = Date.now();
+      // Get response
       const analysisText = await getAssistantResponse(OPENAI_API_KEY, threadId);
-      console.log('Analysis text received, length:', analysisText?.length, 'took:', Date.now() - responseStartTime, 'ms');
+      console.log('Analysis text received, length:', analysisText?.length);
       
       if (!analysisText) {
         throw new Error('No analysis text received from OpenAI');
       }
       
-      // Step 6: Parse results into structured format
+      // Parse results
       const analysisResult = parseAnalysisResults(analysisText);
       console.log('Analysis parsed successfully');
 
@@ -218,17 +176,15 @@ serve(async (req) => {
       console.log('Total analysis time:', totalTime, 'ms');
       console.log('=== ANALYZE PLANT FUNCTION SUCCESS ===');
 
-      // Return successful response
-      const response = { 
-        analysis: analysisResult, 
-        diagnosis: analysisText,
-        profileUsed: !!userProfileData,
-        processingTime: totalTime,
-        success: true
-      };
-
+      // Return successful response with CORS headers
       return new Response(
-        JSON.stringify(response),
+        JSON.stringify({ 
+          analysis: analysisResult, 
+          diagnosis: analysisText,
+          profileUsed: !!userProfileData,
+          processingTime: totalTime,
+          success: true
+        }),
         { 
           status: 200,
           headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
@@ -255,20 +211,17 @@ serve(async (req) => {
   } catch (error) {
     const totalTime = Date.now() - startTime;
     console.error('=== ANALYZE PLANT FUNCTION ERROR ===');
-    console.error('Unexpected error in analyze-plant function:', error);
-    console.error('Error occurred after:', totalTime, 'ms');
+    console.error('Unexpected error:', error);
     console.error('Error stack:', error.stack);
     
-    // Create detailed error response with proper CORS headers
-    const errorResponse = {
-      error: 'Internal server error occurred',
-      success: false,
-      processingTime: totalTime,
-      timestamp: new Date().toISOString()
-    };
-
+    // CRITICAL: Always return CORS headers even on error
     return new Response(
-      JSON.stringify(errorResponse),
+      JSON.stringify({
+        error: 'Internal server error occurred',
+        success: false,
+        processingTime: totalTime,
+        timestamp: new Date().toISOString()
+      }),
       { 
         status: 500,
         headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 

@@ -2,7 +2,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-// Enhanced CORS headers with specific origin support
+// Enhanced CORS headers
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-requested-with, accept',
@@ -16,9 +16,8 @@ serve(async (req) => {
   console.log('Request method:', req.method);
   console.log('Request URL:', req.url);
   console.log('Origin:', req.headers.get('origin'));
-  console.log('User-Agent:', req.headers.get('user-agent'));
 
-  // Handle CORS preflight with immediate response
+  // Handle CORS preflight with immediate response - CRITICAL FIX
   if (req.method === 'OPTIONS') {
     console.log('Handling CORS preflight request');
     return new Response(null, { 
@@ -47,7 +46,7 @@ serve(async (req) => {
       });
     }
     
-    // Use service role client to bypass RLS
+    // Initialize Supabase client
     let supabase;
     try {
       supabase = createClient(supabaseUrl, supabaseServiceKey, {
@@ -56,6 +55,7 @@ serve(async (req) => {
           persistSession: false
         }
       });
+      console.log('Supabase client initialized');
     } catch (supabaseError) {
       console.error('Failed to initialize Supabase client:', supabaseError);
       return new Response(JSON.stringify({ 
@@ -108,7 +108,7 @@ serve(async (req) => {
       });
     }
 
-    // Convert base64 to blob with better error handling
+    // Convert base64 to blob
     let bytes;
     try {
       console.log('Converting base64 to bytes...');
@@ -129,7 +129,7 @@ serve(async (req) => {
       });
     }
 
-    // Upload using service role (bypasses RLS)
+    // Upload to storage
     console.log('Uploading to storage...');
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('plant-images')
@@ -171,9 +171,10 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('=== UPLOAD PLANT IMAGE FUNCTION ERROR ===');
-    console.error('Unexpected error in upload-plant-image:', error);
+    console.error('Unexpected error:', error);
     console.error('Error stack:', error.stack);
     
+    // CRITICAL: Always return CORS headers even on error
     return new Response(JSON.stringify({ 
       error: 'Internal server error occurred',
       success: false 
