@@ -5,7 +5,7 @@ project_id = "inbfxduleyhygxatxmre"
 verify_jwt = true
 
 [functions.analyze-plant]
-verify_jwt = true
+verify_jwt = false
 
 [functions.create-storage-bucket]
 verify_jwt = false
@@ -14,4 +14,7 @@ verify_jwt = false
 verify_jwt = true
 
 [functions.square-webhook]
+verify_jwt = false
+
+[functions.upload-plant-image]
 verify_jwt = false

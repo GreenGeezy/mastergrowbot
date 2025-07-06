@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from 'react-router-dom';
-import { createClient } from '@supabase/supabase-js';
 import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import CameraCapture from '@/components/plant-health/CameraCapture';
@@ -52,13 +51,6 @@ const PlantHealthAnalyzer = () => {
 
     try {
       console.log('Starting analysis with', selectedFiles.length, 'files');
-      
-      // First, ensure storage bucket exists and has proper policies
-      console.log('Ensuring storage bucket exists...');
-      const { error: bucketError } = await supabase.functions.invoke('create-storage-bucket');
-      if (bucketError) {
-        console.warn('Bucket creation warning:', bucketError);
-      }
       
       // Upload images to storage with improved error handling
       const imageUrls = [];
@@ -119,7 +111,7 @@ const PlantHealthAnalyzer = () => {
       const analysisPromise = supabase.functions.invoke('analyze-plant', {
         body: { 
           imageUrls,
-          userId: session?.user?.id || null // Allow null for anonymous users
+          userId: session?.user?.id || `anonymous-${Date.now()}` // Use anonymous ID for non-authenticated users
         }
       });
 
@@ -141,6 +133,10 @@ const PlantHealthAnalyzer = () => {
 
       if (!data) {
         throw new Error('No analysis data received');
+      }
+
+      if (!data.success) {
+        throw new Error(data.error || 'Analysis failed with unknown error');
       }
 
       const analysisText = data.analysis || data.diagnosis || "Analysis completed successfully!";
