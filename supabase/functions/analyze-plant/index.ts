@@ -30,18 +30,28 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Analyze plant function called');
+    
     // Parse request
-    const { imageUrls, userId } = await req.json();
-    console.log('Processing image URLs:', imageUrls);
-    console.log('User ID:', userId);
+    const body = await req.json();
+    const { imageUrls, userId } = body;
+    
+    console.log('Request body:', { imageUrlsCount: imageUrls?.length, userId });
+
+    if (!OPENAI_API_KEY) {
+      throw new Error('OpenAI API key not configured');
+    }
 
     if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
       throw new Error('No valid image URLs provided');
     }
 
+    console.log('Processing image URLs:', imageUrls);
+
     // Fetch user profile data if userId is provided
     let userProfileData = null;
     if (userId) {
+      console.log('Fetching user profile for:', userId);
       const { data: profile, error } = await supabase
         .from('user_profiles')
         .select('*')
@@ -52,35 +62,51 @@ serve(async (req) => {
         console.error('Error fetching user profile:', error);
       } else {
         userProfileData = profile;
-        console.log('User profile data:', userProfileData);
+        console.log('User profile data loaded');
       }
     }
 
     // Step 1: Create a thread
+    console.log('Creating OpenAI thread...');
     const threadId = await createThread(OPENAI_API_KEY);
+    console.log('Thread created:', threadId);
     
     // Step 2: Add message with images to thread and include user profile context
+    console.log('Adding message with images to thread...');
     await addMessageWithImages(OPENAI_API_KEY, threadId, imageUrls, userProfileData);
+    console.log('Message added to thread');
     
     // Step 3: Run assistant on thread with user-specific instructions
+    console.log('Running assistant...');
     const runId = await runAssistant(OPENAI_API_KEY, threadId, ASSISTANT_ID, userProfileData);
+    console.log('Assistant run started:', runId);
     
     // Step 4: Wait for run completion (with exponential backoff)
+    console.log('Waiting for run completion...');
     await waitForRunCompletion(OPENAI_API_KEY, threadId, runId);
+    console.log('Run completed');
     
     // Step 5: Get assistant response
+    console.log('Getting assistant response...');
     const analysisText = await getAssistantResponse(OPENAI_API_KEY, threadId);
+    console.log('Analysis text received, length:', analysisText?.length);
     
     // Step 6: Parse results into structured format
     const analysisResult = parseAnalysisResults(analysisText);
+    console.log('Analysis parsed successfully');
 
     // Return successful response
     return new Response(
-      JSON.stringify({ analysis: analysisResult, profileUsed: !!userProfileData }),
+      JSON.stringify({ 
+        analysis: analysisResult, 
+        diagnosis: analysisText,
+        profileUsed: !!userProfileData 
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
+    console.error('Error in analyze-plant function:', error);
     // Handle any errors with a consistent response format
     return createErrorResponse(error);
   }

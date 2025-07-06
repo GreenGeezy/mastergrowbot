@@ -24,10 +24,12 @@ const PlantHealthAnalyzer = () => {
   const isMobile = useIsMobile();
 
   const handleImagesSelected = useCallback((files: File[]) => {
+    console.log('Images selected:', files.length);
     setSelectedFiles(files);
   }, []);
 
   const handleCameraCapture = useCallback((file: File) => {
+    console.log('Camera capture file:', file.name, file.size);
     setSelectedFiles(prev => [...prev, file]);
     setShowCamera(false);
   }, []);
@@ -38,44 +40,100 @@ const PlantHealthAnalyzer = () => {
       return;
     }
 
+    if (!session?.user?.id) {
+      toast.error("Please sign in to analyze plant images.");
+      navigate('/signin');
+      return;
+    }
+
     setIsLoading(true);
     setAnalysisResult(null);
 
     try {
-      // Upload images to storage
+      console.log('Starting analysis with', selectedFiles.length, 'files');
+      
+      // Upload images to storage with better error handling
       const imageUrls = [];
       
-      for (const file of selectedFiles) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i];
+        console.log(`Uploading file ${i + 1}:`, file.name, file.size, file.type);
+        
         const fileName = `plant-analysis-${Date.now()}-${Math.random().toString(36).substring(7)}.${file.name.split('.').pop()}`;
-        const { data, error } = await supabase.storage
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
           .from('plant-images')
-          .upload(fileName, file);
+          .upload(fileName, file, {
+            cacheControl: '3600',
+            upsert: false
+          });
 
-        if (error) throw error;
+        if (uploadError) {
+          console.error(`Upload error for file ${i + 1}:`, uploadError);
+          throw new Error(`Failed to upload ${file.name}: ${uploadError.message}`);
+        }
+
+        console.log(`Upload successful for file ${i + 1}:`, uploadData);
 
         const { data: { publicUrl } } = supabase.storage
           .from('plant-images')
           .getPublicUrl(fileName);
         
+        console.log(`Public URL for file ${i + 1}:`, publicUrl);
         imageUrls.push(publicUrl);
       }
+
+      console.log('All images uploaded, calling analyze-plant function with URLs:', imageUrls);
 
       // Call the analyze-plant edge function
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
         body: { 
           imageUrls,
-          userId: session?.user?.id 
+          userId: session.user.id 
         }
       });
 
-      if (error) throw error;
+      console.log('Analysis function response:', { data, error });
 
-      setAnalysisResult(data.analysis || "Analysis completed successfully!");
+      if (error) {
+        console.error('Analysis function error:', error);
+        throw new Error(`Analysis failed: ${error.message}`);
+      }
+
+      if (!data) {
+        throw new Error('No analysis data received');
+      }
+
+      const analysisText = data.analysis || data.diagnosis || "Analysis completed successfully!";
+      console.log('Analysis result:', analysisText);
+      
+      setAnalysisResult(analysisText);
       toast.success("Plant analysis complete!");
+
+      // Store the analysis in the database
+      const { error: saveError } = await supabase
+        .from('plant_analyses')
+        .insert({
+          user_id: session.user.id,
+          image_url: imageUrls[0], // Primary image
+          image_urls: imageUrls, // All images
+          diagnosis: analysisText,
+          confidence_level: data.confidence_level || 0.95,
+          detailed_analysis: data.detailed_analysis || {},
+          recommended_actions: data.recommended_actions || []
+        });
+
+      if (saveError) {
+        console.error('Error saving analysis:', saveError);
+        // Don't throw here, analysis was successful even if saving failed
+        toast.error("Analysis complete but couldn't save to history");
+      }
+
     } catch (error) {
       console.error("Analysis error:", error);
-      setAnalysisResult("Analysis failed. Please try again.");
-      toast.error("Analysis failed. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
+      setAnalysisResult(`Analysis failed: ${errorMessage}`);
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -139,13 +197,30 @@ const PlantHealthAnalyzer = () => {
               </Button>
             </div>
             
+            {selectedFiles.length > 0 && (
+              <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
+                <CardHeader>
+                  <CardTitle className="text-sm text-green-400">Selected Images ({selectedFiles.length})</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {selectedFiles.map((file, index) => (
+                      <div key={index} className="text-xs text-gray-400 truncate">
+                        {file.name} ({Math.round(file.size / 1024)}KB)
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+            
             {analysisResult && (
               <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
                 <CardHeader>
                   <CardTitle className="text-green-400">Analysis Results</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="whitespace-pre-wrap">{analysisResult}</p>
+                  <div className="whitespace-pre-wrap text-sm">{analysisResult}</div>
                 </CardContent>
               </Card>
             )}
