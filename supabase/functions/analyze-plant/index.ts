@@ -36,7 +36,7 @@ serve(async (req) => {
     const body = await req.json();
     const { imageUrls, userId } = body;
     
-    console.log('Request body:', { imageUrlsCount: imageUrls?.length, userId });
+    console.log('Request body:', { imageUrlsCount: imageUrls?.length, userId: userId || 'anonymous' });
 
     // Validate required parameters
     if (!OPENAI_API_KEY) {
@@ -49,32 +49,31 @@ serve(async (req) => {
       throw new Error('No valid image URLs provided');
     }
 
-    if (!userId) {
-      console.error('User ID not provided');
-      throw new Error('Authentication required - please sign in');
-    }
-
     console.log('Processing image URLs:', imageUrls);
 
-    // Fetch user profile data if userId is provided
+    // Fetch user profile data if userId is provided (optional for anonymous users)
     let userProfileData = null;
-    try {
-      console.log('Fetching user profile for:', userId);
-      const { data: profile, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-      
-      if (error) {
-        console.log('No user profile found or error fetching profile:', error.message);
-      } else {
-        userProfileData = profile;
-        console.log('User profile data loaded successfully');
+    if (userId && userId !== 'anonymous') {
+      try {
+        console.log('Fetching user profile for:', userId);
+        const { data: profile, error } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', userId)
+          .single();
+        
+        if (error) {
+          console.log('No user profile found or error fetching profile:', error.message);
+        } else {
+          userProfileData = profile;
+          console.log('User profile data loaded successfully');
+        }
+      } catch (profileError) {
+        console.log('Error fetching user profile:', profileError);
+        // Continue without profile data
       }
-    } catch (profileError) {
-      console.log('Error fetching user profile:', profileError);
-      // Continue without profile data
+    } else {
+      console.log('Anonymous user or no userId provided, proceeding without profile data');
     }
 
     // Step 1: Create a thread
