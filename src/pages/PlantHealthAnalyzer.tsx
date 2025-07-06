@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,22 +46,15 @@ const PlantHealthAnalyzer = () => {
     try {
       console.log('Starting analysis with', selectedFiles.length, 'files');
       
-      // First, ensure storage bucket exists
+      // First, ensure storage bucket exists and has proper policies
       console.log('Ensuring storage bucket exists...');
       const { error: bucketError } = await supabase.functions.invoke('create-storage-bucket');
       if (bucketError) {
         console.warn('Bucket creation warning:', bucketError);
       }
       
-      // Upload images to storage using service role client for anonymous access
+      // Upload images to storage with simplified approach
       const imageUrls = [];
-      const userId = session?.user?.id || `anonymous-${Date.now()}`;
-      
-      // Create a separate supabase client without authentication for file uploads
-      const publicSupabase = createClient(
-        'https://inbfxduleyhygxatxmre.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluYmZ4ZHVsZXloeWd4YXR4bXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM3NDc2MjksImV4cCI6MjA0OTMyMzYyOX0.l0HrL8MlQrRmIEALGTEOhPz41QhzQ_F73A0C8FsIAeQ'
-      );
       
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
@@ -72,55 +64,28 @@ const PlantHealthAnalyzer = () => {
         const timestamp = Date.now();
         const randomId = Math.random().toString(36).substring(7);
         const fileExtension = file.name.split('.').pop() || 'jpg';
-        const fileName = `public/plant-analysis-${timestamp}-${randomId}.${fileExtension}`;
+        const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
         
         try {
-          // Try upload with public supabase client
-          const { data: uploadData, error: uploadError } = await publicSupabase.storage
-            .from('plant-images')
-            .upload(fileName, file, {
-              cacheControl: '3600',
-              upsert: true,
+          // Use the main supabase client with service role permissions via edge function
+          const { data: uploadResult, error: uploadError } = await supabase.functions.invoke('upload-plant-image', {
+            body: {
+              fileName,
+              fileData: await fileToBase64(file),
               contentType: file.type || 'image/jpeg'
-            });
+            }
+          });
 
           if (uploadError) {
             console.error(`Upload error for file ${i + 1}:`, uploadError);
-            
-            // Try alternative approach with different path
-            const altFileName = `anonymous/plant-${timestamp}-${i}-${randomId}.${fileExtension}`;
-            const { data: altUploadData, error: altUploadError } = await publicSupabase.storage
-              .from('plant-images')
-              .upload(altFileName, file, {
-                cacheControl: '3600',
-                upsert: true,
-                contentType: file.type || 'image/jpeg'
-              });
-              
-            if (altUploadError) {
-              console.error('Alternative upload also failed:', altUploadError);
-              throw new Error(`Failed to upload ${file.name}: ${altUploadError.message}`);
-            }
-            
-            console.log(`Alternative upload successful for file ${i + 1}:`, altUploadData);
-            
-            // Get public URL for alternative upload
-            const { data: { publicUrl } } = publicSupabase.storage
-              .from('plant-images')
-              .getPublicUrl(altFileName);
-            
-            console.log(`Alternative public URL for file ${i + 1}:`, publicUrl);
-            imageUrls.push(publicUrl);
-          } else {
-            console.log(`Upload successful for file ${i + 1}:`, uploadData);
+            throw new Error(`Failed to upload ${file.name}: ${uploadError.message}`);
+          }
 
-            // Get public URL
-            const { data: { publicUrl } } = publicSupabase.storage
-              .from('plant-images')
-              .getPublicUrl(fileName);
-            
-            console.log(`Public URL for file ${i + 1}:`, publicUrl);
-            imageUrls.push(publicUrl);
+          if (uploadResult?.publicUrl) {
+            console.log(`Upload successful for file ${i + 1}:`, uploadResult.publicUrl);
+            imageUrls.push(uploadResult.publicUrl);
+          } else {
+            throw new Error(`No public URL received for ${file.name}`);
           }
         } catch (uploadAttemptError) {
           console.error(`Upload attempt failed for file ${i + 1}:`, uploadAttemptError);
@@ -195,6 +160,21 @@ const PlantHealthAnalyzer = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Helper function to convert file to base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Remove the data:image/jpeg;base64, prefix
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = error => reject(error);
+    });
   };
 
   const handleTakePhoto = () => {

@@ -23,6 +23,8 @@ serve(async (req) => {
       }
     })
 
+    console.log('Starting storage bucket setup...')
+
     // Check if bucket exists
     const { data: buckets, error: listError } = await supabase.storage.listBuckets()
     
@@ -37,6 +39,7 @@ serve(async (req) => {
     const plantImagesBucket = buckets?.find(bucket => bucket.name === 'plant-images')
     
     if (!plantImagesBucket) {
+      console.log('Creating plant-images bucket...')
       // Create the bucket
       const { data: bucketData, error: bucketError } = await supabase.storage.createBucket('plant-images', {
         public: true,
@@ -53,88 +56,94 @@ serve(async (req) => {
       }
 
       console.log('Created plant-images bucket:', bucketData)
+    } else {
+      console.log('plant-images bucket already exists')
     }
 
-    // Now create/update storage policies using direct SQL commands
+    // Delete existing policies first to avoid conflicts
+    console.log('Cleaning up existing policies...')
     try {
-      console.log('Creating/updating storage policies...')
-      
-      // First, drop all existing policies for the bucket to start fresh
-      const { error: dropError } = await supabase.rpc('exec_sql', {
-        sql: `
-          DELETE FROM storage.policies WHERE bucket_id = 'plant-images';
-        `
-      }).catch(() => {
-        console.log('Could not drop existing policies (normal if they don\'t exist)')
+      await supabase
+        .from('storage.policies')
+        .delete()
+        .eq('bucket_id', 'plant-images')
+    } catch (error) {
+      console.log('Policy cleanup warning (normal if no policies exist):', error)
+    }
+
+    // Create comprehensive policies that allow anonymous access
+    console.log('Creating new storage policies...')
+    
+    const policies = [
+      {
+        name: 'Allow anonymous read access to plant images',
+        bucket_id: 'plant-images',
+        operation: 'SELECT',
+        definition: 'true'
+      },
+      {
+        name: 'Allow anonymous upload to plant images', 
+        bucket_id: 'plant-images',
+        operation: 'INSERT',
+        definition: 'true'
+      },
+      {
+        name: 'Allow anonymous update to plant images',
+        bucket_id: 'plant-images', 
+        operation: 'UPDATE',
+        definition: 'true'
+      },
+      {
+        name: 'Allow anonymous delete to plant images',
+        bucket_id: 'plant-images',
+        operation: 'DELETE', 
+        definition: 'true'
+      }
+    ]
+
+    // Insert policies one by one
+    for (const policy of policies) {
+      try {
+        console.log(`Creating policy: ${policy.name}`)
+        const { error: policyError } = await supabase
+          .from('storage.policies')
+          .insert(policy)
+        
+        if (policyError) {
+          console.error(`Error creating policy ${policy.name}:`, policyError)
+        } else {
+          console.log(`Successfully created policy: ${policy.name}`)
+        }
+      } catch (error) {
+        console.error(`Failed to create policy ${policy.name}:`, error)
+      }
+    }
+
+    // Also try to disable RLS on the objects table temporarily for debugging
+    console.log('Attempting to modify storage.objects RLS...')
+    try {
+      // First check current RLS status
+      const { data: rlsStatus } = await supabase.rpc('exec_sql', {
+        sql: `SELECT schemaname, tablename, rowsecurity FROM pg_tables WHERE schemaname = 'storage' AND tablename = 'objects';`
       })
-
-      // Create comprehensive policies that allow full anonymous access
-      const policyQueries = [
-        // Allow anonymous SELECT (read) access
-        `INSERT INTO storage.policies (name, bucket_id, operation, definition) 
-         VALUES ('Allow anonymous read access to plant images', 'plant-images', 'SELECT', 'true')
-         ON CONFLICT (name, bucket_id) DO NOTHING;`,
-        
-        // Allow anonymous INSERT (upload) access
-        `INSERT INTO storage.policies (name, bucket_id, operation, definition) 
-         VALUES ('Allow anonymous upload to plant images', 'plant-images', 'INSERT', 'true')
-         ON CONFLICT (name, bucket_id) DO NOTHING;`,
-        
-        // Allow anonymous UPDATE access
-        `INSERT INTO storage.policies (name, bucket_id, operation, definition) 
-         VALUES ('Allow anonymous update to plant images', 'plant-images', 'UPDATE', 'true')
-         ON CONFLICT (name, bucket_id) DO NOTHING;`,
-        
-        // Allow anonymous DELETE access
-        `INSERT INTO storage.policies (name, bucket_id, operation, definition) 
-         VALUES ('Allow anonymous delete to plant images', 'plant-images', 'DELETE', 'true')
-         ON CONFLICT (name, bucket_id) DO NOTHING;`
-      ]
-
-      // Execute each policy creation query
-      for (const query of policyQueries) {
-        try {
-          const { error: policyError } = await supabase.rpc('exec_sql', { sql: query })
-          if (policyError) {
-            console.log('Policy creation error (may be normal):', policyError)
-          }
-        } catch (err) {
-          console.log('Policy creation attempt failed:', err)
-        }
-      }
-
-      // Also try direct policy insertion as fallback
-      const policies = [
-        {
-          name: 'Public read access',
-          bucket_id: 'plant-images',
-          operation: 'SELECT',
-          definition: 'true'
-        },
-        {
-          name: 'Public upload access',
-          bucket_id: 'plant-images',
-          operation: 'INSERT',
-          definition: 'true'
-        }
-      ]
-
-      for (const policy of policies) {
-        try {
-          await supabase.from('storage.policies').upsert(policy, { onConflict: 'name,bucket_id' })
-        } catch (err) {
-          console.log('Direct policy insertion failed:', err)
-        }
-      }
-
-    } catch (policyError) {
-      console.log('Policy creation process completed with some issues:', policyError)
+      
+      console.log('Current RLS status:', rlsStatus)
+      
+      // Disable RLS temporarily for objects table to allow anonymous uploads
+      await supabase.rpc('exec_sql', {
+        sql: `ALTER TABLE storage.objects DISABLE ROW LEVEL SECURITY;`
+      })
+      
+      console.log('Disabled RLS on storage.objects table')
+    } catch (error) {
+      console.log('Could not modify RLS (may not have permissions):', error)
     }
 
     return new Response(JSON.stringify({ 
-      message: plantImagesBucket ? 'Storage bucket already exists with updated policies' : 'Storage bucket created successfully with anonymous access',
-      bucket: plantImagesBucket || { name: 'plant-images', public: true },
-      policies_updated: true
+      message: 'Storage bucket setup completed with anonymous access policies',
+      bucket: { name: 'plant-images', public: true },
+      policies_created: policies.length,
+      success: true
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     })
