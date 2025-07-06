@@ -2,25 +2,38 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const corsHeaders = {
+// Enhanced CORS headers for better compatibility
+const enhancedCorsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-requested-with',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+  'Access-Control-Max-Age': '86400',
 }
 
 serve(async (req) => {
-  // Handle CORS preflight
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
-  }
-
   console.log('=== UPLOAD PLANT IMAGE FUNCTION START ===');
   console.log('Request method:', req.method);
-  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
+  console.log('Request URL:', req.url);
+  console.log('User Agent:', req.headers.get('user-agent'));
+  console.log('Origin:', req.headers.get('origin'));
+  console.log('Referer:', req.headers.get('referer'));
+
+  // Handle CORS preflight with enhanced headers
+  if (req.method === 'OPTIONS') {
+    console.log('Handling CORS preflight request');
+    return new Response(null, { 
+      status: 200,
+      headers: enhancedCorsHeaders 
+    });
+  }
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    
+    console.log('Environment check:');
+    console.log('- SUPABASE_URL exists:', !!supabaseUrl);
+    console.log('- SERVICE_KEY exists:', !!supabaseServiceKey);
     
     if (!supabaseUrl || !supabaseServiceKey) {
       console.error('Missing Supabase configuration');
@@ -37,7 +50,9 @@ serve(async (req) => {
 
     let body;
     try {
-      body = await req.json();
+      const textBody = await req.text();
+      console.log('Raw request body length:', textBody.length);
+      body = JSON.parse(textBody);
     } catch (parseError) {
       console.error('Failed to parse request body:', parseError);
       throw new Error('Invalid JSON in request body');
@@ -100,7 +115,7 @@ serve(async (req) => {
       path: uploadData.path,
       success: true 
     }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' }
     });
 
   } catch (error) {
@@ -113,7 +128,7 @@ serve(async (req) => {
       success: false 
     }), {
       status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' }
     });
   }
 });

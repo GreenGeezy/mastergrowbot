@@ -15,6 +15,14 @@ import {
 } from "./utils.ts";
 import { createClient } from "https://deno.land/x/supabase@1.0.0/mod.ts";
 
+// Enhanced CORS headers for better compatibility
+const enhancedCorsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-requested-with',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+  'Access-Control-Max-Age': '86400',
+};
+
 // Initialize Supabase client with service role for admin access
 const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
@@ -24,26 +32,44 @@ const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
 const ASSISTANT_ID = Deno.env.get('OPENAI_ASSISTANT_ID') || "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
 
 serve(async (req) => {
-  // Handle CORS preflight
+  console.log('=== ANALYZE PLANT FUNCTION START ===');
+  console.log('Request method:', req.method);
+  console.log('Request URL:', req.url);
+  console.log('User Agent:', req.headers.get('user-agent'));
+  console.log('Origin:', req.headers.get('origin'));
+  console.log('Referer:', req.headers.get('referer'));
+
+  // Handle CORS preflight with enhanced headers
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    console.log('Handling CORS preflight request');
+    return new Response(null, { 
+      status: 200,
+      headers: enhancedCorsHeaders 
+    });
   }
 
   const startTime = Date.now();
-  console.log('=== ANALYZE PLANT FUNCTION START ===');
-  console.log('Request method:', req.method);
-  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
   
   try {
+    console.log('Environment check:');
+    console.log('- OPENAI_API_KEY exists:', !!OPENAI_API_KEY);
+    console.log('- SUPABASE_URL:', supabaseUrl);
+    console.log('- ASSISTANT_ID:', ASSISTANT_ID);
+
     // Parse request with better error handling
     let body;
     try {
-      body = await req.json();
+      const textBody = await req.text();
+      console.log('Raw request body length:', textBody.length);
+      body = JSON.parse(textBody);
     } catch (parseError) {
       console.error('Failed to parse request body:', parseError);
       return new Response(
         JSON.stringify({ error: 'Invalid JSON in request body', success: false }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { 
+          status: 400, 
+          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+        }
       );
     }
 
@@ -60,7 +86,10 @@ serve(async (req) => {
       console.error('OpenAI API key not configured');
       return new Response(
         JSON.stringify({ error: 'OpenAI API key not configured', success: false }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { 
+          status: 500, 
+          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+        }
       );
     }
 
@@ -68,7 +97,10 @@ serve(async (req) => {
       console.error('No valid image URLs provided');
       return new Response(
         JSON.stringify({ error: 'No valid image URLs provided', success: false }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { 
+          status: 400, 
+          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+        }
       );
     }
 
@@ -155,7 +187,7 @@ serve(async (req) => {
     console.log('Total analysis time:', totalTime, 'ms');
     console.log('=== ANALYZE PLANT FUNCTION SUCCESS ===');
 
-    // Return successful response
+    // Return successful response with enhanced headers
     const response = { 
       analysis: analysisResult, 
       diagnosis: analysisText,
@@ -168,7 +200,7 @@ serve(async (req) => {
       JSON.stringify(response),
       { 
         status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
       }
     );
 
@@ -191,7 +223,7 @@ serve(async (req) => {
       JSON.stringify(errorResponse),
       { 
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
       }
     );
   }

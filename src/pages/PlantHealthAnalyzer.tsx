@@ -41,6 +41,10 @@ const PlantHealthAnalyzer = () => {
     }
 
     console.log('=== STARTING PLANT ANALYSIS ===');
+    console.log('Current URL:', window.location.href);
+    console.log('Supabase URL:', supabase.supabaseUrl);
+    console.log('Branch/Environment check');
+    
     setIsLoading(true);
     setAnalysisResult(null);
 
@@ -73,9 +77,10 @@ const PlantHealthAnalyzer = () => {
         
         try {
           console.log(`Uploading file ${i + 1} with name:`, fileName);
+          console.log('Calling upload-plant-image function...');
           
-          // Use the upload edge function with timeout
-          const uploadPromise = supabase.functions.invoke('upload-plant-image', {
+          // Use the upload edge function with enhanced error handling
+          const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
             body: {
               fileName,
               fileData: await fileToBase64(file),
@@ -83,27 +88,18 @@ const PlantHealthAnalyzer = () => {
             }
           });
 
-          const uploadTimeout = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Upload timeout')), 30000)
-          );
+          console.log(`Upload response for file ${i + 1}:`, uploadResponse);
 
-          const { data: uploadResult, error: uploadError } = await Promise.race([
-            uploadPromise,
-            uploadTimeout
-          ]) as any;
-
-          console.log(`Upload response for file ${i + 1}:`, { uploadResult, uploadError });
-
-          if (uploadError) {
-            console.error(`Upload error for file ${i + 1}:`, uploadError);
-            throw new Error(`Failed to upload ${file.name}: ${uploadError.message}`);
+          if (uploadResponse.error) {
+            console.error(`Upload error for file ${i + 1}:`, uploadResponse.error);
+            throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
           }
 
-          if (uploadResult?.publicUrl) {
-            console.log(`Upload successful for file ${i + 1}:`, uploadResult.publicUrl);
-            imageUrls.push(uploadResult.publicUrl);
+          if (uploadResponse.data?.publicUrl) {
+            console.log(`Upload successful for file ${i + 1}:`, uploadResponse.data.publicUrl);
+            imageUrls.push(uploadResponse.data.publicUrl);
           } else {
-            console.error(`No public URL received for file ${i + 1}:`, uploadResult);
+            console.error(`No public URL received for file ${i + 1}:`, uploadResponse.data);
             throw new Error(`No public URL received for ${file.name}`);
           }
         } catch (uploadAttemptError) {
@@ -119,47 +115,32 @@ const PlantHealthAnalyzer = () => {
       console.log('All images uploaded successfully:', imageUrls);
       console.log('Calling analyze-plant function...');
 
-      // Call the analyze-plant edge function with timeout protection
-      const analysisPromise = supabase.functions.invoke('analyze-plant', {
+      // Call the analyze-plant edge function with enhanced error handling
+      const analysisResponse = await supabase.functions.invoke('analyze-plant', {
         body: { 
           imageUrls,
           userId: session?.user?.id || `anonymous-${Date.now()}` // Use anonymous ID for non-authenticated users
         }
       });
 
-      const analysisTimeout = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Analysis timeout - OpenAI request took too long')), 90000)
-      );
+      console.log('Analysis function response received:', analysisResponse);
 
-      console.log('Waiting for analysis response...');
-      const { data, error } = await Promise.race([
-        analysisPromise,
-        analysisTimeout
-      ]) as any;
-
-      console.log('Analysis function response received:', { 
-        hasData: !!data, 
-        hasError: !!error,
-        dataKeys: data ? Object.keys(data) : [],
-        errorDetails: error
-      });
-
-      if (error) {
-        console.error('Analysis function error:', error);
-        throw new Error(`Analysis failed: ${error.message || 'Unknown error from analysis function'}`);
+      if (analysisResponse.error) {
+        console.error('Analysis function error:', analysisResponse.error);
+        throw new Error(`Analysis failed: ${analysisResponse.error.message || 'Unknown error from analysis function'}`);
       }
 
-      if (!data) {
+      if (!analysisResponse.data) {
         console.error('No analysis data received');
         throw new Error('No analysis data received from function');
       }
 
-      if (!data.success) {
-        console.error('Analysis function returned failure:', data);
-        throw new Error(data.error || 'Analysis failed with unknown error');
+      if (!analysisResponse.data.success) {
+        console.error('Analysis function returned failure:', analysisResponse.data);
+        throw new Error(analysisResponse.data.error || 'Analysis failed with unknown error');
       }
 
-      const analysisText = data.analysis || data.diagnosis || "Analysis completed successfully!";
+      const analysisText = analysisResponse.data.analysis || analysisResponse.data.diagnosis || "Analysis completed successfully!";
       console.log('Analysis result received, length:', analysisText.length);
       
       setAnalysisResult(analysisText);
@@ -176,9 +157,9 @@ const PlantHealthAnalyzer = () => {
               image_url: imageUrls[0], // Primary image
               image_urls: imageUrls, // All images
               diagnosis: analysisText,
-              confidence_level: data.confidence_level || 0.95,
-              detailed_analysis: data.detailed_analysis || {},
-              recommended_actions: data.recommended_actions || []
+              confidence_level: analysisResponse.data.confidence_level || 0.95,
+              detailed_analysis: analysisResponse.data.detailed_analysis || {},
+              recommended_actions: analysisResponse.data.recommended_actions || []
             });
 
           if (saveError) {
