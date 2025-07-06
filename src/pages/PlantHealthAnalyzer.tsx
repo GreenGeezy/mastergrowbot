@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -9,7 +9,6 @@ import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import CameraCapture from '@/components/plant-health/CameraCapture';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
-import AnalysisActions from '@/components/plant-health/AnalysisActions';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,20 +17,38 @@ const PlantHealthAnalyzer = () => {
   const [analysisResult, setAnalysisResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
+  // Check authentication status on component mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        console.log('Current session status:', currentSession ? 'authenticated' : 'not authenticated');
+        setAuthChecked(true);
+      } catch (error) {
+        console.error('Error checking auth:', error);
+        setAuthChecked(true);
+      }
+    };
+    
+    checkAuth();
+  }, []);
+
   const handleImagesSelected = useCallback((files: File[]) => {
     console.log('Images selected:', files.length);
     setSelectedFiles(files);
+    setAnalysisResult(null); // Clear previous results
   }, []);
 
   const handleCameraCapture = useCallback((file: File) => {
     console.log('Camera capture file:', file.name, file.size);
     setSelectedFiles(prev => [...prev, file]);
     setShowCamera(false);
+    setAnalysisResult(null); // Clear previous results
   }, []);
 
   const handleAnalyze = async () => {
@@ -40,7 +57,9 @@ const PlantHealthAnalyzer = () => {
       return;
     }
 
+    // Check if user is authenticated
     if (!session?.user?.id) {
+      console.log('User not authenticated, redirecting to signin');
       toast.error("Please sign in to analyze plant images.");
       navigate('/signin');
       return;
@@ -50,7 +69,14 @@ const PlantHealthAnalyzer = () => {
     setAnalysisResult(null);
 
     try {
-      console.log('Starting analysis with', selectedFiles.length, 'files');
+      console.log('Starting analysis with', selectedFiles.length, 'files for user:', session.user.id);
+      
+      // First, ensure storage bucket exists
+      console.log('Ensuring storage bucket exists...');
+      const { error: bucketError } = await supabase.functions.invoke('create-storage-bucket');
+      if (bucketError) {
+        console.warn('Bucket creation warning:', bucketError);
+      }
       
       // Upload images to storage with better error handling
       const imageUrls = [];
@@ -59,7 +85,8 @@ const PlantHealthAnalyzer = () => {
         const file = selectedFiles[i];
         console.log(`Uploading file ${i + 1}:`, file.name, file.size, file.type);
         
-        const fileName = `plant-analysis-${Date.now()}-${Math.random().toString(36).substring(7)}.${file.name.split('.').pop()}`;
+        // Create unique filename with user ID folder structure
+        const fileName = `${session.user.id}/plant-analysis-${Date.now()}-${Math.random().toString(36).substring(7)}.${file.name.split('.').pop()}`;
         
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('plant-images')
@@ -75,6 +102,7 @@ const PlantHealthAnalyzer = () => {
 
         console.log(`Upload successful for file ${i + 1}:`, uploadData);
 
+        // Get public URL
         const { data: { publicUrl } } = supabase.storage
           .from('plant-images')
           .getPublicUrl(fileName);
@@ -105,28 +133,33 @@ const PlantHealthAnalyzer = () => {
       }
 
       const analysisText = data.analysis || data.diagnosis || "Analysis completed successfully!";
-      console.log('Analysis result:', analysisText);
+      console.log('Analysis result received, length:', analysisText.length);
       
       setAnalysisResult(analysisText);
       toast.success("Plant analysis complete!");
 
       // Store the analysis in the database
-      const { error: saveError } = await supabase
-        .from('plant_analyses')
-        .insert({
-          user_id: session.user.id,
-          image_url: imageUrls[0], // Primary image
-          image_urls: imageUrls, // All images
-          diagnosis: analysisText,
-          confidence_level: data.confidence_level || 0.95,
-          detailed_analysis: data.detailed_analysis || {},
-          recommended_actions: data.recommended_actions || []
-        });
+      try {
+        const { error: saveError } = await supabase
+          .from('plant_analyses')
+          .insert({
+            user_id: session.user.id,
+            image_url: imageUrls[0], // Primary image
+            image_urls: imageUrls, // All images
+            diagnosis: analysisText,
+            confidence_level: data.confidence_level || 0.95,
+            detailed_analysis: data.detailed_analysis || {},
+            recommended_actions: data.recommended_actions || []
+          });
 
-      if (saveError) {
-        console.error('Error saving analysis:', saveError);
-        // Don't throw here, analysis was successful even if saving failed
-        toast.error("Analysis complete but couldn't save to history");
+        if (saveError) {
+          console.error('Error saving analysis:', saveError);
+          toast.error("Analysis complete but couldn't save to history");
+        } else {
+          console.log('Analysis saved to database successfully');
+        }
+      } catch (saveError) {
+        console.error('Error saving analysis to database:', saveError);
       }
 
     } catch (error) {
@@ -146,6 +179,18 @@ const PlantHealthAnalyzer = () => {
   const handleSignIn = () => {
     navigate('/signin');
   };
+
+  // Show loading spinner while checking auth
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-background text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-white pb-20">
