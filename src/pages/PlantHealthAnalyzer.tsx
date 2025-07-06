@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from 'react-router-dom';
+import { createClient } from '@supabase/supabase-js';
 import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import CameraCapture from '@/components/plant-health/CameraCapture';
