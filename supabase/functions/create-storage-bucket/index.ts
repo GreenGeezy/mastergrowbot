@@ -55,11 +55,63 @@ serve(async (req) => {
       console.log('Created plant-images bucket:', bucketData)
     }
 
-    // Set up RLS policies for the bucket
-    const { error: policyError } = await supabase.rpc('create_storage_policies')
-    
-    if (policyError) {
-      console.log('Policy creation might have failed, but bucket exists:', policyError)
+    // Create storage policies with direct SQL execution
+    try {
+      console.log('Creating storage policies...')
+      
+      // Delete existing policies first to avoid conflicts
+      await supabase.rpc('exec_sql', { 
+        sql: `
+          DELETE FROM storage.policies WHERE bucket_id = 'plant-images';
+        `
+      }).catch(() => {
+        // Ignore errors if policies don't exist
+        console.log('No existing policies to delete or exec_sql not available')
+      })
+
+      // Create new policies that allow anonymous access
+      const policies = [
+        {
+          name: 'Allow anonymous uploads to plant images',
+          bucket_id: 'plant-images',
+          operation: 'INSERT',
+          definition: 'true'
+        },
+        {
+          name: 'Allow public read access to plant images',
+          bucket_id: 'plant-images', 
+          operation: 'SELECT',
+          definition: 'true'
+        },
+        {
+          name: 'Allow users to update plant images',
+          bucket_id: 'plant-images',
+          operation: 'UPDATE', 
+          definition: 'true'
+        },
+        {
+          name: 'Allow users to delete plant images',
+          bucket_id: 'plant-images',
+          operation: 'DELETE',
+          definition: 'true'
+        }
+      ]
+
+      for (const policy of policies) {
+        const { error: policyError } = await supabase
+          .from('storage.policies')
+          .insert(policy)
+          .onConflict('name,bucket_id')
+        
+        if (policyError) {
+          console.log(`Policy ${policy.name} might already exist:`, policyError)
+        } else {
+          console.log(`Created policy: ${policy.name}`)
+        }
+      }
+
+    } catch (policyError) {
+      console.log('Policy creation failed, but bucket exists:', policyError)
     }
 
     return new Response(JSON.stringify({ 

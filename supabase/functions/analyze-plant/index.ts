@@ -15,7 +15,7 @@ import {
 } from "./utils.ts";
 import { createClient } from "https://deno.land/x/supabase@1.0.0/mod.ts";
 
-// Initialize Supabase client
+// Initialize Supabase client with service role for admin access
 const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -51,9 +51,9 @@ serve(async (req) => {
 
     console.log('Processing image URLs:', imageUrls);
 
-    // Fetch user profile data if userId is provided (optional for anonymous users)
+    // Fetch user profile data if userId is provided and not anonymous
     let userProfileData = null;
-    if (userId && userId !== 'anonymous') {
+    if (userId && userId !== 'anonymous' && !userId.startsWith('anonymous-')) {
       try {
         console.log('Fetching user profile for:', userId);
         const { data: profile, error } = await supabase

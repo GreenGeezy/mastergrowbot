@@ -53,38 +53,71 @@ const PlantHealthAnalyzer = () => {
         console.warn('Bucket creation warning:', bucketError);
       }
       
-      // Upload images to storage with better error handling
+      // Upload images to storage with anonymous support
       const imageUrls = [];
-      const userId = session?.user?.id || 'anonymous';
+      const userId = session?.user?.id || `anonymous-${Date.now()}`;
       
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         console.log(`Uploading file ${i + 1}:`, file.name, file.size, file.type);
         
-        // Create unique filename
-        const fileName = `${userId}/plant-analysis-${Date.now()}-${Math.random().toString(36).substring(7)}.${file.name.split('.').pop()}`;
+        // Create unique filename with timestamp to avoid conflicts
+        const timestamp = Date.now();
+        const randomId = Math.random().toString(36).substring(7);
+        const fileExtension = file.name.split('.').pop() || 'jpg';
+        const fileName = `${userId}/plant-analysis-${timestamp}-${randomId}.${fileExtension}`;
         
+        // Use upsert to avoid conflicts and handle anonymous uploads
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('plant-images')
           .upload(fileName, file, {
             cacheControl: '3600',
-            upsert: false
+            upsert: true, // Allow overwriting
+            contentType: file.type || 'image/jpeg'
           });
 
         if (uploadError) {
           console.error(`Upload error for file ${i + 1}:`, uploadError);
-          throw new Error(`Failed to upload ${file.name}: ${uploadError.message}`);
+          
+          // Try alternative upload approach for anonymous users
+          console.log('Trying alternative upload approach...');
+          const altFileName = `anonymous/plant-${timestamp}-${i}-${randomId}.${fileExtension}`;
+          const { data: altUploadData, error: altUploadError } = await supabase.storage
+            .from('plant-images')
+            .upload(altFileName, file, {
+              cacheControl: '3600',
+              upsert: true
+            });
+            
+          if (altUploadError) {
+            console.error('Alternative upload also failed:', altUploadError);
+            throw new Error(`Failed to upload ${file.name}: ${altUploadError.message}`);
+          }
+          
+          console.log(`Alternative upload successful for file ${i + 1}:`, altUploadData);
+          
+          // Get public URL for alternative upload
+          const { data: { publicUrl } } = supabase.storage
+            .from('plant-images')
+            .getPublicUrl(altFileName);
+          
+          console.log(`Alternative public URL for file ${i + 1}:`, publicUrl);
+          imageUrls.push(publicUrl);
+        } else {
+          console.log(`Upload successful for file ${i + 1}:`, uploadData);
+
+          // Get public URL
+          const { data: { publicUrl } } = supabase.storage
+            .from('plant-images')
+            .getPublicUrl(fileName);
+          
+          console.log(`Public URL for file ${i + 1}:`, publicUrl);
+          imageUrls.push(publicUrl);
         }
+      }
 
-        console.log(`Upload successful for file ${i + 1}:`, uploadData);
-
-        // Get public URL
-        const { data: { publicUrl } } = supabase.storage
-          .from('plant-images')
-          .getPublicUrl(fileName);
-        
-        console.log(`Public URL for file ${i + 1}:`, publicUrl);
-        imageUrls.push(publicUrl);
+      if (imageUrls.length === 0) {
+        throw new Error('No images were successfully uploaded');
       }
 
       console.log('All images uploaded, calling analyze-plant function with URLs:', imageUrls);
@@ -93,7 +126,7 @@ const PlantHealthAnalyzer = () => {
       const { data, error } = await supabase.functions.invoke('analyze-plant', {
         body: { 
           imageUrls,
-          userId: session?.user?.id || null // Allow anonymous analysis
+          userId: session?.user?.id || null // Allow null for anonymous users
         }
       });
 
