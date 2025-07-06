@@ -42,7 +42,6 @@ const PlantHealthAnalyzer = () => {
 
     console.log('=== STARTING PLANT ANALYSIS ===');
     console.log('Current URL:', window.location.href);
-    console.log('Supabase URL:', supabase.supabaseUrl);
     console.log('Branch/Environment check');
     
     setIsLoading(true);
