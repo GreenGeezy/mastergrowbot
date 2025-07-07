@@ -1,19 +1,144 @@
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { 
-  createThread, 
-  addMessageWithImages, 
-  runAssistant, 
-  waitForRunCompletion, 
-  getAssistantResponse 
-} from "./openai-client.ts";
-import { 
-  corsHeaders, 
-  parseAnalysisResults, 
-  createErrorResponse 
-} from "./utils.ts";
+// OpenAI API functions - inline implementation to avoid import issues
+async function createThread(apiKey: string): Promise<string> {
+  const response = await fetch('https://api.openai.com/v1/threads', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'OpenAI-Beta': 'assistants=v2'
+    }
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to create thread: ${response.statusText}`);
+  }
+  
+  const data = await response.json();
+  return data.id;
+}
+
+async function addMessageWithImages(apiKey: string, threadId: string, imageUrls: string[], userProfile?: any): Promise<void> {
+  const content = [
+    {
+      type: "text",
+      text: `Please analyze these cannabis plant images for health issues, diseases, nutrient deficiencies, and provide specific recommendations. ${userProfile ? `User profile: ${JSON.stringify(userProfile)}` : ''}`
+    },
+    ...imageUrls.map(url => ({
+      type: "image_url",
+      image_url: { url }
+    }))
+  ];
+
+  const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'OpenAI-Beta': 'assistants=v2'
+    },
+    body: JSON.stringify({
+      role: "user",
+      content
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add message: ${response.statusText}`);
+  }
+}
+
+async function runAssistant(apiKey: string, threadId: string, assistantId: string, userProfile?: any): Promise<string> {
+  const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'OpenAI-Beta': 'assistants=v2'
+    },
+    body: JSON.stringify({
+      assistant_id: assistantId,
+      instructions: userProfile ? `Consider this user profile in your analysis: ${JSON.stringify(userProfile)}` : undefined
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to run assistant: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.id;
+}
+
+async function waitForRunCompletion(apiKey: string, threadId: string, runId: string): Promise<void> {
+  let attempts = 0;
+  const maxAttempts = 30;
+  
+  while (attempts < maxAttempts) {
+    const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${runId}`, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'OpenAI-Beta': 'assistants=v2'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to check run status: ${response.statusText}`);
+    }
+
+    const run = await response.json();
+    
+    if (run.status === 'completed') {
+      return;
+    }
+    
+    if (run.status === 'failed' || run.status === 'cancelled' || run.status === 'expired') {
+      throw new Error(`Run ${run.status}: ${run.last_error?.message || 'Unknown error'}`);
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    attempts++;
+  }
+  
+  throw new Error('Assistant run timed out');
+}
+
+async function getAssistantResponse(apiKey: string, threadId: string): Promise<string> {
+  const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'OpenAI-Beta': 'assistants=v2'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to get messages: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  const assistantMessages = data.data.filter((msg: any) => msg.role === 'assistant');
+  
+  if (assistantMessages.length === 0) {
+    throw new Error('No assistant response found');
+  }
+
+  const latestMessage = assistantMessages[0];
+  return latestMessage.content[0]?.text?.value || 'No response content';
+}
 import { createClient } from "https://deno.land/x/supabase@1.0.0/mod.ts";
+
+// Utility functions - inline implementation
+function parseAnalysisResults(text: string): any {
+  // Simple parsing - return the text as analysis
+  return {
+    summary: text,
+    recommendations: [],
+    issues_detected: [],
+    confidence: 0.9
+  };
+}
 
 // Enhanced CORS headers with specific origin support
 const enhancedCorsHeaders = {
