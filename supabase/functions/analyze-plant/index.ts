@@ -1,131 +1,61 @@
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-// OpenAI API functions - inline implementation to avoid import issues
-async function createThread(apiKey: string): Promise<string> {
-  const response = await fetch('https://api.openai.com/v1/threads', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'OpenAI-Beta': 'assistants=v2'
-    }
-  });
-  
-  if (!response.ok) {
-    throw new Error(`Failed to create thread: ${response.statusText}`);
-  }
-  
-  const data = await response.json();
-  return data.id;
-}
-
-async function addMessageWithImages(apiKey: string, threadId: string, imageUrls: string[], userProfile?: any): Promise<void> {
-  const content = [
+// OpenAI Vision API functions - using Chat Completions for better image analysis
+async function analyzeImagesWithVision(apiKey: string, imageUrls: string[], userProfile?: any): Promise<string> {
+  const messages = [
     {
-      type: "text",
-      text: `Please analyze these cannabis plant images for health issues, diseases, nutrient deficiencies, and provide specific recommendations. ${userProfile ? `User profile: ${JSON.stringify(userProfile)}` : ''}`
+      role: "system",
+      content: `You are an expert cannabis cultivation assistant specializing in plant health analysis. Analyze the provided images for:
+      
+      1. Health Issues: Identify any visible problems, diseases, or stress indicators
+      2. Nutrient Deficiencies: Look for signs of nitrogen, phosphorus, potassium, or other nutrient deficiencies
+      3. Pests & Diseases: Check for spider mites, aphids, powdery mildew, bud rot, or other issues
+      4. Growth Stage Assessment: Determine the plant's current growth stage
+      5. Environmental Stress: Look for light burn, heat stress, overwatering, or underwatering
+      
+      Provide specific, actionable recommendations for each issue found. Be thorough and professional.
+      ${userProfile ? `Consider this user profile in your analysis: ${JSON.stringify(userProfile)}` : ''}`
     },
-    ...imageUrls.map(url => ({
-      type: "image_url",
-      image_url: { url }
-    }))
+    {
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: "Please analyze these cannabis plant images and provide a detailed health assessment with specific recommendations."
+        },
+        ...imageUrls.map(url => ({
+          type: "image_url",
+          image_url: {
+            url: url,
+            detail: "high"
+          }
+        }))
+      ]
+    }
   ];
 
-  const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'OpenAI-Beta': 'assistants=v2'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      role: "user",
-      content
+      model: 'gpt-4o', // Using GPT-4 Vision model
+      messages: messages,
+      max_tokens: 2000,
+      temperature: 0.3
     })
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to add message: ${response.statusText}`);
-  }
-}
-
-async function runAssistant(apiKey: string, threadId: string, assistantId: string, userProfile?: any): Promise<string> {
-  const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'OpenAI-Beta': 'assistants=v2'
-    },
-    body: JSON.stringify({
-      assistant_id: assistantId,
-      instructions: userProfile ? `Consider this user profile in your analysis: ${JSON.stringify(userProfile)}` : undefined
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to run assistant: ${response.statusText}`);
+    const errorData = await response.json();
+    throw new Error(`OpenAI Vision API error: ${errorData.error?.message || response.statusText}`);
   }
 
   const data = await response.json();
-  return data.id;
-}
-
-async function waitForRunCompletion(apiKey: string, threadId: string, runId: string): Promise<void> {
-  let attempts = 0;
-  const maxAttempts = 30;
-  
-  while (attempts < maxAttempts) {
-    const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${runId}`, {
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'OpenAI-Beta': 'assistants=v2'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to check run status: ${response.statusText}`);
-    }
-
-    const run = await response.json();
-    
-    if (run.status === 'completed') {
-      return;
-    }
-    
-    if (run.status === 'failed' || run.status === 'cancelled' || run.status === 'expired') {
-      throw new Error(`Run ${run.status}: ${run.last_error?.message || 'Unknown error'}`);
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    attempts++;
-  }
-  
-  throw new Error('Assistant run timed out');
-}
-
-async function getAssistantResponse(apiKey: string, threadId: string): Promise<string> {
-  const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/messages`, {
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'OpenAI-Beta': 'assistants=v2'
-    }
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to get messages: ${response.statusText}`);
-  }
-
-  const data = await response.json();
-  const assistantMessages = data.data.filter((msg: any) => msg.role === 'assistant');
-  
-  if (assistantMessages.length === 0) {
-    throw new Error('No assistant response found');
-  }
-
-  const latestMessage = assistantMessages[0];
-  return latestMessage.content[0]?.text?.value || 'No response content';
+  return data.choices[0]?.message?.content || 'No analysis provided';
 }
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -265,28 +195,12 @@ serve(async (req) => {
       }
     }
 
-    // OpenAI Analysis with timeout protection
+    // OpenAI Vision Analysis with timeout protection
     try {
-      console.log('Starting OpenAI analysis...');
+      console.log('Starting OpenAI Vision analysis...');
       
-      // Create thread
-      const threadId = await createThread(OPENAI_API_KEY);
-      console.log('Thread created:', threadId);
-      
-      // Add message with images
-      await addMessageWithImages(OPENAI_API_KEY, threadId, imageUrls, userProfileData);
-      console.log('Message added to thread');
-      
-      // Run assistant
-      const runId = await runAssistant(OPENAI_API_KEY, threadId, ASSISTANT_ID, userProfileData);
-      console.log('Assistant run started:', runId);
-      
-      // Wait for completion with timeout
-      await waitForRunCompletion(OPENAI_API_KEY, threadId, runId);
-      console.log('Run completed');
-      
-      // Get response
-      const analysisText = await getAssistantResponse(OPENAI_API_KEY, threadId);
+      // Use direct vision analysis instead of assistants
+      const analysisText = await analyzeImagesWithVision(OPENAI_API_KEY, imageUrls, userProfileData);
       console.log('Analysis text received, length:', analysisText?.length);
       
       if (!analysisText) {
