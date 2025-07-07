@@ -140,7 +140,17 @@ const PlantHealthAnalyzer = () => {
         throw new Error(analysisResponse.data.error || 'Analysis failed with unknown error');
       }
 
-      const analysisText = analysisResponse.data.analysis || analysisResponse.data.diagnosis || "Analysis completed successfully!";
+      // Safely extract and sanitize analysis text
+      let analysisText = analysisResponse.data.analysis || analysisResponse.data.diagnosis || "Analysis completed successfully!";
+      
+      // Ensure analysisText is a string and sanitize it
+      if (typeof analysisText !== 'string') {
+        analysisText = JSON.stringify(analysisText, null, 2);
+      }
+      
+      // Remove any potential problematic characters
+      analysisText = analysisText.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, '');
+      
       console.log('Analysis result received, length:', analysisText.length);
       
       setAnalysisResult(analysisText);
@@ -286,7 +296,9 @@ const PlantHealthAnalyzer = () => {
                   <CardTitle className="text-green-400">Analysis Results</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="whitespace-pre-wrap text-sm">{analysisResult}</div>
+                  <div className="whitespace-pre-wrap text-sm break-words overflow-wrap-anywhere">
+                    {String(analysisResult)}
+                  </div>
                 </CardContent>
               </Card>
             )}
