@@ -127,7 +127,7 @@ async function getAssistantResponse(apiKey: string, threadId: string): Promise<s
   const latestMessage = assistantMessages[0];
   return latestMessage.content[0]?.text?.value || 'No response content';
 }
-import { createClient } from "https://deno.land/x/supabase@1.0.0/mod.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 // Utility functions - inline implementation
 function parseAnalysisResults(text: string): any {
