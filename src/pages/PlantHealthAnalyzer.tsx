@@ -9,12 +9,25 @@ import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import CameraCapture from '@/components/plant-health/CameraCapture';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
+import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 
+interface StructuredAnalysisResult {
+  diagnosis: string;
+  confidence_level: number;
+  detailed_analysis: {
+    growth_stage: string;
+    health_score: string;
+    specific_issues: string;
+    environmental_factors: string;
+  };
+  recommended_actions: string[];
+}
+
 const PlantHealthAnalyzer = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [analysisResult, setAnalysisResult] = useState<string | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<StructuredAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const session = useSession();
@@ -150,10 +163,12 @@ const PlantHealthAnalyzer = () => {
       
       // Remove any potential problematic characters
       analysisText = analysisText.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, '');
+      // Parse the analysis text to create structured data
+      const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
       
       console.log('Analysis result received, length:', analysisText.length);
       
-      setAnalysisResult(analysisText);
+      setAnalysisResult(structuredResult);
       toast.success("Plant analysis complete!");
 
       // Store the analysis in the database only if user is authenticated
@@ -192,12 +207,88 @@ const PlantHealthAnalyzer = () => {
       console.error("Analysis error:", error);
       console.error("Error stack:", error.stack);
       const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
-      setAnalysisResult(`Analysis failed: ${errorMessage}`);
+      setAnalysisResult(null);
       toast.error(errorMessage);
     } finally {
       clearTimeout(timeoutId);
       setIsLoading(false);
     }
+  };
+
+  // Helper function to parse analysis text into structured data
+  const parseAnalysisText = (analysisText: string, confidence: number): StructuredAnalysisResult => {
+    // Split analysis text into sections based on common patterns
+    const sections = analysisText.split(/\n\n+/);
+    
+    let growthStage = "";
+    let healthScore = "";
+    let specificIssues = "";
+    let environmentalFactors = "";
+    const recommendedActions: string[] = [];
+    
+    // Parse sections looking for key indicators
+    for (const section of sections) {
+      const lowerSection = section.toLowerCase();
+      
+      if (lowerSection.includes('flowering') || lowerSection.includes('vegetative') || lowerSection.includes('growth stage')) {
+        growthStage = section.length > 200 ? section.substring(0, 200) + "..." : section;
+      } else if (lowerSection.includes('health') && lowerSection.includes('score')) {
+        healthScore = section.length > 200 ? section.substring(0, 200) + "..." : section;
+      } else if (lowerSection.includes('issue') || lowerSection.includes('deficiency') || lowerSection.includes('problem')) {
+        specificIssues = section.length > 300 ? section.substring(0, 300) + "..." : section;
+      } else if (lowerSection.includes('environment') || lowerSection.includes('temperature') || lowerSection.includes('humidity') || lowerSection.includes('light')) {
+        environmentalFactors = section.length > 300 ? section.substring(0, 300) + "..." : section;
+      }
+      
+      // Extract recommendations
+      if (lowerSection.includes('recommend') || lowerSection.includes('action') || lowerSection.includes('suggestion')) {
+        const recommendations = section.split(/[•\-\n]/).filter(item => 
+          item.trim().length > 10 && 
+          (item.toLowerCase().includes('use') || 
+           item.toLowerCase().includes('apply') || 
+           item.toLowerCase().includes('adjust') ||
+           item.toLowerCase().includes('increase') ||
+           item.toLowerCase().includes('decrease') ||
+           item.toLowerCase().includes('ensure') ||
+           item.toLowerCase().includes('monitor'))
+        );
+        recommendedActions.push(...recommendations.map(r => r.trim()).slice(0, 6));
+      }
+    }
+    
+    // Fallback values if sections aren't found
+    if (!growthStage) {
+      growthStage = analysisText.length > 200 ? analysisText.substring(0, 200) + "..." : analysisText;
+    }
+    if (!healthScore) {
+      healthScore = "Plant appears to be in good overall condition based on visual assessment.";
+    }
+    if (!specificIssues) {
+      specificIssues = "No major issues detected. Continue monitoring plant health.";
+    }
+    if (!environmentalFactors) {
+      environmentalFactors = "Environmental conditions appear suitable. Monitor temperature, humidity, and lighting.";
+    }
+    if (recommendedActions.length === 0) {
+      recommendedActions.push(
+        "Continue regular watering schedule",
+        "Monitor for pests and diseases",
+        "Maintain proper lighting conditions",
+        "Check nutrient levels"
+      );
+    }
+    
+    return {
+      diagnosis: analysisText,
+      confidence_level: confidence,
+      detailed_analysis: {
+        growth_stage: growthStage,
+        health_score: healthScore,
+        specific_issues: specificIssues,
+        environmental_factors: environmentalFactors
+      },
+      recommended_actions: recommendedActions
+    };
   };
 
   // Helper function to convert file to base64
@@ -291,16 +382,7 @@ const PlantHealthAnalyzer = () => {
             )}
             
             {analysisResult && (
-              <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
-                <CardHeader>
-                  <CardTitle className="text-green-400">Analysis Results</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="whitespace-pre-wrap text-sm break-words overflow-wrap-anywhere">
-                    {String(analysisResult)}
-                  </div>
-                </CardContent>
-              </Card>
+              <AnalysisResults analysisResult={analysisResult} />
             )}
           </div>
         </section>
