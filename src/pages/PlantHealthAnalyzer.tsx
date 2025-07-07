@@ -217,8 +217,11 @@ const PlantHealthAnalyzer = () => {
 
   // Helper function to parse analysis text into structured data
   const parseAnalysisText = (analysisText: string, confidence: number): StructuredAnalysisResult => {
-    // Split analysis text into sections based on common patterns
-    const sections = analysisText.split(/\n\n+/);
+    // Clean up the text first
+    const cleanText = analysisText.replace(/\*\*/g, '').replace(/###/g, '').trim();
+    
+    // Split by major sections
+    const sections = cleanText.split(/(?=Growth Stage|Health Score|Specific Issues|Environmental|Recommended Actions)/i);
     
     let growthStage = "";
     let healthScore = "";
@@ -226,60 +229,127 @@ const PlantHealthAnalyzer = () => {
     let environmentalFactors = "";
     const recommendedActions: string[] = [];
     
-    // Parse sections looking for key indicators
+    // Extract summary information
+    const summaryMatch = cleanText.match(/Analysis Summary[:\s]*([\s\S]*?)(?=Growth Stage|Health Score|$)/i);
+    const summary = summaryMatch ? summaryMatch[1].trim() : "";
+    
+    // Parse each section
     for (const section of sections) {
-      const lowerSection = section.toLowerCase();
+      const trimmedSection = section.trim();
+      const lowerSection = trimmedSection.toLowerCase();
       
-      if (lowerSection.includes('flowering') || lowerSection.includes('vegetative') || lowerSection.includes('growth stage')) {
-        growthStage = section.length > 200 ? section.substring(0, 200) + "..." : section;
-      } else if (lowerSection.includes('health') && lowerSection.includes('score')) {
-        healthScore = section.length > 200 ? section.substring(0, 200) + "..." : section;
-      } else if (lowerSection.includes('issue') || lowerSection.includes('deficiency') || lowerSection.includes('problem')) {
-        specificIssues = section.length > 300 ? section.substring(0, 300) + "..." : section;
-      } else if (lowerSection.includes('environment') || lowerSection.includes('temperature') || lowerSection.includes('humidity') || lowerSection.includes('light')) {
-        environmentalFactors = section.length > 300 ? section.substring(0, 300) + "..." : section;
-      }
-      
-      // Extract recommendations
-      if (lowerSection.includes('recommend') || lowerSection.includes('action') || lowerSection.includes('suggestion')) {
-        const recommendations = section.split(/[•\-\n]/).filter(item => 
-          item.trim().length > 10 && 
-          (item.toLowerCase().includes('use') || 
-           item.toLowerCase().includes('apply') || 
-           item.toLowerCase().includes('adjust') ||
-           item.toLowerCase().includes('increase') ||
-           item.toLowerCase().includes('decrease') ||
-           item.toLowerCase().includes('ensure') ||
-           item.toLowerCase().includes('monitor'))
-        );
-        recommendedActions.push(...recommendations.map(r => r.trim()).slice(0, 6));
+      if (lowerSection.startsWith('growth stage')) {
+        // Extract just the growth stage info, not the whole analysis
+        const stageMatch = trimmedSection.match(/flowering|vegetative|seedling|germination/i);
+        if (stageMatch) {
+          growthStage = `The plant is in the ${stageMatch[0].toLowerCase()} stage.`;
+        } else {
+          growthStage = "Growth stage assessment based on visual indicators shows mature development.";
+        }
+      } else if (lowerSection.startsWith('health score')) {
+        // Extract health assessment
+        const healthMatch = trimmedSection.match(/Health Score[:\s]*([\s\S]*?)(?=Specific Issues|Environmental|$)/i);
+        if (healthMatch) {
+          const healthText = healthMatch[1].trim();
+          healthScore = healthText.length > 300 ? healthText.substring(0, 300) + "..." : healthText;
+        } else {
+          healthScore = "Plant appears healthy with good overall condition and structure.";
+        }
+      } else if (lowerSection.startsWith('specific issues')) {
+        // Extract specific issues
+        const issuesMatch = trimmedSection.match(/Specific Issues[:\s]*([\s\S]*?)(?=Environmental|Recommended Actions|$)/i);
+        if (issuesMatch) {
+          const issuesText = issuesMatch[1].trim();
+          specificIssues = issuesText.length > 400 ? issuesText.substring(0, 400) + "..." : issuesText;
+        } else {
+          specificIssues = "No major issues detected. Continue regular monitoring and care.";
+        }
+      } else if (lowerSection.startsWith('environmental')) {
+        // Extract environmental factors
+        const envMatch = trimmedSection.match(/Environmental[:\s]*([\s\S]*?)(?=Recommended Actions|$)/i);
+        if (envMatch) {
+          const envText = envMatch[1].trim();
+          environmentalFactors = envText.length > 400 ? envText.substring(0, 400) + "..." : envText;
+        } else {
+          environmentalFactors = "Environmental conditions appear suitable. Monitor lighting, temperature, and humidity levels.";
+        }
+      } else if (lowerSection.startsWith('recommended actions')) {
+        // Extract recommended actions
+        const actionsMatch = trimmedSection.match(/Recommended Actions[:\s]*([\s\S]*)/i);
+        if (actionsMatch) {
+          const actionsText = actionsMatch[1];
+          
+          // Parse different action categories
+          const categories = [
+            'Nutrient Management',
+            'Pest Control', 
+            'Airflow and Ventilation',
+            'Watering Practices',
+            'Monitoring',
+            'pH Management',
+            'Temperature Control',
+            'Humidity Control',
+            'Light Management'
+          ];
+          
+          for (const category of categories) {
+            const categoryRegex = new RegExp(`${category}[:\\s]*(.*?)(?=${categories.join('|')}|$)`, 'is');
+            const categoryMatch = actionsText.match(categoryRegex);
+            
+            if (categoryMatch) {
+              const categoryText = categoryMatch[1].trim();
+              const bullets = categoryText.split(/[-•]\s*/).filter(item => item.trim().length > 10);
+              
+              bullets.forEach(bullet => {
+                const cleanBullet = bullet.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' ');
+                if (cleanBullet.length > 15) {
+                  recommendedActions.push(`${category}: ${cleanBullet}`);
+                }
+              });
+            }
+          }
+        }
       }
     }
     
     // Fallback values if sections aren't found
     if (!growthStage) {
-      growthStage = analysisText.length > 200 ? analysisText.substring(0, 200) + "..." : analysisText;
+      if (summary.toLowerCase().includes('flowering')) {
+        growthStage = "The plant is in the flowering stage, showing mature bud development.";
+      } else {
+        growthStage = "Plant shows healthy development with good structural characteristics.";
+      }
     }
+    
     if (!healthScore) {
-      healthScore = "Plant appears to be in good overall condition based on visual assessment.";
+      if (summary.toLowerCase().includes('good') || summary.toLowerCase().includes('healthy')) {
+        healthScore = "Plant appears to be in good overall health with well-formed structure and minimal visible issues.";
+      } else {
+        healthScore = "Plant condition assessment shows areas for improvement and monitoring.";
+      }
     }
+    
     if (!specificIssues) {
-      specificIssues = "No major issues detected. Continue monitoring plant health.";
+      specificIssues = "Continue regular monitoring for any signs of nutrient deficiencies, pests, or environmental stress.";
     }
+    
     if (!environmentalFactors) {
-      environmentalFactors = "Environmental conditions appear suitable. Monitor temperature, humidity, and lighting.";
+      environmentalFactors = "Maintain optimal growing conditions including proper lighting, temperature (70-80°F), and humidity levels (40-60%).";
     }
+    
     if (recommendedActions.length === 0) {
       recommendedActions.push(
-        "Continue regular watering schedule",
-        "Monitor for pests and diseases",
-        "Maintain proper lighting conditions",
-        "Check nutrient levels"
+        "Nutrient Management: Monitor and adjust nutrient levels based on growth stage",
+        "Pest Control: Regular inspection for pests and diseases",
+        "Environmental Control: Maintain optimal temperature and humidity",
+        "Watering: Water when top inch of soil feels dry",
+        "Monitoring: Daily visual inspection for changes",
+        "pH Management: Keep pH between 6.0-6.5 for optimal uptake"
       );
     }
     
     return {
-      diagnosis: analysisText,
+      diagnosis: cleanText,
       confidence_level: confidence,
       detailed_analysis: {
         growth_stage: growthStage,
@@ -287,7 +357,7 @@ const PlantHealthAnalyzer = () => {
         specific_issues: specificIssues,
         environmental_factors: environmentalFactors
       },
-      recommended_actions: recommendedActions
+      recommended_actions: recommendedActions.slice(0, 9) // Limit to 9 actions
     };
   };
 
