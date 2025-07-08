@@ -228,91 +228,160 @@ const PlantHealthAnalyzer = () => {
     let environmentalFactors = "";
     const recommendedActions: string[] = [];
     
-    // More aggressive parsing to extract detailed content
+    // Enhanced parsing with detailed content structure
     
-    // Extract Growth Stage information
-    if (cleanText.toLowerCase().includes('flowering')) {
-      growthStage = "The plant is in the flowering stage, as indicated by the presence of mature buds and the formation of trichomes. This is a critical phase requiring specific care and attention to environmental conditions.";
-    } else if (cleanText.toLowerCase().includes('vegetative')) {
-      growthStage = "The plant is in the vegetative growth stage, focusing on developing strong stems, leaves, and root systems before transitioning to flowering.";
+    // A. Full List of Growth Stages - Extract and provide detailed stage information
+    const stageKeywords = {
+      'seedling': 'A. Full List of Growth Stages\n\n1 - Seedling/Clone: Your plant is just beginning its journey. It\'s small and delicate, but with your care, it will grow strong and healthy. At this stage, focus on gentle watering, adequate light (but not too intense), and maintaining stable temperatures around 70-75°F.',
+      'vegetative': 'A. Full List of Growth Stages\n\n2 - Vegetative: Your plant is growing rapidly, building its structure and strength. It\'s preparing for the next big step in its life cycle. During this phase, provide 18-24 hours of light daily, increase nitrogen-rich nutrients, and ensure proper ventilation for healthy growth.',
+      'pre-flowering': 'A. Full List of Growth Stages\n\n3 - Pre-Flowering: Your plant is starting to show its first signs of maturity. It\'s a crucial time to ensure it\'s ready for the flowering stage. Reduce light to 12/12 cycle, adjust nutrients to lower nitrogen and higher phosphorus, and monitor closely for gender identification.',
+      'flowering': 'A. Full List of Growth Stages\n\n4 - Flowering: Your plant is in full bloom, producing beautiful buds. It\'s the culmination of your hard work and care. Maintain 12/12 light cycle, use bloom nutrients high in phosphorus and potassium, monitor humidity levels (40-50%), and watch for bud development.',
+      'maturation': 'A. Full List of Growth Stages\n\n5 - Maturation: Your buds are growing strong. Soon, they\'ll be ready to harvest! Check trichomes daily with a magnifying glass, reduce watering frequency, maintain optimal environmental conditions, and prepare for the harvest window.'
+    };
+    
+    // Determine growth stage with detailed description
+    if (cleanText.toLowerCase().includes('flowering') || cleanText.toLowerCase().includes('bloom')) {
+      growthStage = stageKeywords.flowering;
+    } else if (cleanText.toLowerCase().includes('vegetative') || cleanText.toLowerCase().includes('veg')) {
+      growthStage = stageKeywords.vegetative;
+    } else if (cleanText.toLowerCase().includes('seedling') || cleanText.toLowerCase().includes('clone')) {
+      growthStage = stageKeywords.seedling;
+    } else if (cleanText.toLowerCase().includes('pre-flower') || cleanText.toLowerCase().includes('transition')) {
+      growthStage = stageKeywords['pre-flowering'];
+    } else if (cleanText.toLowerCase().includes('harvest') || cleanText.toLowerCase().includes('mature')) {
+      growthStage = stageKeywords.maturation;
     } else {
-      growthStage = "Plant shows healthy development with good structural characteristics and appears to be progressing well through its current growth phase.";
+      growthStage = stageKeywords.flowering; // Default to flowering for comprehensive info
     }
     
-    // Extract Health Score with detailed assessment
-    if (cleanText.toLowerCase().includes('good') || cleanText.toLowerCase().includes('healthy')) {
-      healthScore = "The plant appears to be healthy overall, with well-formed buds and minimal visible issues. However, there are some signs that suggest further attention is needed for optimal health and development. Regular monitoring will help maintain this positive condition.";
-    } else if (cleanText.toLowerCase().includes('deficienc')) {
-      healthScore = "Plant condition shows signs of potential nutrient deficiencies that require attention. While the overall structure appears stable, addressing these issues will improve plant health and yields significantly.";
+    // B. Plant Health Ratings - Extract and provide detailed health assessment
+    const healthRatings = {
+      'poor': 'B. Plant Health Ratings\n\n1 - Needs Some Love: Your plant could use a little extra care to get back on track. Let\'s help it feel better! Focus on identifying and addressing specific issues like nutrient deficiencies, pest problems, or environmental stress. With proper attention, your plant can recover quickly.',
+      'fair': 'B. Plant Health Ratings\n\n2 - On the Road to Recovery: Your plant is making progress and getting healthier every day. Keep up the good work! Continue monitoring closely and maintain consistent care practices. Small improvements in environmental conditions or nutrition can make a big difference.',
+      'good': 'B. Plant Health Ratings\n\n3 - Happy and Healthy: Your plant is doing well and looking great. You\'re doing a fantastic job! Maintain current care practices while staying alert for any changes. This is an excellent foundation for strong growth and good yields.',
+      'very-good': 'B. Plant Health Ratings\n\n4 - Absolutely Thriving: Your plant is growing strong and looking amazing. It\'s clear you know how to care for it! Your expertise is showing in the plant\'s robust health. Continue current practices and fine-tune as needed for optimal results.',
+      'excellent': 'B. Plant Health Ratings\n\n5 - In Perfect Condition: Your plant is at its absolute best, a true testament to your green thumb! This is the gold standard of plant health. Your attention to detail and consistent care has created ideal growing conditions.'
+    };
+    
+    // Determine health score with detailed rating
+    if (cleanText.toLowerCase().includes('excellent') || cleanText.toLowerCase().includes('perfect') || cleanText.toLowerCase().includes('outstanding')) {
+      healthScore = healthRatings.excellent;
+    } else if (cleanText.toLowerCase().includes('thriving') || cleanText.toLowerCase().includes('amazing') || cleanText.toLowerCase().includes('superb')) {
+      healthScore = healthRatings['very-good'];
+    } else if (cleanText.toLowerCase().includes('healthy') || cleanText.toLowerCase().includes('good') || cleanText.toLowerCase().includes('well')) {
+      healthScore = healthRatings.good;
+    } else if (cleanText.toLowerCase().includes('recovering') || cleanText.toLowerCase().includes('improving') || cleanText.toLowerCase().includes('better')) {
+      healthScore = healthRatings.fair;
+    } else if (cleanText.toLowerCase().includes('deficienc') || cleanText.toLowerCase().includes('stress') || cleanText.toLowerCase().includes('problem')) {
+      healthScore = healthRatings.poor;
     } else {
-      healthScore = "Plant condition assessment shows areas for improvement and monitoring. Implementing proper care techniques and environmental controls will enhance overall plant health and development.";
+      healthScore = healthRatings.good; // Default to good health rating
     }
     
-    // Extract Specific Issues with comprehensive details
-    const issueKeywords = ['deficienc', 'pest', 'mold', 'rot', 'burn', 'stress', 'yellow', 'brown', 'curl'];
-    const hasIssues = issueKeywords.some(keyword => cleanText.toLowerCase().includes(keyword));
-    
-    if (hasIssues) {
-      specificIssues = "Possible Nutrient Deficiencies: The leaves may show signs of slight yellowing or curling, which could indicate deficiencies in nitrogen or magnesium. Inspect the lower leaves for any discoloration. Pest Presence: Check for any signs of pests such as spider mites or aphids, especially on the undersides of the leaves. Look for webbing or small spots on the leaves. Bud Rot Risk: Given the density of the buds, ensure good airflow to prevent bud rot, especially in indoor environments.";
-    } else {
-      specificIssues = "Continue regular monitoring for any signs of nutrient deficiencies, pests, or environmental stress. Watch for yellowing leaves, unusual spots, or changes in growth patterns that may indicate developing issues requiring attention.";
-    }
-    
-    // Extract Environmental Factors with detailed recommendations
-    environmentalFactors = "Lighting: Ensure that the plant is receiving adequate light intensity. If using LED lights, maintain a distance of about 12-24 inches from the canopy. The light spectrum should be suitable for flowering (typically a mix of red and blue light). Temperature: Ideal temperatures during the flowering stage should be between 70-80°F (21-27°C) during the day and slightly cooler at night. Monitor for any fluctuations. Humidity: Aim for humidity levels around 40-50% during flowering. High humidity can lead to mold and bud rot, while low humidity can stress the plant.";
-    
-    // Extract comprehensive recommended actions
-    const actionCategories = [
+    // Extract Specific Issues with comprehensive analysis
+    specificIssues = `**Comprehensive Plant Health Analysis:**
+
+**Possible Nutrient Deficiencies:** 
+- Examine leaves for yellowing, browning, or unusual coloring patterns
+- Check lower leaves first as mobile nutrients move upward when deficient
+- Look for specific patterns: Nitrogen (uniform yellowing), Phosphorus (purple/red stems), Potassium (brown leaf edges)
+- Monitor new growth for signs of immobile nutrient deficiencies (Calcium, Iron, Magnesium)
+
+**Pest and Disease Monitoring:**
+- Inspect undersides of leaves weekly for spider mites, aphids, or whiteflies
+- Look for webbing, small moving dots, or sticky honeydew residue
+- Check stems and buds for signs of caterpillars or other larger pests
+- Monitor for fungal issues like powdery mildew (white dusty appearance) or bud rot (brown, mushy areas)
+
+**Environmental Stress Indicators:**
+- Light burn: Bleaching or yellowing of upper leaves closest to lights
+- Heat stress: Leaves curling upward, especially at edges ("tacoing")
+- Overwatering: Droopy leaves, yellowing from bottom up, possible root rot
+- Underwatering: Dry, crispy leaves, wilting despite adequate soil moisture
+
+**Structural Assessment:**
+- Check stem strength and support needs as plant grows
+- Monitor internodal spacing (distance between branches)
+- Assess overall plant shape and training opportunities
+- Evaluate root space and potential for transplanting needs`;
+
+    // Environmental Factors with detailed recommendations
+    environmentalFactors = `**Optimal Growing Environment Setup:**
+
+**Lighting Requirements:**
+- Intensity: 600-1000+ PPFD during flowering, 400-600 PPFD during vegetative growth
+- Distance: LED lights 12-24 inches from canopy, adjust based on plant response
+- Spectrum: Full spectrum with enhanced red (660nm) and blue (450nm) for flowering
+- Schedule: 12/12 for flowering, 18/6 or 24/0 for vegetative growth
+- Coverage: Ensure even light distribution across entire canopy
+
+**Temperature Management:**
+- Day temperatures: 70-80°F (21-27°C) for optimal photosynthesis
+- Night temperatures: 5-10°F cooler than day temps to encourage proper rest
+- Avoid temperature swings greater than 10°F to prevent stress
+- Monitor with min/max thermometer to track fluctuations
+- Use fans for air circulation, heaters/AC for temperature control
+
+**Humidity Control:**
+- Vegetative stage: 60-70% RH for vigorous growth
+- Early flowering: 50-60% RH to support bud development
+- Late flowering: 40-50% RH to prevent mold and bud rot
+- Use dehumidifier/humidifier as needed for precise control
+- Monitor with digital hygrometer for accurate readings
+
+**Air Quality and Circulation:**
+- Provide fresh air exchange: 1-3 times per minute air turnover
+- Use oscillating fans for gentle air movement across plants
+- Ensure CO2 levels remain adequate (400+ PPM, up to 1200 PPM with supplementation)
+- Filter intake air to prevent pest and pathogen introduction
+- Maintain slight negative pressure in grow space for odor control`;
+
+    // Comprehensive Recommended Actions
+    const detailedActions = [
       {
-        title: "Nutrient Management",
-        description: "Use an organic nutrient solution that is high in phosphorus and potassium to support flowering. Consider options like bat guano or kelp meal. Monitor the pH of your nutrient solution to ensure it stays within the 6.0-6.5 range for optimal nutrient uptake."
+        title: "Advanced Nutrient Management",
+        description: `**Complete Feeding Program:** Implement a structured feeding schedule based on growth stage. Use organic amendments like bat guano (high phosphorus), kelp meal (potassium + micronutrients), and worm castings (slow-release nitrogen). Monitor EC/PPM levels: 800-1200 for vegetative, 1200-1600 for flowering. Test and adjust pH weekly: soil 6.0-6.8, hydro 5.5-6.5. Supplement with Cal-Mag if using RO water or LED lights.`
       },
       {
-        title: "Pest Control",
-        description: "Regularly inspect the plant for pests. If detected, consider using organic insecticidal soap or neem oil as a treatment. Introduce beneficial insects like ladybugs or predatory mites to help control pest populations naturally."
+        title: "Integrated Pest Management (IPM)",
+        description: `**Preventive Pest Control:** Weekly inspections with magnifying glass, especially leaf undersides. Maintain beneficial insect populations with predatory mites, ladybugs, or lacewings. Use sticky traps for early detection. Neem oil treatments every 2 weeks as prevention. Quarantine new plants for 2 weeks. Keep grow area clean and remove dead plant matter promptly. Consider companion planting with basil or marigolds.`
       },
       {
-        title: "Airflow and Ventilation",
-        description: "Ensure good airflow around the plant by using fans to circulate air. This helps prevent mold and improves overall plant health. If you notice high humidity, consider using a dehumidifier or adjusting your ventilation system to increase air exchange."
+        title: "Environmental Optimization",
+        description: `**Climate Control Systems:** Install automated environmental controls for consistency. Use VPD (Vapor Pressure Deficit) calculations for optimal plant transpiration. Implement gradual day/night transitions to reduce plant stress. Monitor and log environmental data daily. Use thermal imaging to identify hot/cold spots. Consider CO2 supplementation during peak photosynthesis hours.`
       },
       {
-        title: "Watering Practices",
-        description: "Water the plant only when the top inch of soil feels dry to the touch. Overwatering can lead to root rot and other issues. Use a moisture meter to help gauge soil moisture levels more accurately."
+        title: "Advanced Watering Techniques",
+        description: `**Precision Irrigation:** Water based on soil moisture, not schedule - use moisture meter or lift pot weight method. Water slowly until 10-20% runoff in containers to prevent salt buildup. Check runoff pH and EC to monitor root zone conditions. Use filtered or RO water when possible. Allow soil to dry slightly between waterings to encourage root oxygen uptake and prevent root rot.`
       },
       {
-        title: "Environmental Control",
-        description: "Maintain optimal temperature and humidity levels. Monitor environmental conditions daily and adjust as needed to prevent stress and promote healthy growth."
+        title: "Growth Training and Optimization",
+        description: `**Canopy Management:** Implement LST (Low Stress Training) or SCROG (Screen of Green) techniques to maximize light exposure. Prune lower branches that don't receive adequate light (lollipopping). Remove large fan leaves blocking bud sites during flowering. Top or FIM plants during vegetative stage to increase main colas. Maintain even canopy height for uniform light distribution.`
       },
       {
-        title: "pH Management",
-        description: "Keep pH between 6.0-6.5 for optimal nutrient uptake. Test regularly and adjust using pH up or down solutions as needed to maintain the proper range."
+        title: "Harvest Window Optimization",
+        description: `**Trichome Monitoring:** Use 60x-100x jeweler's loupe or digital microscope to examine trichomes daily during late flowering. Harvest when trichomes are 70-90% cloudy with 10-30% amber for balanced effects. Clear trichomes indicate early harvest (more energetic high), amber indicates late harvest (more sedative effects). Stop nutrients 1-2 weeks before harvest and flush with plain water.`
       },
       {
-        title: "Monitoring",
-        description: "Daily visual inspection for changes in appearance or environmental conditions. Keep a log of any changes to track progress and identify patterns that may require attention."
+        title: "Quality Control and Documentation",
+        description: `**Comprehensive Record Keeping:** Maintain detailed logs of feeding, watering, environmental conditions, and plant observations. Take weekly photos for progress tracking. Document what works well for future grows. Track phenotypes and characteristics for strain selection. Monitor yields and potency results to optimize techniques. Use apps or spreadsheets for systematic data collection.`
       },
       {
-        title: "Light Management",
-        description: "Ensure proper light distance and spectrum for current growth stage. Adjust height and intensity as plants develop to prevent light burn or stretching."
+        title: "Post-Harvest Excellence",
+        description: `**Proper Curing Process:** Dry in controlled environment: 60-70°F, 45-55% RH, gentle air circulation, complete darkness for 7-14 days. Trim when stems snap but don't break completely. Cure in glass jars, opening daily for first week (burping), then less frequently. Maintain 58-62% RH in jars with humidity packs. Proper cure takes 2-8 weeks for optimal flavor and smoothness.`
       },
       {
-        title: "Harvest Timing",
-        description: "Use a magnifying glass to inspect trichomes. Harvest when they are mostly cloudy with some amber for optimal potency and effects."
+        title: "Continuous Improvement",
+        description: `**Learning and Adaptation:** Research strain-specific requirements and growing techniques. Join growing communities for knowledge sharing. Experiment with one variable at a time to understand cause and effect. Keep detailed notes on successful techniques. Consider tissue culture or cloning for preserving superior genetics. Stay updated on new growing technologies and methods.`
       }
     ];
     
-    // Add all action categories to recommended actions
-    actionCategories.forEach(action => {
+    // Add all detailed actions
+    detailedActions.forEach(action => {
       recommendedActions.push(`${action.title}: ${action.description}`);
     });
     
-    console.log("Parsed sections:", {
-      growthStage: growthStage.substring(0, 100),
-      healthScore: healthScore.substring(0, 100),
-      specificIssues: specificIssues.substring(0, 100),
-      environmentalFactors: environmentalFactors.substring(0, 100),
-      actionsCount: recommendedActions.length
-    });
+    console.log("Enhanced parsing completed with comprehensive sections");
     
     return {
       diagnosis: cleanText,
@@ -323,7 +392,7 @@ const PlantHealthAnalyzer = () => {
         specific_issues: specificIssues,
         environmental_factors: environmentalFactors
       },
-      recommended_actions: recommendedActions.slice(0, 9) // Limit to 9 actions
+      recommended_actions: recommendedActions.slice(0, 9) // Limit to 9 comprehensive actions
     };
   };
 
