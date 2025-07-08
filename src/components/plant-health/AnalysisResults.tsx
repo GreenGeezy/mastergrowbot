@@ -36,21 +36,51 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
     visible: { opacity: 1, y: 0 }
   };
 
-  // Extract first sentences from Growth Stage and Health Score
-  const getFirstSentence = (text: string) => {
-    const match = text.match(/^[^.!?]*[.!?]/);
-    return match ? match[0].trim() : text.split(' ').slice(0, 15).join(' ') + '...';
+  // Extract meaningful content from Growth Stage and Health Score for summary
+  const getGrowthStageSummary = (text: string) => {
+    // Extract the stage name after the header (e.g., "Flowering" from "A. Full List of Growth Stages\n\nFlowering\n...")
+    const lines = text.split('\n').filter(line => line.trim() !== '');
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line && !line.startsWith('A.') && !line.includes('Growth Stages') && line.length < 50) {
+        return `**${line}**: The plant is in the ${line.toLowerCase()} stage.`;
+      }
+    }
+    return "**Growth Stage**: Analysis completed.";
+  };
+
+  const getHealthScoreSummary = (text: string) => {
+    // Extract the health rating after the header (e.g., "Happy and Healthy" from "B. Plant Health Ratings\n\nHappy and Healthy\n...")
+    const lines = text.split('\n').filter(line => line.trim() !== '');
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line && !line.startsWith('B.') && !line.includes('Plant Health') && line.length < 50) {
+        return `**${line}**: The plant appears to be in good condition overall.`;
+      }
+    }
+    return "**Health Score**: Plant condition assessed.";
   };
 
   const getRemainingText = (text: string) => {
-    const firstSentence = getFirstSentence(text);
-    return text.substring(firstSentence.length).trim();
+    const lines = text.split('\n');
+    const contentStart = lines.findIndex(line => 
+      line.trim() !== '' && 
+      !line.includes('A.') && 
+      !line.includes('B.') && 
+      !line.includes('Growth Stages') && 
+      !line.includes('Plant Health')
+    );
+    
+    if (contentStart >= 2) {
+      return lines.slice(contentStart + 1).join('\n').trim();
+    }
+    return text;
   };
 
-  const growthStageFirstSentence = getFirstSentence(analysisResult.detailed_analysis.growth_stage);
+  const growthStageFirstSentence = getGrowthStageSummary(analysisResult.detailed_analysis.growth_stage);
   const growthStageRemainingText = getRemainingText(analysisResult.detailed_analysis.growth_stage);
   
-  const healthScoreFirstSentence = getFirstSentence(analysisResult.detailed_analysis.health_score);
+  const healthScoreFirstSentence = getHealthScoreSummary(analysisResult.detailed_analysis.health_score);
   const healthScoreRemainingText = getRemainingText(analysisResult.detailed_analysis.health_score);
 
   // Filter out empty or very short actions and limit to 9
