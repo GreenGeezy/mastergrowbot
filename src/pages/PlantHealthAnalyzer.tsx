@@ -232,11 +232,11 @@ const PlantHealthAnalyzer = () => {
     
     // A. Full List of Growth Stages - Extract and provide detailed stage information
     const stageKeywords = {
-      'seedling': 'A. Full List of Growth Stages\n\n1 - Seedling/Clone: Your plant is just beginning its journey. It\'s small and delicate, but with your care, it will grow strong and healthy. At this stage, focus on gentle watering, adequate light (but not too intense), and maintaining stable temperatures around 70-75°F.',
-      'vegetative': 'A. Full List of Growth Stages\n\n2 - Vegetative: Your plant is growing rapidly, building its structure and strength. It\'s preparing for the next big step in its life cycle. During this phase, provide 18-24 hours of light daily, increase nitrogen-rich nutrients, and ensure proper ventilation for healthy growth.',
-      'pre-flowering': 'A. Full List of Growth Stages\n\n3 - Pre-Flowering: Your plant is starting to show its first signs of maturity. It\'s a crucial time to ensure it\'s ready for the flowering stage. Reduce light to 12/12 cycle, adjust nutrients to lower nitrogen and higher phosphorus, and monitor closely for gender identification.',
-      'flowering': 'A. Full List of Growth Stages\n\n4 - Flowering: Your plant is in full bloom, producing beautiful buds. It\'s the culmination of your hard work and care. Maintain 12/12 light cycle, use bloom nutrients high in phosphorus and potassium, monitor humidity levels (40-50%), and watch for bud development.',
-      'maturation': 'A. Full List of Growth Stages\n\n5 - Maturation: Your buds are growing strong. Soon, they\'ll be ready to harvest! Check trichomes daily with a magnifying glass, reduce watering frequency, maintain optimal environmental conditions, and prepare for the harvest window.'
+      'seedling': 'A. Full List of Growth Stages\n\nSeedling/Clone\nYour plant is just beginning its journey. It\'s small and delicate, but with your care, it will grow strong and healthy.',
+      'vegetative': 'A. Full List of Growth Stages\n\nVegetative\nYour plant is growing rapidly, building its structure and strength. It\'s preparing for the next big step in its life cycle.',
+      'pre-flowering': 'A. Full List of Growth Stages\n\nPre-Flowering\nYour plant is starting to show its first signs of maturity. It\'s a crucial time to ensure it\'s ready for the flowering stage.',
+      'flowering': 'A. Full List of Growth Stages\n\nFlowering\nYour plant is in full bloom, producing beautiful buds. It\'s the culmination of your hard work and care.',
+      'maturation': 'A. Full List of Growth Stages\n\nMaturation\nYour buds are growing strong. Soon, they\'ll be ready to harvest!'
     };
     
     // Determine growth stage with detailed description
@@ -256,11 +256,11 @@ const PlantHealthAnalyzer = () => {
     
     // B. Plant Health Ratings - Extract and provide detailed health assessment
     const healthRatings = {
-      'poor': 'B. Plant Health Ratings\n\n1 - Needs Some Love: Your plant could use a little extra care to get back on track. Let\'s help it feel better! Focus on identifying and addressing specific issues like nutrient deficiencies, pest problems, or environmental stress. With proper attention, your plant can recover quickly.',
-      'fair': 'B. Plant Health Ratings\n\n2 - On the Road to Recovery: Your plant is making progress and getting healthier every day. Keep up the good work! Continue monitoring closely and maintain consistent care practices. Small improvements in environmental conditions or nutrition can make a big difference.',
-      'good': 'B. Plant Health Ratings\n\n3 - Happy and Healthy: Your plant is doing well and looking great. You\'re doing a fantastic job! Maintain current care practices while staying alert for any changes. This is an excellent foundation for strong growth and good yields.',
-      'very-good': 'B. Plant Health Ratings\n\n4 - Absolutely Thriving: Your plant is growing strong and looking amazing. It\'s clear you know how to care for it! Your expertise is showing in the plant\'s robust health. Continue current practices and fine-tune as needed for optimal results.',
-      'excellent': 'B. Plant Health Ratings\n\n5 - In Perfect Condition: Your plant is at its absolute best, a true testament to your green thumb! This is the gold standard of plant health. Your attention to detail and consistent care has created ideal growing conditions.'
+      'poor': 'B. Plant Health Ratings\n\nNeeds Some Love\nYour plant could use a little extra care to get back on track. Let\'s help it feel better!',
+      'fair': 'B. Plant Health Ratings\n\nOn the Road to Recovery\nYour plant is making progress and getting healthier every day. Keep up the good work!',
+      'good': 'B. Plant Health Ratings\n\nHappy and Healthy\nYour plant is doing well and looking great. You\'re doing a fantastic job!',
+      'very-good': 'B. Plant Health Ratings\n\nAbsolutely Thriving\nYour plant is growing strong and looking amazing. It\'s clear you know how to care for it!',
+      'excellent': 'B. Plant Health Ratings\n\nIn Perfect Condition\nYour plant is at its absolute best, a true testament to your green thumb!'
     };
     
     // Determine health score with detailed rating
