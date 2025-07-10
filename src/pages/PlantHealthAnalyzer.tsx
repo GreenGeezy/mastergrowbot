@@ -532,11 +532,11 @@ const PlantHealthAnalyzer = () => {
           <div className="text-center space-y-6 px-4">
             <div className="space-y-2">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-              <h3 className="text-xl md:text-2xl font-semibold text-foreground">
+              <h3 className="text-xl md:text-2xl font-semibold text-white">
                 Analyzing your plant with your growing preferences...
               </h3>
             </div>
-            <div className="text-lg md:text-xl text-muted-foreground">
+            <div className="text-lg md:text-xl text-white">
               Time elapsed: <span className="font-mono font-bold text-primary">{elapsedTime}</span>
             </div>
           </div>
