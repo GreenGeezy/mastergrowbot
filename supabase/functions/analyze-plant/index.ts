@@ -73,15 +73,21 @@ serve(async (req) => {
     
     // Step 6: Parse results into structured format
     const analysisResult = parseAnalysisResults(analysisText);
+    
+    console.log('Parsed analysis result:', JSON.stringify(analysisResult, null, 2));
 
     // Return successful response
+    const responseData = { analysis: analysisResult, profileUsed: !!userProfileData };
+    console.log('Sending response:', JSON.stringify(responseData, null, 2));
+    
     return new Response(
-      JSON.stringify({ analysis: analysisResult, profileUsed: !!userProfileData }),
+      JSON.stringify(responseData),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
     // Handle any errors with a consistent response format
+    console.error('Error in analyze-plant function:', error);
     return createErrorResponse(error);
   }
 });

@@ -106,6 +106,8 @@ const PlantHealthAnalyzer = () => {
 
       if (!data || !data.analysis) {
         console.error('Invalid response data structure:', data);
+        console.error('Expected structure: { analysis: {...}, profileUsed: boolean }');
+        console.error('Actual data keys:', data ? Object.keys(data) : 'data is null/undefined');
         throw new Error('Received invalid analysis data');
       }
       
