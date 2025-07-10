@@ -90,24 +90,18 @@ function getCacheKey(imageData: string, maxSizeMB: number, quality: number): str
 
 // Helper function to create an image from a data URL
 function createImageFromDataUrl(dataUrl: string): Promise<ImageBitmap> {
-  return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.onload = async () => {
-      try {
-        // Use createImageBitmap which is optimized for performance
-        const bitmap = await self.createImageBitmap(image);
-        resolve(bitmap);
-      } catch (error) {
-        reject(error);
-      }
-      // Clean up by revoking the object URL
-      URL.revokeObjectURL(image.src);
-    };
-    image.onerror = (error) => {
-      URL.revokeObjectURL(image.src);
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Convert data URL to blob
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      
+      // Use createImageBitmap directly with the blob
+      const bitmap = await self.createImageBitmap(blob);
+      resolve(bitmap);
+    } catch (error) {
       reject(error);
-    };
-    image.src = dataUrl;
+    }
   });
 }
 
