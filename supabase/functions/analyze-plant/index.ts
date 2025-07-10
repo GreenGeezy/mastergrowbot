@@ -2,13 +2,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { 
-  createThread, 
-  addMessageWithImages, 
-  runAssistant, 
-  waitForRunCompletion, 
-  getAssistantResponse 
-} from "./openai-client.ts";
-import { 
   corsHeaders, 
   parseAnalysisResults, 
   createErrorResponse 
@@ -21,7 +14,6 @@ const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
-const ASSISTANT_ID = Deno.env.get('OPENAI_ASSISTANT_ID') || "asst_PMIYO6Z4FO2bkPvPrPHbVn1C";
 
 serve(async (req) => {
   // Handle CORS preflight
@@ -56,20 +48,8 @@ serve(async (req) => {
       }
     }
 
-    // Step 1: Create a thread
-    const threadId = await createThread(OPENAI_API_KEY);
-    
-    // Step 2: Add message with images to thread and include user profile context
-    await addMessageWithImages(OPENAI_API_KEY, threadId, imageUrls, userProfileData);
-    
-    // Step 3: Run assistant on thread with user-specific instructions
-    const runId = await runAssistant(OPENAI_API_KEY, threadId, ASSISTANT_ID, userProfileData);
-    
-    // Step 4: Wait for run completion (with exponential backoff)
-    await waitForRunCompletion(OPENAI_API_KEY, threadId, runId);
-    
-    // Step 5: Get assistant response
-    const analysisText = await getAssistantResponse(OPENAI_API_KEY, threadId);
+    // Use OpenAI Vision API for plant analysis
+    const analysisText = await analyzeWithVision(OPENAI_API_KEY, imageUrls, userProfileData);
     
     // Step 6: Parse results into structured format
     const analysisResult = parseAnalysisResults(analysisText);
@@ -91,3 +71,90 @@ serve(async (req) => {
     return createErrorResponse(error);
   }
 });
+
+// Analyze plant images using OpenAI Vision API
+async function analyzeWithVision(apiKey: string, imageUrls: string[], userProfile?: any): Promise<string> {
+  // Prepare base prompt text
+  let promptText = "Analyze this cannabis plant image. Provide a detailed assessment in the following format:\n\n" +
+                  "Growth Stage: (seedling, vegetative, flowering, etc.)\n" +
+                  "Health Score: (excellent, good, fair, poor)\n" +
+                  "Specific Issues: (any visible problems, deficiencies, pests, etc.)\n" +
+                  "Environmental Factors: (lighting, temperature, humidity observations)\n" +
+                  "Recommended Actions: (bullet points of specific actions to take)";
+  
+  // Add user profile context if available
+  if (userProfile) {
+    promptText += "\n\nUser Growing Context:";
+    
+    if (userProfile.growing_method) {
+      promptText += `\n- Growing Method: ${userProfile.growing_method} growing`;
+    }
+    
+    if (userProfile.grow_experience_level) {
+      promptText += `\n- Experience Level: ${userProfile.grow_experience_level}`;
+    }
+    
+    if (userProfile.monitoring_method) {
+      promptText += `\n- Monitoring Method: ${userProfile.monitoring_method}`;
+    }
+    
+    if (userProfile.nutrient_type) {
+      promptText += `\n- Nutrient Type: ${userProfile.nutrient_type}`;
+    }
+    
+    // Add note to tailor response based on profile
+    promptText += "\n\nPlease tailor your analysis and recommendations specifically for this user's growing context.";
+  }
+
+  // Prepare message content with images
+  const content = [
+    {
+      type: "text",
+      text: promptText
+    }
+  ];
+
+  // Add image URLs to the message
+  for (const url of imageUrls) {
+    content.push({
+      type: "image_url",
+      image_url: { url }
+    });
+  }
+
+  console.log('Making OpenAI Vision API call...');
+  
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are Master Growbot, a cannabis cultivation expert. Analyze plant images thoroughly and provide specific, detailed feedback about plant health, growth stage, and potential issues. Be thorough and specific in your analysis rather than general.'
+        },
+        {
+          role: 'user',
+          content
+        }
+      ],
+      max_tokens: 1000
+    })
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    console.error('OpenAI Vision API failed:', errorBody);
+    throw new Error(`OpenAI Vision API failed: ${errorBody}`);
+  }
+
+  const data = await response.json();
+  const analysisText = data.choices[0].message.content;
+  
+  console.log('Vision analysis completed');
+  return analysisText;
+}
