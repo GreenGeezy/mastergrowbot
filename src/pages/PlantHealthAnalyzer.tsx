@@ -30,9 +30,29 @@ const PlantHealthAnalyzer = () => {
   const [analysisResult, setAnalysisResult] = useState<StructuredAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  // Timer effect for loading state
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isLoading) {
+      setElapsedTime(0);
+      interval = setInterval(() => {
+        setElapsedTime(prev => prev + 1);
+      }, 1000);
+    } else {
+      setElapsedTime(0);
+    }
+    
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isLoading]);
 
   const handleImagesSelected = useCallback((files: File[]) => {
     console.log('Images selected:', files.length);
@@ -505,6 +525,23 @@ const PlantHealthAnalyzer = () => {
           </section>
         )}
       </main>
+      
+      {/* Loading Overlay with Timer */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="text-center space-y-6 px-4">
+            <div className="space-y-2">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+              <h3 className="text-xl md:text-2xl font-semibold text-foreground">
+                Analyzing your plant with your growing preferences...
+              </h3>
+            </div>
+            <div className="text-lg md:text-xl text-muted-foreground">
+              Time elapsed: <span className="font-mono font-bold text-primary">{elapsedTime}</span>
+            </div>
+          </div>
+        </div>
+      )}
       
       <BottomNavigation />
     </div>
