@@ -15,9 +15,12 @@ import OnboardingTutorial from '@/components/plant-health/OnboardingTutorial';
 import AnalysisProgress from '@/components/plant-health/AnalysisProgress';
 import ErrorHandlingModal from '@/components/plant-health/ErrorHandlingModal';
 import PostScanSignInPrompt from '@/components/plant-health/PostScanSignInPrompt';
+import TieredResultsScreen from '@/components/plant-health/TieredResultsScreen';
+import PremiumUpgradeModal from '@/components/plant-health/PremiumUpgradeModal';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
+import { useScanTracking } from '@/utils/scanTracking';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -46,10 +49,20 @@ const PlantHealthAnalyzer = () => {
     message?: string;
   }>({ isVisible: false, type: null });
   const [showPostScanSignIn, setShowPostScanSignIn] = useState(false);
+  const [showTieredResults, setShowTieredResults] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const haptic = useHapticFeedback();
+  const { 
+    scanData, 
+    incrementScans, 
+    updatePremiumStatus, 
+    canScan, 
+    shouldShowUpgrade, 
+    scansRemaining 
+  } = useScanTracking();
 
   // Slideshow sentences for loading screen
   const slideshowMessages = [
@@ -118,13 +131,30 @@ const PlantHealthAnalyzer = () => {
     };
   }, [isLoading, slideshowMessages.length]);
 
+  // Auto-show upgrade modal when free scans are used up
+  useEffect(() => {
+    if (shouldShowUpgrade && analysisResult) {
+      setShowUpgradeModal(true);
+    }
+  }, [shouldShowUpgrade, analysisResult]);
+
   const handleImagesSelected = useCallback((files: File[]) => {
     console.log('Images selected:', files.length);
+    
+    // Check if user can scan
+    if (!canScan.canScan && !scanData.isPremium) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    
     setSelectedFiles(files);
     setAnalysisResult(null); // Clear previous results
     
     // Auto-trigger analysis after upload
     if (files.length > 0) {
+      // Increment scan count
+      const newScanData = incrementScans();
+      
       setTimeout(async () => {
         // Inline analysis trigger
         if (files.length === 0) {
@@ -188,6 +218,9 @@ const PlantHealthAnalyzer = () => {
           haptic.success();
           toast.success("Plant analysis complete!");
 
+          // Show tiered results screen instead of basic results
+          setShowTieredResults(true);
+
           if (session?.user?.id) {
             await supabase.from('plant_analyses').insert({
               user_id: session.user.id,
@@ -222,14 +255,24 @@ const PlantHealthAnalyzer = () => {
         }
       }, 500);
     }
-  }, [session?.user?.id]);
+  }, [session?.user?.id, canScan, scanData.isPremium, incrementScans]);
 
   const handleCameraCapture = useCallback((file: File) => {
     console.log('Camera capture file:', file.name, file.size);
+    
+    // Check if user can scan
+    if (!canScan.canScan && !scanData.isPremium) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    
     const newFiles = [file]; // Single file from camera
     setSelectedFiles(newFiles);
     setShowStreamlinedCamera(false);
     setAnalysisResult(null); // Clear previous results
+    
+    // Increment scan count
+    const newScanData = incrementScans();
     
     // Auto-trigger analysis after camera capture
     setTimeout(async () => {
@@ -291,6 +334,9 @@ const PlantHealthAnalyzer = () => {
           setAnalysisResult(structuredResult);
           haptic.success();
           toast.success("Plant analysis complete!");
+
+          // Show tiered results screen instead of basic results
+          setShowTieredResults(true);
 
         if (session?.user?.id) {
           await supabase.from('plant_analyses').insert({
@@ -711,6 +757,19 @@ const PlantHealthAnalyzer = () => {
     setShowPostScanSignIn(false);
   };
 
+  const handleUpgrade = () => {
+    // For now, just simulate premium upgrade
+    // In production, this would integrate with Stripe
+    updatePremiumStatus(true);
+    setShowUpgradeModal(false);
+    toast.success("Welcome to Premium! Unlimited scans unlocked!");
+  };
+
+  const handleCloseResults = () => {
+    setShowTieredResults(false);
+    setAnalysisResult(null);
+  };
+
   // Helper functions for error handling
   const handleRetakePhoto = () => {
     setErrorState({ isVisible: false, type: null });
@@ -850,7 +909,7 @@ const PlantHealthAnalyzer = () => {
         </section>
 
         <section className="mb-8">
-          {analysisResult && (
+          {analysisResult && !showTieredResults && (
             <AnalysisResults analysisResult={analysisResult} />
           )}
         </section>
@@ -914,6 +973,27 @@ const PlantHealthAnalyzer = () => {
         onRetake={handleRetakePhoto}
         onRetry={handleRetryAnalysis}
         onCancel={handleCancelError}
+      />
+      
+      {/* Tiered Results Screen */}
+      {analysisResult && (
+        <TieredResultsScreen
+          analysisResult={analysisResult}
+          isVisible={showTieredResults}
+          onClose={handleCloseResults}
+          onUpgrade={handleUpgrade}
+          isPremium={scanData.isPremium}
+          scanCount={scanData.count}
+        />
+      )}
+
+      {/* Premium Upgrade Modal */}
+      <PremiumUpgradeModal
+        isVisible={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        onUpgrade={handleUpgrade}
+        scanCount={scanData.count}
+        scansRemaining={scansRemaining}
       />
       
       <BottomNavigation />
