@@ -13,8 +13,10 @@ import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import OnboardingTutorial from '@/components/plant-health/OnboardingTutorial';
 import AnalysisProgress from '@/components/plant-health/AnalysisProgress';
 import ErrorHandlingModal from '@/components/plant-health/ErrorHandlingModal';
+import PostScanSignInPrompt from '@/components/plant-health/PostScanSignInPrompt';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
+import { useHapticFeedback } from '@/utils/hapticFeedback';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -41,9 +43,11 @@ const PlantHealthAnalyzer = () => {
     type: 'blurry' | 'upload' | 'analysis' | 'network' | null;
     message?: string;
   }>({ isVisible: false, type: null });
+  const [showPostScanSignIn, setShowPostScanSignIn] = useState(false);
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const haptic = useHapticFeedback();
 
   // Slideshow sentences for loading screen
   const slideshowMessages = [
@@ -167,6 +171,7 @@ const PlantHealthAnalyzer = () => {
           
           const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
           setAnalysisResult(structuredResult);
+          haptic.success();
           toast.success("Plant analysis complete!");
 
           if (session?.user?.id) {
@@ -182,6 +187,7 @@ const PlantHealthAnalyzer = () => {
           }
         } catch (error) {
           console.error("Analysis error:", error);
+          haptic.error();
           const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
           
           // Determine error type for better UX
@@ -267,9 +273,10 @@ const PlantHealthAnalyzer = () => {
           analysisText = JSON.stringify(analysisText, null, 2);
         }
         
-        const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
-        setAnalysisResult(structuredResult);
-        toast.success("Plant analysis complete!");
+          const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
+          setAnalysisResult(structuredResult);
+          haptic.success();
+          toast.success("Plant analysis complete!");
 
         if (session?.user?.id) {
           await supabase.from('plant_analyses').insert({
@@ -284,6 +291,7 @@ const PlantHealthAnalyzer = () => {
         }
         } catch (error) {
           console.error("Analysis error:", error);
+          haptic.error();
           const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
           
           // Determine error type for better UX
@@ -454,9 +462,10 @@ const PlantHealthAnalyzer = () => {
         } catch (saveError) {
           console.error('Error saving analysis to database:', saveError);
         }
-      } else {
-        console.log('User not authenticated, skipping analysis save');
-      }
+          } else {
+            console.log('User not authenticated, showing post-scan sign-in prompt');
+            setShowPostScanSignIn(true);
+          }
 
       console.log('=== PLANT ANALYSIS COMPLETED SUCCESSFULLY ===');
 
@@ -674,7 +683,18 @@ const PlantHealthAnalyzer = () => {
   };
 
   const handleSignIn = () => {
+    haptic.light();
     navigate('/');
+  };
+
+  const handlePostScanSignIn = () => {
+    setShowPostScanSignIn(false);
+    handleSignIn();
+  };
+
+  const handleDismissSignInPrompt = () => {
+    haptic.light();
+    setShowPostScanSignIn(false);
   };
 
   // Helper functions for error handling
@@ -762,6 +782,7 @@ const PlantHealthAnalyzer = () => {
   };
 
   const handleCancelAnalysis = () => {
+    haptic.light();
     setIsLoading(false);
     setErrorState({ isVisible: false, type: null });
     toast.info("Analysis cancelled");
@@ -805,16 +826,12 @@ const PlantHealthAnalyzer = () => {
         </section>
 
         {!session && (
-          <section className="text-center">
-            <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10 p-6">
-              <p className="text-gray-400 mb-4">
-                To save your analysis history and get personalized recommendations, please sign in.
-              </p>
-              <Button onClick={handleSignIn} variant="secondary">
-                Sign In to Save History
-              </Button>
-            </Card>
-          </section>
+          <PostScanSignInPrompt
+            isVisible={showPostScanSignIn}
+            onSignIn={handlePostScanSignIn}
+            onDismiss={handleDismissSignInPrompt}
+            analysisComplete={!!analysisResult}
+          />
         )}
       </main>
       

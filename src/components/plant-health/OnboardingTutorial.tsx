@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, X, Camera, Upload, Zap } from 'lucide-react';
+import { useHapticFeedback } from '@/utils/hapticFeedback';
 
 interface OnboardingTutorialProps {
   onComplete: () => void;
@@ -11,6 +12,7 @@ interface OnboardingTutorialProps {
 const OnboardingTutorial = ({ onComplete, onSkip }: OnboardingTutorialProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const haptic = useHapticFeedback();
 
   const tutorialSlides = [
     {
@@ -34,6 +36,7 @@ const OnboardingTutorial = ({ onComplete, onSkip }: OnboardingTutorialProps) => 
   ];
 
   const nextSlide = () => {
+    haptic.light();
     if (currentSlide < tutorialSlides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
@@ -42,18 +45,21 @@ const OnboardingTutorial = ({ onComplete, onSkip }: OnboardingTutorialProps) => 
   };
 
   const prevSlide = () => {
+    haptic.light();
     if (currentSlide > 0) {
       setCurrentSlide(currentSlide - 1);
     }
   };
 
   const handleComplete = () => {
+    haptic.success();
     setIsVisible(false);
     localStorage.setItem('plant-health-tutorial-completed', 'true');
     onComplete();
   };
 
   const handleSkip = () => {
+    haptic.light();
     setIsVisible(false);
     localStorage.setItem('plant-health-tutorial-completed', 'true');
     onSkip();
@@ -62,16 +68,24 @@ const OnboardingTutorial = ({ onComplete, onSkip }: OnboardingTutorialProps) => 
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md mx-4 bg-gradient-to-br from-gray-900/95 to-gray-800/95 border border-gray-700/50 overflow-hidden">
+    <div 
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+      role="dialog"
+      aria-labelledby="tutorial-title"
+      aria-describedby="tutorial-description"
+    >
+      <Card className="w-full max-w-md mx-4 bg-gradient-to-br from-background/95 to-card/95 border border-border/50 overflow-hidden shadow-2xl"
+           role="main"
+      >
         {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b border-gray-700/50">
-          <h2 className="text-lg font-semibold text-white">Quick Tutorial</h2>
+        <div className="flex justify-between items-center p-4 border-b border-border/50">
+          <h2 id="tutorial-title" className="text-lg font-semibold text-foreground">Quick Tutorial</h2>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={handleSkip}
-            className="text-gray-400 hover:text-white p-1"
+            className="text-muted-foreground hover:text-foreground p-1"
+            aria-label="Skip tutorial and close"
           >
             <X className="w-5 h-5" />
           </Button>
