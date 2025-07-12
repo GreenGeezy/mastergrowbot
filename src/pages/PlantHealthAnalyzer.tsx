@@ -14,12 +14,10 @@ import OnboardingTutorial from '@/components/plant-health/OnboardingTutorial';
 import AnalysisProgress from '@/components/plant-health/AnalysisProgress';
 import ErrorHandlingModal from '@/components/plant-health/ErrorHandlingModal';
 import PostScanSignInPrompt from '@/components/plant-health/PostScanSignInPrompt';
-import FullResultsScreen from '@/components/plant-health/FullResultsScreen';
-import PlantCareQuiz from '@/components/quiz/PlantCareQuiz';
-import SubscriptionModal from '@/components/subscription/SubscriptionModal';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
+import { useSubscriptionStatus } from '@/hooks/use-subscription-status';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -48,15 +46,12 @@ const PlantHealthAnalyzer = () => {
     message?: string;
   }>({ isVisible: false, type: null });
   const [showPostScanSignIn, setShowPostScanSignIn] = useState(false);
-  const [showFullResults, setShowFullResults] = useState(false);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [showSubscription, setShowSubscription] = useState(false);
-  const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
   
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const haptic = useHapticFeedback();
+  const { hasActiveSubscription, isLoading: subscriptionLoading } = useSubscriptionStatus();
 
   // Slideshow sentences for loading screen
   const slideshowMessages = [
@@ -67,13 +62,21 @@ const PlantHealthAnalyzer = () => {
     "Fine-tuning your grow for fatter, stronger, tastier flowers."
   ];
 
+  // Redirect to quiz if user is not subscribed
+  useEffect(() => {
+    if (!subscriptionLoading && session && !hasActiveSubscription) {
+      haptic.light();
+      navigate('/quiz');
+    }
+  }, [session, hasActiveSubscription, subscriptionLoading, navigate, haptic]);
+
   // Check if user needs onboarding
   useEffect(() => {
     const hasSeenTutorial = localStorage.getItem('plant-health-tutorial-completed');
-    if (!hasSeenTutorial) {
+    if (!hasSeenTutorial && hasActiveSubscription) {
       setShowOnboarding(true);
     }
-  }, []);
+  }, [hasActiveSubscription]);
 
   // Listen for camera trigger from bottom navigation
   useEffect(() => {
@@ -128,7 +131,12 @@ const PlantHealthAnalyzer = () => {
   const handleImagesSelected = useCallback((files: File[]) => {
     console.log('Images selected:', files.length);
     
-    // No scan limits - all analysis is free
+    // Check subscription status first
+    if (!hasActiveSubscription) {
+      haptic.light();
+      navigate('/quiz');
+      return;
+    }
     setSelectedFiles(files);
     setAnalysisResult(null); // Clear previous results
     
@@ -196,9 +204,7 @@ const PlantHealthAnalyzer = () => {
           setAnalysisResult(structuredResult);
           haptic.success();
           toast.success("Plant analysis complete!");
-
-          // Show full results screen (no tiers, all content visible)
-          setShowFullResults(true);
+          setAnalysisResult(structuredResult);
 
           if (session?.user?.id) {
             await supabase.from('plant_analyses').insert({
@@ -234,12 +240,15 @@ const PlantHealthAnalyzer = () => {
         }
       }, 500);
     }
-  }, [session?.user?.id]);
+  }, [session?.user?.id, hasActiveSubscription, navigate, haptic]);
 
   const handleCameraCapture = useCallback((file: File) => {
-    console.log('Camera capture file:', file.name, file.size);
-    
-    // No scan limits - all analysis is free
+    // Check subscription status first
+    if (!hasActiveSubscription) {
+      haptic.light();
+      navigate('/quiz');
+      return;
+    }
     const newFiles = [file]; // Single file from camera
     setSelectedFiles(newFiles);
     setShowStreamlinedCamera(false);
@@ -305,9 +314,7 @@ const PlantHealthAnalyzer = () => {
         setAnalysisResult(structuredResult);
         haptic.success();
         toast.success("Plant analysis complete!");
-
-        // Show full results screen (no tiers, all content visible)
-        setShowFullResults(true);
+        setAnalysisResult(structuredResult);
 
         if (session?.user?.id) {
           await supabase.from('plant_analyses').insert({
@@ -342,7 +349,7 @@ const PlantHealthAnalyzer = () => {
         setIsLoading(false);
       }
     }, 500);
-  }, [selectedFiles, session?.user?.id]);
+  }, [selectedFiles, session?.user?.id, hasActiveSubscription, navigate, haptic]);
 
   // Helper function to parse analysis text into structured data
   const parseAnalysisText = (analysisText: string, confidence: number): StructuredAnalysisResult => {
@@ -543,10 +550,7 @@ const PlantHealthAnalyzer = () => {
     setShowPostScanSignIn(false);
   };
 
-  const handleCloseResults = () => {
-    setShowFullResults(false);
-    setAnalysisResult(null);
-  };
+  return (
 
   // Helper functions for error handling
   const handleRetakePhoto = () => {
@@ -649,7 +653,38 @@ const PlantHealthAnalyzer = () => {
     toast.info("Analysis cancelled");
   };
 
-  return (
+  // Show subscription gate if not subscribed
+  if (!subscriptionLoading && (!session || !hasActiveSubscription)) {
+    return (
+      <div className="min-h-screen bg-background text-white pb-20 flex items-center justify-center">
+        <Card className="w-full max-w-md mx-4 bg-card/90 backdrop-blur-sm border-card-foreground/10">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl mb-4">Plant Health Analysis</CardTitle>
+            <CardDescription>
+              Complete the quiz and subscribe to unlock AI-powered plant health analysis
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Button
+              onClick={() => navigate('/quiz')}
+              className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3"
+            >
+              Start Plant Care Quiz
+            </Button>
+            {!session && (
+              <Button
+                onClick={() => navigate('/')}
+                variant="outline"
+                className="w-full"
+              >
+                Sign In First
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+        <BottomNavigation />
+      </div>
+    );
     <div className="min-h-screen bg-background text-white pb-20">
       <PlantHealthHeader />
 
@@ -751,40 +786,6 @@ const PlantHealthAnalyzer = () => {
         onRetake={handleRetakePhoto}
         onRetry={handleRetryAnalysis}
         onCancel={handleCancelError}
-      />
-      
-      {/* Full Results Screen */}
-      <FullResultsScreen
-        analysisResult={analysisResult}
-        isVisible={showFullResults}
-        onClose={() => setShowFullResults(false)}
-        onSavePlants={() => {
-          setShowFullResults(false);
-          setShowQuiz(true);
-        }}
-      />
-
-      {/* Plant Care Quiz */}
-      <PlantCareQuiz
-        isVisible={showQuiz}
-        onClose={() => setShowQuiz(false)}
-        onComplete={(answers) => {
-          setQuizAnswers(answers);
-          setShowQuiz(false);
-          setShowSubscription(true);
-        }}
-      />
-
-      {/* Subscription Modal */}
-      <SubscriptionModal
-        isVisible={showSubscription}
-        onClose={() => setShowSubscription(false)}
-        onSubscribe={() => {
-          console.log('Subscription completed with answers:', quizAnswers);
-          setShowSubscription(false);
-          // Handle successful subscription
-        }}
-        quizAnswers={quizAnswers}
       />
       
       <BottomNavigation />
