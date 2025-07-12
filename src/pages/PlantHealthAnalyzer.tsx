@@ -10,6 +10,9 @@ import BottomNavigation from "@/components/navigation/BottomNavigation";
 import CameraCapture from '@/components/plant-health/CameraCapture';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
+import OnboardingTutorial from '@/components/plant-health/OnboardingTutorial';
+import AnalysisProgress from '@/components/plant-health/AnalysisProgress';
+import ErrorHandlingModal from '@/components/plant-health/ErrorHandlingModal';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -32,6 +35,12 @@ const PlantHealthAnalyzer = () => {
   const [showCamera, setShowCamera] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [errorState, setErrorState] = useState<{
+    isVisible: boolean;
+    type: 'blurry' | 'upload' | 'analysis' | 'network' | null;
+    message?: string;
+  }>({ isVisible: false, type: null });
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -44,6 +53,14 @@ const PlantHealthAnalyzer = () => {
     "Calculating growth tweaks that stack grams—and revenue.",
     "Fine-tuning your grow for fatter, stronger, tastier flowers."
   ];
+
+  // Check if user needs onboarding
+  useEffect(() => {
+    const hasSeenTutorial = localStorage.getItem('plant-health-tutorial-completed');
+    if (!hasSeenTutorial) {
+      setShowOnboarding(true);
+    }
+  }, []);
 
   // Timer effect for loading state
   useEffect(() => {
@@ -166,7 +183,20 @@ const PlantHealthAnalyzer = () => {
         } catch (error) {
           console.error("Analysis error:", error);
           const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
-          toast.error(errorMessage);
+          
+          // Determine error type for better UX
+          let errorType: 'blurry' | 'upload' | 'analysis' | 'network' = 'analysis';
+          if (errorMessage.includes('upload') || errorMessage.includes('Failed to upload')) {
+            errorType = 'upload';
+          } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+            errorType = 'network';
+          }
+          
+          setErrorState({
+            isVisible: true,
+            type: errorType,
+            message: errorMessage
+          });
         } finally {
           setIsLoading(false);
         }
@@ -252,13 +282,26 @@ const PlantHealthAnalyzer = () => {
             recommended_actions: analysisResponse.data.recommended_actions || []
           });
         }
-      } catch (error) {
-        console.error("Analysis error:", error);
-        const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
-        toast.error(errorMessage);
-      } finally {
-        setIsLoading(false);
-      }
+        } catch (error) {
+          console.error("Analysis error:", error);
+          const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
+          
+          // Determine error type for better UX
+          let errorType: 'blurry' | 'upload' | 'analysis' | 'network' = 'analysis';
+          if (errorMessage.includes('upload') || errorMessage.includes('Failed to upload')) {
+            errorType = 'upload';
+          } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+            errorType = 'network';
+          }
+          
+          setErrorState({
+            isVisible: true,
+            type: errorType,
+            message: errorMessage
+          });
+        } finally {
+          setIsLoading(false);
+        }
     }, 500);
   }, [selectedFiles, session?.user?.id]);
 
@@ -634,6 +677,96 @@ const PlantHealthAnalyzer = () => {
     navigate('/');
   };
 
+  // Helper functions for error handling
+  const handleRetakePhoto = () => {
+    setErrorState({ isVisible: false, type: null });
+    setShowCamera(true);
+    setSelectedFiles([]);
+  };
+
+  const handleRetryAnalysis = () => {
+    setErrorState({ isVisible: false, type: null });
+    if (selectedFiles.length > 0) {
+      // Retry with current files
+      const files = selectedFiles;
+      setTimeout(async () => {
+        // Trigger analysis inline (similar to existing logic)
+        setIsLoading(true);
+        try {
+          // Re-run analysis with current files
+          const imageUrls = [];
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const timestamp = Date.now();
+            const randomId = Math.random().toString(36).substring(7);
+            const fileExtension = file.name.split('.').pop() || 'jpg';
+            const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
+            
+            const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
+              body: {
+                fileName,
+                fileData: await fileToBase64(file),
+                contentType: file.type || 'image/jpeg'
+              }
+            });
+
+            if (uploadResponse.error) throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
+            if (uploadResponse.data?.publicUrl) imageUrls.push(uploadResponse.data.publicUrl);
+          }
+
+          if (imageUrls.length === 0) throw new Error('No images were successfully uploaded');
+
+          const analysisResponse = await supabase.functions.invoke('analyze-plant', {
+            body: { imageUrls, userId: session?.user?.id || `anonymous-${Date.now()}` }
+          });
+
+          if (analysisResponse.error || !analysisResponse.data?.success) {
+            throw new Error(analysisResponse.error?.message || 'Analysis failed');
+          }
+
+          let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
+          if (typeof analysisText !== 'string') analysisText = JSON.stringify(analysisText, null, 2);
+          
+          const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
+          setAnalysisResult(structuredResult);
+          toast.success("Plant analysis complete!");
+
+          if (session?.user?.id) {
+            await supabase.from('plant_analyses').insert({
+              user_id: session.user.id,
+              image_url: imageUrls[0],
+              image_urls: imageUrls,
+              diagnosis: analysisText,
+              confidence_level: analysisResponse.data.confidence_level || 0.95,
+              detailed_analysis: analysisResponse.data.detailed_analysis || {},
+              recommended_actions: analysisResponse.data.recommended_actions || []
+            });
+          }
+        } catch (error) {
+          console.error("Retry analysis error:", error);
+          const errorMessage = error instanceof Error ? error.message : "Analysis failed again. Please try again.";
+          setErrorState({
+            isVisible: true,
+            type: 'analysis',
+            message: errorMessage
+          });
+        } finally {
+          setIsLoading(false);
+        }
+      }, 500);
+    }
+  };
+
+  const handleCancelError = () => {
+    setErrorState({ isVisible: false, type: null });
+  };
+
+  const handleCancelAnalysis = () => {
+    setIsLoading(false);
+    setErrorState({ isVisible: false, type: null });
+    toast.info("Analysis cancelled");
+  };
+
   return (
     <div className="min-h-screen bg-background text-white pb-20">
       <PlantHealthHeader />
@@ -709,6 +842,32 @@ const PlantHealthAnalyzer = () => {
           </div>
         </div>
       )}
+
+      {/* Onboarding Tutorial */}
+      {showOnboarding && (
+        <OnboardingTutorial
+          onComplete={() => setShowOnboarding(false)}
+          onSkip={() => setShowOnboarding(false)}
+        />
+      )}
+
+      {/* Analysis Progress Modal */}
+      <AnalysisProgress
+        isVisible={isLoading}
+        onCancel={handleCancelAnalysis}
+        currentMessage={slideshowMessages[currentSlideIndex]}
+        elapsedTime={elapsedTime}
+      />
+
+      {/* Error Handling Modal */}
+      <ErrorHandlingModal
+        isVisible={errorState.isVisible}
+        errorType={errorState.type}
+        errorMessage={errorState.message}
+        onRetake={handleRetakePhoto}
+        onRetry={handleRetryAnalysis}
+        onCancel={handleCancelError}
+      />
       
       <BottomNavigation />
     </div>
