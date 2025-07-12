@@ -628,30 +628,7 @@ const PlantHealthAnalyzer = () => {
     }, 500);
   }, [selectedFiles, session?.user?.id, haptic]);
 
-  // Only require sign-in for authenticated users
-  if (!session) {
-    return (
-      <div className="min-h-screen bg-background text-white pb-20 flex items-center justify-center">
-        <Card className="w-full max-w-md mx-4 bg-card/90 backdrop-blur-sm border-card-foreground/10">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl mb-4">Plant Health Analysis</CardTitle>
-            <CardDescription>
-              Sign in to access AI-powered plant health analysis
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Button
-              onClick={() => navigate('/')}
-              className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3"
-            >
-              Sign In to Continue
-            </Button>
-          </CardContent>
-        </Card>
-        <BottomNavigation />
-      </div>
-    );
-  }
+  // Allow access without authentication for testing and design work
 
   return (
     <div className="min-h-screen bg-background text-white pb-20">
