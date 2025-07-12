@@ -133,7 +133,19 @@ const BottomNavigation = () => {
             return (
               <button
                 key={item.to}
-                onClick={() => navigate(item.to)}
+                onClick={() => {
+                  // Special handling for camera icon - navigate to plant-health and trigger camera
+                  if (item.to === '/plant-health') {
+                    navigate(item.to);
+                    // Trigger camera after navigation
+                    setTimeout(() => {
+                      const event = new CustomEvent('trigger-camera-capture');
+                      window.dispatchEvent(event);
+                    }, 100);
+                  } else {
+                    navigate(item.to);
+                  }
+                }}
                 className={`flex-1 flex flex-col items-center p-3 rounded-xl transition-all duration-300 group relative overflow-hidden ${
                   isActive 
                     ? 'bg-gradient-to-t from-gray-900 to-gray-800 shadow-[0_0_20px_rgba(0,255,255,0.4)] border border-cyan-500/30' 

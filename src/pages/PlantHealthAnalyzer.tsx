@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import CameraCapture from '@/components/plant-health/CameraCapture';
+import StreamlinedCameraCapture from '@/components/plant-health/StreamlinedCameraCapture';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import OnboardingTutorial from '@/components/plant-health/OnboardingTutorial';
@@ -35,6 +36,7 @@ const PlantHealthAnalyzer = () => {
   const [analysisResult, setAnalysisResult] = useState<StructuredAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
+  const [showStreamlinedCamera, setShowStreamlinedCamera] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -64,6 +66,18 @@ const PlantHealthAnalyzer = () => {
     if (!hasSeenTutorial) {
       setShowOnboarding(true);
     }
+  }, []);
+
+  // Listen for camera trigger from bottom navigation
+  useEffect(() => {
+    const handleCameraTrigger = () => {
+      setShowStreamlinedCamera(true);
+    };
+
+    window.addEventListener('trigger-camera-capture', handleCameraTrigger);
+    return () => {
+      window.removeEventListener('trigger-camera-capture', handleCameraTrigger);
+    };
   }, []);
 
   // Timer effect for loading state
@@ -212,9 +226,9 @@ const PlantHealthAnalyzer = () => {
 
   const handleCameraCapture = useCallback((file: File) => {
     console.log('Camera capture file:', file.name, file.size);
-    const newFiles = [...selectedFiles, file];
+    const newFiles = [file]; // Single file from camera
     setSelectedFiles(newFiles);
-    setShowCamera(false);
+    setShowStreamlinedCamera(false);
     setAnalysisResult(null); // Clear previous results
     
     // Auto-trigger analysis after camera capture
@@ -679,7 +693,7 @@ const PlantHealthAnalyzer = () => {
   };
 
   const handleTakePhoto = () => {
-    setShowCamera(true);
+    setShowStreamlinedCamera(true);
   };
 
   const handleSignIn = () => {
@@ -700,8 +714,17 @@ const PlantHealthAnalyzer = () => {
   // Helper functions for error handling
   const handleRetakePhoto = () => {
     setErrorState({ isVisible: false, type: null });
-    setShowCamera(true);
+    setShowStreamlinedCamera(true);
     setSelectedFiles([]);
+  };
+
+  const handleGallerySelect = () => {
+    setShowStreamlinedCamera(false);
+    // Trigger file input
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
   };
 
   const handleRetryAnalysis = () => {
@@ -777,6 +800,7 @@ const PlantHealthAnalyzer = () => {
     }
   };
 
+
   const handleCancelError = () => {
     setErrorState({ isVisible: false, type: null });
   };
@@ -801,8 +825,14 @@ const PlantHealthAnalyzer = () => {
                 Take photos or upload images from your device for AI-powered plant health analysis
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              {!showCamera ? (
+            <CardContent className="p-0">
+              {showStreamlinedCamera ? (
+                <StreamlinedCameraCapture
+                  onPhotoCapture={handleCameraCapture}
+                  onClose={() => setShowStreamlinedCamera(false)}
+                  onGallerySelect={handleGallerySelect}
+                />
+              ) : !showCamera ? (
                 <ImageDropzone
                   onImagesSelected={handleImagesSelected}
                   selectedFiles={selectedFiles}
