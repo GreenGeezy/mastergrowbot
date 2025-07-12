@@ -31,9 +31,19 @@ const PlantHealthAnalyzer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  // Slideshow sentences for loading screen
+  const slideshowMessages = [
+    "Brewing higher yields—your custom profit-boost plan is sprouting.",
+    "Dialing in max potency for buds that wow and sell.",
+    "Optimizing every leaf to squeeze out top-shelf quality.",
+    "Calculating growth tweaks that stack grams—and revenue.",
+    "Fine-tuning your grow for fatter, stronger, tastier flowers."
+  ];
 
   // Timer effect for loading state
   useEffect(() => {
@@ -53,6 +63,25 @@ const PlantHealthAnalyzer = () => {
       }
     };
   }, [isLoading]);
+
+  // Slideshow effect for loading messages
+  useEffect(() => {
+    let slideInterval: NodeJS.Timeout;
+    if (isLoading) {
+      setCurrentSlideIndex(0);
+      slideInterval = setInterval(() => {
+        setCurrentSlideIndex(prev => (prev + 1) % slideshowMessages.length);
+      }, 3000); // Change every 3 seconds
+    } else {
+      setCurrentSlideIndex(0);
+    }
+    
+    return () => {
+      if (slideInterval) {
+        clearInterval(slideInterval);
+      }
+    };
+  }, [isLoading, slideshowMessages.length]);
 
   const handleImagesSelected = useCallback((files: File[]) => {
     console.log('Images selected:', files.length);
@@ -530,14 +559,22 @@ const PlantHealthAnalyzer = () => {
       {isLoading && (
         <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="text-center space-y-6 px-4">
-            <div className="space-y-2">
+            <div className="space-y-4">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+              
+              {/* Slideshow Messages */}
+              <div className="min-h-[3rem] flex items-center justify-center">
+                <p className="text-lg md:text-xl font-medium text-primary animate-fade-in">
+                  {slideshowMessages[currentSlideIndex]}
+                </p>
+              </div>
+              
               <h3 className="text-xl md:text-2xl font-semibold text-white">
                 Analyzing your plant with your growing preferences...
               </h3>
             </div>
             <div className="text-lg md:text-xl text-white">
-              Time elapsed: <span className="font-mono font-bold text-primary">{elapsedTime}</span>
+              Time elapsed: <span className="font-mono font-bold text-primary">{elapsedTime}s</span>
             </div>
           </div>
         </div>
