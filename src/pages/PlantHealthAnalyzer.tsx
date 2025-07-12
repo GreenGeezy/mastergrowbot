@@ -17,7 +17,6 @@ import PostScanSignInPrompt from '@/components/plant-health/PostScanSignInPrompt
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
-import { useSubscriptionStatus } from '@/hooks/use-subscription-status';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -51,32 +50,23 @@ const PlantHealthAnalyzer = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const haptic = useHapticFeedback();
-  const { hasActiveSubscription, isLoading: subscriptionLoading } = useSubscriptionStatus();
 
   // Slideshow sentences for loading screen
   const slideshowMessages = [
     "Brewing higher yields—your custom profit-boost plan is sprouting.",
     "Dialing in max potency for buds that wow and sell.",
-    "Optimizing every leaf to squeeze out top-shelf quality.",
+    "Optimizing every leaf to squeeze out max potency for top-shelf quality.",
     "Calculating growth tweaks that stack grams—and revenue.",
     "Fine-tuning your grow for fatter, stronger, tastier flowers."
   ];
 
-  // Redirect to quiz if user is not subscribed
-  useEffect(() => {
-    if (!subscriptionLoading && session && !hasActiveSubscription) {
-      haptic.light();
-      navigate('/quiz');
-    }
-  }, [session, hasActiveSubscription, subscriptionLoading, navigate, haptic]);
-
   // Check if user needs onboarding
   useEffect(() => {
     const hasSeenTutorial = localStorage.getItem('plant-health-tutorial-completed');
-    if (!hasSeenTutorial && hasActiveSubscription) {
+    if (!hasSeenTutorial && session) {
       setShowOnboarding(true);
     }
-  }, [hasActiveSubscription]);
+  }, [session]);
 
   // Listen for camera trigger from bottom navigation
   useEffect(() => {
@@ -308,15 +298,127 @@ const PlantHealthAnalyzer = () => {
     });
   };
 
+  // Helper functions for error handling
+  const handleRetakePhoto = () => {
+    setErrorState({ isVisible: false, type: null });
+    setShowStreamlinedCamera(true);
+    setSelectedFiles([]);
+  };
+
+  const handleGallerySelect = () => {
+    setShowStreamlinedCamera(false);
+    // Trigger file input
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
+  const handleRetryAnalysis = () => {
+    setErrorState({ isVisible: false, type: null });
+    if (selectedFiles.length > 0) {
+      // Retry with current files
+      const files = selectedFiles;
+      setTimeout(async () => {
+        // Trigger analysis inline (similar to existing logic)
+        setIsLoading(true);
+        try {
+          // Re-run analysis with current files
+          const imageUrls = [];
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const timestamp = Date.now();
+            const randomId = Math.random().toString(36).substring(7);
+            const fileExtension = file.name.split('.').pop() || 'jpg';
+            const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
+            
+            const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
+              body: {
+                fileName,
+                fileData: await fileToBase64(file),
+                contentType: file.type || 'image/jpeg'
+              }
+            });
+
+            if (uploadResponse.error) throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
+            if (uploadResponse.data?.publicUrl) imageUrls.push(uploadResponse.data.publicUrl);
+          }
+
+          if (imageUrls.length === 0) throw new Error('No images were successfully uploaded');
+
+          const analysisResponse = await supabase.functions.invoke('analyze-plant', {
+            body: { imageUrls, userId: session?.user?.id || `anonymous-${Date.now()}` }
+          });
+
+          if (analysisResponse.error || !analysisResponse.data?.success) {
+            throw new Error(analysisResponse.error?.message || 'Analysis failed');
+          }
+
+          let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
+          if (typeof analysisText !== 'string') analysisText = JSON.stringify(analysisText, null, 2);
+          
+          const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
+          setAnalysisResult(structuredResult);
+          toast.success("Plant analysis complete!");
+
+          if (session?.user?.id) {
+            await supabase.from('plant_analyses').insert({
+              user_id: session.user.id,
+              image_url: imageUrls[0],
+              image_urls: imageUrls,
+              diagnosis: analysisText,
+              confidence_level: analysisResponse.data.confidence_level || 0.95,
+              detailed_analysis: analysisResponse.data.detailed_analysis || {},
+              recommended_actions: analysisResponse.data.recommended_actions || []
+            });
+          }
+        } catch (error) {
+          console.error("Retry analysis error:", error);
+          const errorMessage = error instanceof Error ? error.message : "Analysis failed again. Please try again.";
+          setErrorState({
+            isVisible: true,
+            type: 'analysis',
+            message: errorMessage
+          });
+        } finally {
+          setIsLoading(false);
+        }
+      }, 500);
+    }
+  };
+
+  const handleCancelError = () => {
+    setErrorState({ isVisible: false, type: null });
+  };
+
+  const handleCancelAnalysis = () => {
+    haptic.light();
+    setIsLoading(false);
+    setErrorState({ isVisible: false, type: null });
+    toast.info("Analysis cancelled");
+  };
+
+  const handleSignIn = () => {
+    haptic.light();
+    navigate('/');
+  };
+
+  const handlePostScanSignIn = () => {
+    setShowPostScanSignIn(false);
+    handleSignIn();
+  };
+
+  const handleDismissSignInPrompt = () => {
+    haptic.light();
+    setShowPostScanSignIn(false);
+  };
+
+  const handleTakePhoto = () => {
+    setShowStreamlinedCamera(true);
+  };
+
   const handleImagesSelected = useCallback((files: File[]) => {
     console.log('Images selected:', files.length);
-    
-    // Check subscription status first
-    if (!hasActiveSubscription) {
-      haptic.light();
-      navigate('/quiz');
-      return;
-    }
     
     setSelectedFiles(files);
     setAnalysisResult(null); // Clear previous results
@@ -420,16 +522,9 @@ const PlantHealthAnalyzer = () => {
         }
       }, 500);
     }
-  }, [session?.user?.id, hasActiveSubscription, navigate, haptic]);
+  }, [session?.user?.id, haptic]);
 
   const handleCameraCapture = useCallback((file: File) => {
-    // Check subscription status first
-    if (!hasActiveSubscription) {
-      haptic.light();
-      navigate('/quiz');
-      return;
-    }
-    
     console.log('Camera capture file:', file.name, file.size);
     
     const newFiles = [file]; // Single file from camera
@@ -531,154 +626,26 @@ const PlantHealthAnalyzer = () => {
         setIsLoading(false);
       }
     }, 500);
-  }, [selectedFiles, session?.user?.id, hasActiveSubscription, navigate, haptic]);
+  }, [selectedFiles, session?.user?.id, haptic]);
 
-  const handleTakePhoto = () => {
-    setShowStreamlinedCamera(true);
-  };
-
-  const handleSignIn = () => {
-    haptic.light();
-    navigate('/');
-  };
-
-  const handlePostScanSignIn = () => {
-    setShowPostScanSignIn(false);
-    handleSignIn();
-  };
-
-  const handleDismissSignInPrompt = () => {
-    haptic.light();
-    setShowPostScanSignIn(false);
-  };
-
-  // Helper functions for error handling
-  const handleRetakePhoto = () => {
-    setErrorState({ isVisible: false, type: null });
-    setShowStreamlinedCamera(true);
-    setSelectedFiles([]);
-  };
-
-  const handleGallerySelect = () => {
-    setShowStreamlinedCamera(false);
-    // Trigger file input
-    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
-
-  const handleRetryAnalysis = () => {
-    setErrorState({ isVisible: false, type: null });
-    if (selectedFiles.length > 0) {
-      // Retry with current files
-      const files = selectedFiles;
-      setTimeout(async () => {
-        // Trigger analysis inline (similar to existing logic)
-        setIsLoading(true);
-        try {
-          // Re-run analysis with current files
-          const imageUrls = [];
-          for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const timestamp = Date.now();
-            const randomId = Math.random().toString(36).substring(7);
-            const fileExtension = file.name.split('.').pop() || 'jpg';
-            const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
-            
-            const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
-              body: {
-                fileName,
-                fileData: await fileToBase64(file),
-                contentType: file.type || 'image/jpeg'
-              }
-            });
-
-            if (uploadResponse.error) throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
-            if (uploadResponse.data?.publicUrl) imageUrls.push(uploadResponse.data.publicUrl);
-          }
-
-          if (imageUrls.length === 0) throw new Error('No images were successfully uploaded');
-
-          const analysisResponse = await supabase.functions.invoke('analyze-plant', {
-            body: { imageUrls, userId: session?.user?.id || `anonymous-${Date.now()}` }
-          });
-
-          if (analysisResponse.error || !analysisResponse.data?.success) {
-            throw new Error(analysisResponse.error?.message || 'Analysis failed');
-          }
-
-          let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
-          if (typeof analysisText !== 'string') analysisText = JSON.stringify(analysisText, null, 2);
-          
-          const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
-          setAnalysisResult(structuredResult);
-          toast.success("Plant analysis complete!");
-
-          if (session?.user?.id) {
-            await supabase.from('plant_analyses').insert({
-              user_id: session.user.id,
-              image_url: imageUrls[0],
-              image_urls: imageUrls,
-              diagnosis: analysisText,
-              confidence_level: analysisResponse.data.confidence_level || 0.95,
-              detailed_analysis: analysisResponse.data.detailed_analysis || {},
-              recommended_actions: analysisResponse.data.recommended_actions || []
-            });
-          }
-        } catch (error) {
-          console.error("Retry analysis error:", error);
-          const errorMessage = error instanceof Error ? error.message : "Analysis failed again. Please try again.";
-          setErrorState({
-            isVisible: true,
-            type: 'analysis',
-            message: errorMessage
-          });
-        } finally {
-          setIsLoading(false);
-        }
-      }, 500);
-    }
-  };
-
-  const handleCancelError = () => {
-    setErrorState({ isVisible: false, type: null });
-  };
-
-  const handleCancelAnalysis = () => {
-    haptic.light();
-    setIsLoading(false);
-    setErrorState({ isVisible: false, type: null });
-    toast.info("Analysis cancelled");
-  };
-
-  // Show subscription gate if not subscribed
-  if (!subscriptionLoading && (!session || !hasActiveSubscription)) {
+  // Only require sign-in for authenticated users
+  if (!session) {
     return (
       <div className="min-h-screen bg-background text-white pb-20 flex items-center justify-center">
         <Card className="w-full max-w-md mx-4 bg-card/90 backdrop-blur-sm border-card-foreground/10">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl mb-4">Plant Health Analysis</CardTitle>
             <CardDescription>
-              Complete the quiz and subscribe to unlock AI-powered plant health analysis
+              Sign in to access AI-powered plant health analysis
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Button
-              onClick={() => navigate('/quiz')}
+              onClick={() => navigate('/')}
               className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3"
             >
-              Start Plant Care Quiz
+              Sign In to Continue
             </Button>
-            {!session && (
-              <Button
-                onClick={() => navigate('/')}
-                variant="outline"
-                className="w-full"
-              >
-                Sign In First
-              </Button>
-            )}
           </CardContent>
         </Card>
         <BottomNavigation />
@@ -729,14 +696,12 @@ const PlantHealthAnalyzer = () => {
           )}
         </section>
 
-        {!session && (
-          <PostScanSignInPrompt
-            isVisible={showPostScanSignIn}
-            onSignIn={handlePostScanSignIn}
-            onDismiss={handleDismissSignInPrompt}
-            analysisComplete={!!analysisResult}
-          />
-        )}
+        <PostScanSignInPrompt
+          isVisible={showPostScanSignIn}
+          onSignIn={handlePostScanSignIn}
+          onDismiss={handleDismissSignInPrompt}
+          analysisComplete={!!analysisResult}
+        />
       </main>
       
       {/* Loading Overlay with Timer */}
