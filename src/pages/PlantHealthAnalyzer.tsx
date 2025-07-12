@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,12 +14,12 @@ import OnboardingTutorial from '@/components/plant-health/OnboardingTutorial';
 import AnalysisProgress from '@/components/plant-health/AnalysisProgress';
 import ErrorHandlingModal from '@/components/plant-health/ErrorHandlingModal';
 import PostScanSignInPrompt from '@/components/plant-health/PostScanSignInPrompt';
-import TieredResultsScreen from '@/components/plant-health/TieredResultsScreen';
-import PremiumUpgradeModal from '@/components/plant-health/PremiumUpgradeModal';
+import FullResultsScreen from '@/components/plant-health/FullResultsScreen';
+import PlantCareQuiz from '@/components/quiz/PlantCareQuiz';
+import SubscriptionModal from '@/components/subscription/SubscriptionModal';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
-import { useScanTracking } from '@/utils/scanTracking';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -49,20 +48,15 @@ const PlantHealthAnalyzer = () => {
     message?: string;
   }>({ isVisible: false, type: null });
   const [showPostScanSignIn, setShowPostScanSignIn] = useState(false);
-  const [showTieredResults, setShowTieredResults] = useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showFullResults, setShowFullResults] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [showSubscription, setShowSubscription] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
+  
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const haptic = useHapticFeedback();
-  const { 
-    scanData, 
-    incrementScans, 
-    updatePremiumStatus, 
-    canScan, 
-    shouldShowUpgrade, 
-    scansRemaining 
-  } = useScanTracking();
 
   // Slideshow sentences for loading screen
   const slideshowMessages = [
@@ -131,30 +125,15 @@ const PlantHealthAnalyzer = () => {
     };
   }, [isLoading, slideshowMessages.length]);
 
-  // Auto-show upgrade modal when free scans are used up
-  useEffect(() => {
-    if (shouldShowUpgrade && analysisResult) {
-      setShowUpgradeModal(true);
-    }
-  }, [shouldShowUpgrade, analysisResult]);
-
   const handleImagesSelected = useCallback((files: File[]) => {
     console.log('Images selected:', files.length);
     
-    // Check if user can scan
-    if (!canScan.canScan && !scanData.isPremium) {
-      setShowUpgradeModal(true);
-      return;
-    }
-    
+    // No scan limits - all analysis is free
     setSelectedFiles(files);
     setAnalysisResult(null); // Clear previous results
     
     // Auto-trigger analysis after upload
     if (files.length > 0) {
-      // Increment scan count
-      const newScanData = incrementScans();
-      
       setTimeout(async () => {
         // Inline analysis trigger
         if (files.length === 0) {
@@ -218,8 +197,8 @@ const PlantHealthAnalyzer = () => {
           haptic.success();
           toast.success("Plant analysis complete!");
 
-          // Show tiered results screen instead of basic results
-          setShowTieredResults(true);
+          // Show full results screen (no tiers, all content visible)
+          setShowFullResults(true);
 
           if (session?.user?.id) {
             await supabase.from('plant_analyses').insert({
@@ -255,24 +234,16 @@ const PlantHealthAnalyzer = () => {
         }
       }, 500);
     }
-  }, [session?.user?.id, canScan, scanData.isPremium, incrementScans]);
+  }, [session?.user?.id]);
 
   const handleCameraCapture = useCallback((file: File) => {
     console.log('Camera capture file:', file.name, file.size);
     
-    // Check if user can scan
-    if (!canScan.canScan && !scanData.isPremium) {
-      setShowUpgradeModal(true);
-      return;
-    }
-    
+    // No scan limits - all analysis is free
     const newFiles = [file]; // Single file from camera
     setSelectedFiles(newFiles);
     setShowStreamlinedCamera(false);
     setAnalysisResult(null); // Clear previous results
-    
-    // Increment scan count
-    const newScanData = incrementScans();
     
     // Auto-trigger analysis after camera capture
     setTimeout(async () => {
@@ -330,13 +301,13 @@ const PlantHealthAnalyzer = () => {
           analysisText = JSON.stringify(analysisText, null, 2);
         }
         
-          const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
-          setAnalysisResult(structuredResult);
-          haptic.success();
-          toast.success("Plant analysis complete!");
+        const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
+        setAnalysisResult(structuredResult);
+        haptic.success();
+        toast.success("Plant analysis complete!");
 
-          // Show tiered results screen instead of basic results
-          setShowTieredResults(true);
+        // Show full results screen (no tiers, all content visible)
+        setShowFullResults(true);
 
         if (session?.user?.id) {
           await supabase.from('plant_analyses').insert({
@@ -349,198 +320,29 @@ const PlantHealthAnalyzer = () => {
             recommended_actions: analysisResponse.data.recommended_actions || []
           });
         }
-        } catch (error) {
-          console.error("Analysis error:", error);
-          haptic.error();
-          const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
-          
-          // Determine error type for better UX
-          let errorType: 'blurry' | 'upload' | 'analysis' | 'network' = 'analysis';
-          if (errorMessage.includes('upload') || errorMessage.includes('Failed to upload')) {
-            errorType = 'upload';
-          } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
-            errorType = 'network';
-          }
-          
-          setErrorState({
-            isVisible: true,
-            type: errorType,
-            message: errorMessage
-          });
-        } finally {
-          setIsLoading(false);
+      } catch (error) {
+        console.error("Analysis error:", error);
+        haptic.error();
+        const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
+        
+        // Determine error type for better UX
+        let errorType: 'blurry' | 'upload' | 'analysis' | 'network' = 'analysis';
+        if (errorMessage.includes('upload') || errorMessage.includes('Failed to upload')) {
+          errorType = 'upload';
+        } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+          errorType = 'network';
         }
+        
+        setErrorState({
+          isVisible: true,
+          type: errorType,
+          message: errorMessage
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }, 500);
   }, [selectedFiles, session?.user?.id]);
-
-  const handleAnalyze = async () => {
-    if (selectedFiles.length === 0) {
-      toast.error("Please select or capture images first.");
-      return;
-    }
-
-    console.log('=== STARTING PLANT ANALYSIS ===');
-    console.log('Current URL:', window.location.href);
-    console.log('Branch/Environment check');
-    console.log('Files to analyze:', selectedFiles.length);
-    
-    setIsLoading(true);
-    setAnalysisResult(null);
-
-    // Set a timeout to prevent infinite loading
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-      toast.error("Analysis timed out. Please try again with a smaller image or check your connection.");
-    }, 120000); // 2 minute timeout
-
-    try {
-      console.log('Starting analysis with', selectedFiles.length, 'files');
-      
-      // Upload images to storage with enhanced error handling
-      const imageUrls = [];
-      
-      for (let i = 0; i < selectedFiles.length; i++) {
-        const file = selectedFiles[i];
-        console.log(`Processing file ${i + 1}:`, {
-          name: file.name,
-          size: file.size, 
-          type: file.type,
-          lastModified: file.lastModified
-        });
-        
-        // Create unique filename with timestamp to avoid conflicts
-        const timestamp = Date.now();
-        const randomId = Math.random().toString(36).substring(7);
-        const fileExtension = file.name.split('.').pop() || 'jpg';
-        const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
-        
-        try {
-          console.log(`Uploading file ${i + 1} with name:`, fileName);
-          console.log('Calling upload-plant-image function...');
-          
-          // Use the upload edge function with enhanced error handling
-          const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
-            body: {
-              fileName,
-              fileData: await fileToBase64(file),
-              contentType: file.type || 'image/jpeg'
-            }
-          });
-
-          console.log(`Upload response for file ${i + 1}:`, uploadResponse);
-
-          if (uploadResponse.error) {
-            console.error(`Upload error for file ${i + 1}:`, uploadResponse.error);
-            throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
-          }
-
-          if (uploadResponse.data?.publicUrl) {
-            console.log(`Upload successful for file ${i + 1}:`, uploadResponse.data.publicUrl);
-            imageUrls.push(uploadResponse.data.publicUrl);
-          } else {
-            console.error(`No public URL received for file ${i + 1}:`, uploadResponse.data);
-            throw new Error(`No public URL received for ${file.name}`);
-          }
-        } catch (uploadAttemptError) {
-          console.error(`Upload attempt failed for file ${i + 1}:`, uploadAttemptError);
-          throw new Error(`Failed to upload ${file.name}: ${uploadAttemptError.message}`);
-        }
-      }
-
-      if (imageUrls.length === 0) {
-        throw new Error('No images were successfully uploaded');
-      }
-
-      console.log('All images uploaded successfully:', imageUrls);
-      console.log('Calling analyze-plant function...');
-
-      // Call the analyze-plant edge function with enhanced error handling
-      const analysisResponse = await supabase.functions.invoke('analyze-plant', {
-        body: { 
-          imageUrls,
-          userId: session?.user?.id || `anonymous-${Date.now()}` // Use anonymous ID for non-authenticated users
-        }
-      });
-
-      console.log('Analysis function response received:', analysisResponse);
-
-      if (analysisResponse.error) {
-        console.error('Analysis function error:', analysisResponse.error);
-        throw new Error(`Analysis failed: ${analysisResponse.error.message || 'Unknown error from analysis function'}`);
-      }
-
-      if (!analysisResponse.data) {
-        console.error('No analysis data received');
-        throw new Error('No analysis data received from function');
-      }
-
-      if (!analysisResponse.data.success) {
-        console.error('Analysis function returned failure:', analysisResponse.data);
-        throw new Error(analysisResponse.data.error || 'Analysis failed with unknown error');
-      }
-
-      // Safely extract and sanitize analysis text
-      let analysisText = analysisResponse.data.analysis || analysisResponse.data.diagnosis || "Analysis completed successfully!";
-      
-      // Ensure analysisText is a string and sanitize it
-      if (typeof analysisText !== 'string') {
-        analysisText = JSON.stringify(analysisText, null, 2);
-      }
-      
-      // Remove any potential problematic characters
-      analysisText = analysisText.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, '');
-      // Parse the analysis text to create structured data
-      const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
-      
-      console.log('Analysis result received, length:', analysisText.length);
-      
-      setAnalysisResult(structuredResult);
-      toast.success("Plant analysis complete!");
-
-      // Store the analysis in the database only if user is authenticated
-      if (session?.user?.id) {
-        try {
-          console.log('Saving analysis to database...');
-          const { error: saveError } = await supabase
-            .from('plant_analyses')
-            .insert({
-              user_id: session.user.id,
-              image_url: imageUrls[0], // Primary image
-              image_urls: imageUrls, // All images
-              diagnosis: analysisText,
-              confidence_level: analysisResponse.data.confidence_level || 0.95,
-              detailed_analysis: analysisResponse.data.detailed_analysis || {},
-              recommended_actions: analysisResponse.data.recommended_actions || []
-            });
-
-          if (saveError) {
-            console.error('Error saving analysis:', saveError);
-            toast.error("Analysis complete but couldn't save to history");
-          } else {
-            console.log('Analysis saved to database successfully');
-          }
-        } catch (saveError) {
-          console.error('Error saving analysis to database:', saveError);
-        }
-          } else {
-            console.log('User not authenticated, showing post-scan sign-in prompt');
-            setShowPostScanSignIn(true);
-          }
-
-      console.log('=== PLANT ANALYSIS COMPLETED SUCCESSFULLY ===');
-
-    } catch (error) {
-      console.error('=== PLANT ANALYSIS FAILED ===');
-      console.error("Analysis error:", error);
-      console.error("Error stack:", error.stack);
-      const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
-      setAnalysisResult(null);
-      toast.error(errorMessage);
-    } finally {
-      clearTimeout(timeoutId);
-      setIsLoading(false);
-    }
-  };
 
   // Helper function to parse analysis text into structured data
   const parseAnalysisText = (analysisText: string, confidence: number): StructuredAnalysisResult => {
@@ -684,22 +486,6 @@ const PlantHealthAnalyzer = () => {
       {
         title: "Growth Training and Optimization",
         description: `**Canopy Management:** Implement LST (Low Stress Training) or SCROG (Screen of Green) techniques to maximize light exposure. Prune lower branches that don't receive adequate light (lollipopping). Remove large fan leaves blocking bud sites during flowering. Top or FIM plants during vegetative stage to increase main colas. Maintain even canopy height for uniform light distribution.`
-      },
-      {
-        title: "Harvest Window Optimization",
-        description: `**Trichome Monitoring:** Use 60x-100x jeweler's loupe or digital microscope to examine trichomes daily during late flowering. Harvest when trichomes are 70-90% cloudy with 10-30% amber for balanced effects. Clear trichomes indicate early harvest (more energetic high), amber indicates late harvest (more sedative effects). Stop nutrients 1-2 weeks before harvest and flush with plain water.`
-      },
-      {
-        title: "Quality Control and Documentation",
-        description: `**Comprehensive Record Keeping:** Maintain detailed logs of feeding, watering, environmental conditions, and plant observations. Take weekly photos for progress tracking. Document what works well for future grows. Track phenotypes and characteristics for strain selection. Monitor yields and potency results to optimize techniques. Use apps or spreadsheets for systematic data collection.`
-      },
-      {
-        title: "Post-Harvest Excellence",
-        description: `**Proper Curing Process:** Dry in controlled environment: 60-70°F, 45-55% RH, gentle air circulation, complete darkness for 7-14 days. Trim when stems snap but don't break completely. Cure in glass jars, opening daily for first week (burping), then less frequently. Maintain 58-62% RH in jars with humidity packs. Proper cure takes 2-8 weeks for optimal flavor and smoothness.`
-      },
-      {
-        title: "Continuous Improvement",
-        description: `**Learning and Adaptation:** Research strain-specific requirements and growing techniques. Join growing communities for knowledge sharing. Experiment with one variable at a time to understand cause and effect. Keep detailed notes on successful techniques. Consider tissue culture or cloning for preserving superior genetics. Stay updated on new growing technologies and methods.`
       }
     ];
     
@@ -719,7 +505,7 @@ const PlantHealthAnalyzer = () => {
         specific_issues: specificIssues,
         environmental_factors: environmentalFactors
       },
-      recommended_actions: recommendedActions.slice(0, 9) // Limit to 9 comprehensive actions
+      recommended_actions: recommendedActions.slice(0, 5) // Limit to 5 comprehensive actions
     };
   };
 
@@ -757,16 +543,8 @@ const PlantHealthAnalyzer = () => {
     setShowPostScanSignIn(false);
   };
 
-  const handleUpgrade = () => {
-    // For now, just simulate premium upgrade
-    // In production, this would integrate with Stripe
-    updatePremiumStatus(true);
-    setShowUpgradeModal(false);
-    toast.success("Welcome to Premium! Unlimited scans unlocked!");
-  };
-
   const handleCloseResults = () => {
-    setShowTieredResults(false);
+    setShowFullResults(false);
     setAnalysisResult(null);
   };
 
@@ -831,6 +609,7 @@ const PlantHealthAnalyzer = () => {
           
           const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
           setAnalysisResult(structuredResult);
+          setShowFullResults(true);
           toast.success("Plant analysis complete!");
 
           if (session?.user?.id) {
@@ -858,7 +637,6 @@ const PlantHealthAnalyzer = () => {
       }, 500);
     }
   };
-
 
   const handleCancelError = () => {
     setErrorState({ isVisible: false, type: null });
@@ -909,7 +687,7 @@ const PlantHealthAnalyzer = () => {
         </section>
 
         <section className="mb-8">
-          {analysisResult && !showTieredResults && (
+          {analysisResult && !showFullResults && (
             <AnalysisResults analysisResult={analysisResult} />
           )}
         </section>
@@ -975,25 +753,38 @@ const PlantHealthAnalyzer = () => {
         onCancel={handleCancelError}
       />
       
-      {/* Tiered Results Screen */}
-      {analysisResult && (
-        <TieredResultsScreen
-          analysisResult={analysisResult}
-          isVisible={showTieredResults}
-          onClose={handleCloseResults}
-          onUpgrade={handleUpgrade}
-          isPremium={scanData.isPremium}
-          scanCount={scanData.count}
-        />
-      )}
+      {/* Full Results Screen */}
+      <FullResultsScreen
+        analysisResult={analysisResult}
+        isVisible={showFullResults}
+        onClose={() => setShowFullResults(false)}
+        onSavePlants={() => {
+          setShowFullResults(false);
+          setShowQuiz(true);
+        }}
+      />
 
-      {/* Premium Upgrade Modal */}
-      <PremiumUpgradeModal
-        isVisible={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        onUpgrade={handleUpgrade}
-        scanCount={scanData.count}
-        scansRemaining={scansRemaining}
+      {/* Plant Care Quiz */}
+      <PlantCareQuiz
+        isVisible={showQuiz}
+        onClose={() => setShowQuiz(false)}
+        onComplete={(answers) => {
+          setQuizAnswers(answers);
+          setShowQuiz(false);
+          setShowSubscription(true);
+        }}
+      />
+
+      {/* Subscription Modal */}
+      <SubscriptionModal
+        isVisible={showSubscription}
+        onClose={() => setShowSubscription(false)}
+        onSubscribe={() => {
+          console.log('Subscription completed with answers:', quizAnswers);
+          setShowSubscription(false);
+          // Handle successful subscription
+        }}
+        quizAnswers={quizAnswers}
       />
       
       <BottomNavigation />
