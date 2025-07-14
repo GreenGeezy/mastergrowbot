@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useHapticFeedback } from "@/utils/hapticFeedback";
 import { useIsMobile } from "@/hooks/use-mobile";
+import PlantComparison from "./PlantComparison";
 const Header = () => {
   const [isHovered, setIsHovered] = useState(false);
   const haptic = useHapticFeedback();
@@ -58,8 +59,13 @@ const Header = () => {
           
           {/* Main Headline */}
           <h2 className={`font-bold leading-tight max-w-[720px] mx-auto text-white ${isMobile ? 'text-lg' : 'text-xl sm:text-2xl'}`}>
-            Grow Award Winning Cannabis and Save Your Plants in Secs Just by Snapping a Pic
+            Grow Award-Winning Cannabis & Save Plants in Seconds – Free 3-Day Trial
           </h2>
+          
+          {/* Subtitle */}
+          <p className={`font-semibold text-gold max-w-[600px] mx-auto ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
+            Prevent $336/Plant Losses – Start Your Free Trial Now
+          </p>
           
           {/* Trust Indicators */}
           <div className="space-y-3 sm:space-y-4">
@@ -85,6 +91,9 @@ const Header = () => {
             </motion.div>
           </div>
           
+          {/* Plant Comparison Image */}
+          <PlantComparison />
+          
           {/* CTA Button */}
           <motion.div 
             className="pt-2 sm:pt-4"
@@ -104,6 +113,16 @@ const Header = () => {
                   background: 'linear-gradient(135deg, #00ff95 0%, #4cff79 100%)',
                 }}
               >
+                {/* Discount Badge */}
+                <motion.div
+                  className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.8, type: "spring" }}
+                >
+                  3 Days Free
+                </motion.div>
+                
                 {/* Neon glow effect */}
                 <motion.div
                   className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
