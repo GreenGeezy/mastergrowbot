@@ -17,6 +17,7 @@ import PostScanSignInPrompt from '@/components/plant-health/PostScanSignInPrompt
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -631,109 +632,111 @@ const PlantHealthAnalyzer = () => {
   // Allow access without authentication for testing and design work
 
   return (
-    <div className="min-h-screen bg-background text-white pb-20">
-      <PlantHealthHeader />
+    <TooltipProvider>
+      <div className="min-h-screen bg-background text-white pb-20">
+        <PlantHealthHeader />
 
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <section className="mb-8">
-          <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
-            <CardHeader>
-              <CardTitle className="text-center text-2xl">Capture or Upload Plant Images</CardTitle>
-              <CardDescription className="text-center">
-                Take photos or upload images from your device for AI-powered plant health analysis
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              {showStreamlinedCamera ? (
-                <StreamlinedCameraCapture
-                  onPhotoCapture={handleCameraCapture}
-                  onClose={() => setShowStreamlinedCamera(false)}
-                  onGallerySelect={handleGallerySelect}
-                />
-              ) : !showCamera ? (
-                <ImageDropzone
-                  onImagesSelected={handleImagesSelected}
-                  selectedFiles={selectedFiles}
-                  maxFiles={3}
-                  onCameraCapture={handleCameraCapture}
-                />
-              ) : (
-                <CameraCapture
-                  onPhotoCapture={handleCameraCapture}
-                  onClose={() => setShowCamera(false)}
-                />
-              )}
-            </CardContent>
-          </Card>
-        </section>
+        <main className="container mx-auto px-4 py-8 max-w-4xl">
+          <section className="mb-8">
+            <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
+              <CardHeader>
+                <CardTitle className="text-center text-2xl">Capture or Upload Plant Images</CardTitle>
+                <CardDescription className="text-center">
+                  Take photos or upload images from your device for AI-powered plant health analysis
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-0">
+                {showStreamlinedCamera ? (
+                  <StreamlinedCameraCapture
+                    onPhotoCapture={handleCameraCapture}
+                    onClose={() => setShowStreamlinedCamera(false)}
+                    onGallerySelect={handleGallerySelect}
+                  />
+                ) : !showCamera ? (
+                  <ImageDropzone
+                    onImagesSelected={handleImagesSelected}
+                    selectedFiles={selectedFiles}
+                    maxFiles={3}
+                    onCameraCapture={handleCameraCapture}
+                  />
+                ) : (
+                  <CameraCapture
+                    onPhotoCapture={handleCameraCapture}
+                    onClose={() => setShowCamera(false)}
+                  />
+                )}
+              </CardContent>
+            </Card>
+          </section>
 
-        <section className="mb-8">
-          {analysisResult && (
-            <AnalysisResults analysisResult={analysisResult} />
-          )}
-        </section>
+          <section className="mb-8">
+            {analysisResult && (
+              <AnalysisResults analysisResult={analysisResult} />
+            )}
+          </section>
 
-        <PostScanSignInPrompt
-          isVisible={showPostScanSignIn}
-          onSignIn={handlePostScanSignIn}
-          onDismiss={handleDismissSignInPrompt}
-          analysisComplete={!!analysisResult}
-        />
-      </main>
-      
-      {/* Loading Overlay with Timer */}
-      {isLoading && (
-        <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="text-center space-y-6 px-4">
-            <div className="space-y-4">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-              
-              {/* Slideshow Messages */}
-              <div className="min-h-[3rem] flex items-center justify-center">
-                <p className="text-lg md:text-xl font-medium text-primary animate-fade-in">
-                  {slideshowMessages[currentSlideIndex]}
-                </p>
+          <PostScanSignInPrompt
+            isVisible={showPostScanSignIn}
+            onSignIn={handlePostScanSignIn}
+            onDismiss={handleDismissSignInPrompt}
+            analysisComplete={!!analysisResult}
+          />
+        </main>
+        
+        {/* Loading Overlay with Timer */}
+        {isLoading && (
+          <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
+            <div className="text-center space-y-6 px-4">
+              <div className="space-y-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                
+                {/* Slideshow Messages */}
+                <div className="min-h-[3rem] flex items-center justify-center">
+                  <p className="text-lg md:text-xl font-medium text-primary animate-fade-in">
+                    {slideshowMessages[currentSlideIndex]}
+                  </p>
+                </div>
+                
+                <h3 className="text-xl md:text-2xl font-semibold text-white">
+                  Analyzing your plant with your growing preferences...
+                </h3>
               </div>
-              
-              <h3 className="text-xl md:text-2xl font-semibold text-white">
-                Analyzing your plant with your growing preferences...
-              </h3>
-            </div>
-            <div className="text-lg md:text-xl text-white">
-              Time elapsed: <span className="font-mono font-bold text-primary">{elapsedTime}s</span>
+              <div className="text-lg md:text-xl text-white">
+                Time elapsed: <span className="font-mono font-bold text-primary">{elapsedTime}s</span>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Onboarding Tutorial */}
-      {showOnboarding && (
-        <OnboardingTutorial
-          onComplete={() => setShowOnboarding(false)}
-          onSkip={() => setShowOnboarding(false)}
+        {/* Onboarding Tutorial */}
+        {showOnboarding && (
+          <OnboardingTutorial
+            onComplete={() => setShowOnboarding(false)}
+            onSkip={() => setShowOnboarding(false)}
+          />
+        )}
+
+        {/* Analysis Progress Modal */}
+        <AnalysisProgress
+          isVisible={isLoading}
+          onCancel={handleCancelAnalysis}
+          currentMessage={slideshowMessages[currentSlideIndex]}
+          elapsedTime={elapsedTime}
         />
-      )}
 
-      {/* Analysis Progress Modal */}
-      <AnalysisProgress
-        isVisible={isLoading}
-        onCancel={handleCancelAnalysis}
-        currentMessage={slideshowMessages[currentSlideIndex]}
-        elapsedTime={elapsedTime}
-      />
-
-      {/* Error Handling Modal */}
-      <ErrorHandlingModal
-        isVisible={errorState.isVisible}
-        errorType={errorState.type}
-        errorMessage={errorState.message}
-        onRetake={handleRetakePhoto}
-        onRetry={handleRetryAnalysis}
-        onCancel={handleCancelError}
-      />
-      
-      <BottomNavigation />
-    </div>
+        {/* Error Handling Modal */}
+        <ErrorHandlingModal
+          isVisible={errorState.isVisible}
+          errorType={errorState.type}
+          errorMessage={errorState.message}
+          onRetake={handleRetakePhoto}
+          onRetry={handleRetryAnalysis}
+          onCancel={handleCancelError}
+        />
+        
+        <BottomNavigation />
+      </div>
+    </TooltipProvider>
   );
 };
 
