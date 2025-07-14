@@ -12,6 +12,7 @@ import {
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import SupportDialog from '@/components/support/SupportDialog';
@@ -79,7 +80,7 @@ export const ChatHeader = () => {
   };
 
   return (
-    <>
+    <TooltipProvider>
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center p-4 border-b border-[#333333] bg-[#1A1A1A] h-[80px]">
         <div className="flex items-center space-x-3 mr-4">
           <a href="https://www.mastergrowbot.com" className="hover:opacity-80 transition-opacity">
@@ -221,6 +222,6 @@ export const ChatHeader = () => {
       </div>
       <div className="h-[80px]"></div>
       <SupportDialog isOpen={showSupport} onOpenChange={setShowSupport} />
-    </>
+    </TooltipProvider>
   );
 };
