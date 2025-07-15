@@ -61,7 +61,7 @@ const Header = () => {
               Grow Award-Winning Cannabis & Save Plants in Seconds – Free 3-Day Trial
             </h2>
             <p className={`font-semibold text-gold max-w-[600px] mx-auto leading-relaxed ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
-              Prevent $336/Plant to Over $100,000 per Harvest in Losses – Start Your Free Trial Now. Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide.
+              Prevent $336/Plant to Over $100,000 per Harvest in Losses – Start Your Free Trial Now. Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers
             </p>
           </div>
           
