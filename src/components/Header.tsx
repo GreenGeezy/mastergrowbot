@@ -15,7 +15,7 @@ const Header = () => {
   };
   return <div className="w-full flex flex-col items-center mb-2 sm:mb-4 animate-fade-in circuit-background min-h-[75vh] flex justify-center px-4">
       {/* Logo Section */}
-      <motion.div className="relative group mb-6 sm:mb-8" initial={{
+      <motion.div className="relative group mb-2 sm:mb-3" initial={{
       opacity: 0,
       scale: 0.9
     }} animate={{
