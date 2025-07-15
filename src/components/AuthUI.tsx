@@ -166,23 +166,6 @@ const AuthUI = ({
       </div>
 
 
-      {/* Three Images Layout */}
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-4 max-w-5xl mx-auto">
-        {/* Cancel Anytime Badge */}
-        <div className="flex-shrink-0">
-          <img src="/lovable-uploads/0b625d46-6a8a-4ae6-a395-2ea7b1034b04.png" alt="Cancel Anytime Zero Fees Badge" className="w-32 h-32 md:w-40 md:h-40 object-contain" loading="lazy" />
-        </div>
-
-        {/* Secure Checkout Image */}
-        <div className="flex-shrink-0">
-          <img alt="Secure checkout by Square with multiple payment options" className="w-full max-w-md h-auto object-contain rounded-lg" src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" />
-        </div>
-
-        {/* Trusted Seller Badge */}
-        <div className="flex-shrink-0">
-          <img src="/lovable-uploads/30767198-f9b4-42cb-b632-0b9fbb0b856a.png" alt="Trusted Seller Badge" className="w-32 h-32 md:w-40 md:h-40 object-contain" loading="lazy" />
-        </div>
-      </div>
 
       {/* Authentication Section */}
       <div className="flex flex-col items-center justify-center max-w-4xl mx-auto">
