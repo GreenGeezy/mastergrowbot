@@ -11,7 +11,6 @@ import Header from '@/components/Header';
 import FeatureSection from '@/components/FeatureSection';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
-import PricingCards from '@/components/PricingCards';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -153,10 +152,7 @@ export default function Index() {
             
             {/* Main content area */}
             <div className="flex-1 container mx-auto px-4 flex flex-col justify-center">
-              <div className="py-6 md:py-10 flex flex-col items-center justify-center min-h-[60vh] space-y-8">
-                {/* Pricing Cards - Above Auth */}
-                <PricingCards />
-                
+              <div className="py-6 md:py-10 flex flex-col items-center justify-center min-h-[60vh]">
                 <AuthUI>
                   <div></div>
                 </AuthUI>
