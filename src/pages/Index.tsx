@@ -10,6 +10,7 @@ import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
 import FeatureSection from '@/components/FeatureSection';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
+import TestimonialCarousel from '@/components/TestimonialCarousel';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -144,6 +145,11 @@ export default function Index() {
           <UserDashboard />
         ) : (
           <div className="flex flex-col flex-1 pb-20">
+            {/* Testimonials Section - Right after Header */}
+            <div className="container mx-auto px-4 py-4">
+              <TestimonialCarousel />
+            </div>
+            
             {/* Main content area */}
             <div className="flex-1 container mx-auto px-4 flex flex-col justify-center">
               <div className="py-6 md:py-10 flex flex-col items-center justify-center min-h-[60vh]">
