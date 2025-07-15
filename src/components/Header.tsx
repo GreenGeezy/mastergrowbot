@@ -127,7 +127,7 @@ const Header = () => {
               }} />
                 
                 <span className="relative z-10 flex items-center">
-                  Save My Plants
+                  Save My Plants with AI
                   <motion.div animate={{
                   x: isHovered ? 4 : 0
                 }} transition={{
