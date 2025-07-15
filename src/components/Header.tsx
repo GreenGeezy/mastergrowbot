@@ -60,16 +60,13 @@ const Header = () => {
             <h2 className={`font-bold leading-tight max-w-[720px] mx-auto text-white ${isMobile ? 'text-lg' : 'text-xl sm:text-2xl'}`}>
               Grow Award-Winning Cannabis & Save Plants in Seconds – Free 3-Day Trial
             </h2>
-            <p className={`font-semibold text-gold max-w-[600px] mx-auto ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
-              Prevent $336/Plant to Over $100,000 per Harvest in Losses – Start Your Free Trial Now
+            <p className={`font-semibold text-gold max-w-[600px] mx-auto leading-relaxed ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
+              Prevent $336/Plant to Over $100,000 per Harvest in Losses – Start Your Free Trial Now. Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide.
             </p>
           </div>
           
           {/* Trust Indicators */}
           <div className="space-y-3 sm:space-y-4">
-            <p className={`text-center font-medium text-gold ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
-              Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
-            </p>
             
             <motion.div className="flex items-center justify-center space-x-2 sm:space-x-3 relative" initial={{
             opacity: 0
