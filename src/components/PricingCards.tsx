@@ -99,7 +99,7 @@ export default function PricingCards() {
                   Master Growbot
                 </div>
               </div>
-              <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-2 py-1 text-xs font-bold">
+              <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-5 py-2 text-base font-bold">
                 3 Days Free
               </Badge>
             </div>
@@ -159,7 +159,7 @@ export default function PricingCards() {
                   Master Growbot
                 </div>
               </div>
-              <Badge className="bg-gradient-to-r from-accent to-secondary text-white border-0 px-2 py-1 text-xs font-bold">
+              <Badge className="bg-gradient-to-r from-accent to-secondary text-white border-0 px-5 py-2 text-base font-bold">
                 Save 25%
               </Badge>
             </div>
@@ -219,7 +219,7 @@ export default function PricingCards() {
                   Master Growbot
                 </div>
               </div>
-              <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-2 py-1 text-xs font-bold">
+              <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-5 py-2 text-base font-bold">
                 Save 60%
               </Badge>
             </div>
