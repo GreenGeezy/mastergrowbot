@@ -424,106 +424,106 @@ const PlantHealthAnalyzer = () => {
     setSelectedFiles(files);
     setAnalysisResult(null); // Clear previous results
     
-    // Auto-trigger analysis after upload
-    if (files.length > 0) {
-      setTimeout(async () => {
-        // Inline analysis trigger
-        if (files.length === 0) {
-          toast.error("Please select or capture images first.");
-          return;
-        }
+    // Do NOT auto-trigger analysis for file uploads - only for camera captures
+    // Users should be able to upload multiple images before analyzing
+  }, []);
 
-        console.log('=== STARTING PLANT ANALYSIS ===');
-        setIsLoading(true);
-        setAnalysisResult(null);
-
-        try {
-          const imageUrls = [];
-          
-          for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const timestamp = Date.now();
-            const randomId = Math.random().toString(36).substring(7);
-            const fileExtension = file.name.split('.').pop() || 'jpg';
-            const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
-            
-            const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
-              body: {
-                fileName,
-                fileData: await fileToBase64(file),
-                contentType: file.type || 'image/jpeg'
-              }
-            });
-
-            if (uploadResponse.error) {
-              throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
-            }
-
-            if (uploadResponse.data?.publicUrl) {
-              imageUrls.push(uploadResponse.data.publicUrl);
-            }
-          }
-
-          if (imageUrls.length === 0) {
-            throw new Error('No images were successfully uploaded');
-          }
-
-          const analysisResponse = await supabase.functions.invoke('analyze-plant', {
-            body: { 
-              imageUrls,
-              userId: session?.user?.id || `anonymous-${Date.now()}`
-            }
-          });
-
-          if (analysisResponse.error || !analysisResponse.data?.success) {
-            throw new Error(analysisResponse.error?.message || 'Analysis failed');
-          }
-
-          let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
-          if (typeof analysisText !== 'string') {
-            analysisText = JSON.stringify(analysisText, null, 2);
-          }
-          
-          const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
-          setAnalysisResult(structuredResult);
-          haptic.success();
-          toast.success("Plant analysis complete!");
-
-          if (session?.user?.id) {
-            await supabase.from('plant_analyses').insert({
-              user_id: session.user.id,
-              image_url: imageUrls[0],
-              image_urls: imageUrls,
-              diagnosis: analysisText,
-              confidence_level: analysisResponse.data.confidence_level || 0.95,
-              detailed_analysis: analysisResponse.data.detailed_analysis || {},
-              recommended_actions: analysisResponse.data.recommended_actions || []
-            });
-          }
-        } catch (error) {
-          console.error("Analysis error:", error);
-          haptic.error();
-          const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
-          
-          // Determine error type for better UX
-          let errorType: 'blurry' | 'upload' | 'analysis' | 'network' = 'analysis';
-          if (errorMessage.includes('upload') || errorMessage.includes('Failed to upload')) {
-            errorType = 'upload';
-          } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
-            errorType = 'network';
-          }
-          
-          setErrorState({
-            isVisible: true,
-            type: errorType,
-            message: errorMessage
-          });
-        } finally {
-          setIsLoading(false);
-        }
-      }, 500);
+  // Manual analysis function for uploaded files
+  const handleManualAnalysis = useCallback(async () => {
+    if (selectedFiles.length === 0) {
+      toast.error("Please select images first.");
+      return;
     }
-  }, [session?.user?.id, haptic]);
+
+    console.log('=== STARTING MANUAL PLANT ANALYSIS ===');
+    setIsLoading(true);
+    setAnalysisResult(null);
+
+    try {
+      const imageUrls = [];
+      
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i];
+        const timestamp = Date.now();
+        const randomId = Math.random().toString(36).substring(7);
+        const fileExtension = file.name.split('.').pop() || 'jpg';
+        const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
+        
+        const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
+          body: {
+            fileName,
+            fileData: await fileToBase64(file),
+            contentType: file.type || 'image/jpeg'
+          }
+        });
+
+        if (uploadResponse.error) {
+          throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
+        }
+
+        if (uploadResponse.data?.publicUrl) {
+          imageUrls.push(uploadResponse.data.publicUrl);
+        }
+      }
+
+      if (imageUrls.length === 0) {
+        throw new Error('No images were successfully uploaded');
+      }
+
+      const analysisResponse = await supabase.functions.invoke('analyze-plant', {
+        body: { 
+          imageUrls,
+          userId: session?.user?.id || `anonymous-${Date.now()}`
+        }
+      });
+
+      if (analysisResponse.error || !analysisResponse.data?.success) {
+        throw new Error(analysisResponse.error?.message || 'Analysis failed');
+      }
+
+      let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
+      if (typeof analysisText !== 'string') {
+        analysisText = JSON.stringify(analysisText, null, 2);
+      }
+      
+      const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
+      setAnalysisResult(structuredResult);
+      haptic.success();
+      toast.success("Plant analysis complete!");
+
+      if (session?.user?.id) {
+        await supabase.from('plant_analyses').insert({
+          user_id: session.user.id,
+          image_url: imageUrls[0],
+          image_urls: imageUrls,
+          diagnosis: analysisText,
+          confidence_level: analysisResponse.data.confidence_level || 0.95,
+          detailed_analysis: analysisResponse.data.detailed_analysis || {},
+          recommended_actions: analysisResponse.data.recommended_actions || []
+        });
+      }
+    } catch (error) {
+      console.error("Manual analysis error:", error);
+      haptic.error();
+      const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
+      
+      // Determine error type for better UX
+      let errorType: 'blurry' | 'upload' | 'analysis' | 'network' = 'analysis';
+      if (errorMessage.includes('upload') || errorMessage.includes('Failed to upload')) {
+        errorType = 'upload';
+      } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+        errorType = 'network';
+      }
+      
+      setErrorState({
+        isVisible: true,
+        type: errorType,
+        message: errorMessage
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [selectedFiles, session?.user?.id, haptic]);
 
   const handleCameraCapture = useCallback((file: File) => {
     console.log('Camera capture file:', file.name, file.size);
@@ -668,6 +668,34 @@ const PlantHealthAnalyzer = () => {
               </CardContent>
             </Card>
           </section>
+
+          {/* Manual Analysis Button - appears when files are selected but no analysis has been done */}
+          {selectedFiles.length > 0 && !analysisResult && !isLoading && (
+            <section className="mb-8">
+              <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    <h3 className="text-xl font-semibold text-white">
+                      {selectedFiles.length} image{selectedFiles.length > 1 ? 's' : ''} ready for analysis
+                    </h3>
+                    <p className="text-muted-foreground">
+                      {selectedFiles.length < 3 ? 
+                        `You can add ${3 - selectedFiles.length} more image${3 - selectedFiles.length > 1 ? 's' : ''} or analyze now` :
+                        'Maximum 3 images selected - ready to analyze'
+                      }
+                    </p>
+                    <Button
+                      onClick={handleManualAnalysis}
+                      className="w-full md:w-auto bg-gradient-to-r from-green-500 via-blue-500 to-green-600 hover:from-green-600 hover:via-blue-600 hover:to-green-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 shadow-2xl shadow-green-500/25 hover:shadow-green-500/40 transform hover:scale-[1.02] focus:scale-[1.02] focus:shadow-green-500/40 text-lg"
+                      disabled={isLoading}
+                    >
+                      🌿 Analyze Plant Health ({selectedFiles.length} image{selectedFiles.length > 1 ? 's' : ''})
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+          )}
 
           <section className="mb-8">
             {analysisResult && (
