@@ -172,13 +172,18 @@ export default function BenefitsSection() {
       >
         <Button
           onClick={handleQuizClick}
-          className={`bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white font-bold rounded-full shadow-lg transition-all duration-300 hover:scale-105 pulse-glow ${
+          className={`bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white font-bold rounded-full shadow-lg transition-all duration-300 hover:scale-105 pulse-glow flex flex-col items-center justify-center leading-tight ${
             isMobile ? 'px-8 py-6 text-lg' : 'px-12 py-8 text-xl'
           }`}
         >
-          <Zap className={`mr-2 ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
-          Unlock These Benefits – Start Free Quiz
-          <ChevronRight className={`ml-2 ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
+          <div className="flex items-center justify-center">
+            <Zap className={`mr-2 ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
+            <span>Unlock These Benefits</span>
+          </div>
+          <div className="flex items-center justify-center">
+            <span>Start Free Quiz</span>
+            <ChevronRight className={`ml-2 ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
+          </div>
         </Button>
         
         <p className={`text-white/60 mt-4 ${isMobile ? 'text-sm' : 'text-base'}`}>
