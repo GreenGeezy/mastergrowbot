@@ -68,7 +68,7 @@ const Header = () => {
           {/* Trust Indicators */}
           <div className="space-y-3 sm:space-y-4">
             <div className={`text-left font-medium text-gold flex items-center ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
-              <span>Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide</span>
+              <span className="flex-1">Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide</span>
               <motion.div className="flex items-center space-x-1 ml-2" initial={{
                 opacity: 0
               }} animate={{
