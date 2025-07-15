@@ -67,10 +67,10 @@ const UploadArea = ({
                 )}
               </div>
               <div className="text-center">
-                <p className="text-foreground font-semibold text-xl mb-3">
+                <p className="text-white font-semibold text-xl mb-3">
                   {isProcessing ? "Processing images..." : "Drop images here"}
                 </p>
-                <p className="text-muted-foreground text-base">
+                <p className="text-white text-base">
                   or tap to select from your device
                 </p>
               </div>
