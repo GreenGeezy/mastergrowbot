@@ -8,11 +8,11 @@ import { Eye, EyeOff } from "lucide-react";
 import PricingCards from './PricingCards';
 import TestimonialCarousel from './TestimonialCarousel';
 import { isIOSPreview } from '@/utils/flags';
-
-const AuthUI = ({ children }) => {
+const AuthUI = ({
+  children
+}) => {
   // Skip Supabase login when in iOS preview mode
   if (isIOSPreview) return <>{children ?? null}</>;
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,26 +20,25 @@ const AuthUI = ({ children }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const supabase = useSupabaseClient();
-
   const handleSignIn = async () => {
     setError(null);
     setLoading(true);
-    
     if (!email || !password) {
       setError('Please enter your email and password.');
       setLoading(false);
       return;
     }
-    
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const {
+        data,
+        error
+      } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password
       });
-      
       if (error) {
         console.error('Sign-in error:', error);
-        
+
         // Handle specific error cases
         if (error.message.includes('Invalid login credentials')) {
           setError('Invalid email or password. Please check your credentials and try again.');
@@ -65,35 +64,33 @@ const AuthUI = ({ children }) => {
       setLoading(false);
     }
   };
-
   const handleSignUp = async () => {
     setError(null);
     setLoading(true);
-    
     if (!email || !password) {
       setError('Please enter your email and password.');
       setLoading(false);
       return;
     }
-
     if (password.length < 6) {
       setError('Password must be at least 6 characters long.');
       setLoading(false);
       return;
     }
-    
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const {
+        data,
+        error
+      } = await supabase.auth.signUp({
         email: email.trim(),
         password: password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`
         }
       });
-      
       if (error) {
         console.error('Sign-up error:', error);
-        
+
         // Handle specific error cases
         if (error.message.includes('User already registered')) {
           setError('An account with this email already exists. Please sign in instead.');
@@ -120,19 +117,19 @@ const AuthUI = ({ children }) => {
       setLoading(false);
     }
   };
-
   const handleGoogleSignIn = async () => {
     setError(null);
     setLoading(true);
-    
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const {
+        data,
+        error
+      } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`
         }
       });
-      
       if (error) {
         console.error('Google sign-in error:', error);
         setError('Google sign-in failed. Please try again or use email/password.');
@@ -146,7 +143,6 @@ const AuthUI = ({ children }) => {
       setLoading(false);
     }
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isSignUp) {
@@ -155,11 +151,9 @@ const AuthUI = ({ children }) => {
       handleSignIn();
     }
   };
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   const toggleMode = () => {
     setIsSignUp(!isSignUp);
     setError(null);
@@ -167,17 +161,13 @@ const AuthUI = ({ children }) => {
     setEmail('');
     setPassword('');
   };
-
-  return (
-    <div className="w-full max-w-6xl mx-auto space-y-6">
+  return <div className="w-full max-w-6xl mx-auto space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
-          Master Growbot
-        </h1>
+        
       </div>
 
       <div className="text-center space-y-4">
-        <h2 className="font-semibold text-white text-lg">Select a Plan and Subscribe with Square Checkout. Already Subscribed? Sign in at the Bottom of the Page</h2>
+        
         
         <TestimonialCarousel />
         
@@ -188,31 +178,17 @@ const AuthUI = ({ children }) => {
       <div className="flex flex-col lg:flex-row items-center justify-center gap-4 max-w-5xl mx-auto">
         {/* Cancel Anytime Badge */}
         <div className="flex-shrink-0">
-          <img 
-            src="/lovable-uploads/0b625d46-6a8a-4ae6-a395-2ea7b1034b04.png" 
-            alt="Cancel Anytime Zero Fees Badge" 
-            className="w-32 h-32 md:w-40 md:h-40 object-contain"
-            loading="lazy"
-          />
+          <img src="/lovable-uploads/0b625d46-6a8a-4ae6-a395-2ea7b1034b04.png" alt="Cancel Anytime Zero Fees Badge" className="w-32 h-32 md:w-40 md:h-40 object-contain" loading="lazy" />
         </div>
 
         {/* Secure Checkout Image */}
         <div className="flex-shrink-0">
-          <img 
-            alt="Secure checkout by Square with multiple payment options" 
-            className="w-full max-w-md h-auto object-contain rounded-lg" 
-            src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" 
-          />
+          <img alt="Secure checkout by Square with multiple payment options" className="w-full max-w-md h-auto object-contain rounded-lg" src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" />
         </div>
 
         {/* Trusted Seller Badge */}
         <div className="flex-shrink-0">
-          <img 
-            src="/lovable-uploads/30767198-f9b4-42cb-b632-0b9fbb0b856a.png" 
-            alt="Trusted Seller Badge" 
-            className="w-32 h-32 md:w-40 md:h-40 object-contain"
-            loading="lazy"
-          />
+          <img src="/lovable-uploads/30767198-f9b4-42cb-b632-0b9fbb0b856a.png" alt="Trusted Seller Badge" className="w-32 h-32 md:w-40 md:h-40 object-contain" loading="lazy" />
         </div>
       </div>
 
@@ -223,56 +199,24 @@ const AuthUI = ({ children }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                name="email" 
-                type="email" 
-                placeholder="Enter your email" 
-                value={email} 
-                onChange={e => setEmail(e.target.value)} 
-                className="bg-background/50 border-white/20" 
-                required 
-                autoComplete="email" 
-              />
+              <Input id="email" name="email" type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} className="bg-background/50 border-white/20" required autoComplete="email" />
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <Input 
-                  id="password" 
-                  name="password" 
-                  type={showPassword ? "text" : "password"} 
-                  placeholder="Enter your password" 
-                  value={password} 
-                  onChange={e => setPassword(e.target.value)} 
-                  className="bg-background/50 border-white/20 pr-10" 
-                  required 
-                  autoComplete={isSignUp ? "new-password" : "current-password"}
-                  minLength={6}
-                />
-                <button 
-                  type="button" 
-                  onClick={togglePasswordVisibility} 
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors" 
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
+                <Input id="password" name="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} className="bg-background/50 border-white/20 pr-10" required autoComplete={isSignUp ? "new-password" : "current-password"} minLength={6} />
+                <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors" aria-label={showPassword ? "Hide password" : "Show password"}>
                   {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                 </button>
               </div>
             </div>
 
-            {error && (
-              <div className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg p-3">
+            {error && <div className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg p-3">
                 {error}
-              </div>
-            )}
+              </div>}
 
-            <Button 
-              type="submit" 
-              disabled={loading || !email.trim() || !password} 
-              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+            <Button type="submit" disabled={loading || !email.trim() || !password} className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover disabled:opacity-50 disabled:cursor-not-allowed">
               {loading ? 'Loading...' : isSignUp ? 'Create Account' : 'Sign In'}
             </Button>
 
@@ -285,13 +229,7 @@ const AuthUI = ({ children }) => {
               </div>
             </div>
 
-            <Button 
-              type="button" 
-              onClick={handleGoogleSignIn} 
-              disabled={loading} 
-              variant="outline" 
-              className="w-full hover:bg-white/5 border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+            <Button type="button" onClick={handleGoogleSignIn} disabled={loading} variant="outline" className="w-full hover:bg-white/5 border-white/20 disabled:opacity-50 disabled:cursor-not-allowed">
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -302,19 +240,13 @@ const AuthUI = ({ children }) => {
             </Button>
 
             <div className="text-center mt-4">
-              <button 
-                type="button" 
-                className="text-sm text-gray-400 hover:text-white transition-colors" 
-                onClick={toggleMode}
-              >
+              <button type="button" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={toggleMode}>
                 {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
               </button>
             </div>
           </form>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default AuthUI;
