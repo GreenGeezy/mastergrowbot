@@ -158,13 +158,13 @@ export default function Index() {
                 </AuthUI>
               </div>
             </div>
-            
-            {/* Benefits section - show on all devices */}
-            <div className="bg-background/95 backdrop-blur-sm py-6 safe-area-pb">
-              <FeatureSection onFeatureClick={handleFeatureClick} />
-            </div>
           </div>
         )}
+        
+        {/* Benefits section - show on all devices for both signed-in and signed-out users */}
+        <div className="bg-background/95 backdrop-blur-sm py-6 safe-area-pb">
+          <FeatureSection onFeatureClick={handleFeatureClick} />
+        </div>
       </div>
       
       {/* Bottom Navigation - show on all devices */}

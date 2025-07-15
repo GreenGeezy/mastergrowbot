@@ -1,11 +1,10 @@
 
 import React from 'react';
-import FeatureSection from '../FeatureSection';
 
 const PlantHealthHeader = () => {
   return (
     <div className="text-center mb-8 animate-fade-in">
-      <div className="flex items-center justify-between max-w-6xl mx-auto mb-4">
+      <div className="flex items-center justify-center max-w-6xl mx-auto mb-4">
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-primary via-[#33C3F0] to-secondary rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
           <a href="https://www.mastergrowbot.com" className="block">
@@ -17,9 +16,6 @@ const PlantHealthHeader = () => {
               />
             </div>
           </a>
-        </div>
-        <div className="flex-1 ml-4">
-          <FeatureSection onFeatureClick={() => {}} />
         </div>
       </div>
       <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 text-transparent bg-clip-text">
