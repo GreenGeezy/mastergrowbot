@@ -97,7 +97,7 @@ const Header = () => {
           <PlantComparison />
           
           {/* CTA Button */}
-          <motion.div className="pt-2 sm:pt-4" initial={{
+          <motion.div className="pt-1 sm:pt-2" initial={{
           opacity: 0,
           y: 20
         }} animate={{
