@@ -110,7 +110,7 @@ const UploadArea = ({
                   aria-label="Photo guideline: Show full plant for context"
                 >
                   <Eye className="w-5 h-5 text-green-400" aria-hidden="true" />
-                  <span className="text-foreground text-sm font-medium">Full Plant</span>
+                  <span className="text-white text-sm font-medium">Full Plant</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -127,7 +127,7 @@ const UploadArea = ({
                   aria-label="Photo guideline: Include close-up shots of problem areas"
                 >
                   <Image className="w-5 h-5 text-blue-400" aria-hidden="true" />
-                  <span className="text-foreground text-sm font-medium">Close-ups</span>
+                  <span className="text-white text-sm font-medium">Close-ups</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -144,7 +144,7 @@ const UploadArea = ({
                   aria-label="Photo guideline: Ensure photos are well-lit"
                 >
                   <Lightbulb className="w-5 h-5 text-yellow-400" aria-hidden="true" />
-                  <span className="text-foreground text-sm font-medium">Well-lit</span>
+                  <span className="text-white text-sm font-medium">Well-lit</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -161,7 +161,7 @@ const UploadArea = ({
                   aria-label="Photo guideline: Supported file formats"
                 >
                   <FileImage className="w-5 h-5 text-purple-400" aria-hidden="true" />
-                  <span className="text-foreground text-sm font-medium">Formats</span>
+                  <span className="text-white text-sm font-medium">Formats</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>
