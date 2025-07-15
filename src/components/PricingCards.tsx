@@ -89,21 +89,19 @@ export default function PricingCards() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-3 py-1 text-sm font-bold">
-              <Tag className="w-3 h-3 mr-1" />
-              3 Days Free
-            </Badge>
-          </div>
-          
           <div className="p-6">
-            <div className="text-center mb-4">
-              <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                Weekly Plan
-              </h3>
-              <div className={`text-white/80 mb-4 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                Master Growbot
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                  Weekly Plan
+                </h3>
+                <div className={`text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                  Master Growbot
+                </div>
               </div>
+              <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-2 py-1 text-xs font-bold">
+                3 Days Free
+              </Badge>
             </div>
             
             <div className="text-center mb-6">
@@ -151,20 +149,19 @@ export default function PricingCards() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className="bg-gradient-to-r from-accent to-secondary text-white border-0 px-3 py-1 text-sm font-bold">
-              Save 25%
-            </Badge>
-          </div>
-          
           <div className="p-6">
-            <div className="text-center mb-4">
-              <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                Monthly Plan
-              </h3>
-              <div className={`text-white/80 mb-4 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                Master Growbot
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                  Monthly Plan
+                </h3>
+                <div className={`text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                  Master Growbot
+                </div>
               </div>
+              <Badge className="bg-gradient-to-r from-accent to-secondary text-white border-0 px-2 py-1 text-xs font-bold">
+                Save 25%
+              </Badge>
             </div>
             
             <div className="text-center mb-6">
@@ -212,20 +209,19 @@ export default function PricingCards() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-3 py-1 text-sm font-bold">
-              Best Value - Save 60%
-            </Badge>
-          </div>
-          
           <div className="p-6">
-            <div className="text-center mb-4">
-              <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                Yearly Plan
-              </h3>
-              <div className={`text-white/80 mb-4 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                Master Growbot
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                  Yearly Plan
+                </h3>
+                <div className={`text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                  Master Growbot
+                </div>
               </div>
+              <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-2 py-1 text-xs font-bold">
+                Save 60%
+              </Badge>
             </div>
             
             <div className="text-center mb-6">
