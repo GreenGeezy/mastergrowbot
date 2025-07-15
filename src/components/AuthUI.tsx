@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Eye, EyeOff } from "lucide-react";
-import PricingCards from './PricingCards';
+
 import { isIOSPreview } from '@/utils/flags';
 const AuthUI = ({
   children
@@ -165,9 +165,6 @@ const AuthUI = ({
         
       </div>
 
-      <div className="text-center space-y-4">
-        <PricingCards />
-      </div>
 
       {/* Three Images Layout */}
       <div className="flex flex-col lg:flex-row items-center justify-center gap-4 max-w-5xl mx-auto">
