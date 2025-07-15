@@ -55,13 +55,15 @@ const Header = () => {
             </p>
           </div>
           
-          {/* Main Headline */}
-          <h2 className={`font-bold leading-tight max-w-[720px] mx-auto text-white ${isMobile ? 'text-lg' : 'text-xl sm:text-2xl'}`}>
-            Grow Award-Winning Cannabis & Save Plants in Seconds – Free 3-Day Trial
-          </h2>
-          
-          {/* Subtitle */}
-          <p className={`font-semibold text-gold max-w-[600px] mx-auto ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>Prevent $336/Plant to Over $100,000 per Harvest in Losses – Start Your Free Trial Now</p>
+          {/* Main Headline with Combined Text */}
+          <div className="space-y-2">
+            <h2 className={`font-bold leading-tight max-w-[720px] mx-auto text-white ${isMobile ? 'text-lg' : 'text-xl sm:text-2xl'}`}>
+              Grow Award-Winning Cannabis & Save Plants in Seconds – Free 3-Day Trial
+            </h2>
+            <p className={`font-semibold text-gold max-w-[600px] mx-auto ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
+              Prevent $336/Plant to Over $100,000 per Harvest in Losses – Start Your Free Trial Now
+            </p>
+          </div>
           
           {/* Trust Indicators */}
           <div className="space-y-3 sm:space-y-4">
