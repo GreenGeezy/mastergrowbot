@@ -1,13 +1,11 @@
 
-import React from 'react';
-import { Quote } from 'lucide-react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import React, { useCallback, useEffect, useState } from 'react';
+import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
+import { useHapticFeedback } from "@/utils/hapticFeedback";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const testimonials = [
   {
@@ -45,38 +43,170 @@ const testimonials = [
 ];
 
 const TestimonialCarousel = () => {
-  const [emblaRef] = useEmblaCarousel(
+  const [emblaRef, emblaApi] = useEmblaCarousel(
     { 
       loop: true,
-      dragFree: true
+      dragFree: true,
+      containScroll: "trimSnaps"
     },
-    [Autoplay({ delay: 2000, stopOnInteraction: false })]
+    [Autoplay({ delay: 4000, stopOnInteraction: false })]
   );
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+  const haptic = useHapticFeedback();
+  const isMobile = useIsMobile();
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) {
+      emblaApi.scrollPrev();
+      haptic.light();
+    }
+  }, [emblaApi, haptic]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) {
+      emblaApi.scrollNext();
+      haptic.light();
+    }
+  }, [emblaApi, haptic]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCurrentIndex(emblaApi.selectedScrollSnap());
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
+
   return (
-    <section className="bg-[#0a0a0a] py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-white text-xl sm:text-2xl font-bold text-center mb-8 leading-tight">
-          See what First Time Growers, Large-Scale Cultivators, Hobbyists, Medical Researchers, and Botanists across the Cannabis Industry are saying about Master Growbot AI
-        </h2>
+    <section className="bg-[#0a0a0a] py-12 px-4 relative overflow-hidden">
+      {/* Background gradient effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+      
+      <div className="max-w-5xl mx-auto relative">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8"
+        >
+          <h2 className={`text-white font-bold text-center mb-2 leading-tight ${isMobile ? 'text-xl' : 'text-2xl sm:text-3xl'}`}>
+            See what First Time Growers, Large-Scale Cultivators, Hobbyists, Medical Researchers, and Botanists across the Cannabis Industry are saying about Master Growbot AI
+          </h2>
+        </motion.div>
         
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="flex-[0_0_100%] min-w-0 px-4">
-                <div className="flex flex-col items-center max-w-[600px] mx-auto text-center">
-                  <Quote size={32} className="text-[#8a4fff] mb-4" />
-                  <blockquote className="text-white text-base sm:text-lg leading-relaxed mb-4">
-                    "{testimonial.text}"
-                  </blockquote>
-                  <cite className="text-[#8a4fff] text-sm font-bold uppercase tracking-wide">
-                    — {testimonial.role}
-                  </cite>
+        <div className="relative">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className={`flex-[0_0_100%] min-w-0 ${isMobile ? 'px-2' : 'px-4'}`}>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="relative group"
+                  >
+                    {/* Neon border effect */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000" />
+                    
+                    <div className="relative bg-card/40 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-primary/30 transition-all duration-500 max-w-[600px] mx-auto">
+                      <div className="flex flex-col items-center text-center">
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ duration: 0.5, delay: 0.2 }}
+                          className="mb-4"
+                        >
+                          <Quote size={isMobile ? 28 : 32} className="text-primary-glow" />
+                        </motion.div>
+                        
+                        <motion.blockquote
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.3 }}
+                          className={`text-white font-medium leading-relaxed mb-4 ${isMobile ? 'text-base' : 'text-lg sm:text-xl'}`}
+                        >
+                          "{testimonial.text}"
+                        </motion.blockquote>
+                        
+                        <motion.cite
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.4 }}
+                          className={`text-gold font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}
+                        >
+                          — {testimonial.role}
+                        </motion.cite>
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
+          {/* Navigation arrows - only show on larger screens */}
+          {!isMobile && (
+            <>
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-card/60 backdrop-blur-sm rounded-full p-3 border border-white/20 hover:border-primary/40 transition-all duration-300 group disabled:opacity-50"
+                onClick={scrollPrev}
+                disabled={!canScrollPrev}
+              >
+                <ChevronLeft className="w-6 h-6 text-white group-hover:text-primary-glow transition-colors" />
+              </motion.button>
+              
+              <motion.button
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-card/60 backdrop-blur-sm rounded-full p-3 border border-white/20 hover:border-primary/40 transition-all duration-300 group disabled:opacity-50"
+                onClick={scrollNext}
+                disabled={!canScrollNext}
+              >
+                <ChevronRight className="w-6 h-6 text-white group-hover:text-primary-glow transition-colors" />
+              </motion.button>
+            </>
+          )}
         </div>
+
+        {/* Dots indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="flex justify-center mt-8 space-x-2"
+        >
+          {testimonials.map((_, index) => (
+            <motion.button
+              key={index}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'bg-primary-glow w-6' 
+                  : 'bg-white/30 hover:bg-white/50'
+              }`}
+              onClick={() => {
+                if (emblaApi) {
+                  emblaApi.scrollTo(index);
+                  haptic.light();
+                }
+              }}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+            />
+          ))}
+        </motion.div>
       </div>
     </section>
   );
