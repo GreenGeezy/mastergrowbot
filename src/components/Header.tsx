@@ -71,7 +71,7 @@ const Header = () => {
               Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
             </p>
             
-            <motion.div className="flex items-center justify-center space-x-2 sm:space-x-3" initial={{
+            <motion.div className="flex items-center justify-center space-x-2 sm:space-x-3 relative" initial={{
             opacity: 0
           }} animate={{
             opacity: 1
@@ -82,6 +82,17 @@ const Header = () => {
               <div className="flex items-center space-x-1">
                 {[...Array(5)].map((_, index) => <Star key={index} className={`fill-gold text-gold ${isMobile ? 'w-4 h-4' : 'w-5 h-5 sm:w-6 sm:h-6'}`} />)}
               </div>
+              {/* Try it For Free Badge */}
+              <motion.div className="bg-gradient-to-r from-gold to-yellow-400 text-black text-lg font-bold px-6 py-3 rounded-full shadow-lg ml-4" initial={{
+                scale: 0
+              }} animate={{
+                scale: 1
+              }} transition={{
+                delay: 0.8,
+                type: "spring"
+              }}>
+                Try it For Free
+              </motion.div>
             </motion.div>
           </div>
           
@@ -106,18 +117,6 @@ const Header = () => {
             }} className={`relative overflow-hidden font-semibold text-black rounded-xl transition-all duration-300 flex items-center justify-center group shadow-2xl ${isMobile ? 'text-base py-3 px-6 min-w-[240px]' : 'text-lg py-4 px-8 min-w-[280px]'}`} style={{
               background: 'linear-gradient(135deg, #00ff95 0%, #4cff79 100%)'
             }}>
-                {/* Discount Badge */}
-                <motion.div className="absolute -top-3 -right-3 bg-gradient-to-r from-gold to-yellow-400 text-black text-sm font-bold px-4 py-2 rounded-full shadow-lg z-20" initial={{
-                scale: 0
-              }} animate={{
-                scale: 1
-              }} transition={{
-                delay: 0.8,
-                type: "spring"
-              }}>
-                  Try it For Free
-                </motion.div>
-                
                 {/* Neon glow effect */}
                 <motion.div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
                 background: 'linear-gradient(135deg, #00ff95 0%, #4cff79 100%)',
