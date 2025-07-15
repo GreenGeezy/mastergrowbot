@@ -83,7 +83,7 @@ const Header = () => {
                 {[...Array(5)].map((_, index) => <Star key={index} className={`fill-gold text-gold ${isMobile ? 'w-4 h-4' : 'w-5 h-5 sm:w-6 sm:h-6'}`} />)}
               </div>
               {/* Try it For Free Badge */}
-              <motion.div className="bg-gradient-to-r from-gold to-yellow-400 text-black text-lg font-bold px-6 py-3 rounded-full shadow-lg ml-4" initial={{
+              <motion.div className="bg-gradient-to-r from-gold to-yellow-400 text-black text-sm font-bold px-3 py-1 rounded-full shadow-lg ml-4" initial={{
                 scale: 0
               }} animate={{
                 scale: 1
