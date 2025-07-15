@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import plantComparisonImage from "@/assets/plant-comparison.jpg";
+import healthyCannabisPlant from "@/assets/healthy-cannabis-plant.jpg";
 
 const PlantComparison = () => {
   return (
@@ -30,7 +30,7 @@ const PlantComparison = () => {
           {/* After - Healthy plant */}
           <div className="flex-1 relative">
             <img 
-              src={plantComparisonImage}
+              src={healthyCannabisPlant}
               alt="Healthy cannabis plant"
               className="w-full h-full object-cover"
               loading="lazy"
