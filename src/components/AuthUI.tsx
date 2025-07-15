@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Eye, EyeOff } from "lucide-react";
 import PricingCards from './PricingCards';
-import TestimonialCarousel from './TestimonialCarousel';
 import { isIOSPreview } from '@/utils/flags';
 const AuthUI = ({
   children
@@ -162,13 +161,11 @@ const AuthUI = ({
     setPassword('');
   };
   return <div className="w-full max-w-6xl mx-auto space-y-6">
-      
+      <div className="text-center space-y-2">
+        
+      </div>
 
       <div className="text-center space-y-4">
-        
-        
-        <TestimonialCarousel />
-        
         <PricingCards />
       </div>
 
