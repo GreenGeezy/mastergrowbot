@@ -107,7 +107,7 @@ const Header = () => {
               background: 'linear-gradient(135deg, #00ff95 0%, #4cff79 100%)'
             }}>
                 {/* Discount Badge */}
-                <motion.div className="absolute -top-2 -right-2 bg-gradient-to-r from-gold to-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg" initial={{
+                <motion.div className="absolute -top-4 -right-4 bg-gradient-to-r from-gold to-yellow-400 text-black text-sm font-bold px-4 py-2 rounded-full shadow-lg" initial={{
                 scale: 0
               }} animate={{
                 scale: 1
