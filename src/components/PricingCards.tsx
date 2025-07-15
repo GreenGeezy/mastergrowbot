@@ -46,9 +46,9 @@ export default function PricingCards() {
   }
 
   const benefits = [
-    'Grow Bigger Buds & Higher Yields with AI',
-    'Stack Cash & SuperCharge Profits',
-    'Improve Quality & Increase Potency'
+    'Grow Bigger Buds & Higher Yields with AI Power',
+    'Stack Cash & SuperCharge Profits via Advanced Strain Database',
+    'Improve Quality & Increase Potency Using Precision Tools'
   ];
 
   return (
