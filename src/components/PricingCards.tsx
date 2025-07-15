@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Award, Users, Tag } from "lucide-react";
+import { Star, Award, Users, Tag, ArrowRight, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { isIOSPreview } from "@/utils/flags";
+import { useHapticFeedback } from "@/utils/hapticFeedback";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { motion } from "framer-motion";
 
 export default function PricingCards() {
   const [timeLeft, setTimeLeft] = useState("");
   const isIOSPreviewMode = isIOSPreview;
+  const haptic = useHapticFeedback();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const targetDate = new Date('2025-07-01T23:59:59.000Z');
@@ -26,158 +31,252 @@ export default function PricingCards() {
     return () => clearInterval(timer);
   }, []);
 
+  const handlePlanClick = () => {
+    haptic.medium();
+  };
+
+  const handleRestorePurchase = () => {
+    haptic.light();
+    // Handle restore purchase logic here
+  };
+
   // Don't render pricing cards in iOS preview mode
   if (isIOSPreviewMode) {
     return null;
   }
 
-  return <div className="w-full space-y-6">
+  const benefits = [
+    'Grow Bigger Buds & Higher Yields with AI Power',
+    'Stack Cash & SuperCharge Profits via Advanced Strain Database',
+    'Improve Quality & Increase Potency Using Precision Tools'
+  ];
+
+  return (
+    <div className="w-full space-y-6">
       <div className="flex flex-col items-center space-y-4">
-        <div className="flex items-center gap-4 w-full">
-          
-          
+        <div className="flex items-center justify-center space-x-2 text-gold">
+          <Users className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+          <span className={`font-semibold text-center ${isMobile ? 'text-sm' : 'text-base'}`}>
+            Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts
+          </span>
         </div>
-        <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
-          <Users className="w-5 h-5" />
-          <span className="font-semibold text-center">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
-        </div>
-        <div className="flex items-center justify-center space-x-4 text-[#FFD700]">
-          
-          <p className="text-sm sm:text-base text-center font-medium text-[#FFD700]">
-            Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
-          </p>
-        </div>
+        <p className={`text-center font-medium text-gold ${isMobile ? 'text-xs' : 'text-sm sm:text-base'}`}>
+          Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
+        </p>
       </div>
 
-      <div className="bg-[#9b87f5] rounded-lg p-4 text-center transform hover:scale-105 transition-transform duration-300">
-        <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
-        <p className="text-[#FFD700] font-mono font-bold text-xl">{timeLeft}</p>
-      </div>
+      <motion.div 
+        className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <p className={`text-white font-bold ${isMobile ? 'text-base' : 'text-lg'}`}>
+          Unlock 25% Off Monthly & Over 60% Off Yearly—Offer Ends 7/10/25!
+        </p>
+        <p className={`text-gold font-mono font-bold ${isMobile ? 'text-lg' : 'text-xl'}`}>
+          {timeLeft}
+        </p>
+      </motion.div>
       
-      <div className="flex flex-col lg:flex-row gap-6 items-stretch justify-center w-full">
+      <div className="flex flex-col gap-4 items-stretch justify-center w-full max-w-md mx-auto">
         {/* Weekly Plan */}
-        <div className="flex-1 max-w-sm lg:max-w-none bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card relative">
+        <motion.div 
+          className="bg-gradient-to-b from-card/90 to-card/60 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl relative overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-3 py-1 text-sm font-bold flex items-center gap-1">
-              <Tag className="w-3 h-3" />
-              Sale
+            <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-3 py-1 text-sm font-bold">
+              <Tag className="w-3 h-3 mr-1" />
+              3 Days Free
             </Badge>
           </div>
-          <div className="p-6 text-center">
-            <div className="mb-4">
-              <h3 className="text-white text-xl font-bold mb-2">Weekly Plan</h3>
-              <div className="text-white/80 text-sm mb-4">Master Growbot</div>
+          
+          <div className="p-6">
+            <div className="text-center mb-4">
+              <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                Weekly Plan
+              </h3>
+              <div className={`text-white/80 mb-4 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                Master Growbot
+              </div>
             </div>
             
             <div className="text-center mb-6">
-              <div className="price-line">
-                <div className="flex items-center justify-center gap-2">
-                  <div className="text-white/50 text-2xl font-bold line-through">$9.99</div>
-                  <div className="text-white text-4xl font-bold">$8</div>
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className={`text-white font-bold ${isMobile ? 'text-3xl' : 'text-4xl'}`}>
+                  $9.99
                 </div>
-                <div className="text-white/60 text-sm">/week</div>
+              </div>
+              <div className={`text-white/60 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                /week after 3-day free trial
               </div>
             </div>
             
-            
-            
-            <div className="space-y-3 mb-6 text-left">
-              <div className="flex items-center text-white/80 text-sm">
-                <span className="mr-2">•</span>
-                <span>No-risk: cancel anytime</span>
-              </div>
+            <div className="space-y-2 mb-6 text-left">
+              {benefits.map((benefit, index) => (
+                <div key={index} className={`flex items-start text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                  <span className="mr-2 text-primary">•</span>
+                  <span>{benefit}</span>
+                </div>
+              ))}
             </div>
             
-            <a href="https://square.link/u/HWK25HbP" target="_blank" rel="noopener noreferrer" className="block">
-              <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-                Unlock Growbot →
-              </button>
-            </a>
+            <div className={`text-center mb-4 text-gold font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>
+              3 Days Free – Auto-Renew, Cancel Anytime
+            </div>
+            
+            <motion.button
+              onClick={handlePlanClick}
+              className={`w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white font-semibold rounded-lg transition-all duration-300 flex items-center justify-center ${isMobile ? 'py-3 px-4 text-sm' : 'py-4 px-6 text-base'}`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Start Free Trial
+              <ArrowRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Quarterly Plan */}
-        <div className="flex-1 max-w-sm lg:max-w-none bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card">
-          <div className="p-6 text-center">
-            <div className="mb-4">
-              <h3 className="text-white text-xl font-bold mb-2">Save Your Seconds</h3>
-              <div className="text-white/80 text-sm mb-4">Master Growbot Quarterly</div>
+        {/* Monthly Plan */}
+        <motion.div 
+          className="bg-gradient-to-b from-card/90 to-card/60 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl relative overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+            <Badge className="bg-gradient-to-r from-accent to-secondary text-white border-0 px-3 py-1 text-sm font-bold">
+              Save 25%
+            </Badge>
+          </div>
+          
+          <div className="p-6">
+            <div className="text-center mb-4">
+              <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                Monthly Plan
+              </h3>
+              <div className={`text-white/80 mb-4 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                Master Growbot
+              </div>
             </div>
             
             <div className="text-center mb-6">
-              <div className="price-line">
-                <div className="text-white text-4xl font-bold">$89</div>
-                <div className="text-white/60 text-sm">/quarter</div>
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className={`text-white font-bold ${isMobile ? 'text-3xl' : 'text-4xl'}`}>
+                  $29.99
+                </div>
+              </div>
+              <div className={`text-white/60 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                /month after 3-day free trial
               </div>
             </div>
             
-            
-            
-            <div className="space-y-3 mb-6 text-left">
-              <div className="flex items-center text-white/80 text-sm">
-                <span className="mr-2">•</span>
-                <span>Save 25%</span>
-              </div>
-              <div className="flex items-center text-white/80 text-sm">
-                <span className="mr-2">•</span>
-                <span>No-risk: cancel anytime</span>
-              </div>
+            <div className="space-y-2 mb-6 text-left">
+              {benefits.map((benefit, index) => (
+                <div key={index} className={`flex items-start text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                  <span className="mr-2 text-primary">•</span>
+                  <span>{benefit}</span>
+                </div>
+              ))}
             </div>
             
-            <a href="https://square.link/u/mG7rXjby" target="_blank" rel="noopener noreferrer" className="block">
-              <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-                Unlock Growbot →
-              </button>
-            </a>
+            <div className={`text-center mb-4 text-gold font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>
+              3 Days Free – Auto-Renew, Cancel Anytime
+            </div>
+            
+            <motion.button
+              onClick={handlePlanClick}
+              className={`w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white font-semibold rounded-lg transition-all duration-300 flex items-center justify-center ${isMobile ? 'py-3 px-4 text-sm' : 'py-4 px-6 text-base'}`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Start Free Trial
+              <ArrowRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Yearly Plan - Best Value */}
-        <div className="flex-1 max-w-sm lg:max-w-none bg-gradient-to-b from-gray-900 to-black rounded-2xl border-2 border-[#FFD700] shadow-2xl transform hover:scale-105 transition-all duration-300 relative plan-card">
+        <motion.div 
+          className="bg-gradient-to-b from-card/90 to-card/60 backdrop-blur-xl rounded-2xl border-2 border-gold shadow-2xl relative overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-3 py-1 text-sm font-bold">
-              Best Value
+            <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-3 py-1 text-sm font-bold">
+              Best Value - Save 60%
             </Badge>
           </div>
-          <div className="p-6 text-center">
-            <div className="mb-4">
-              <h3 className="text-white text-xl font-bold mb-2">Yearly Quarterly</h3>
-              <div className="text-white/80 text-sm mb-4">Master Growbot</div>
+          
+          <div className="p-6">
+            <div className="text-center mb-4">
+              <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                Yearly Plan
+              </h3>
+              <div className={`text-white/80 mb-4 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                Master Growbot
+              </div>
             </div>
             
             <div className="text-center mb-6">
-              <div className="price-line">
-                <div className="text-white text-4xl font-bold">$199</div>
-                <div className="text-white/60 text-sm">/year</div>
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className={`text-white font-bold ${isMobile ? 'text-3xl' : 'text-4xl'}`}>
+                  $199.99
+                </div>
+              </div>
+              <div className={`text-white/60 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                /year after 3-day free trial
               </div>
             </div>
             
-            
-            
-            <div className="space-y-3 mb-6 text-left">
-              <div className="flex items-center text-white/80 text-sm">
-                <span className="mr-2">•</span>
-                <span>Save Over 60%</span>
-              </div>
-              <div className="flex items-center text-white/80 text-sm">
-                <span className="mr-2">•</span>
-                <span>No-risk: cancel anytime</span>
-              </div>
+            <div className="space-y-2 mb-6 text-left">
+              {benefits.map((benefit, index) => (
+                <div key={index} className={`flex items-start text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                  <span className="mr-2 text-primary">•</span>
+                  <span>{benefit}</span>
+                </div>
+              ))}
             </div>
             
-            <a href="https://square.link/u/pa9x0yXT" target="_blank" rel="noopener noreferrer" className="block">
-              <button className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black font-bold py-3 px-6 rounded-lg transition-colors duration-300">
-                Unlock Growbot →
-              </button>
-            </a>
+            <div className={`text-center mb-4 text-gold font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>
+              3 Days Free – Auto-Renew, Cancel Anytime
+            </div>
+            
+            <motion.button
+              onClick={handlePlanClick}
+              className={`w-full bg-gradient-to-r from-gold to-yellow-400 hover:from-yellow-400 hover:to-gold text-black font-bold rounded-lg transition-all duration-300 flex items-center justify-center ${isMobile ? 'py-3 px-4 text-sm' : 'py-4 px-6 text-base'}`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Start Free Trial
+              <ArrowRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      <div className="flex flex-col items-center space-y-6 w-full">
-        <div className="text-center">
-          
-        </div>
+      {/* Restore Purchase Link */}
+      <div className="flex justify-center">
+        <motion.button
+          onClick={handleRestorePurchase}
+          className={`text-white/60 hover:text-white transition-colors duration-300 flex items-center ${isMobile ? 'text-sm' : 'text-base'}`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <RefreshCw className={`mr-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+          Restore Purchase
+        </motion.button>
       </div>
-    </div>;
+    </div>
+  );
 }
