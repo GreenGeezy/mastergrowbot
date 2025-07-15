@@ -61,7 +61,7 @@ const Header = () => {
               Grow Award-Winning Cannabis & Save Plants in Seconds with AI
             </h2>
             <p className={`font-semibold text-gold max-w-[600px] mx-auto leading-relaxed ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
-              Prevent $336/Plant Losses – Start 3-Day Free Trial Now
+              See Why Leading Growers Worldwide Trust MasterGrowbot AI to Prevent $336/Plant to Over $100,000 per Harvest in Losses
             </p>
           </div>
           
