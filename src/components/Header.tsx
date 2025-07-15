@@ -107,7 +107,7 @@ const Header = () => {
               background: 'linear-gradient(135deg, #00ff95 0%, #4cff79 100%)'
             }}>
                 {/* Discount Badge */}
-                <motion.div className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg" initial={{
+                <motion.div className="absolute -top-2 -right-2 bg-gradient-to-r from-gold to-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg" initial={{
                 scale: 0
               }} animate={{
                 scale: 1
@@ -115,7 +115,7 @@ const Header = () => {
                 delay: 0.8,
                 type: "spring"
               }}>
-                  3 Days Free
+                  Try it For Free
                 </motion.div>
                 
                 {/* Neon glow effect */}
