@@ -58,10 +58,10 @@ const Header = () => {
           {/* Main Headline with Combined Text */}
           <div className="space-y-2">
             <h2 className={`font-bold leading-tight max-w-[720px] mx-auto text-white ${isMobile ? 'text-lg' : 'text-xl sm:text-2xl'}`}>
-              Grow Award-Winning Cannabis & Save Plants in Seconds just with a Picture
+              Grow Award-Winning Cannabis & Save Plants in Seconds with AI
             </h2>
             <p className={`font-semibold text-gold max-w-[600px] mx-auto leading-relaxed ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
-              Prevent $336/Plant to Over $100,000 per Harvest in Losses – Start Your Free Trial Now. Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers
+              Prevent $336/Plant Losses – Start 3-Day Free Trial Now
             </p>
           </div>
           
@@ -106,38 +106,56 @@ const Header = () => {
         }} transition={{
           delay: 0.6
         }}>
-            <Link to="/quiz" className="inline-block">
-              <motion.button onClick={handleCTAClick} onHoverStart={() => setIsHovered(true)} onHoverEnd={() => setIsHovered(false)} whileHover={{
-              scale: 1.02
-            }} whileTap={{
-              scale: 0.98
-            }} className={`relative overflow-hidden font-semibold text-black rounded-xl transition-all duration-300 flex items-center justify-center group shadow-2xl ${isMobile ? 'text-base py-3 px-6 min-w-[240px]' : 'text-lg py-4 px-8 min-w-[280px]'}`} style={{
-              background: 'linear-gradient(135deg, #00ff95 0%, #4cff79 100%)'
-            }}>
-                {/* Neon glow effect */}
-                <motion.div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
+            <div className="relative inline-block">
+              <Link to="/quiz" className="inline-block">
+                <motion.button onClick={handleCTAClick} onHoverStart={() => setIsHovered(true)} onHoverEnd={() => setIsHovered(false)} whileHover={{
+                scale: 1.02
+              }} whileTap={{
+                scale: 0.98
+              }} className={`relative overflow-hidden font-semibold text-black rounded-xl transition-all duration-300 flex items-center justify-center group ${isMobile ? 'text-base py-3 px-6 min-w-[240px]' : 'text-lg py-4 px-8 min-w-[280px]'}`} style={{
                 background: 'linear-gradient(135deg, #00ff95 0%, #4cff79 100%)',
-                filter: 'blur(8px)'
-              }} animate={{
-                opacity: isHovered ? [0.5, 0.8, 0.5] : 0
-              }} transition={{
-                duration: 2,
-                repeat: isHovered ? Infinity : 0,
-                ease: "easeInOut"
-              }} />
-                
-                <span className="relative z-10 flex items-center">
-                  Save My Plants with AI
-                  <motion.div animate={{
-                  x: isHovered ? 4 : 0
+                boxShadow: '0 0 40px rgba(0, 255, 149, 0.4), 0 0 80px rgba(0, 255, 149, 0.2)'
+              }}>
+                  {/* Enhanced neon glow effect */}
+                  <motion.div className="absolute -inset-1 rounded-xl opacity-60 group-hover:opacity-100 transition-opacity duration-300" style={{
+                  background: 'linear-gradient(135deg, #00ff95 0%, #4cff79 100%)',
+                  filter: 'blur(12px)'
+                }} animate={{
+                  opacity: isHovered ? [0.6, 1, 0.6] : 0.4
                 }} transition={{
-                  duration: 0.2
-                }}>
-                    <ArrowRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
-                  </motion.div>
-                </span>
-              </motion.button>
-            </Link>
+                  duration: 2,
+                  repeat: isHovered ? Infinity : 0,
+                  ease: "easeInOut"
+                }} />
+                  
+                  <span className="relative z-10 flex items-center">
+                    Save My Plants with AI
+                    <motion.div animate={{
+                    x: isHovered ? 4 : 0
+                  }} transition={{
+                    duration: 0.2
+                  }}>
+                      <ArrowRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+                    </motion.div>
+                  </span>
+                </motion.button>
+              </Link>
+              
+              {/* 3 Days Free Badge */}
+              <motion.div className="absolute -top-2 -right-2 bg-gradient-to-r from-gold to-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg border-2 border-white" initial={{
+                scale: 0,
+                rotate: 12
+              }} animate={{
+                scale: 1,
+                rotate: 12
+              }} transition={{
+                delay: 0.8,
+                type: "spring",
+                stiffness: 200
+              }}>
+                3 Days Free
+              </motion.div>
+            </div>
           </motion.div>
 
           {/* Footer Links */}
