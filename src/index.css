@@ -320,3 +320,17 @@ h1, h2, h3, .tech-font {
   filter: drop-shadow(0 0 4px rgba(0,0,0,0.4));
   margin-bottom: 12px;
 }
+
+/* Benefits section animations */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.3);
+  }
+}
+
+.pulse-glow {
+  animation: pulse 2s infinite;
+}

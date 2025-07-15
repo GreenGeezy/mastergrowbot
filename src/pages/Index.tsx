@@ -159,8 +159,8 @@ export default function Index() {
               </div>
             </div>
             
-            {/* Feature cards at bottom - show on all devices */}
-            <div className="sticky bottom-20 bg-background/95 backdrop-blur-sm border-t border-accent/20 py-6 safe-area-pb">
+            {/* Benefits section - show on all devices */}
+            <div className="bg-background/95 backdrop-blur-sm py-6 safe-area-pb">
               <FeatureSection onFeatureClick={handleFeatureClick} />
             </div>
           </div>
