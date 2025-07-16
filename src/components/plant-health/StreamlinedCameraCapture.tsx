@@ -148,21 +148,6 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
         </Button>
         
         <div className="flex-1"></div>
-        
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={handleGallerySelect}
-            variant="ghost"
-            size="sm"
-            className="text-white hover:bg-white/20 p-2"
-            aria-label="Choose from gallery"
-          >
-            <Image className="w-6 h-6" />
-          </Button>
-          <span className="text-white text-sm font-medium">
-            Upload Images Instead
-          </span>
-        </div>
       </div>
 
       {/* Camera View */}
@@ -281,7 +266,7 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
             </div>
           </div>
 
-          {/* Floating Shutter Button - Positioned over green box */}
+          {/* Bottom Controls - Shutter Button and Gallery Option */}
           <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 z-10">
             <div className="flex flex-col items-center">
               {/* Enhanced Shutter Button for iOS */}
@@ -318,6 +303,22 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
                   transition={{ duration: 0.3 }}
                 />
               </motion.button>
+              
+              {/* Gallery Option Below Shutter Button */}
+              <div className="flex items-center gap-3 mt-4">
+                <Button
+                  onClick={handleGallerySelect}
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white/20 p-2"
+                  aria-label="Choose from gallery"
+                >
+                  <Image className="w-5 h-5" />
+                </Button>
+                <span className="text-white text-sm font-medium">
+                  Upload Images Instead
+                </span>
+              </div>
             </div>
           </div>
         </div>
