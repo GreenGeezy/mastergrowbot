@@ -88,8 +88,23 @@ const BottomNavigation = () => {
     </div>
   );
 
-  // Navigation items in the new order: AI Chat, Plant Health, Guide, Settings
+  // Navigation items in the new order: Logo, AI Chat, Plant Health, Guide, Settings
   const navigationItems = [
+    {
+      title: "Home",
+      subtitle: "Master Growbot Home",
+      to: "/",
+      icon: () => (
+        <div className="relative w-8 h-8 transition-all duration-300 hover:scale-105">
+          <img
+            src="/lovable-uploads/95145701-8da0-4e5d-8ac7-afe473b3842c.png"
+            alt="Master Growbot Logo"
+            className="w-full h-full object-contain transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(0,255,127,0.6)]"
+          />
+        </div>
+      ),
+      label: "Home"
+    },
     {
       title: "AI Chat",
       subtitle: "Get expert growing advice",
