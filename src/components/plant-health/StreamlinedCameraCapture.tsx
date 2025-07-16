@@ -266,8 +266,8 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
             </div>
           </div>
 
-          {/* Bottom Controls - Positioned Below Camera View Box */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+          {/* Bottom Controls - Positioned Well Below Camera View Box */}
+          <div className="absolute -bottom-32 left-1/2 transform -translate-x-1/2 z-10">
             <div className="flex flex-col items-center">
               {/* Enhanced Shutter Button for iOS */}
               <motion.button
