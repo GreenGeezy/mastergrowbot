@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Camera, X, Image, RotateCcw, Check } from 'lucide-react';
+import { Camera, X, Image, RotateCcw, Check, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useHapticFeedback } from '@/utils/hapticFeedback';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface StreamlinedCameraCaptureProps {
   onPhotoCapture: (file: File) => void;
@@ -171,56 +172,173 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
             style={{ transform: 'scaleX(-1)' }} // Mirror for selfie effect
           />
           
-          {/* AR-like Plant Framing Guide */}
+          {/* Enhanced AR-like Plant Framing Guide */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="relative">
-              {/* Bounding Box */}
-              <div className="w-80 h-80 border-2 border-green-400 rounded-xl relative bg-green-400/5">
-                {/* Corner Guides */}
-                <div className="absolute -top-1 -left-1 w-6 h-6 border-l-4 border-t-4 border-green-400"></div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 border-r-4 border-t-4 border-green-400"></div>
-                <div className="absolute -bottom-1 -left-1 w-6 h-6 border-l-4 border-b-4 border-green-400"></div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-r-4 border-b-4 border-green-400"></div>
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              {/* Enhanced Bounding Box with Neon Glow */}
+              <motion.div 
+                className="w-80 h-80 sm:w-72 sm:h-72 md:w-80 md:h-80 border-2 border-green-400 rounded-xl relative bg-green-400/5"
+                style={{ 
+                  boxShadow: '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)',
+                  filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.4))'
+                }}
+                animate={{ 
+                  boxShadow: [
+                    '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)',
+                    '0 0 30px rgba(34, 197, 94, 0.5), inset 0 0 30px rgba(34, 197, 94, 0.2)',
+                    '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)'
+                  ]
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                {/* Enhanced Corner Guides with Glow */}
+                <motion.div 
+                  className="absolute -top-1 -left-1 w-8 h-8 border-l-4 border-t-4 border-green-400 rounded-tl-lg"
+                  style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div 
+                  className="absolute -top-1 -right-1 w-8 h-8 border-r-4 border-t-4 border-green-400 rounded-tr-lg"
+                  style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+                />
+                <motion.div 
+                  className="absolute -bottom-1 -left-1 w-8 h-8 border-l-4 border-b-4 border-green-400 rounded-bl-lg"
+                  style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+                />
+                <motion.div 
+                  className="absolute -bottom-1 -right-1 w-8 h-8 border-r-4 border-b-4 border-green-400 rounded-br-lg"
+                  style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                />
                 
                 {/* Center Label */}
-                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-green-400/90 text-black px-3 py-1 rounded-full text-sm font-medium">
-                    Position plant here
+                <motion.div 
+                  className="absolute -top-10 left-1/2 transform -translate-x-1/2"
+                  initial={{ y: -10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                >
+                  <div className="bg-green-400/90 text-black px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                    Frame Your Plant & Tap to Scan
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
               
-              {/* Scanning Animation */}
-              <div className="absolute inset-0 border-2 border-transparent">
-                <div className="w-full h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent animate-pulse"></div>
-              </div>
-            </div>
+              {/* Enhanced Scanning Animation Waves */}
+              <AnimatePresence>
+                {!isCapturing && (
+                  <motion.div className="absolute inset-0 border-2 border-transparent overflow-hidden rounded-xl">
+                    {/* Multiple scanning waves */}
+                    <motion.div
+                      className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent"
+                      animate={{
+                        y: [0, 320, 0]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      style={{ filter: 'drop-shadow(0 0 8px rgba(34, 197, 94, 0.8))' }}
+                    />
+                    <motion.div
+                      className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-green-300 to-transparent"
+                      animate={{
+                        y: [0, 320, 0]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1.5
+                      }}
+                      style={{ filter: 'drop-shadow(0 0 6px rgba(34, 197, 94, 0.6))' }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+              {/* Capture Flash Effect */}
+              <AnimatePresence>
+                {isCapturing && (
+                  <motion.div
+                    className="absolute inset-0 bg-green-400/20 rounded-xl border-2 border-green-400"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: [0, 1, 0], scale: [0.9, 1.1, 1] }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{ filter: 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.8))' }}
+                  />
+                )}
+              </AnimatePresence>
+            </motion.div>
           </div>
 
           {/* Bottom Controls */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 pb-12">
             <div className="flex items-center justify-center">
-              {/* Shutter Button */}
-              <button
+              {/* Enhanced Shutter Button for iOS */}
+              <motion.button
                 onClick={capturePhoto}
                 disabled={isCapturing || hasPermission !== true}
-                className={`w-20 h-20 rounded-full border-4 border-white bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-200 ${
+                className={`w-28 h-28 rounded-full border-4 border-white bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-200 ${
                   isCapturing 
-                    ? 'scale-95 bg-green-400/50' 
-                    : 'hover:scale-105 active:scale-95'
-                } disabled:opacity-50`}
+                    ? 'scale-95 bg-green-400/50 border-green-400' 
+                    : 'hover:scale-105 active:scale-95 hover:bg-white/30'
+                } disabled:opacity-50 touch-manipulation`}
+                style={{
+                  filter: isCapturing ? 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.8))' : 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))',
+                  minHeight: '112px',
+                  minWidth: '112px'
+                }}
                 aria-label="Capture plant photo"
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.05 }}
+                animate={{
+                  borderColor: isCapturing ? '#22c55e' : '#ffffff',
+                  boxShadow: isCapturing 
+                    ? '0 0 30px rgba(34, 197, 94, 0.6), inset 0 0 20px rgba(34, 197, 94, 0.2)' 
+                    : '0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1)'
+                }}
+                transition={{ duration: 0.2 }}
               >
-                <div className={`w-16 h-16 rounded-full transition-all duration-200 ${
-                  isCapturing ? 'bg-green-400' : 'bg-white'
-                }`} />
-              </button>
+                <motion.div 
+                  className={`w-20 h-20 rounded-full transition-all duration-200 ${
+                    isCapturing ? 'bg-green-400' : 'bg-white'
+                  }`}
+                  animate={{
+                    scale: isCapturing ? [1, 1.2, 1] : 1,
+                    backgroundColor: isCapturing ? '#22c55e' : '#ffffff'
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.button>
             </div>
             
-            {/* Instruction Text */}
-            <p className="text-white text-center mt-4 text-sm">
-              Position your plant in the frame and tap to scan
-            </p>
+            {/* Enhanced Instruction Text */}
+            <motion.p 
+              className="text-white text-center mt-6 text-base font-medium"
+              style={{ 
+                textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)',
+                filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9))'
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+            >
+              Frame Your Plant & Tap to Scan
+            </motion.p>
           </div>
         </div>
       ) : (
