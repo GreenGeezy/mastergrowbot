@@ -180,9 +180,9 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              {/* Enhanced Bounding Box with Neon Glow */}
+              {/* Enhanced Bounding Box with Neon Glow - Made Taller */}
               <motion.div 
-                className="w-80 h-80 sm:w-72 sm:h-72 md:w-80 md:h-80 border-2 border-green-400 rounded-xl relative bg-green-400/5"
+                className="w-80 h-96 sm:w-72 sm:h-80 md:w-80 md:h-96 border-2 border-green-400 rounded-xl relative bg-green-400/5"
                 style={{ 
                   boxShadow: '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)',
                   filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.4))'
@@ -243,7 +243,7 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
                     <motion.div
                       className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent"
                       animate={{
-                        y: [0, 320, 0]
+                        y: [0, 384, 0]
                       }}
                       transition={{
                         duration: 3,
@@ -255,7 +255,7 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
                     <motion.div
                       className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-green-300 to-transparent"
                       animate={{
-                        y: [0, 320, 0]
+                        y: [0, 384, 0]
                       }}
                       transition={{
                         duration: 3,
@@ -285,8 +285,8 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
             </motion.div>
           </div>
 
-          {/* Bottom Controls */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 pb-12">
+          {/* Bottom Controls - Positioned below the taller scanner box */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 pb-16">
             <div className="flex items-center justify-center">
               {/* Enhanced Shutter Button for iOS */}
               <motion.button
