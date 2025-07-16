@@ -168,7 +168,7 @@ export default function BenefitsSection() {
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="text-center"
+        className="text-center flex justify-center"
       >
         <Button
           onClick={handleQuizClick}
