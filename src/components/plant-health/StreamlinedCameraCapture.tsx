@@ -305,19 +305,19 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
               </motion.button>
               
               {/* Gallery Option Below Shutter Button */}
-              <div className="flex items-center gap-3 mt-4">
+              <div className="flex items-center gap-4 mt-6">
                 <Button
                   onClick={handleGallerySelect}
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/20 p-2"
+                  variant="outline"
+                  size="lg"
+                  className="text-white border-white/30 hover:bg-white/20 hover:border-white/50 px-6 py-3 flex items-center gap-3"
                   aria-label="Choose from gallery"
                 >
-                  <Image className="w-5 h-5" />
+                  <Image className="w-6 h-6" />
+                  <span className="text-sm font-medium">
+                    Upload Images Instead
+                  </span>
                 </Button>
-                <span className="text-white text-sm font-medium">
-                  Upload Images Instead
-                </span>
               </div>
             </div>
           </div>
