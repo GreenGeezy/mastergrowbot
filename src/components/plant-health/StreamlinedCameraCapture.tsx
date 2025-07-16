@@ -162,115 +162,118 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
 
       {/* Camera View */}
       {!capturedImage ? (
-        <div className="relative w-full h-full">
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className="w-full h-full object-cover"
-            style={{ transform: 'scaleX(-1)' }} // Mirror for selfie effect
-          />
-          
-          {/* Enhanced AR-like Plant Framing Guide */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <motion.div 
-              className="relative"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              {/* Enhanced Bounding Box with Neon Glow - Made Taller */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          {/* Camera viewfinder sized to match green box */}
+          <div className="relative w-80 h-96 sm:w-72 sm:h-80 md:w-80 md:h-96 overflow-hidden rounded-xl">
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className="w-full h-full object-cover rounded-xl"
+              style={{ transform: 'scaleX(-1)' }} // Mirror for selfie effect
+            />
+            
+            {/* Enhanced AR-like Plant Framing Guide - perfectly overlaid */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <motion.div 
-                className="w-80 h-96 sm:w-72 sm:h-80 md:w-80 md:h-96 border-2 border-green-400 rounded-xl relative bg-green-400/5"
-                style={{ 
-                  boxShadow: '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)',
-                  filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.4))'
-                }}
-                animate={{ 
-                  boxShadow: [
-                    '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)',
-                    '0 0 30px rgba(34, 197, 94, 0.5), inset 0 0 30px rgba(34, 197, 94, 0.2)',
-                    '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)'
-                  ]
-                }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="relative w-full h-full"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
-                {/* Enhanced Corner Guides with Glow */}
+                {/* Enhanced Bounding Box with Neon Glow - Made Taller */}
                 <motion.div 
-                  className="absolute -top-1 -left-1 w-8 h-8 border-l-4 border-t-4 border-green-400 rounded-tl-lg"
-                  style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
-                  animate={{ opacity: [0.7, 1, 0.7] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div 
-                  className="absolute -top-1 -right-1 w-8 h-8 border-r-4 border-t-4 border-green-400 rounded-tr-lg"
-                  style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
-                  animate={{ opacity: [0.7, 1, 0.7] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-                />
-                <motion.div 
-                  className="absolute -bottom-1 -left-1 w-8 h-8 border-l-4 border-b-4 border-green-400 rounded-bl-lg"
-                  style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
-                  animate={{ opacity: [0.7, 1, 0.7] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                />
-                <motion.div 
-                  className="absolute -bottom-1 -right-1 w-8 h-8 border-r-4 border-b-4 border-green-400 rounded-br-lg"
-                  style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
-                  animate={{ opacity: [0.7, 1, 0.7] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-                />
-              </motion.div>
-              
-              {/* Enhanced Scanning Animation Waves */}
-              <AnimatePresence>
-                {!isCapturing && (
-                  <motion.div className="absolute inset-0 border-2 border-transparent overflow-hidden rounded-xl">
-                    {/* Multiple scanning waves */}
-                    <motion.div
-                      className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent"
-                      animate={{
-                        y: [0, 384, 0]
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                      style={{ filter: 'drop-shadow(0 0 8px rgba(34, 197, 94, 0.8))' }}
-                    />
-                    <motion.div
-                      className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-green-300 to-transparent"
-                      animate={{
-                        y: [0, 384, 0]
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 1.5
-                      }}
-                      style={{ filter: 'drop-shadow(0 0 6px rgba(34, 197, 94, 0.6))' }}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              
-              {/* Capture Flash Effect */}
-              <AnimatePresence>
-                {isCapturing && (
-                  <motion.div
-                    className="absolute inset-0 bg-green-400/20 rounded-xl border-2 border-green-400"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: [0, 1, 0], scale: [0.9, 1.1, 1] }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{ filter: 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.8))' }}
+                  className="w-full h-full border-2 border-green-400 rounded-xl relative bg-green-400/5"
+                  style={{ 
+                    boxShadow: '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)',
+                    filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.4))'
+                  }}
+                  animate={{ 
+                    boxShadow: [
+                      '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)',
+                      '0 0 30px rgba(34, 197, 94, 0.5), inset 0 0 30px rgba(34, 197, 94, 0.2)',
+                      '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1)'
+                    ]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  {/* Enhanced Corner Guides with Glow */}
+                  <motion.div 
+                    className="absolute -top-1 -left-1 w-8 h-8 border-l-4 border-t-4 border-green-400 rounded-tl-lg"
+                    style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
+                    animate={{ opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                   />
-                )}
-              </AnimatePresence>
-            </motion.div>
+                  <motion.div 
+                    className="absolute -top-1 -right-1 w-8 h-8 border-r-4 border-t-4 border-green-400 rounded-tr-lg"
+                    style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
+                    animate={{ opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+                  />
+                  <motion.div 
+                    className="absolute -bottom-1 -left-1 w-8 h-8 border-l-4 border-b-4 border-green-400 rounded-bl-lg"
+                    style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
+                    animate={{ opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+                  />
+                  <motion.div 
+                    className="absolute -bottom-1 -right-1 w-8 h-8 border-r-4 border-b-4 border-green-400 rounded-br-lg"
+                    style={{ filter: 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.6))' }}
+                    animate={{ opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                  />
+
+                  {/* Enhanced Scanning Animation Waves */}
+                  <AnimatePresence>
+                    {!isCapturing && (
+                      <motion.div className="absolute inset-0 border-2 border-transparent overflow-hidden rounded-xl">
+                        {/* Multiple scanning waves */}
+                        <motion.div
+                          className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent"
+                          animate={{
+                            y: [0, 384, 0]
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                          style={{ filter: 'drop-shadow(0 0 8px rgba(34, 197, 94, 0.8))' }}
+                        />
+                        <motion.div
+                          className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-green-300 to-transparent"
+                          animate={{
+                            y: [0, 384, 0]
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 1.5
+                          }}
+                          style={{ filter: 'drop-shadow(0 0 6px rgba(34, 197, 94, 0.6))' }}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  
+                  {/* Capture Flash Effect */}
+                  <AnimatePresence>
+                    {isCapturing && (
+                      <motion.div
+                        className="absolute inset-0 bg-green-400/20 rounded-xl border-2 border-green-400"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: [0, 1, 0], scale: [0.9, 1.1, 1] }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        style={{ filter: 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.8))' }}
+                      />
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </motion.div>
+            </div>
           </div>
 
           {/* Floating Shutter Button - Positioned over green box */}
