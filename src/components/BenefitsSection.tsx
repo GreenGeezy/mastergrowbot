@@ -186,7 +186,7 @@ export default function BenefitsSection() {
           </div>
         </Button>
         
-        <p className={`text-gold mt-2 ${isMobile ? 'text-sm' : 'text-base'}`}>
+        <p className={`text-gold mt-0 ${isMobile ? 'text-sm' : 'text-base'}`}>
           3 Days Free Trial • No Credit Card Required
         </p>
       </motion.div>
