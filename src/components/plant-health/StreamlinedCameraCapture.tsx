@@ -149,15 +149,20 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
         
         <div className="flex-1"></div>
         
-        <Button
-          onClick={handleGallerySelect}
-          variant="ghost"
-          size="sm"
-          className="text-white hover:bg-white/20 p-2"
-          aria-label="Choose from gallery"
-        >
-          <Image className="w-6 h-6" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handleGallerySelect}
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/20 p-2"
+            aria-label="Choose from gallery"
+          >
+            <Image className="w-6 h-6" />
+          </Button>
+          <span className="text-white text-sm font-medium">
+            Upload Images Instead
+          </span>
+        </div>
       </div>
 
       {/* Camera View */}
