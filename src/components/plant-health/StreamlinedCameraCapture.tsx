@@ -273,22 +273,20 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
             </motion.div>
           </div>
 
-          {/* Bottom Controls - Positioned below the taller scanner box */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 pb-16">
-            <div className="flex items-center justify-center">
+          {/* Floating Shutter Button - Positioned over green box */}
+          <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 z-10">
+            <div className="flex flex-col items-center">
               {/* Enhanced Shutter Button for iOS */}
               <motion.button
                 onClick={capturePhoto}
                 disabled={isCapturing || hasPermission !== true}
-                className={`w-28 h-28 rounded-full border-4 border-white bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-200 ${
+                className={`w-20 h-20 rounded-full border-4 border-white bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-200 ${
                   isCapturing 
                     ? 'scale-95 bg-green-400/50 border-green-400' 
                     : 'hover:scale-105 active:scale-95 hover:bg-white/30'
                 } disabled:opacity-50 touch-manipulation`}
                 style={{
                   filter: isCapturing ? 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.8))' : 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))',
-                  minHeight: '112px',
-                  minWidth: '112px'
                 }}
                 aria-label="Capture plant photo"
                 whileTap={{ scale: 0.9 }}
@@ -302,7 +300,7 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
                 transition={{ duration: 0.2 }}
               >
                 <motion.div 
-                  className={`w-20 h-20 rounded-full transition-all duration-200 ${
+                  className={`w-12 h-12 rounded-full transition-all duration-200 ${
                     isCapturing ? 'bg-green-400' : 'bg-white'
                   }`}
                   animate={{
@@ -313,20 +311,6 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
                 />
               </motion.button>
             </div>
-            
-            {/* Enhanced Instruction Text */}
-            <motion.p 
-              className="text-white text-center mt-6 text-base font-medium"
-              style={{ 
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)',
-                filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9))'
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              Frame Your Plant & Tap to Scan
-            </motion.p>
           </div>
         </div>
       ) : (
