@@ -136,7 +136,7 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
   return (
     <div className="fixed inset-0 bg-black z-50">
       {/* Header Controls */}
-      <div className="absolute top-0 left-0 right-0 z-10 flex justify-between items-center p-4 bg-gradient-to-b from-black/60 to-transparent">
+      <div className="absolute top-0 left-0 right-0 z-10 flex justify-between items-center p-4">
         <Button
           onClick={handleClose}
           variant="ghost"
@@ -147,7 +147,7 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
           <X className="w-6 h-6" />
         </Button>
         
-        <h1 className="text-white font-semibold">Plant Scanner</h1>
+        <div className="flex-1"></div>
         
         <Button
           onClick={handleGallerySelect}
