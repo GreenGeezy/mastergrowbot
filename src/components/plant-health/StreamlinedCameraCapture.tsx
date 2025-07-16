@@ -221,18 +221,6 @@ const StreamlinedCameraCapture = ({ onPhotoCapture, onClose, onGallerySelect }: 
                   animate={{ opacity: [0.7, 1, 0.7] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
                 />
-                
-                {/* Center Label */}
-                <motion.div 
-                  className="absolute -top-10 left-1/2 transform -translate-x-1/2"
-                  initial={{ y: -10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                >
-                  <div className="bg-green-400/90 text-black px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                    Frame Your Plant & Tap to Scan
-                  </div>
-                </motion.div>
               </motion.div>
               
               {/* Enhanced Scanning Animation Waves */}
