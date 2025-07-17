@@ -37,6 +37,7 @@ export default function Quiz() {
   const [showPreview, setShowPreview] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
+  const [showInterstitial, setShowInterstitial] = useState(false);
   const [currentProofIndex, setCurrentProofIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(45);
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
@@ -191,8 +192,8 @@ export default function Quiz() {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // After completing all questions, show preview step
-      setShowPreview(true);
+      // After completing all questions, show interstitial
+      setShowInterstitial(true);
     }
   };
 
@@ -209,6 +210,42 @@ export default function Quiz() {
   const handleBackToQuestions = () => {
     setShowPreview(false);
     setCurrentStep(questions.length - 1); // Go back to last question
+  };
+
+  const handleInterstitialContinue = () => {
+    handleSubmit();
+  };
+
+  const generateDynamicTip = () => {
+    const experienceLevel = quizResponses.experience_level;
+    const growingMethod = quizResponses.growing_method;
+    const goals = Array.isArray(quizResponses.goals) ? quizResponses.goals[0] : quizResponses.goals;
+    const challenges = quizResponses.challenges;
+
+    // Generate tip based on experience level and growing method
+    if (experienceLevel === 'new' && growingMethod === 'indoor') {
+      return 'Adjust lighting to 18/6 cycle for 15% yield boost in your indoor setup.';
+    } else if (experienceLevel === 'new' && growingMethod === 'outdoor') {
+      return 'Start with companion planting to naturally deter pests in your outdoor garden.';
+    } else if (experienceLevel === 'intermediate' && growingMethod === 'indoor') {
+      return 'Optimize your VPD (Vapor Pressure Deficit) to increase terpene production by 20%.';
+    } else if (experienceLevel === 'intermediate' && growingMethod === 'outdoor') {
+      return 'Implement LST (Low Stress Training) early in veg for 25% more bud sites.';
+    } else if (experienceLevel === 'advanced' && growingMethod === 'greenhouse') {
+      return 'Fine-tune your environmental controls for craft-grade terpene expression.';
+    } else if (goals === 'profits') {
+      return 'Focus on high-yield strains and optimize your grow space utilization for maximum ROI.';
+    } else if (goals === 'quality') {
+      return 'Lower temperatures during flower (65-75°F) to preserve delicate terpenes.';
+    } else if (goals === 'costs') {
+      return 'Switch to LED lighting to reduce energy costs by up to 40% while maintaining yields.';
+    } else if (challenges?.includes('pests')) {
+      return 'Implement IPM (Integrated Pest Management) early to prevent costly infestations.';
+    } else if (challenges?.includes('nutrient_deficiencies')) {
+      return 'Monitor pH levels daily - optimal range is 6.0-7.0 for soil, 5.5-6.5 for hydro.';
+    } else {
+      return 'Maintain consistent environmental conditions for optimal plant health and yields.';
+    }
   };
 
   const handleSubmit = async () => {
@@ -535,6 +572,63 @@ export default function Quiz() {
           </div>
         </div>
       </div>;
+  }
+
+  if (showInterstitial) {
+    return (
+      <div className="min-h-screen bg-background circuit-background relative">
+        {/* Sparkles Background */}
+        <div className="fixed inset-0 w-full h-full">
+          <SparklesCore
+            id="quiz-interstitial-sparkles"
+            background="transparent"
+            minSize={0.4}
+            maxSize={1.2}
+            particleDensity={40}
+            className="w-full h-full"
+            particleColor="#8b87f5"
+            speed={0.6}
+          />
+        </div>
+        
+        <div className="relative z-10">
+          <ChatHeader />
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-2xl mx-auto">
+              <div className="px-8 py-12 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl text-center">
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
+                      Based on your answers, here's a quick tip:
+                    </h1>
+                    
+                    <div className="bg-gradient-to-r from-purple-600/20 to-green-400/20 rounded-lg p-6 border border-purple-400/30">
+                      <p className="text-xl text-white font-medium leading-relaxed">
+                        {generateDynamicTip()}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-white/80 text-lg">
+                      This is just the beginning. Get your complete personalized action plan now.
+                    </p>
+                    
+                    <Button 
+                      onClick={handleInterstitialContinue} 
+                      disabled={isSubmitting}
+                      className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500 rounded-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      {isSubmitting ? "Loading..." : "See My Full AI Action Card"}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const currentQuestion = questions[currentStep];
