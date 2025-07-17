@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { MessageCircle, Camera, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { MobileNavigation } from "./mobile/MobileNavigation";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -53,11 +52,6 @@ const UserDashboard = () => {
 
   return (
     <div className="w-full max-w-md mx-auto animate-fade-in px-4 circuit-background relative">
-      {/* Mobile Navigation - Only show on mobile */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 xs:block md:hidden">
-        <MobileNavigation />
-      </div>
-
       <div className="flex flex-col items-center space-y-8">
         <div className="w-full grid grid-cols-1 gap-4">
           {navigationButtons.map((button, index) => {
