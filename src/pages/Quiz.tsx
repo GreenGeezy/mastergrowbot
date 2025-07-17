@@ -39,6 +39,7 @@ export default function Quiz() {
   const [showSubscription, setShowSubscription] = useState(false);
   const [showInterstitial, setShowInterstitial] = useState(false);
   const [currentProofIndex, setCurrentProofIndex] = useState(0);
+  const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(45);
   const [quizResponses, setQuizResponses] = useState<Partial<QuizResponse>>(() => {
     try {
@@ -434,40 +435,39 @@ export default function Quiz() {
                 </div>
               </div>
               
-              <div className="flex flex-row gap-6 items-stretch justify-center flex-wrap md:flex-nowrap mb-4 mx-0 my-0 py-0 px-0 rounded">
+              <div className="max-w-md mx-auto space-y-4">
                 {/* Weekly Plan */}
-                <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card relative">
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                    <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-3 py-1 text-sm font-bold flex items-center gap-1">
+                <div className="bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transition-all duration-300 relative p-4">
+                  <div className="absolute -top-2 right-4 z-10">
+                    <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-2 py-1 text-xs font-bold flex items-center gap-1">
                       <Tag className="w-3 h-3" />
                       Sale
                     </Badge>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="mb-4">
-                      <h3 className="text-white text-xl font-bold mb-2">Weekly Plan</h3>
-                      <div className="text-white/80 text-sm mb-4">Master Growbot</div>
+                  
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-white text-lg font-bold">Weekly Plan</h3>
+                      <div className="text-white/80 text-sm">Master Growbot</div>
                     </div>
-                    
-                    <div className="text-center mb-6">
-                      <div className="price-line">
-                        <div className="flex items-center justify-center gap-2">
-                          <div className="text-white/50 text-2xl font-bold line-through">$9.99</div>
-                          <div className="text-white text-4xl font-bold">$8</div>
-                        </div>
-                        <div className="text-white/60 text-sm">/week</div>
+                    <div className="text-right">
+                      <div className="flex items-center gap-2">
+                        <div className="text-white/50 text-lg font-bold line-through">$9.99</div>
+                        <div className="text-white text-2xl font-bold">$8</div>
                       </div>
+                      <div className="text-white/60 text-sm">/week</div>
                     </div>
-                    
-                    <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
-                    width: '36px',
-                    height: '36px',
-                    margin: '8px auto 4px',
-                    opacity: 0.9,
-                    transition: 'transform 0.3s'
-                  }} alt="Cancel Anytime – No Fee" />
-                    
-                    <div className="space-y-3 mb-6 text-left">
+                  </div>
+                  
+                  <button 
+                    onClick={() => setExpandedPlan(expandedPlan === 'weekly' ? null : 'weekly')}
+                    className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors"
+                  >
+                    {expandedPlan === 'weekly' ? '▼' : '▶'} Tap to see plan details
+                  </button>
+                  
+                  {expandedPlan === 'weekly' && (
+                    <div className="space-y-2 mb-4 text-left">
                       {generatePersonalizedBullets().map((bullet, index) => (
                         <div key={index} className="flex items-start text-white/80 text-sm">
                           <span className="mr-2 mt-1">•</span>
@@ -475,39 +475,38 @@ export default function Quiz() {
                         </div>
                       ))}
                     </div>
-                    
-                    <a href="https://square.link/u/HWK25HbP" target="_blank" rel="noopener noreferrer" className="block">
-                      <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-                        Unlock Growbot →
-                      </button>
-                    </a>
-                  </div>
+                  )}
+                  
+                  <a href="https://square.link/u/HWK25HbP" target="_blank" rel="noopener noreferrer" className="block">
+                    <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-lg">
+                      Start Free Trial
+                    </button>
+                  </a>
+                  <p className="text-white/60 text-xs text-center mt-2">- Cancel Anytime</p>
                 </div>
 
                 {/* Quarterly Plan */}
-                <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transform hover:scale-105 transition-all duration-300 plan-card">
-                  <div className="p-6 text-center">
-                    <div className="mb-4">
-                      <h3 className="text-white text-xl font-bold mb-2">Save Your Seconds</h3>
-                      <div className="text-white/80 text-sm mb-4">Master Growbot Quarterly</div>
+                <div className="bg-gradient-to-b from-gray-900 to-black rounded-2xl border border-gray-600 shadow-2xl transition-all duration-300 p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-white text-lg font-bold">Save Your Seconds</h3>
+                      <div className="text-white/80 text-sm">Master Growbot Quarterly</div>
                     </div>
-                    
-                    <div className="text-center mb-6">
-                      <div className="price-line">
-                        <div className="text-white text-4xl font-bold">$89</div>
-                        <div className="text-white/60 text-sm">/quarter</div>
-                      </div>
+                    <div className="text-right">
+                      <div className="text-white text-2xl font-bold">$89</div>
+                      <div className="text-white/60 text-sm">/quarter</div>
                     </div>
-                    
-                    <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
-                    width: '36px',
-                    height: '36px',
-                    margin: '8px auto 4px',
-                    opacity: 0.9,
-                    transition: 'transform 0.3s'
-                  }} alt="Cancel Anytime – No Fee" />
-                    
-                    <div className="space-y-3 mb-6 text-left">
+                  </div>
+                  
+                  <button 
+                    onClick={() => setExpandedPlan(expandedPlan === 'quarterly' ? null : 'quarterly')}
+                    className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors"
+                  >
+                    {expandedPlan === 'quarterly' ? '▼' : '▶'} Tap to see plan details
+                  </button>
+                  
+                  {expandedPlan === 'quarterly' && (
+                    <div className="space-y-2 mb-4 text-left">
                       {generatePersonalizedBullets().map((bullet, index) => (
                         <div key={index} className="flex items-start text-white/80 text-sm">
                           <span className="mr-2 mt-1">•</span>
@@ -515,44 +514,44 @@ export default function Quiz() {
                         </div>
                       ))}
                     </div>
-                    
-                    <a href="https://square.link/u/mG7rXjby" target="_blank" rel="noopener noreferrer" className="block">
-                      <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-                        Unlock Growbot →
-                      </button>
-                    </a>
-                  </div>
+                  )}
+                  
+                  <a href="https://square.link/u/mG7rXjby" target="_blank" rel="noopener noreferrer" className="block">
+                    <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-lg">
+                      Start Free Trial
+                    </button>
+                  </a>
+                  <p className="text-white/60 text-xs text-center mt-2">- Cancel Anytime</p>
                 </div>
 
                 {/* Yearly Plan - Best Value */}
-                <div className="w-[280px] bg-gradient-to-b from-gray-900 to-black rounded-2xl border-2 border-[#FFD700] shadow-2xl transform hover:scale-105 transition-all duration-300 relative plan-card">
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                    <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-3 py-1 text-sm font-bold">
+                <div className="bg-gradient-to-b from-gray-900 to-black rounded-2xl border-2 border-purple-500 shadow-2xl transition-all duration-300 relative p-4">
+                  <div className="absolute -top-2 right-4 z-10">
+                    <Badge className="bg-[#FFD700] text-black border border-[#FFD700] px-2 py-1 text-xs font-bold">
                       Best Value
                     </Badge>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="mb-4">
-                      <h3 className="text-white text-xl font-bold mb-2">Yearly Quarterly</h3>
-                      <div className="text-white/80 text-sm mb-4">Master Growbot</div>
+                  
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-white text-lg font-bold">Yearly Plan</h3>
+                      <div className="text-white/80 text-sm">Master Growbot</div>
                     </div>
-                    
-                    <div className="text-center mb-6">
-                      <div className="price-line">
-                        <div className="text-white text-4xl font-bold">$199</div>
-                        <div className="text-white/60 text-sm">/year</div>
-                      </div>
+                    <div className="text-right">
+                      <div className="text-white text-2xl font-bold">$199</div>
+                      <div className="text-white/60 text-sm">/year</div>
                     </div>
-                    
-                    <img src="/lovable-uploads/4a1ea5dc-b2d4-48d3-bd79-90775a76fb00.png" className="trust-stamp" style={{
-                    width: '36px',
-                    height: '36px',
-                    margin: '8px auto 4px',
-                    opacity: 0.9,
-                    transition: 'transform 0.3s'
-                  }} alt="Cancel Anytime – No Fee" />
-                    
-                    <div className="space-y-3 mb-6 text-left">
+                  </div>
+                  
+                  <button 
+                    onClick={() => setExpandedPlan(expandedPlan === 'yearly' ? null : 'yearly')}
+                    className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors"
+                  >
+                    {expandedPlan === 'yearly' ? '▼' : '▶'} Tap to see plan details
+                  </button>
+                  
+                  {expandedPlan === 'yearly' && (
+                    <div className="space-y-2 mb-4 text-left">
                       {generatePersonalizedBullets().map((bullet, index) => (
                         <div key={index} className="flex items-start text-white/80 text-sm">
                           <span className="mr-2 mt-1">•</span>
@@ -560,13 +559,14 @@ export default function Quiz() {
                         </div>
                       ))}
                     </div>
-                    
-                    <a href="https://square.link/u/pa9x0yXT" target="_blank" rel="noopener noreferrer" className="block">
-                      <button className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black font-bold py-3 px-6 rounded-lg transition-colors duration-300">
-                        Unlock Growbot →
-                      </button>
-                    </a>
-                  </div>
+                  )}
+                  
+                  <a href="https://square.link/u/pa9x0yXT" target="_blank" rel="noopener noreferrer" className="block">
+                    <button className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black font-bold py-3 px-6 rounded-lg transition-colors duration-300 text-lg">
+                      Start Free Trial
+                    </button>
+                  </a>
+                  <p className="text-white/60 text-xs text-center mt-2">- Cancel Anytime</p>
                 </div>
               </div>
 
@@ -574,22 +574,23 @@ export default function Quiz() {
                 <div className="flex flex-col lg:flex-row items-center justify-center gap-4 w-full max-w-5xl mx-auto">
                   {/* Cancel Anytime Badge */}
                   <div className="flex-shrink-0">
-                    <img src="/lovable-uploads/0b625d46-6a8a-4ae6-a395-2ea7b1034b04.png" alt="Cancel Anytime Zero Fees Badge" className="w-32 h-32 md:w-40 md:h-40 object-contain" loading="lazy" />
+                    <img src="/lovable-uploads/0b625d46-6a8a-4ae6-a395-2ea7b1034b04.png" alt="Cancel Anytime Zero Fees Badge" className="w-24 h-24 md:w-32 md:h-32 object-contain" loading="lazy" />
                   </div>
 
                   {/* Secure Checkout Image */}
                   <div className="flex-shrink-0">
-                    <img alt="Secure checkout by Square with multiple payment options" className="w-full max-w-md h-auto object-contain rounded-lg" src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" />
+                    <img alt="Secure checkout by Square with multiple payment options" className="w-full max-w-sm h-auto object-contain rounded-lg" src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" />
                   </div>
 
                   {/* Trusted Seller Badge */}
                   <div className="flex-shrink-0">
-                    <img src="/lovable-uploads/30767198-f9b4-42cb-b632-0b9fbb0b856a.png" alt="Trusted Seller Badge" className="w-32 h-32 md:w-40 md:h-40 object-contain" loading="lazy" />
+                    <img src="/lovable-uploads/30767198-f9b4-42cb-b632-0b9fbb0b856a.png" alt="Trusted Seller Badge" className="w-24 h-24 md:w-32 md:h-32 object-contain" loading="lazy" />
                   </div>
                 </div>
                 
                 <div className="flex flex-col space-y-4 items-center w-full max-w-md">
-                  <p className="text-center text-white/80">After purchase, use the email you provided during checkout to sign up</p>
+                  <p className="text-center text-white/80 text-sm">After purchase, use the email you provided during checkout to sign up</p>
+                  
                   <Button variant="default" onClick={() => navigate('/')} className="w-full px-6 h-12 text-base bg-primary hover:bg-primary/90">
                     Go to Signup
                   </Button>
@@ -597,13 +598,18 @@ export default function Quiz() {
                   <Button variant="outline" onClick={() => setShowSubscription(false)} className="px-6 w-full h-12 text-base hover:bg-white/5 border-white/20 transition-colors duration-200">
                     Back to Quiz
                   </Button>
+                  
+                  <button 
+                    onClick={() => navigate('/chat')} 
+                    className="text-white/60 hover:text-white text-sm underline transition-colors duration-200"
+                  >
+                    No Thanks, Continue Free
+                  </button>
                 </div>
 
                 <div className="flex items-center justify-center space-x-2 text-[#FFD700]">
-                  
                   <Users className="w-5 h-5" />
-                  <span className="font-semibold">Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts</span>
-                  
+                  <span className="font-semibold text-sm">Join Our Community of Elite Cannabis Cultivators</span>
                 </div>
               </div>
             </div>
