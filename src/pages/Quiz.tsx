@@ -248,6 +248,42 @@ export default function Quiz() {
     }
   };
 
+  const generatePersonalizedHeadline = () => {
+    const growingMethod = quizResponses.growing_method;
+    const experienceLevel = quizResponses.experience_level;
+    const challenges = quizResponses.challenges;
+    
+    let location = 'grow';
+    if (growingMethod === 'indoor') location = 'indoor';
+    else if (growingMethod === 'outdoor') location = 'outdoor'; 
+    else if (growingMethod === 'greenhouse') location = 'greenhouse';
+    
+    return `Reclaim 13-20% yield for your ${location} setup?`;
+  };
+
+  const generatePersonalizedBullets = () => {
+    const experienceLevel = quizResponses.experience_level;
+    const challenges = quizResponses.challenges;
+    const growingMethod = quizResponses.growing_method;
+    
+    let experience = 'beginner';
+    if (experienceLevel === 'intermediate') experience = '6 months-2 years';
+    else if (experienceLevel === 'advanced') experience = 'advanced';
+    else if (experienceLevel === 'new') experience = 'new grower';
+    
+    let challenge = 'plant issues';
+    if (challenges?.includes('pests')) challenge = 'pest outbreaks';
+    else if (challenges?.includes('nutrient_deficiencies')) challenge = 'nutrient deficiencies';
+    else if (challenges?.includes('environmental_issues')) challenge = 'environmental issues';
+    
+    return [
+      `AI predictions tailored to your ${experience} level and ${challenge}`,
+      `Real-time plant health monitoring for ${growingMethod} setups`,
+      `Personalized harvest optimization strategies`,
+      `24/7 expert guidance system`
+    ];
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -378,14 +414,18 @@ export default function Quiz() {
           <div className="container mx-auto px-4 py-8">
             <div className="w-full max-w-[1200px] space-y-6">
               <div className="text-center space-y-2">
-                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">Subscription Required</h1>
-                <p className="text-lg text-white/80">To access Master Growbot AI, please select a subscription plan</p>
+                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
+                  {generatePersonalizedHeadline()}
+                </h1>
+                <p className="text-lg text-white/80">Get personalized AI guidance for your growing journey</p>
                 
                 <TestimonialCarousel />
 
                 <div className="bg-[#9b87f5] rounded-lg p-4 mt-6 text-center transform hover:scale-105 transition-transform duration-300 relative">
-                  <p className="text-white font-bold text-lg">Unlock 25% Off Quarterly & Over 60% Off Yearly—Offer Ends 7/10/25!</p>
-                  <p className="text-[#FFD700] font-mono font-bold text-xl">{globalTimeLeft}</p>
+                  <p className="text-white font-bold text-lg">🚨 LIMITED TIME: Save 25% on Quarterly & Over 60% on Yearly!</p>
+                  <p className="text-[#FFD700] font-mono font-bold text-2xl mt-2">
+                    Offer ends: {globalTimeLeft}
+                  </p>
                   
                   <img src="/lovable-uploads/4e2d074b-bacf-43a5-b44c-a932cd298cdf.png" className="risk-ribbon md:hidden block mx-auto mt-2" style={{
                   height: '40px',
@@ -428,10 +468,12 @@ export default function Quiz() {
                   }} alt="Cancel Anytime – No Fee" />
                     
                     <div className="space-y-3 mb-6 text-left">
-                      <div className="flex items-center text-white/80 text-sm">
-                        <span className="mr-2">•</span>
-                        <span>No-risk: cancel anytime</span>
-                      </div>
+                      {generatePersonalizedBullets().map((bullet, index) => (
+                        <div key={index} className="flex items-start text-white/80 text-sm">
+                          <span className="mr-2 mt-1">•</span>
+                          <span>{bullet}</span>
+                        </div>
+                      ))}
                     </div>
                     
                     <a href="https://square.link/u/HWK25HbP" target="_blank" rel="noopener noreferrer" className="block">
@@ -466,14 +508,12 @@ export default function Quiz() {
                   }} alt="Cancel Anytime – No Fee" />
                     
                     <div className="space-y-3 mb-6 text-left">
-                      <div className="flex items-center text-white/80 text-sm">
-                        <span className="mr-2">•</span>
-                        <span>Save 25%</span>
-                      </div>
-                      <div className="flex items-center text-white/80 text-sm">
-                        <span className="mr-2">•</span>
-                        <span>No-risk: cancel anytime</span>
-                      </div>
+                      {generatePersonalizedBullets().map((bullet, index) => (
+                        <div key={index} className="flex items-start text-white/80 text-sm">
+                          <span className="mr-2 mt-1">•</span>
+                          <span>{bullet}</span>
+                        </div>
+                      ))}
                     </div>
                     
                     <a href="https://square.link/u/mG7rXjby" target="_blank" rel="noopener noreferrer" className="block">
@@ -513,14 +553,12 @@ export default function Quiz() {
                   }} alt="Cancel Anytime – No Fee" />
                     
                     <div className="space-y-3 mb-6 text-left">
-                      <div className="flex items-center text-white/80 text-sm">
-                        <span className="mr-2">•</span>
-                        <span>Save Over 60%</span>
-                      </div>
-                      <div className="flex items-center text-white/80 text-sm">
-                        <span className="mr-2">•</span>
-                        <span>No-risk: cancel anytime</span>
-                      </div>
+                      {generatePersonalizedBullets().map((bullet, index) => (
+                        <div key={index} className="flex items-start text-white/80 text-sm">
+                          <span className="mr-2 mt-1">•</span>
+                          <span>{bullet}</span>
+                        </div>
+                      ))}
                     </div>
                     
                     <a href="https://square.link/u/pa9x0yXT" target="_blank" rel="noopener noreferrer" className="block">
