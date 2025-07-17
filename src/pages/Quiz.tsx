@@ -555,16 +555,20 @@ export default function Quiz() {
   const getTimerText = () => {
     switch (currentStep) {
       case 0:
-        return "Step 1 / 4 · 45 s left";
+        return "30s to your personalized AI plan";
       case 1:
-        return "Step 2 / 4 · 30 s left";
+        return "25s to your personalized AI plan";
       case 2:
-        return "Step 3 / 4 · 15 s left";
+        return "15s to your personalized AI plan";
       case 3:
-        return "Step 4 / 4 · 5 s left";
+        return "5s to your personalized AI plan";
       default:
-        return `Step ${currentStep + 1} / 4 · ${timeLeft} s left`;
+        return `${timeLeft}s to your personalized AI plan`;
     }
+  };
+
+  const getProgressPercentage = () => {
+    return ((currentStep + 1) / questions.length) * 100;
   };
 
   return <div className="min-h-screen bg-background circuit-background relative">
@@ -592,12 +596,25 @@ export default function Quiz() {
                   <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
                     Help us personalize your growing experience
                   </h1>
-                  <div className="flex items-center justify-center gap-2 mt-4">
-                    {questions.map((_, index) => <div key={index} className={`h-2 w-2 rounded-full ${index === currentStep ? 'bg-accent w-6' : index < currentStep ? 'bg-primary' : 'bg-white/20'}`} />)}
+                  {/* Progress Bar */}
+                  <div className="w-full mt-6 space-y-3">
+                    <div className="w-full bg-white/10 rounded-full h-4 overflow-hidden shadow-inner">
+                      <div 
+                        className="h-full bg-gradient-to-r from-purple-600 via-purple-400 to-green-400 transition-all duration-300 ease-out flex items-center justify-center relative"
+                        style={{ width: `${getProgressPercentage()}%` }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/80 via-purple-400/80 to-green-400/80 animate-pulse" />
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white/90 font-medium">
+                        Step {currentStep + 1}/4
+                      </span>
+                      <span className="text-white/70 font-medium">
+                        {getTimerText()}
+                      </span>
+                    </div>
                   </div>
-                  <p className="text-slate-400 mt-2 tracking-wide">
-                    {getTimerText()}
-                  </p>
                 </div>
 
                 <div className="space-y-6">
