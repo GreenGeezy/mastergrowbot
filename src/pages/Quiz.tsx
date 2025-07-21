@@ -138,7 +138,7 @@ export default function Quiz() {
       tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
     },
     {
-      question: "Biggest headache this cycle?",
+      question: "How long have you been growing?",
       type: "radio",
       field: "experience_level",
       options: [
