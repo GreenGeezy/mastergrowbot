@@ -248,6 +248,7 @@ export default function ChatInput({
           onChange={onMessageChange}
           placeholder="Ask about cannabis cultivation..."
           disabled={isLoading || isRecording}
+          data-testid="chat-input"
           className="bg-[#1A1E26] border-[#2A2F3B] text-white placeholder:text-gray-400 focus:border-accent focus:ring-accent"
         />
         

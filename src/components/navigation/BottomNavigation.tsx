@@ -136,7 +136,10 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-black backdrop-blur-lg border-t border-emerald-500/20 shadow-[0_-10px_40px_-10px_rgba(0,255,127,0.3)]">
+    <nav 
+      data-testid="bottom-navigation" 
+      className="fixed bottom-0 left-0 right-0 z-50 bg-black backdrop-blur-lg border-t border-emerald-500/20 shadow-[0_-10px_40px_-10px_rgba(0,255,127,0.3)]"
+    >
       {/* Futuristic edge effect */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent"></div>
       
@@ -186,7 +189,7 @@ const BottomNavigation = () => {
           })}
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

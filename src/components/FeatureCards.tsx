@@ -61,6 +61,7 @@ const FeatureCards = () => {
   return (
     <motion.div 
       className={`space-y-3 sm:space-y-4 w-full max-w-md mx-auto px-4 ${isMobile ? 'mb-6' : 'mb-8'}`}
+      data-testid="feature-cards"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

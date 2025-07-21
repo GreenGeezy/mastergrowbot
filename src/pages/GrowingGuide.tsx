@@ -43,7 +43,14 @@ const GrowingGuide = () => {
         {/* Search Bar */}
         <div className="relative max-w-2xl mx-auto mb-12 animate-fade-in">
           <div className="relative">
-            <Input type="text" placeholder="Search guides and growing help..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full bg-card border-accent/20 text-white placeholder:text-gray-400 h-12 pl-12 rounded-xl" />
+            <Input 
+              type="text" 
+              placeholder="Search guides and growing help..." 
+              value={searchQuery} 
+              onChange={e => setSearchQuery(e.target.value)} 
+              data-testid="search-input" 
+              className="w-full bg-card border-accent/20 text-white placeholder:text-gray-400 h-12 pl-12 rounded-xl" 
+            />
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           </div>
         </div>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import ProfileSettingsDialog from '@/components/profile/ProfileSettingsDialog';
 import Header from '@/components/Header';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
+import SubscriptionSection from '@/components/settings/SubscriptionSection';
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -50,11 +51,19 @@ const Settings = () => {
           </p>
         </div>
 
-        <div className="flex justify-center">
-          <ProfileSettingsDialog 
-            isOpen={showProfileDialog} 
-            onOpenChange={setShowProfileDialog}
-          />
+        <div className="space-y-6">
+          {/* Subscription Section */}
+          <div className="max-w-2xl mx-auto">
+            <SubscriptionSection />
+          </div>
+          
+          {/* Profile Settings */}
+          <div className="flex justify-center">
+            <ProfileSettingsDialog 
+              isOpen={showProfileDialog} 
+              onOpenChange={setShowProfileDialog}
+            />
+          </div>
         </div>
       </main>
 
