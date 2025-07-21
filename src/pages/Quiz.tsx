@@ -451,8 +451,8 @@ export default function Quiz() {
                       <div className="text-white/80 text-sm">Master Growbot Quarterly</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-white text-2xl font-bold">$89</div>
-                      <div className="text-white/60 text-sm">/quarter</div>
+                      <div className="text-white text-2xl font-bold">$29.99</div>
+                      <div className="text-white/60 text-sm">/month</div>
                     </div>
                   </div>
                   
