@@ -591,6 +591,65 @@ export default function Quiz() {
                     <Button onClick={handleInterstitialContinue} disabled={isSubmitting} className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500 rounded-xl transition-all duration-300 transform hover:scale-105">
                       {isSubmitting ? "Loading..." : "See My Full AI Action Card"}
                     </Button>
+                    
+                    {/* Feature Benefit Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 w-full max-w-4xl mx-auto">
+                      {/* Grow Bigger Buds Card */}
+                      <div className="bg-gradient-to-br from-green-600/20 to-green-800/20 border border-green-500/30 rounded-xl p-6 backdrop-blur-sm">
+                        <div className="flex items-start space-x-4">
+                          <div className="bg-green-500/20 p-3 rounded-lg">
+                            <div className="w-8 h-8 text-green-400">🌿</div>
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-white font-bold text-lg mb-2">Grow Bigger Buds & Higher Yields</h3>
+                            <p className="text-white/70 text-sm mb-3">Maximize harvest with abundant bud-colibrating discipline across all nutrient schedules.</p>
+                            <p className="text-green-400 text-sm font-medium">Stop guessing. Get AI guidance with weekly inspections and room adjustments recommendations.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Stack Cash Card */}
+                      <div className="bg-gradient-to-br from-yellow-600/20 to-orange-600/20 border border-yellow-500/30 rounded-xl p-6 backdrop-blur-sm">
+                        <div className="flex items-start space-x-4">
+                          <div className="bg-yellow-500/20 p-3 rounded-lg">
+                            <div className="w-8 h-8 text-yellow-400">💰</div>
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-white font-bold text-lg mb-2">Stack Cash & Super Charge Profits</h3>
+                            <p className="text-white/70 text-sm mb-3">Boost earnings by optimizing harvest timing and yield strategies, through Database and yield-boost tips.</p>
+                            <p className="text-yellow-400 text-sm font-medium">Get 95% confidence scans and personalized action to maximize your investment.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Improve Quality Card */}
+                      <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-6 backdrop-blur-sm">
+                        <div className="flex items-start space-x-4">
+                          <div className="bg-purple-500/20 p-3 rounded-lg">
+                            <div className="w-8 h-8 text-purple-400">⚡</div>
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-white font-bold text-lg mb-2">Improve Quality & Increase Potency</h3>
+                            <p className="text-white/70 text-sm mb-3">Elevate plant strength for superior harvest with Precision Tools like PM and pH guidance.</p>
+                            <p className="text-purple-400 text-sm font-medium">Access comprehensive nutrient suggestions and environmental control approaches.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* AI-Powered Plant Evaluation Card */}
+                      <div className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 border border-blue-500/30 rounded-xl p-6 backdrop-blur-sm">
+                        <div className="flex items-start space-x-4">
+                          <div className="bg-blue-500/20 p-3 rounded-lg">
+                            <div className="w-8 h-8 text-blue-400">🔍</div>
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-white font-bold text-lg mb-2">AI-Powered Plant Evaluation</h3>
+                            <p className="text-white/70 text-sm mb-3">Advanced 95% confidence scans with intelligent diagnostic and recommended actions.</p>
+                            <p className="text-blue-400 text-sm font-medium">Real-time plant health monitoring with precision diagnostic tools.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
