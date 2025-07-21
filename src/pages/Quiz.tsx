@@ -133,7 +133,7 @@ export default function Quiz() {
       field: "goals",
       options: [
         { label: "Max yield", value: "profits" },
-        { label: "Better terp power", value: "quality" },
+        { label: "Top quality and potency", value: "quality" },
         { label: "Slash costs", value: "costs" },
         { label: "Stay 100% compliant", value: "compliance" }
       ],
