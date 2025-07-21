@@ -15,9 +15,7 @@ import TestimonialCarousel from '@/components/TestimonialCarousel';
 import IntroCover from '@/components/quiz/IntroCover';
 import PreviewStep from '@/components/quiz/PreviewStep';
 import { SparklesCore } from '@/components/ui/sparkles';
-
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
-
 const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
   if (!jsonString) return fallback;
   try {
@@ -27,11 +25,12 @@ const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
     return fallback;
   }
 };
-
 export default function Quiz() {
   const session = useSession();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [showIntroCover, setShowIntroCover] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
@@ -75,12 +74,7 @@ export default function Quiz() {
     }
   });
   const [globalTimeLeft, setGlobalTimeLeft] = useState("");
-
-  const proofTickers = [
-    "📈 2022 Univ. of Guelph greenhouse trial: AI tools ↑ yield 8–12 % & cut labour 18 %.",
-    "💸 One unchecked mite outbreak = –$336/plant. Stop it before it starts."
-  ];
-
+  const proofTickers = ["📈 2022 Univ. of Guelph greenhouse trial: AI tools ↑ yield 8–12 % & cut labour 18 %.", "💸 One unchecked mite outbreak = –$336/plant. Stop it before it starts."];
   useEffect(() => {
     try {
       sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
@@ -88,7 +82,6 @@ export default function Quiz() {
       console.error('Error saving quiz responses to session storage:', error);
     }
   }, [quizResponses]);
-
   useEffect(() => {
     const targetDate = new Date('2025-07-01T23:59:59.000Z');
     const updateTimer = () => {
@@ -111,7 +104,7 @@ export default function Quiz() {
   // Proof ticker rotation
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentProofIndex((prev) => (prev + 1) % proofTickers.length);
+      setCurrentProofIndex(prev => (prev + 1) % proofTickers.length);
     }, 6000);
     return () => clearInterval(interval);
   }, []);
@@ -120,64 +113,82 @@ export default function Quiz() {
   useEffect(() => {
     if (!showIntroCover && !showSubscription && timeLeft > 0) {
       const interval = setInterval(() => {
-        setTimeLeft((prev) => Math.max(0, prev - 1));
+        setTimeLeft(prev => Math.max(0, prev - 1));
       }, 1000);
       return () => clearInterval(interval);
     }
   }, [showIntroCover, showSubscription, timeLeft]);
-
-  const questions = [
-    {
-      question: "What's your #1 grow goal right now?",
-      type: "radio",
-      field: "goals",
-      options: [
-        { label: "Max yield", value: "profits" },
-        { label: "Top quality and potency", value: "quality" },
-        { label: "Slash costs", value: "costs" },
-        { label: "Stay 100% compliant", value: "compliance" }
-      ],
-      tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
-    },
-    {
-      question: "How long have you been growing?",
-      type: "radio",
-      field: "experience_level",
-      options: [
-        { label: "I'm new", value: "new" },
-        { label: "6 months - 2 years", value: "intermediate" },
-        { label: "Over 2 years", value: "advanced" }
-      ]
-    },
-    {
-      question: "How many plants are you growing or expect to grow?",
-      type: "radio",
-      field: "plant_quantity",
-      options: [
-        { label: "🌱 1–4 (home hobby)", value: "1-4" },
-        { label: "🌿 5–20 (garage / small room)", value: "5-20" },
-        { label: "🌳 21–100 (craft)", value: "21-100" },
-        { label: "🏭 101–500 (mid-scale)", value: "101-500" },
-        { label: "🌄 500 + (farm or MSO)", value: "500+" }
-      ],
-      tooltip: "This lets us size nutrients, labour, and ROI."
-    },
-    {
-      question: "Where are your plants living?",
-      type: "radio",
-      field: "growing_method",
-      options: [
-        { label: "Indoor", value: "indoor" },
-        { label: "Outdoor", value: "outdoor" },
-        { label: "Greenhouse", value: "greenhouse" }
-      ]
-    }
-  ];
-
+  const questions = [{
+    question: "What's your #1 grow goal right now?",
+    type: "radio",
+    field: "goals",
+    options: [{
+      label: "Max yield",
+      value: "profits"
+    }, {
+      label: "Top quality and potency",
+      value: "quality"
+    }, {
+      label: "Slash costs",
+      value: "costs"
+    }, {
+      label: "Stay 100% compliant",
+      value: "compliance"
+    }],
+    tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
+  }, {
+    question: "How long have you been growing?",
+    type: "radio",
+    field: "experience_level",
+    options: [{
+      label: "I'm new",
+      value: "new"
+    }, {
+      label: "6 months - 2 years",
+      value: "intermediate"
+    }, {
+      label: "Over 2 years",
+      value: "advanced"
+    }]
+  }, {
+    question: "How many plants are you growing or expect to grow?",
+    type: "radio",
+    field: "plant_quantity",
+    options: [{
+      label: "🌱 1–4 (home hobby)",
+      value: "1-4"
+    }, {
+      label: "🌿 5–20 (garage / small room)",
+      value: "5-20"
+    }, {
+      label: "🌳 21–100 (craft)",
+      value: "21-100"
+    }, {
+      label: "🏭 101–500 (mid-scale)",
+      value: "101-500"
+    }, {
+      label: "🌄 500 + (farm or MSO)",
+      value: "500+"
+    }],
+    tooltip: "This lets us size nutrients, labour, and ROI."
+  }, {
+    question: "Where are your plants living?",
+    type: "radio",
+    field: "growing_method",
+    options: [{
+      label: "Indoor",
+      value: "indoor"
+    }, {
+      label: "Outdoor",
+      value: "outdoor"
+    }, {
+      label: "Greenhouse",
+      value: "greenhouse"
+    }]
+  }];
   const handleStartQuiz = () => {
     setShowIntroCover(false);
   };
-
   const handleNextStep = () => {
     const currentQuestion = questions[currentStep];
     if (!currentQuestion) {
@@ -200,26 +211,21 @@ export default function Quiz() {
       setShowInterstitial(true);
     }
   };
-
   const handlePreviousStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
-
   const handleContinueToCheckout = () => {
     handleSubmit();
   };
-
   const handleBackToQuestions = () => {
     setShowPreview(false);
     setCurrentStep(questions.length - 1); // Go back to last question
   };
-
   const handleInterstitialContinue = () => {
     handleSubmit();
   };
-
   const generateDynamicTip = () => {
     const experienceLevel = quizResponses.experience_level;
     const growingMethod = quizResponses.growing_method;
@@ -251,43 +257,24 @@ export default function Quiz() {
       return 'Maintain consistent environmental conditions for optimal plant health and yields.';
     }
   };
-
   const generatePersonalizedHeadline = () => {
     const growingMethod = quizResponses.growing_method;
     const experienceLevel = quizResponses.experience_level;
     const challenges = quizResponses.challenges;
-    
     let location = 'grow';
-    if (growingMethod === 'indoor') location = 'indoor';
-    else if (growingMethod === 'outdoor') location = 'outdoor'; 
-    else if (growingMethod === 'greenhouse') location = 'greenhouse';
-    
+    if (growingMethod === 'indoor') location = 'indoor';else if (growingMethod === 'outdoor') location = 'outdoor';else if (growingMethod === 'greenhouse') location = 'greenhouse';
     return `Reclaim 13-20% yield for your ${location} setup?`;
   };
-
   const generatePersonalizedBullets = () => {
     const experienceLevel = quizResponses.experience_level;
     const challenges = quizResponses.challenges;
     const growingMethod = quizResponses.growing_method;
-    
     let experience = 'beginner';
-    if (experienceLevel === 'intermediate') experience = '6 months-2 years';
-    else if (experienceLevel === 'advanced') experience = 'advanced';
-    else if (experienceLevel === 'new') experience = 'new grower';
-    
+    if (experienceLevel === 'intermediate') experience = '6 months-2 years';else if (experienceLevel === 'advanced') experience = 'advanced';else if (experienceLevel === 'new') experience = 'new grower';
     let challenge = 'plant issues';
-    if (challenges?.includes('pests')) challenge = 'pest outbreaks';
-    else if (challenges?.includes('nutrient_deficiencies')) challenge = 'nutrient deficiencies';
-    else if (challenges?.includes('environmental_issues')) challenge = 'environmental issues';
-    
-    return [
-      `AI predictions tailored to your ${experience} level and ${challenge}`,
-      `Real-time plant health monitoring for ${growingMethod} setups`,
-      `Personalized harvest optimization strategies`,
-      `24/7 expert guidance system`
-    ];
+    if (challenges?.includes('pests')) challenge = 'pest outbreaks';else if (challenges?.includes('nutrient_deficiencies')) challenge = 'nutrient deficiencies';else if (challenges?.includes('environmental_issues')) challenge = 'environmental issues';
+    return [`AI predictions tailored to your ${experience} level and ${challenge}`, `Real-time plant health monitoring for ${growingMethod} setups`, `Personalized harvest optimization strategies`, `24/7 expert guidance system`];
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -359,26 +346,14 @@ export default function Quiz() {
     }
     setIsSubmitting(false);
   };
-
   if (showIntroCover) {
     return <IntroCover onStartQuiz={handleStartQuiz} />;
   }
-
   if (showPreview) {
-    return (
-      <div className="min-h-screen bg-background circuit-background relative">
+    return <div className="min-h-screen bg-background circuit-background relative">
         {/* Sparkles Background */}
         <div className="fixed inset-0 w-full h-full">
-          <SparklesCore
-            id="quiz-preview-sparkles"
-            background="transparent"
-            minSize={0.4}
-            maxSize={1.2}
-            particleDensity={40}
-            className="w-full h-full"
-            particleColor="#8b87f5"
-            speed={0.6}
-          />
+          <SparklesCore id="quiz-preview-sparkles" background="transparent" minSize={0.4} maxSize={1.2} particleDensity={40} className="w-full h-full" particleColor="#8b87f5" speed={0.6} />
         </div>
         
         <div className="relative z-10">
@@ -386,32 +361,18 @@ export default function Quiz() {
           <div className="container mx-auto px-4 py-8">
             <div className="max-w-2xl mx-auto">
               <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
-                <PreviewStep 
-                  onContinueToCheckout={handleContinueToCheckout}
-                  onBackToQuestions={handleBackToQuestions}
-                />
+                <PreviewStep onContinueToCheckout={handleContinueToCheckout} onBackToQuestions={handleBackToQuestions} />
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
   if (showSubscription) {
     return <div className="min-h-screen bg-background circuit-background relative">
         {/* Sparkles Background */}
         <div className="fixed inset-0 w-full h-full">
-          <SparklesCore
-            id="quiz-subscription-sparkles"
-            background="transparent"
-            minSize={0.5}
-            maxSize={1.3}
-            particleDensity={45}
-            className="w-full h-full"
-            particleColor="#9b87f5"
-            speed={0.7}
-          />
+          <SparklesCore id="quiz-subscription-sparkles" background="transparent" minSize={0.5} maxSize={1.3} particleDensity={45} className="w-full h-full" particleColor="#9b87f5" speed={0.7} />
         </div>
         
         <div className="relative z-10">
@@ -463,23 +424,16 @@ export default function Quiz() {
                     </div>
                   </div>
                   
-                  <button 
-                    onClick={() => setExpandedPlan(expandedPlan === 'weekly' ? null : 'weekly')}
-                    className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors"
-                  >
+                  <button onClick={() => setExpandedPlan(expandedPlan === 'weekly' ? null : 'weekly')} className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors">
                     {expandedPlan === 'weekly' ? '▼' : '▶'} Tap to see plan details
                   </button>
                   
-                  {expandedPlan === 'weekly' && (
-                    <div className="space-y-2 mb-4 text-left">
-                      {generatePersonalizedBullets().map((bullet, index) => (
-                        <div key={index} className="flex items-start text-white/80 text-sm">
+                  {expandedPlan === 'weekly' && <div className="space-y-2 mb-4 text-left">
+                      {generatePersonalizedBullets().map((bullet, index) => <div key={index} className="flex items-start text-white/80 text-sm">
                           <span className="mr-2 mt-1">•</span>
                           <span>{bullet}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        </div>)}
+                    </div>}
                   
                   <a href="https://square.link/u/HWK25HbP" target="_blank" rel="noopener noreferrer" className="block">
                     <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-lg">
@@ -502,23 +456,16 @@ export default function Quiz() {
                     </div>
                   </div>
                   
-                  <button 
-                    onClick={() => setExpandedPlan(expandedPlan === 'quarterly' ? null : 'quarterly')}
-                    className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors"
-                  >
+                  <button onClick={() => setExpandedPlan(expandedPlan === 'quarterly' ? null : 'quarterly')} className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors">
                     {expandedPlan === 'quarterly' ? '▼' : '▶'} Tap to see plan details
                   </button>
                   
-                  {expandedPlan === 'quarterly' && (
-                    <div className="space-y-2 mb-4 text-left">
-                      {generatePersonalizedBullets().map((bullet, index) => (
-                        <div key={index} className="flex items-start text-white/80 text-sm">
+                  {expandedPlan === 'quarterly' && <div className="space-y-2 mb-4 text-left">
+                      {generatePersonalizedBullets().map((bullet, index) => <div key={index} className="flex items-start text-white/80 text-sm">
                           <span className="mr-2 mt-1">•</span>
                           <span>{bullet}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        </div>)}
+                    </div>}
                   
                   <a href="https://square.link/u/mG7rXjby" target="_blank" rel="noopener noreferrer" className="block">
                     <button className="w-full bg-[#9b87f5] hover:bg-[#8b7af5] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 text-lg">
@@ -547,23 +494,16 @@ export default function Quiz() {
                     </div>
                   </div>
                   
-                  <button 
-                    onClick={() => setExpandedPlan(expandedPlan === 'yearly' ? null : 'yearly')}
-                    className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors"
-                  >
+                  <button onClick={() => setExpandedPlan(expandedPlan === 'yearly' ? null : 'yearly')} className="w-full text-left text-white/80 text-sm mb-4 hover:text-white transition-colors">
                     {expandedPlan === 'yearly' ? '▼' : '▶'} Tap to see plan details
                   </button>
                   
-                  {expandedPlan === 'yearly' && (
-                    <div className="space-y-2 mb-4 text-left">
-                      {generatePersonalizedBullets().map((bullet, index) => (
-                        <div key={index} className="flex items-start text-white/80 text-sm">
+                  {expandedPlan === 'yearly' && <div className="space-y-2 mb-4 text-left">
+                      {generatePersonalizedBullets().map((bullet, index) => <div key={index} className="flex items-start text-white/80 text-sm">
                           <span className="mr-2 mt-1">•</span>
                           <span>{bullet}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        </div>)}
+                    </div>}
                   
                   <a href="https://square.link/u/pa9x0yXT" target="_blank" rel="noopener noreferrer" className="block">
                     <button className="w-full bg-[#FFD700] hover:bg-[#e6c200] text-black font-bold py-3 px-6 rounded-lg transition-colors duration-300 text-lg">
@@ -578,17 +518,17 @@ export default function Quiz() {
                 <div className="flex flex-col lg:flex-row items-center justify-center gap-4 w-full max-w-5xl mx-auto">
                   {/* Cancel Anytime Badge */}
                   <div className="flex-shrink-0">
-                    <img src="/lovable-uploads/0b625d46-6a8a-4ae6-a395-2ea7b1034b04.png" alt="Cancel Anytime Zero Fees Badge" className="w-24 h-24 md:w-32 md:h-32 object-contain" loading="lazy" />
+                    
                   </div>
 
                   {/* Secure Checkout Image */}
                   <div className="flex-shrink-0">
-                    <img alt="Secure checkout by Square with multiple payment options" className="w-full max-w-sm h-auto object-contain rounded-lg" src="/lovable-uploads/1f642749-fc10-4fb2-8ad3-3f0866f9c935.png" />
+                    
                   </div>
 
                   {/* Trusted Seller Badge */}
                   <div className="flex-shrink-0">
-                    <img src="/lovable-uploads/30767198-f9b4-42cb-b632-0b9fbb0b856a.png" alt="Trusted Seller Badge" className="w-24 h-24 md:w-32 md:h-32 object-contain" loading="lazy" />
+                    
                   </div>
                 </div>
                 
@@ -603,10 +543,7 @@ export default function Quiz() {
                     Back to Quiz
                   </Button>
                   
-                  <button 
-                    onClick={() => navigate('/chat')} 
-                    className="text-white/60 hover:text-white text-sm underline transition-colors duration-200"
-                  >
+                  <button onClick={() => navigate('/chat')} className="text-white/60 hover:text-white text-sm underline transition-colors duration-200">
                     No Thanks, Continue Free
                   </button>
                 </div>
@@ -621,22 +558,11 @@ export default function Quiz() {
         </div>
       </div>;
   }
-
   if (showInterstitial) {
-    return (
-      <div className="min-h-screen bg-background circuit-background relative">
+    return <div className="min-h-screen bg-background circuit-background relative">
         {/* Sparkles Background */}
         <div className="fixed inset-0 w-full h-full">
-          <SparklesCore
-            id="quiz-interstitial-sparkles"
-            background="transparent"
-            minSize={0.4}
-            maxSize={1.2}
-            particleDensity={40}
-            className="w-full h-full"
-            particleColor="#8b87f5"
-            speed={0.6}
-          />
+          <SparklesCore id="quiz-interstitial-sparkles" background="transparent" minSize={0.4} maxSize={1.2} particleDensity={40} className="w-full h-full" particleColor="#8b87f5" speed={0.6} />
         </div>
         
         <div className="relative z-10">
@@ -662,11 +588,7 @@ export default function Quiz() {
                       This is just the beginning. Get your complete personalized action plan now.
                     </p>
                     
-                    <Button 
-                      onClick={handleInterstitialContinue} 
-                      disabled={isSubmitting}
-                      className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500 rounded-xl transition-all duration-300 transform hover:scale-105"
-                    >
+                    <Button onClick={handleInterstitialContinue} disabled={isSubmitting} className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500 rounded-xl transition-all duration-300 transform hover:scale-105">
                       {isSubmitting ? "Loading..." : "See My Full AI Action Card"}
                     </Button>
                   </div>
@@ -675,22 +597,18 @@ export default function Quiz() {
             </div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
   const currentQuestion = questions[currentStep];
   if (!currentQuestion) {
     console.error('Current question not found at index:', currentStep);
-    return (
-      <div className="min-h-screen bg-background circuit-background flex items-center justify-center">
+    return <div className="min-h-screen bg-background circuit-background flex items-center justify-center">
         <div className="text-center p-8 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
           <h2 className="text-2xl font-semibold mb-4">Something went wrong</h2>
           <p className="mb-6">We're having trouble loading the quiz questions.</p>
           <Button onClick={() => navigate('/chat')}>Go to Chat</Button>
         </div>
-      </div>
-    );
+      </div>;
   }
 
   // Dynamic timer based on step
@@ -708,24 +626,13 @@ export default function Quiz() {
         return `${timeLeft}s to your personalized AI plan`;
     }
   };
-
   const getProgressPercentage = () => {
-    return ((currentStep + 1) / questions.length) * 100;
+    return (currentStep + 1) / questions.length * 100;
   };
-
   return <div className="min-h-screen bg-background circuit-background relative">
       {/* Sparkles Background */}
       <div className="fixed inset-0 w-full h-full">
-        <SparklesCore
-          id="quiz-sparkles"
-          background="transparent"
-          minSize={0.4}
-          maxSize={1.0}
-          particleDensity={35}
-          className="w-full h-full"
-          particleColor="#36d399"
-          speed={0.5}
-        />
+        <SparklesCore id="quiz-sparkles" background="transparent" minSize={0.4} maxSize={1.0} particleDensity={35} className="w-full h-full" particleColor="#36d399" speed={0.5} />
       </div>
       
       <div className="relative z-10">
@@ -741,10 +648,9 @@ export default function Quiz() {
                   {/* Progress Bar */}
                   <div className="w-full mt-6 space-y-3">
                     <div className="w-full bg-white/10 rounded-full h-4 overflow-hidden shadow-inner">
-                      <div 
-                        className="h-full bg-gradient-to-r from-purple-600 via-purple-400 to-green-400 transition-all duration-300 ease-out flex items-center justify-center relative"
-                        style={{ width: `${getProgressPercentage()}%` }}
-                      >
+                      <div className="h-full bg-gradient-to-r from-purple-600 via-purple-400 to-green-400 transition-all duration-300 ease-out flex items-center justify-center relative" style={{
+                      width: `${getProgressPercentage()}%`
+                    }}>
                         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/80 via-purple-400/80 to-green-400/80 animate-pulse" />
                       </div>
                     </div>
@@ -764,8 +670,7 @@ export default function Quiz() {
                     <h2 className="text-xl font-semibold text-white tech-font">
                       {currentQuestion.question}
                     </h2>
-                    {currentQuestion.tooltip && (
-                      <TooltipProvider>
+                    {currentQuestion.tooltip && <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Button variant="ghost" size="icon" className="h-6 w-6 text-white/60 hover:text-white">
@@ -776,73 +681,47 @@ export default function Quiz() {
                             <p className="max-w-xs">{currentQuestion.tooltip}</p>
                           </TooltipContent>
                         </Tooltip>
-                      </TooltipProvider>
-                    )}
+                      </TooltipProvider>}
                   </div>
 
-                  {currentQuestion.type === "radio" && (currentStep === 0 || currentStep === 1 || currentStep === 2) && (
-                    <div className="flex flex-col gap-4">
-                      {currentQuestion.options.map(option => (
-                        <div 
-                          key={option.value} 
-                          className={`rounded-lg bg-white/5 backdrop-blur ring-1 ring-white/10 py-4 px-5 hover:ring-purple-400 transition cursor-pointer ${
-                            (Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
-                              (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
-                              quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value 
-                              ? 'ring-purple-400 bg-purple-400/10' : ''
-                          }`}
-                          onClick={() => {
-                            if (currentQuestion.field === "goals") {
-                              setQuizResponses(prev => ({
-                                ...prev,
-                                [currentQuestion.field]: [option.value]
-                              }));
-                            } else {
-                              setQuizResponses(prev => ({
-                                ...prev,
-                                [currentQuestion.field]: option.value
-                              }));
-                            }
-                          }}
-                        >
+                  {currentQuestion.type === "radio" && (currentStep === 0 || currentStep === 1 || currentStep === 2) && <div className="flex flex-col gap-4">
+                      {currentQuestion.options.map(option => <div key={option.value} className={`rounded-lg bg-white/5 backdrop-blur ring-1 ring-white/10 py-4 px-5 hover:ring-purple-400 transition cursor-pointer ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'ring-purple-400 bg-purple-400/10' : ''}`} onClick={() => {
+                    if (currentQuestion.field === "goals") {
+                      setQuizResponses(prev => ({
+                        ...prev,
+                        [currentQuestion.field]: [option.value]
+                      }));
+                    } else {
+                      setQuizResponses(prev => ({
+                        ...prev,
+                        [currentQuestion.field]: option.value
+                      }));
+                    }
+                  }}>
                           <div className="flex items-center space-x-3">
-                            <div className={`w-4 h-4 rounded-full border-2 ${
-                              (Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
-                                (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
-                                quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value 
-                                ? 'border-purple-400 bg-purple-400' : 'border-white/30'
-                            }`}>
-                              {(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
-                                (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
-                                quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value && (
-                                <div className="w-full h-full rounded-full bg-white"></div>
-                              )}
+                            <div className={`w-4 h-4 rounded-full border-2 ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'border-purple-400 bg-purple-400' : 'border-white/30'}`}>
+                              {(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value && <div className="w-full h-full rounded-full bg-white"></div>}
                             </div>
                             <label className="text-lg font-medium leading-none cursor-pointer w-full text-white">
                               {option.label}
                             </label>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        </div>)}
+                    </div>}
 
-                  {currentQuestion.type === "radio" && currentStep !== 0 && currentStep !== 1 && currentStep !== 2 && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? 
-                    (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : 
-                    quizResponses[currentQuestion.field as keyof QuizResponse] as string} 
-                    onValueChange={value => {
-                      if (currentQuestion.field === "goals") {
-                        setQuizResponses(prev => ({
-                          ...prev,
-                          [currentQuestion.field]: [value]
-                        }));
-                      } else {
-                        setQuizResponses(prev => ({
-                          ...prev,
-                          [currentQuestion.field]: value
-                        }));
-                      }
-                    }} className="space-y-4">
+                  {currentQuestion.type === "radio" && currentStep !== 0 && currentStep !== 1 && currentStep !== 2 && <RadioGroup value={Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string} onValueChange={value => {
+                  if (currentQuestion.field === "goals") {
+                    setQuizResponses(prev => ({
+                      ...prev,
+                      [currentQuestion.field]: [value]
+                    }));
+                  } else {
+                    setQuizResponses(prev => ({
+                      ...prev,
+                      [currentQuestion.field]: value
+                    }));
+                  }
+                }} className="space-y-4">
                     {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
                         <RadioGroupItem value={option.value} id={option.value} className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent" />
                         <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
@@ -854,27 +733,27 @@ export default function Quiz() {
                   {currentQuestion.type === "checkbox" && <div className="space-y-4">
                       {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
                           <Checkbox id={option.value} checked={(quizResponses[currentQuestion.field as keyof QuizResponse] as string[] || []).includes(option.value)} onCheckedChange={checked => {
-                        const field = currentQuestion.field as keyof QuizResponse;
-                        const currentValues = quizResponses[field] as string[] || [];
-                        if (checked) {
-                          if (option.value === 'all' || option.value === 'none') {
-                            setQuizResponses(prev => ({
-                              ...prev,
-                              [field]: [option.value]
-                            }));
-                          } else {
-                            setQuizResponses(prev => ({
-                              ...prev,
-                              [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
-                            }));
-                          }
+                      const field = currentQuestion.field as keyof QuizResponse;
+                      const currentValues = quizResponses[field] as string[] || [];
+                      if (checked) {
+                        if (option.value === 'all' || option.value === 'none') {
+                          setQuizResponses(prev => ({
+                            ...prev,
+                            [field]: [option.value]
+                          }));
                         } else {
                           setQuizResponses(prev => ({
                             ...prev,
-                            [field]: currentValues.filter(value => value !== option.value)
+                            [field]: [...currentValues.filter(v => v !== 'all' && v !== 'none'), option.value]
                           }));
                         }
-                      }} className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent" />
+                      } else {
+                        setQuizResponses(prev => ({
+                          ...prev,
+                          [field]: currentValues.filter(value => value !== option.value)
+                        }));
+                      }
+                    }} className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent" />
                           <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
                             {option.label}
                           </label>
@@ -882,48 +761,33 @@ export default function Quiz() {
                     </div>}
 
                   {/* Proof ticker for first three questions */}
-                  {(currentStep === 0 || currentStep === 1 || currentStep === 2) && (
-                    <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+                  {(currentStep === 0 || currentStep === 1 || currentStep === 2) && <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
                       <p className="text-sm text-white/80 text-center animate-pulse">
                         {proofTickers[currentProofIndex]}
                       </p>
-                    </div>
-                  )}
+                    </div>}
 
                   {/* Mini-fact for second question */}
-                  {currentStep === 1 && (
-                    <div className="mt-4 text-center">
+                  {currentStep === 1 && <div className="mt-4 text-center">
                       <p className="text-sm text-white/70">
                         ⚡ 68% of growers recover ROI in ≤14 days after solving the #1 pain-point (Guide p. 5).
                       </p>
-                    </div>
-                  )}
+                    </div>}
 
                   {/* Mini-fact for fourth question */}
-                  {currentStep === 3 && (
-                    <div className="mt-4 text-center">
+                  {currentStep === 3 && <div className="mt-4 text-center">
                       <p className="text-sm text-white/70">
                         🌱 57% of micro-grows using AI hit craft-grade terps in ≤3 cycles (Guide p. 7).
                       </p>
-                    </div>
-                  )}
+                    </div>}
                 </div>
 
                 <div className="flex justify-between pt-6">
-                  <Button 
-                    variant="outline" 
-                    onClick={handlePreviousStep} 
-                    disabled={currentStep === 0} 
-                    className="px-6 rounded-full"
-                  >
+                  <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0} className="px-6 rounded-full">
                     Previous
                   </Button>
                   
-                  <Button 
-                    onClick={handleNextStep} 
-                    disabled={isSubmitting} 
-                    className="px-6 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500"
-                  >
+                  <Button onClick={handleNextStep} disabled={isSubmitting} className="px-6 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500">
                     {currentStep === questions.length - 1 ? isSubmitting ? "Saving..." : "Complete Quiz" : "Next"}
                   </Button>
                 </div>
