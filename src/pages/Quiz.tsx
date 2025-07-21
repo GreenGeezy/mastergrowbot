@@ -598,7 +598,7 @@ export default function Quiz() {
                       <div className="bg-gradient-to-br from-green-600/20 to-green-800/20 border border-green-500/30 rounded-xl p-6 backdrop-blur-sm">
                         <div className="flex items-start space-x-4">
                           <div className="bg-green-500/20 p-3 rounded-lg">
-                            <div className="w-8 h-8 text-green-400">🌿</div>
+                            <div className="w-24 h-24 text-green-400 flex items-center justify-center text-4xl">🌿</div>
                           </div>
                           <div className="flex-1">
                             <h3 className="text-white font-bold text-lg mb-2">Grow Bigger Buds & Higher Yields</h3>
@@ -612,7 +612,7 @@ export default function Quiz() {
                       <div className="bg-gradient-to-br from-yellow-600/20 to-orange-600/20 border border-yellow-500/30 rounded-xl p-6 backdrop-blur-sm">
                         <div className="flex items-start space-x-4">
                           <div className="bg-yellow-500/20 p-3 rounded-lg">
-                            <div className="w-8 h-8 text-yellow-400">💰</div>
+                            <div className="w-24 h-24 text-yellow-400 flex items-center justify-center text-4xl">💰</div>
                           </div>
                           <div className="flex-1">
                             <h3 className="text-white font-bold text-lg mb-2">Stack Cash & Super Charge Profits</h3>
@@ -626,7 +626,7 @@ export default function Quiz() {
                       <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-6 backdrop-blur-sm">
                         <div className="flex items-start space-x-4">
                           <div className="bg-purple-500/20 p-3 rounded-lg">
-                            <div className="w-8 h-8 text-purple-400">⚡</div>
+                            <div className="w-24 h-24 text-purple-400 flex items-center justify-center text-4xl">⚡</div>
                           </div>
                           <div className="flex-1">
                             <h3 className="text-white font-bold text-lg mb-2">Improve Quality & Increase Potency</h3>
@@ -640,7 +640,7 @@ export default function Quiz() {
                       <div className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 border border-blue-500/30 rounded-xl p-6 backdrop-blur-sm">
                         <div className="flex items-start space-x-4">
                           <div className="bg-blue-500/20 p-3 rounded-lg">
-                            <div className="w-8 h-8 text-blue-400">🔍</div>
+                            <div className="w-24 h-24 text-blue-400 flex items-center justify-center text-4xl">🔍</div>
                           </div>
                           <div className="flex-1">
                             <h3 className="text-white font-bold text-lg mb-2">AI-Powered Plant Evaluation</h3>
