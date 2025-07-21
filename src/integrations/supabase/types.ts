@@ -210,6 +210,9 @@ export type Database = {
           id: string
           monitoring_method: Database["public"]["Enums"]["monitoring_method"]
           nutrient_type: Database["public"]["Enums"]["nutrient_type"]
+          plant_quantity:
+            | Database["public"]["Enums"]["plant_quantity_type"]
+            | null
           updated_at: string
           user_id: string
         }
@@ -222,6 +225,9 @@ export type Database = {
           id?: string
           monitoring_method: Database["public"]["Enums"]["monitoring_method"]
           nutrient_type: Database["public"]["Enums"]["nutrient_type"]
+          plant_quantity?:
+            | Database["public"]["Enums"]["plant_quantity_type"]
+            | null
           updated_at?: string
           user_id: string
         }
@@ -234,6 +240,9 @@ export type Database = {
           id?: string
           monitoring_method?: Database["public"]["Enums"]["monitoring_method"]
           nutrient_type?: Database["public"]["Enums"]["nutrient_type"]
+          plant_quantity?:
+            | Database["public"]["Enums"]["plant_quantity_type"]
+            | null
           updated_at?: string
           user_id?: string
         }
@@ -531,6 +540,7 @@ export type Database = {
       growing_method: "indoor" | "outdoor" | "greenhouse"
       monitoring_method: "manual" | "basic_sensors" | "advanced_systems"
       nutrient_type: "organic" | "synthetic" | "both" | "none"
+      plant_quantity_type: "1-4" | "5-20" | "21-100" | "101-500" | "500+"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -662,6 +672,7 @@ export const Constants = {
       growing_method: ["indoor", "outdoor", "greenhouse"],
       monitoring_method: ["manual", "basic_sensors", "advanced_systems"],
       nutrient_type: ["organic", "synthetic", "both", "none"],
+      plant_quantity_type: ["1-4", "5-20", "21-100", "101-500", "500+"],
     },
   },
 } as const
