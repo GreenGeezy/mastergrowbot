@@ -48,14 +48,16 @@ export default function Quiz() {
         growing_method: undefined,
         challenges: [],
         monitoring_method: undefined,
-        nutrient_type: undefined
+        nutrient_type: undefined,
+        plant_quantity: undefined
       }) : {
         goals: [],
         experience_level: undefined,
         growing_method: undefined,
         challenges: [],
         monitoring_method: undefined,
-        nutrient_type: undefined
+        nutrient_type: undefined,
+        plant_quantity: undefined
       };
     } catch (error) {
       console.error('Error initializing quiz responses:', error);
@@ -65,7 +67,8 @@ export default function Quiz() {
         growing_method: undefined,
         challenges: [],
         monitoring_method: undefined,
-        nutrient_type: undefined
+        nutrient_type: undefined,
+        plant_quantity: undefined
       };
     }
   });
@@ -145,15 +148,17 @@ export default function Quiz() {
       ]
     },
     {
-      question: "How many runs under your belt?",
+      question: "How many plants are you growing or expect to grow?",
       type: "radio",
-      field: "growing_method",
+      field: "plant_quantity",
       options: [
-        { label: "New", value: "indoor" },
-        { label: "Intermediate", value: "outdoor" },
-        { label: "Advanced", value: "greenhouse" }
+        { label: "🌱 1–4 (home hobby)", value: "1_4" },
+        { label: "🌿 5–20 (garage / small room)", value: "5_20" },
+        { label: "🌳 21–100 (craft)", value: "21_100" },
+        { label: "🏭 101–500 (mid-scale)", value: "101_500" },
+        { label: "🌄 500 + (farm or MSO)", value: "500_plus" }
       ],
-      tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
+      tooltip: "This lets us size nutrients, labour, and ROI."
     },
     {
       question: "Where are your plants living?",
@@ -251,6 +256,7 @@ export default function Quiz() {
           challenges: quizResponses.challenges,
           monitoring_method: quizResponses.monitoring_method,
           nutrient_type: quizResponses.nutrient_type,
+          plant_quantity: quizResponses.plant_quantity,
           goals: Array.isArray(quizResponses.goals) ? quizResponses.goals : [quizResponses.goals].filter(Boolean)
         });
         if (quizError) {
