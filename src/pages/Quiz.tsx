@@ -48,6 +48,7 @@ export default function Quiz() {
         goals: [],
         experience_level: undefined,
         growing_method: undefined,
+        plant_quantity: undefined,
         challenges: [],
         monitoring_method: undefined,
         nutrient_type: undefined
@@ -55,6 +56,7 @@ export default function Quiz() {
         goals: [],
         experience_level: undefined,
         growing_method: undefined,
+        plant_quantity: undefined,
         challenges: [],
         monitoring_method: undefined,
         nutrient_type: undefined
@@ -65,6 +67,7 @@ export default function Quiz() {
         goals: [],
         experience_level: undefined,
         growing_method: undefined,
+        plant_quantity: undefined,
         challenges: [],
         monitoring_method: undefined,
         nutrient_type: undefined
@@ -147,26 +150,26 @@ export default function Quiz() {
       ]
     },
     {
-      question: "How many runs under your belt?",
+      question: "How many plants are you growing or expect to grow?",
       type: "radio",
-      field: "growing_method",
+      field: "plant_quantity",
       options: [
-        { label: "New", value: "indoor" },
-        { label: "Intermediate", value: "outdoor" },
-        { label: "Advanced", value: "greenhouse" }
+        { label: "🌱 1–4 (home hobby)", value: "1-4" },
+        { label: "🌿 5–20 (garage / small room)", value: "5-20" },
+        { label: "🌳 21–100 (craft)", value: "21-100" },
+        { label: "🏭 101–500 (mid-scale)", value: "101-500" },
+        { label: "🌄 500 + (farm or MSO)", value: "500+" }
       ],
-      tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
+      tooltip: "This lets us size nutrients, labour, and ROI."
     },
     {
       question: "Where are your plants living?",
-      type: "checkbox",
-      field: "challenges",
+      type: "radio",
+      field: "growing_method",
       options: [
-        { label: "Indoor", value: "pests" },
-        { label: "Greenhouse", value: "nutrient_deficiencies" },
-        { label: "Outdoor", value: "environmental_issues" },
-        { label: "Both", value: "none" },
-        { label: "Micro-grow", value: "micro_grow" }
+        { label: "Indoor", value: "indoor" },
+        { label: "Outdoor", value: "outdoor" },
+        { label: "Greenhouse", value: "greenhouse" }
       ]
     }
   ];
@@ -322,6 +325,7 @@ export default function Quiz() {
           user_id: session.user.id,
           experience_level: quizResponses.experience_level,
           growing_method: quizResponses.growing_method,
+          plant_quantity: quizResponses.plant_quantity,
           challenges: quizResponses.challenges,
           monitoring_method: quizResponses.monitoring_method,
           nutrient_type: quizResponses.nutrient_type,
