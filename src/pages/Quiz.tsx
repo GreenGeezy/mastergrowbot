@@ -570,7 +570,7 @@ export default function Quiz() {
           <ChatHeader />
           <div className="container mx-auto px-4 py-8">
             <div className="max-w-2xl mx-auto">
-              <div className="px-8 py-12 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl text-center">
+              <div className="px-8 py-12 bg-white/95 dark:bg-card rounded-xl border border-gray-200 dark:border-white/10 shadow-2xl backdrop-blur-xl text-center">
                 <div className="space-y-8">
                   <div className="space-y-4">
                     <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
@@ -578,14 +578,14 @@ export default function Quiz() {
                     </h1>
                     
                     <div className="bg-gradient-to-r from-purple-600/20 to-green-400/20 rounded-lg p-6 border border-purple-400/30">
-                      <p className="text-xl text-white font-medium leading-relaxed">
+                      <p className="text-xl text-gray-900 dark:text-white font-medium leading-relaxed">
                         {generateDynamicTip()}
                       </p>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <p className="text-white/80 text-lg">
+                    <p className="text-gray-700 dark:text-white/80 text-lg">
                       This is just the beginning. Get your complete personalized action plan now.
                     </p>
                     
@@ -602,9 +602,9 @@ export default function Quiz() {
                             <div className="w-24 h-24 text-green-400 flex items-center justify-center text-4xl">🌿</div>
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-white font-bold text-lg mb-2">Grow Bigger Buds & Higher Yields</h3>
-                            <p className="text-white/70 text-sm mb-3">Maximize harvest with abundant bud-colibrating discipline across all nutrient schedules.</p>
-                            <p className="text-green-400 text-sm font-medium">Stop guessing. Get AI guidance with weekly inspections and room adjustments recommendations.</p>
+                            <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Grow Bigger Buds & Higher Yields</h3>
+                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Maximize harvest with abundant bud-colibrating discipline across all nutrient schedules.</p>
+                            <p className="text-green-600 dark:text-green-400 text-sm font-medium">Stop guessing. Get AI guidance with weekly inspections and room adjustments recommendations.</p>
                           </div>
                         </div>
                       </div>
@@ -616,9 +616,9 @@ export default function Quiz() {
                             <div className="w-24 h-24 text-yellow-400 flex items-center justify-center text-4xl">💰</div>
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-white font-bold text-lg mb-2">Stack Cash & Super Charge Profits</h3>
-                            <p className="text-white/70 text-sm mb-3">Boost earnings by optimizing harvest timing and yield strategies, through Database and yield-boost tips.</p>
-                            <p className="text-yellow-400 text-sm font-medium">Get 95% confidence scans and personalized action to maximize your investment.</p>
+                            <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Stack Cash & Super Charge Profits</h3>
+                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Boost earnings by optimizing harvest timing and yield strategies, through Database and yield-boost tips.</p>
+                            <p className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">Get 95% confidence scans and personalized action to maximize your investment.</p>
                           </div>
                         </div>
                       </div>
@@ -630,9 +630,9 @@ export default function Quiz() {
                             <div className="w-24 h-24 text-purple-400 flex items-center justify-center text-4xl">⚡</div>
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-white font-bold text-lg mb-2">Improve Quality & Increase Potency</h3>
-                            <p className="text-white/70 text-sm mb-3">Elevate plant strength for superior harvest with Precision Tools like PM and pH guidance.</p>
-                            <p className="text-purple-400 text-sm font-medium">Access comprehensive nutrient suggestions and environmental control approaches.</p>
+                            <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Improve Quality & Increase Potency</h3>
+                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Elevate plant strength for superior harvest with Precision Tools like PM and pH guidance.</p>
+                            <p className="text-purple-600 dark:text-purple-400 text-sm font-medium">Access comprehensive nutrient suggestions and environmental control approaches.</p>
                           </div>
                         </div>
                       </div>
@@ -644,9 +644,9 @@ export default function Quiz() {
                             <div className="w-24 h-24 text-blue-400 flex items-center justify-center text-4xl">🔍</div>
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-white font-bold text-lg mb-2">AI-Powered Plant Evaluation</h3>
-                            <p className="text-white/70 text-sm mb-3">Advanced 95% confidence scans with intelligent diagnostic and recommended actions.</p>
-                            <p className="text-blue-400 text-sm font-medium">Real-time plant health monitoring with precision diagnostic tools.</p>
+                            <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">AI-Powered Plant Evaluation</h3>
+                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Advanced 95% confidence scans with intelligent diagnostic and recommended actions.</p>
+                            <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">Real-time plant health monitoring with precision diagnostic tools.</p>
                           </div>
                         </div>
                       </div>
@@ -706,7 +706,7 @@ export default function Quiz() {
         <ChatHeader />
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
-            <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
+              <div className="px-8 py-6 bg-white/95 dark:bg-card rounded-xl border border-gray-200 dark:border-white/10 shadow-2xl backdrop-blur-xl">
               <div className="space-y-6">
                 <div className="space-y-2 text-center">
                   <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
@@ -714,7 +714,7 @@ export default function Quiz() {
                   </h1>
                   {/* Progress Bar */}
                   <div className="w-full mt-6 space-y-3">
-                    <div className="w-full bg-white/10 rounded-full h-4 overflow-hidden shadow-inner">
+                    <div className="w-full bg-gray-200 dark:bg-white/10 rounded-full h-4 overflow-hidden shadow-inner">
                       <div className="h-full bg-gradient-to-r from-purple-600 via-purple-400 to-green-400 transition-all duration-300 ease-out flex items-center justify-center relative" style={{
                       width: `${getProgressPercentage()}%`
                     }}>
@@ -722,10 +722,10 @@ export default function Quiz() {
                       </div>
                     </div>
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-white/90 font-medium">
+                      <span className="text-gray-900 dark:text-white/90 font-medium">
                         Step {currentStep + 1}/4
                       </span>
-                      <span className="text-white/70 font-medium">
+                      <span className="text-gray-700 dark:text-white/70 font-medium">
                         {getTimerText()}
                       </span>
                     </div>
@@ -734,13 +734,13 @@ export default function Quiz() {
 
                 <div className="space-y-6">
                   <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-semibold text-white tech-font">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white tech-font">
                       {currentQuestion.question}
                     </h2>
                     {currentQuestion.tooltip && <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-6 w-6 text-white/60 hover:text-white">
+                            <Button variant="ghost" size="icon" className="h-6 w-6 text-gray-600 dark:text-white/60 hover:text-gray-800 dark:hover:text-white">
                               <HelpCircle className="h-4 w-4" />
                             </Button>
                           </TooltipTrigger>
@@ -752,7 +752,7 @@ export default function Quiz() {
                   </div>
 
                   {currentQuestion.type === "radio" && (currentStep === 0 || currentStep === 1 || currentStep === 2) && <div className="flex flex-col gap-4">
-                      {currentQuestion.options.map(option => <div key={option.value} className={`rounded-lg bg-white/5 backdrop-blur ring-1 ring-white/10 py-4 px-5 hover:ring-purple-400 transition cursor-pointer ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'ring-purple-400 bg-purple-400/10' : ''}`} onClick={() => {
+                      {currentQuestion.options.map(option => <div key={option.value} className={`rounded-lg bg-gray-50 dark:bg-white/5 backdrop-blur ring-1 ring-gray-200 dark:ring-white/10 py-4 px-5 hover:ring-purple-400 transition cursor-pointer ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'ring-purple-400 bg-purple-400/20 dark:bg-purple-400/10' : ''}`} onClick={() => {
                     if (currentQuestion.field === "goals") {
                       setQuizResponses(prev => ({
                         ...prev,
@@ -766,10 +766,10 @@ export default function Quiz() {
                     }
                   }}>
                           <div className="flex items-center space-x-3">
-                            <div className={`w-4 h-4 rounded-full border-2 ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'border-purple-400 bg-purple-400' : 'border-white/30'}`}>
+                            <div className={`w-4 h-4 rounded-full border-2 ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'border-purple-400 bg-purple-400' : 'border-gray-300 dark:border-white/30'}`}>
                               {(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value && <div className="w-full h-full rounded-full bg-white"></div>}
                             </div>
-                            <label className="text-lg font-medium leading-none cursor-pointer w-full text-white">
+                            <label className="text-lg font-medium leading-none cursor-pointer w-full text-gray-900 dark:text-white">
                               {option.label}
                             </label>
                           </div>
@@ -789,16 +789,16 @@ export default function Quiz() {
                     }));
                   }
                 }} className="space-y-4">
-                    {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                    {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-gray-200 dark:border-white/10 p-4 hover:bg-gray-50 dark:hover:bg-white/5">
                         <RadioGroupItem value={option.value} id={option.value} className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent" />
-                        <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
+                        <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full text-gray-900 dark:text-white hover:text-accent">
                           {option.label}
                         </label>
                       </div>)}
                   </RadioGroup>}
 
                   {currentQuestion.type === "checkbox" && <div className="space-y-4">
-                      {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-white/10 p-4 hover:bg-white/5">
+                      {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-gray-200 dark:border-white/10 p-4 hover:bg-gray-50 dark:hover:bg-white/5">
                           <Checkbox id={option.value} checked={(quizResponses[currentQuestion.field as keyof QuizResponse] as string[] || []).includes(option.value)} onCheckedChange={checked => {
                       const field = currentQuestion.field as keyof QuizResponse;
                       const currentValues = quizResponses[field] as string[] || [];
@@ -821,32 +821,32 @@ export default function Quiz() {
                         }));
                       }
                     }} className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent" />
-                          <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full hover:text-accent">
-                            {option.label}
-                          </label>
+                           <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full text-gray-900 dark:text-white hover:text-accent">
+                             {option.label}
+                           </label>
                         </div>)}
                     </div>}
 
-                  {/* Proof ticker for first three questions */}
-                  {(currentStep === 0 || currentStep === 1 || currentStep === 2) && <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
-                      <p className="text-sm text-white/80 text-center animate-pulse">
-                        {proofTickers[currentProofIndex]}
-                      </p>
-                    </div>}
+                   {/* Proof ticker for first three questions */}
+                   {(currentStep === 0 || currentStep === 1 || currentStep === 2) && <div className="mt-6 p-4 bg-gray-100 dark:bg-white/5 rounded-lg border border-gray-200 dark:border-white/10">
+                       <p className="text-sm text-gray-700 dark:text-white/80 text-center animate-pulse">
+                         {proofTickers[currentProofIndex]}
+                       </p>
+                     </div>}
 
-                  {/* Mini-fact for second question */}
-                  {currentStep === 1 && <div className="mt-4 text-center">
-                      <p className="text-sm text-white/70">
-                        ⚡ 68% of growers recover ROI in ≤14 days after solving the #1 pain-point (Guide p. 5).
-                      </p>
-                    </div>}
+                   {/* Mini-fact for second question */}
+                   {currentStep === 1 && <div className="mt-4 text-center">
+                       <p className="text-sm text-gray-600 dark:text-white/70">
+                         ⚡ 68% of growers recover ROI in ≤14 days after solving the #1 pain-point (Guide p. 5).
+                       </p>
+                     </div>}
 
-                  {/* Mini-fact for fourth question */}
-                  {currentStep === 3 && <div className="mt-4 text-center">
-                      <p className="text-sm text-white/70">
-                        🌱 57% of micro-grows using AI hit craft-grade terps in ≤3 cycles (Guide p. 7).
-                      </p>
-                    </div>}
+                   {/* Mini-fact for fourth question */}
+                   {currentStep === 3 && <div className="mt-4 text-center">
+                       <p className="text-sm text-gray-600 dark:text-white/70">
+                         🌱 57% of micro-grows using AI hit craft-grade terps in ≤3 cycles (Guide p. 7).
+                       </p>
+                     </div>}
                 </div>
 
                 <div className="flex justify-between pt-6">

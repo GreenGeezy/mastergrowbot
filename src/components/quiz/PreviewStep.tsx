@@ -76,7 +76,7 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ onContinueToCheckout, onBackT
         <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
           Ready to reclaim the missing 13–20% yield?
         </h2>
-        <p className="text-lg text-white/80">
+        <p className="text-lg text-gray-700 dark:text-white/80">
           Your AI Action Card is ready—complete with gram-gain predictions.
         </p>
       </div>
@@ -89,12 +89,12 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ onContinueToCheckout, onBackT
               <div key={index} className="flex-[0_0_100%] min-w-0 px-4">
                 <div className="flex flex-col items-center text-center space-y-4">
                   <Quote size={32} className="text-[#B24BF3]" />
-                  <blockquote className="text-white text-base leading-relaxed">
-                    "{testimonial.text}"
-                  </blockquote>
-                  <cite className="text-purple-300 text-sm font-bold uppercase tracking-wide">
-                    — {testimonial.role}
-                  </cite>
+                   <blockquote className="text-gray-900 dark:text-white text-base leading-relaxed">
+                     "{testimonial.text}"
+                   </blockquote>
+                   <cite className="text-purple-600 dark:text-purple-300 text-sm font-bold uppercase tracking-wide">
+                     — {testimonial.role}
+                   </cite>
                 </div>
               </div>
             ))}
@@ -111,7 +111,7 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ onContinueToCheckout, onBackT
       <div className="mt-8">
         <button 
           onClick={onBackToQuestions}
-          className="flex items-center gap-2 text-white/70 hover:text-white transition-colors mx-auto"
+          className="flex items-center gap-2 text-gray-600 dark:text-white/70 hover:text-gray-800 dark:hover:text-white transition-colors mx-auto"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to questions

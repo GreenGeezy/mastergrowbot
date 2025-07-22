@@ -53,7 +53,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
             </div>
             
             {/* Sub-headline */}
-            <p className="text-base text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base text-gray-700 dark:text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed">
               Answer four quick questions to unlock your first personalised AI Action Card—and prevent $336 in hidden losses.
             </p>
             
@@ -77,7 +77,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
             </div>
             
             {/* Additional visual elements */}
-            <div className="pt-12 flex justify-center items-center space-x-2 text-gray-600">
+            <div className="pt-12 flex justify-center items-center space-x-2 text-gray-700 dark:text-gray-600">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               <span className="text-sm font-medium">No signup required to start</span>
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
