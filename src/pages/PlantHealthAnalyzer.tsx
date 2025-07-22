@@ -18,7 +18,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
 import { TooltipProvider } from "@/components/ui/tooltip";
-import FloatingIcons from '@/components/FloatingIcons';
+import { Particles } from '@/components/ui/particles';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -635,8 +635,15 @@ const PlantHealthAnalyzer = () => {
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-white text-gray-900 pb-20">
-        {/* Floating Icons */}
-        <FloatingIcons />
+        {/* Particles Background */}
+        <Particles
+          className="absolute inset-0"
+          quantity={30}
+          ease={80}
+          color="#22c55e"
+          size={6}
+          refresh
+        />
         
         <PlantHealthHeader />
 

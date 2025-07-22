@@ -13,7 +13,7 @@ import BottomNavigation from '@/components/navigation/BottomNavigation';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { useIsMobile } from '@/hooks/use-mobile';
-import FloatingIcons from '@/components/FloatingIcons';
+import { Particles } from '@/components/ui/particles';
 
 export default function Index() {
   const session = useSession();
@@ -93,22 +93,15 @@ export default function Index() {
   if (isIOSPreviewMode) {
     return (
       <div className="min-h-screen bg-white relative">
-        {/* Floating Icons */}
-        <FloatingIcons />
-        
-        {/* Sparkles Background */}
-        <div className="fixed inset-0 w-full h-full">
-          <SparklesCore
-            id="homepage-sparkles"
-            background="transparent"
-            minSize={0.6}
-            maxSize={1.4}
-            particleDensity={50}
-            className="w-full h-full"
-            particleColor="#22c55e"
-            speed={0.8}
-          />
-        </div>
+        {/* Particles Background */}
+        <Particles
+          className="absolute inset-0"
+          quantity={50}
+          ease={80}
+          color="#22c55e"
+          size={10}
+          refresh
+        />
         
         {/* Existing gradient background overlay */}
         <div className="absolute inset-0 bg-gradient-radial from-green-100/30 via-white to-white -z-10" />
@@ -124,22 +117,15 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-white relative flex flex-col">
-      {/* Floating Icons */}
-      <FloatingIcons />
-      
-      {/* Sparkles Background */}
-      <div className="fixed inset-0 w-full h-full">
-        <SparklesCore
-          id="homepage-sparkles"
-          background="transparent"
-          minSize={0.6}
-          maxSize={1.4}
-          particleDensity={50}
-          className="w-full h-full"
-          particleColor="#22c55e"
-          speed={0.8}
-        />
-      </div>
+      {/* Particles Background */}
+      <Particles
+        className="absolute inset-0"
+        quantity={50}
+        ease={80}
+        color="#22c55e"
+        size={10}
+        refresh
+      />
       
       {/* Existing gradient background overlay */}
       <div className="absolute inset-0 bg-gradient-radial from-green-100/30 via-white to-white -z-10" />

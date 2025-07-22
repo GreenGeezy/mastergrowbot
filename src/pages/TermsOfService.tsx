@@ -3,13 +3,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import FloatingIcons from '@/components/FloatingIcons';
+import { Particles } from '@/components/ui/particles';
 
 const TermsOfService = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background/80 to-muted/50 flex flex-col">
-      {/* Floating Icons */}
-      <FloatingIcons />
+      {/* Particles Background */}
+      <Particles
+        className="absolute inset-0"
+        quantity={20}
+        ease={80}
+        color="#22c55e"
+        size={4}
+        refresh
+      />
       
       {/* Header */}
       <header className="w-full py-4 px-6 border-b bg-card/60 backdrop-blur-sm">

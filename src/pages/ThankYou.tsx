@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
 import { isIOSPreview } from "@/utils/flags";
-import FloatingIcons from '@/components/FloatingIcons';
+import { Particles } from '@/components/ui/particles';
 
 const ThankYou = () => {
   const location = useLocation();
@@ -180,7 +180,14 @@ const ThankYou = () => {
   if (isValidating) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-        <FloatingIcons />
+        <Particles
+          className="absolute inset-0"
+          quantity={15}
+          ease={80}
+          color="#22c55e"
+          size={4}
+          refresh
+        />
         <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
       </div>
     );
@@ -188,7 +195,14 @@ const ThankYou = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <FloatingIcons />
+      <Particles
+        className="absolute inset-0"
+        quantity={15}
+        ease={80}
+        color="#22c55e"
+        size={4}
+        refresh
+      />
       <div className="w-full max-w-md">
         <Card className="border border-primary/20">
           <CardHeader className="text-center pb-2">

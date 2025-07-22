@@ -15,7 +15,7 @@ import TestimonialCarousel from '@/components/TestimonialCarousel';
 import IntroCover from '@/components/quiz/IntroCover';
 import PreviewStep from '@/components/quiz/PreviewStep';
 import { SparklesCore } from '@/components/ui/sparkles';
-import FloatingIcons from '@/components/FloatingIcons';
+import { Particles } from '@/components/ui/particles';
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
   if (!jsonString) return fallback;
@@ -690,13 +690,17 @@ export default function Quiz() {
     return (currentStep + 1) / questions.length * 100;
   };
   return <div className="min-h-screen bg-background circuit-background relative">
-      {/* Floating Icons */}
-      <FloatingIcons />
+      {/* Particles Background */}
+      <Particles
+        className="absolute inset-0"
+        quantity={35}
+        ease={80}
+        color="#22c55e"
+        size={8}
+        refresh
+      />
       
-      {/* Sparkles Background */}
-      <div className="fixed inset-0 w-full h-full">
-        <SparklesCore id="quiz-sparkles" background="transparent" minSize={0.4} maxSize={1.0} particleDensity={35} className="w-full h-full" particleColor="#36d399" speed={0.5} />
-      </div>
+      {/* Content with higher z-index */}
       
       <div className="relative z-10">
         <ChatHeader />

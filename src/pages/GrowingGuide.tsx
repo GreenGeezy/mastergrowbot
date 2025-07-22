@@ -7,15 +7,22 @@ import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import FloatingIcons from '@/components/FloatingIcons';
+import { Particles } from '@/components/ui/particles';
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   return <div className="min-h-screen bg-white text-gray-900 pb-20">
-      {/* Floating Icons */}
-      <FloatingIcons />
+      {/* Particles Background */}
+      <Particles
+        className="absolute inset-0"
+        quantity={25}
+        ease={80}
+        color="#22c55e"
+        size={5}
+        refresh
+      />
       
       <div className="absolute inset-0 bg-gradient-radial from-green-100/20 via-white to-white -z-10" />
       
