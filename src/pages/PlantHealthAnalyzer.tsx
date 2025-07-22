@@ -633,12 +633,12 @@ const PlantHealthAnalyzer = () => {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-background text-white pb-20">
+      <div className="min-h-screen bg-white text-gray-900 pb-20">
         <PlantHealthHeader />
 
         <main className="container mx-auto px-4 py-8 max-w-4xl">
           <section className="mb-8">
-            <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
+            <Card className="bg-gray-50 backdrop-blur-sm border-gray-200">
               <CardHeader>
                 <CardTitle className="text-center text-2xl">Capture or Upload Plant Images</CardTitle>
                 <CardDescription className="text-center">
