@@ -94,15 +94,17 @@ export default function BenefitsSection() {
         transition={{ duration: 0.6 }}
         className="text-center mb-8"
       >
-        <h2 className={`font-bold text-gray-900 mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+        <h2 className={`font-bold text-gray-900 mb-4 ${isMobile ? 'text-lg sm:text-xl' : 'text-2xl'}`}>
           Transform Your Cannabis Growing Experience
         </h2>
-        <p className={`text-gray-600 mb-6 ${isMobile ? 'text-sm' : 'text-base'}`}>
+        <p className={`text-gray-600 mb-6 px-2 ${isMobile ? 'text-sm sm:text-base' : 'text-base'}`}>
           Unlock professional-grade growing insights with AI-powered analysis
         </p>
-        <Badge className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 text-sm font-semibold">
-          Prevent $336/Plant Losses
-        </Badge>
+        <div className="px-2">
+          <Badge className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 text-sm font-semibold">
+            Prevent $336/Plant Losses
+          </Badge>
+        </div>
       </motion.div>
 
       <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} mb-8`}>
@@ -126,13 +128,13 @@ export default function BenefitsSection() {
                     {benefit.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className={`font-bold text-gray-900 mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                    <h3 className={`font-bold text-gray-900 mb-2 leading-tight ${isMobile ? 'text-base sm:text-lg' : 'text-xl'}`}>
                       {benefit.title}
                     </h3>
-                    <p className={`text-gray-600 mb-3 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                    <p className={`text-gray-600 mb-3 leading-relaxed ${isMobile ? 'text-sm' : 'text-base'}`}>
                       {benefit.description}
                     </p>
-                    <p className={`text-amber-600 font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                    <p className={`text-amber-600 font-medium leading-relaxed ${isMobile ? 'text-xs sm:text-sm' : 'text-sm'}`}>
                       {benefit.details}
                     </p>
                   </div>
@@ -168,25 +170,25 @@ export default function BenefitsSection() {
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="text-center flex justify-center"
+        className="text-center flex flex-col items-center"
       >
         <Button
           onClick={handleQuizClick}
-          className={`bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-full shadow-lg transition-all duration-300 hover:scale-105 pulse-glow flex flex-col items-center justify-center leading-tight ${
-            isMobile ? 'px-8 py-6 text-lg' : 'px-12 py-8 text-xl'
+          className={`bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-full shadow-lg transition-all duration-300 hover:scale-105 pulse-glow flex flex-col items-center justify-center leading-tight mb-3 ${
+            isMobile ? 'px-6 py-5 text-base' : 'px-12 py-8 text-xl'
           }`}
         >
           <div className="flex items-center justify-center">
-            <Zap className={`mr-2 ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
+            <Zap className={`mr-2 ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
             <span>Unlock These Benefits</span>
           </div>
           <div className="flex items-center justify-center">
             <span>Start Free Quiz</span>
-            <ChevronRight className={`ml-2 ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
+            <ChevronRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
           </div>
         </Button>
         
-        <p className={`text-amber-600 mt-0 ${isMobile ? 'text-sm' : 'text-base'}`}>
+        <p className={`text-amber-600 text-center px-2 ${isMobile ? 'text-sm' : 'text-base'}`}>
           3 Days Free Trial • No Credit Card Required
         </p>
       </motion.div>

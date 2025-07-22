@@ -22,11 +22,11 @@ const GrowingGuide = () => {
 
       {/* Main Content */}
       <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
-        <div className="text-center mb-8 animate-fade-in">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-green-600 via-green-500 to-green-700 bg-clip-text text-transparent">
+        <div className="text-center mb-8 animate-fade-in px-2">
+          <h1 className={`font-bold mb-4 bg-gradient-to-r from-green-600 via-green-500 to-green-700 bg-clip-text text-transparent ${isMobile ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'}`}>
             Growing Guide & FAQ
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className={`text-gray-600 max-w-2xl mx-auto leading-relaxed ${isMobile ? 'text-sm sm:text-base' : 'text-base'}`}>
             Find answers to common questions and learn expert growing techniques
           </p>
         </div>

@@ -96,9 +96,9 @@ const TestimonialCarousel = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8"
+          className="text-center mb-8 px-2"
         >
-          <h2 className={`text-gray-900 font-bold text-center mb-2 leading-tight ${isMobile ? 'text-xl' : 'text-2xl sm:text-3xl'}`}>
+          <h2 className={`text-gray-900 font-bold text-center mb-2 leading-tight ${isMobile ? 'text-lg sm:text-xl' : 'text-2xl sm:text-3xl'}`}>
             See what First Time Growers, Large-Scale Cultivators, Hobbyists, Medical Researchers, and Botanists across the Cannabis Industry are saying about Master Growbot AI
           </h2>
         </motion.div>
@@ -132,7 +132,7 @@ const TestimonialCarousel = () => {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.5, delay: 0.3 }}
-                          className={`text-gray-900 font-medium leading-relaxed mb-4 ${isMobile ? 'text-base' : 'text-lg sm:text-xl'}`}
+                          className={`text-gray-900 font-medium leading-relaxed mb-4 ${isMobile ? 'text-sm sm:text-base' : 'text-lg sm:text-xl'}`}
                         >
                           "{testimonial.text}"
                         </motion.blockquote>
