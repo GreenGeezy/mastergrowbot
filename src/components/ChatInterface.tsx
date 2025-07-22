@@ -269,7 +269,11 @@ const ChatInterface = () => {
                           forceClose={forceCloseVoiceChat}
                         />
                       </div>
-                      <ChatInputSubmit className="bg-green-600 hover:bg-green-700" />
+                      <ChatInputSubmit 
+                        variant="cta" 
+                        size="icon"
+                        className="min-w-[44px] h-[44px] rounded-2xl"
+                      />
                     </div>
                   </div>
                 </ChatInput>

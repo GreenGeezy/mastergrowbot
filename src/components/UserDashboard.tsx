@@ -57,24 +57,27 @@ const UserDashboard = () => {
           {navigationButtons.map((button, index) => {
             const Icon = button.icon;
             return (
-              <button
+              <Button
                 key={button.title}
                 onClick={button.onClick}
-                className="card flex items-center p-4 rounded-lg cursor-pointer w-full group relative overflow-hidden"
+                variant="outline"
+                className="flex items-center justify-start p-6 h-auto w-full group relative overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="p-2 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg glow-primary group-hover:glow-accent transition-all duration-300">
-                  <Icon className="w-5 h-5 text-white" />
+                <div className="p-3 bg-primary rounded-xl mr-4">
+                  <Icon className="w-6 h-6 text-white" />
                 </div>
-                <div className="ml-4 flex flex-col text-left">
-                  <h3 className="font-medium text-sm text-white group-hover:text-accent transition-colors duration-300 tech-font">
+                <div className="flex flex-col text-left">
+                  <h3 className="font-medium text-base text-gray-900 tech-font">
                     {button.title}
                   </h3>
-                  <p className="text-gray-400 text-xs">
+                  <p className="text-gray-600 text-sm">
                     {button.subtitle}
                   </p>
                 </div>
-              </button>
+                <svg className="w-5 h-5 ml-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Button>
             );
           })}
         </div>
@@ -86,7 +89,8 @@ const UserDashboard = () => {
         <Button
           onClick={handleSignOut}
           disabled={isSigningOut}
-          className="cyber-button w-full glow-accent"
+          variant="outline"
+          size="full"
         >
           {isSigningOut ? "Signing Out..." : "Sign Out"}
         </Button>

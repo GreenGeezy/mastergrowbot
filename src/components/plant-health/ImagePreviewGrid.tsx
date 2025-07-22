@@ -62,7 +62,8 @@ const ImagePreviewGrid = ({
           </div>
           <Button
             onClick={onStartCamera}
-            className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white"
+            variant="cta"
+            size="full"
             disabled={isProcessing}
           >
             {isProcessing ? (

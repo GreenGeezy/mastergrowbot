@@ -82,11 +82,13 @@ const UploadArea = ({
         <Button
           onClick={handleCameraCapture}
           disabled={isProcessing}
-          className="w-full bg-gradient-to-r from-green-500 via-blue-500 to-green-600 hover:from-green-600 hover:via-blue-600 hover:to-green-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 shadow-2xl shadow-green-500/25 hover:shadow-green-500/40 transform hover:scale-[1.02] focus:scale-[1.02] focus:shadow-green-500/40 flex items-center justify-center gap-3 text-lg"
+          variant="cta"
+          size="lg"
+          className="w-full"
           aria-label="Start camera to scan plant instantly"
           aria-describedby="scan-button-description"
         >
-          <Camera className="w-6 h-6" aria-hidden="true" />
+          <Camera className="w-6 h-6 mr-2" aria-hidden="true" />
           Scan Now
         </Button>
         <span id="scan-button-description" className="sr-only">

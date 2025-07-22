@@ -850,12 +850,18 @@ export default function Quiz() {
                 </div>
 
                 <div className="flex justify-between pt-6">
-                  <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0} className="px-6 rounded-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50">
+                  <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0} className="px-6 rounded-2xl">
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
                     Previous
                   </Button>
                   
-                  <Button onClick={handleNextStep} disabled={isSubmitting} className="px-6 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-700 hover:to-purple-500">
+                  <Button onClick={handleNextStep} disabled={isSubmitting} variant="cta" className="px-6 rounded-2xl">
                     {currentStep === questions.length - 1 ? isSubmitting ? "Saving..." : "Complete Quiz" : "Next"}
+                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </Button>
                 </div>
               </div>

@@ -6,25 +6,27 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 text-white",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-medium transition-all duration-200 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-sm shadow-black/5 hover:bg-primary/90",
+        default: "bg-primary text-white shadow-md shadow-neutral-200 hover:bg-primary-hover active:bg-primary-hover transform active:scale-[0.98]",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm shadow-black/5 hover:bg-destructive/90",
+          "bg-destructive text-destructive-foreground shadow-md shadow-neutral-200 hover:bg-destructive/90 active:bg-destructive/90 transform active:scale-[0.98]",
         outline:
-          "border border-input bg-background shadow-sm shadow-black/5 hover:bg-accent hover:text-accent-foreground",
+          "border-2 border-primary bg-transparent text-primary shadow-md shadow-neutral-200 hover:bg-primary hover:text-white active:bg-primary active:text-white transform active:scale-[0.98]",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm shadow-black/5 hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+          "bg-secondary text-secondary-foreground shadow-md shadow-neutral-200 hover:bg-secondary/80 active:bg-secondary/80 transform active:scale-[0.98]",
+        ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent active:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        cta: "bg-primary text-white shadow-md shadow-neutral-200 hover:bg-green-400 active:bg-green-400 transform active:scale-[0.98] gap-2",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-lg px-3 text-xs",
-        lg: "h-10 rounded-lg px-8",
-        icon: "h-9 w-9",
+        default: "h-12 px-6 py-3",
+        sm: "h-9 rounded-xl px-4 text-xs",
+        lg: "h-14 rounded-2xl px-8 text-base",
+        icon: "h-12 w-12",
+        full: "h-12 w-full px-6 py-3",
       },
     },
     defaultVariants: {
