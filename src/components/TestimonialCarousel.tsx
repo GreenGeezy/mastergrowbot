@@ -87,9 +87,9 @@ const TestimonialCarousel = () => {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="bg-[#0a0a0a] py-12 px-4 relative overflow-hidden">
+    <section className="bg-gray-50 py-12 px-4 relative overflow-hidden">
       {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-green-100/50 via-transparent to-green-100/30 pointer-events-none" />
       
       <div className="max-w-5xl mx-auto relative">
         <motion.div
@@ -98,7 +98,7 @@ const TestimonialCarousel = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-8"
         >
-          <h2 className={`text-white font-bold text-center mb-2 leading-tight ${isMobile ? 'text-xl' : 'text-2xl sm:text-3xl'}`}>
+          <h2 className={`text-gray-900 font-bold text-center mb-2 leading-tight ${isMobile ? 'text-xl' : 'text-2xl sm:text-3xl'}`}>
             See what First Time Growers, Large-Scale Cultivators, Hobbyists, Medical Researchers, and Botanists across the Cannabis Industry are saying about Master Growbot AI
           </h2>
         </motion.div>
@@ -115,9 +115,9 @@ const TestimonialCarousel = () => {
                     className="relative group"
                   >
                     {/* Neon border effect */}
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-glow via-accent-glow to-secondary-glow rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000" />
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000" />
                     
-                    <div className="relative bg-card/40 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-primary/30 transition-all duration-500 max-w-[600px] mx-auto">
+                    <div className="relative bg-white backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-gray-200 hover:border-green-300 transition-all duration-500 max-w-[600px] mx-auto">
                       <div className="flex flex-col items-center text-center">
                         <motion.div
                           initial={{ scale: 0 }}
@@ -125,14 +125,14 @@ const TestimonialCarousel = () => {
                           transition={{ duration: 0.5, delay: 0.2 }}
                           className="mb-4"
                         >
-                          <Quote size={isMobile ? 28 : 32} className="text-primary-glow" />
+                          <Quote size={isMobile ? 28 : 32} className="text-green-600" />
                         </motion.div>
                         
                         <motion.blockquote
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.5, delay: 0.3 }}
-                          className={`text-white font-medium leading-relaxed mb-4 ${isMobile ? 'text-base' : 'text-lg sm:text-xl'}`}
+                          className={`text-gray-900 font-medium leading-relaxed mb-4 ${isMobile ? 'text-base' : 'text-lg sm:text-xl'}`}
                         >
                           "{testimonial.text}"
                         </motion.blockquote>
@@ -141,7 +141,7 @@ const TestimonialCarousel = () => {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.5, delay: 0.4 }}
-                          className={`text-gold font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}
+                          className={`text-amber-600 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}
                         >
                           — {testimonial.role}
                         </motion.cite>
@@ -160,22 +160,22 @@ const TestimonialCarousel = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-card/60 backdrop-blur-sm rounded-full p-3 border border-white/20 hover:border-primary/40 transition-all duration-300 group disabled:opacity-50"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm rounded-full p-3 border border-gray-200 hover:border-green-400 transition-all duration-300 group disabled:opacity-50"
                 onClick={scrollPrev}
                 disabled={!canScrollPrev}
               >
-                <ChevronLeft className="w-6 h-6 text-white group-hover:text-primary-glow transition-colors" />
+                <ChevronLeft className="w-6 h-6 text-gray-600 group-hover:text-green-600 transition-colors" />
               </motion.button>
               
               <motion.button
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-card/60 backdrop-blur-sm rounded-full p-3 border border-white/20 hover:border-primary/40 transition-all duration-300 group disabled:opacity-50"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm rounded-full p-3 border border-gray-200 hover:border-green-400 transition-all duration-300 group disabled:opacity-50"
                 onClick={scrollNext}
                 disabled={!canScrollNext}
               >
-                <ChevronRight className="w-6 h-6 text-white group-hover:text-primary-glow transition-colors" />
+                <ChevronRight className="w-6 h-6 text-gray-600 group-hover:text-green-600 transition-colors" />
               </motion.button>
             </>
           )}
@@ -193,8 +193,8 @@ const TestimonialCarousel = () => {
               key={index}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex 
-                  ? 'bg-primary-glow w-6' 
-                  : 'bg-white/30 hover:bg-white/50'
+                  ? 'bg-green-600 w-6' 
+                  : 'bg-gray-400 hover:bg-gray-600'
               }`}
               onClick={() => {
                 if (emblaApi) {

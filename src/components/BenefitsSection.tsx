@@ -94,13 +94,13 @@ export default function BenefitsSection() {
         transition={{ duration: 0.6 }}
         className="text-center mb-8"
       >
-        <h2 className={`font-bold text-white mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+        <h2 className={`font-bold text-gray-900 mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>
           Transform Your Cannabis Growing Experience
         </h2>
-        <p className={`text-white/80 mb-6 ${isMobile ? 'text-sm' : 'text-base'}`}>
+        <p className={`text-gray-600 mb-6 ${isMobile ? 'text-sm' : 'text-base'}`}>
           Unlock professional-grade growing insights with AI-powered analysis
         </p>
-        <Badge className="bg-gradient-to-r from-primary to-accent text-white px-4 py-2 text-sm font-semibold">
+        <Badge className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 text-sm font-semibold">
           Prevent $336/Plant Losses
         </Badge>
       </motion.div>
@@ -115,8 +115,8 @@ export default function BenefitsSection() {
             className="h-full"
           >
             <Card 
-              className={`bg-card/80 backdrop-blur-xl border-white/20 cursor-pointer transition-all duration-300 hover:scale-105 ${
-                activeCard === benefit.id ? 'ring-2 ring-primary' : ''
+              className={`bg-gray-50 backdrop-blur-xl border-gray-200 cursor-pointer transition-all duration-300 hover:scale-105 ${
+                activeCard === benefit.id ? 'ring-2 ring-green-500' : ''
               }`}
               onClick={() => handleCardClick(benefit.id)}
             >
@@ -126,13 +126,13 @@ export default function BenefitsSection() {
                     {benefit.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className={`font-bold text-white mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                    <h3 className={`font-bold text-gray-900 mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
                       {benefit.title}
                     </h3>
-                    <p className={`text-white/80 mb-3 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                    <p className={`text-gray-600 mb-3 ${isMobile ? 'text-sm' : 'text-base'}`}>
                       {benefit.description}
                     </p>
-                    <p className={`text-gold font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                    <p className={`text-amber-600 font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>
                       {benefit.details}
                     </p>
                   </div>
@@ -149,10 +149,10 @@ export default function BenefitsSection() {
                         className="w-full h-32 object-cover transition-transform duration-300 hover:scale-110"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                       <div className="absolute bottom-2 right-2">
                         <div className={`p-2 rounded-full bg-gradient-to-r ${benefit.gradientFrom} ${benefit.gradientTo}`}>
-                          <ChevronRight className="w-4 h-4 text-white" />
+                        <ChevronRight className="w-4 h-4 text-white" />
                         </div>
                       </div>
                     </>
@@ -172,7 +172,7 @@ export default function BenefitsSection() {
       >
         <Button
           onClick={handleQuizClick}
-          className={`bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white font-bold rounded-full shadow-lg transition-all duration-300 hover:scale-105 pulse-glow flex flex-col items-center justify-center leading-tight ${
+          className={`bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-full shadow-lg transition-all duration-300 hover:scale-105 pulse-glow flex flex-col items-center justify-center leading-tight ${
             isMobile ? 'px-8 py-6 text-lg' : 'px-12 py-8 text-xl'
           }`}
         >
@@ -186,7 +186,7 @@ export default function BenefitsSection() {
           </div>
         </Button>
         
-        <p className={`text-gold mt-0 ${isMobile ? 'text-sm' : 'text-base'}`}>
+        <p className={`text-amber-600 mt-0 ${isMobile ? 'text-sm' : 'text-base'}`}>
           3 Days Free Trial • No Credit Card Required
         </p>
       </motion.div>

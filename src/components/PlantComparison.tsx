@@ -10,7 +10,7 @@ const PlantComparison = () => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, delay: 0.3 }}
     >
-      <div className="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
+      <div className="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-gray-200">
         <div className="flex h-48 sm:h-56">
           {/* Before - Unhealthy plant */}
           <motion.div 
@@ -31,7 +31,7 @@ const PlantComparison = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.8 }}
             >
-              <div className="bg-red-500/90 text-white text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
+              <div className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
                 Before
               </div>
             </motion.div>
@@ -56,7 +56,7 @@ const PlantComparison = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.9 }}
             >
-              <div className="bg-green-500/90 text-white text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
+              <div className="bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
                 After
               </div>
             </motion.div>
@@ -65,7 +65,7 @@ const PlantComparison = () => {
         
         {/* Animated divider line */}
         <motion.div 
-          className="absolute top-0 left-1/2 w-0.5 bg-white/20 transform -translate-x-0.5"
+          className="absolute top-0 left-1/2 w-0.5 bg-gray-300 transform -translate-x-0.5"
           initial={{ height: 0 }}
           animate={{ height: "100%" }}
           transition={{ duration: 0.6, delay: 0.4 }}

@@ -91,7 +91,7 @@ export default function Index() {
   // If in iOS preview mode, show UserDashboard directly
   if (isIOSPreviewMode) {
     return (
-      <div className="min-h-screen bg-background relative">
+      <div className="min-h-screen bg-white relative">
         {/* Sparkles Background */}
         <div className="fixed inset-0 w-full h-full">
           <SparklesCore
@@ -101,13 +101,13 @@ export default function Index() {
             maxSize={1.4}
             particleDensity={50}
             className="w-full h-full"
-            particleColor="#36d399"
+            particleColor="#22c55e"
             speed={0.8}
           />
         </div>
         
         {/* Existing gradient background overlay */}
-        <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
+        <div className="absolute inset-0 bg-gradient-radial from-green-100/30 via-white to-white -z-10" />
         
         {/* Content with higher z-index */}
         <div className="relative z-10">
@@ -119,7 +119,7 @@ export default function Index() {
   }
 
   return (
-    <div className="min-h-screen bg-background relative flex flex-col">
+    <div className="min-h-screen bg-white relative flex flex-col">
       {/* Sparkles Background */}
       <div className="fixed inset-0 w-full h-full">
         <SparklesCore
@@ -129,13 +129,13 @@ export default function Index() {
           maxSize={1.4}
           particleDensity={50}
           className="w-full h-full"
-          particleColor="#36d399"
+          particleColor="#22c55e"
           speed={0.8}
         />
       </div>
       
       {/* Existing gradient background overlay */}
-      <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
+      <div className="absolute inset-0 bg-gradient-radial from-green-100/30 via-white to-white -z-10" />
       
       {/* Content with higher z-index */}
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -162,7 +162,7 @@ export default function Index() {
         )}
         
         {/* Benefits section - show on all devices for both signed-in and signed-out users */}
-        <div className="bg-background/95 backdrop-blur-sm py-6 safe-area-pb">
+        <div className="bg-white/95 backdrop-blur-sm py-6 safe-area-pb">
           <FeatureSection onFeatureClick={handleFeatureClick} />
         </div>
       </div>

@@ -170,41 +170,41 @@ const AuthUI = ({
       {/* Authentication Section */}
       <div className="flex flex-col items-center justify-center max-w-4xl mx-auto">
         {/* Authentication Form */}
-        <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl p-6 max-w-md w-full">
+        <div className="bg-gray-50 backdrop-blur-sm rounded-xl border border-gray-200 shadow-2xl p-6 max-w-md w-full">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} className="bg-background/50 border-white/20" required autoComplete="email" />
+              <Label htmlFor="email" className="text-gray-700">Email</Label>
+              <Input id="email" name="email" type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} className="bg-white border-gray-300 text-gray-900" required autoComplete="email" />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-gray-700">Password</Label>
               <div className="relative">
-                <Input id="password" name="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} className="bg-background/50 border-white/20 pr-10" required autoComplete={isSignUp ? "new-password" : "current-password"} minLength={6} />
-                <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors" aria-label={showPassword ? "Hide password" : "Show password"}>
+                <Input id="password" name="password" type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} className="bg-white border-gray-300 text-gray-900 pr-10" required autoComplete={isSignUp ? "new-password" : "current-password"} minLength={6} />
+                <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors" aria-label={showPassword ? "Hide password" : "Show password"}>
                   {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                 </button>
               </div>
             </div>
 
-            {error && <div className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg p-3">
+            {error && <div className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg p-3">
                 {error}
               </div>}
 
-            <Button type="submit" disabled={loading || !email.trim() || !password} className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover disabled:opacity-50 disabled:cursor-not-allowed">
+            <Button type="submit" disabled={loading || !email.trim() || !password} className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white disabled:opacity-50 disabled:cursor-not-allowed">
               {loading ? 'Loading...' : isSignUp ? 'Create Account' : 'Sign In'}
             </Button>
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-white/20" />
+                <span className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-white/60">Or continue with</span>
+                <span className="bg-gray-50 px-2 text-gray-500">Or continue with</span>
               </div>
             </div>
 
-            <Button type="button" onClick={handleGoogleSignIn} disabled={loading} variant="outline" className="w-full hover:bg-white/5 border-white/20 disabled:opacity-50 disabled:cursor-not-allowed">
+            <Button type="button" onClick={handleGoogleSignIn} disabled={loading} variant="outline" className="w-full hover:bg-gray-50 border-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed">
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -215,7 +215,7 @@ const AuthUI = ({
             </Button>
 
             <div className="text-center mt-4">
-              <button type="button" className="text-sm text-gray-400 hover:text-white transition-colors" onClick={toggleMode}>
+              <button type="button" className="text-sm text-gray-600 hover:text-gray-800 transition-colors" onClick={toggleMode}>
                 {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
               </button>
             </div>

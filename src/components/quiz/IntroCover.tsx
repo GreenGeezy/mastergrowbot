@@ -10,7 +10,7 @@ interface IntroCoverProps {
 
 const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
   return (
-    <div className="min-h-screen bg-background circuit-background relative overflow-hidden">
+    <div className="min-h-screen bg-white circuit-background relative overflow-hidden">
       <ChatHeader />
       
       {/* Background Image */}
@@ -31,7 +31,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
               <div 
                 className="absolute inset-0 -m-8 rounded-full opacity-30 animate-pulse"
                 style={{
-                  background: 'radial-gradient(circle, rgba(54, 211, 153, 0.3) 0%, rgba(138, 79, 255, 0.3) 50%, transparent 70%)',
+                  background: 'radial-gradient(circle, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.15) 50%, transparent 70%)',
                   width: '400px',
                   height: '400px',
                   left: '50%',
@@ -41,19 +41,19 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
                 }}
               />
               
-              <h1 className="text-4xl md:text-6xl font-bold tech-font tracking-tight leading-tight relative z-10"
+              <h1 className="text-4xl md:text-6xl font-bold tech-font tracking-tight leading-tight relative z-10 text-gray-900"
                   style={{
-                    background: 'linear-gradient(135deg, #36d399 0%, #8a4fff 100%)',
+                    background: 'linear-gradient(135deg, #16a34a 0%, #059669 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text'
                   }}>
-                Stop Losing <span className="text-[#00D4FF]">$336 per plant</span> and up to <span className="text-[#00D4FF]">$100,000 per Harvest</span> in 10 Seconds with just a pic
+                Stop Losing <span className="text-[#ef4444]">$336 per plant</span> and up to <span className="text-[#ef4444]">$100,000 per Harvest</span> in 10 Seconds with just a pic
               </h1>
             </div>
             
             {/* Sub-headline */}
-            <p className="text-base text-slate-300 font-medium max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed">
               Answer four quick questions to unlock your first personalised AI Action Card—and prevent $336 in hidden losses.
             </p>
             
@@ -61,9 +61,9 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
             <div className="pt-8">
               <Button 
                 onClick={onStartQuiz}
-                className="px-12 py-6 text-xl font-bold text-black hover:scale-105 transform transition-all duration-300"
+                className="px-12 py-6 text-xl font-bold text-white hover:scale-105 transform transition-all duration-300"
                 style={{
-                  backgroundColor: '#00FF41',
+                  backgroundColor: '#16a34a',
                   border: 'none'
                 }}
               >
@@ -77,10 +77,10 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
             </div>
             
             {/* Additional visual elements */}
-            <div className="pt-12 flex justify-center items-center space-x-2 text-white/60">
-              <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+            <div className="pt-12 flex justify-center items-center space-x-2 text-gray-600">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               <span className="text-sm font-medium">No signup required to start</span>
-              <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             </div>
           </div>
         </div>
