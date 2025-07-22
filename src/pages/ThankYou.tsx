@@ -9,6 +9,7 @@ import { AuthForm } from "@/components/auth/AuthForm";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
 import { isIOSPreview } from "@/utils/flags";
 import { Waves } from "@/components/ui/waves";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const ThankYou = () => {
   const location = useLocation();
@@ -186,21 +187,7 @@ const ThankYou = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-white relative">
-      {/* Waves Background */}
-      <Waves
-        lineColor="#22c55e"
-        backgroundColor="transparent"
-        waveSpeedX={0.015}
-        waveSpeedY={0.008}
-        waveAmpX={20}
-        waveAmpY={12}
-        friction={0.92}
-        tension={0.008}
-        maxCursorMove={80}
-        xGap={8}
-        yGap={24}
-      />
+    <AuroraBackground className="min-h-screen flex items-center justify-center p-4 bg-white relative">
       <div className="w-full max-w-md relative z-10">
         <Card className="border border-primary/20">
           <CardHeader className="text-center pb-2">
@@ -245,7 +232,7 @@ const ThankYou = () => {
           onClose={() => setShowPurchaseModal(false)} 
         />
       </div>
-    </div>
+    </AuroraBackground>
   );
 };
 

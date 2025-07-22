@@ -8,6 +8,7 @@ import { Loader2, ExternalLink } from 'lucide-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import { motion } from 'framer-motion';
 import { Waves } from '@/components/ui/waves';
+import { AuroraBackground } from '@/components/ui/aurora-background';
 
 const SharedAnalysis = () => {
   const { token } = useParams();
@@ -110,24 +111,10 @@ const SharedAnalysis = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white min-h-screen relative">
-      {/* Waves Background */}
-      <Waves
-        lineColor="#22c55e"
-        backgroundColor="transparent"
-        waveSpeedX={0.015}
-        waveSpeedY={0.008}
-        waveAmpX={20}
-        waveAmpY={12}
-        friction={0.92}
-        tension={0.008}
-        maxCursorMove={80}
-        xGap={8}
-        yGap={24}
-      />
+    <AuroraBackground className="container mx-auto px-4 py-8 bg-white min-h-screen relative">
       {/* Modern Branded Header */}
       <motion.div 
-        className="flex flex-col items-center justify-center mb-12"
+        className="flex flex-col items-center justify-center mb-12 relative z-10"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
@@ -151,6 +138,7 @@ const SharedAnalysis = () => {
       </motion.div>
 
       <motion.div
+        className="relative z-10"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
@@ -211,7 +199,7 @@ const SharedAnalysis = () => {
           </div>
         </Card>
       </motion.div>
-    </div>
+    </AuroraBackground>
   );
 };
 

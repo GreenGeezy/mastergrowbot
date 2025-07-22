@@ -4,24 +4,11 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Waves } from "@/components/ui/waves";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const PrivacyPolicy = () => {
   return (
-    <div className="min-h-screen bg-white flex flex-col relative">
-      {/* Waves Background */}
-      <Waves
-        lineColor="#22c55e"
-        backgroundColor="transparent"
-        waveSpeedX={0.015}
-        waveSpeedY={0.008}
-        waveAmpX={20}
-        waveAmpY={12}
-        friction={0.92}
-        tension={0.008}
-        maxCursorMove={80}
-        xGap={8}
-        yGap={24}
-      />
+    <AuroraBackground className="min-h-screen bg-white flex flex-col relative">
       {/* Header */}
       <header className="w-full py-4 px-6 border-b bg-gray-50/60 backdrop-blur-sm relative z-10">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -270,7 +257,7 @@ const PrivacyPolicy = () => {
           <p>© {new Date().getFullYear()} Master Growbot. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </AuroraBackground>
   );
 };
 

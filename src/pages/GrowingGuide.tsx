@@ -8,26 +8,13 @@ import SupportDialog from "@/components/support/SupportDialog";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Waves } from "@/components/ui/waves";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  return <div className="min-h-screen bg-white text-gray-900 pb-20 relative">
-      {/* Waves Background */}
-      <Waves
-        lineColor="#22c55e"
-        backgroundColor="transparent"
-        waveSpeedX={0.015}
-        waveSpeedY={0.008}
-        waveAmpX={20}
-        waveAmpY={12}
-        friction={0.92}
-        tension={0.008}
-        maxCursorMove={80}
-        xGap={8}
-        yGap={24}
-      />
+  return <AuroraBackground className="min-h-screen bg-white text-gray-900 pb-20 relative">
       <div className="absolute inset-0 bg-gradient-radial from-green-100/20 via-white to-white -z-10" />
       
       {/* Decorative accent lines */}
@@ -79,6 +66,6 @@ const GrowingGuide = () => {
 
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
-    </div>;
+    </AuroraBackground>;
 };
 export default GrowingGuide;

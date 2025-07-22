@@ -12,7 +12,7 @@ import FeatureSection from '@/components/FeatureSection';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import { SparklesCore } from '@/components/ui/sparkles';
-import { Waves } from '@/components/ui/waves';
+import { AuroraBackground } from '@/components/ui/aurora-background';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function Index() {
@@ -92,82 +92,18 @@ export default function Index() {
   // If in iOS preview mode, show UserDashboard directly
   if (isIOSPreviewMode) {
     return (
-      <div className="min-h-screen bg-white relative">
-        {/* Waves Background */}
-        <Waves
-          lineColor="#22c55e"
-          backgroundColor="transparent"
-          waveSpeedX={0.015}
-          waveSpeedY={0.008}
-          waveAmpX={20}
-          waveAmpY={12}
-          friction={0.92}
-          tension={0.008}
-          maxCursorMove={80}
-          xGap={8}
-          yGap={24}
-        />
-        
-        {/* Sparkles Background */}
-        <div className="fixed inset-0 w-full h-full">
-          <SparklesCore
-            id="homepage-sparkles"
-            background="transparent"
-            minSize={0.6}
-            maxSize={1.4}
-            particleDensity={50}
-            className="w-full h-full"
-            particleColor="#22c55e"
-            speed={0.8}
-          />
-        </div>
-        
-        {/* Existing gradient background overlay */}
-        <div className="absolute inset-0 bg-gradient-radial from-green-100/30 via-white to-white -z-10" />
-        
+      <AuroraBackground className="min-h-screen bg-white relative">
         {/* Content with higher z-index */}
         <div className="relative z-10">
           <Header />
           <UserDashboard />
         </div>
-      </div>
+      </AuroraBackground>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white relative flex flex-col">
-      {/* Waves Background */}
-      <Waves
-        lineColor="#22c55e"
-        backgroundColor="transparent"
-        waveSpeedX={0.015}
-        waveSpeedY={0.008}
-        waveAmpX={20}
-        waveAmpY={12}
-        friction={0.92}
-        tension={0.008}
-        maxCursorMove={80}
-        xGap={8}
-        yGap={24}
-      />
-      
-      {/* Sparkles Background */}
-      <div className="fixed inset-0 w-full h-full">
-        <SparklesCore
-          id="homepage-sparkles"
-          background="transparent"
-          minSize={0.6}
-          maxSize={1.4}
-          particleDensity={50}
-          className="w-full h-full"
-          particleColor="#22c55e"
-          speed={0.8}
-        />
-      </div>
-      
-      {/* Existing gradient background overlay */}
-      <div className="absolute inset-0 bg-gradient-radial from-green-100/30 via-white to-white -z-10" />
-      
+    <AuroraBackground className="min-h-screen bg-white relative flex flex-col">
       {/* Content with higher z-index */}
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
@@ -200,6 +136,6 @@ export default function Index() {
       
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
-    </div>
+    </AuroraBackground>
   );
 }

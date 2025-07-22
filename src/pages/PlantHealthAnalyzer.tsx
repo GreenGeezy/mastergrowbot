@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Waves } from '@/components/ui/waves';
+import { AuroraBackground } from '@/components/ui/aurora-background';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -634,21 +635,7 @@ const PlantHealthAnalyzer = () => {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-white text-gray-900 pb-20 relative">
-        {/* Waves Background */}
-        <Waves
-          lineColor="#22c55e"
-          backgroundColor="transparent"
-          waveSpeedX={0.015}
-          waveSpeedY={0.008}
-          waveAmpX={20}
-          waveAmpY={12}
-          friction={0.92}
-          tension={0.008}
-          maxCursorMove={80}
-          xGap={8}
-          yGap={24}
-        />
+      <AuroraBackground className="min-h-screen bg-white text-gray-900 pb-20 relative">
         <div className="relative z-10">
           <PlantHealthHeader />
 
@@ -780,7 +767,7 @@ const PlantHealthAnalyzer = () => {
         
           <BottomNavigation />
         </div>
-      </div>
+      </AuroraBackground>
     </TooltipProvider>
   );
 };

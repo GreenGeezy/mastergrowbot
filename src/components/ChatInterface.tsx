@@ -24,6 +24,7 @@ import { isIOSPreview } from "@/utils/flags";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Waves } from "@/components/ui/waves";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 interface Message {
   id: string;
@@ -171,26 +172,12 @@ const ChatInterface = () => {
   }
 
   return (
-    <div className="flex h-screen w-full bg-white text-gray-900 relative overflow-hidden">
-      {/* Waves Background */}
-      <Waves
-        lineColor="#22c55e"
-        backgroundColor="transparent"
-        waveSpeedX={0.015}
-        waveSpeedY={0.008}
-        waveAmpX={20}
-        waveAmpY={12}
-        friction={0.92}
-        tension={0.008}
-        maxCursorMove={80}
-        xGap={8}
-        yGap={24}
-      />
+    <AuroraBackground className="flex h-screen w-full bg-white text-gray-900 relative overflow-hidden">
       {/* Chat History Sidebar */}
       <ChatHistorySidebar onConversationSelect={handleConversationSelect} />
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 ml-12">
+      <div className="flex-1 flex flex-col min-w-0 ml-12 relative z-10">
         {/* Messages area - adjusted for voice interface and bottom navigation */}
         <div className="flex-1 overflow-hidden flex flex-col pb-32">
           {messages.length === 0 ? (
@@ -305,7 +292,7 @@ const ChatInterface = () => {
 
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
-    </div>
+    </AuroraBackground>
   );
 };
 
