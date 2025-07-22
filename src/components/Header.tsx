@@ -26,7 +26,7 @@ const Header = () => {
           
           <div>
             <Link to="/quiz" className="inline-block transform transition-transform duration-300 mt-5 min-w-[260px]" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-              <button className="relative overflow-hidden font-semibold text-[1.05rem] py-4 px-8 rounded-[10px] min-w-[260px] text-black bg-gradient-to-b from-[#00ff95] to-[#4cff79] transition-all duration-300 animate-pulse-soft flex items-center justify-center">
+              <button className="relative overflow-hidden font-semibold text-[1.05rem] py-4 px-8 rounded-[10px] min-w-[260px] text-white bg-gradient-to-b from-primary-glow to-primary shadow-lg shadow-primary-glow/30 transition-all duration-300 hover:shadow-primary-glow/50 hover:scale-105 flex items-center justify-center">
                 Save My Plants
                 <ArrowRight className={`ml-2 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
               </button>
