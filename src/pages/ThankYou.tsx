@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
 import { isIOSPreview } from "@/utils/flags";
+import { Waves } from "@/components/ui/waves";
 
 const ThankYou = () => {
   const location = useLocation();
@@ -185,8 +186,22 @@ const ThankYou = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-white relative">
+      {/* Waves Background */}
+      <Waves
+        lineColor="#22c55e"
+        backgroundColor="transparent"
+        waveSpeedX={0.015}
+        waveSpeedY={0.008}
+        waveAmpX={20}
+        waveAmpY={12}
+        friction={0.92}
+        tension={0.008}
+        maxCursorMove={80}
+        xGap={8}
+        yGap={24}
+      />
+      <div className="w-full max-w-md relative z-10">
         <Card className="border border-primary/20">
           <CardHeader className="text-center pb-2">
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">

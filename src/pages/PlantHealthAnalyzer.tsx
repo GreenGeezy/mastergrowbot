@@ -18,6 +18,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Waves } from '@/components/ui/waves';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -633,10 +634,25 @@ const PlantHealthAnalyzer = () => {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-white text-gray-900 pb-20">
-        <PlantHealthHeader />
+      <div className="min-h-screen bg-white text-gray-900 pb-20 relative">
+        {/* Waves Background */}
+        <Waves
+          lineColor="#22c55e"
+          backgroundColor="transparent"
+          waveSpeedX={0.015}
+          waveSpeedY={0.008}
+          waveAmpX={20}
+          waveAmpY={12}
+          friction={0.92}
+          tension={0.008}
+          maxCursorMove={80}
+          xGap={8}
+          yGap={24}
+        />
+        <div className="relative z-10">
+          <PlantHealthHeader />
 
-        <main className="container mx-auto px-4 py-8 max-w-4xl">
+          <main className="container mx-auto px-4 py-8 max-w-4xl">
           <section className="mb-8">
             <Card className="bg-gray-50 backdrop-blur-sm border-gray-200">
               <CardHeader>
@@ -762,7 +778,8 @@ const PlantHealthAnalyzer = () => {
           onCancel={handleCancelError}
         />
         
-        <BottomNavigation />
+          <BottomNavigation />
+        </div>
       </div>
     </TooltipProvider>
   );

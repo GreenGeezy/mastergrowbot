@@ -3,10 +3,25 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Waves } from "@/components/ui/waves";
 
 const TermsOfService = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background/80 to-muted/50 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col relative">
+      {/* Waves Background */}
+      <Waves
+        lineColor="#22c55e"
+        backgroundColor="transparent"
+        waveSpeedX={0.015}
+        waveSpeedY={0.008}
+        waveAmpX={20}
+        waveAmpY={12}
+        friction={0.92}
+        tension={0.008}
+        maxCursorMove={80}
+        xGap={8}
+        yGap={24}
+      />
       {/* Header */}
       <header className="w-full py-4 px-6 border-b bg-card/60 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">

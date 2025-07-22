@@ -12,6 +12,7 @@ import FeatureSection from '@/components/FeatureSection';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import { SparklesCore } from '@/components/ui/sparkles';
+import { Waves } from '@/components/ui/waves';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function Index() {
@@ -92,6 +93,21 @@ export default function Index() {
   if (isIOSPreviewMode) {
     return (
       <div className="min-h-screen bg-white relative">
+        {/* Waves Background */}
+        <Waves
+          lineColor="#22c55e"
+          backgroundColor="transparent"
+          waveSpeedX={0.015}
+          waveSpeedY={0.008}
+          waveAmpX={20}
+          waveAmpY={12}
+          friction={0.92}
+          tension={0.008}
+          maxCursorMove={80}
+          xGap={8}
+          yGap={24}
+        />
+        
         {/* Sparkles Background */}
         <div className="fixed inset-0 w-full h-full">
           <SparklesCore
@@ -120,6 +136,21 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-white relative flex flex-col">
+      {/* Waves Background */}
+      <Waves
+        lineColor="#22c55e"
+        backgroundColor="transparent"
+        waveSpeedX={0.015}
+        waveSpeedY={0.008}
+        waveAmpX={20}
+        waveAmpY={12}
+        friction={0.92}
+        tension={0.008}
+        maxCursorMove={80}
+        xGap={8}
+        yGap={24}
+      />
+      
       {/* Sparkles Background */}
       <div className="fixed inset-0 w-full h-full">
         <SparklesCore

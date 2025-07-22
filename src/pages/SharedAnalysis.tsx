@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Loader2, ExternalLink } from 'lucide-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import { motion } from 'framer-motion';
+import { Waves } from '@/components/ui/waves';
 
 const SharedAnalysis = () => {
   const { token } = useParams();
@@ -109,7 +110,21 @@ const SharedAnalysis = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-background to-gray-900/80 min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen relative">
+      {/* Waves Background */}
+      <Waves
+        lineColor="#22c55e"
+        backgroundColor="transparent"
+        waveSpeedX={0.015}
+        waveSpeedY={0.008}
+        waveAmpX={20}
+        waveAmpY={12}
+        friction={0.92}
+        tension={0.008}
+        maxCursorMove={80}
+        xGap={8}
+        yGap={24}
+      />
       {/* Modern Branded Header */}
       <motion.div 
         className="flex flex-col items-center justify-center mb-12"

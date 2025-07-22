@@ -3,12 +3,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Waves } from "@/components/ui/waves";
 
 const PrivacyPolicy = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background/80 to-muted/50 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col relative">
+      {/* Waves Background */}
+      <Waves
+        lineColor="#22c55e"
+        backgroundColor="transparent"
+        waveSpeedX={0.015}
+        waveSpeedY={0.008}
+        waveAmpX={20}
+        waveAmpY={12}
+        friction={0.92}
+        tension={0.008}
+        maxCursorMove={80}
+        xGap={8}
+        yGap={24}
+      />
       {/* Header */}
-      <header className="w-full py-4 px-6 border-b bg-card/60 backdrop-blur-sm">
+      <header className="w-full py-4 px-6 border-b bg-gray-50/60 backdrop-blur-sm relative z-10">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <img 
@@ -16,7 +31,7 @@ const PrivacyPolicy = () => {
               alt="Master Growbot Logo" 
               className="w-10 h-10" 
             />
-            <span className="font-bold text-xl text-primary">Master Growbot</span>
+            <span className="font-bold text-xl text-green-600">Master Growbot</span>
           </Link>
           <Link to="/">
             <Button variant="outline">Return Home</Button>
@@ -25,15 +40,15 @@ const PrivacyPolicy = () => {
       </header>
 
       {/* Content */}
-      <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-8">
-        <div className="bg-card border rounded-lg shadow-lg p-6 md:p-8">
-          <h1 className="text-3xl font-bold mb-6 text-primary border-b pb-2">Privacy Policy</h1>
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-8 relative z-10">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg shadow-lg p-6 md:p-8">
+          <h1 className="text-3xl font-bold mb-6 text-gray-900 border-b pb-2">Privacy Policy</h1>
           
           <ScrollArea className="h-[calc(100vh-250px)] pr-4">
             <div className="space-y-6">
               {/* Introduction */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Introduction</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-gray-900">Introduction</h2>
                 <p>
                   Welcome to Master Growbot's Privacy Policy. Master Growbot is an AI-powered cannabis cultivation 
                   platform designed to help users grow better and improve their cultivation practices through 
@@ -250,8 +265,8 @@ const PrivacyPolicy = () => {
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-4 px-6 border-t bg-card/60 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
+      <footer className="w-full py-4 px-6 border-t bg-gray-50/60 backdrop-blur-sm relative z-10">
+        <div className="max-w-6xl mx-auto text-center text-sm text-gray-600">
           <p>© {new Date().getFullYear()} Master Growbot. All rights reserved.</p>
         </div>
       </footer>

@@ -7,12 +7,27 @@ import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Waves } from "@/components/ui/waves";
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  return <div className="min-h-screen bg-white text-gray-900 pb-20">
+  return <div className="min-h-screen bg-white text-gray-900 pb-20 relative">
+      {/* Waves Background */}
+      <Waves
+        lineColor="#22c55e"
+        backgroundColor="transparent"
+        waveSpeedX={0.015}
+        waveSpeedY={0.008}
+        waveAmpX={20}
+        waveAmpY={12}
+        friction={0.92}
+        tension={0.008}
+        maxCursorMove={80}
+        xGap={8}
+        yGap={24}
+      />
       <div className="absolute inset-0 bg-gradient-radial from-green-100/20 via-white to-white -z-10" />
       
       {/* Decorative accent lines */}
@@ -30,7 +45,7 @@ const GrowingGuide = () => {
       </header>
 
       {/* Main Content */}
-      <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
+      <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-green-600 via-green-500 to-green-700 bg-clip-text text-transparent">
             Growing Guide & FAQ
