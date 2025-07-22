@@ -34,7 +34,7 @@ const CommunityShares = () => {
 
   return (
     <div className="mt-8 space-y-6">
-      <h2 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#33C3F0]">
+      <h2 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-700">
         Recent Community Successes
       </h2>
       
@@ -42,16 +42,16 @@ const CommunityShares = () => {
         {stories.map((story) => (
           <div
             key={story.id}
-            className="p-4 border border-primary/20 rounded-lg bg-black/20 backdrop-blur-sm"
+            className="p-4 border border-gray-300 rounded-lg bg-gray-50 backdrop-blur-sm"
           >
-            <h3 className="font-medium mb-2">{story.title}</h3>
-            <p className="text-sm text-gray-400 mb-4">{story.description}</p>
+            <h3 className="font-medium mb-2 text-gray-900">{story.title}</h3>
+            <p className="text-sm text-gray-600 mb-4">{story.description}</p>
             
             {(story.before_image_url || story.after_image_url) && (
               <div className="grid grid-cols-2 gap-4">
                 {story.before_image_url && (
                   <div>
-                    <span className="text-xs text-gray-500 block mb-1">Before</span>
+                    <span className="text-xs text-red-500 block mb-1">Before</span>
                     <img
                       src={story.before_image_url}
                       alt="Before"
@@ -61,7 +61,7 @@ const CommunityShares = () => {
                 )}
                 {story.after_image_url && (
                   <div>
-                    <span className="text-xs text-gray-500 block mb-1">After</span>
+                    <span className="text-xs text-green-600 block mb-1">After</span>
                     <img
                       src={story.after_image_url}
                       alt="After"
@@ -72,7 +72,7 @@ const CommunityShares = () => {
               </div>
             )}
             
-            <div className="mt-2 text-xs text-gray-500">
+            <div className="mt-2 text-xs text-gray-600">
               {format(new Date(story.created_at), "MMM d, yyyy")}
             </div>
           </div>

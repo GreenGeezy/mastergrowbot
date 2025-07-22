@@ -169,7 +169,7 @@ const GuideCategories = ({ searchQuery }: { searchQuery: string }) => {
 
   if (filteredCategories.length === 0 && searchQuery.trim()) {
     return (
-      <div className="text-center py-8 text-gray-400 animate-fade-in">
+      <div className="text-center py-8 text-gray-600 animate-fade-in">
         No results found for "{searchQuery}". Try a different search term.
       </div>
     );
@@ -180,11 +180,11 @@ const GuideCategories = ({ searchQuery }: { searchQuery: string }) => {
       {filteredCategories.map((category) => (
         <div
           key={category.id}
-          className="rounded-xl bg-black/30 backdrop-blur-sm border border-white/10 overflow-hidden transition-all duration-300 hover:border-[#FF69B4]/30 group"
+          className="rounded-xl bg-gray-50 backdrop-blur-sm border border-gray-200 overflow-hidden transition-all duration-300 hover:border-green-400 group"
         >
           <div className="p-6">
-            <h3 className="text-xl font-semibold mb-2">{category.title}</h3>
-            <p className="text-gray-300 text-sm">{category.description}</p>
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">{category.title}</h3>
+            <p className="text-gray-600 text-sm">{category.description}</p>
           </div>
           
           <Accordion type="single" collapsible className="px-6 pb-6">
@@ -192,12 +192,12 @@ const GuideCategories = ({ searchQuery }: { searchQuery: string }) => {
               <AccordionItem
                 key={index}
                 value={`${category.id}-${index}`}
-                className="border-white/10"
+                className="border-gray-200"
               >
-                <AccordionTrigger className="text-left hover:text-[#FF69B4] text-sm py-4">
+                <AccordionTrigger className="text-left hover:text-green-600 text-sm py-4 text-gray-900">
                   {qa.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
+                <AccordionContent className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
                   {qa.a}
                 </AccordionContent>
               </AccordionItem>

@@ -93,21 +93,21 @@ const SuccessShare = ({ guideId, title }: SuccessShareProps) => {
   };
 
   return (
-    <div className="mt-6 p-4 border border-primary/20 rounded-lg bg-black/20 backdrop-blur-sm">
-      <h3 className="text-lg font-medium mb-4">Share Your Success</h3>
+    <div className="mt-6 p-4 border border-gray-300 rounded-lg bg-gray-50 backdrop-blur-sm">
+      <h3 className="text-lg font-medium mb-4 text-gray-900">Share Your Success</h3>
       
       <div className="space-y-4">
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Share your growing success story..."
-          className="w-full p-3 bg-black/30 border border-primary/20 rounded-lg text-white placeholder:text-gray-400 focus:ring-primary focus:border-primary"
+          className="w-full p-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-600 focus:ring-green-500 focus:border-green-500"
           rows={3}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Before Photo</label>
+            <label className="block text-sm font-medium mb-2 text-gray-900">Before Photo</label>
             <div className="relative">
               {beforeImage ? (
                 <div className="relative">
@@ -118,15 +118,15 @@ const SuccessShare = ({ guideId, title }: SuccessShareProps) => {
                   />
                   <button
                     onClick={() => setBeforeImage(null)}
-                    className="absolute top-2 right-2 p-1 bg-black/50 rounded-full hover:bg-black/70"
+                    className="absolute top-2 right-2 p-1 bg-black/70 rounded-full hover:bg-black/90"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-primary/20 rounded-lg cursor-pointer hover:border-primary/40">
-                  <Upload className="w-6 h-6 mb-2 text-gray-400" />
-                  <span className="text-sm text-gray-400">Upload before photo</span>
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-green-400">
+                  <Upload className="w-6 h-6 mb-2 text-gray-600" />
+                  <span className="text-sm text-gray-600">Upload before photo</span>
                   <input
                     type="file"
                     className="hidden"
@@ -139,7 +139,7 @@ const SuccessShare = ({ guideId, title }: SuccessShareProps) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">After Photo</label>
+            <label className="block text-sm font-medium mb-2 text-gray-900">After Photo</label>
             <div className="relative">
               {afterImage ? (
                 <div className="relative">
@@ -150,15 +150,15 @@ const SuccessShare = ({ guideId, title }: SuccessShareProps) => {
                   />
                   <button
                     onClick={() => setAfterImage(null)}
-                    className="absolute top-2 right-2 p-1 bg-black/50 rounded-full hover:bg-black/70"
+                    className="absolute top-2 right-2 p-1 bg-black/70 rounded-full hover:bg-black/90"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-primary/20 rounded-lg cursor-pointer hover:border-primary/40">
-                  <Upload className="w-6 h-6 mb-2 text-gray-400" />
-                  <span className="text-sm text-gray-400">Upload after photo</span>
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-green-400">
+                  <Upload className="w-6 h-6 mb-2 text-gray-600" />
+                  <span className="text-sm text-gray-600">Upload after photo</span>
                   <input
                     type="file"
                     className="hidden"
@@ -174,7 +174,7 @@ const SuccessShare = ({ guideId, title }: SuccessShareProps) => {
         <Button
           onClick={handleShare}
           disabled={isSubmitting || !description}
-          className="w-full bg-gradient-to-r from-primary to-[#33C3F0]"
+          className="w-full bg-gradient-to-r from-green-600 to-green-700"
         >
           <Share2 className="w-4 h-4 mr-2" />
           Share Success
