@@ -14,6 +14,7 @@ import TestimonialCarousel from '@/components/TestimonialCarousel';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Particles } from '@/components/ui/particles';
+import OnboardingTooltips from '@/components/onboarding/OnboardingTooltips';
 
 export default function Index() {
   const session = useSession();
@@ -162,6 +163,9 @@ export default function Index() {
       
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
+      
+      {/* Onboarding Tooltips */}
+      <OnboardingTooltips />
     </div>
   );
 }
