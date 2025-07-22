@@ -13,18 +13,18 @@ const Settings = () => {
   const [showProfileDialog, setShowProfileDialog] = useState(true);
 
   return (
-    <div className="min-h-screen bg-background text-white pb-20">
-      <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-background to-background -z-10" />
+    <div className="min-h-screen bg-white text-gray-900 pb-20">
+      <div className="absolute inset-0 bg-gradient-radial from-gray-50 via-white to-white -z-10" />
       
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 bg-card/80 backdrop-blur-md border-b border-accent/20 z-50">
+      <header className="fixed top-0 left-0 right-0 bg-gray-50/80 backdrop-blur-md border-b border-gray-200 z-50">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => navigate(-1)}
-              className="hover:bg-white/10"
+              className="hover:bg-gray-100 text-gray-900"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -34,7 +34,7 @@ const Settings = () => {
                 alt="Master Growbot Logo"
                 className="w-8 h-8"
               />
-              <h1 className="text-xl font-medium">Settings</h1>
+              <h1 className="text-xl font-medium text-gray-900">Settings</h1>
             </div>
           </div>
         </div>
@@ -43,10 +43,10 @@ const Settings = () => {
       {/* Main Content */}
       <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
         <div className="text-center mb-8 animate-fade-in">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
             Account Settings
           </h1>
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Manage your profile and growing preferences
           </p>
         </div>

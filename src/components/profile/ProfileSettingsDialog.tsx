@@ -162,10 +162,10 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-lg bg-gray-800 text-white border-gray-600">
+      <DialogContent className="flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-lg bg-gray-50 text-gray-900 border-gray-200">
         <DialogHeader className="contents space-y-0 text-left">
-          <DialogTitle className="border-b border-gray-600 px-6 py-4 text-base text-white flex items-center gap-3">
-            <User className="w-5 h-5 text-primary" />
+          <DialogTitle className="border-b border-gray-200 px-6 py-4 text-base text-gray-900 flex items-center gap-3">
+            <User className="w-5 h-5 text-green-600" />
             Profile Settings
           </DialogTitle>
         </DialogHeader>
@@ -180,30 +180,30 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
               {/* Basic Information */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-white">Name</Label>
+                  <Label htmlFor="username" className="text-gray-900">Name</Label>
                   <Input
                     id="username"
                     placeholder="Enter your name"
                     value={profileData.username}
                     onChange={(e) => handleInputChange('username', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
+                    className="bg-white border-gray-300 text-gray-900"
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-white">Email</Label>
+                  <Label htmlFor="email" className="text-gray-900">Email</Label>
                   <Input
                     id="email"
                     value={profileData.email}
                     disabled
-                    className="bg-gray-600 border-gray-500 text-gray-300"
+                    className="bg-gray-100 border-gray-200 text-gray-600"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="experience" className="text-white">Experience Level</Label>
+                  <Label htmlFor="experience" className="text-gray-900">Experience Level</Label>
                   <Select value={profileData.grow_experience_level} onValueChange={(value) => handleInputChange('grow_experience_level', value)}>
-                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -217,12 +217,12 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
 
               {/* Growing Preferences */}
               <div className="space-y-4">
-                <h3 className="text-sm font-medium text-white">Growing Preferences</h3>
+                <h3 className="text-sm font-medium text-gray-900">Growing Preferences</h3>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="growing-method" className="text-white">Growing Method</Label>
+                  <Label htmlFor="growing-method" className="text-gray-900">Growing Method</Label>
                   <Select value={profileData.growing_method} onValueChange={(value) => handleInputChange('growing_method', value)}>
-                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -234,9 +234,9 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="monitoring-method" className="text-white">Monitoring Method</Label>
+                  <Label htmlFor="monitoring-method" className="text-gray-900">Monitoring Method</Label>
                   <Select value={profileData.monitoring_method} onValueChange={(value) => handleInputChange('monitoring_method', value)}>
-                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -248,9 +248,9 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="nutrient-type" className="text-white">Nutrient Type</Label>
+                  <Label htmlFor="nutrient-type" className="text-gray-900">Nutrient Type</Label>
                   <Select value={profileData.nutrient_type} onValueChange={(value) => handleInputChange('nutrient_type', value)}>
-                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectTrigger className="bg-white border-gray-300 text-gray-900">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -266,34 +266,34 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
               {/* Growing Challenges & Goals */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="challenges" className="text-white">Growing Challenges</Label>
+                  <Label htmlFor="challenges" className="text-gray-900">Growing Challenges</Label>
                   <Input
                     id="challenges"
                     placeholder="e.g., pests, diseases, climate (comma separated)"
                     value={profileData.challenges.join(', ')}
                     onChange={(e) => handleArrayChange('challenges', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
+                    className="bg-white border-gray-300 text-gray-900 placeholder-gray-600"
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="goals" className="text-white">Growing Goals</Label>
+                  <Label htmlFor="goals" className="text-gray-900">Growing Goals</Label>
                   <Input
                     id="goals"
                     placeholder="e.g., learn, harvest, experiment (comma separated)"
                     value={profileData.goals.join(', ')}
                     onChange={(e) => handleArrayChange('goals', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
+                    className="bg-white border-gray-300 text-gray-900 placeholder-gray-600"
                   />
                 </div>
               </div>
 
               {/* Account Settings */}
-              <div className="space-y-4 border-t border-gray-600 pt-4">
-                <h3 className="text-sm font-medium text-white">Account Settings</h3>
+              <div className="space-y-4 border-t border-gray-200 pt-4">
+                <h3 className="text-sm font-medium text-gray-900">Account Settings</h3>
                 
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="email-notifications" className="text-white">Email Notifications</Label>
+                  <Label htmlFor="email-notifications" className="text-gray-900">Email Notifications</Label>
                   <Switch
                     id="email-notifications"
                     checked={notifications}
@@ -302,7 +302,7 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="dark-mode" className="text-white">Dark Mode</Label>
+                  <Label htmlFor="dark-mode" className="text-gray-900">Dark Mode</Label>
                   <Switch
                     id="dark-mode"
                     checked={isDarkMode}
@@ -324,12 +324,12 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
           </div>
         </div>
 
-        <DialogFooter className="border-t border-gray-600 px-6 py-4">
+        <DialogFooter className="border-t border-gray-200 px-6 py-4">
           <Button 
             type="button" 
             variant="outline" 
             onClick={() => onOpenChange(false)}
-            className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            className="border-gray-300 text-gray-600 hover:bg-gray-50"
           >
             Cancel
           </Button>
@@ -337,7 +337,7 @@ const ProfileSettingsDialog: React.FC<ProfileSettingsDialogProps> = ({ isOpen, o
             type="button" 
             onClick={handleSaveChanges}
             disabled={loading}
-            className="bg-primary hover:bg-primary/90"
+            className="bg-green-600 hover:bg-green-700 text-white"
           >
             {loading ? 'Saving...' : 'Save changes'}
           </Button>

@@ -19,18 +19,18 @@ export function ProfileSettings({
   return (
     <div className="space-y-4">
       <button
-        className="flex items-center w-full px-3 py-2 text-sm text-gray-200 rounded-md hover:bg-primary/10"
+        className="flex items-center w-full px-3 py-2 text-sm text-gray-900 rounded-md hover:bg-green-50"
       >
-        <Key className="w-4 h-4 mr-3" />
+        <Key className="w-4 h-4 mr-3 text-green-600" />
         Change Password
       </button>
 
-      <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-200 rounded-md hover:bg-primary/10">
+      <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-900 rounded-md hover:bg-green-50">
         <div className="flex items-center">
           {notifications ? (
-            <Bell className="w-4 h-4 mr-3" />
+            <Bell className="w-4 h-4 mr-3 text-green-600" />
           ) : (
-            <BellOff className="w-4 h-4 mr-3" />
+            <BellOff className="w-4 h-4 mr-3 text-gray-600" />
           )}
           Email Notifications
         </div>
@@ -40,12 +40,12 @@ export function ProfileSettings({
         />
       </div>
 
-      <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-200 rounded-md hover:bg-primary/10">
+      <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-900 rounded-md hover:bg-green-50">
         <div className="flex items-center">
           {isDarkMode ? (
-            <Moon className="w-4 h-4 mr-3" />
+            <Moon className="w-4 h-4 mr-3 text-green-600" />
           ) : (
-            <Sun className="w-4 h-4 mr-3" />
+            <Sun className="w-4 h-4 mr-3 text-green-600" />
           )}
           Dark Mode
         </div>
@@ -57,7 +57,7 @@ export function ProfileSettings({
 
       <button
         onClick={handleSignOut}
-        className="flex items-center w-full px-3 py-2 text-sm text-red-400 rounded-md hover:bg-red-500/10"
+        className="flex items-center w-full px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50"
       >
         <LogOut className="w-4 h-4 mr-3" />
         Sign Out
