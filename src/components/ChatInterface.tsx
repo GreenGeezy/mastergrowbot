@@ -170,7 +170,7 @@ const ChatInterface = () => {
   }
 
   return (
-    <div className="flex h-screen w-full bg-background text-white relative overflow-hidden">
+    <div className="flex h-screen w-full bg-white text-gray-900 relative overflow-hidden">
       {/* Chat History Sidebar */}
       <ChatHistorySidebar onConversationSelect={handleConversationSelect} />
 
@@ -189,7 +189,7 @@ const ChatInterface = () => {
                       alt="Master Growbot"
                       className="w-16 h-16 flex-shrink-0"
                     />
-                    <p className="text-gray-300 text-lg text-left">
+                    <p className="text-gray-600 text-lg text-left">
                       Your AI-powered cannabis cultivation expert. Ask me anything about growing, plant health, nutrients, and more!
                     </p>
                   </div>
@@ -204,10 +204,10 @@ const ChatInterface = () => {
                       <button
                         key={index}
                         onClick={() => handleQuestionClick(question)}
-                        className="p-2 bg-card/30 hover:bg-card/50 border border-white/10 rounded-lg text-left transition-all duration-200 hover:border-accent/30 text-xs"
+                        className="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-left transition-all duration-200 hover:border-green-400 text-xs"
                         disabled={isLoading}
                       >
-                        <p className="text-gray-300">{question}</p>
+                        <p className="text-gray-600">{question}</p>
                       </button>
                     ))}
                   </div>
@@ -229,7 +229,7 @@ const ChatInterface = () => {
         </div>
 
         {/* Input area - moved lower and adjusted for bottom navigation */}
-        <div className="border-t border-white/10 bg-card/50 backdrop-blur-sm pb-20">
+        <div className="border-t border-gray-200 bg-gray-50 backdrop-blur-sm pb-20">
           <div className="max-w-4xl mx-auto p-4">
             {/* Chat input with voice and send buttons */}
             <div className="flex items-end gap-2">
@@ -240,12 +240,12 @@ const ChatInterface = () => {
                   onChange={handleMessageChange}
                   onSubmit={handleSendMessage}
                   loading={isLoading}
-                  className="bg-background/50 border-white/20 text-white w-full"
+                  className="bg-white border-gray-300 text-gray-900 w-full"
                 >
                   <div className="flex flex-col gap-2 w-full">
                     <ChatInputTextArea 
                       placeholder="Ask about growing techniques, plant health, nutrients..."
-                      className="text-white placeholder:text-gray-400 focus:border-accent/50 flex-1 min-h-[60px]"
+                      className="text-gray-900 placeholder:text-gray-600 focus:border-green-400 flex-1 min-h-[60px]"
                       disabled={isLoading}
                       rows={2}
                     />
@@ -258,7 +258,7 @@ const ChatInterface = () => {
                           forceClose={forceCloseVoiceChat}
                         />
                       </div>
-                      <ChatInputSubmit className="bg-gradient-primary hover:bg-gradient-secondary" />
+                      <ChatInputSubmit className="bg-green-600 hover:bg-green-700" />
                     </div>
                   </div>
                 </ChatInput>

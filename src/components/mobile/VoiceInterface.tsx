@@ -162,7 +162,7 @@ export function VoiceInterface({
   };
 
   return (
-    <div className={cn("flex flex-col items-center justify-center h-full bg-background relative overflow-hidden", className)}>
+    <div className={cn("flex flex-col items-center justify-center h-full bg-white relative overflow-hidden", className)}>
       {/* Close button - positioned at top right */}
       <motion.button
         onClick={handleCloseClick}
@@ -178,7 +178,7 @@ export function VoiceInterface({
         {particles.map(particle => (
           <motion.div
             key={particle.id}
-            className="absolute w-1 h-1 bg-primary/20 rounded-full"
+            className="absolute w-1 h-1 bg-green-600/30 rounded-full"
             style={{
               left: particle.x,
               top: particle.y,
@@ -199,7 +199,7 @@ export function VoiceInterface({
       {/* Background glow effects - simplified for mobile */}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
-          className="w-64 h-64 md:w-96 md:h-96 rounded-full bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 blur-2xl"
+          className="w-64 h-64 md:w-96 md:h-96 rounded-full bg-gradient-to-r from-green-500/5 via-blue-500/5 to-green-500/5 blur-2xl"
           animate={{
             scale: isListening ? [1, 1.15, 1] : [1, 1.05, 1],
             opacity: isListening ? [0.2, 0.4, 0.2] : isSpeaking ? [0.15, 0.3, 0.15] : [0.05, 0.1, 0.05]
@@ -224,10 +224,10 @@ export function VoiceInterface({
             className={cn(
               "relative rounded-full flex items-center justify-center transition-all duration-300",
               getButtonSize(),
-              "bg-gradient-to-br from-primary/20 to-primary/10 border-2",
+              "bg-gradient-to-br from-green-600/20 to-green-600/10 border-2",
               isListening ? "border-blue-500 shadow-lg shadow-blue-500/20" :
               isSpeaking ? "border-green-500 shadow-lg shadow-green-500/20" :
-              "border-border hover:border-primary/50"
+              "border-gray-300 hover:border-green-400"
             )}
             animate={{
               boxShadow: isListening 
@@ -265,7 +265,7 @@ export function VoiceInterface({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                 >
-                  <Mic className={cn(getIconSize(), "text-muted-foreground")} />
+                  <Mic className={cn(getIconSize(), "text-gray-600")} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -310,7 +310,7 @@ export function VoiceInterface({
                 "w-1 rounded-full transition-colors duration-300",
                 isListening ? "bg-blue-500" :
                 isSpeaking ? "bg-green-500" :
-                "bg-muted"
+                "bg-gray-400"
               )}
               animate={{
                 height: `${Math.max(3, height * 0.4)}px`,
@@ -337,7 +337,7 @@ export function VoiceInterface({
             {getStatusText()}
           </motion.p>
           
-          <p className="text-sm text-muted-foreground font-mono">
+          <p className="text-sm text-gray-600 font-mono">
             {formatTime(duration)}
           </p>
 
@@ -347,22 +347,22 @@ export function VoiceInterface({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <VolumeX className="w-3 h-3 text-muted-foreground" />
-              <div className="w-16 md:w-24 h-2 bg-muted rounded-full overflow-hidden">
+              <VolumeX className="w-3 h-3 text-gray-600" />
+              <div className="w-16 md:w-24 h-2 bg-gray-300 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-blue-500 rounded-full"
                   animate={{ width: `${volume}%` }}
                   transition={{ duration: 0.1 }}
                 />
               </div>
-              <Volume2 className="w-3 h-3 text-muted-foreground" />
+              <Volume2 className="w-3 h-3 text-gray-600" />
             </motion.div>
           )}
         </div>
 
         {/* AI indicator */}
         <motion.div
-          className="flex items-center space-x-2 text-xs md:text-sm text-muted-foreground"
+          className="flex items-center space-x-2 text-xs md:text-sm text-gray-600"
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{
             duration: 4,
@@ -376,7 +376,7 @@ export function VoiceInterface({
 
         {/* Close button text instruction */}
         <motion.p
-          className="text-xs text-muted-foreground text-center mt-4"
+          className="text-xs text-gray-600 text-center mt-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}

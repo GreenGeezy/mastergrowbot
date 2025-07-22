@@ -22,11 +22,11 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
   if (messages.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center">
-        <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center glow-effect mb-4">
+        <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center glow-effect mb-4">
           <Leaf className="w-6 h-6 text-white" />
         </div>
-        <h2 className="text-2xl font-semibold text-white mb-2">How can I help you today?</h2>
-        <p className="text-gray-400 max-w-md mb-6">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-2">How can I help you today?</h2>
+        <p className="text-gray-600 max-w-md mb-6">
           I'm your cannabis cultivation assistant. Ask me anything about growing, plant care, or troubleshooting issues.
         </p>
         
@@ -52,13 +52,13 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
         </div>
 
         <div className="w-full max-w-2xl">
-          <h3 className="text-white text-left mb-2 font-medium">Common Questions</h3>
+          <h3 className="text-gray-900 text-left mb-2 font-medium">Common Questions</h3>
           <div className="grid grid-cols-1 gap-2">
             {starterQuestions.map((question, index) => (
               <button
                 key={index}
                 onClick={() => handleQuestionClick(question)}
-                className="cyber-button text-left p-3 rounded-lg text-gray-300 hover:text-white text-sm transition-all duration-200"
+                className="cyber-button text-left p-3 rounded-lg text-gray-600 hover:text-gray-900 text-sm transition-all duration-200"
               >
                 {question}
               </button>
@@ -91,8 +91,8 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
             <div
               className={`p-4 rounded-2xl ${
                 msg.is_ai
-                  ? 'bg-card hover:bg-card-hover border border-accent/20 shimmer'
-                  : 'bg-gradient-primary hover:bg-gradient-secondary'
+                  ? 'bg-gray-50 hover:bg-gray-100 border border-gray-200 shimmer'
+                  : 'bg-green-600 hover:bg-green-700'
               }`}
             >
               {/* Show attachments if present */}

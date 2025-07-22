@@ -37,7 +37,7 @@ export function ConversationList({
 
   if (conversations.length === 0) {
     return (
-      <div className="p-4 text-center text-sm text-gray-400">
+      <div className="p-4 text-center text-sm text-gray-600">
         No conversations yet
       </div>
     )
@@ -49,19 +49,19 @@ export function ConversationList({
         <Button
           key={conversation.id}
           variant="ghost"
-          className={`w-full justify-start space-x-2 rounded-lg p-3 text-left hover:bg-accent ${
-            currentConversationId === conversation.id ? 'bg-accent' : ''
+          className={`w-full justify-start space-x-2 rounded-lg p-3 text-left hover:bg-gray-100 ${
+            currentConversationId === conversation.id ? 'bg-green-100 border border-green-300' : ''
           }`}
           onClick={() => onConversationSelect(conversation.id)}
         >
-          <MessageSquare className="h-4 w-4 shrink-0" />
+          <MessageSquare className="h-4 w-4 shrink-0 text-gray-600" />
           <div className="flex-1 overflow-hidden">
-            <div className="truncate font-medium">{conversation.title}</div>
-            <div className="truncate text-xs text-gray-400">
+            <div className="truncate font-medium text-gray-900">{conversation.title}</div>
+            <div className="truncate text-xs text-gray-600">
               {conversation.lastMessage}
             </div>
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-gray-600">
             {formatDistanceToNow(new Date(conversation.updatedAt), { addSuffix: true })}
           </div>
         </Button>
