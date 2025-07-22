@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Loader2, ExternalLink } from 'lucide-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import { motion } from 'framer-motion';
+import { AuroraBackground } from '@/components/ui/aurora-background';
 
 const SharedAnalysis = () => {
   const { token } = useParams();
@@ -76,7 +77,7 @@ const SharedAnalysis = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-background to-gray-900/80">
+      <AuroraBackground className="flex items-center justify-center min-h-screen">
         <motion.div 
           className="flex flex-col items-center gap-4"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -86,13 +87,13 @@ const SharedAnalysis = () => {
           <Loader2 className="w-12 h-12 text-primary animate-spin" />
           <p className="text-white text-lg">Loading analysis...</p>
         </motion.div>
-      </div>
+      </AuroraBackground>
     );
   }
 
   if (error || !analysis) {
     return (
-      <div className="container mx-auto px-4 py-8 text-center bg-gradient-to-b from-background to-gray-900/80 min-h-screen">
+      <AuroraBackground className="container mx-auto px-4 py-8 text-center min-h-screen">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -104,12 +105,12 @@ const SharedAnalysis = () => {
             <Link to="/">Return Home</Link>
           </Button>
         </motion.div>
-      </div>
+      </AuroraBackground>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-background to-gray-900/80 min-h-screen">
+    <AuroraBackground className="container mx-auto px-4 py-8 min-h-screen">
       {/* Modern Branded Header */}
       <motion.div 
         className="flex flex-col items-center justify-center mb-12"
@@ -196,7 +197,7 @@ const SharedAnalysis = () => {
           </div>
         </Card>
       </motion.div>
-    </div>
+    </AuroraBackground>
   );
 };
 

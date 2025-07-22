@@ -12,6 +12,7 @@ import FeatureSection from '@/components/FeatureSection';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import { SparklesCore } from '@/components/ui/sparkles';
+import { AuroraBackground } from '@/components/ui/aurora-background';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function Index() {
@@ -91,53 +92,17 @@ export default function Index() {
   // If in iOS preview mode, show UserDashboard directly
   if (isIOSPreviewMode) {
     return (
-      <div className="min-h-screen bg-white relative">
-        {/* Sparkles Background */}
-        <div className="fixed inset-0 w-full h-full">
-          <SparklesCore
-            id="homepage-sparkles"
-            background="transparent"
-            minSize={0.6}
-            maxSize={1.4}
-            particleDensity={50}
-            className="w-full h-full"
-            particleColor="#22c55e"
-            speed={0.8}
-          />
-        </div>
-        
-        {/* Existing gradient background overlay */}
-        <div className="absolute inset-0 bg-gradient-radial from-green-100/30 via-white to-white -z-10" />
-        
-        {/* Content with higher z-index */}
-        <div className="relative z-10">
+      <AuroraBackground className="min-h-screen">
+        <div className="relative z-10 w-full">
           <Header />
           <UserDashboard />
         </div>
-      </div>
+      </AuroraBackground>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white relative flex flex-col">
-      {/* Sparkles Background */}
-      <div className="fixed inset-0 w-full h-full">
-        <SparklesCore
-          id="homepage-sparkles"
-          background="transparent"
-          minSize={0.6}
-          maxSize={1.4}
-          particleDensity={50}
-          className="w-full h-full"
-          particleColor="#22c55e"
-          speed={0.8}
-        />
-      </div>
-      
-      {/* Existing gradient background overlay */}
-      <div className="absolute inset-0 bg-gradient-radial from-green-100/30 via-white to-white -z-10" />
-      
-      {/* Content with higher z-index */}
+    <AuroraBackground className="min-h-screen flex flex-col">
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         
@@ -169,6 +134,6 @@ export default function Index() {
       
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
-    </div>
+    </AuroraBackground>
   );
 }

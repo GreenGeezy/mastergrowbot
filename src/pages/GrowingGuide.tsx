@@ -7,22 +7,13 @@ import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  return <div className="min-h-screen bg-white text-gray-900 pb-20">
-      <div className="absolute inset-0 bg-gradient-radial from-green-100/20 via-white to-white -z-10" />
-      
-      {/* Decorative accent lines */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute top-[10%] left-[-10%] w-[120%] h-[1px] bg-green-200 transform rotate-[15deg]" />
-          <div className="absolute top-[30%] left-[-10%] w-[120%] h-[1px] bg-green-200 transform rotate-[-10deg]" />
-          <div className="absolute top-[50%] left-[-10%] w-[120%] h-[1px] bg-green-200 transform rotate-[5deg]" />
-        </div>
-      </div>
+  return <AuroraBackground className="min-h-screen text-gray-900 pb-20">
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md border-b border-gray-200 z-50">
@@ -64,6 +55,6 @@ const GrowingGuide = () => {
 
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
-    </div>;
+    </AuroraBackground>;
 };
 export default GrowingGuide;

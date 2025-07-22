@@ -3,10 +3,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const PrivacyPolicy = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background/80 to-muted/50 flex flex-col">
+    <AuroraBackground className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="w-full py-4 px-6 border-b bg-card/60 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -255,7 +256,7 @@ const PrivacyPolicy = () => {
           <p>© {new Date().getFullYear()} Master Growbot. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </AuroraBackground>
   );
 };
 
