@@ -67,10 +67,10 @@ const UserDashboard = () => {
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex flex-col text-left">
-                  <h3 className="font-medium text-base text-gray-900 tech-font">
+                  <h3 className="text-body font-body text-foreground font-semibold">
                     {button.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-body-secondary font-body text-sm">
                     {button.subtitle}
                   </p>
                 </div>
@@ -82,7 +82,7 @@ const UserDashboard = () => {
           })}
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-accent to-secondary-glow tech-font">
+        <h2 className="text-headline-sm font-display text-foreground mb-6 text-center">
           Welcome back!
         </h2>
         

@@ -47,21 +47,21 @@ const Header = () => {
       }}>
           {/* Headlines */}
           <div className="space-y-2 sm:space-y-3">
-            <h1 className={`font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 via-green-500 to-green-700 animate-fade-in tracking-tight tech-font will-change-transform leading-tight ${isMobile ? 'text-2xl' : 'text-3xl sm:text-6xl'}`}>
-              MasterGrowbot AI
+            <h1 className={`text-headline font-display text-foreground animate-fade-in tracking-tight will-change-transform leading-tight ${isMobile ? 'text-headline-sm' : 'text-headline'}`}>
+              Master Growbot AI
             </h1>
-            <p className={`text-gray-800 font-bold ${isMobile ? 'text-base' : 'text-lg'}`}>
+            <p className="text-body-secondary font-body">
               AI Cannabis Cultivation Assistant
             </p>
           </div>
           
           {/* Main Headline with Combined Text */}
           <div className="space-y-2">
-            <h2 className={`font-bold leading-tight max-w-[720px] mx-auto text-gray-900 ${isMobile ? 'text-lg' : 'text-xl sm:text-2xl'}`}>
+            <h2 className={`text-headline-sm font-display text-foreground leading-tight max-w-[720px] mx-auto ${isMobile ? 'text-headline-sm' : 'text-headline-md'}`}>
               Grow Award-Winning Cannabis & Save Plants in Seconds with AI
             </h2>
-            <p className={`font-semibold text-amber-600 max-w-[600px] mx-auto leading-relaxed ${isMobile ? 'text-sm' : 'text-base sm:text-lg'}`}>
-              See Why Leading Growers Worldwide Trust MasterGrowbot AI to Prevent $336/Plant to Over $100,000 per Harvest in Losses
+            <p className="text-body-secondary font-body max-w-[600px] mx-auto leading-relaxed">
+              See Why Leading Growers Worldwide Trust Master Growbot AI to Prevent $336/Plant to Over $100,000 per Harvest in Losses
             </p>
           </div>
           

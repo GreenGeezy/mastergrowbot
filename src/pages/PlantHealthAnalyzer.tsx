@@ -651,8 +651,8 @@ const PlantHealthAnalyzer = () => {
           <section className="mb-8">
             <Card className="bg-gray-50 backdrop-blur-sm border-gray-200">
               <CardHeader>
-                <CardTitle className="text-center text-2xl">Capture or Upload Plant Images</CardTitle>
-                <CardDescription className="text-center">
+                <CardTitle className="text-headline-sm font-display text-foreground text-center">Plant Health Scanner</CardTitle>
+                <CardDescription className="text-body-secondary font-body text-center">
                   Take photos or upload images from your device for AI-powered plant health analysis
                 </CardDescription>
               </CardHeader>

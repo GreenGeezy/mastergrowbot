@@ -94,7 +94,7 @@ export default function BenefitsSection() {
         transition={{ duration: 0.6 }}
         className="text-center mb-8"
       >
-        <h2 className={`font-bold text-gray-900 mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+        <h2 className={`text-headline-sm font-display text-foreground mb-4 ${isMobile ? 'text-headline-sm' : 'text-headline-md'}`}>
           Transform Your Cannabis Growing Experience
         </h2>
         <p className={`text-gray-600 mb-6 ${isMobile ? 'text-sm' : 'text-base'}`}>
@@ -126,7 +126,7 @@ export default function BenefitsSection() {
                     {benefit.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className={`font-bold text-gray-900 mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                    <h3 className={`text-body font-body text-foreground mb-2 font-semibold ${isMobile ? 'text-body' : 'text-lg'}`}>
                       {benefit.title}
                     </h3>
                     <p className={`text-gray-600 mb-3 ${isMobile ? 'text-sm' : 'text-base'}`}>

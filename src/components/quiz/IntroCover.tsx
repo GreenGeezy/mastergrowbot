@@ -41,19 +41,13 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
                 }}
               />
               
-              <h1 className="text-4xl md:text-6xl font-bold tech-font tracking-tight leading-tight relative z-10 text-gray-900"
-                  style={{
-                    background: 'linear-gradient(135deg, #16a34a 0%, #059669 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}>
-                Stop Losing <span className="text-[#ef4444]">$336 per plant</span> and up to <span className="text-[#ef4444]">$100,000 per Harvest</span> in 10 Seconds with just a pic
+              <h1 className="text-headline font-display text-foreground text-center leading-tight relative z-10">
+                Stop Losing <span className="text-destructive">$336 per plant</span> and up to <span className="text-destructive">$100,000 per Harvest</span> in 10 Seconds with just a pic
               </h1>
             </div>
             
             {/* Sub-headline */}
-            <p className="text-base text-gray-700 dark:text-gray-600 font-medium max-w-3xl mx-auto leading-relaxed">
+            <p className="text-body-secondary font-body max-w-3xl mx-auto leading-relaxed text-center">
               Answer four quick questions to unlock your first personalised AI Action Card—and prevent $336 in hidden losses.
             </p>
             
@@ -80,7 +74,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
             {/* Additional visual elements */}
             <div className="pt-12 flex justify-center items-center space-x-2 text-gray-700 dark:text-gray-600">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span className="text-sm font-medium">No signup required to start</span>
+              <span className="text-label font-body">No signup required to start</span>
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             </div>
           </div>

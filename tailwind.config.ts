@@ -19,6 +19,19 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        'sans': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        'display': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        'body': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+      },
+      fontSize: {
+        'headline': ['32px', { lineHeight: '1.2', fontWeight: '700' }],
+        'headline-md': ['28px', { lineHeight: '1.25', fontWeight: '700' }],
+        'headline-sm': ['24px', { lineHeight: '1.3', fontWeight: '700' }],
+        'body': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '1.5', fontWeight: '400' }],
+        'label': ['16px', { lineHeight: '1.5', fontWeight: '500' }],
+      },
       colors: {
         border: "#e5e7eb",
         input: "#e5e7eb",

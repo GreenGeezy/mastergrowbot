@@ -163,7 +163,7 @@ const ChatInterface = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Sign in required</h2>
+          <h2 className="text-headline-sm font-display text-foreground mb-4">Sign in required</h2>
           <p className="text-gray-600">Please sign in to access the growing assistant.</p>
         </Card>
       </div>

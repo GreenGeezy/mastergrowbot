@@ -43,10 +43,10 @@ const GrowingGuide = () => {
       {/* Main Content */}
       <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
         <div className="text-center mb-8 animate-fade-in">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-green-600 via-green-500 to-green-700 bg-clip-text text-transparent">
+          <h1 className="text-headline font-display text-foreground text-center mb-4">
             Growing Guide & FAQ
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-body-secondary max-w-2xl mx-auto text-center">
             Find answers to common questions and learn expert growing techniques
           </p>
         </div>
@@ -60,7 +60,7 @@ const GrowingGuide = () => {
               value={searchQuery} 
               onChange={e => setSearchQuery(e.target.value)} 
               data-testid="search-input" 
-              className="w-full bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-600 h-12 pl-12 rounded-xl" 
+              className="w-full bg-gray-50 border-gray-300 text-foreground placeholder:text-muted-foreground h-12 pl-12 rounded-xl" 
             />
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-600 h-5 w-5" />
           </div>

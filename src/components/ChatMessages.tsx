@@ -25,7 +25,7 @@ export default function ChatMessages({ messages, handleQuestionClick, starterQue
         <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center glow-effect mb-4">
           <Leaf className="w-6 h-6 text-white" />
         </div>
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">How can I help you today?</h2>
+        <h2 className="text-headline-sm font-display text-foreground mb-2">How can I help you today?</h2>
         <p className="text-gray-600 max-w-md mb-6">
           I'm your cannabis cultivation assistant. Ask me anything about growing, plant care, or troubleshooting issues.
         </p>

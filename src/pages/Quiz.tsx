@@ -734,7 +734,7 @@ export default function Quiz() {
 
                 <div className="space-y-6">
                   <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white tech-font">
+                    <h2 className="text-headline-sm font-display text-foreground">
                       {currentQuestion.question}
                     </h2>
                     {currentQuestion.tooltip && <TooltipProvider>
@@ -769,7 +769,7 @@ export default function Quiz() {
                             <div className={`w-4 h-4 rounded-full border-2 ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'border-purple-500 bg-purple-500' : 'border-gray-400 dark:border-gray-300'}`}>
                               {(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value && <div className="w-2 h-2 rounded-full bg-white m-0.5"></div>}
                             </div>
-                            <label className="text-lg font-medium leading-none cursor-pointer w-full text-gray-900 dark:text-white">
+                            <label className="text-body font-body text-foreground leading-none cursor-pointer w-full">
                               {option.label}
                             </label>
                           </div>
@@ -791,7 +791,7 @@ export default function Quiz() {
                 }} className="space-y-4">
                     {currentQuestion.options.map(option => <div key={option.value} className="flex items-center space-x-3 rounded-lg border border-gray-200 dark:border-white/10 p-4 hover:bg-gray-50 dark:hover:bg-white/5">
                         <RadioGroupItem value={option.value} id={option.value} className="border-accent data-[state=checked]:border-accent data-[state=checked]:text-accent" />
-                        <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full text-gray-900 dark:text-white hover:text-accent">
+                        <label htmlFor={option.value} className="text-body font-body text-foreground leading-none cursor-pointer w-full hover:text-accent">                        
                           {option.label}
                         </label>
                       </div>)}
@@ -821,7 +821,7 @@ export default function Quiz() {
                         }));
                       }
                     }} className="border-accent data-[state=checked]:border-accent data-[state=checked]:bg-accent" />
-                           <label htmlFor={option.value} className="text-lg font-medium leading-none cursor-pointer w-full text-gray-900 dark:text-white hover:text-accent">
+                           <label htmlFor={option.value} className="text-body font-body text-foreground leading-none cursor-pointer w-full hover:text-accent">
                              {option.label}
                            </label>
                         </div>)}
