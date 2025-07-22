@@ -23,6 +23,7 @@ import { useConversations } from "@/hooks/use-conversations";
 import { isIOSPreview } from "@/utils/flags";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import FloatingIcons from '@/components/FloatingIcons';
 
 interface Message {
   id: string;
@@ -171,6 +172,9 @@ const ChatInterface = () => {
 
   return (
     <div className="flex h-screen w-full bg-white text-gray-900 relative overflow-hidden">
+      {/* Floating Icons */}
+      <FloatingIcons />
+      
       {/* Chat History Sidebar */}
       <ChatHistorySidebar onConversationSelect={handleConversationSelect} />
 

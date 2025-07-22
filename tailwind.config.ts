@@ -107,6 +107,36 @@ export default {
           "0%": { strokeDashoffset: "1000" },
           "100%": { strokeDashoffset: "0" },
         },
+        "float-up": {
+          "0%": { 
+            transform: "translateY(100vh) translateX(0px) rotate(0deg)",
+            opacity: "0"
+          },
+          "10%": {
+            opacity: "0.3"
+          },
+          "90%": {
+            opacity: "0.3"
+          },
+          "100%": {
+            transform: "translateY(-100vh) translateX(20px) rotate(360deg)",
+            opacity: "0"
+          }
+        },
+        "gentle-rotate": {
+          "0%, 100%": {
+            transform: "rotate(0deg)"
+          },
+          "25%": {
+            transform: "rotate(-15deg)"
+          },
+          "50%": {
+            transform: "rotate(0deg)"
+          },
+          "75%": {
+            transform: "rotate(15deg)"
+          }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -117,6 +147,8 @@ export default {
         float: "float 3s ease-in-out infinite",
         shimmer: "shimmer 2s infinite",
         "circuit-flow": "circuit-flow 3s linear infinite",
+        "float-up": "float-up 20s linear infinite",
+        "gentle-rotate": "gentle-rotate 25s ease-in-out infinite",
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

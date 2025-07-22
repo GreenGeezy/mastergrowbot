@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Loader2, ExternalLink } from 'lucide-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import { motion } from 'framer-motion';
+import FloatingIcons from '@/components/FloatingIcons';
 
 const SharedAnalysis = () => {
   const { token } = useParams();
@@ -110,6 +111,9 @@ const SharedAnalysis = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-background to-gray-900/80 min-h-screen">
+      {/* Floating Icons */}
+      <FloatingIcons />
+      
       {/* Modern Branded Header */}
       <motion.div 
         className="flex flex-col items-center justify-center mb-12"

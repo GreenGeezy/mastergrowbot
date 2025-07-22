@@ -13,6 +13,7 @@ import BottomNavigation from '@/components/navigation/BottomNavigation';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { useIsMobile } from '@/hooks/use-mobile';
+import FloatingIcons from '@/components/FloatingIcons';
 
 export default function Index() {
   const session = useSession();
@@ -92,6 +93,9 @@ export default function Index() {
   if (isIOSPreviewMode) {
     return (
       <div className="min-h-screen bg-white relative">
+        {/* Floating Icons */}
+        <FloatingIcons />
+        
         {/* Sparkles Background */}
         <div className="fixed inset-0 w-full h-full">
           <SparklesCore
@@ -120,6 +124,9 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-white relative flex flex-col">
+      {/* Floating Icons */}
+      <FloatingIcons />
+      
       {/* Sparkles Background */}
       <div className="fixed inset-0 w-full h-full">
         <SparklesCore
