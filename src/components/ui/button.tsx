@@ -6,20 +6,20 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-medium transition-all duration-200 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-medium transition-all duration-200 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 interactive-element shadow-card",
   {
     variants: {
       variant: {
-        default: "bg-primary text-white shadow-md shadow-neutral-200 hover:bg-primary-hover active:bg-primary-hover transform active:scale-[0.98]",
+        default: "bg-primary text-white hover:bg-primary-hover hover:shadow-elevated active:bg-primary-hover",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-md shadow-neutral-200 hover:bg-destructive/90 active:bg-destructive/90 transform active:scale-[0.98]",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-elevated active:bg-destructive/90",
         outline:
-          "border-2 border-primary bg-transparent text-primary shadow-md shadow-neutral-200 hover:bg-primary hover:text-white active:bg-primary active:text-white transform active:scale-[0.98]",
+          "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-white hover:shadow-elevated active:bg-primary active:text-white",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-md shadow-neutral-200 hover:bg-secondary/80 active:bg-secondary/80 transform active:scale-[0.98]",
-        ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent active:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        cta: "bg-primary text-white shadow-md shadow-neutral-200 hover:bg-green-400 active:bg-green-400 transform active:scale-[0.98] gap-2",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-elevated active:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent active:text-accent-foreground shadow-none",
+        link: "text-primary underline-offset-4 hover:underline shadow-none",
+        cta: "bg-primary text-white hover:bg-primary-hover hover:shadow-elevated active:bg-primary-hover gap-2",
       },
       size: {
         default: "h-12 px-6 py-3",

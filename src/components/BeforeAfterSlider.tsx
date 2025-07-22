@@ -59,7 +59,7 @@ export default function BeforeAfterSlider({ className = '' }: BeforeAfterSliderP
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden rounded-lg cursor-col-resize select-none ${className}`}
+      className={`relative overflow-hidden rounded-lg cursor-col-resize select-none premium-card ${className}`}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

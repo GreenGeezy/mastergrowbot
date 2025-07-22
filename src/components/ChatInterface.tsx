@@ -171,7 +171,7 @@ const ChatInterface = () => {
   }
 
   return (
-    <div className="flex h-screen w-full bg-white text-gray-900 relative overflow-hidden">
+    <div className="flex h-screen w-full bg-white text-gray-900 relative overflow-hidden page-fade-in">
       {/* Particles Background */}
       <Particles
         className="absolute inset-0"

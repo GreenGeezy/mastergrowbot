@@ -115,7 +115,7 @@ export default function BenefitsSection() {
             className="h-full"
           >
             <Card 
-              className={`bg-gray-50 backdrop-blur-xl border-gray-200 cursor-pointer transition-all duration-300 hover:scale-105 ${
+              className={`bg-gray-50 backdrop-blur-xl border-gray-200 cursor-pointer premium-card interactive-element ${
                 activeCard === benefit.id ? 'ring-2 ring-green-500' : ''
               }`}
               onClick={() => handleCardClick(benefit.id)}

@@ -689,7 +689,7 @@ export default function Quiz() {
   const getProgressPercentage = () => {
     return (currentStep + 1) / questions.length * 100;
   };
-  return <div className="min-h-screen bg-background circuit-background relative">
+  return <div className="min-h-screen bg-background circuit-background relative page-fade-in">
       {/* Particles Background */}
       <Particles
         className="absolute inset-0"

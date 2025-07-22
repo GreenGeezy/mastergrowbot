@@ -116,7 +116,7 @@ export default function Index() {
   }
 
   return (
-    <div className="min-h-screen bg-white relative flex flex-col">
+    <div className="min-h-screen bg-white relative flex flex-col page-fade-in">
       {/* Particles Background */}
       <Particles
         className="absolute inset-0"

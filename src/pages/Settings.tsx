@@ -13,7 +13,7 @@ const Settings = () => {
   const [showProfileDialog, setShowProfileDialog] = useState(true);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 pb-20">
+    <div className="min-h-screen bg-white text-gray-900 pb-20 page-fade-in">
       <div className="absolute inset-0 bg-gradient-radial from-gray-50 via-white to-white -z-10" />
       
       {/* Header */}

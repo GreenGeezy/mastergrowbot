@@ -78,7 +78,7 @@ const FeatureCards = () => {
           >
             <button
               onClick={() => handleFeatureClick(feature.to)}
-              className={`w-full flex items-center p-4 sm:p-5 bg-card/90 hover:bg-card/95 border border-white/10 hover:border-accent/30 rounded-2xl transition-all duration-300 text-left backdrop-blur-xl shadow-xl hover:shadow-2xl ${feature.glowColor} hover:shadow-lg group-hover:translate-y-[-2px]`}
+              className={`w-full flex items-center p-4 sm:p-5 bg-card/90 hover:bg-card/95 border border-white/10 hover:border-accent/30 rounded-2xl transition-all duration-300 text-left backdrop-blur-xl premium-card interactive-element`}
             >
               <div className={`${feature.bgColor} p-3 sm:p-4 rounded-xl mr-4 shadow-lg ring-1 ring-white/10 group-hover:ring-white/20 transition-all duration-300`}>
                 <Icon className={`text-white group-hover:scale-110 transition-transform duration-300 ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />

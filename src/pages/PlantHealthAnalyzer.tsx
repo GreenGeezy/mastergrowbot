@@ -634,7 +634,7 @@ const PlantHealthAnalyzer = () => {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-white text-gray-900 pb-20">
+      <div className="min-h-screen bg-white text-gray-900 pb-20 page-fade-in">
         {/* Particles Background */}
         <Particles
           className="absolute inset-0"

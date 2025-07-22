@@ -105,6 +105,40 @@ p, span, div {
   color: #4b5563;
 }
 
+/* Premium shadow and interaction utilities */
+.premium-card {
+  box-shadow: 0 4px 6px -1px rgba(229, 231, 235, 0.3), 0 2px 4px -2px rgba(229, 231, 235, 0.2);
+  transition: all 0.3s ease;
+}
+
+.premium-card:hover {
+  box-shadow: 0 6px 12px -2px rgba(229, 231, 235, 0.4), 0 4px 8px -4px rgba(229, 231, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+.interactive-element {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.interactive-element:active {
+  transform: scale(0.95);
+}
+
+.page-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.icon-active {
+  color: #16a34a !important;
+  fill: #16a34a !important;
+}
+
+.icon-inactive {
+  color: #6b7280 !important;
+  fill: none !important;
+}
+
 .circuit-background {
   position: relative;
   overflow: hidden;
