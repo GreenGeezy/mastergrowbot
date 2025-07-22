@@ -7,14 +7,12 @@ import { useNavigate } from "react-router-dom";
 import SupportDialog from "@/components/support/SupportDialog";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Waves } from "@/components/ui/waves";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSupport, setShowSupport] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  return <AuroraBackground className="min-h-screen bg-white text-gray-900 pb-20 relative">
+  return <div className="min-h-screen bg-white text-gray-900 pb-20">
       <div className="absolute inset-0 bg-gradient-radial from-green-100/20 via-white to-white -z-10" />
       
       {/* Decorative accent lines */}
@@ -32,7 +30,7 @@ const GrowingGuide = () => {
       </header>
 
       {/* Main Content */}
-      <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto relative z-10">
+      <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-green-600 via-green-500 to-green-700 bg-clip-text text-transparent">
             Growing Guide & FAQ
@@ -66,6 +64,6 @@ const GrowingGuide = () => {
 
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
-    </AuroraBackground>;
+    </div>;
 };
 export default GrowingGuide;

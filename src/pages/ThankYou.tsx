@@ -8,8 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
 import { isIOSPreview } from "@/utils/flags";
-import { Waves } from "@/components/ui/waves";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const ThankYou = () => {
   const location = useLocation();
@@ -187,8 +185,8 @@ const ThankYou = () => {
   }
 
   return (
-    <AuroraBackground className="min-h-screen flex items-center justify-center p-4 bg-white relative">
-      <div className="w-full max-w-md relative z-10">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
+      <div className="w-full max-w-md">
         <Card className="border border-primary/20">
           <CardHeader className="text-center pb-2">
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -232,7 +230,7 @@ const ThankYou = () => {
           onClose={() => setShowPurchaseModal(false)} 
         />
       </div>
-    </AuroraBackground>
+    </div>
   );
 };
 

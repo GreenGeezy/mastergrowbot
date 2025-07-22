@@ -15,8 +15,6 @@ import TestimonialCarousel from '@/components/TestimonialCarousel';
 import IntroCover from '@/components/quiz/IntroCover';
 import PreviewStep from '@/components/quiz/PreviewStep';
 import { SparklesCore } from '@/components/ui/sparkles';
-import { Waves } from '@/components/ui/waves';
-import { AuroraBackground } from '@/components/ui/aurora-background';
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
   if (!jsonString) return fallback;
@@ -352,8 +350,12 @@ export default function Quiz() {
     return <IntroCover onStartQuiz={handleStartQuiz} />;
   }
   if (showPreview) {
-    return <AuroraBackground className="min-h-screen bg-white circuit-background relative">
-        {/* Content with z-index */}
+    return <div className="min-h-screen bg-background circuit-background relative">
+        {/* Sparkles Background */}
+        <div className="fixed inset-0 w-full h-full">
+          <SparklesCore id="quiz-preview-sparkles" background="transparent" minSize={0.4} maxSize={1.2} particleDensity={40} className="w-full h-full" particleColor="#8b87f5" speed={0.6} />
+        </div>
+        
         <div className="relative z-10">
           <ChatHeader />
           <div className="container mx-auto px-4 py-8">
@@ -364,10 +366,15 @@ export default function Quiz() {
             </div>
           </div>
         </div>
-      </AuroraBackground>;
+      </div>;
   }
   if (showSubscription) {
-    return <AuroraBackground className="min-h-screen bg-white circuit-background relative">
+    return <div className="min-h-screen bg-background circuit-background relative">
+        {/* Sparkles Background */}
+        <div className="fixed inset-0 w-full h-full">
+          <SparklesCore id="quiz-subscription-sparkles" background="transparent" minSize={0.5} maxSize={1.3} particleDensity={45} className="w-full h-full" particleColor="#9b87f5" speed={0.7} />
+        </div>
+        
         <div className="relative z-10">
           <ChatHeader />
           <div className="container mx-auto px-4 py-8">
@@ -549,27 +556,13 @@ export default function Quiz() {
             </div>
           </div>
         </div>
-      </AuroraBackground>;
+      </div>;
   }
   if (showInterstitial) {
-    return <div className="min-h-screen bg-white circuit-background relative">
-        {/* Waves Background */}
-        <Waves
-          lineColor="#22c55e"
-          backgroundColor="transparent"
-          waveSpeedX={0.015}
-          waveSpeedY={0.008}
-          waveAmpX={20}
-          waveAmpY={12}
-          friction={0.92}
-          tension={0.008}
-          maxCursorMove={80}
-          xGap={8}
-          yGap={24}
-        />
+    return <div className="min-h-screen bg-background circuit-background relative">
         {/* Sparkles Background */}
         <div className="fixed inset-0 w-full h-full">
-          <SparklesCore id="quiz-interstitial-sparkles" background="transparent" minSize={0.4} maxSize={1.2} particleDensity={40} className="w-full h-full" particleColor="#22c55e" speed={0.6} />
+          <SparklesCore id="quiz-interstitial-sparkles" background="transparent" minSize={0.4} maxSize={1.2} particleDensity={40} className="w-full h-full" particleColor="#8b87f5" speed={0.6} />
         </div>
         
         <div className="relative z-10">
@@ -668,21 +661,7 @@ export default function Quiz() {
   const currentQuestion = questions[currentStep];
   if (!currentQuestion) {
     console.error('Current question not found at index:', currentStep);
-    return <div className="min-h-screen bg-white circuit-background flex items-center justify-center relative">
-        {/* Waves Background */}
-        <Waves
-          lineColor="#22c55e"
-          backgroundColor="transparent"
-          waveSpeedX={0.015}
-          waveSpeedY={0.008}
-          waveAmpX={20}
-          waveAmpY={12}
-          friction={0.92}
-          tension={0.008}
-          maxCursorMove={80}
-          xGap={8}
-          yGap={24}
-        />
+    return <div className="min-h-screen bg-background circuit-background flex items-center justify-center">
         <div className="text-center p-8 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
           <h2 className="text-2xl font-semibold mb-4">Something went wrong</h2>
           <p className="mb-6">We're having trouble loading the quiz questions.</p>
@@ -709,24 +688,10 @@ export default function Quiz() {
   const getProgressPercentage = () => {
     return (currentStep + 1) / questions.length * 100;
   };
-  return <div className="min-h-screen bg-white circuit-background relative">
-      {/* Waves Background */}
-      <Waves
-        lineColor="#22c55e"
-        backgroundColor="transparent"
-        waveSpeedX={0.015}
-        waveSpeedY={0.008}
-        waveAmpX={20}
-        waveAmpY={12}
-        friction={0.92}
-        tension={0.008}
-        maxCursorMove={80}
-        xGap={8}
-        yGap={24}
-      />
+  return <div className="min-h-screen bg-background circuit-background relative">
       {/* Sparkles Background */}
       <div className="fixed inset-0 w-full h-full">
-        <SparklesCore id="quiz-sparkles" background="transparent" minSize={0.4} maxSize={1.0} particleDensity={35} className="w-full h-full" particleColor="#22c55e" speed={0.5} />
+        <SparklesCore id="quiz-sparkles" background="transparent" minSize={0.4} maxSize={1.0} particleDensity={35} className="w-full h-full" particleColor="#36d399" speed={0.5} />
       </div>
       
       <div className="relative z-10">
@@ -889,6 +854,6 @@ export default function Quiz() {
             </div>
           </div>
         </div>
-        </div>
-      </AuroraBackground>;
+      </div>
+    </div>;
 }

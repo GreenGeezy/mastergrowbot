@@ -18,8 +18,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Waves } from '@/components/ui/waves';
-import { AuroraBackground } from '@/components/ui/aurora-background';
 
 interface StructuredAnalysisResult {
   diagnosis: string;
@@ -635,11 +633,10 @@ const PlantHealthAnalyzer = () => {
 
   return (
     <TooltipProvider>
-      <AuroraBackground className="min-h-screen bg-white text-gray-900 pb-20 relative">
-        <div className="relative z-10">
-          <PlantHealthHeader />
+      <div className="min-h-screen bg-white text-gray-900 pb-20">
+        <PlantHealthHeader />
 
-          <main className="container mx-auto px-4 py-8 max-w-4xl">
+        <main className="container mx-auto px-4 py-8 max-w-4xl">
           <section className="mb-8">
             <Card className="bg-gray-50 backdrop-blur-sm border-gray-200">
               <CardHeader>
@@ -765,9 +762,8 @@ const PlantHealthAnalyzer = () => {
           onCancel={handleCancelError}
         />
         
-          <BottomNavigation />
-        </div>
-      </AuroraBackground>
+        <BottomNavigation />
+      </div>
     </TooltipProvider>
   );
 };

@@ -7,8 +7,6 @@ import { Card } from '@/components/ui/card';
 import { Loader2, ExternalLink } from 'lucide-react';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
 import { motion } from 'framer-motion';
-import { Waves } from '@/components/ui/waves';
-import { AuroraBackground } from '@/components/ui/aurora-background';
 
 const SharedAnalysis = () => {
   const { token } = useParams();
@@ -111,10 +109,10 @@ const SharedAnalysis = () => {
   }
 
   return (
-    <AuroraBackground className="container mx-auto px-4 py-8 bg-white min-h-screen relative">
+    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-background to-gray-900/80 min-h-screen">
       {/* Modern Branded Header */}
       <motion.div 
-        className="flex flex-col items-center justify-center mb-12 relative z-10"
+        className="flex flex-col items-center justify-center mb-12"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
@@ -138,7 +136,6 @@ const SharedAnalysis = () => {
       </motion.div>
 
       <motion.div
-        className="relative z-10"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
@@ -199,7 +196,7 @@ const SharedAnalysis = () => {
           </div>
         </Card>
       </motion.div>
-    </AuroraBackground>
+    </div>
   );
 };
 
