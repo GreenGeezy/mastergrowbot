@@ -9,7 +9,6 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { supabase } from "@/integrations/supabase/client";
 import { WalkthroughProvider } from "@/contexts/WalkthroughContext";
 import { WalkthroughManager } from "@/components/walkthrough/WalkthroughManager";
-import { Waves } from "@/components/Waves";
 
 import Index from "./pages/Index";
 import ChatInterface from "./pages/ChatInterface";
@@ -40,10 +39,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase}>
         <WalkthroughProvider>
-          <div className="App relative overflow-hidden">
-            <Waves 
-              className="absolute inset-0 z-[-10] overflow-hidden" 
-            />
+          <div className="App">
             <Toaster />
             <BrowserRouter>
               <Routes>
