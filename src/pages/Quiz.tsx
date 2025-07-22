@@ -766,8 +766,8 @@ export default function Quiz() {
                     }
                   }}>
                           <div className="flex items-center space-x-3">
-                            <div className={`w-4 h-4 rounded-full border-2 ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'border-purple-400 bg-purple-400' : 'border-gray-300 dark:border-white/30'}`}>
-                              {(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value && <div className="w-full h-full rounded-full bg-white"></div>}
+                            <div className={`w-4 h-4 rounded-full border-2 ${(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value ? 'border-purple-500 bg-purple-500' : 'border-gray-400 dark:border-gray-300'}`}>
+                              {(Array.isArray(quizResponses[currentQuestion.field as keyof QuizResponse]) ? (quizResponses[currentQuestion.field as keyof QuizResponse] as string[])[0] : quizResponses[currentQuestion.field as keyof QuizResponse] as string) === option.value && <div className="w-2 h-2 rounded-full bg-white m-0.5"></div>}
                             </div>
                             <label className="text-lg font-medium leading-none cursor-pointer w-full text-gray-900 dark:text-white">
                               {option.label}
@@ -850,7 +850,7 @@ export default function Quiz() {
                 </div>
 
                 <div className="flex justify-between pt-6">
-                  <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0} className="px-6 rounded-full">
+                  <Button variant="outline" onClick={handlePreviousStep} disabled={currentStep === 0} className="px-6 rounded-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50">
                     Previous
                   </Button>
                   
