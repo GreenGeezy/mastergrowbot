@@ -42,9 +42,7 @@ function App() {
         <WalkthroughProvider>
           <div className="App relative overflow-hidden">
             <Waves 
-              lineColor="#16a34a" 
-              backgroundColor="transparent" 
-              className="absolute inset-0 z-[-1] pointer-events-none" 
+              className="absolute inset-0 z-[-10] overflow-hidden" 
             />
             <Toaster />
             <BrowserRouter>
