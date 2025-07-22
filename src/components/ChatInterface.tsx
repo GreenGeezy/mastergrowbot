@@ -23,7 +23,6 @@ import { useConversations } from "@/hooks/use-conversations";
 import { isIOSPreview } from "@/utils/flags";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 
 interface Message {
   id: string;
@@ -171,7 +170,7 @@ const ChatInterface = () => {
   }
 
   return (
-    <AuroraBackground className="flex h-screen w-full text-gray-900 relative overflow-hidden">
+    <div className="flex h-screen w-full bg-white text-gray-900 relative overflow-hidden">
       {/* Chat History Sidebar */}
       <ChatHistorySidebar onConversationSelect={handleConversationSelect} />
 
@@ -291,7 +290,7 @@ const ChatInterface = () => {
 
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
-    </AuroraBackground>
+    </div>
   );
 };
 

@@ -8,7 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
 import PurchaseNotificationModal from "@/components/auth/PurchaseNotificationModal";
 import { isIOSPreview } from "@/utils/flags";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const ThankYou = () => {
   const location = useLocation();
@@ -179,14 +178,14 @@ const ThankYou = () => {
   // Show loading state while validating token
   if (isValidating) {
     return (
-      <AuroraBackground className="min-h-screen flex items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-background">
         <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
-      </AuroraBackground>
+      </div>
     );
   }
 
   return (
-    <AuroraBackground className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md">
         <Card className="border border-primary/20">
           <CardHeader className="text-center pb-2">
@@ -231,7 +230,7 @@ const ThankYou = () => {
           onClose={() => setShowPurchaseModal(false)} 
         />
       </div>
-    </AuroraBackground>
+    </div>
   );
 };
 

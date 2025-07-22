@@ -1,12 +1,10 @@
 
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const BottomNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobile = useIsMobile();
 
   // Custom Futuristic Icons
   const ChatIcon = ({ isActive }: { isActive: boolean }) => (
@@ -145,7 +143,7 @@ const BottomNavigation = () => {
       {/* Futuristic edge effect */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent"></div>
       
-      <div className={`px-4 ${isMobile ? 'py-3' : 'py-4'}`}>
+      <div className="px-4 py-4">
         <div className="flex justify-between items-center max-w-md mx-auto">
           {navigationItems.map((item) => {
             const Icon = item.icon;
@@ -166,7 +164,7 @@ const BottomNavigation = () => {
                     navigate(item.to);
                   }
                 }}
-                className={`flex flex-col items-center ${isMobile ? 'p-2' : 'p-3'} rounded-xl transition-all duration-300 group relative overflow-hidden ${
+                className={`flex flex-col items-center p-3 rounded-xl transition-all duration-300 group relative overflow-hidden ${
                   isActive 
                     ? 'bg-gradient-to-t from-black to-gray-900 shadow-[0_0_20px_rgba(0,255,127,0.4)] border border-emerald-500/30' 
                     : 'bg-gradient-to-t from-gray-900/50 to-gray-800/50 hover:bg-gradient-to-t hover:from-gray-900 hover:to-gray-800 hover:shadow-[0_0_15px_rgba(138,43,226,0.3)] hover:border hover:border-purple-500/20'
@@ -176,7 +174,7 @@ const BottomNavigation = () => {
                 <div className={`absolute inset-0 bg-gradient-to-t from-emerald-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isActive ? 'opacity-30' : ''}`}></div>
                 
                 <Icon isActive={isActive} />
-                <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium ${isMobile ? 'mt-1' : 'mt-2'} relative z-10 transition-all duration-300 ${
+                <span className={`text-xs font-medium mt-2 relative z-10 transition-all duration-300 ${
                   isActive 
                     ? 'text-emerald-300 font-semibold drop-shadow-[0_0_6px_rgba(0,255,127,0.8)]' 
                     : 'text-white group-hover:text-purple-200 group-hover:drop-shadow-[0_0_4px_rgba(138,43,226,0.4)]'

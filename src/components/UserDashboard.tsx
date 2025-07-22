@@ -4,12 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { MessageCircle, Camera, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [isSigningOut, setIsSigningOut] = useState(false);
-  const isMobile = useIsMobile();
 
   const navigationButtons = [
     {
@@ -53,55 +51,45 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className={`max-w-4xl mx-auto animate-fade-in relative ${isMobile ? 'px-4 py-6' : 'px-8 py-8'}`}>
-      <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 p-6 sm:p-8">
-        {/* Dashboard Header */}
-        <div className="text-center mb-8">
-          <h1 className={`font-bold text-gray-900 mb-4 ${isMobile ? 'text-2xl sm:text-3xl' : 'text-4xl'}`}>
-            Welcome to Master Growbot
-          </h1>
-          <p className={`text-gray-600 leading-relaxed px-2 ${isMobile ? 'text-sm sm:text-base' : 'text-lg'}`}>
-            Your AI-powered cannabis cultivation assistant is ready to help
-          </p>
-        </div>
-
-        {/* Navigation Cards */}
-        <div className={`grid gap-6 mb-8 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-3'}`}>
+    <div className="w-full max-w-md mx-auto animate-fade-in px-4 circuit-background relative">
+      <div className="flex flex-col items-center space-y-8">
+        <div className="w-full grid grid-cols-1 gap-4">
           {navigationButtons.map((button, index) => {
-            const IconComponent = button.icon;
+            const Icon = button.icon;
             return (
-              <div key={index} className="group relative">
-                <Button
-                  onClick={button.onClick}
-                  className="w-full h-auto text-left bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 border border-green-200 hover:border-green-300 transition-all duration-300 group-hover:scale-105 p-6"
-                  variant="ghost"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <IconComponent className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-green-600 mb-4`} />
-                    <h3 className={`font-bold text-gray-900 mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                      {button.title}
-                    </h3>
-                    <p className={`text-gray-600 leading-relaxed ${isMobile ? 'text-sm' : 'text-base'}`}>
-                      {button.subtitle}
-                    </p>
-                  </div>
-                </Button>
-              </div>
+              <button
+                key={button.title}
+                onClick={button.onClick}
+                className="card flex items-center p-4 rounded-lg cursor-pointer w-full group relative overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="p-2 bg-gradient-primary group-hover:bg-gradient-secondary rounded-lg glow-primary group-hover:glow-accent transition-all duration-300">
+                  <Icon className="w-5 h-5 text-white" />
+                </div>
+                <div className="ml-4 flex flex-col text-left">
+                  <h3 className="font-medium text-sm text-white group-hover:text-accent transition-colors duration-300 tech-font">
+                    {button.title}
+                  </h3>
+                  <p className="text-gray-400 text-xs">
+                    {button.subtitle}
+                  </p>
+                </div>
+              </button>
             );
           })}
         </div>
 
-        {/* Sign Out Button */}
-        <div className="text-center pt-6 border-t border-gray-200">
-          <Button
-            onClick={handleSignOut}
-            disabled={isSigningOut}
-            variant="outline"
-            className={`text-gray-600 hover:text-red-600 border-gray-300 hover:border-red-300 ${isMobile ? 'px-4 py-2 text-sm' : 'px-6 py-3'}`}
-          >
-            {isSigningOut ? 'Signing out...' : 'Sign Out'}
-          </Button>
-        </div>
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-glow via-accent to-secondary-glow tech-font">
+          Welcome back!
+        </h2>
+        
+        <Button
+          onClick={handleSignOut}
+          disabled={isSigningOut}
+          className="cyber-button w-full glow-accent"
+        >
+          {isSigningOut ? "Signing Out..." : "Sign Out"}
+        </Button>
       </div>
     </div>
   );

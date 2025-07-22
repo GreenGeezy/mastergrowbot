@@ -15,7 +15,6 @@ import TestimonialCarousel from '@/components/TestimonialCarousel';
 import IntroCover from '@/components/quiz/IntroCover';
 import PreviewStep from '@/components/quiz/PreviewStep';
 import { SparklesCore } from '@/components/ui/sparkles';
-import { AuroraBackground } from '@/components/ui/aurora-background';
 const TEMP_QUIZ_RESPONSES_KEY = 'mg_temp_quiz_responses';
 const safeJsonParse = (jsonString: string | null, fallback: any = {}) => {
   if (!jsonString) return fallback;
@@ -689,7 +688,7 @@ export default function Quiz() {
   const getProgressPercentage = () => {
     return (currentStep + 1) / questions.length * 100;
   };
-  return <AuroraBackground className="min-h-screen relative">
+  return <div className="min-h-screen bg-background circuit-background relative">
       {/* Sparkles Background */}
       <div className="fixed inset-0 w-full h-full">
         <SparklesCore id="quiz-sparkles" background="transparent" minSize={0.4} maxSize={1.0} particleDensity={35} className="w-full h-full" particleColor="#36d399" speed={0.5} />
@@ -856,5 +855,5 @@ export default function Quiz() {
           </div>
         </div>
       </div>
-    </AuroraBackground>;
+    </div>;
 }
