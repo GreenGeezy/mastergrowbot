@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChatHeader } from '@/components/chat/ChatHeader';
+import BottomNavigation from '@/components/navigation/BottomNavigation';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -358,8 +358,7 @@ export default function Quiz() {
         </div>
         
         <div className="relative z-10">
-          <ChatHeader />
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 py-8 pt-8">
             <div className="max-w-2xl mx-auto">
               <div className="px-8 py-6 bg-card rounded-xl border border-white/10 shadow-2xl backdrop-blur-xl">
                 <PreviewStep onContinueToCheckout={handleContinueToCheckout} onBackToQuestions={handleBackToQuestions} />
@@ -367,6 +366,7 @@ export default function Quiz() {
             </div>
           </div>
         </div>
+        <BottomNavigation />
       </div>;
   }
   if (showSubscription) {
@@ -377,8 +377,7 @@ export default function Quiz() {
         </div>
         
         <div className="relative z-10">
-          <ChatHeader />
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 py-8 pt-8">
             <div className="w-full max-w-[1200px] space-y-6">
               <div className="text-center space-y-2">
                 <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-glow via-accent to-secondary-glow text-transparent bg-clip-text tech-font tracking-tight">
@@ -557,6 +556,7 @@ export default function Quiz() {
             </div>
           </div>
         </div>
+        <BottomNavigation />
       </div>;
   }
   if (showInterstitial) {
@@ -567,8 +567,7 @@ export default function Quiz() {
         </div>
         
         <div className="relative z-10">
-          <ChatHeader />
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 py-8 pt-8">
             <div className="max-w-2xl mx-auto">
               <div className="px-8 py-12 bg-white/95 dark:bg-card rounded-xl border border-gray-200 dark:border-white/10 shadow-2xl backdrop-blur-xl text-center">
                 <div className="space-y-8">
@@ -657,6 +656,7 @@ export default function Quiz() {
             </div>
           </div>
         </div>
+        <BottomNavigation />
       </div>;
   }
   const currentQuestion = questions[currentStep];
@@ -703,8 +703,7 @@ export default function Quiz() {
       {/* Content with higher z-index */}
       
       <div className="relative z-10">
-        <ChatHeader />
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 pt-8">
           <div className="max-w-2xl mx-auto">
               <div className="px-8 py-6 bg-white/95 dark:bg-card rounded-xl border border-gray-200 dark:border-white/10 shadow-2xl backdrop-blur-xl">
               <div className="space-y-6">
@@ -869,5 +868,6 @@ export default function Quiz() {
           </div>
         </div>
       </div>
+      <BottomNavigation />
     </div>;
 }

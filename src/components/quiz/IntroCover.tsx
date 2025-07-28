@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ChatHeader } from '@/components/chat/ChatHeader';
+import BottomNavigation from '@/components/navigation/BottomNavigation';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 
 interface IntroCoverProps {
@@ -11,7 +11,8 @@ interface IntroCoverProps {
 const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
   return (
     <div className="min-h-screen bg-white circuit-background relative overflow-hidden">
-      <ChatHeader />
+      {/* Content with top padding to replace header */}
+      <div className="pt-4">
       
       {/* Background Image */}
       <div 
@@ -80,6 +81,8 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
           </div>
         </div>
       </div>
+      </div>
+      <BottomNavigation />
     </div>
   );
 };
