@@ -35,7 +35,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({
               }} />
               
               <h1 className="text-headline font-display text-foreground text-center leading-tight relative z-10">
-                Stop Losing <span className="text-destructive">$336 per plant</span> and up to <span className="text-destructive">$100,000 per Harvest</span> in 10 Seconds with just a pic
+                Stop Losing <span className="text-destructive">$336 per plant</span> and up to <span className="text-destructive">$100,000 per Harvest</span> in 10 Seconds with a pic
               </h1>
             </div>
             
