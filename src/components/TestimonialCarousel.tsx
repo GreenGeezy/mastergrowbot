@@ -87,7 +87,7 @@ const TestimonialCarousel = () => {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="bg-gray-50 py-12 px-4 relative overflow-hidden">
+    <section className="bg-gray-50 py-4 px-4 relative overflow-hidden">
       {/* Background gradient effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-green-100/50 via-transparent to-green-100/30 pointer-events-none" />
       
@@ -96,11 +96,11 @@ const TestimonialCarousel = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8"
+          className="text-center mb-4"
         >
-          <h2 className={`text-headline-sm font-display text-foreground text-center mb-2 leading-tight ${isMobile ? 'text-headline-sm' : 'text-headline-md'}`}>
+          <h3 className={`text-headline-xs font-display text-foreground text-center leading-tight ${isMobile ? 'text-headline-xs' : 'text-headline-sm'}`}>
             See what First Time Growers, Large-Scale Cultivators, Hobbyists, Medical Researchers, and Botanists across the Cannabis Industry are saying about Master Growbot AI
-          </h2>
+          </h3>
         </motion.div>
         
         <div className="relative">
