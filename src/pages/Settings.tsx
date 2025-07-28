@@ -1,16 +1,20 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProfileSettingsDialog from '@/components/profile/ProfileSettingsDialog';
 import Header from '@/components/Header';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import SubscriptionSection from '@/components/settings/SubscriptionSection';
+import SupportDialog from '@/components/support/SupportDialog';
+import { useSession } from '@supabase/auth-helpers-react';
 
 const Settings = () => {
   const navigate = useNavigate();
+  const session = useSession();
   const [showProfileDialog, setShowProfileDialog] = useState(true);
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-gray-900 pb-20 page-fade-in">
@@ -57,6 +61,23 @@ const Settings = () => {
             <SubscriptionSection />
           </div>
           
+          {/* Feedback Section - Only visible if authenticated */}
+          {session && (
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Share Your Feedback</h3>
+                <p className="text-gray-600 mb-4">Help us improve Master Growbot by sharing your thoughts and suggestions.</p>
+                <Button
+                  onClick={() => setShowFeedbackDialog(true)}
+                  className="bg-green-600 hover:bg-green-700 text-white rounded-2xl h-12 px-6 flex items-center gap-2"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  Share Feedback
+                </Button>
+              </div>
+            </div>
+          )}
+          
           {/* Profile Settings */}
           <div className="flex justify-center">
             <ProfileSettingsDialog 
@@ -68,6 +89,12 @@ const Settings = () => {
       </main>
 
       <BottomNavigation />
+      
+      {/* Support/Feedback Dialog */}
+      <SupportDialog 
+        isOpen={showFeedbackDialog} 
+        onOpenChange={setShowFeedbackDialog} 
+      />
     </div>
   );
 };
