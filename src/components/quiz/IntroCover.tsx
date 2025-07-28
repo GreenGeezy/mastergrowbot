@@ -53,7 +53,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({
             </div>
             
             {/* Testimonial Carousel */}
-            <div className="pt-8">
+            <div className="pt-4">
               <TestimonialCarousel />
             </div>
             
