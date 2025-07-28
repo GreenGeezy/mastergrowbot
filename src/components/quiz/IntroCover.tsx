@@ -40,7 +40,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({
             </div>
             
             {/* Sub-headline */}
-            <p className="text-body-secondary font-body max-w-3xl mx-auto leading-relaxed text-center">Answer four quick questions to unlock your first personalised AI Action Card—Save your grow from dangerous pests and dieseases and take your first step to Growing Award Winning Buds with AI</p>
+            <p className="text-body-secondary font-body max-w-3xl mx-auto leading-relaxed text-center">Answer 4 quick questions to unlock your first personalised AI Action Card. Save your grow from dangerous pests and dieseases to take your 1st step to Growing Award Winning Buds with AI</p>
             
             {/* Primary CTA Button with Glassmorphism */}
             <div className="pt-8">
