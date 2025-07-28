@@ -71,6 +71,10 @@ const AuthSection: React.FC<AuthSectionProps> = ({ onSignOut }) => {
     setLoading(true);
     try {
       if (authMode === 'signup') {
+        // Check for existing pending subscriptions
+        const { data: pendingSubscription } = await supabase
+          .rpc('get_pending_subscription', { email_address: formData.email });
+
         const { error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
@@ -82,21 +86,51 @@ const AuthSection: React.FC<AuthSectionProps> = ({ onSignOut }) => {
           }
         });
         
-        if (error) throw error;
-        toast.success('Check your email to confirm your account!');
+        if (error) {
+          if (error.message.includes('already registered')) {
+            toast.error('Account already exists. Please sign in instead.');
+            setAuthMode('signin');
+          } else {
+            throw error;
+          }
+        } else {
+          toast.success('Check your email to confirm your account!');
+        }
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: formData.email,
           password: formData.password,
         });
         
-        if (error) throw error;
-        toast.success('Signed in successfully!');
+        if (error) {
+          if (error.message.includes('Invalid login credentials')) {
+            toast.error('Invalid email or password. Please try again.');
+          } else if (error.message.includes('Email not confirmed')) {
+            toast.error('Please check your email and confirm your account first.');
+          } else {
+            throw error;
+          }
+        } else {
+          toast.success('Signed in successfully!');
+          
+          // Handle pending subscriptions after successful sign-in
+          try {
+            const { data: pendingSubscription } = await supabase
+              .rpc('get_pending_subscription', { email_address: formData.email });
+            
+            if (pendingSubscription?.[0]?.has_pending) {
+              toast.success('Welcome back! Your subscription is ready.');
+            }
+          } catch (subscriptionError) {
+            console.warn('Could not check pending subscriptions:', subscriptionError);
+          }
+        }
       }
       
       setFormData({ name: '', email: '', password: '', confirmPassword: '' });
     } catch (error: any) {
-      toast.error(error.message || 'Authentication failed');
+      console.error('Authentication error:', error);
+      toast.error(error.message || 'Authentication failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -105,16 +139,32 @@ const AuthSection: React.FC<AuthSectionProps> = ({ onSignOut }) => {
   const handleGoogleAuth = async () => {
     setLoading(true);
     try {
+      // Check network connectivity
+      if (!navigator.onLine) {
+        throw new Error('No internet connection. Please check your network.');
+      }
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`
+          redirectTo: `${window.location.origin}/`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
         }
       });
       
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes('popup')) {
+          toast.error('Popup blocked. Please allow popups and try again.');
+        } else {
+          throw error;
+        }
+      }
     } catch (error: any) {
-      toast.error(error.message || 'Google sign-in failed');
+      console.error('Google auth error:', error);
+      toast.error(error.message || 'Google sign-in failed. Please try again.');
     } finally {
       setLoading(false);
     }

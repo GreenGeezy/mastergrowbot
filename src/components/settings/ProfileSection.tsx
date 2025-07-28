@@ -51,23 +51,43 @@ const ProfileSection: React.FC = () => {
     if (!session?.user) return;
 
     try {
-      // Load user profile
-      const { data: profile } = await supabase
+      setLoading(true);
+      
+      // Load user profile with safer query methods
+      const { data: profile, error: profileError } = await supabase
         .from('user_profiles')
         .select('*')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
 
-      // Load quiz responses
-      const { data: quizData } = await supabase
+      if (profileError && profileError.code !== 'PGRST116') {
+        console.error('Profile load error:', profileError);
+        toast.error('Failed to load profile data');
+        return;
+      }
+
+      // Load quiz responses with safer query methods
+      const { data: quizData, error: quizError } = await supabase
         .from('quiz_responses')
         .select('*')
         .eq('user_id', session.user.id)
-        .single();
+        .maybeSingle();
+
+      if (quizError && quizError.code !== 'PGRST116') {
+        console.error('Quiz data load error:', quizError);
+      }
+
+      // Check for auth session validity
+      const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !currentSession) {
+        toast.error('Session expired. Please sign in again.');
+        return;
+      }
 
       setProfileData({
         username: profile?.username || '',
-        email: session.user.email || '',
+        email: currentSession.user.email || '',
         grow_experience_level: profile?.grow_experience_level || quizData?.experience_level || 'new',
         growing_method: profile?.growing_method || quizData?.growing_method || 'outdoor',
         monitoring_method: profile?.monitoring_method || quizData?.monitoring_method || 'manual',
@@ -75,51 +95,115 @@ const ProfileSection: React.FC = () => {
         challenges: profile?.challenges || quizData?.challenges || [],
         goals: profile?.goals || quizData?.goals || []
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading profile:', error);
+      if (error.message?.includes('JWT')) {
+        toast.error('Authentication error. Please sign in again.');
+      } else {
+        toast.error('Failed to load profile data. Please try again.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSaveProfile = async () => {
-    if (!session?.user) return;
+    if (!session?.user) {
+      toast.error('Please sign in to save changes');
+      return;
+    }
+
+    // Validate required fields
+    if (!profileData.username.trim()) {
+      toast.error('Name is required');
+      return;
+    }
 
     setLoading(true);
     try {
-      // Update user profile
-      const { error: profileError } = await supabase
-        .from('user_profiles')
-        .upsert({
-          id: session.user.id,
-          username: profileData.username,
-          grow_experience_level: profileData.grow_experience_level,
-          growing_method: profileData.growing_method,
-          monitoring_method: profileData.monitoring_method,
-          nutrient_type: profileData.nutrient_type,
-          challenges: profileData.challenges,
-          goals: profileData.goals
+      // Check current session validity before saving
+      const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !currentSession) {
+        toast.error('Session expired. Please sign in again.');
+        setLoading(false);
+        return;
+      }
+
+      // Create retry logic for database operations
+      const retryOperation = async (operation: () => Promise<any>, maxRetries = 3) => {
+        for (let i = 0; i < maxRetries; i++) {
+          try {
+            return await operation();
+          } catch (error: any) {
+            if (i === maxRetries - 1) throw error;
+            if (error.message?.includes('JWT') || error.code === '401') {
+              // Force session refresh and retry
+              await supabase.auth.refreshSession();
+            }
+            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1))); // Progressive delay
+          }
+        }
+      };
+
+      // Update user profile with retry logic
+      await retryOperation(async () => {
+        const { error: profileError } = await supabase
+          .from('user_profiles')
+          .upsert({
+            id: currentSession.user.id,
+            username: profileData.username.trim(),
+            grow_experience_level: profileData.grow_experience_level,
+            growing_method: profileData.growing_method,
+            monitoring_method: profileData.monitoring_method,
+            nutrient_type: profileData.nutrient_type,
+            challenges: profileData.challenges.filter(c => c.trim()),
+            goals: profileData.goals.filter(g => g.trim())
+          }, {
+            onConflict: 'id'
+          });
+
+        if (profileError) throw profileError;
+      });
+
+      // Update quiz responses with retry logic (optional sync)
+      try {
+        await retryOperation(async () => {
+          const { error: quizError } = await supabase
+            .from('quiz_responses')
+            .upsert({
+              user_id: currentSession.user.id,
+              experience_level: profileData.grow_experience_level as any,
+              growing_method: profileData.growing_method as any,
+              monitoring_method: profileData.monitoring_method as any,
+              nutrient_type: profileData.nutrient_type as any,
+              challenges: profileData.challenges.filter(c => c.trim()),
+              goals: profileData.goals.filter(g => g.trim())
+            }, {
+              onConflict: 'user_id'
+            });
+
+          if (quizError) throw quizError;
         });
-
-      if (profileError) throw profileError;
-
-      // Update quiz responses
-      const { error: quizError } = await supabase
-        .from('quiz_responses')
-        .upsert({
-          user_id: session.user.id,
-          experience_level: profileData.grow_experience_level as any,
-          growing_method: profileData.growing_method as any,
-          monitoring_method: profileData.monitoring_method as any,
-          nutrient_type: profileData.nutrient_type as any,
-          challenges: profileData.challenges,
-          goals: profileData.goals
-        });
-
-      if (quizError) throw quizError;
+      } catch (quizSyncError) {
+        console.warn('Quiz sync failed, profile still saved:', quizSyncError);
+        // Don't throw - profile save succeeded
+      }
 
       toast.success('Profile updated successfully!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving profile:', error);
-      toast.error('Failed to save profile changes');
+      
+      if (error.message?.includes('JWT') || error.code === '401') {
+        toast.error('Authentication error. Please sign in again.');
+      } else if (error.message?.includes('violates row-level security')) {
+        toast.error('Permission denied. Please sign in again.');
+      } else if (error.message?.includes('duplicate key')) {
+        toast.error('Profile already exists. Refreshing page...');
+        setTimeout(() => window.location.reload(), 2000);
+      } else {
+        toast.error('Failed to save profile changes. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
