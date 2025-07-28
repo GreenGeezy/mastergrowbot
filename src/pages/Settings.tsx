@@ -1,20 +1,29 @@
 
-import { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MessageSquare } from 'lucide-react';
+import { useSession } from '@supabase/auth-helpers-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ProfileSettingsDialog from '@/components/profile/ProfileSettingsDialog';
-import Header from '@/components/Header';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import SubscriptionSection from '@/components/settings/SubscriptionSection';
-import SupportDialog from '@/components/support/SupportDialog';
-import { useSession } from '@supabase/auth-helpers-react';
+import AuthSection from '@/components/settings/AuthSection';
+import ProfileSection from '@/components/settings/ProfileSection';
+import AccountSection from '@/components/settings/AccountSection';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 const Settings = () => {
   const navigate = useNavigate();
   const session = useSession();
-  const [showProfileDialog, setShowProfileDialog] = useState(true);
-  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
+
+  const handleSignOut = () => {
+    // Refresh the page to update auth state
+    window.location.reload();
+  };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 pb-20 page-fade-in">
@@ -55,46 +64,54 @@ const Settings = () => {
           </p>
         </div>
 
-        <div className="space-y-6">
-          {/* Subscription Section */}
-          <div className="max-w-2xl mx-auto">
-            <SubscriptionSection />
-          </div>
+        <div className="max-w-2xl mx-auto space-y-6">
+          {/* Authentication Section - Always visible */}
+          <AuthSection onSignOut={handleSignOut} />
           
-          {/* Feedback Section - Only visible if authenticated */}
+          {/* Collapsible sections for authenticated users */}
           {session && (
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Share Your Feedback</h3>
-                <p className="text-gray-600 mb-4">Help us improve Master Growbot by sharing your thoughts and suggestions.</p>
-                <Button
-                  onClick={() => setShowFeedbackDialog(true)}
-                  className="bg-green-600 hover:bg-green-700 text-white rounded-2xl h-12 px-6 flex items-center gap-2"
-                >
-                  <MessageSquare className="h-4 w-4" />
-                  Share Feedback
-                </Button>
-              </div>
-            </div>
+            <Accordion type="multiple" defaultValue={["profile", "account", "subscription"]} className="space-y-4">
+              <AccordionItem value="profile" className="border-none">
+                <AccordionTrigger className="hover:no-underline p-0">
+                  <div className="flex items-center gap-3 text-left">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                    <span className="text-lg font-medium text-gray-900">Profile Settings</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 pb-0">
+                  <ProfileSection />
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="account" className="border-none">
+                <AccordionTrigger className="hover:no-underline p-0">
+                  <div className="flex items-center gap-3 text-left">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                    <span className="text-lg font-medium text-gray-900">Account Settings</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 pb-0">
+                  <AccountSection />
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="subscription" className="border-none">
+                <AccordionTrigger className="hover:no-underline p-0">
+                  <div className="flex items-center gap-3 text-left">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                    <span className="text-lg font-medium text-gray-900">Subscription</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 pb-0">
+                  <SubscriptionSection />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           )}
-          
-          {/* Profile Settings */}
-          <div className="flex justify-center">
-            <ProfileSettingsDialog 
-              isOpen={showProfileDialog} 
-              onOpenChange={setShowProfileDialog}
-            />
-          </div>
         </div>
       </main>
 
       <BottomNavigation />
-      
-      {/* Support/Feedback Dialog */}
-      <SupportDialog 
-        isOpen={showFeedbackDialog} 
-        onOpenChange={setShowFeedbackDialog} 
-      />
     </div>
   );
 };
