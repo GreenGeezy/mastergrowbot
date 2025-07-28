@@ -124,16 +124,16 @@ export default function Quiz() {
     type: "radio",
     field: "goals",
     options: [{
-      label: "Max yield",
+      label: "💰 Max yield",
       value: "profits"
     }, {
-      label: "Top quality and potency",
+      label: "🏆 Top quality and potency",
       value: "quality"
     }, {
-      label: "Slash costs",
+      label: "💡 Slash costs",
       value: "costs"
     }, {
-      label: "Stay 100% compliant",
+      label: "📋 Stay 100% compliant",
       value: "compliance"
     }],
     tooltip: "We tune the AI to maximise yield, terps, savings or compliance—whichever you pick."
@@ -142,13 +142,13 @@ export default function Quiz() {
     type: "radio",
     field: "experience_level",
     options: [{
-      label: "I'm new",
+      label: "🌱 I'm new",
       value: "new"
     }, {
-      label: "6 months - 2 years",
+      label: "🌿 6 months - 2 years",
       value: "intermediate"
     }, {
-      label: "Over 2 years",
+      label: "🌳 Over 2 years",
       value: "advanced"
     }]
   }, {
@@ -156,19 +156,19 @@ export default function Quiz() {
     type: "radio",
     field: "plant_quantity",
     options: [{
-      label: "🌱 1–4 (home hobby)",
+      label: "🏠 1–4 (home hobby)",
       value: "1-4"
     }, {
-      label: "🌿 5–20 (garage / small room)",
+      label: "🌱 5–20 (garage / small room)",
       value: "5-20"
     }, {
-      label: "🌳 21–100 (craft)",
+      label: "🌿 21–100 (craft)",
       value: "21-100"
     }, {
       label: "🏭 101–500 (mid-scale)",
       value: "101-500"
     }, {
-      label: "🌄 500 + (farm or MSO)",
+      label: "🏗️ 500 + (farm or MSO)",
       value: "500+"
     }],
     tooltip: "This lets us size nutrients, labour, and ROI."
@@ -177,13 +177,13 @@ export default function Quiz() {
     type: "radio",
     field: "growing_method",
     options: [{
-      label: "Indoor",
+      label: "🏠 Indoor",
       value: "indoor"
     }, {
-      label: "Outdoor",
+      label: "🌞 Outdoor",
       value: "outdoor"
     }, {
-      label: "Greenhouse",
+      label: "🏡 Greenhouse",
       value: "greenhouse"
     }]
   }];
