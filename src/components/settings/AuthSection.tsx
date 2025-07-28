@@ -139,14 +139,32 @@ const AuthSection: React.FC<AuthSectionProps> = ({ onSignOut }) => {
 
   if (session) {
     return (
-      <Card className="bg-gray-50 border-gray-200">
+      <Card className="bg-gray-50 border-gray-200 shadow-sm">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <User className="h-6 w-6 text-green-600" />
               <div>
-                <CardTitle className="text-gray-900">Account</CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardTitle 
+                  className="text-gray-900"
+                  style={{ 
+                    fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: '20pt',
+                    fontWeight: '700',
+                    color: '#111827'
+                  }}
+                >
+                  Account
+                </CardTitle>
+                <CardDescription 
+                  className="text-gray-600"
+                  style={{ 
+                    fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: '16pt',
+                    fontWeight: '400',
+                    color: '#4b5563'
+                  }}
+                >
                   Signed in as {session.user.email}
                 </CardDescription>
               </div>
@@ -158,24 +176,59 @@ const AuthSection: React.FC<AuthSectionProps> = ({ onSignOut }) => {
             <AlertDialogTrigger asChild>
               <Button 
                 variant="destructive" 
-                className="w-full bg-red-600 hover:bg-red-700 text-white"
+                className="w-full h-12 bg-red-600 hover:bg-red-700 text-white transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] rounded-xl"
+                style={{ backgroundColor: '#ef4444' }}
               >
                 <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
+                <span 
+                  style={{ 
+                    fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: '16pt',
+                    fontWeight: '600'
+                  }}
+                >
+                  Sign Out
+                </span>
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className="bg-white border-gray-200">
               <AlertDialogHeader>
-                <AlertDialogTitle>Sign out of your account?</AlertDialogTitle>
-                <AlertDialogDescription>
+                <AlertDialogTitle 
+                  style={{ 
+                    fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: '20pt',
+                    fontWeight: '700',
+                    color: '#111827'
+                  }}
+                >
+                  Sign out of your account?
+                </AlertDialogTitle>
+                <AlertDialogDescription 
+                  style={{ 
+                    fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: '16pt',
+                    fontWeight: '400',
+                    color: '#4b5563'
+                  }}
+                >
                   You will need to sign in again to access your personalized settings and data.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel 
+                  className="transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  style={{ 
+                    backgroundColor: 'white',
+                    color: '#111827',
+                    borderColor: '#e5e7eb'
+                  }}
+                >
+                  Cancel
+                </AlertDialogCancel>
                 <AlertDialogAction 
                   onClick={handleSignOut}
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-red-600 hover:bg-red-700 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  style={{ backgroundColor: '#ef4444' }}
                 >
                   Sign Out
                 </AlertDialogAction>
@@ -188,13 +241,31 @@ const AuthSection: React.FC<AuthSectionProps> = ({ onSignOut }) => {
   }
 
   return (
-    <Card className="bg-gray-50 border-gray-200">
+    <Card className="bg-gray-50 border-gray-200 shadow-sm">
       <CardHeader>
         <div className="flex items-center gap-3">
           <User className="h-6 w-6 text-green-600" />
           <div>
-            <CardTitle className="text-gray-900">Sign In / Sign Up</CardTitle>
-            <CardDescription className="text-gray-600">
+            <CardTitle 
+              className="text-gray-900"
+              style={{ 
+                fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                fontSize: '20pt',
+                fontWeight: '700',
+                color: '#111827'
+              }}
+            >
+              Sign In / Sign Up
+            </CardTitle>
+            <CardDescription 
+              className="text-gray-600"
+              style={{ 
+                fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                fontSize: '16pt',
+                fontWeight: '400',
+                color: '#4b5563'
+              }}
+            >
               Access your personalized growing assistant
             </CardDescription>
           </div>
@@ -211,27 +282,49 @@ const AuthSection: React.FC<AuthSectionProps> = ({ onSignOut }) => {
           <TabsContent value="signin" className="space-y-4">
             <form onSubmit={handleEmailAuth} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="signin-email" className="text-gray-900">Email</Label>
+                <Label 
+                  htmlFor="signin-email" 
+                  className="text-gray-900"
+                  style={{ 
+                    fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: '16pt',
+                    fontWeight: '500',
+                    color: '#111827'
+                  }}
+                >
+                  Email
+                </Label>
                 <Input
                   id="signin-email"
                   type="email"
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`bg-white border-gray-300 ${errors.email ? 'border-red-500' : ''}`}
+                  className={`bg-white border-gray-300 h-12 rounded-xl transition-all duration-200 focus:scale-[1.01] ${errors.email ? 'border-red-500' : ''}`}
                 />
                 {errors.email && <p className="text-sm text-red-600">{errors.email}</p>}
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="signin-password" className="text-gray-900">Password</Label>
+                <Label 
+                  htmlFor="signin-password" 
+                  className="text-gray-900"
+                  style={{ 
+                    fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: '16pt',
+                    fontWeight: '500',
+                    color: '#111827'
+                  }}
+                >
+                  Password
+                </Label>
                 <Input
                   id="signin-password"
                   type="password"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
-                  className={`bg-white border-gray-300 ${errors.password ? 'border-red-500' : ''}`}
+                  className={`bg-white border-gray-300 h-12 rounded-xl transition-all duration-200 focus:scale-[1.01] ${errors.password ? 'border-red-500' : ''}`}
                 />
                 {errors.password && <p className="text-sm text-red-600">{errors.password}</p>}
               </div>
@@ -239,10 +332,19 @@ const AuthSection: React.FC<AuthSectionProps> = ({ onSignOut }) => {
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="w-full bg-green-600 hover:bg-green-700 text-white h-12"
+                className="w-full h-12 bg-green-600 hover:bg-green-700 text-white rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                style={{ backgroundColor: '#16a34a' }}
               >
                 <Mail className="h-4 w-4 mr-2" />
-                {loading ? 'Signing In...' : 'Sign In'}
+                <span 
+                  style={{ 
+                    fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: '16pt',
+                    fontWeight: '600'
+                  }}
+                >
+                  {loading ? 'Signing In...' : 'Sign In'}
+                </span>
               </Button>
             </form>
           </TabsContent>

@@ -289,14 +289,47 @@ const ProfileSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-gray-200">
-          <Button 
-            onClick={handleSaveProfile}
-            disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 text-white h-12"
-          >
-            {loading ? 'Saving...' : 'Save Profile Changes'}
-          </Button>
+        <div className="pt-6 border-t border-gray-200">
+          <div className="flex gap-3">
+            <Button 
+              onClick={handleSaveProfile}
+              disabled={loading}
+              className="flex-1 bg-green-600 hover:bg-green-700 text-white h-12 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              style={{ backgroundColor: '#16a34a' }}
+            >
+              {loading && (
+                <div className="w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              )}
+              <span 
+                style={{ 
+                  fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                  fontSize: '16pt',
+                  fontWeight: '600'
+                }}
+              >
+                {loading ? 'Saving...' : 'Save Changes'}
+              </span>
+            </Button>
+            <Button 
+              variant="outline"
+              className="px-6 h-12 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              style={{ 
+                backgroundColor: 'white',
+                color: '#111827',
+                borderColor: '#e5e7eb'
+              }}
+            >
+              <span 
+                style={{ 
+                  fontFamily: 'SF Pro Text, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                  fontSize: '16pt',
+                  fontWeight: '500'
+                }}
+              >
+                Cancel
+              </span>
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
