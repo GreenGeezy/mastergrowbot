@@ -23,9 +23,9 @@ const IntroCover: React.FC<IntroCoverProps> = ({ onStartQuiz }) => {
         }}
       />
       
-      <div className="container mx-auto px-4 py-8 relative z-10">
+      <div className="container mx-auto px-4 py-2 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="space-y-8 mt-16 md:mt-24">
+          <div className="space-y-6 mt-4 md:mt-8">
             {/* Main Headline with Animated Halo */}
             <div className="relative">
               {/* Animated radial-gradient halo */}
