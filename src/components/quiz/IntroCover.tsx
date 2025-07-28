@@ -43,7 +43,7 @@ const IntroCover: React.FC<IntroCoverProps> = ({
             <p className="text-body-secondary font-body max-w-3xl mx-auto leading-relaxed text-center">Answer 4 quick questions to unlock your first personalised AI Action Card. Save your grow from dangerous pests and dieseases to take your 1st step to Growing Award Winning Buds with AI</p>
             
             {/* Primary CTA Button with Glassmorphism */}
-            <div className="pt-8">
+            <div className="pt-4">
               <Button onClick={onStartQuiz} variant="cta" size="lg" className="px-12 py-6 text-xl font-bold">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.5 5.5L15.5 12L8.5 18.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -53,12 +53,12 @@ const IntroCover: React.FC<IntroCoverProps> = ({
             </div>
             
             {/* Testimonial Carousel */}
-            <div className="pt-4">
+            <div className="pt-2">
               <TestimonialCarousel />
             </div>
             
             {/* Additional visual elements */}
-            <div className="pt-12 flex justify-center items-center space-x-2 text-gray-700 dark:text-gray-600">
+            <div className="pt-6 flex justify-center items-center space-x-2 text-gray-700 dark:text-gray-600">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               <span className="text-label font-body">No signup required to start</span>
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
