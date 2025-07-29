@@ -89,7 +89,7 @@ const UploadArea = ({
           aria-describedby="scan-button-description"
         >
           <Camera className="w-6 h-6 mr-2" aria-hidden="true" />
-          Scan Now
+          Take Pic and Scan Now
         </Button>
         <span id="scan-button-description" className="sr-only">
           Opens camera interface to capture and analyze your plant immediately
