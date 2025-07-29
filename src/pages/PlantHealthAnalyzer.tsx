@@ -62,13 +62,13 @@ const PlantHealthAnalyzer = () => {
     "Fine-tuning your grow for fatter, stronger, tastier flowers."
   ];
 
-  // Check if user needs onboarding
+  // Check if user needs onboarding - show for all first-time visitors
   useEffect(() => {
     const hasSeenTutorial = localStorage.getItem('plant-health-tutorial-completed');
-    if (!hasSeenTutorial && session) {
+    if (!hasSeenTutorial) {
       setShowOnboarding(true);
     }
-  }, [session]);
+  }, []); // Remove session dependency to show for all users
 
   // Listen for camera trigger from bottom navigation
   useEffect(() => {
