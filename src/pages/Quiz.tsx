@@ -225,7 +225,8 @@ export default function Quiz() {
     setCurrentStep(questions.length - 1); // Go back to last question
   };
   const handleInterstitialContinue = () => {
-    handleSubmit();
+    setShowInterstitial(false);
+    setShowPreview(true);
   };
   const generateDynamicTip = () => {
     const experienceLevel = quizResponses.experience_level;
