@@ -33,7 +33,6 @@ export default function PricingCards() {
 
   const handlePlanClick = () => {
     haptic.medium();
-    // Payment functionality removed for iOS branch
   };
 
   const handleRestorePurchase = () => {
