@@ -99,10 +99,10 @@ const OnboardingTutorial = ({ onComplete, onSkip }: OnboardingTutorialProps) => 
             </div>
             
             <div className="space-y-3">
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold text-black">
                 {tutorialSlides[currentSlide].title}
               </h3>
-              <p className="text-gray-300 text-base leading-relaxed">
+              <p className="text-gray-800 text-base leading-relaxed">
                 {tutorialSlides[currentSlide].description}
               </p>
             </div>
