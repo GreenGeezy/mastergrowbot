@@ -12,7 +12,7 @@ export default function PricingCards() {
   const haptic = useHapticFeedback();
   const isMobile = useIsMobile();
   useEffect(() => {
-    const targetDate = new Date('2025-07-01T23:59:59.000Z');
+    const targetDate = new Date('2026-04-20T23:59:59.000Z');
     const updateTimer = () => {
       const now = new Date();
       const timeDiff = targetDate.getTime() - now.getTime();
