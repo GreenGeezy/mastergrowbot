@@ -627,7 +627,7 @@ export default function Quiz() {
                       <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-6 backdrop-blur-sm">
                         <div className="flex items-start space-x-4">
                           <div className="bg-purple-500/20 p-3 rounded-lg">
-                            <div className="w-24 h-24 text-purple-400 flex items-center justify-center text-4xl">⚡</div>
+                            <img src="/lovable-uploads/4c608680-cc4c-478c-9b69-587992e09ba5.png" alt="THC and CBD potency" className="w-24 h-24 object-contain" />
                           </div>
                           <div className="flex-1">
                             <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Improve Quality & Increase Potency</h3>
