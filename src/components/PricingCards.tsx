@@ -40,10 +40,10 @@ export default function PricingCards() {
     // Handle restore purchase logic here
   };
 
-  // Don't render pricing cards in iOS preview mode
-  if (isIOSPreviewMode) {
-    return null;
-  }
+  // Temporarily disabled iOS preview check for debugging
+  // if (isIOSPreviewMode) {
+  //   return null;
+  // }
 
   const benefits = [
     'Grow Bigger Buds & Higher Yields with AI',
