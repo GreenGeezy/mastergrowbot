@@ -641,7 +641,7 @@ export default function Quiz() {
                       <div className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 border border-blue-500/30 rounded-xl p-6 backdrop-blur-sm">
                         <div className="flex items-start space-x-4">
                           <div className="bg-blue-500/20 p-3 rounded-lg">
-                            <div className="w-24 h-24 text-blue-400 flex items-center justify-center text-4xl">🔍</div>
+                            <img src="/lovable-uploads/1ed9f03d-386d-4ed5-914e-639306c1983e.png" alt="AI-powered cannabis analysis" className="w-24 h-24 object-contain" />
                           </div>
                           <div className="flex-1">
                             <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">AI-Powered Plant Evaluation</h3>
