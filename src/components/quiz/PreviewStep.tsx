@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Quote, ArrowLeft } from 'lucide-react';
+import { Quote, ArrowLeft, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Carousel,
@@ -78,6 +78,18 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ onContinueToCheckout, onBackT
         </h2>
         <p className="text-lg text-gray-700 dark:text-white/80">
           Your AI Action Card is ready—complete with gram-gain predictions.
+        </p>
+      </div>
+
+      {/* Trust Badge */}
+      <div className="flex flex-col items-center space-y-2 mb-6">
+        <div className="flex items-center space-x-1">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+          ))}
+        </div>
+        <p className="text-sm text-gray-700 dark:text-white/80 font-medium">
+          Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
         </p>
       </div>
 
