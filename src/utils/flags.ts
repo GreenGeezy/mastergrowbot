@@ -2,7 +2,7 @@
 // src/utils/flags.ts
 export const isIOSPreview =
   import.meta.env.VITE_IOS_PREVIEW === '1' ||
-  window.location.hostname.includes('mastergrowbot-git-ios-main');
+  (window.location.hostname.includes('mastergrowbot-git-ios-main') && !window.location.hostname.includes('vercel.app'));
 
 /**
  * Generic feature flag checker
