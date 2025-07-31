@@ -6,13 +6,11 @@ import { isIOSPreview } from "@/utils/flags";
 import { useHapticFeedback } from "@/utils/hapticFeedback";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
-
 export default function PricingCards() {
   const [timeLeft, setTimeLeft] = useState("");
   const isIOSPreviewMode = isIOSPreview;
   const haptic = useHapticFeedback();
   const isMobile = useIsMobile();
-
   useEffect(() => {
     const targetDate = new Date('2025-07-01T23:59:59.000Z');
     const updateTimer = () => {
@@ -31,11 +29,9 @@ export default function PricingCards() {
     const timer = setInterval(updateTimer, 60000);
     return () => clearInterval(timer);
   }, []);
-
   const handlePlanClick = () => {
     haptic.medium();
   };
-
   const handleRestorePurchase = () => {
     haptic.light();
     // Handle restore purchase logic here
@@ -46,20 +42,9 @@ export default function PricingCards() {
   //   return null;
   // }
 
-  const benefits = [
-    'Grow Bigger Buds & Higher Yields with AI',
-    'Stack Cash & SuperCharge Profits',
-    'Improve Quality & Increase Potency'
-  ];
-
-  const testimonials = [
-    "Transformed my harvest!",
-    "Doubled my yield in one season!",
-    "Best investment for any grower!"
-  ];
-
-  return (
-    <div className="w-full space-y-6">
+  const benefits = ['Grow Bigger Buds & Higher Yields with AI', 'Stack Cash & SuperCharge Profits', 'Improve Quality & Increase Potency'];
+  const testimonials = ["Transformed my harvest!", "Doubled my yield in one season!", "Best investment for any grower!"];
+  return <div className="w-full space-y-6">
       {/* Progress Indicator */}
       <div className="text-center">
         <h2 className="text-[#111827] font-bold text-xl">
@@ -78,23 +63,14 @@ export default function PricingCards() {
         {/* Star Rating */}
         <div className="flex items-center space-x-2">
           <div className="flex items-center">
-            {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                className={`w-4 h-4 ${i < 4 ? 'fill-[#22c55e] text-[#22c55e]' : 'fill-[#22c55e] text-[#22c55e]'}`} 
-              />
-            ))}
+            {[...Array(5)].map((_, i) => <Star key={i} className={`w-4 h-4 ${i < 4 ? 'fill-[#22c55e] text-[#22c55e]' : 'fill-[#22c55e] text-[#22c55e]'}`} />)}
           </div>
           <span className="text-[#111827] font-semibold text-sm">4.8/5</span>
         </div>
 
         {/* Testimonials */}
         <div className="space-y-2 text-center">
-          {testimonials.map((testimonial, index) => (
-            <p key={index} className="text-[#4b5563] italic text-sm">
-              "{testimonial}" – Anonymous Grower
-            </p>
-          ))}
+          {testimonials.map((testimonial, index) => {})}
         </div>
         
         <p className={`text-center font-medium text-gold ${isMobile ? 'text-xs' : 'text-sm sm:text-base'}`}>
@@ -102,12 +78,15 @@ export default function PricingCards() {
         </p>
       </div>
 
-      <motion.div 
-        className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <motion.div className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 text-center" initial={{
+      opacity: 0,
+      y: 20
+    }} animate={{
+      opacity: 1,
+      y: 0
+    }} transition={{
+      duration: 0.5
+    }}>
         <p className={`text-white font-bold ${isMobile ? 'text-base' : 'text-lg'}`}>
           Unlock 25% Off Monthly & Over 60% Off Yearly—Offer Ends 7/10/25!
         </p>
@@ -122,12 +101,10 @@ export default function PricingCards() {
           What You'll Get:
         </h3>
         <div className="space-y-2">
-          {benefits.map((benefit, index) => (
-            <div key={index} className="flex items-start text-[#4b5563]">
+          {benefits.map((benefit, index) => <div key={index} className="flex items-start text-[#4b5563]">
               <CheckCircle className="mr-2 w-5 h-5 text-[#16a34a] flex-shrink-0 mt-0.5" />
               <span>{benefit}</span>
-            </div>
-          ))}
+            </div>)}
         </div>
       </div>
 
@@ -155,12 +132,11 @@ export default function PricingCards() {
                 3 Days Free – Auto-Renew, Cancel Anytime
               </div>
               <div className="flex items-center gap-2">
-                <motion.button
-                  onClick={handlePlanClick}
-                  className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <motion.button onClick={handlePlanClick} className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14" whileHover={{
+                scale: 1.05
+              }} whileTap={{
+                scale: 0.95
+              }}>
                   Start 3-Day Free Trial Now
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </motion.button>
@@ -206,12 +182,11 @@ export default function PricingCards() {
                 3 Days Free – Auto-Renew, Cancel Anytime
               </div>
               <div className="flex items-center gap-2">
-                <motion.button
-                  onClick={handlePlanClick}
-                  className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <motion.button onClick={handlePlanClick} className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14" whileHover={{
+                scale: 1.05
+              }} whileTap={{
+                scale: 0.95
+              }}>
                   Start 3-Day Free Trial Now
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </motion.button>
@@ -257,12 +232,11 @@ export default function PricingCards() {
                 3 Days Free – Auto-Renew, Cancel Anytime
               </div>
               <div className="flex items-center gap-2">
-                <motion.button
-                  onClick={handlePlanClick}
-                  className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <motion.button onClick={handlePlanClick} className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14" whileHover={{
+                scale: 1.05
+              }} whileTap={{
+                scale: 0.95
+              }}>
                   Start 3-Day Free Trial Now
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </motion.button>
@@ -289,16 +263,14 @@ export default function PricingCards() {
 
       {/* Restore Purchase Link */}
       <div className="flex justify-center">
-        <motion.button
-          onClick={handleRestorePurchase}
-          className="text-[#4b5563] hover:text-[#111827] transition-colors duration-300 flex items-center text-sm"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <motion.button onClick={handleRestorePurchase} className="text-[#4b5563] hover:text-[#111827] transition-colors duration-300 flex items-center text-sm" whileHover={{
+        scale: 1.05
+      }} whileTap={{
+        scale: 0.95
+      }}>
           <RefreshCw className="mr-2 w-4 h-4" />
           Restore Purchase
         </motion.button>
       </div>
-    </div>
-  );
+    </div>;
 }
