@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Award, Users, Tag, ArrowRight, RefreshCw, CheckCircle } from "lucide-react";
+import { Star, Award, Users, Tag, ArrowRight, RefreshCw, CheckCircle, Shield, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { isIOSPreview } from "@/utils/flags";
@@ -52,6 +52,12 @@ export default function PricingCards() {
     'Improve Quality & Increase Potency'
   ];
 
+  const testimonials = [
+    "Transformed my harvest!",
+    "Doubled my yield in one season!",
+    "Best investment for any grower!"
+  ];
+
   return (
     <div className="w-full space-y-6">
       {/* Progress Indicator */}
@@ -62,12 +68,35 @@ export default function PricingCards() {
       </div>
 
       <div className="flex flex-col items-center space-y-4">
-        <div className="flex items-center justify-center space-x-2 text-gold">
-          <Users className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
-          <span className={`font-semibold text-center ${isMobile ? 'text-sm' : 'text-base'}`}>
-            Join Our Community of Elite Cannabis Cultivators and AI Enthusiasts
+        <div className="flex items-center justify-center space-x-2">
+          <Users className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-[#111827]`} />
+          <span className={`font-semibold text-center text-[#111827] ${isMobile ? 'text-sm' : 'text-base'}`}>
+            Join 10k+ Growers Worldwide
           </span>
         </div>
+        
+        {/* Star Rating */}
+        <div className="flex items-center space-x-2">
+          <div className="flex items-center">
+            {[...Array(5)].map((_, i) => (
+              <Star 
+                key={i} 
+                className={`w-4 h-4 ${i < 4 ? 'fill-[#22c55e] text-[#22c55e]' : 'fill-[#22c55e] text-[#22c55e]'}`} 
+              />
+            ))}
+          </div>
+          <span className="text-[#111827] font-semibold text-sm">4.8/5</span>
+        </div>
+
+        {/* Testimonials */}
+        <div className="space-y-2 text-center">
+          {testimonials.map((testimonial, index) => (
+            <p key={index} className="text-[#4b5563] italic text-sm">
+              "{testimonial}" – Anonymous Grower
+            </p>
+          ))}
+        </div>
+        
         <p className={`text-center font-medium text-gold ${isMobile ? 'text-xs' : 'text-sm sm:text-base'}`}>
           Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
         </p>
@@ -139,6 +168,18 @@ export default function PricingCards() {
                   Limited Time Offer
                 </div>
               </div>
+              
+              {/* Trust Badges */}
+              <div className="flex flex-wrap justify-center gap-2 mt-3">
+                <div className="flex items-center space-x-1 bg-[#ffffff] border border-[#e5e7eb] rounded-full px-3 py-1">
+                  <Shield className="w-3 h-3 text-[#4b5563]" />
+                  <span className="text-[#4b5563] text-xs">Secure via Apple Pay</span>
+                </div>
+                <div className="flex items-center space-x-1 bg-[#ffffff] border border-[#e5e7eb] rounded-full px-3 py-1">
+                  <Clock className="w-3 h-3 text-[#4b5563]" />
+                  <span className="text-[#4b5563] text-xs">Cancel Anytime – No Hassle</span>
+                </div>
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -178,6 +219,18 @@ export default function PricingCards() {
                   Limited Time Offer
                 </div>
               </div>
+              
+              {/* Trust Badges */}
+              <div className="flex flex-wrap justify-center gap-2 mt-3">
+                <div className="flex items-center space-x-1 bg-[#ffffff] border border-[#e5e7eb] rounded-full px-3 py-1">
+                  <Shield className="w-3 h-3 text-[#4b5563]" />
+                  <span className="text-[#4b5563] text-xs">Secure via Apple Pay</span>
+                </div>
+                <div className="flex items-center space-x-1 bg-[#ffffff] border border-[#e5e7eb] rounded-full px-3 py-1">
+                  <Clock className="w-3 h-3 text-[#4b5563]" />
+                  <span className="text-[#4b5563] text-xs">Cancel Anytime – No Hassle</span>
+                </div>
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -215,6 +268,18 @@ export default function PricingCards() {
                 </motion.button>
                 <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
                   Limited Time Offer
+                </div>
+              </div>
+              
+              {/* Trust Badges */}
+              <div className="flex flex-wrap justify-center gap-2 mt-3">
+                <div className="flex items-center space-x-1 bg-[#ffffff] border border-[#e5e7eb] rounded-full px-3 py-1">
+                  <Shield className="w-3 h-3 text-[#4b5563]" />
+                  <span className="text-[#4b5563] text-xs">Secure via Apple Pay</span>
+                </div>
+                <div className="flex items-center space-x-1 bg-[#ffffff] border border-[#e5e7eb] rounded-full px-3 py-1">
+                  <Clock className="w-3 h-3 text-[#4b5563]" />
+                  <span className="text-[#4b5563] text-xs">Cancel Anytime – No Hassle</span>
                 </div>
               </div>
             </div>
