@@ -52,35 +52,7 @@ export default function PricingCards() {
         </h2>
       </div>
 
-      <div className="flex flex-col items-center space-y-4">
-        <div className="flex items-center justify-center space-x-2">
-          <Users className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-[#111827]`} />
-          <span className={`font-semibold text-center text-[#111827] ${isMobile ? 'text-sm' : 'text-base'}`}>
-            Join 10k+ Growers Worldwide
-          </span>
-        </div>
-        
-        {/* Star Rating */}
-        <div className="flex items-center space-x-2">
-          <div className="flex items-center">
-            {[...Array(5)].map((_, i) => <Star key={i} className={`w-4 h-4 ${i < 4 ? 'fill-[#22c55e] text-[#22c55e]' : 'fill-[#22c55e] text-[#22c55e]'}`} />)}
-          </div>
-          <span className="text-[#111827] font-semibold text-sm">4.8/5</span>
-        </div>
-
-        {/* Testimonials */}
-        <div className="space-y-2 text-center">
-          {testimonials.map((testimonial, index) => (
-            <p key={index} className="text-[#4b5563] italic text-sm">
-              "{testimonial}" – Anonymous Grower
-            </p>
-          ))}
-        </div>
-        
-        <p className={`text-center font-medium text-gold ${isMobile ? 'text-xs' : 'text-sm sm:text-base'}`}>
-          Created by Award-Winning AI Technologists and Trusted by Leading Cannabis Growers Worldwide
-        </p>
-      </div>
+      
 
       <motion.div className="bg-gradient-to-r from-primary to-accent rounded-lg p-4 text-center" initial={{
       opacity: 0,
