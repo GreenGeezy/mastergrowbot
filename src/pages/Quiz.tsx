@@ -599,7 +599,7 @@ export default function Quiz() {
                       <div className="bg-gradient-to-br from-green-600/20 to-green-800/20 border border-green-500/30 rounded-xl p-6 backdrop-blur-sm">
                         <div className="flex items-start space-x-4">
                           <div className="bg-green-500/20 p-3 rounded-lg">
-                            <div className="w-24 h-24 text-green-400 flex items-center justify-center text-4xl">🌿</div>
+                            <img src="/lovable-uploads/4b8e7f0e-6e5c-45e6-9007-a2b8a1addd41.png" alt="Cannabis plant" className="w-24 h-24 object-contain" />
                           </div>
                           <div className="flex-1">
                             <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Grow Bigger Buds & Higher Yields</h3>
