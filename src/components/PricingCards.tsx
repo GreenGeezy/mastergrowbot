@@ -70,7 +70,11 @@ export default function PricingCards() {
 
         {/* Testimonials */}
         <div className="space-y-2 text-center">
-          {testimonials.map((testimonial, index) => {})}
+          {testimonials.map((testimonial, index) => (
+            <p key={index} className="text-[#4b5563] text-sm italic">
+              "{testimonial}" – Anonymous Grower
+            </p>
+          ))}
         </div>
         
         <p className={`text-center font-medium text-gold ${isMobile ? 'text-xs' : 'text-sm sm:text-base'}`}>
