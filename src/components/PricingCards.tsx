@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Award, Users, Tag, ArrowRight, RefreshCw } from "lucide-react";
+import { Star, Award, Users, Tag, ArrowRight, RefreshCw, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { isIOSPreview } from "@/utils/flags";
 import { useHapticFeedback } from "@/utils/hapticFeedback";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -53,6 +54,13 @@ export default function PricingCards() {
 
   return (
     <div className="w-full space-y-6">
+      {/* Progress Indicator */}
+      <div className="text-center">
+        <h2 className="text-[#111827] font-bold text-xl">
+          Quiz Complete – Claim Your Plan
+        </h2>
+      </div>
+
       <div className="flex flex-col items-center space-y-4">
         <div className="flex items-center justify-center space-x-2 text-gold">
           <Users className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
@@ -78,213 +86,151 @@ export default function PricingCards() {
           {timeLeft}
         </p>
       </motion.div>
-      
-      <div className="flex flex-col gap-4 items-stretch justify-center w-full max-w-md mx-auto">
+
+      {/* Consolidated Benefits */}
+      <div className="bg-[#f9fafb] rounded-xl p-4 border border-[#e5e7eb]">
+        <h3 className="text-[#111827] font-semibold mb-3 text-center">
+          What You'll Get:
+        </h3>
+        <div className="space-y-2">
+          {benefits.map((benefit, index) => (
+            <div key={index} className="flex items-start text-[#4b5563]">
+              <CheckCircle className="mr-2 w-5 h-5 text-[#16a34a] flex-shrink-0 mt-0.5" />
+              <span>{benefit}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Plan Accordion */}
+      <Accordion type="single" defaultValue="yearly" className="w-full max-w-md mx-auto">
         {/* Weekly Plan */}
-        <motion.div 
-          className="bg-gradient-to-b from-card/90 to-card/60 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl relative overflow-hidden"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                  Weekly Plan
-                </h3>
-                <div className={`text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                  Master Growbot
-                </div>
+        <AccordionItem value="weekly">
+          <AccordionTrigger className="bg-[#f9fafb] px-4 py-3 rounded-t-xl border border-[#e5e7eb] hover:no-underline">
+            <div className="flex items-center justify-between w-full">
+              <div className="text-left">
+                <h3 className="text-[#111827] font-bold">Weekly Plan</h3>
+                <p className="text-[#4b5563] text-sm">$9.99/week</p>
               </div>
-              <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-2 py-1 text-xs font-bold">
+              <Badge className="bg-[#16a34a] text-white px-3 py-1 text-sm font-bold">
                 3 Days Free
               </Badge>
             </div>
-            
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <div className={`text-white font-bold ${isMobile ? 'text-3xl' : 'text-4xl'}`}>
-                  $9.99
+          </AccordionTrigger>
+          <AccordionContent className="bg-[#ffffff] px-4 pb-4 border-x border-b border-[#e5e7eb] rounded-b-xl">
+            <div className="text-center mb-4">
+              <div className="text-[#4b5563] text-sm mb-3">
+                After 3-day free trial
+              </div>
+              <div className="text-[#4b5563] text-sm mb-4">
+                3 Days Free – Auto-Renew, Cancel Anytime
+              </div>
+              <div className="flex items-center gap-2">
+                <motion.button
+                  onClick={handlePlanClick}
+                  className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Start 3-Day Free Trial Now
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </motion.button>
+                <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                  Limited Time Offer
                 </div>
               </div>
-              <div className={`text-white/60 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                /week after 3-day free trial
-              </div>
             </div>
-            
-            <div className="space-y-2 mb-6 text-left">
-              {benefits.map((benefit, index) => (
-                <div key={index} className={`flex items-start text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                  <span className="mr-2 text-primary">•</span>
-                  <span>{benefit}</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className={`text-center mb-4 text-gold font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>
-              3 Days Free – Auto-Renew, Cancel Anytime
-            </div>
-            
-            <div className="flex items-center gap-2 mb-3">
-              <motion.button
-                onClick={handlePlanClick}
-                className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Start 3-Day Free Trial Now
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </motion.button>
-              <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
-                Limited Time Offer
-              </div>
-            </div>
-          </div>
-        </motion.div>
+          </AccordionContent>
+        </AccordionItem>
 
         {/* Monthly Plan */}
-        <motion.div 
-          className="bg-gradient-to-b from-card/90 to-card/60 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl relative overflow-hidden"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                  Monthly Plan
-                </h3>
-                <div className={`text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                  Master Growbot
-                </div>
+        <AccordionItem value="monthly">
+          <AccordionTrigger className="bg-[#f9fafb] px-4 py-3 border border-[#e5e7eb] hover:no-underline">
+            <div className="flex items-center justify-between w-full">
+              <div className="text-left">
+                <h3 className="text-[#111827] font-bold">Monthly Plan</h3>
+                <p className="text-[#4b5563] text-sm">$29.99/month</p>
               </div>
-              <Badge className="bg-gradient-to-r from-accent to-secondary text-white border-0 px-2 py-1 text-xs font-bold">
+              <Badge className="bg-[#f97316] text-white px-4 py-2 text-sm font-bold">
                 Save 25%
               </Badge>
             </div>
-            
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <div className={`text-white font-bold ${isMobile ? 'text-3xl' : 'text-4xl'}`}>
-                  $29.99
+          </AccordionTrigger>
+          <AccordionContent className="bg-[#ffffff] px-4 pb-4 border-x border-b border-[#e5e7eb]">
+            <div className="text-center mb-4">
+              <div className="text-[#4b5563] text-sm mb-3">
+                After 3-day free trial
+              </div>
+              <div className="text-[#4b5563] text-sm mb-4">
+                3 Days Free – Auto-Renew, Cancel Anytime
+              </div>
+              <div className="flex items-center gap-2">
+                <motion.button
+                  onClick={handlePlanClick}
+                  className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Start 3-Day Free Trial Now
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </motion.button>
+                <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                  Limited Time Offer
                 </div>
               </div>
-              <div className={`text-white/60 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                /month after 3-day free trial
-              </div>
             </div>
-            
-            <div className="space-y-2 mb-6 text-left">
-              {benefits.map((benefit, index) => (
-                <div key={index} className={`flex items-start text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                  <span className="mr-2 text-primary">•</span>
-                  <span>{benefit}</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className={`text-center mb-4 text-gold font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>
-              3 Days Free – Auto-Renew, Cancel Anytime
-            </div>
-            
-            <div className="flex items-center gap-2 mb-3">
-              <motion.button
-                onClick={handlePlanClick}
-                className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Start 3-Day Free Trial Now
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </motion.button>
-              <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
-                Limited Time Offer
-              </div>
-            </div>
-          </div>
-        </motion.div>
+          </AccordionContent>
+        </AccordionItem>
 
-        {/* Yearly Plan - Best Value */}
-        <motion.div 
-          className="bg-gradient-to-b from-card/90 to-card/60 backdrop-blur-xl rounded-2xl border-2 border-gold shadow-2xl relative overflow-hidden"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className={`text-white font-bold mb-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
-                  Yearly Plan
-                </h3>
-                <div className={`text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                  Master Growbot
-                </div>
+        {/* Yearly Plan - Default Expanded */}
+        <AccordionItem value="yearly">
+          <AccordionTrigger className="bg-[#f9fafb] px-4 py-3 rounded-t-xl border-2 border-[#16a34a] hover:no-underline">
+            <div className="flex items-center justify-between w-full">
+              <div className="text-left">
+                <h3 className="text-[#111827] font-bold">Yearly Plan <span className="text-[#16a34a]">• Recommended</span></h3>
+                <p className="text-[#4b5563] text-sm">$199.99/year</p>
               </div>
-              <Badge className="bg-gradient-to-r from-gold to-yellow-400 text-black border-0 px-2 py-1 text-xs font-bold">
+              <Badge className="bg-[#f97316] text-white px-4 py-2 text-lg font-bold">
                 Save 60%
               </Badge>
             </div>
-            
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <div className={`text-white font-bold ${isMobile ? 'text-3xl' : 'text-4xl'}`}>
-                  $199.99
+          </AccordionTrigger>
+          <AccordionContent className="bg-[#ffffff] px-4 pb-4 border-x-2 border-b-2 border-[#16a34a] rounded-b-xl">
+            <div className="text-center mb-4">
+              <div className="text-[#4b5563] text-sm mb-3">
+                After 3-day free trial
+              </div>
+              <div className="text-[#4b5563] text-sm mb-4">
+                3 Days Free – Auto-Renew, Cancel Anytime
+              </div>
+              <div className="flex items-center gap-2">
+                <motion.button
+                  onClick={handlePlanClick}
+                  className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Start 3-Day Free Trial Now
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </motion.button>
+                <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                  Limited Time Offer
                 </div>
               </div>
-              <div className={`text-white/60 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                /year after 3-day free trial
-              </div>
             </div>
-            
-            <div className="space-y-2 mb-6 text-left">
-              {benefits.map((benefit, index) => (
-                <div key={index} className={`flex items-start text-white/80 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                  <span className="mr-2 text-primary">•</span>
-                  <span>{benefit}</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className={`text-center mb-4 text-gold font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>
-              3 Days Free – Auto-Renew, Cancel Anytime
-            </div>
-            
-            <div className="flex items-center gap-2 mb-3">
-              <motion.button
-                onClick={handlePlanClick}
-                className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Start 3-Day Free Trial Now
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </motion.button>
-              <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
-                Limited Time Offer
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
       {/* Restore Purchase Link */}
       <div className="flex justify-center">
         <motion.button
           onClick={handleRestorePurchase}
-          className={`text-white/60 hover:text-white transition-colors duration-300 flex items-center ${isMobile ? 'text-sm' : 'text-base'}`}
+          className="text-[#4b5563] hover:text-[#111827] transition-colors duration-300 flex items-center text-sm"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <RefreshCw className={`mr-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+          <RefreshCw className="mr-2 w-4 h-4" />
           Restore Purchase
         </motion.button>
       </div>
