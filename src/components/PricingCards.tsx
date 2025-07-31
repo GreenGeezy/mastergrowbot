@@ -63,9 +63,7 @@ export default function PricingCards() {
     }} transition={{
       duration: 0.5
     }}>
-        <p className={`text-white font-bold ${isMobile ? 'text-base' : 'text-lg'}`}>
-          Unlock 25% Off Monthly & Over 60% Off Yearly—Offer Ends 7/10/25!
-        </p>
+        <p className={`text-white font-bold ${isMobile ? 'text-base' : 'text-lg'}`}>Unlock 25% Off Monthly & Over 60% Off Yearly—Offer Ends 4/20!</p>
         <p className={`text-gold font-mono font-bold ${isMobile ? 'text-lg' : 'text-xl'}`}>
           {timeLeft}
         </p>
