@@ -128,15 +128,20 @@ export default function PricingCards() {
               3 Days Free – Auto-Renew, Cancel Anytime
             </div>
             
-            <motion.button
-              onClick={handlePlanClick}
-              className={`w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white font-semibold rounded-lg transition-all duration-300 flex items-center justify-center ${isMobile ? 'py-3 px-4 text-sm' : 'py-4 px-6 text-base'}`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Start Free Trial
-              <ArrowRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
-            </motion.button>
+            <div className="flex items-center gap-2 mb-3">
+              <motion.button
+                onClick={handlePlanClick}
+                className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Start 3-Day Free Trial Now
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </motion.button>
+              <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                Limited Time Offer
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -188,15 +193,20 @@ export default function PricingCards() {
               3 Days Free – Auto-Renew, Cancel Anytime
             </div>
             
-            <motion.button
-              onClick={handlePlanClick}
-              className={`w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white font-semibold rounded-lg transition-all duration-300 flex items-center justify-center ${isMobile ? 'py-3 px-4 text-sm' : 'py-4 px-6 text-base'}`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Start Free Trial
-              <ArrowRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
-            </motion.button>
+            <div className="flex items-center gap-2 mb-3">
+              <motion.button
+                onClick={handlePlanClick}
+                className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Start 3-Day Free Trial Now
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </motion.button>
+              <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                Limited Time Offer
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -248,15 +258,20 @@ export default function PricingCards() {
               3 Days Free – Auto-Renew, Cancel Anytime
             </div>
             
-            <motion.button
-              onClick={handlePlanClick}
-              className={`w-full bg-gradient-to-r from-gold to-yellow-400 hover:from-yellow-400 hover:to-gold text-black font-bold rounded-lg transition-all duration-300 flex items-center justify-center ${isMobile ? 'py-3 px-4 text-sm' : 'py-4 px-6 text-base'}`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Start Free Trial
-              <ArrowRight className={`ml-2 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
-            </motion.button>
+            <div className="flex items-center gap-2 mb-3">
+              <motion.button
+                onClick={handlePlanClick}
+                className="flex-1 bg-[#16a34a] hover:bg-[#15803d] text-[#ffffff] font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center h-14"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Start 3-Day Free Trial Now
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </motion.button>
+              <div className="bg-[#ef4444] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                Limited Time Offer
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
