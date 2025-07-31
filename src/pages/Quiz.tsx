@@ -613,7 +613,7 @@ export default function Quiz() {
                       <div className="bg-gradient-to-br from-yellow-600/20 to-orange-600/20 border border-yellow-500/30 rounded-xl p-6 backdrop-blur-sm">
                         <div className="flex items-start space-x-4">
                           <div className="bg-yellow-500/20 p-3 rounded-lg">
-                            <div className="w-24 h-24 text-yellow-400 flex items-center justify-center text-4xl">💰</div>
+                            <img src="/lovable-uploads/25b167e9-4515-4311-a0a9-b1ecee72a5eb.png" alt="Farmer celebrating profits" className="w-24 h-24 object-contain" />
                           </div>
                           <div className="flex-1">
                             <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Stack Cash & Super Charge Profits</h3>
