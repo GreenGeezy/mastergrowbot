@@ -121,20 +121,8 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
         setTranscription('')
       }
     } else if (event.type === 'session.created') {
-      // Guard against duplicate updates - only update if voice has changed
-      if (currentSessionVoice !== chosenVoice) {
-        setCurrentSessionVoice(chosenVoice)
-        try {
-          chatRef.current?.updateSessionSettings({
-            instructions: settings.system_instructions,
-            temperature: settings.temperature,
-            voice: chosenVoice,
-            globalVoice: chosenVoice
-          })
-        } catch (error) {
-          console.warn('Voice session update failed:', error)
-        }
-      }
+      // Session created successfully - voice is already set during creation
+      setCurrentSessionVoice(chosenVoice)
     }
   }
 

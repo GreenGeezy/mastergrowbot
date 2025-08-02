@@ -1,12 +1,22 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import mitt from "mitt";
+
+export const voiceBus = mitt<{ change: string }>();
 
 type VoiceCtx = { voice: string; setVoice: (v: string) => void };
 const VoiceContext = createContext<VoiceCtx | undefined>(undefined);
 
 export function VoiceProvider({ children }: { children: ReactNode }) {
-  const [voice, setVoice] = useState<string>(() => localStorage.getItem("mg-voice") || "echo");
-  useEffect(() => localStorage.setItem("mg-voice", voice), [voice]);
-  return <VoiceContext.Provider value={{ voice, setVoice }}>{children}</VoiceContext.Provider>;
+  const [voiceState, setVoiceState] = useState<string>(() => localStorage.getItem("mg-voice") || "echo");
+  
+  useEffect(() => localStorage.setItem("mg-voice", voiceState), [voiceState]);
+  
+  const setVoice = (v: string) => {
+    setVoiceState(v);
+    voiceBus.emit("change", v);
+  };
+  
+  return <VoiceContext.Provider value={{ voice: voiceState, setVoice }}>{children}</VoiceContext.Provider>;
 }
 
 export function useVoice() {

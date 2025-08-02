@@ -57,7 +57,6 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error("Error from OpenAI:", errorText)
       throw new Error(`Failed to get ephemeral token: ${errorText}`)
     }
 
