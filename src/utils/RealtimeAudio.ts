@@ -66,6 +66,7 @@ interface SessionSettings {
   temperature?: number
   max_tokens?: number
   voice?: string
+  globalVoice?: string
 }
 
 export class RealtimeChat {
@@ -211,11 +212,22 @@ export class RealtimeChat {
       return
     }
     
-    // Validate voice - ensure it's one of the supported OpenAI voices
-    const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
-    const chosenVoice = validVoices.includes(settings.voice || '') ? settings.voice : 'echo';
+    // Bullet-proof voice validation
+    const valid = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
+    let chosenVoice = settings.voice && valid.includes(settings.voice)
+      ? settings.voice
+      : valid.includes(settings.globalVoice || '') ? settings.globalVoice : "echo";
     
-    console.log('Updating session settings with voice:', chosenVoice);
+    // Map TTS voices to Realtime API voices
+    const rtMap: Record<string, string> = { 
+      alloy: "ash", 
+      echo: "ash", 
+      fable: "ballad", 
+      onyx: "sage", 
+      nova: "coral", 
+      shimmer: "verse" 
+    };
+    const realtimeVoice = rtMap[chosenVoice] || "ash";
     
     try {
       this.dc.send(JSON.stringify({
@@ -223,7 +235,7 @@ export class RealtimeChat {
         session: {
           modalities: ["text", "audio"],
           instructions: settings.instructions || "You are Master Growbot, an AI cannabis cultivation assistant.",
-          voice: chosenVoice,
+          voice: realtimeVoice,
           input_audio_format: "pcm16",
           output_audio_format: "pcm16",
           temperature: settings.temperature || 0.7,
@@ -237,7 +249,7 @@ export class RealtimeChat {
         }
       }))
     } catch (error) {
-      console.warn('Failed to update session settings:', error);
+      console.warn('Realtime voice fail', error);
     }
   }
 

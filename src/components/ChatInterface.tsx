@@ -152,8 +152,6 @@ const ChatInterface = () => {
       const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
       const chosenVoice = validVoices.includes(voice) ? voice : 'echo';
       
-      console.log('Playing assistant reply with voice:', chosenVoice);
-      
       const response = await supabase.functions.invoke('speech', {
         body: {
           text: assistantText,
