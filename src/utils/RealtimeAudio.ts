@@ -224,22 +224,14 @@ export class RealtimeChat {
       return
     }
     
-    // Bullet-proof voice validation
-    const valid = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
-    let chosenVoice = settings.voice && valid.includes(settings.voice)
-      ? settings.voice
-      : valid.includes(settings.globalVoice || '') ? settings.globalVoice : "echo";
-    
-    // Map TTS voices to Realtime API voices
-    const rtMap: Record<string, string> = { 
-      alloy: "ash", 
-      echo: "ash", 
-      fable: "ballad", 
-      onyx: "sage", 
-      nova: "coral", 
-      shimmer: "verse" 
-    };
-    const realtimeVoice = rtMap[chosenVoice] || "ash";
+    // Use the voice from the instance that was set during construction
+    const uiVoices = ["alloy","echo","fable","onyx","nova","shimmer"] as const;
+    const safe = uiVoices.includes(this.chosenVoice as any) ? this.chosenVoice : "echo";
+
+    const rtMap = { alloy:"ash", echo:"ash", fable:"ballad",
+                    onyx:"sage", nova:"coral", shimmer:"verse" } as const;
+
+    const realtimeVoice = rtMap[safe as keyof typeof rtMap];
     
     try {
       this.dc.send(JSON.stringify({
@@ -260,6 +252,7 @@ export class RealtimeChat {
           }
         }
       }))
+      console.info("Realtime voice →", safe, "→", realtimeVoice);
     } catch (error) {
       console.warn('Realtime voice fail', error);
     }
