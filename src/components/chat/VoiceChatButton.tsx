@@ -114,10 +114,18 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
       }
     } else if (event.type === 'session.created') {
       // Update session with our preferred settings
+      // Validate voice - ensure it's one of the supported OpenAI voices
+      const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
+      const dbVoice = settings.voice_settings?.voice;
+      const chosenVoice = validVoices.includes(dbVoice) ? dbVoice : 
+                         validVoices.includes(globalVoice) ? globalVoice : 'echo';
+      
+      console.log('Voice chat using voice:', chosenVoice, 'from DB:', dbVoice, 'global:', globalVoice);
+      
       chatRef.current?.updateSessionSettings({
         instructions: settings.system_instructions,
         temperature: settings.temperature,
-        voice: settings.voice_settings?.voice || globalVoice
+        voice: chosenVoice
       })
     }
   }

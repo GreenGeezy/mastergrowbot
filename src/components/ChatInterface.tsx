@@ -148,10 +148,16 @@ const ChatInterface = () => {
   // Function to play assistant replies using text-to-speech
   const playAssistantReply = async (assistantText: string) => {
     try {
+      // Validate voice - ensure it's one of the supported OpenAI voices
+      const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
+      const chosenVoice = validVoices.includes(voice) ? voice : 'echo';
+      
+      console.log('Playing assistant reply with voice:', chosenVoice);
+      
       const response = await supabase.functions.invoke('speech', {
         body: {
           text: assistantText,
-          voice: voice
+          voice: chosenVoice
         }
       });
 

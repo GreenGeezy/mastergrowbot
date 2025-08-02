@@ -211,24 +211,34 @@ export class RealtimeChat {
       return
     }
     
-    this.dc.send(JSON.stringify({
-      type: 'session.update',
-      session: {
-        modalities: ["text", "audio"],
-        instructions: settings.instructions || "You are Master Growbot, an AI cannabis cultivation assistant.",
-        voice: settings.voice || "alloy",
-        input_audio_format: "pcm16",
-        output_audio_format: "pcm16",
-        temperature: settings.temperature || 0.7,
-        max_response_output_tokens: settings.max_tokens || 1000,
-        turn_detection: {
-          type: "server_vad",
-          threshold: 0.5,
-          prefix_padding_ms: 300,
-          silence_duration_ms: 1000
+    // Validate voice - ensure it's one of the supported OpenAI voices
+    const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
+    const chosenVoice = validVoices.includes(settings.voice || '') ? settings.voice : 'echo';
+    
+    console.log('Updating session settings with voice:', chosenVoice);
+    
+    try {
+      this.dc.send(JSON.stringify({
+        type: 'session.update',
+        session: {
+          modalities: ["text", "audio"],
+          instructions: settings.instructions || "You are Master Growbot, an AI cannabis cultivation assistant.",
+          voice: chosenVoice,
+          input_audio_format: "pcm16",
+          output_audio_format: "pcm16",
+          temperature: settings.temperature || 0.7,
+          max_response_output_tokens: settings.max_tokens || 1000,
+          turn_detection: {
+            type: "server_vad",
+            threshold: 0.5,
+            prefix_padding_ms: 300,
+            silence_duration_ms: 1000
+          }
         }
-      }
-    }))
+      }))
+    } catch (error) {
+      console.warn('Failed to update session settings:', error);
+    }
   }
 
   interrupt() {
