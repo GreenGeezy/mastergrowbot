@@ -41,15 +41,24 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
     max_tokens: 1000,
     voice_settings: { voice: "alloy" }
   })
+  const [currentSessionVoice, setCurrentSessionVoice] = useState<string>('')
   const chatRef = useRef<RealtimeChat | null>(null)
   const { toast } = useToast()
   const session = useSession()
   const { voice: globalVoice } = useVoice()
 
+  // Voice validation and selection
+  const valid = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"]
+  const dbVoice = settings.voice_settings?.voice
+  const chosenVoice = valid.includes(dbVoice || '')
+    ? dbVoice!
+    : valid.includes(globalVoice)
+      ? globalVoice
+      : "echo"
+
   // Handle force close from parent
   useEffect(() => {
     if (forceClose && (chatStatus === 'connected' || isListening || isSpeaking)) {
-      console.log('Force closing voice chat due to parent request');
       disconnectVoiceChat();
     }
   }, [forceClose, chatStatus, isListening, isSpeaking]);
@@ -92,7 +101,6 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   }, [session?.user?.id])
 
   const handleMessage = (event: any) => {
-    console.log('Received voice event:', event)
     
     // Handle different event types
     if (event.type === 'response.audio.delta') {
@@ -113,12 +121,20 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
         setTranscription('')
       }
     } else if (event.type === 'session.created') {
-      chatRef.current?.updateSessionSettings({
-        instructions: settings.system_instructions,
-        temperature: settings.temperature,
-        voice: settings.voice_settings?.voice,
-        globalVoice: globalVoice
-      })
+      // Guard against duplicate updates - only update if voice has changed
+      if (currentSessionVoice !== chosenVoice) {
+        setCurrentSessionVoice(chosenVoice)
+        try {
+          chatRef.current?.updateSessionSettings({
+            instructions: settings.system_instructions,
+            temperature: settings.temperature,
+            voice: chosenVoice,
+            globalVoice: chosenVoice
+          })
+        } catch (error) {
+          console.warn('Voice session update failed:', error)
+        }
+      }
     }
   }
 
@@ -157,12 +173,12 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   }
 
   const disconnectVoiceChat = () => {
-    console.log('Disconnecting voice chat');
     chatRef.current?.disconnect()
     chatRef.current = null
     setChatStatus('disconnected')
     setIsSpeaking(false)
     setIsListening(false)
+    setCurrentSessionVoice('')
     
     toast({
       title: "Voice Chat Disconnected",
