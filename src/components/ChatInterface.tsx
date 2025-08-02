@@ -16,6 +16,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { ChatHistorySidebar } from "@/components/chat/ChatHistorySidebar";
 import { ChatInput, ChatInputTextArea, ChatInputSubmit } from "@/components/ui/chat-input";
+import { VoiceSelector } from "@/components/VoiceSelector";
 import { useChatMessages } from "@/hooks/use-chat-messages";
 import { useChatState } from "@/hooks/use-chat-state";
 import { useAudioState } from "@/hooks/use-audio-state";
@@ -42,6 +43,8 @@ const ChatInterface = () => {
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
   const { conversations, isLoading: isLoadingConversations } = useConversations();
 
+  const [voice, setVoice] = useState("echo");
+  const [previousMessageCount, setPreviousMessageCount] = useState(0);
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -57,6 +60,23 @@ const ChatInterface = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Monitor for new assistant messages and play them with TTS
+  useEffect(() => {
+    // Only trigger TTS for genuinely new messages, not when loading history
+    if (messages.length <= previousMessageCount || messages.length === 0) {
+      setPreviousMessageCount(messages.length);
+      return;
+    }
+    
+    const lastMessage = messages[messages.length - 1];
+    // Check if it's a new AI message
+    if (lastMessage.is_ai && lastMessage.message) {
+      playAssistantReply(lastMessage.message);
+    }
+    
+    setPreviousMessageCount(messages.length);
+  }, [messages, voice, previousMessageCount]);
 
   useEffect(() => {
     if (session?.user || isIOSPreview) {
@@ -125,6 +145,30 @@ const ChatInterface = () => {
     setMessage(voiceMessage);
   };
 
+  // Function to play assistant replies using text-to-speech
+  const playAssistantReply = async (assistantText: string) => {
+    try {
+      const response = await supabase.functions.invoke('speech', {
+        body: {
+          text: assistantText,
+          voice: voice
+        }
+      });
+
+      if (response.error) {
+        console.warn('TTS request failed:', response.error);
+        return;
+      }
+
+      // Convert response to blob and play
+      const blob = new Blob([response.data], { type: 'audio/mpeg' });
+      const audio = new Audio(URL.createObjectURL(blob));
+      await audio.play();
+    } catch (error) {
+      console.warn('Failed to play assistant reply:', error);
+    }
+  };
+
   // Handle voice chat state updates from VoiceChatButton
   const handleVoiceChatStateChange = (listening: boolean, speaking: boolean) => {
     console.log('Voice chat state change:', { listening, speaking });
@@ -187,6 +231,13 @@ const ChatInterface = () => {
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 ml-12">
+        {/* Voice Selector */}
+        <div className="border-b border-gray-200 bg-gray-50 p-4">
+          <div className="max-w-4xl mx-auto">
+            <VoiceSelector voice={voice} onChange={setVoice} />
+          </div>
+        </div>
+        
         {/* Messages area - adjusted for voice interface and bottom navigation */}
         <div className="flex-1 overflow-hidden flex flex-col pb-32">
           {messages.length === 0 ? (
