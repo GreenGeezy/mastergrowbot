@@ -17,7 +17,6 @@ import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { ChatHistorySidebar } from "@/components/chat/ChatHistorySidebar";
 import { ChatInput, ChatInputTextArea, ChatInputSubmit } from "@/components/ui/chat-input";
 import { VoiceSelector } from "@/components/VoiceSelector";
-import { useVoice } from "@/contexts/VoiceContext";
 import { useChatMessages } from "@/hooks/use-chat-messages";
 import { useChatState } from "@/hooks/use-chat-state";
 import { useAudioState } from "@/hooks/use-audio-state";
@@ -43,7 +42,8 @@ const ChatInterface = () => {
   const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages(currentConversationId);
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
   const { conversations, isLoading: isLoadingConversations } = useConversations();
-  const { voice, setVoice } = useVoice();
+
+  const [voice, setVoice] = useState("echo");
   const [previousMessageCount, setPreviousMessageCount] = useState(0);
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
   const [isListening, setIsListening] = useState(false);
