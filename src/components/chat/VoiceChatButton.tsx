@@ -147,7 +147,8 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
         
         chatRef.current = new RealtimeChat(
           handleMessage,
-          setChatStatus
+          setChatStatus,
+          chosenVoice
         )
         await chatRef.current.init()
         

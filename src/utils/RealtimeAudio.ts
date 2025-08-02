@@ -74,21 +74,29 @@ export class RealtimeChat {
   private dc: RTCDataChannel | null = null
   private audioEl: HTMLAudioElement
   private recorder: AudioRecorder | null = null
+  private chosenVoice: string = "echo"
 
   constructor(
     private onMessage: (message: any) => void, 
-    private onStatusChange: (status: 'connecting' | 'connected' | 'disconnected') => void
+    private onStatusChange: (status: 'connecting' | 'connected' | 'disconnected') => void,
+    voiceFromContext?: string
   ) {
     this.audioEl = document.createElement("audio")
     this.audioEl.autoplay = true
+    
+    // Voice validation and selection
+    const valid = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
+    this.chosenVoice = valid.includes(voiceFromContext || '') ? voiceFromContext! : "echo";
   }
 
   async init() {
     try {
       this.onStatusChange('connecting')
       
-      // Get ephemeral token from our Supabase Edge Function
-      const { data, error } = await supabase.functions.invoke("realtime-chat-token")
+      // Get ephemeral token from our Supabase Edge Function with voice parameter
+      const { data, error } = await supabase.functions.invoke("realtime-chat-token", {
+        body: { voice: this.chosenVoice }
+      })
       
       if (error) {
         throw new Error(`Failed to get token: ${error.message}`)

@@ -19,6 +19,14 @@ serve(async (req) => {
       throw new Error('OPENAI_API_KEY is not set')
     }
 
+    // Get voice from request body, fallback to alloy
+    const requestBody = await req.json().catch(() => ({}))
+    const { voice = "alloy" } = requestBody
+    
+    // Validate voice is one of OpenAI's supported voices
+    const validVoices = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"]
+    const selectedVoice = validVoices.includes(voice) ? voice : "alloy"
+
     // Request an ephemeral token from OpenAI
     const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
       method: "POST",
@@ -28,7 +36,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-realtime-preview-2024-12-17",
-        voice: "alloy",
+        voice: selectedVoice,
         instructions: "You are Master Growbot, an AI cannabis cultivation assistant. Help users with growing advice, plant health, and answer questions clearly and accurately."
       }),
     })
