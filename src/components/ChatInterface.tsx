@@ -21,6 +21,7 @@ import { useChatMessages } from "@/hooks/use-chat-messages";
 import { useChatState } from "@/hooks/use-chat-state";
 import { useAudioState } from "@/hooks/use-audio-state";
 import { useConversations } from "@/hooks/use-conversations";
+import { useVoice } from "@/contexts/VoiceContext";
 import { isIOSPreview } from "@/utils/flags";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -42,8 +43,7 @@ const ChatInterface = () => {
   const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages(currentConversationId);
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
   const { conversations, isLoading: isLoadingConversations } = useConversations();
-
-  const [voice, setVoice] = useState("echo");
+  const { voice, setVoice } = useVoice();
   const [previousMessageCount, setPreviousMessageCount] = useState(0);
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
   const [isListening, setIsListening] = useState(false);

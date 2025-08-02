@@ -7,6 +7,7 @@ import { RealtimeChat } from '@/utils/RealtimeAudio'
 import { supabase } from '@/integrations/supabase/client'
 import { useSession } from '@supabase/auth-helpers-react'
 import VoiceIcon from '@/components/icons/VoiceIcon'
+import { useVoice } from '@/contexts/VoiceContext'
 
 interface VoiceChatButtonProps {
   onVoiceMessageReceived: (message: string) => void
@@ -43,6 +44,7 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   const chatRef = useRef<RealtimeChat | null>(null)
   const { toast } = useToast()
   const session = useSession()
+  const { voice: globalVoice } = useVoice()
 
   // Handle force close from parent
   useEffect(() => {
@@ -115,7 +117,7 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
       chatRef.current?.updateSessionSettings({
         instructions: settings.system_instructions,
         temperature: settings.temperature,
-        voice: settings.voice_settings?.voice || "alloy"
+        voice: settings.voice_settings?.voice || globalVoice
       })
     }
   }

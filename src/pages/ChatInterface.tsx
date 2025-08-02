@@ -1,9 +1,14 @@
 
 import React from 'react';
 import ChatInterface from '@/components/ChatInterface';
+import { VoiceProvider } from '@/contexts/VoiceContext';
 
 const ChatInterfacePage = () => {
-  return <ChatInterface />;
+  return (
+    <VoiceProvider>
+      <ChatInterface />
+    </VoiceProvider>
+  );
 };
 
 export default ChatInterfacePage;
