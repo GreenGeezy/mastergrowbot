@@ -57,7 +57,7 @@ const PreviewStep: React.FC<PreviewStepProps> = ({ onContinueToCheckout, onBackT
       loop: true,
       dragFree: true
     },
-    [Autoplay({ delay: 2000, stopOnInteraction: true })]
+    [Autoplay({ delay: 2000, stopOnInteraction: true }) as any]
   );
 
   return (
