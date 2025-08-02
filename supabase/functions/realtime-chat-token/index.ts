@@ -19,8 +19,8 @@ serve(async (req) => {
       throw new Error('OPENAI_API_KEY is not set')
     }
 
-    // Always use alloy voice for simplicity
-    const realtimeVoice = "ash"; // alloy maps to ash in realtime API
+    // Always use alloy voice, ignore any incoming voice parameter
+    const realtimeVoice = "ash"; // alloy → ash mapping for realtime API
 
     // Request an ephemeral token from OpenAI
     const response = await fetch("https://api.openai.com/v1/realtime/sessions", {

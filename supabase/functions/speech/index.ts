@@ -6,7 +6,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-const VALID_VOICES = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']
+
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -32,8 +32,8 @@ serve(async (req) => {
       })
     }
 
-    // Validate and default voice
-    const selectedVoice = (voice && VALID_VOICES.includes(voice)) ? voice : 'echo'
+    // Always use alloy voice
+    const selectedVoice = "alloy"
 
     const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')
     if (!OPENAI_API_KEY) {
