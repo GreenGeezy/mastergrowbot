@@ -235,12 +235,6 @@ const ChatInterface = () => {
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 ml-12">
-        {/* Voice Selector */}
-        <div className="border-b border-gray-200 bg-gray-50 p-4">
-          <div className="max-w-4xl mx-auto">
-            <VoiceSelector voice={voice} onChange={setVoice} />
-          </div>
-        </div>
         
         {/* Messages area - adjusted for voice interface and bottom navigation */}
         <div className="flex-1 overflow-hidden flex flex-col pb-32">
@@ -323,6 +317,7 @@ const ChatInterface = () => {
                           className="min-w-[44px] h-[44px]"
                           forceClose={forceCloseVoiceChat}
                         />
+                        <VoiceSelector voice={voice} onChange={setVoice} />
                       </div>
                       <ChatInputSubmit 
                         variant="cta" 
