@@ -2,6 +2,15 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
+// Voice maps
+const uiVoices = ["alloy","echo","fable","onyx","nova","shimmer"] as const;
+type UiVoice = typeof uiVoices[number];
+const rtMap: Record<UiVoice,"ash"|"ballad"|"coral"|"sage"|"verse"> = {
+  alloy:"ash",  echo:"ash",
+  fable:"ballad", onyx:"sage", 
+  nova:"coral", shimmer:"verse"
+};
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -19,20 +28,18 @@ serve(async (req) => {
       throw new Error('OPENAI_API_KEY is not set')
     }
 
-    // Get voice from request body, fallback to alloy
-    let voice = "alloy"
+    // SAFELY read body without throwing on empty
+    let voice: unknown = "echo";
     try {
-      const requestBody = await req.json()
-      voice = requestBody.voice || "alloy"
-      console.log('Received voice parameter:', voice)
-    } catch (e) {
-      console.log('No request body or invalid JSON, using default voice:', voice)
-    }
+      const body = await req.json();
+      voice = body?.voice;
+    } catch { /* leave default */ }
+
+    const chosen: UiVoice = 
+      uiVoices.includes(voice as UiVoice) ? (voice as UiVoice) : "echo";
+    const realtimeVoice = rtMap[chosen];
     
-    // Validate voice is one of OpenAI's supported voices
-    const validVoices = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"]
-    const selectedVoice = validVoices.includes(voice) ? voice : "alloy"
-    console.log('Selected voice after validation:', selectedVoice)
+    if (Deno.env.get("ENV") !== "prod") console.log("RT voice:", chosen, "→", realtimeVoice);
 
     // Request an ephemeral token from OpenAI
     const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
@@ -43,7 +50,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-realtime-preview-2024-12-17",
-        voice: selectedVoice,
+        voice: realtimeVoice,
         instructions: "You are Master Growbot, an AI cannabis cultivation assistant. Help users with growing advice, plant health, and answer questions clearly and accurately."
       }),
     })
@@ -55,7 +62,6 @@ serve(async (req) => {
     }
 
     const data = await response.json()
-    console.log("Session created:", data)
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

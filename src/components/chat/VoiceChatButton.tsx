@@ -142,32 +142,45 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
     try {
       if (chatStatus === 'disconnected') {
         // Start voice chat - this will trigger the voice interface
-        console.log('Starting voice chat with voice:', chosenVoice)
         setIsListening(true)
         setChatStatus('connecting')
         
-        chatRef.current = new RealtimeChat(
-          handleMessage,
-          setChatStatus,
-          chosenVoice
-        )
-        await chatRef.current.init()
-        
-        toast({
-          title: "Voice Chat Connected",
-          description: "You can now speak to the AI. Click the microphone again to disconnect.",
-        })
+        try {
+          chatRef.current = new RealtimeChat(
+            handleMessage,
+            setChatStatus,
+            chosenVoice
+          )
+          await chatRef.current.init()
+          
+          toast({
+            title: "Voice Chat Connected",
+            description: "You can now speak to the AI. Click the microphone again to disconnect.",
+          })
+        } catch (error) {
+          console.warn('Realtime voice fallback:', error);
+          // gracefully revert to text-only flow
+          setChatStatus('disconnected')
+          setIsListening(false)
+          setIsSpeaking(false)
+          
+          toast({
+            title: "Voice Chat Error",
+            description: error instanceof Error ? error.message : 'Failed to connect to voice chat',
+            variant: "destructive",
+          })
+        }
       } else {
         disconnectVoiceChat()
       }
     } catch (error) {
-      console.error('Error with voice chat:', error)
+      console.warn('Realtime voice fallback:', error);
       setChatStatus('disconnected')
       setIsListening(false)
       setIsSpeaking(false)
       
       toast({
-        title: "Voice Chat Error",
+        title: "Voice Chat Error", 
         description: error instanceof Error ? error.message : 'Failed to connect to voice chat',
         variant: "destructive",
       })

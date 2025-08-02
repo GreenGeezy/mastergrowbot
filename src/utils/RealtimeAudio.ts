@@ -1,6 +1,8 @@
 
 import { supabase } from '@/integrations/supabase/client'
 
+const uiVoices = ["alloy","echo","fable","onyx","nova","shimmer"] as const;
+
 export class AudioRecorder {
   private stream: MediaStream | null = null
   private audioContext: AudioContext | null = null
@@ -74,102 +76,102 @@ export class RealtimeChat {
   private dc: RTCDataChannel | null = null
   private audioEl: HTMLAudioElement
   private recorder: AudioRecorder | null = null
-  private chosenVoice: string = "echo"
 
   constructor(
     private onMessage: (message: any) => void, 
     private onStatusChange: (status: 'connecting' | 'connected' | 'disconnected') => void,
-    voiceFromContext?: string
+    private chosenVoice: string = "echo"
   ) {
     this.audioEl = document.createElement("audio")
     this.audioEl.autoplay = true
-    
-    // Voice validation and selection
-    const valid = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
-    this.chosenVoice = valid.includes(voiceFromContext || '') ? voiceFromContext! : "echo";
   }
 
   async init() {
     try {
       this.onStatusChange('connecting')
       
-      // Get ephemeral token from our Supabase Edge Function with voice parameter
-      console.log('Sending voice to realtime-chat-token:', this.chosenVoice)
-      const { data, error } = await supabase.functions.invoke("realtime-chat-token", {
-        body: { voice: this.chosenVoice }
-      })
+      const chosen = uiVoices.includes(this.chosenVoice as any) ? this.chosenVoice : "echo";
       
-      if (error) {
-        console.error('Error from realtime-chat-token:', error)
-        throw new Error(`Failed to get token: ${error.message}`)
-      }
-      
-      if (!data?.client_secret?.value) {
-        throw new Error("Failed to get ephemeral token")
-      }
-
-      const EPHEMERAL_KEY = data.client_secret.value
-
-      // Create peer connection
-      this.pc = new RTCPeerConnection()
-
-      // Set up remote audio
-      this.pc.ontrack = e => this.audioEl.srcObject = e.streams[0]
-
-      // Add local audio track
-      const ms = await navigator.mediaDevices.getUserMedia({ audio: true })
-      this.pc.addTrack(ms.getTracks()[0])
-
-      // Set up data channel
-      this.dc = this.pc.createDataChannel("oai-events")
-      this.dc.addEventListener("message", (e) => {
-        const event = JSON.parse(e.data)
-        console.log("Received event:", event)
-        this.onMessage(event)
-      })
-
-      // Create and set local description
-      const offer = await this.pc.createOffer()
-      await this.pc.setLocalDescription(offer)
-
-      // Connect to OpenAI's Realtime API
-      const baseUrl = "https://api.openai.com/v1/realtime"
-      const model = "gpt-4o-realtime-preview-2024-12-17"
-      const sdpResponse = await fetch(`${baseUrl}?model=${model}`, {
-        method: "POST",
-        body: offer.sdp,
-        headers: {
-          Authorization: `Bearer ${EPHEMERAL_KEY}`,
-          "Content-Type": "application/sdp"
-        },
-      })
-
-      if (!sdpResponse.ok) {
-        throw new Error(`OpenAI Realtime API error: ${await sdpResponse.text()}`)
-      }
-
-      const answer = {
-        type: "answer" as RTCSdpType,
-        sdp: await sdpResponse.text(),
-      }
-      
-      await this.pc.setRemoteDescription(answer)
-      console.log("WebRTC connection established")
-      this.onStatusChange('connected')
-
-      // Start recording
-      this.recorder = new AudioRecorder((audioData) => {
-        if (this.dc?.readyState === 'open') {
-          this.dc.send(JSON.stringify({
-            type: 'input_audio_buffer.append',
-            audio: this.encodeAudioData(audioData)
-          }))
+      try {
+        // Get ephemeral token from our Supabase Edge Function with voice parameter
+        const { data, error } = await supabase.functions.invoke("realtime-chat-token", {
+          body: { voice: chosen }
+        })
+        
+        if (error) {
+          throw new Error(`Failed to get token: ${error.message}`)
         }
-      })
-      await this.recorder.start()
+        
+        if (!data?.client_secret?.value) {
+          throw new Error("Failed to get ephemeral token")
+        }
 
+        const EPHEMERAL_KEY = data.client_secret.value
+
+        // Create peer connection
+        this.pc = new RTCPeerConnection()
+
+        // Set up remote audio
+        this.pc.ontrack = e => this.audioEl.srcObject = e.streams[0]
+
+        // Add local audio track
+        const ms = await navigator.mediaDevices.getUserMedia({ audio: true })
+        this.pc.addTrack(ms.getTracks()[0])
+
+        // Set up data channel
+        this.dc = this.pc.createDataChannel("oai-events")
+        this.dc.addEventListener("message", (e) => {
+          const event = JSON.parse(e.data)
+          console.log("Received event:", event)
+          this.onMessage(event)
+        })
+
+        // Create and set local description
+        const offer = await this.pc.createOffer()
+        await this.pc.setLocalDescription(offer)
+
+        // Connect to OpenAI's Realtime API
+        const baseUrl = "https://api.openai.com/v1/realtime"
+        const model = "gpt-4o-realtime-preview-2024-12-17"
+        const sdpResponse = await fetch(`${baseUrl}?model=${model}`, {
+          method: "POST",
+          body: offer.sdp,
+          headers: {
+            Authorization: `Bearer ${EPHEMERAL_KEY}`,
+            "Content-Type": "application/sdp"
+          },
+        })
+
+        if (!sdpResponse.ok) {
+          throw new Error(`OpenAI Realtime API error: ${await sdpResponse.text()}`)
+        }
+
+        const answer = {
+          type: "answer" as RTCSdpType,
+          sdp: await sdpResponse.text(),
+        }
+        
+        await this.pc.setRemoteDescription(answer)
+        this.onStatusChange('connected')
+
+        // Start recording
+        this.recorder = new AudioRecorder((audioData) => {
+          if (this.dc?.readyState === 'open') {
+            this.dc.send(JSON.stringify({
+              type: 'input_audio_buffer.append',
+              audio: this.encodeAudioData(audioData)
+            }))
+          }
+        })
+        await this.recorder.start()
+
+      } catch (error) {
+        console.warn("Realtime voice fallback:", error);
+        this.onStatusChange('disconnected')
+        throw error
+      }
     } catch (error) {
-      console.error("Error initializing chat:", error)
+      console.warn("Realtime voice fallback:", error);
       this.onStatusChange('disconnected')
       throw error
     }
