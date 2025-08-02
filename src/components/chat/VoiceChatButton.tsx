@@ -7,7 +7,7 @@ import { RealtimeChat } from '@/utils/RealtimeAudio'
 import { supabase } from '@/integrations/supabase/client'
 import { useSession } from '@supabase/auth-helpers-react'
 import VoiceIcon from '@/components/icons/VoiceIcon'
-import { useVoice } from '@/contexts/VoiceContext'
+
 
 interface VoiceChatButtonProps {
   onVoiceMessageReceived: (message: string) => void
@@ -45,16 +45,6 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
   const chatRef = useRef<RealtimeChat | null>(null)
   const { toast } = useToast()
   const session = useSession()
-  const { voice: globalVoice } = useVoice()
-
-  // Voice validation and selection
-  const valid = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"]
-  const dbVoice = settings.voice_settings?.voice
-  const chosenVoice = valid.includes(dbVoice || '')
-    ? dbVoice!
-    : valid.includes(globalVoice)
-      ? globalVoice
-      : "echo"
 
   // Handle force close from parent
   useEffect(() => {
@@ -121,8 +111,8 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
         setTranscription('')
       }
     } else if (event.type === 'session.created') {
-      // Session created successfully - voice is already set during creation
-      setCurrentSessionVoice(chosenVoice)
+      // Session created successfully - using alloy voice
+      setCurrentSessionVoice('alloy')
     }
   }
 
@@ -136,8 +126,7 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
         try {
           chatRef.current = new RealtimeChat(
             handleMessage,
-            setChatStatus,
-            chosenVoice
+            setChatStatus
           )
           await chatRef.current.init()
           

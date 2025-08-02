@@ -1,8 +1,5 @@
 
 import { supabase } from '@/integrations/supabase/client'
-import { voiceBus } from '@/contexts/VoiceContext'
-
-const uiVoices = ["alloy","echo","fable","onyx","nova","shimmer"] as const;
 
 export class AudioRecorder {
   private stream: MediaStream | null = null
@@ -64,57 +61,27 @@ export class AudioRecorder {
   }
 }
 
-interface SessionSettings {
-  instructions?: string
-  temperature?: number
-  max_tokens?: number
-  voice?: string
-  globalVoice?: string
-}
-
 export class RealtimeChat {
   private pc: RTCPeerConnection | null = null
   private dc: RTCDataChannel | null = null
   private audioEl: HTMLAudioElement
   private recorder: AudioRecorder | null = null
-  private ws: WebSocket | null = null
-  private currentVoice: string = "echo"
 
   constructor(
     private onMessage: (message: any) => void, 
-    private onStatusChange: (status: 'connecting' | 'connected' | 'disconnected') => void,
-    initialVoice: string = "echo"
+    private onStatusChange: (status: 'connecting' | 'connected' | 'disconnected') => void
   ) {
     this.audioEl = document.createElement("audio")
     this.audioEl.autoplay = true
-    this.currentVoice = initialVoice
-    
-    // Subscribe to voice changes
-    voiceBus.on("change", async (newVoice: string) => {
-      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-        this.disconnect()
-        await this.startSession(newVoice)
-      }
-    })
   }
 
   async init() {
-    await this.startSession(this.currentVoice)
-  }
-
-  private async startSession(voice: string) {
     try {
       this.onStatusChange('connecting')
-      this.currentVoice = voice
       
-      const chosen = uiVoices.includes(voice as any) ? voice : "echo"
-      const rtMap = { alloy:"ash", echo:"ash", fable:"ballad",
-                      onyx:"sage", nova:"coral", shimmer:"verse" } as const
-      const realtimeVoice = rtMap[chosen as keyof typeof rtMap]
-      
-      // Get ephemeral token from our Supabase Edge Function with voice parameter
+      // Get ephemeral token from our Supabase Edge Function with alloy voice
       const { data, error } = await supabase.functions.invoke("realtime-chat-token", {
-        body: { voice: chosen }
+        body: { voice: "alloy" }
       })
       
       if (error) {
@@ -241,9 +208,6 @@ export class RealtimeChat {
   }
 
   disconnect() {
-    // Clean up voice change listener
-    voiceBus.off("change")
-    
     this.recorder?.stop()
     if (this.dc) {
       this.dc.close()
@@ -252,10 +216,6 @@ export class RealtimeChat {
     if (this.pc) {
       this.pc.close()
       this.pc = null
-    }
-    if (this.ws) {
-      this.ws.close()
-      this.ws = null
     }
     this.onStatusChange('disconnected')
   }

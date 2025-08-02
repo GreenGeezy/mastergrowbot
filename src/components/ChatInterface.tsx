@@ -16,12 +16,12 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { ChatHistorySidebar } from "@/components/chat/ChatHistorySidebar";
 import { ChatInput, ChatInputTextArea, ChatInputSubmit } from "@/components/ui/chat-input";
-import { VoiceSelector } from "@/components/VoiceSelector";
+
 import { useChatMessages } from "@/hooks/use-chat-messages";
 import { useChatState } from "@/hooks/use-chat-state";
 import { useAudioState } from "@/hooks/use-audio-state";
 import { useConversations } from "@/hooks/use-conversations";
-import { useVoice } from "@/contexts/VoiceContext";
+
 import { isIOSPreview } from "@/utils/flags";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -43,7 +43,7 @@ const ChatInterface = () => {
   const { messages, setMessages, isLoading, loadChatHistory, sendMessage } = useChatMessages(currentConversationId);
   const { isMuted, setIsMuted, speakResponse } = useAudioState();
   const { conversations, isLoading: isLoadingConversations } = useConversations();
-  const { voice, setVoice } = useVoice();
+  
   const [previousMessageCount, setPreviousMessageCount] = useState(0);
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -76,7 +76,7 @@ const ChatInterface = () => {
     }
     
     setPreviousMessageCount(messages.length);
-  }, [messages, voice, previousMessageCount]);
+  }, [messages, previousMessageCount]);
 
   useEffect(() => {
     if (session?.user || isIOSPreview) {
@@ -148,28 +148,14 @@ const ChatInterface = () => {
   // Function to play assistant replies using text-to-speech
   const playAssistantReply = async (assistantText: string) => {
     try {
-      // Validate voice - ensure it's one of the supported OpenAI voices
-      const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
-      const chosenVoice = validVoices.includes(voice) ? voice : 'echo';
-      
-      const response = await supabase.functions.invoke('speech', {
-        body: {
-          text: assistantText,
-          voice: chosenVoice
-        }
+      const { data, error } = await supabase.functions.invoke("speech", {
+        body: { text: assistantText, voice: "alloy" }
       });
-
-      if (response.error) {
-        console.warn('TTS request failed:', response.error);
-        return;
-      }
-
-      // Convert response to blob and play
-      const blob = new Blob([response.data], { type: 'audio/mpeg' });
-      const audio = new Audio(URL.createObjectURL(blob));
-      await audio.play();
-    } catch (error) {
-      console.warn('Failed to play assistant reply:', error);
+      if (error) return console.warn(error);
+      const blob = new Blob([data], { type: "audio/mpeg" });
+      await new Audio(URL.createObjectURL(blob)).play();
+    } catch (err) { 
+      console.warn(err); 
     }
   };
 
@@ -317,7 +303,6 @@ const ChatInterface = () => {
                           className="min-w-[44px] h-[44px]"
                           forceClose={forceCloseVoiceChat}
                         />
-                        <VoiceSelector voice={voice} onChange={setVoice} />
                       </div>
                       <ChatInputSubmit 
                         variant="cta" 
