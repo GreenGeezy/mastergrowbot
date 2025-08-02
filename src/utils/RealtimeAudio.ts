@@ -94,11 +94,13 @@ export class RealtimeChat {
       this.onStatusChange('connecting')
       
       // Get ephemeral token from our Supabase Edge Function with voice parameter
+      console.log('Sending voice to realtime-chat-token:', this.chosenVoice)
       const { data, error } = await supabase.functions.invoke("realtime-chat-token", {
         body: { voice: this.chosenVoice }
       })
       
       if (error) {
+        console.error('Error from realtime-chat-token:', error)
         throw new Error(`Failed to get token: ${error.message}`)
       }
       

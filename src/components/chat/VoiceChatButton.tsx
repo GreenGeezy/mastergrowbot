@@ -142,6 +142,7 @@ const VoiceChatButton: React.FC<VoiceChatButtonProps> = ({
     try {
       if (chatStatus === 'disconnected') {
         // Start voice chat - this will trigger the voice interface
+        console.log('Starting voice chat with voice:', chosenVoice)
         setIsListening(true)
         setChatStatus('connecting')
         

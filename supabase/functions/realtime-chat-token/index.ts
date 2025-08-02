@@ -20,12 +20,19 @@ serve(async (req) => {
     }
 
     // Get voice from request body, fallback to alloy
-    const requestBody = await req.json().catch(() => ({}))
-    const { voice = "alloy" } = requestBody
+    let voice = "alloy"
+    try {
+      const requestBody = await req.json()
+      voice = requestBody.voice || "alloy"
+      console.log('Received voice parameter:', voice)
+    } catch (e) {
+      console.log('No request body or invalid JSON, using default voice:', voice)
+    }
     
     // Validate voice is one of OpenAI's supported voices
     const validVoices = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"]
     const selectedVoice = validVoices.includes(voice) ? voice : "alloy"
+    console.log('Selected voice after validation:', selectedVoice)
 
     // Request an ephemeral token from OpenAI
     const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
