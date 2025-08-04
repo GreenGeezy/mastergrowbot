@@ -19,7 +19,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Particles } from '@/components/ui/particles';
-
 interface StructuredAnalysisResult {
   diagnosis: string;
   confidence_level: number;
@@ -31,7 +30,6 @@ interface StructuredAnalysisResult {
   };
   recommended_actions: string[];
 }
-
 const PlantHealthAnalyzer = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [analysisResult, setAnalysisResult] = useState<StructuredAnalysisResult | null>(null);
@@ -45,22 +43,18 @@ const PlantHealthAnalyzer = () => {
     isVisible: boolean;
     type: 'blurry' | 'upload' | 'analysis' | 'network' | null;
     message?: string;
-  }>({ isVisible: false, type: null });
+  }>({
+    isVisible: false,
+    type: null
+  });
   const [showPostScanSignIn, setShowPostScanSignIn] = useState(false);
-  
   const session = useSession();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const haptic = useHapticFeedback();
 
   // Slideshow sentences for loading screen
-  const slideshowMessages = [
-    "Brewing higher yields—your custom profit-boost plan is sprouting.",
-    "Dialing in max potency for buds that wow and sell.",
-    "Optimizing every leaf to squeeze out max potency for top-shelf quality.",
-    "Calculating growth tweaks that stack grams—and revenue.",
-    "Fine-tuning your grow for fatter, stronger, tastier flowers."
-  ];
+  const slideshowMessages = ["Brewing higher yields—your custom profit-boost plan is sprouting.", "Dialing in max potency for buds that wow and sell.", "Optimizing every leaf to squeeze out max potency for top-shelf quality.", "Calculating growth tweaks that stack grams—and revenue.", "Fine-tuning your grow for fatter, stronger, tastier flowers."];
 
   // Check if user needs onboarding - show for all first-time visitors
   useEffect(() => {
@@ -75,7 +69,6 @@ const PlantHealthAnalyzer = () => {
     const handleCameraTrigger = () => {
       setShowStreamlinedCamera(true);
     };
-
     window.addEventListener('trigger-camera-capture', handleCameraTrigger);
     return () => {
       window.removeEventListener('trigger-camera-capture', handleCameraTrigger);
@@ -93,7 +86,6 @@ const PlantHealthAnalyzer = () => {
     } else {
       setElapsedTime(0);
     }
-    
     return () => {
       if (interval) {
         clearInterval(interval);
@@ -112,7 +104,6 @@ const PlantHealthAnalyzer = () => {
     } else {
       setCurrentSlideIndex(0);
     }
-    
     return () => {
       if (slideInterval) {
         clearInterval(slideInterval);
@@ -123,18 +114,17 @@ const PlantHealthAnalyzer = () => {
   // Helper function to parse analysis text into structured data
   const parseAnalysisText = (analysisText: string, confidence: number): StructuredAnalysisResult => {
     console.log("Parsing analysis text:", analysisText.substring(0, 500));
-    
+
     // Clean up the text first
     const cleanText = analysisText.replace(/\*\*/g, '').replace(/###/g, '').trim();
-    
     let growthStage = "";
     let healthScore = "";
     let specificIssues = "";
     let environmentalFactors = "";
     const recommendedActions: string[] = [];
-    
+
     // Enhanced parsing with detailed content structure
-    
+
     // A. Full List of Growth Stages - Extract and provide detailed stage information
     const stageKeywords = {
       'seedling': 'A. Full List of Growth Stages\n\nSeedling/Clone\nYour plant is just beginning its journey. It\'s small and delicate, but with your care, it will grow strong and healthy.',
@@ -143,7 +133,7 @@ const PlantHealthAnalyzer = () => {
       'flowering': 'A. Full List of Growth Stages\n\nFlowering\nYour plant is in full bloom, producing beautiful buds. It\'s the culmination of your hard work and care.',
       'maturation': 'A. Full List of Growth Stages\n\nMaturation\nYour buds are growing strong. Soon, they\'ll be ready to harvest!'
     };
-    
+
     // Determine growth stage with detailed description
     if (cleanText.toLowerCase().includes('flowering') || cleanText.toLowerCase().includes('bloom')) {
       growthStage = stageKeywords.flowering;
@@ -158,7 +148,7 @@ const PlantHealthAnalyzer = () => {
     } else {
       growthStage = stageKeywords.flowering; // Default to flowering for comprehensive info
     }
-    
+
     // B. Plant Health Ratings - Extract and provide detailed health assessment
     const healthRatings = {
       'poor': 'B. Plant Health Ratings\n\nNeeds Some Love\nYour plant could use a little extra care to get back on track. Let\'s help it feel better!',
@@ -167,7 +157,7 @@ const PlantHealthAnalyzer = () => {
       'very-good': 'B. Plant Health Ratings\n\nAbsolutely Thriving\nYour plant is growing strong and looking amazing. It\'s clear you know how to care for it!',
       'excellent': 'B. Plant Health Ratings\n\nIn Perfect Condition\nYour plant is at its absolute best, a true testament to your green thumb!'
     };
-    
+
     // Determine health score with detailed rating
     if (cleanText.toLowerCase().includes('excellent') || cleanText.toLowerCase().includes('perfect') || cleanText.toLowerCase().includes('outstanding')) {
       healthScore = healthRatings.excellent;
@@ -182,7 +172,7 @@ const PlantHealthAnalyzer = () => {
     } else {
       healthScore = healthRatings.good; // Default to good health rating
     }
-    
+
     // Extract Specific Issues with comprehensive analysis
     specificIssues = `**Comprehensive Plant Health Analysis:**
 
@@ -242,36 +232,28 @@ const PlantHealthAnalyzer = () => {
 - Maintain slight negative pressure in grow space for odor control`;
 
     // Comprehensive Recommended Actions
-    const detailedActions = [
-      {
-        title: "Advanced Nutrient Management",
-        description: `**Complete Feeding Program:** Implement a structured feeding schedule based on growth stage. Use organic amendments like bat guano (high phosphorus), kelp meal (potassium + micronutrients), and worm castings (slow-release nitrogen). Monitor EC/PPM levels: 800-1200 for vegetative, 1200-1600 for flowering. Test and adjust pH weekly: soil 6.0-6.8, hydro 5.5-6.5. Supplement with Cal-Mag if using RO water or LED lights.`
-      },
-      {
-        title: "Integrated Pest Management (IPM)",
-        description: `**Preventive Pest Control:** Weekly inspections with magnifying glass, especially leaf undersides. Maintain beneficial insect populations with predatory mites, ladybugs, or lacewings. Use sticky traps for early detection. Neem oil treatments every 2 weeks as prevention. Quarantine new plants for 2 weeks. Keep grow area clean and remove dead plant matter promptly. Consider companion planting with basil or marigolds.`
-      },
-      {
-        title: "Environmental Optimization",
-        description: `**Climate Control Systems:** Install automated environmental controls for consistency. Use VPD (Vapor Pressure Deficit) calculations for optimal plant transpiration. Implement gradual day/night transitions to reduce plant stress. Monitor and log environmental data daily. Use thermal imaging to identify hot/cold spots. Consider CO2 supplementation during peak photosynthesis hours.`
-      },
-      {
-        title: "Advanced Watering Techniques",
-        description: `**Precision Irrigation:** Water based on soil moisture, not schedule - use moisture meter or lift pot weight method. Water slowly until 10-20% runoff in containers to prevent salt buildup. Check runoff pH and EC to monitor root zone conditions. Use filtered or RO water when possible. Allow soil to dry slightly between waterings to encourage root oxygen uptake and prevent root rot.`
-      },
-      {
-        title: "Growth Training and Optimization",
-        description: `**Canopy Management:** Implement LST (Low Stress Training) or SCROG (Screen of Green) techniques to maximize light exposure. Prune lower branches that don't receive adequate light (lollipopping). Remove large fan leaves blocking bud sites during flowering. Top or FIM plants during vegetative stage to increase main colas. Maintain even canopy height for uniform light distribution.`
-      }
-    ];
-    
+    const detailedActions = [{
+      title: "Advanced Nutrient Management",
+      description: `**Complete Feeding Program:** Implement a structured feeding schedule based on growth stage. Use organic amendments like bat guano (high phosphorus), kelp meal (potassium + micronutrients), and worm castings (slow-release nitrogen). Monitor EC/PPM levels: 800-1200 for vegetative, 1200-1600 for flowering. Test and adjust pH weekly: soil 6.0-6.8, hydro 5.5-6.5. Supplement with Cal-Mag if using RO water or LED lights.`
+    }, {
+      title: "Integrated Pest Management (IPM)",
+      description: `**Preventive Pest Control:** Weekly inspections with magnifying glass, especially leaf undersides. Maintain beneficial insect populations with predatory mites, ladybugs, or lacewings. Use sticky traps for early detection. Neem oil treatments every 2 weeks as prevention. Quarantine new plants for 2 weeks. Keep grow area clean and remove dead plant matter promptly. Consider companion planting with basil or marigolds.`
+    }, {
+      title: "Environmental Optimization",
+      description: `**Climate Control Systems:** Install automated environmental controls for consistency. Use VPD (Vapor Pressure Deficit) calculations for optimal plant transpiration. Implement gradual day/night transitions to reduce plant stress. Monitor and log environmental data daily. Use thermal imaging to identify hot/cold spots. Consider CO2 supplementation during peak photosynthesis hours.`
+    }, {
+      title: "Advanced Watering Techniques",
+      description: `**Precision Irrigation:** Water based on soil moisture, not schedule - use moisture meter or lift pot weight method. Water slowly until 10-20% runoff in containers to prevent salt buildup. Check runoff pH and EC to monitor root zone conditions. Use filtered or RO water when possible. Allow soil to dry slightly between waterings to encourage root oxygen uptake and prevent root rot.`
+    }, {
+      title: "Growth Training and Optimization",
+      description: `**Canopy Management:** Implement LST (Low Stress Training) or SCROG (Screen of Green) techniques to maximize light exposure. Prune lower branches that don't receive adequate light (lollipopping). Remove large fan leaves blocking bud sites during flowering. Top or FIM plants during vegetative stage to increase main colas. Maintain even canopy height for uniform light distribution.`
+    }];
+
     // Add all detailed actions
     detailedActions.forEach(action => {
       recommendedActions.push(`${action.title}: ${action.description}`);
     });
-    
     console.log("Enhanced parsing completed with comprehensive sections");
-    
     return {
       diagnosis: cleanText,
       confidence_level: confidence,
@@ -302,11 +284,13 @@ const PlantHealthAnalyzer = () => {
 
   // Helper functions for error handling
   const handleRetakePhoto = () => {
-    setErrorState({ isVisible: false, type: null });
+    setErrorState({
+      isVisible: false,
+      type: null
+    });
     setShowStreamlinedCamera(true);
     setSelectedFiles([]);
   };
-
   const handleGallerySelect = () => {
     setShowStreamlinedCamera(false);
     // Trigger file input
@@ -315,9 +299,11 @@ const PlantHealthAnalyzer = () => {
       fileInput.click();
     }
   };
-
   const handleRetryAnalysis = () => {
-    setErrorState({ isVisible: false, type: null });
+    setErrorState({
+      isVisible: false,
+      type: null
+    });
     if (selectedFiles.length > 0) {
       // Retry with current files
       const files = selectedFiles;
@@ -333,7 +319,6 @@ const PlantHealthAnalyzer = () => {
             const randomId = Math.random().toString(36).substring(7);
             const fileExtension = file.name.split('.').pop() || 'jpg';
             const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
-            
             const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
               body: {
                 fileName,
@@ -341,28 +326,24 @@ const PlantHealthAnalyzer = () => {
                 contentType: file.type || 'image/jpeg'
               }
             });
-
             if (uploadResponse.error) throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
             if (uploadResponse.data?.publicUrl) imageUrls.push(uploadResponse.data.publicUrl);
           }
-
           if (imageUrls.length === 0) throw new Error('No images were successfully uploaded');
-
           const analysisResponse = await supabase.functions.invoke('analyze-plant', {
-            body: { imageUrls, userId: session?.user?.id || `anonymous-${Date.now()}` }
+            body: {
+              imageUrls,
+              userId: session?.user?.id || `anonymous-${Date.now()}`
+            }
           });
-
           if (analysisResponse.error || !analysisResponse.data?.success) {
             throw new Error(analysisResponse.error?.message || 'Analysis failed');
           }
-
           let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
           if (typeof analysisText !== 'string') analysisText = JSON.stringify(analysisText, null, 2);
-          
           const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
           setAnalysisResult(structuredResult);
           toast.success("Plant analysis complete!");
-
           if (session?.user?.id) {
             await supabase.from('plant_analyses').insert({
               user_id: session.user.id,
@@ -388,43 +369,41 @@ const PlantHealthAnalyzer = () => {
       }, 500);
     }
   };
-
   const handleCancelError = () => {
-    setErrorState({ isVisible: false, type: null });
+    setErrorState({
+      isVisible: false,
+      type: null
+    });
   };
-
   const handleCancelAnalysis = () => {
     haptic.light();
     setIsLoading(false);
-    setErrorState({ isVisible: false, type: null });
+    setErrorState({
+      isVisible: false,
+      type: null
+    });
     toast.info("Analysis cancelled");
   };
-
   const handleSignIn = () => {
     haptic.light();
     navigate('/');
   };
-
   const handlePostScanSignIn = () => {
     setShowPostScanSignIn(false);
     handleSignIn();
   };
-
   const handleDismissSignInPrompt = () => {
     haptic.light();
     setShowPostScanSignIn(false);
   };
-
   const handleTakePhoto = () => {
     setShowStreamlinedCamera(true);
   };
-
   const handleImagesSelected = useCallback((files: File[]) => {
     console.log('Images selected:', files.length);
-    
     setSelectedFiles(files);
     setAnalysisResult(null); // Clear previous results
-    
+
     // Do NOT auto-trigger analysis for file uploads - only for camera captures
     // Users should be able to upload multiple images before analyzing
   }, []);
@@ -435,21 +414,17 @@ const PlantHealthAnalyzer = () => {
       toast.error("Please select images first.");
       return;
     }
-
     console.log('=== STARTING MANUAL PLANT ANALYSIS ===');
     setIsLoading(true);
     setAnalysisResult(null);
-
     try {
       const imageUrls = [];
-      
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         const timestamp = Date.now();
         const randomId = Math.random().toString(36).substring(7);
         const fileExtension = file.name.split('.').pop() || 'jpg';
         const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
-        
         const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
           body: {
             fileName,
@@ -457,41 +432,33 @@ const PlantHealthAnalyzer = () => {
             contentType: file.type || 'image/jpeg'
           }
         });
-
         if (uploadResponse.error) {
           throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
         }
-
         if (uploadResponse.data?.publicUrl) {
           imageUrls.push(uploadResponse.data.publicUrl);
         }
       }
-
       if (imageUrls.length === 0) {
         throw new Error('No images were successfully uploaded');
       }
-
       const analysisResponse = await supabase.functions.invoke('analyze-plant', {
-        body: { 
+        body: {
           imageUrls,
           userId: session?.user?.id || `anonymous-${Date.now()}`
         }
       });
-
       if (analysisResponse.error || !analysisResponse.data?.success) {
         throw new Error(analysisResponse.error?.message || 'Analysis failed');
       }
-
       let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
       if (typeof analysisText !== 'string') {
         analysisText = JSON.stringify(analysisText, null, 2);
       }
-      
       const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
       setAnalysisResult(structuredResult);
       haptic.success();
       toast.success("Plant analysis complete!");
-
       if (session?.user?.id) {
         await supabase.from('plant_analyses').insert({
           user_id: session.user.id,
@@ -507,7 +474,7 @@ const PlantHealthAnalyzer = () => {
       console.error("Manual analysis error:", error);
       haptic.error();
       const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
-      
+
       // Determine error type for better UX
       let errorType: 'blurry' | 'upload' | 'analysis' | 'network' = 'analysis';
       if (errorMessage.includes('upload') || errorMessage.includes('Failed to upload')) {
@@ -515,7 +482,6 @@ const PlantHealthAnalyzer = () => {
       } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
         errorType = 'network';
       }
-      
       setErrorState({
         isVisible: true,
         type: errorType,
@@ -525,34 +491,28 @@ const PlantHealthAnalyzer = () => {
       setIsLoading(false);
     }
   }, [selectedFiles, session?.user?.id, haptic]);
-
   const handleCameraCapture = useCallback((file: File) => {
     console.log('Camera capture file:', file.name, file.size);
-    
     const newFiles = [file]; // Single file from camera
     setSelectedFiles(newFiles);
     setShowStreamlinedCamera(false);
     setAnalysisResult(null); // Clear previous results
-    
+
     // Auto-trigger analysis after camera capture
     setTimeout(async () => {
       const files = newFiles;
       if (files.length === 0) return;
-
       console.log('=== STARTING PLANT ANALYSIS ===');
       setIsLoading(true);
       setAnalysisResult(null);
-
       try {
         const imageUrls = [];
-        
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           const timestamp = Date.now();
           const randomId = Math.random().toString(36).substring(7);
           const fileExtension = file.name.split('.').pop() || 'jpg';
           const fileName = `plant-analysis-${timestamp}-${i}-${randomId}.${fileExtension}`;
-          
           const uploadResponse = await supabase.functions.invoke('upload-plant-image', {
             body: {
               fileName,
@@ -560,41 +520,33 @@ const PlantHealthAnalyzer = () => {
               contentType: file.type || 'image/jpeg'
             }
           });
-
           if (uploadResponse.error) {
             throw new Error(`Failed to upload ${file.name}: ${uploadResponse.error.message}`);
           }
-
           if (uploadResponse.data?.publicUrl) {
             imageUrls.push(uploadResponse.data.publicUrl);
           }
         }
-
         if (imageUrls.length === 0) {
           throw new Error('No images were successfully uploaded');
         }
-
         const analysisResponse = await supabase.functions.invoke('analyze-plant', {
-          body: { 
+          body: {
             imageUrls,
             userId: session?.user?.id || `anonymous-${Date.now()}`
           }
         });
-
         if (analysisResponse.error || !analysisResponse.data?.success) {
           throw new Error(analysisResponse.error?.message || 'Analysis failed');
         }
-
         let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
         if (typeof analysisText !== 'string') {
           analysisText = JSON.stringify(analysisText, null, 2);
         }
-        
         const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
         setAnalysisResult(structuredResult);
         haptic.success();
         toast.success("Plant analysis complete!");
-
         if (session?.user?.id) {
           await supabase.from('plant_analyses').insert({
             user_id: session.user.id,
@@ -610,7 +562,7 @@ const PlantHealthAnalyzer = () => {
         console.error("Analysis error:", error);
         haptic.error();
         const errorMessage = error instanceof Error ? error.message : "Analysis failed. Please try again.";
-        
+
         // Determine error type for better UX
         let errorType: 'blurry' | 'upload' | 'analysis' | 'network' = 'analysis';
         if (errorMessage.includes('upload') || errorMessage.includes('Failed to upload')) {
@@ -618,7 +570,6 @@ const PlantHealthAnalyzer = () => {
         } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
           errorType = 'network';
         }
-        
         setErrorState({
           isVisible: true,
           type: errorType,
@@ -632,18 +583,10 @@ const PlantHealthAnalyzer = () => {
 
   // Allow access without authentication for testing and design work
 
-  return (
-    <TooltipProvider>
+  return <TooltipProvider>
       <div className="min-h-screen bg-white text-gray-900 pb-20 page-fade-in">
         {/* Particles Background */}
-        <Particles
-          className="absolute inset-0"
-          quantity={30}
-          ease={80}
-          color="#22c55e"
-          size={6}
-          refresh
-        />
+        <Particles className="absolute inset-0" quantity={30} ease={80} color="#22c55e" size={6} refresh />
         
         <PlantHealthHeader />
 
@@ -651,7 +594,7 @@ const PlantHealthAnalyzer = () => {
           <section className="mb-8">
             <Card className="bg-gray-50 backdrop-blur-sm border-gray-200">
               <CardHeader>
-                <CardTitle className="text-headline-sm font-display text-foreground text-center">Plant Health Scanner</CardTitle>
+                
                 <CardDescription className="text-body-secondary font-body text-center">
                   Take photos or upload images from your device for AI-powered plant health analysis
                   <br />
@@ -659,32 +602,13 @@ const PlantHealthAnalyzer = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-0">
-                {showStreamlinedCamera ? (
-                  <StreamlinedCameraCapture
-                    onPhotoCapture={handleCameraCapture}
-                    onClose={() => setShowStreamlinedCamera(false)}
-                    onGallerySelect={handleGallerySelect}
-                  />
-                ) : !showCamera ? (
-                  <ImageDropzone
-                    onImagesSelected={handleImagesSelected}
-                    selectedFiles={selectedFiles}
-                    maxFiles={3}
-                    onCameraCapture={handleCameraCapture}
-                  />
-                ) : (
-                  <CameraCapture
-                    onPhotoCapture={handleCameraCapture}
-                    onClose={() => setShowCamera(false)}
-                  />
-                )}
+                {showStreamlinedCamera ? <StreamlinedCameraCapture onPhotoCapture={handleCameraCapture} onClose={() => setShowStreamlinedCamera(false)} onGallerySelect={handleGallerySelect} /> : !showCamera ? <ImageDropzone onImagesSelected={handleImagesSelected} selectedFiles={selectedFiles} maxFiles={3} onCameraCapture={handleCameraCapture} /> : <CameraCapture onPhotoCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
               </CardContent>
             </Card>
           </section>
 
           {/* Manual Analysis Button - appears when files are selected but no analysis has been done */}
-          {selectedFiles.length > 0 && !analysisResult && !isLoading && (
-            <section className="mb-8">
+          {selectedFiles.length > 0 && !analysisResult && !isLoading && <section className="mb-8">
               <Card className="bg-card/90 backdrop-blur-sm border-card-foreground/10">
                 <CardContent className="p-6">
                   <div className="text-center space-y-4">
@@ -692,18 +616,9 @@ const PlantHealthAnalyzer = () => {
                       {selectedFiles.length} image{selectedFiles.length > 1 ? 's' : ''} ready for analysis
                     </h3>
                     <p className="text-muted-foreground">
-                      {selectedFiles.length < 3 ? 
-                        `You can add ${3 - selectedFiles.length} more image${3 - selectedFiles.length > 1 ? 's' : ''} or analyze now` :
-                        'Maximum 3 images selected - ready to analyze'
-                      }
+                      {selectedFiles.length < 3 ? `You can add ${3 - selectedFiles.length} more image${3 - selectedFiles.length > 1 ? 's' : ''} or analyze now` : 'Maximum 3 images selected - ready to analyze'}
                     </p>
-                    <Button
-                      onClick={handleManualAnalysis}
-                      variant="cta"
-                      size="lg"
-                      className="w-full md:w-auto"
-                      disabled={isLoading}
-                    >
+                    <Button onClick={handleManualAnalysis} variant="cta" size="lg" className="w-full md:w-auto" disabled={isLoading}>
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -713,26 +628,17 @@ const PlantHealthAnalyzer = () => {
                   </div>
                 </CardContent>
               </Card>
-            </section>
-          )}
+            </section>}
 
           <section className="mb-8">
-            {analysisResult && (
-              <AnalysisResults analysisResult={analysisResult} />
-            )}
+            {analysisResult && <AnalysisResults analysisResult={analysisResult} />}
           </section>
 
-          <PostScanSignInPrompt
-            isVisible={showPostScanSignIn}
-            onSignIn={handlePostScanSignIn}
-            onDismiss={handleDismissSignInPrompt}
-            analysisComplete={!!analysisResult}
-          />
+          <PostScanSignInPrompt isVisible={showPostScanSignIn} onSignIn={handlePostScanSignIn} onDismiss={handleDismissSignInPrompt} analysisComplete={!!analysisResult} />
         </main>
         
         {/* Loading Overlay with Timer */}
-        {isLoading && (
-          <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
+        {isLoading && <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
             <div className="text-center space-y-6 px-4">
               <div className="space-y-4">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
@@ -752,39 +658,19 @@ const PlantHealthAnalyzer = () => {
                 Time elapsed: <span className="font-mono font-bold text-primary">{elapsedTime}s</span>
               </div>
             </div>
-          </div>
-        )}
+          </div>}
 
         {/* Onboarding Tutorial */}
-        {showOnboarding && (
-          <OnboardingTutorial
-            onComplete={() => setShowOnboarding(false)}
-            onSkip={() => setShowOnboarding(false)}
-          />
-        )}
+        {showOnboarding && <OnboardingTutorial onComplete={() => setShowOnboarding(false)} onSkip={() => setShowOnboarding(false)} />}
 
         {/* Analysis Progress Modal */}
-        <AnalysisProgress
-          isVisible={isLoading}
-          onCancel={handleCancelAnalysis}
-          currentMessage={slideshowMessages[currentSlideIndex]}
-          elapsedTime={elapsedTime}
-        />
+        <AnalysisProgress isVisible={isLoading} onCancel={handleCancelAnalysis} currentMessage={slideshowMessages[currentSlideIndex]} elapsedTime={elapsedTime} />
 
         {/* Error Handling Modal */}
-        <ErrorHandlingModal
-          isVisible={errorState.isVisible}
-          errorType={errorState.type}
-          errorMessage={errorState.message}
-          onRetake={handleRetakePhoto}
-          onRetry={handleRetryAnalysis}
-          onCancel={handleCancelError}
-        />
+        <ErrorHandlingModal isVisible={errorState.isVisible} errorType={errorState.type} errorMessage={errorState.message} onRetake={handleRetakePhoto} onRetry={handleRetryAnalysis} onCancel={handleCancelError} />
         
         <BottomNavigation />
       </div>
-    </TooltipProvider>
-  );
+    </TooltipProvider>;
 };
-
 export default PlantHealthAnalyzer;
