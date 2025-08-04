@@ -27,6 +27,10 @@ const categories = [
       {
         q: "How do I use the Plant Health Analysis feature?",
         a: "Our cutting-edge AI vision technology transforms plant health monitoring. Simply upload clear photos through the Plant Health page to receive instant, professional-grade analysis of your plants' condition. Our AI processes millions of visual data points to identify potential issues before they become visible to the human eye, providing precise, actionable insights that would typically require years of growing expertise."
+      },
+      {
+        q: "Why did I get a generic report plant health analysis from my image, and how can I avoid it?",
+        a: "If the photo you upload doesn't clearly contain a cannabis plant, the vision model lacks the visual cues it needs and will fall back on a generic template. To receive an accurate diagnosis, take a well-lit picture that shows leaves, stems, or buds in focus, filling most of the frame with the plant and avoiding backgrounds dominated by hands, furniture, or other objects. Clear, in-frame plant images allow the AI to analyse nutrient issues, pests, and growth stage with high confidence."
       }
     ]
   },
