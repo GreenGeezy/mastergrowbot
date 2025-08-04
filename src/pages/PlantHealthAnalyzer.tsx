@@ -19,6 +19,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useHapticFeedback } from '@/utils/hapticFeedback';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Particles } from '@/components/ui/particles';
+import { History } from 'lucide-react';
+import AnalysisHistory from '@/components/plant-health/AnalysisHistory';
 interface StructuredAnalysisResult {
   diagnosis: string;
   confidence_level: number;
@@ -629,6 +631,26 @@ const PlantHealthAnalyzer = () => {
                 </CardContent>
               </Card>
             </section>}
+
+          {/* Analysis History Section - visible when user is authenticated */}
+          {session && (
+            <section className="mb-8">
+              <Card className="bg-gray-50/80 backdrop-blur-sm border-gray-200">
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <History className="w-6 h-6 text-primary" />
+                      <h3 className="text-lg font-semibold text-gray-900">Analysis History</h3>
+                    </div>
+                    <p className="text-gray-600 mb-4">
+                      Review your past plant health analyses and track improvements over time
+                    </p>
+                    <AnalysisHistory userId={session.user.id} />
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+          )}
 
           <section className="mb-8">
             {analysisResult && <AnalysisResults analysisResult={analysisResult} />}
