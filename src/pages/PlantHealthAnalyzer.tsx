@@ -654,6 +654,8 @@ const PlantHealthAnalyzer = () => {
                 <CardTitle className="text-headline-sm font-display text-foreground text-center">Plant Health Scanner</CardTitle>
                 <CardDescription className="text-body-secondary font-body text-center">
                   Take photos or upload images from your device for AI-powered plant health analysis
+                  <br />
+                  ⚠️ Upload a real cannabis plant photo or you'll get a generic answer ⚠️
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-0">
