@@ -78,11 +78,16 @@ const BottomNavigation = () => {
                 }`}
               >
                 <IconComponent
-                  className={`w-5 h-5 mb-1 transition-colors duration-200 ${
+                  className={`w-7 h-7 mb-1 transition-all duration-200 ${
                     isActive 
-                      ? 'text-primary fill-primary stroke-2' 
-                      : 'text-muted-foreground stroke-1'
+                      ? 'text-primary fill-primary stroke-2 drop-shadow-sm' 
+                      : 'text-muted-foreground stroke-2'
                   }`}
+                  style={{
+                    filter: isActive 
+                      ? 'drop-shadow(0 1px 2px rgba(229, 231, 235, 0.5)) drop-shadow(0 0 8px rgba(34, 197, 94, 0.2))' 
+                      : 'drop-shadow(0 1px 2px rgba(229, 231, 235, 0.5))'
+                  }}
                   fill={isActive ? 'currentColor' : 'none'}
                 />
                 <span className={`text-xs font-medium transition-colors duration-200 ${
