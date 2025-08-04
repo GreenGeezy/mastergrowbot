@@ -21,6 +21,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Particles } from '@/components/ui/particles';
 import { History } from 'lucide-react';
 import AnalysisHistory from '@/components/plant-health/AnalysisHistory';
+import QuickTipCards from '@/components/plant-health/QuickTipCards';
 interface StructuredAnalysisResult {
   diagnosis: string;
   confidence_level: number;
@@ -631,6 +632,11 @@ const PlantHealthAnalyzer = () => {
                 </CardContent>
               </Card>
             </section>}
+
+          {/* Quick Tip Cards - 4 Recommendations */}
+          <section className="mb-8">
+            <QuickTipCards />
+          </section>
 
           {/* Analysis History Section - visible when user is authenticated */}
           {session && (
