@@ -14,8 +14,8 @@ const PlantHealthHeader = () => {
       <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-green-600 via-green-500 to-green-700 text-transparent bg-clip-text">
         Plant Health Scanner
       </h1>
-      <p className="text-center text-gray-950 text-xl">Take a pic or Upload images of your plant for an instant AI-powered health analysis with 
-Customized Recommended Actions to grow bigger better buds!</p>
+      <p className="text-center text-gray-950 text-xl">Take a pic or Upload images of your plant for an instant AI-powered health analysis<br />
+with Customized Recommended Actions to grow bigger better buds!</p>
     </div>;
 };
 export default PlantHealthHeader;
