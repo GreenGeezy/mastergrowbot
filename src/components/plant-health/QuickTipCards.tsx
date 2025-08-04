@@ -59,13 +59,6 @@ const QuickTipCards = () => {
 
   const quickTips: QuickTip[] = [
     {
-      icon: Camera,
-      title: "Take Photo",
-      description: "Upload clear, detailed photos of any concerning areas on your plant",
-      action: handleTakePhoto,
-      buttonText: "Take Photo"
-    },
-    {
       icon: Share2,
       title: "Share Results",
       description: "Share your analysis via email, social media, or copy a direct link",
