@@ -590,7 +590,7 @@ const PlantHealthAnalyzer = () => {
         
         <PlantHealthHeader />
 
-        <main className="container mx-auto px-4 py-8 max-w-4xl">
+        <main className="container mx-auto px-4 pb-8 max-w-4xl">
           <section className="mb-8">
             <Card className="bg-gray-50 backdrop-blur-sm border-gray-200">
               <CardHeader>
