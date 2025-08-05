@@ -1,0 +1,32 @@
+name: Add Native iOS Shell
+
+on:
+  workflow_dispatch:
+
+jobs:
+  add-ios-shell:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Add iOS platform
+      run: npx cap add ios
+      
+    - name: Commit iOS files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add ios/
+        git commit -m "Add native iOS shell" || exit 0
+        git push
