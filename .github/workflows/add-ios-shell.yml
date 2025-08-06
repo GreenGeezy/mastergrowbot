@@ -1,33 +1,36 @@
 name: Generate iOS shell
 
+permissions:
+  contents: write          # ← allow git push from the workflow
+
 on:
-  workflow_dispatch: # run manually when needed
+  workflow_dispatch:       # run manually when needed
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v4
-      with:
-        ref: ios-main
-        
-    - name: Set up Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        
-    - name: Install packages
-      run: npm ci
-      
-    - name: Add iOS platform
-      run: npx cap add ios
-      
-    - name: Commit native shell
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add ios
-        git commit -m "Add native iOS shell" || echo "No changes"
-        git push
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ios-main
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install packages
+        run: npm ci
+
+      - name: Add iOS platform
+        run: npx cap add ios
+
+      - name: Commit native shell
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ios
+          git commit -m "Add native iOS shell" || echo "No changes"
+          git push
