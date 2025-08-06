@@ -1,10 +1,10 @@
 name: Generate iOS shell
 
 permissions:
-  contents: write          # ← allow git push from the workflow
+  contents: write            # allow this job to push the new ios/ folder
 
 on:
-  workflow_dispatch:       # run manually when needed
+  workflow_dispatch:         # run manually when needed
 
 jobs:
   build:
@@ -21,11 +21,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install packages
-        run: npm ci
+      # ──────────────────────────────────────────────────────────────
+      # Install project deps even if lock-file and package.json differ
+      # and ensure Capacitor CLI is available in the runner.
+      # ──────────────────────────────────────────────────────────────
+      - name: Install deps & Capacitor CLI
+        run: |
+          npm install --legacy-peer-deps
+          npx --yes --package @capacitor/cli@latest cap --version
 
       - name: Add iOS platform
-        run: npx cap add ios
+        run: npx --yes @capacitor/cli add ios
 
       - name: Commit native shell
         run: |
