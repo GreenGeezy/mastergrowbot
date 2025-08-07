@@ -10,7 +10,7 @@ workflows:
       vars:
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME:   "App"
-      xcode: latest                 # latest Apple toolchain
+      xcode: latest                 # latest Apple tool-chain
 
     scripts:
       - name: Install npm dependencies
@@ -26,9 +26,12 @@ workflows:
         script: |
           npx cap sync ios
 
+      # ---------- FIXED BLOCK ----------
       - name: Install CocoaPods dependencies
         script: |
-          cd ios && pod install
+          cd ios/App                # <─ where the Podfile actually lives
+          pod install --repo-update
+      # ---------------------------------
 
       - name: Build unsigned iOS app
         script: |
