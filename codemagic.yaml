@@ -1,38 +1,43 @@
 workflows:
   ios-capacitor-build:
     name: iOS Capacitor Build
-    max_build_duration: 120         # minutes
+    max_build_duration: 120            # minutes
     instance_type: mac_mini_m2
 
     environment:
-      groups:                       # pulls keys from Codemagic
-        - supabase                  # ← your variable group
+      groups:                          # pulls secrets/keys from Codemagic
+        - supabase                     # ← the group you created
       vars:
-        XCODE_WORKSPACE: "ios/App/App.xcworkspace"
-        XCODE_SCHEME:   "App"
-      xcode: latest                 # latest Apple tool-chain
+        # ‼️ We change only the workspace path — it must be *relative*
+        #   to the ios/ directory because we `cd ios` before building.
+        XCODE_WORKSPACE: "App/App.xcworkspace"
+        XCODE_SCHEME:    "App"
+      xcode: latest                    # latest Apple tool-chain
 
     scripts:
+      # 1. Install JS deps
       - name: Install npm dependencies
         script: |
           npm install --legacy-peer-deps
 
+      # 2. Build your Vite / Next.js site (and export if you use SSG)
       - name: Build web app
         script: |
           npm run build
-          npx next export || true   # safe even if you don’t export
+          npx next export || true      # harmless if not exporting
 
+      # 3. Sync Capacitor
       - name: Sync Capacitor for iOS
         script: |
           npx cap sync ios
 
-      # ---------- FIXED BLOCK ----------
+      # 4. Install CocoaPods
       - name: Install CocoaPods dependencies
         script: |
-          cd ios/App                # <─ where the Podfile actually lives
-          pod install --repo-update
-      # ---------------------------------
+          cd ios && pod install
+          cd ..
 
+      # 5. Build an **unsigned** .xcarchive + .ipa
       - name: Build unsigned iOS app
         script: |
           cd ios
@@ -48,6 +53,7 @@ workflows:
             -archivePath build/App.xcarchive \
             -exportPath build \
             -exportOptionsPlist ../export_options.plist
+          cd ..
 
     artifacts:
       - ios/build/*.ipa
@@ -60,5 +66,5 @@ workflows:
       events:
         - push
       branch_patterns:
-        - pattern: 'ios-main'
+        - pattern: "ios-main"
           include: true
