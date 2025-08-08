@@ -103,3 +103,35 @@ export const checkUserExists = async (userId: string) => {
     return { exists: false, error };
   }
 };
+
+// Fetch current user's Bud Boost Run (streak) from user_streaks
+// Returns 0 if no row is found or if the user is not authenticated
+export const getUserBudBoostRun = async (): Promise<number> => {
+  try {
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      console.warn('No authenticated user found when fetching Bud Boost Run:', authError);
+      return 0;
+    }
+
+    const { data, error } = await supabase
+      .from('user_streaks')
+      .select('current_streak')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error fetching user streak:', error);
+      return 0;
+    }
+
+    return data?.current_streak ?? 0;
+  } catch (err) {
+    console.error('Unexpected error fetching Bud Boost Run:', err);
+    return 0;
+  }
+};
