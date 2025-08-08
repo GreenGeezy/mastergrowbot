@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getUserBudBoostRun } from "@/integrations/supabase/client";
 import { MessageCircle, Camera, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import BudBoostBadge from "@/components/BudBoostBadge";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const [budBoostRun, setBudBoostRun] = useState<number>(0);
 
   const navigationButtons = [
     {
@@ -29,6 +31,20 @@ const UserDashboard = () => {
       icon: BookOpen,
     },
   ];
+
+  // Fetch Bud Boost Run (streak) once on mount
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const run = await getUserBudBoostRun();
+        if (isMounted) setBudBoostRun(run);
+      } catch (e) {
+        console.error('Failed to load Bud Boost Run', e);
+      }
+    })();
+    return () => { isMounted = false };
+  }, []);
 
   const handleSignOut = async () => {
     try {
@@ -80,6 +96,10 @@ const UserDashboard = () => {
               </Button>
             );
           })}
+        </div>
+        {/* Bud Boost Run badge below quick actions */}
+        <div className="w-full flex justify-center">
+          <BudBoostBadge run={budBoostRun} />
         </div>
 
         <h2 className="text-headline-sm font-display text-foreground mb-6 text-center">
