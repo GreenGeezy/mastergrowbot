@@ -459,6 +459,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_streaks: {
+        Row: {
+          current_streak: number
+          grace_days: number
+          last_action: string
+          user_id: string
+        }
+        Insert: {
+          current_streak?: number
+          grace_days?: number
+          last_action?: string
+          user_id: string
+        }
+        Update: {
+          current_streak?: number
+          grace_days?: number
+          last_action?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       user_access_view: {
