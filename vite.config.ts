@@ -53,4 +53,9 @@ export default defineConfig(({ mode }) => ({
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
   },
+  test: {
+    globals: true,
+    environment: 'node',
+    include: ['__tests__/**/*.test.ts'],
+  },
 }));
