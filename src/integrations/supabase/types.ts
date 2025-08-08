@@ -551,6 +551,10 @@ export type Database = {
         Args: { user_id_to_delete: string }
         Returns: undefined
       }
+      update_streak_for_user: {
+        Args: { user_uuid: string }
+        Returns: undefined
+      }
       user_has_access: {
         Args: { user_uuid: string }
         Returns: boolean
