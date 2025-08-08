@@ -5,11 +5,13 @@ import { MessageCircle, Camera, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import BudBoostBadge from "@/components/BudBoostBadge";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [budBoostRun, setBudBoostRun] = useState<number>(0);
+  const [isRunLoading, setIsRunLoading] = useState<boolean>(true);
 
   const navigationButtons = [
     {
@@ -37,10 +39,13 @@ const UserDashboard = () => {
     let isMounted = true;
     (async () => {
       try {
+        setIsRunLoading(true);
         const run = await getUserBudBoostRun();
         if (isMounted) setBudBoostRun(run);
       } catch (e) {
         console.error('Failed to load Bud Boost Run', e);
+      } finally {
+        if (isMounted) setIsRunLoading(false);
       }
     })();
     return () => { isMounted = false };
@@ -99,7 +104,11 @@ const UserDashboard = () => {
         </div>
         {/* Bud Boost Run badge below quick actions */}
         <div className="w-full flex justify-center">
-          <BudBoostBadge run={budBoostRun} />
+          {isRunLoading ? (
+            <Skeleton className="h-7 w-28 rounded-full" />
+          ) : (
+            <BudBoostBadge run={budBoostRun} />
+          )}
         </div>
 
         <h2 className="text-headline-sm font-display text-foreground mb-6 text-center">
