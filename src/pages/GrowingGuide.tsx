@@ -8,6 +8,7 @@ import SupportDialog from "@/components/support/SupportDialog";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Particles } from '@/components/ui/particles';
+import BudBoostLeaderboard from '@/components/guide/BudBoostLeaderboard';
 const GrowingGuide = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSupport, setShowSupport] = useState(false);
@@ -65,6 +66,9 @@ const GrowingGuide = () => {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-600 h-5 w-5" />
           </div>
         </div>
+
+        {/* Leaderboard Card */}
+        <BudBoostLeaderboard />
 
         {/* Guide Categories */}
         <GuideCategories searchQuery={searchQuery} />
