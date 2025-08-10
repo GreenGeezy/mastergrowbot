@@ -15,13 +15,18 @@ const BudBoostBadge: React.FC<BudBoostBadgeProps> = ({ run }) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 select-none">
-            <Flame className="w-4 h-4" aria-hidden="true" />
-            <span className="font-semibold text-sm">Day {run}</span>
+          <div
+            role="status"
+            aria-label={`Bud Boost Run Streak — Day ${run}`}
+            className="inline-flex items-center gap-3 rounded-full bg-gold/10 text-gold px-4 py-2 select-none ring-1 ring-gold/30 shadow-subtle"
+          >
+            <Flame className="w-5 h-5" aria-hidden="true" />
+            <span className="font-medium text-sm">Bud Boost Run Streak</span>
+            <span className="font-semibold text-base">Day {run}</span>
           </div>
         </TooltipTrigger>
         <TooltipContent>
-          <p>🔥 Bud Boost Run — Day {run}</p>
+          <p>🔥 Bud Boost Run Streak — Day {run}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
