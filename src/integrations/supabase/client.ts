@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { Tables } from '@/integrations/supabase/types'
 
 const SUPABASE_URL = "https://inbfxduleyhygxatxmre.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluYmZ4ZHVsZXloeWd4YXR4bXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM3NDc2MjksImV4cCI6MjA0OTMyMzYyOX0.l0HrL8MlQrRmIEALGTEOhPz41QhzQ_F73A0C8FsIAeQ";
@@ -133,5 +134,94 @@ export const getUserBudBoostRun = async (): Promise<number> => {
   } catch (err) {
     console.error('Unexpected error fetching Bud Boost Run:', err);
     return 0;
+  }
+};
+
+// Leaderboard helpers
+export type LeaderboardRow = {
+  rank: number;
+  leaderboard_name: string;
+  run: number;
+  last_action: string; // PostgREST returns dates as ISO strings
+};
+
+// Safely fetch top-N leaderboard rows via RPC. Returns [] on any error.
+export const getBudBoostLeaderboard = async (limit = 20): Promise<LeaderboardRow[]> => {
+  try {
+    const { data, error } = await supabase.rpc('get_bud_boost_leaderboard', { max_rows: limit });
+    if (error) {
+      console.error('Error fetching leaderboard:', error);
+      return [];
+    }
+    return Array.isArray(data) ? (data as LeaderboardRow[]) : [];
+  } catch (err) {
+    console.error('Unexpected error fetching leaderboard:', err);
+    return [];
+  }
+};
+
+// Row type from generated DB types
+export type LeaderboardProfile = Tables<'leaderboard_profiles'>;
+
+// Get current user's leaderboard profile. Returns null if unauthenticated, not found, or on error.
+export const getLeaderboardProfile = async (): Promise<LeaderboardProfile | null> => {
+  try {
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      console.warn('No authenticated user when fetching leaderboard profile:', authError);
+      return null;
+    }
+
+    const { data, error } = await supabase
+      .from('leaderboard_profiles')
+      .select('*')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error fetching leaderboard profile:', error);
+      return null;
+    }
+
+    return data ?? null;
+  } catch (err) {
+    console.error('Unexpected error fetching leaderboard profile:', err);
+    return null;
+  }
+};
+
+// Create or update current user's leaderboard profile. Returns saved row or null on error.
+export const upsertLeaderboardProfile = async (
+  params: { leaderboard_name: string; is_opt_in: boolean }
+): Promise<LeaderboardProfile | null> => {
+  try {
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      console.warn('No authenticated user when upserting leaderboard profile:', authError);
+      return null;
+    }
+
+    const { data, error } = await supabase
+      .from('leaderboard_profiles')
+      .upsert(
+        {
+          user_id: user.id,
+          leaderboard_name: params.leaderboard_name ?? '',
+          is_opt_in: !!params.is_opt_in,
+        },
+        { onConflict: 'user_id' }
+      )
+      .select('*')
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error upserting leaderboard profile:', error);
+      return null;
+    }
+
+    return data ?? null;
+  } catch (err) {
+    console.error('Unexpected error upserting leaderboard profile:', err);
+    return null;
   }
 };
