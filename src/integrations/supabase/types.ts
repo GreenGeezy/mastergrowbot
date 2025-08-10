@@ -107,6 +107,30 @@ export type Database = {
         }
         Relationships: []
       }
+      leaderboard_profiles: {
+        Row: {
+          created_at: string
+          is_opt_in: boolean
+          leaderboard_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          is_opt_in?: boolean
+          leaderboard_name?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          is_opt_in?: boolean
+          leaderboard_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pending_subscriptions: {
         Row: {
           consumed: boolean | null
