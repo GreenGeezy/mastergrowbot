@@ -539,6 +539,15 @@ export type Database = {
         Args: { sub_email: string }
         Returns: boolean
       }
+      get_bud_boost_leaderboard: {
+        Args: { max_rows?: number }
+        Returns: {
+          rank: number
+          leaderboard_name: string
+          run: number
+          last_action: string
+        }[]
+      }
       get_pending_subscription: {
         Args: { email_address: string }
         Returns: {
