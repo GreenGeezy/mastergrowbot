@@ -577,7 +577,7 @@ export type Database = {
         Returns: boolean
       }
       mark_user_completed_quiz: {
-        Args: { user_email: string }
+        Args: Record<PropertyKey, never> | { user_email: string }
         Returns: boolean
       }
       safely_delete_user: {
