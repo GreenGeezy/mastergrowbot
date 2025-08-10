@@ -21,6 +21,13 @@ serve(async (req) => {
       auth: { persistSession: false },
     });
 
+    // Also initialize a user-authenticated client to call RPC with the caller's JWT
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") || "";
+    const supabaseUserClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { persistSession: false },
+      global: { headers: { Authorization: req.headers.get("Authorization") ?? "" } },
+    });
+
     // Parse request body
     const requestData = await req.json();
     const { user_id, email, subscription_type = "basic" } = requestData;
@@ -56,9 +63,18 @@ serve(async (req) => {
 
     // If we have a user ID, update the user's metadata and profiles table
     if (userId) {
-      console.log("Updating user metadata for user ID:", userId);
+      console.log("Calling RPC mark_user_completed_quiz for current user via auth token");
+      const { data: rpcData, error: rpcError } = await supabaseUserClient.rpc('mark_user_completed_quiz');
+      if (rpcError) {
+        console.error("Error marking quiz completed via RPC:", rpcError);
+        return new Response(JSON.stringify({ error: "Failed to mark quiz as completed" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        });
+      }
+      console.log("RPC mark_user_completed_quiz result:", rpcData);
       
-      // Update auth user metadata
+      // Update auth user metadata (best-effort; non-blocking)
       const { error: updateError } = await supabaseClient.auth.admin.updateUserById(userId, {
         user_metadata: { has_completed_quiz: true }
       });
@@ -67,18 +83,7 @@ serve(async (req) => {
         console.error("Error updating user metadata:", updateError);
       }
 
-      // Update user profile to mark quiz as completed
-      const { error: profileError } = await supabaseClient
-        .from("user_profiles")
-        .upsert({
-          id: userId,
-          email: email,
-          has_completed_quiz: true
-        });
-
-      if (profileError) {
-        console.error("Error updating user profile:", profileError);
-      }
+      // Profile upsert handled by RPC. No direct write here to avoid schema drift.
 
       // Create or update user quiz responses with default values
       const { error: quizError } = await supabaseClient
@@ -184,7 +189,6 @@ serve(async (req) => {
           .upsert({
             email: email,
             subscription_type: subscription_type || "basic",
-            has_completed_quiz: true,
             consumed: false,
             expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
           });
@@ -199,7 +203,7 @@ serve(async (req) => {
       }
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, has_completed_quiz: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
