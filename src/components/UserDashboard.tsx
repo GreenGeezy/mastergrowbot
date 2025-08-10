@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import BudBoostBadge from "@/components/BudBoostBadge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { isIOSPreview } from "@/utils/flags";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -37,6 +38,31 @@ const UserDashboard = () => {
   // Fetch Bud Boost Run (streak) once on mount
   useEffect(() => {
     let isMounted = true;
+
+    // Preview mode: simulate loading and auto-incrementing streak
+    if (isIOSPreview) {
+      setIsRunLoading(true);
+
+      const initial = setTimeout(() => {
+        if (!isMounted) return;
+        setBudBoostRun(1);
+        setIsRunLoading(false);
+      }, 500);
+
+      let current = 1;
+      const ticker = setInterval(() => {
+        if (!isMounted) return;
+        current = current >= 7 ? 1 : current + 1;
+        setBudBoostRun(current);
+      }, 1500);
+
+      return () => {
+        isMounted = false;
+        clearTimeout(initial);
+        clearInterval(ticker);
+      };
+    }
+
     (async () => {
       try {
         setIsRunLoading(true);
@@ -48,6 +74,7 @@ const UserDashboard = () => {
         if (isMounted) setIsRunLoading(false);
       }
     })();
+
     return () => { isMounted = false };
   }, []);
 
