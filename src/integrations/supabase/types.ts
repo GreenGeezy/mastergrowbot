@@ -548,6 +548,16 @@ export type Database = {
           last_action: string
         }[]
       }
+      get_my_pending_subscriptions: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          subscription_type: string
+          expires_at: string
+          consumed: boolean
+          created_at: string
+        }[]
+      }
       get_pending_subscription: {
         Args: { email_address: string }
         Returns: {
