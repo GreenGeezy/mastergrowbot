@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Flame, ChevronRight, Crown, RefreshCw, LogIn } from 'lucide-react';
+import { Flame, ChevronRight, Crown, RefreshCw, LogIn, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
-import { getLeaderboardProfile, upsertLeaderboardProfile } from '@/integrations/supabase/client';
+import { getLeaderboardProfile, getBudBoostLeaderboard } from '@/integrations/supabase/client';
 import type { LeaderboardRow } from '@/integrations/supabase/client';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import LeaderboardModal from '@/components/guide/LeaderboardModal';
 
 const RowSkeleton: React.FC = () => (
   <div className="flex items-center justify-between py-3">
@@ -60,7 +57,8 @@ const BudBoostLeaderboard: React.FC = () => {
   const [rows, setRows] = useState<LeaderboardRow[]>([]);
   const [isOptedIn, setIsOptedIn] = useState<boolean>(false);
   const [leaderboardName, setLeaderboardName] = useState<string>('');
-  const [joinOpen, setJoinOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInitialName, setModalInitialName] = useState('');
   const [isAuthed, setIsAuthed] = useState(false);
   const navigate = useNavigate();
 
@@ -77,15 +75,9 @@ const BudBoostLeaderboard: React.FC = () => {
       setIsOptedIn(!!profile?.is_opt_in);
       if (profile?.leaderboard_name) setLeaderboardName(profile.leaderboard_name);
 
-      // Leaderboard via RPC for better error awareness
-      const { data, error } = await supabase.rpc('get_bud_boost_leaderboard', { max_rows: opts?.fresh ? 20 : limit });
-      if (error) {
-        console.error('Leaderboard RPC error:', error);
-        setError('rpc');
-        setRows([]);
-      } else {
-        setRows(Array.isArray(data) ? (data as LeaderboardRow[]) : []);
-      }
+      // Leaderboard via helper
+      const data = await getBudBoostLeaderboard(opts?.fresh ? 20 : limit);
+      setRows(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error('Unexpected leaderboard load error', e);
       setError('unexpected');
@@ -102,15 +94,29 @@ const BudBoostLeaderboard: React.FC = () => {
 
   const handleViewMore = () => setLimit((n) => n + 20);
 
-  const handleJoin = async () => {
-    const saved = await upsertLeaderboardProfile({
-      leaderboard_name: leaderboardName?.trim() || 'Grower',
-      is_opt_in: true,
-    });
-    if (saved) {
-      setIsOptedIn(true);
-      setJoinOpen(false);
-      fetchAll({ fresh: true });
+  const openModal = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        navigate('/settings');
+        return;
+      }
+      // Try to load profile name, else pseudonym from user id
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('username')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      const last4 = user.id.slice(-4);
+      const fallback = `Grower #${last4}`;
+      const initialName = (profile?.username && profile.username.trim()) || fallback;
+      setModalInitialName(initialName);
+      setModalOpen(true);
+    } catch (e) {
+      console.warn('Could not prepare leaderboard modal', e);
+      setModalInitialName('Grower');
+      setModalOpen(true);
     }
   };
 
@@ -140,33 +146,9 @@ const BudBoostLeaderboard: React.FC = () => {
     if (!isOptedIn) {
       return (
         <div className="py-4">
-          <Dialog open={joinOpen} onOpenChange={setJoinOpen}>
-            <DialogTrigger asChild>
-              <Button className="w-full bg-gold text-white hover:bg-gold/90">Join the leaderboard</Button>
-            </DialogTrigger>
-            <DialogContent className="rounded-2xl">
-              <DialogHeader>
-                <DialogTitle>Join the Bud Boost Leaderboard</DialogTitle>
-                <DialogDescription>Choose a public display name and opt in.</DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4 py-2">
-                <div className="space-y-2">
-                  <Label htmlFor="leaderboard_name">Display name</Label>
-                  <Input id="leaderboard_name" value={leaderboardName} onChange={(e) => setLeaderboardName(e.target.value)} placeholder="e.g. GreenThumb" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="optin">Opt in</Label>
-                    <p className="text-xs text-muted-foreground">Your name and streak will appear on the leaderboard.</p>
-                  </div>
-                  <Switch id="optin" checked={true} onCheckedChange={() => {}} aria-readonly />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button onClick={handleJoin} className="bg-gold text-white hover:bg-gold/90">Join</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <Button className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={openModal}>
+            Join the leaderboard
+          </Button>
         </div>
       );
     }
@@ -210,14 +192,17 @@ const BudBoostLeaderboard: React.FC = () => {
             </li>
           ))}
         </ul>
-        <div className="pt-3">
+        <div className="pt-3 space-y-2">
           <Button variant="ghost" className="w-full text-gold hover:bg-gold/10" onClick={handleViewMore}>
             View more <ChevronRight className="w-4 h-4 ml-1" />
+          </Button>
+          <Button variant="outline" className="w-full" onClick={openModal}>
+            <Settings className="w-4 h-4 mr-2" /> Edit leaderboard settings
           </Button>
         </div>
       </div>
     );
-  }, [isAuthed, isOptedIn, error, loading, rows, leaderboardName]);
+  }, [isAuthed, isOptedIn, error, loading, rows, navigate]);
 
   return (
     <section aria-labelledby="leaderboard-title" className="max-w-2xl mx-auto -mt-6 mb-10">
@@ -227,6 +212,16 @@ const BudBoostLeaderboard: React.FC = () => {
           {content}
         </CardContent>
       </Card>
+
+      {/* Modal lives at root to avoid focus-trap issues */}
+      <LeaderboardModal
+        isOpen={modalOpen}
+        onClose={async () => {
+          setModalOpen(false);
+          await fetchAll({ fresh: true });
+        }}
+        initialName={modalInitialName}
+      />
     </section>
   );
 };
