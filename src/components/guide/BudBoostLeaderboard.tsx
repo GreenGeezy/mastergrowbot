@@ -66,18 +66,42 @@ const BudBoostLeaderboard: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      // Check auth state
       const { data: { user } } = await supabase.auth.getUser();
-      setIsAuthed(!!user);
+      const authed = !!user;
+      setIsAuthed(authed);
 
-      // Profile (to know opt-in)
-      const profile = await getLeaderboardProfile();
-      setIsOptedIn(!!profile?.is_opt_in);
-      if (profile?.leaderboard_name) setLeaderboardName(profile.leaderboard_name);
+      // If not signed in, do not call any DB. Show CTA instead.
+      if (!authed) {
+        setRows([]);
+        setIsOptedIn(false);
+        setLeaderboardName('');
+        return;
+      }
 
-      // Leaderboard via helper
-      const data = await getBudBoostLeaderboard(opts?.fresh ? 20 : limit);
-      setRows(Array.isArray(data) ? data : []);
+      // Load opt-in/profile name safely
+      try {
+        const profile = await getLeaderboardProfile();
+        setIsOptedIn(!!profile?.is_opt_in);
+        if (profile?.leaderboard_name) setLeaderboardName(profile.leaderboard_name);
+      } catch (e) {
+        console.warn('getLeaderboardProfile failed', e);
+        setIsOptedIn(false);
+      }
+
+      // Load leaderboard with safe fallback
+      try {
+        const data = await getBudBoostLeaderboard(opts?.fresh ? 20 : limit);
+        if (!Array.isArray(data)) {
+          setError('rpc');
+          setRows([]);
+        } else {
+          setRows(data as LeaderboardRow[]);
+        }
+      } catch (e) {
+        console.warn('getBudBoostLeaderboard failed', e);
+        setError('rpc');
+        setRows([]);
+      }
     } catch (e) {
       console.error('Unexpected leaderboard load error', e);
       setError('unexpected');
@@ -98,7 +122,7 @@ const BudBoostLeaderboard: React.FC = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        navigate('/settings');
+        navigate('/settings#auth');
         return;
       }
       // Try to load profile name, else pseudonym from user id
@@ -136,7 +160,7 @@ const BudBoostLeaderboard: React.FC = () => {
     if (!isAuthed) {
       return (
         <div className="py-4">
-          <Button className="w-full bg-gold text-white hover:bg-gold/90" onClick={() => navigate('/settings')}>
+          <Button className="w-full bg-gold text-white hover:bg-gold/90" onClick={() => navigate('/settings#auth')}>
             <LogIn className="w-4 h-4 mr-2" /> Sign in to view the leaderboard
           </Button>
         </div>
