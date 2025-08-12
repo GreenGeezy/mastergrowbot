@@ -15,24 +15,39 @@ interface LeaderboardModalProps {
 
 // Collapse whitespace, remove control chars, limit emoji, enforce length 2–20
 const sanitizeName = (name: string) => {
-  // Remove control characters
-  let cleaned = name.replace(/[\p{Cc}\p{Cf}]/gu, '');
+  // Remove control characters (C0 + DEL + C1)
+  let cleaned = name.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
   // Collapse inner spaces
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
   return cleaned;
 };
 
+const isBasicEmojiCodePoint = (cp: number) =>
+  (cp >= 0x1f300 && cp <= 0x1f6ff) ||
+  (cp >= 0x1f900 && cp <= 0x1f9ff) ||
+  (cp >= 0x1fa70 && cp <= 0x1faff) ||
+  (cp >= 0x2600 && cp <= 0x27bf) ||
+  cp === 0x203c || cp === 0x3297 || cp === 0x3299;
+
 const countEmoji = (str: string) => {
-  // Basic emoji regex (not exhaustive, but good enough for client-side)
-  const emojiRegex = /([\u203C-\u3299\u1F000-\u1FAFF\u1F300-\u1F6FF\u1F900-\u1F9FF\u2600-\u27BF])/gu;
-  return (str.match(emojiRegex) || []).length;
+  let count = 0;
+  for (const ch of str) {
+    const cp = ch.codePointAt(0)!;
+    if (isBasicEmojiCodePoint(cp)) count++;
+  }
+  return count;
 };
 
+const isAsciiLetterOrDigit = (ch: string) => /[A-Za-z0-9]/.test(ch);
+
 const isValidChars = (str: string) => {
-  // Allow letters, numbers, spaces, and common emoji; block other symbols/control
-  // We allow punctuation minimally: hyphen and apostrophe for names
-  const invalid = /[^\p{L}\p{N} \-\'\u203C-\u3299\u1F000-\u1FAFF\u1F300-\u1F6FF\u1F900-\u1F9FF\u2600-\u27BF]/gu;
-  return !invalid.test(str);
+  for (const ch of str) {
+    const cp = ch.codePointAt(0)!;
+    if (isAsciiLetterOrDigit(ch) || ch === ' ' || ch === '-' || ch === "'") continue;
+    if (isBasicEmojiCodePoint(cp)) continue;
+    return false;
+  }
+  return true;
 };
 
 const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose, initialName }) => {
