@@ -15,6 +15,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import LeaderboardModal from '@/components/guide/LeaderboardModal';
+import { getLeaderboardProfile, upsertLeaderboardProfile } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileData {
   username: string;
@@ -29,6 +32,7 @@ interface ProfileData {
 
 const ProfileSection: React.FC = () => {
   const session = useSession();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
     username: '',
@@ -40,6 +44,9 @@ const ProfileSection: React.FC = () => {
     challenges: [],
     goals: []
   });
+  const [lbModalOpen, setLbModalOpen] = useState(false);
+  const [isOptIn, setIsOptIn] = useState(false);
+  const [lbName, setLbName] = useState('');
 
   useEffect(() => {
     if (session?.user) {
@@ -104,6 +111,58 @@ const ProfileSection: React.FC = () => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Load leaderboard profile (opt-in and name)
+  const loadLeaderboard = async () => {
+    if (!session?.user) return;
+    try {
+      const profile = await getLeaderboardProfile();
+      setIsOptIn(!!profile?.is_opt_in);
+      setLbName(profile?.leaderboard_name || '');
+    } catch (e) {
+      console.warn('Failed to load leaderboard profile', e);
+    }
+  };
+
+  useEffect(() => {
+    if (session?.user) {
+      loadLeaderboard();
+    }
+  }, [session]);
+
+  const openLeaderboardModal = () => {
+    if (!session) {
+      navigate('/settings#auth');
+      toast.error('Sign in to manage your leaderboard settings.');
+      return;
+    }
+    const defaultName = (profileData.username?.trim()) || `Grower #${session.user.id.slice(-4)}`;
+    setLbName(lbName || defaultName);
+    setLbModalOpen(true);
+  };
+
+  const handleLeaveLeaderboard = async () => {
+    if (!session) {
+      navigate('/settings#auth');
+      toast.error('Sign in to manage your leaderboard settings.');
+      return;
+    }
+    try {
+      const saved = await upsertLeaderboardProfile({
+        leaderboard_name: lbName || (profileData.username?.trim() || `Grower #${session.user.id.slice(-4)}`),
+        is_opt_in: false,
+      });
+      if (saved) {
+        toast.success('You left the leaderboard.');
+        await loadLeaderboard();
+      } else {
+        throw new Error('Update failed');
+      }
+    } catch (e) {
+      console.error('Leave leaderboard error', e);
+      toast.error("Couldn't update your leaderboard settings. Please try again.");
     }
   };
 
@@ -373,6 +432,32 @@ const ProfileSection: React.FC = () => {
           </div>
         </div>
 
+        {/* Leaderboard */}
+        <div className="rounded-2xl border border-gray-200 bg-white p-4 md:p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-medium text-gray-900">Leaderboard</h3>
+              <p className="text-xs text-gray-600">Control how you appear on the Bud Boost Run board.</p>
+            </div>
+          </div>
+          <div className="mt-3 flex flex-col sm:flex-row gap-2">
+            {!isOptIn ? (
+              <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={openLeaderboardModal}>
+                Join the leaderboard
+              </Button>
+            ) : (
+              <>
+                <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={openLeaderboardModal}>
+                  Edit name
+                </Button>
+                <Button variant="outline" onClick={handleLeaveLeaderboard}>
+                  Leave leaderboard
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+
         <div className="pt-4 border-t border-gray-200">
           <Button 
             onClick={handleSaveProfile}
@@ -382,6 +467,15 @@ const ProfileSection: React.FC = () => {
             {loading ? 'Saving...' : 'Save Profile Changes'}
           </Button>
         </div>
+
+        <LeaderboardModal
+          isOpen={lbModalOpen}
+          onClose={async () => {
+            setLbModalOpen(false);
+            await loadLeaderboard();
+          }}
+          initialName={profileData.username?.trim() || `Grower #${session?.user?.id?.slice(-4) || '0000'}`}
+        />
       </CardContent>
     </Card>
   );
