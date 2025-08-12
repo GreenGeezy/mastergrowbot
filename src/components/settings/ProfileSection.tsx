@@ -448,7 +448,7 @@ const ProfileSection: React.FC = () => {
             ) : (
               <>
                 <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={openLeaderboardModal}>
-                  Edit name
+                  Edit leaderboard name
                 </Button>
                 <Button variant="outline" onClick={handleLeaveLeaderboard}>
                   Leave leaderboard
@@ -456,6 +456,7 @@ const ProfileSection: React.FC = () => {
               </>
             )}
           </div>
+          <p className="text-xs text-gray-600 mt-2">We only show your Leaderboard Name. You can leave anytime.</p>
         </div>
 
         <div className="pt-4 border-t border-gray-200">
@@ -475,6 +476,7 @@ const ProfileSection: React.FC = () => {
             await loadLeaderboard();
           }}
           initialName={profileData.username?.trim() || `Grower #${session?.user?.id?.slice(-4) || '0000'}`}
+          initialOptIn={isOptIn}
         />
       </CardContent>
     </Card>

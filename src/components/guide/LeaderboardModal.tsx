@@ -11,6 +11,7 @@ interface LeaderboardModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialName: string;
+  initialOptIn?: boolean;
 }
 
 // Collapse whitespace, remove control chars, limit emoji, enforce length 2–20
@@ -50,7 +51,7 @@ const isValidChars = (str: string) => {
   return true;
 };
 
-const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose, initialName }) => {
+const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose, initialName, initialOptIn = true }) => {
   const [name, setName] = useState(initialName || '');
   const [optIn, setOptIn] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -95,9 +96,12 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose, in
       const saved = await upsertLeaderboardProfile({ leaderboard_name: cleaned, is_opt_in: optIn });
       if (!saved) throw new Error('Save failed');
 
-      toast({
-        title: optIn ? "You're on the board—boost daily to climb!" : 'You left the leaderboard.',
-      });
+      const joined = !initialOptIn && optIn;
+      const title = optIn
+        ? (initialOptIn ? 'Leaderboard name updated.' : "You're on the board—boost daily to climb!")
+        : 'You left the leaderboard.';
+
+      toast({ title });
 
       onClose();
     } catch (e) {
@@ -133,7 +137,7 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose, in
               maxLength={24}
             />
             <p className="text-xs text-muted-foreground">
-              Shown publicly on the board. You can change or leave anytime.
+              Shown publicly on the Bud Boost Run board. No email is displayed.
             </p>
           </div>
           <div className="flex items-center justify-between">

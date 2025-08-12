@@ -221,7 +221,7 @@ const BudBoostLeaderboard: React.FC = () => {
             View more <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
           <Button variant="outline" className="w-full" onClick={openModal}>
-            <Settings className="w-4 h-4 mr-2" /> Edit leaderboard settings
+            <Settings className="w-4 h-4 mr-2" /> Edit leaderboard name
           </Button>
         </div>
       </div>
@@ -245,6 +245,7 @@ const BudBoostLeaderboard: React.FC = () => {
           await fetchAll({ fresh: true });
         }}
         initialName={modalInitialName}
+        initialOptIn={isOptedIn}
       />
     </section>
   );
