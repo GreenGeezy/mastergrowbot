@@ -75,6 +75,12 @@ Next Steps (No changes in this PR)
 
 Appendix: Search Touchpoints
 - Edge functions interacting with emails/payments:
-  - send-verification-email: manages pending_subscriptions by email
-  - square-webhook: calls handle_square_payment(email, order_id) → writes to pending_subscriptions (publicly readable today)
-  - mark-quiz-completed: references email/user_id flows; no public data exposure
+- send-verification-email: manages pending_subscriptions by email
+- square-webhook: calls handle_square_payment(email, order_id) → writes to pending_subscriptions (publicly readable today)
+- mark-quiz-completed: references email/user_id flows; no public data exposure
+
+## Security Notes
+- shared_analyses is intentionally public but time-bounded: rows are viewable only while expires_at > now(), and access requires possession of a high-entropy share_token, making it effectively an unguessable link.
+- plant_analyses are only readable for rows that have an active share in shared_analyses; otherwise, standard owner-only RLS applies.
+- Neither shared_analyses nor the shared subset of plant_analyses contain user emails or payment identifiers (e.g., square_order_id); exposed fields are limited to share metadata and analysis content necessary for viewing.
+
