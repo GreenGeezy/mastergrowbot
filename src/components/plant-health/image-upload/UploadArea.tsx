@@ -101,7 +101,9 @@ const UploadArea = ({
           role="region"
           aria-labelledby="photo-guidelines-title"
         >
-          <h3 id="photo-guidelines-title" className="sr-only">Photo capture guidelines</h3>
+          <h3 id="photo-guidelines-title" className="text-foreground text-lg font-semibold mb-4 text-center">
+            Ensure that your Photos and Images Are
+          </h3>
           <div className="grid grid-cols-2 gap-4">
             <Tooltip>
               <TooltipTrigger asChild>
