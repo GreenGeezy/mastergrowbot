@@ -47,9 +47,7 @@ const Header = () => {
       }}>
           {/* Headlines */}
           <div className="space-y-2 sm:space-y-3">
-            <h1 className={`text-headline font-display text-foreground animate-fade-in tracking-tight will-change-transform leading-tight ${isMobile ? 'text-headline-sm' : 'text-headline'}`}>
-              Master Growbot AI
-            </h1>
+            <h1 className={`text-headline font-display text-foreground animate-fade-in tracking-tight will-change-transform leading-tight ${isMobile ? 'text-headline-sm' : 'text-headline'}`}>MasterGrowbot AI</h1>
             <p className="text-body-secondary font-body">
               AI Cannabis Cultivation Assistant
             </p>
@@ -60,9 +58,7 @@ const Header = () => {
             <h2 className={`text-headline-sm font-display text-foreground leading-tight max-w-[720px] mx-auto ${isMobile ? 'text-headline-sm' : 'text-headline-md'}`}>
               Grow Award-Winning Cannabis & Save Plants in Seconds with AI
             </h2>
-            <p className="text-body-secondary font-body max-w-[600px] mx-auto leading-relaxed">
-              See Why Leading Growers Worldwide Trust Master Growbot AI to Prevent $336/Plant to Over $100,000 per Harvest in Losses
-            </p>
+            <p className="text-body-secondary font-body max-w-[600px] mx-auto leading-relaxed">See Why Leading Growers Worldwide Trust MasterGrowbot AI to Prevent $336/Plant to Over $100,000 per Harvest in Losses</p>
           </div>
           
           {/* Trust Indicators */}
@@ -81,13 +77,13 @@ const Header = () => {
               </div>
               {/* Try it For Free Badge */}
               <motion.div className="bg-gradient-to-r from-amber-400 to-yellow-400 text-black text-sm font-bold px-3 py-1 rounded-full shadow-lg ml-4" initial={{
-                scale: 0
-              }} animate={{
-                scale: 1
-              }} transition={{
-                delay: 0.8,
-                type: "spring"
-              }}>
+              scale: 0
+            }} animate={{
+              scale: 1
+            }} transition={{
+              delay: 0.8,
+              type: "spring"
+            }}>
                 Try it For Free
               </motion.div>
             </motion.div>
@@ -143,16 +139,16 @@ const Header = () => {
               
               {/* 3 Days Free Badge */}
               <motion.div className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-400 to-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg border-2 border-white" initial={{
-                scale: 0,
-                rotate: 12
-              }} animate={{
-                scale: 1,
-                rotate: 12
-              }} transition={{
-                delay: 0.8,
-                type: "spring",
-                stiffness: 200
-              }}>
+              scale: 0,
+              rotate: 12
+            }} animate={{
+              scale: 1,
+              rotate: 12
+            }} transition={{
+              delay: 0.8,
+              type: "spring",
+              stiffness: 200
+            }}>
                 3 Days Free
               </motion.div>
             </div>
