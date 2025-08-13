@@ -443,6 +443,7 @@ export type Database = {
       }
       user_profiles: {
         Row: {
+          avatar_url: string | null
           challenges: string[] | null
           created_at: string
           goals: string[] | null
@@ -456,6 +457,7 @@ export type Database = {
           username: string | null
         }
         Insert: {
+          avatar_url?: string | null
           challenges?: string[] | null
           created_at?: string
           goals?: string[] | null
@@ -469,6 +471,7 @@ export type Database = {
           username?: string | null
         }
         Update: {
+          avatar_url?: string | null
           challenges?: string[] | null
           created_at?: string
           goals?: string[] | null
