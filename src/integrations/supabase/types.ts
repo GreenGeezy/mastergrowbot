@@ -77,6 +77,66 @@ export type Database = {
         }
         Relationships: []
       }
+      avatar_customizations_catalog: {
+        Row: {
+          created_at: string | null
+          customization_type: string | null
+          description: string
+          id: string
+          image_url: string | null
+          name: string
+          unlock_requirement: number
+        }
+        Insert: {
+          created_at?: string | null
+          customization_type?: string | null
+          description: string
+          id: string
+          image_url?: string | null
+          name: string
+          unlock_requirement: number
+        }
+        Update: {
+          created_at?: string | null
+          customization_type?: string | null
+          description?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          unlock_requirement?: number
+        }
+        Relationships: []
+      }
+      badges_catalog: {
+        Row: {
+          badge_type: string | null
+          created_at: string | null
+          description: string
+          icon_url: string | null
+          id: string
+          name: string
+          unlock_requirement: number
+        }
+        Insert: {
+          badge_type?: string | null
+          created_at?: string | null
+          description: string
+          icon_url?: string | null
+          id: string
+          name: string
+          unlock_requirement: number
+        }
+        Update: {
+          badge_type?: string | null
+          created_at?: string | null
+          description?: string
+          icon_url?: string | null
+          id?: string
+          name?: string
+          unlock_requirement?: number
+        }
+        Relationships: []
+      }
       chat_history: {
         Row: {
           conversation_id: string | null
@@ -402,6 +462,70 @@ export type Database = {
         }
         Relationships: []
       }
+      user_avatars: {
+        Row: {
+          applied_at: string | null
+          avatar_customization_id: string
+          id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string | null
+          avatar_customization_id: string
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          applied_at?: string | null
+          avatar_customization_id?: string
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_avatars_avatar_customization_id_fkey"
+            columns: ["avatar_customization_id"]
+            isOneToOne: false
+            referencedRelation: "avatar_customizations_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          id: string
+          is_active: boolean | null
+          unlocked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          id?: string
+          is_active?: boolean | null
+          unlocked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          id?: string
+          is_active?: boolean | null
+          unlocked_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_feedback: {
         Row: {
           beta_testing_email: string | null
@@ -529,6 +653,10 @@ export type Database = {
       check_and_remove_pending_subscriptions: {
         Args: { email_param: string }
         Returns: undefined
+      }
+      check_and_unlock_streak_rewards: {
+        Args: { current_user_streak: number }
+        Returns: Json
       }
       check_pending_subscription: {
         Args: { check_email: string }
