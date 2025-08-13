@@ -9,6 +9,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { supabase } from "@/integrations/supabase/client";
 import { WalkthroughProvider } from "@/contexts/WalkthroughContext";
 import { WalkthroughManager } from "@/components/walkthrough/WalkthroughManager";
+import { MilestoneProvider } from "@/components/milestones/MilestoneProvider";
 
 import Index from "./pages/Index";
 import ChatInterface from "./pages/ChatInterface";
@@ -39,9 +40,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase}>
         <WalkthroughProvider>
-          <div className="App">
-            <Toaster />
-            <BrowserRouter>
+          <MilestoneProvider>
+            <div className="App">
+              <Toaster />
+              <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/chat" element={<ChatInterface />} />
@@ -57,6 +59,7 @@ function App() {
               <WalkthroughManager />
             </BrowserRouter>
           </div>
+          </MilestoneProvider>
         </WalkthroughProvider>
       </SessionContextProvider>
     </QueryClientProvider>

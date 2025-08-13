@@ -10,6 +10,7 @@ import AuthSection from '@/components/settings/AuthSection';
 import ProfileSection from '@/components/settings/ProfileSection';
 import AccountSection from '@/components/settings/AccountSection';
 import { StreakRewardsSection } from '@/components/rewards/StreakRewardsSection';
+import { MilestoneHistory } from '@/components/milestones/MilestoneHistory';
 import {
   Accordion,
   AccordionContent,
@@ -71,7 +72,7 @@ const Settings = () => {
           
           {/* Collapsible sections for authenticated users */}
           {session && (
-            <Accordion type="multiple" defaultValue={["profile", "rewards", "account", "subscription"]} className="space-y-4">
+            <Accordion type="multiple" defaultValue={["profile", "rewards", "milestones", "account", "subscription"]} className="space-y-4">
               <AccordionItem value="profile" className="border-none">
                 <AccordionTrigger className="hover:no-underline p-0">
                   <div className="flex items-center gap-3 text-left">
@@ -93,6 +94,18 @@ const Settings = () => {
                 </AccordionTrigger>
                 <AccordionContent className="pt-4 pb-0">
                   <StreakRewardsSection />
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="milestones" className="border-none">
+                <AccordionTrigger className="hover:no-underline p-0">
+                  <div className="flex items-center gap-3 text-left">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    <span className="text-lg font-medium text-gray-900">Milestone Achievements</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 pb-0">
+                  <MilestoneHistory />
                 </AccordionContent>
               </AccordionItem>
 

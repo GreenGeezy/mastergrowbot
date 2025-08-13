@@ -191,6 +191,33 @@ export type Database = {
         }
         Relationships: []
       }
+      milestones_catalog: {
+        Row: {
+          created_at: string | null
+          fun_fact: string
+          id: string
+          milestone_type: string
+          streak_requirement: number
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          fun_fact: string
+          id: string
+          milestone_type?: string
+          streak_requirement: number
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          fun_fact?: string
+          id?: string
+          milestone_type?: string
+          streak_requirement?: number
+          title?: string
+        }
+        Relationships: []
+      }
       pending_subscriptions: {
         Row: {
           consumed: boolean | null
@@ -565,6 +592,41 @@ export type Database = {
         }
         Relationships: []
       }
+      user_milestones: {
+        Row: {
+          celebrated_at: string | null
+          created_at: string | null
+          id: string
+          is_shared: boolean | null
+          milestone_id: string
+          user_id: string
+        }
+        Insert: {
+          celebrated_at?: string | null
+          created_at?: string | null
+          id?: string
+          is_shared?: boolean | null
+          milestone_id: string
+          user_id: string
+        }
+        Update: {
+          celebrated_at?: string | null
+          created_at?: string | null
+          id?: string
+          is_shared?: boolean | null
+          milestone_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_milestones_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_profiles: {
         Row: {
           avatar_url: string | null
@@ -666,6 +728,10 @@ export type Database = {
           expires_at: string
         }[]
       }
+      check_personal_milestone_achievements: {
+        Args: { current_user_streak: number }
+        Returns: Json
+      }
       consume_pending_subscription: {
         Args: { sub_email: string }
         Returns: boolean
@@ -715,6 +781,10 @@ export type Database = {
       }
       is_quiz_subscription_required: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      mark_milestone_shared: {
+        Args: { milestone_achievement_id: string }
         Returns: boolean
       }
       mark_user_completed_quiz: {
