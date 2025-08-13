@@ -25,6 +25,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentAvatarUrl || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -111,6 +112,9 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
+      if (cameraInputRef.current) {
+        cameraInputRef.current.value = '';
+      }
     }
   };
 
@@ -196,6 +200,10 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
     fileInputRef.current?.click();
   };
 
+  const triggerCameraInput = () => {
+    cameraInputRef.current?.click();
+  };
+
   return (
     <div className="flex flex-col items-center space-y-3">
       <TooltipProvider>
@@ -209,12 +217,12 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
                 </AvatarFallback>
               </Avatar>
               
-              {/* Upload overlay */}
+              {/* Camera overlay */}
               <button
-                onClick={triggerFileInput}
+                onClick={triggerCameraInput}
                 disabled={uploading}
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-200 disabled:cursor-not-allowed"
-                aria-label="Upload profile picture"
+                aria-label="Take photo with camera"
               >
                 {uploading ? (
                   <Loader2 className="h-6 w-6 text-white animate-spin" />
@@ -255,9 +263,19 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
         )}
       </div>
 
-      {/* Hidden file input */}
+      {/* Hidden file inputs */}
+      {/* Gallery/Files input */}
       <input
         ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileSelect}
+        className="hidden"
+      />
+      
+      {/* Camera input */}
+      <input
+        ref={cameraInputRef}
         type="file"
         accept="image/*"
         onChange={handleFileSelect}
