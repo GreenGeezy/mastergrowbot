@@ -18,6 +18,7 @@ import {
 import LeaderboardModal from '@/components/guide/LeaderboardModal';
 import { getLeaderboardProfile, upsertLeaderboardProfile } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import AvatarUpload from '@/components/profile/AvatarUpload';
 
 interface ProfileData {
   username: string;
@@ -28,6 +29,7 @@ interface ProfileData {
   nutrient_type: string;
   challenges: string[];
   goals: string[];
+  avatar_url?: string | null;
 }
 
 const ProfileSection: React.FC = () => {
@@ -42,7 +44,8 @@ const ProfileSection: React.FC = () => {
     monitoring_method: 'manual',
     nutrient_type: 'organic',
     challenges: [],
-    goals: []
+    goals: [],
+    avatar_url: null
   });
   const [lbModalOpen, setLbModalOpen] = useState(false);
   const [isOptIn, setIsOptIn] = useState(false);
@@ -100,7 +103,8 @@ const ProfileSection: React.FC = () => {
         monitoring_method: profile?.monitoring_method || quizData?.monitoring_method || 'manual',
         nutrient_type: profile?.nutrient_type || quizData?.nutrient_type || 'organic',
         challenges: profile?.challenges || quizData?.challenges || [],
-        goals: profile?.goals || quizData?.goals || []
+        goals: profile?.goals || quizData?.goals || [],
+        avatar_url: profile?.avatar_url || null
       });
     } catch (error: any) {
       console.error('Error loading profile:', error);
@@ -304,6 +308,15 @@ const ProfileSection: React.FC = () => {
           <h3 className="text-sm font-medium text-gray-900">Basic Information</h3>
           
           <div className="grid gap-4">
+            {/* Avatar Upload */}
+            <div className="flex justify-center">
+              <AvatarUpload
+                userId={session.user.id}
+                currentAvatarUrl={profileData.avatar_url}
+                onAvatarUpdate={(url) => handleInputChange('avatar_url', url)}
+              />
+            </div>
+            
             <div className="space-y-2">
               <Label htmlFor="profile-name" className="text-gray-900">Name</Label>
               <Input
