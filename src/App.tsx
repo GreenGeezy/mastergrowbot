@@ -41,7 +41,13 @@ const queryClient = new QueryClient({
   },
 });
 
-// Route guard component with exact check order
+// Self-check logging utility (no PII)
+const logSelfCheck = (scenario: string, result: 'PASS' | 'FAIL', details?: string) => {
+  const message = `SELF-CHECK [${scenario}]: ${result}${details ? ` - ${details}` : ''}`;
+  console.log(message);
+};
+
+// Route guard component with self-check flow
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const session = useSession();
   const location = useLocation();
@@ -51,62 +57,89 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   // Read existing runtime flags without adding new ones
   const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
   
-  // 1. If in iOS preview mode → allow immediately
+  // Self-check: iOS preview bypass
   if (isIOSPreview) {
+    logSelfCheck('iOS-Preview-Bypass', 'PASS', 'all gates disabled');
     return <>{children}</>;
   }
   
-  // If runtime flags disable the quiz and subscription gates → allow immediately
+  // Self-check: Runtime flags bypass
   if (!requireQuizAndSubscription) {
+    logSelfCheck('Runtime-Flags-Bypass', 'PASS', 'gates disabled by config');
     return <>{children}</>;
   }
   
-  // 2. If on a public route → allow
+  // Self-check: Public route access
   const publicRoutes = ['/shared', '/privacy', '/terms'];
   const isPublicRoute = publicRoutes.some(route => location.pathname.startsWith(route));
   if (isPublicRoute) {
+    logSelfCheck('Public-Route-Access', 'PASS', `path: ${location.pathname}`);
     return <>{children}</>;
   }
   
-  // 3. If on the quiz route → allow
+  // Self-check: Quiz page access
   if (location.pathname === '/quiz') {
+    logSelfCheck('Quiz-Page-Access', 'PASS', 'quiz page always accessible');
     return <>{children}</>;
   }
   
-  // 4. If on the landing page → allow
+  // Self-check: Landing page access
   if (location.pathname === '/') {
+    logSelfCheck('Landing-Page-Access', 'PASS', 'landing page always accessible');
     return <>{children}</>;
   }
   
   // For all other routes, run the protection checks:
   
-  // 5. If the subscription/status hook is still loading → render nothing (no flash)
+  // Self-check: Loading state
   if (isLoading) {
+    logSelfCheck('Loading-State', 'PASS', 'subscription status loading');
     return null;
   }
   
-  // 6. If the user is not signed in and sign-in is required → navigate to the existing sign-in screen
+  // Self-check: Signed out user accessing protected page
   if (!session) {
     if (location.pathname !== '/') {
-      navigate('/', { replace: true });
+      // Determine where to redirect based on quiz completion
+      const redirectTarget = hasCompletedQuiz ? '/' : '/quiz';
+      logSelfCheck('Signed-Out-Protected-Access', 'PASS', `redirecting to ${redirectTarget}`);
+      navigate(redirectTarget, { replace: true });
+    } else {
+      logSelfCheck('Signed-Out-Protected-Access', 'FAIL', 'already on landing page');
     }
     return null;
   }
   
-  // 7. If the user has active access (trial or subscription) → allow immediately (bypass the quiz requirement)
+  // Self-check: User with active access (bypass quiz requirement)
   if (hasAccess) {
+    logSelfCheck('Active-Access-Bypass', 'PASS', 'user has active subscription/trial');
     return <>{children}</>;
   }
   
-  // 8. If the quiz gate is enabled and the user has not completed the quiz → navigate to the quiz
-  if (!hasCompletedQuiz) {
+  // Self-check: User signed in but no quiz completion and no access
+  if (!hasCompletedQuiz && !hasAccess) {
     if (location.pathname !== '/quiz') {
+      logSelfCheck('No-Quiz-No-Access', 'PASS', 'redirecting to quiz');
       navigate('/quiz', { replace: true });
+    } else {
+      logSelfCheck('No-Quiz-No-Access', 'FAIL', 'already on quiz page');
     }
     return null;
   }
   
-  // 9. If access is required and the user still has no active access → navigate to the paywall
+  // Self-check: User completed quiz but no access (paywall scenario)
+  if (hasCompletedQuiz && !hasAccess) {
+    if (location.pathname !== '/') {
+      logSelfCheck('Quiz-Complete-No-Access', 'PASS', 'redirecting to paywall');
+      navigate('/', { replace: true });
+    } else {
+      logSelfCheck('Quiz-Complete-No-Access', 'FAIL', 'already on paywall');
+    }
+    return null;
+  }
+  
+  // Self-check: Fallback case
+  logSelfCheck('Fallback-Case', 'FAIL', 'unexpected state reached');
   if (location.pathname !== '/') {
     navigate('/', { replace: true });
   }
