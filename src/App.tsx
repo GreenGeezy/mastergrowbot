@@ -115,8 +115,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return null;
   }
   
-  // Self-check: Signed out user accessing protected page
-  if (!effectiveSession) {
+  // Self-check: Signed out user accessing protected page (skip if auth gate disabled)
+  if (!disableAuthGate && !effectiveSession) {
     if (location.pathname !== '/') {
       // Determine where to redirect based on quiz completion
       const redirectTarget = hasCompletedQuiz ? '/' : '/quiz';
@@ -128,14 +128,14 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return null;
   }
   
-  // Self-check: User with active access (bypass quiz requirement)
-  if (hasAccess) {
+  // Self-check: User with active access (bypass quiz requirement or skip if access gate disabled)
+  if (!disableAccessGate && hasAccess) {
     logSelfCheck('Active-Access-Bypass', 'PASS', 'user has active subscription/trial');
     return <>{children}</>;
   }
   
-  // Self-check: User signed in but no quiz completion and no access
-  if (!hasCompletedQuiz && !hasAccess) {
+  // Self-check: User signed in but no quiz completion and no access (skip if quiz gate disabled)
+  if (!disableQuizGate && !hasCompletedQuiz && !hasAccess) {
     if (location.pathname !== '/quiz') {
       logSelfCheck('No-Quiz-No-Access', 'PASS', 'redirecting to quiz');
       navigate('/quiz', { replace: true });
@@ -145,8 +145,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return null;
   }
   
-  // Self-check: User completed quiz but no access (paywall scenario)
-  if (hasCompletedQuiz && !hasAccess) {
+  // Self-check: User completed quiz but no access (paywall scenario, skip if access gate disabled)
+  if (!disableAccessGate && hasCompletedQuiz && !hasAccess) {
     if (location.pathname !== '/') {
       logSelfCheck('Quiz-Complete-No-Access', 'PASS', 'redirecting to paywall');
       navigate('/', { replace: true });
@@ -154,6 +154,12 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
       logSelfCheck('Quiz-Complete-No-Access', 'FAIL', 'already on paywall');
     }
     return null;
+  }
+  
+  // Self-check: If we reach here and any gates are disabled, allow access
+  if (disableAuthGate || disableQuizGate || disableAccessGate) {
+    logSelfCheck('Individual-Gate-Bypass', 'PASS', 'specific gate disabled');
+    return <>{children}</>;
   }
   
   // Self-check: Fallback case
