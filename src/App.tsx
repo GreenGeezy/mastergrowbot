@@ -68,6 +68,15 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const disableAccessGate = import.meta.env.VITE_DISABLE_ACCESS_GATE === 'true';
   const disableAllGates = import.meta.env.VITE_DISABLE_ALL_GATES === 'true';
   
+  // Log runtime flag variable names for Vercel env matching
+  console.log('Runtime flags being read:', {
+    'VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION': import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION,
+    'VITE_DISABLE_AUTH_GATE': import.meta.env.VITE_DISABLE_AUTH_GATE,
+    'VITE_DISABLE_QUIZ_GATE': import.meta.env.VITE_DISABLE_QUIZ_GATE,
+    'VITE_DISABLE_ACCESS_GATE': import.meta.env.VITE_DISABLE_ACCESS_GATE,
+    'VITE_DISABLE_ALL_GATES': import.meta.env.VITE_DISABLE_ALL_GATES
+  });
+  
   // Self-check: iOS preview bypass
   if (isIOSPreview) {
     logSelfCheck('iOS-Preview-Bypass', 'PASS', 'all gates disabled');
