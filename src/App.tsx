@@ -117,12 +117,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase}>
-        <QABanner />
         <WalkthroughProvider>
           <MilestoneProvider>
             <div className="App">
               <Toaster />
               <BrowserRouter>
+              <QABanner />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/quiz" element={<Quiz />} />
