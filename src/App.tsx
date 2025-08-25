@@ -82,7 +82,14 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   
   // Self-check: Public route access
-  const publicRoutes = ['/shared', '/privacy', '/terms'];
+  const publicRoutes = [
+    '/shared', 
+    '/shared-analysis', 
+    '/privacy', 
+    '/terms', 
+    '/404', 
+    '/not-found'
+  ];
   const isPublicRoute = publicRoutes.some(route => location.pathname.startsWith(route));
   if (isPublicRoute) {
     logSelfCheck('Public-Route-Access', 'PASS', `path: ${location.pathname}`);
