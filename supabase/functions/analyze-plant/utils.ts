@@ -70,7 +70,12 @@ export function parseAnalysisResults(analysisText: string): any {
   const healthScore = extractSection(analysisText, "Health Score") || "Good";
   const specificIssues = extractSection(analysisText, "Specific Issues") || "No major issues detected";
   const environmentalFactors = extractSection(analysisText, "Environmental Factors") || "Appears to be in adequate growing conditions";
-  const recommendedActions = extractRecommendations(analysisText) || ["Monitor plant regularly", "Continue with current care regimen"];
+  const recommendedActions = extractRecommendations(analysisText);
+  
+  // Ensure we always have an array of recommendations
+  const finalRecommendations = Array.isArray(recommendedActions) && recommendedActions.length > 0 
+    ? recommendedActions 
+    : ["Monitor plant regularly", "Continue with current care regimen"];
 
   // Construct analysis response
   return {
@@ -82,6 +87,6 @@ export function parseAnalysisResults(analysisText: string): any {
       specific_issues: specificIssues,
       environmental_factors: environmentalFactors
     },
-    recommended_actions: recommendedActions
+    recommended_actions: finalRecommendations
   };
 }

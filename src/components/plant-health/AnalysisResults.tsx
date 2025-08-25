@@ -13,7 +13,7 @@ interface AnalysisResult {
     specific_issues?: string;
     environmental_factors?: string;
   };
-  recommended_actions?: string[];
+  recommended_actions?: string[] | string;
 }
 
 interface AnalysisResultsProps {
@@ -63,10 +63,22 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const healthScoreRemainingText = getRemainingText(healthScore);
 
   // Filter out empty or very short actions and limit to 9 with safe array access
-  const actions = analysisResult.recommended_actions || [];
-  const validActions = actions
-    .filter(action => action && typeof action === 'string' && action.trim().length > 5)
-    .slice(0, 9); // Limit to maximum 9 actions
+  const actions = analysisResult.recommended_actions;
+  let validActions: string[] = [];
+  
+  if (Array.isArray(actions)) {
+    validActions = actions
+      .filter(action => action && typeof action === 'string' && action.trim().length > 5)
+      .slice(0, 9); // Limit to maximum 9 actions
+  } else if (typeof actions === 'string' && actions.trim().length > 5) {
+    // Handle case where recommended_actions is a single string
+    validActions = [actions.trim()];
+  }
+  
+  // Ensure we always have at least one action
+  if (validActions.length === 0) {
+    validActions = ['Continue monitoring your plant regularly'];
+  }
 
   // Find the most detailed recommended action (longest text)
   const mostDetailedAction = validActions.reduce((longest, current) => {
