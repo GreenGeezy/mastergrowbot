@@ -178,7 +178,7 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
     };
 
     checkSubscription();
-  }, [session]);
+  }, [session, isQAMode, qaAccess, qaQuiz]);
 
   return status;
 };
