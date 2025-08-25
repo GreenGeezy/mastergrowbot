@@ -7,13 +7,13 @@ import { motion } from 'framer-motion';
 interface AnalysisResult {
   diagnosis: string;
   confidence_level: number;
-  detailed_analysis: {
-    growth_stage: string;
-    health_score: string;
-    specific_issues: string;
-    environmental_factors: string;
+  detailed_analysis?: {
+    growth_stage?: string;
+    health_score?: string;
+    specific_issues?: string;
+    environmental_factors?: string;
   };
-  recommended_actions: string[];
+  recommended_actions?: string[];
 }
 
 interface AnalysisResultsProps {
@@ -36,26 +36,36 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
     visible: { opacity: 1, y: 0 }
   };
 
-  // Extract first sentences from Growth Stage and Health Score
-  const getFirstSentence = (text: string) => {
+  // Extract first sentences from Growth Stage and Health Score with safe defaults
+  const getFirstSentence = (text: string | undefined) => {
+    if (!text || typeof text !== 'string') return 'No information available';
     const match = text.match(/^[^.!?]*[.!?]/);
     return match ? match[0].trim() : text.split(' ').slice(0, 15).join(' ') + '...';
   };
 
-  const getRemainingText = (text: string) => {
+  const getRemainingText = (text: string | undefined) => {
+    if (!text || typeof text !== 'string') return '';
     const firstSentence = getFirstSentence(text);
     return text.substring(firstSentence.length).trim();
   };
 
-  const growthStageFirstSentence = getFirstSentence(analysisResult.detailed_analysis.growth_stage);
-  const growthStageRemainingText = getRemainingText(analysisResult.detailed_analysis.growth_stage);
-  
-  const healthScoreFirstSentence = getFirstSentence(analysisResult.detailed_analysis.health_score);
-  const healthScoreRemainingText = getRemainingText(analysisResult.detailed_analysis.health_score);
+  // Safe access to detailed_analysis properties with defaults
+  const detailedAnalysis = analysisResult.detailed_analysis || {};
+  const growthStage = detailedAnalysis.growth_stage || 'Growth stage information not available';
+  const healthScore = detailedAnalysis.health_score || 'Health score information not available';
+  const specificIssues = detailedAnalysis.specific_issues || 'No specific issues identified';
+  const environmentalFactors = detailedAnalysis.environmental_factors || 'Environmental factors not analyzed';
 
-  // Filter out empty or very short actions and limit to 9
-  const validActions = analysisResult.recommended_actions
-    .filter(action => action && action.trim().length > 5)
+  const growthStageFirstSentence = getFirstSentence(growthStage);
+  const growthStageRemainingText = getRemainingText(growthStage);
+  
+  const healthScoreFirstSentence = getFirstSentence(healthScore);
+  const healthScoreRemainingText = getRemainingText(healthScore);
+
+  // Filter out empty or very short actions and limit to 9 with safe array access
+  const actions = analysisResult.recommended_actions || [];
+  const validActions = actions
+    .filter(action => action && typeof action === 'string' && action.trim().length > 5)
     .slice(0, 9); // Limit to maximum 9 actions
 
   // Find the most detailed recommended action (longest text)
@@ -191,7 +201,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                 </div>
                 <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-4 backdrop-blur-sm">
                   <p className="text-gray-300 leading-relaxed">
-                    {analysisResult.detailed_analysis.specific_issues}
+                    {specificIssues}
                   </p>
                 </div>
               </div>
@@ -208,7 +218,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   <h3 className="text-xl font-bold text-white">Environmental</h3>
                 </div>
                 <p className="text-gray-300 leading-relaxed">
-                  {analysisResult.detailed_analysis.environmental_factors}
+                  {environmentalFactors}
                 </p>
               </div>
             </Card>
