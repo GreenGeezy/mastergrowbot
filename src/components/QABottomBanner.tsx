@@ -1,30 +1,33 @@
 import { useSession } from '@supabase/auth-helpers-react';
-import { useLocation } from 'react-router-dom';
 import { useSubscriptionStatus } from '@/hooks/use-subscription-status';
 import { useQAOverrides } from '@/hooks/use-qa-overrides';
 import { isIOSPreview, isDevelopment } from '@/utils/flags';
 
 export const QABottomBanner = () => {
   const session = useSession();
-  const location = useLocation();
   const { hasCompletedQuiz, hasAccess, isLoading } = useSubscriptionStatus();
   const { isQAMode, qaAuth, qaAccess, qaQuiz } = useQAOverrides();
   
-  // Check if QA banner should be shown
+  // Check if QA banner should be shown - same logic as before
   const isDev = isDevelopment();
-  const hasQAParam = isQAMode;
-  const shouldShow = isDev || hasQAParam;
+  const shouldShow = isDev || isQAMode;
   
   // Hide by default in production previews
   if (!shouldShow) {
     return null;
   }
   
-  // Read the same runtime flags as the guard
+  // Read the exact same runtime flags as the guard
   const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
-  const bypass = isIOSPreview || !requireQuizAndSubscription;
+  const disableAuthGate = import.meta.env.VITE_DISABLE_AUTH_GATE === 'true';
+  const disableQuizGate = import.meta.env.VITE_DISABLE_QUIZ_GATE === 'true';
+  const disableAccessGate = import.meta.env.VITE_DISABLE_ACCESS_GATE === 'true';
+  const disableAllGates = import.meta.env.VITE_DISABLE_ALL_GATES === 'true';
   
-  // Apply QA auth override for display
+  // Calculate bypass exactly like the guard does
+  const bypass = isIOSPreview || !requireQuizAndSubscription || disableAllGates || disableAuthGate || disableQuizGate || disableAccessGate;
+  
+  // Apply QA auth override for display exactly like the guard
   const effectiveAuth = isQAMode && qaAuth !== null ? qaAuth === 'on' : !!session;
   
   const states = {
@@ -47,7 +50,7 @@ export const QABottomBanner = () => {
     .join(' ') + qaIndicators;
   
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-yellow-400 text-black text-xs px-2 py-1 font-mono">
+    <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-yellow-400 text-black text-xs px-2 py-1 font-mono">
       {stateString}
     </div>
   );

@@ -16,7 +16,6 @@ import { MilestoneProvider } from "@/components/milestones/MilestoneProvider";
 import { useSubscriptionStatus } from "@/hooks/use-subscription-status";
 import { useQAOverrides } from "@/hooks/use-qa-overrides";
 import { isIOSPreview } from '@/utils/flags';
-import { QABanner } from './components/QABanner';
 import { QABottomBanner } from './components/QABottomBanner';
 
 import Index from "./pages/Index";
@@ -174,7 +173,6 @@ function App() {
             <div className="App">
               <Toaster />
               <BrowserRouter>
-              <QABanner />
               <QABottomBanner />
               <Routes>
                 <Route path="/" element={<Index />} />
