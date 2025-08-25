@@ -16,6 +16,7 @@ import { MilestoneProvider } from "@/components/milestones/MilestoneProvider";
 import { useSubscriptionStatus } from "@/hooks/use-subscription-status";
 import { isIOSPreview } from '@/utils/flags';
 import { QABanner } from './components/QABanner';
+import { QABottomBanner } from './components/QABottomBanner';
 
 import Index from "./pages/Index";
 import ChatInterface from "./pages/ChatInterface";
@@ -47,15 +48,19 @@ const logSelfCheck = (scenario: string, result: 'PASS' | 'FAIL', details?: strin
   console.log(message);
 };
 
-// Route guard component with self-check flow
+// Route guard component with self-check flow and rollback safety
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const session = useSession();
   const location = useLocation();
   const navigate = useNavigate();
   const { hasCompletedQuiz, hasAccess, isLoading } = useSubscriptionStatus();
   
-  // Read existing runtime flags without adding new ones
+  // Read all existing runtime flags for rollback safety
   const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+  const disableAuthGate = import.meta.env.VITE_DISABLE_AUTH_GATE === 'true';
+  const disableQuizGate = import.meta.env.VITE_DISABLE_QUIZ_GATE === 'true';
+  const disableAccessGate = import.meta.env.VITE_DISABLE_ACCESS_GATE === 'true';
+  const disableAllGates = import.meta.env.VITE_DISABLE_ALL_GATES === 'true';
   
   // Self-check: iOS preview bypass
   if (isIOSPreview) {
@@ -63,8 +68,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
   
-  // Self-check: Runtime flags bypass
-  if (!requireQuizAndSubscription) {
+  // Self-check: Runtime flags bypass - check for any gate disable flags
+  if (!requireQuizAndSubscription || disableAllGates || disableAuthGate || disableQuizGate || disableAccessGate) {
     logSelfCheck('Runtime-Flags-Bypass', 'PASS', 'gates disabled by config');
     return <>{children}</>;
   }
@@ -156,6 +161,7 @@ function App() {
               <Toaster />
               <BrowserRouter>
               <QABanner />
+              <QABottomBanner />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/quiz" element={<Quiz />} />
