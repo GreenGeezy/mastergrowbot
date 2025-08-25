@@ -15,6 +15,7 @@ import { WalkthroughManager } from "@/components/walkthrough/WalkthroughManager"
 import { MilestoneProvider } from "@/components/milestones/MilestoneProvider";
 import { useSubscriptionStatus } from "@/hooks/use-subscription-status";
 import { isIOSPreview } from '@/utils/flags';
+import { QABanner } from './components/QABanner';
 
 import Index from "./pages/Index";
 import ChatInterface from "./pages/ChatInterface";
@@ -116,6 +117,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabase}>
+        <QABanner />
         <WalkthroughProvider>
           <MilestoneProvider>
             <div className="App">
