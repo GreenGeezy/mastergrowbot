@@ -54,12 +54,20 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { hasCompletedQuiz, hasAccess, isLoading } = useSubscriptionStatus();
-  const { isQAMode, qaAuth } = useQAOverrides();
+  const { isQAMode, qaAuth, qaAccess, qaQuiz } = useQAOverrides();
   
-  // Apply QA auth override if in QA mode
+  // Apply QA overrides if in QA mode
   const effectiveSession = isQAMode && qaAuth !== null 
     ? (qaAuth === 'on' ? { user: { id: 'qa-user' } } : null)
     : session;
+    
+  const effectiveHasCompletedQuiz = isQAMode && qaQuiz !== null
+    ? qaQuiz === 'done'
+    : hasCompletedQuiz;
+    
+  const effectiveHasAccess = isQAMode && qaAccess !== null
+    ? qaAccess === 'on'
+    : hasAccess;
   
   // Read all existing runtime flags for rollback safety
   const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
@@ -67,6 +75,14 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const disableQuizGate = import.meta.env.VITE_DISABLE_QUIZ_GATE === 'true';
   const disableAccessGate = import.meta.env.VITE_DISABLE_ACCESS_GATE === 'true';
   const disableAllGates = import.meta.env.VITE_DISABLE_ALL_GATES === 'true';
+  
+  // QA "enforce gates" mode - when ?qa=1, enforce all gates regardless of missing runtime flags
+  const enforceGatesInQA = isQAMode;
+  const effectiveRequireQuizAndSubscription = enforceGatesInQA || requireQuizAndSubscription;
+  const effectiveDisableAuthGate = enforceGatesInQA ? false : disableAuthGate;
+  const effectiveDisableQuizGate = enforceGatesInQA ? false : disableQuizGate;
+  const effectiveDisableAccessGate = enforceGatesInQA ? false : disableAccessGate;
+  const effectiveDisableAllGates = enforceGatesInQA ? false : disableAllGates;
   
   // Log runtime flag variable names for Vercel env matching
   console.log('Runtime flags being read:', {
@@ -77,14 +93,14 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     'VITE_DISABLE_ALL_GATES': import.meta.env.VITE_DISABLE_ALL_GATES
   });
   
-  // Self-check: iOS preview bypass
-  if (isIOSPreview) {
+  // Self-check: iOS preview bypass (ignore in QA mode to enforce gates)
+  if (isIOSPreview && !enforceGatesInQA) {
     logSelfCheck('iOS-Preview-Bypass', 'PASS', 'all gates disabled');
     return <>{children}</>;
   }
   
-  // Self-check: Runtime flags bypass - check for any gate disable flags
-  if (!requireQuizAndSubscription || disableAllGates || disableAuthGate || disableQuizGate || disableAccessGate) {
+  // Self-check: Runtime flags bypass - check for any gate disable flags (use effective flags)
+  if (!effectiveRequireQuizAndSubscription || effectiveDisableAllGates || effectiveDisableAuthGate || effectiveDisableQuizGate || effectiveDisableAccessGate) {
     logSelfCheck('Runtime-Flags-Bypass', 'PASS', 'gates disabled by config');
     return <>{children}</>;
   }
@@ -125,10 +141,10 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   
   // Self-check: Signed out user accessing protected page (skip if auth gate disabled)
-  if (!disableAuthGate && !effectiveSession) {
+  if (!effectiveDisableAuthGate && !effectiveSession) {
     if (location.pathname !== '/') {
       // Determine where to redirect based on quiz completion
-      const redirectTarget = hasCompletedQuiz ? '/' : '/quiz';
+      const redirectTarget = effectiveHasCompletedQuiz ? '/' : '/quiz';
       logSelfCheck('Signed-Out-Protected-Access', 'PASS', `redirecting to ${redirectTarget}`);
       navigate(redirectTarget, { replace: true });
     } else {
@@ -138,13 +154,13 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   
   // Self-check: User with active access (bypass quiz requirement or skip if access gate disabled)
-  if (!disableAccessGate && hasAccess) {
+  if (!effectiveDisableAccessGate && effectiveHasAccess) {
     logSelfCheck('Active-Access-Bypass', 'PASS', 'user has active subscription/trial');
     return <>{children}</>;
   }
   
   // Self-check: User signed in but no quiz completion and no access (skip if quiz gate disabled)
-  if (!disableQuizGate && !hasCompletedQuiz && !hasAccess) {
+  if (!effectiveDisableQuizGate && !effectiveHasCompletedQuiz && !effectiveHasAccess) {
     if (location.pathname !== '/quiz') {
       logSelfCheck('No-Quiz-No-Access', 'PASS', 'redirecting to quiz');
       navigate('/quiz', { replace: true });
@@ -155,7 +171,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   
   // Self-check: User completed quiz but no access (paywall scenario, skip if access gate disabled)
-  if (!disableAccessGate && hasCompletedQuiz && !hasAccess) {
+  if (!effectiveDisableAccessGate && effectiveHasCompletedQuiz && !effectiveHasAccess) {
     if (location.pathname !== '/') {
       logSelfCheck('Quiz-Complete-No-Access', 'PASS', 'redirecting to paywall');
       navigate('/', { replace: true });
@@ -166,7 +182,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   
   // Self-check: If we reach here and any gates are disabled, allow access
-  if (disableAuthGate || disableQuizGate || disableAccessGate) {
+  if (effectiveDisableAuthGate || effectiveDisableQuizGate || effectiveDisableAccessGate) {
     logSelfCheck('Individual-Gate-Bypass', 'PASS', 'specific gate disabled');
     return <>{children}</>;
   }

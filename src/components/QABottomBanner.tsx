@@ -27,14 +27,19 @@ export const QABottomBanner = () => {
   // Calculate bypass exactly like the guard does
   const bypass = isIOSPreview || !requireQuizAndSubscription || disableAllGates || disableAuthGate || disableQuizGate || disableAccessGate;
   
-  // Apply QA auth override for display exactly like the guard
+  // Apply QA overrides for display exactly like the guard
   const effectiveAuth = isQAMode && qaAuth !== null ? qaAuth === 'on' : !!session;
+  const effectiveQuiz = isQAMode && qaQuiz !== null ? qaQuiz === 'done' : hasCompletedQuiz;
+  const effectiveAccess = isQAMode && qaAccess !== null ? qaAccess === 'on' : hasAccess;
+  
+  // In QA mode, ignore bypass flags to enforce gates
+  const effectiveBypass = isQAMode ? false : bypass;
   
   const states = {
-    quiz: hasCompletedQuiz,
+    quiz: effectiveQuiz,
     auth: effectiveAuth,
-    access: hasAccess,
-    bypass: bypass,
+    access: effectiveAccess,
+    bypass: effectiveBypass,
     loading: isLoading
   };
   
