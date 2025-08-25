@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from '@supabase/auth-helpers-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useQAOverrides } from './use-qa-overrides';
 
 interface SubscriptionStatus {
   isLoading: boolean;
@@ -14,6 +15,7 @@ interface SubscriptionStatus {
 
 export const useSubscriptionStatus = (): SubscriptionStatus => {
   const session = useSession();
+  const { isQAMode, qaAccess, qaQuiz } = useQAOverrides();
   const [status, setStatus] = useState<SubscriptionStatus>({
     isLoading: true,
     hasAccess: false,
@@ -120,10 +122,21 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           const hasQuiz = profileData?.has_completed_quiz === true;
           const hasSubscription = profileData?.subscription_status === 'active' || subData?.status === 'active';
           
+          // Apply QA overrides if in QA mode
+          let finalHasAccess = hasSubscription;
+          let finalHasQuiz = hasQuiz;
+          
+          if (isQAMode && qaAccess !== null) {
+            finalHasAccess = qaAccess === 'on';
+          }
+          if (isQAMode && qaQuiz !== null) {
+            finalHasQuiz = qaQuiz === 'done';
+          }
+          
           setStatus({
             isLoading: false,
-            hasAccess: hasSubscription, // Grant access if subscription is active
-            hasCompletedQuiz: hasQuiz,
+            hasAccess: finalHasAccess,
+            hasCompletedQuiz: finalHasQuiz,
             subscriptionType: subData?.subscription_type || null,
             expiresAt: subData?.expires_at || null,
             error: null
@@ -132,10 +145,21 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           return;
         }
         
+        // Apply QA overrides if in QA mode
+        let finalHasAccess = hasActiveSubscription;
+        let finalHasQuiz = hasQuizCompleted;
+        
+        if (isQAMode && qaAccess !== null) {
+          finalHasAccess = qaAccess === 'on';
+        }
+        if (isQAMode && qaQuiz !== null) {
+          finalHasQuiz = qaQuiz === 'done';
+        }
+        
         setStatus({
           isLoading: false,
-          hasAccess: hasActiveSubscription, // Grant access if subscription is active
-          hasCompletedQuiz: hasQuizCompleted,
+          hasAccess: finalHasAccess,
+          hasCompletedQuiz: finalHasQuiz,
           subscriptionType: data?.subscription_type || null,
           expiresAt: data?.expires_at || null,
           error: null

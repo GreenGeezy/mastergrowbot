@@ -14,6 +14,7 @@ import { WalkthroughProvider } from "@/contexts/WalkthroughContext";
 import { WalkthroughManager } from "@/components/walkthrough/WalkthroughManager";
 import { MilestoneProvider } from "@/components/milestones/MilestoneProvider";
 import { useSubscriptionStatus } from "@/hooks/use-subscription-status";
+import { useQAOverrides } from "@/hooks/use-qa-overrides";
 import { isIOSPreview } from '@/utils/flags';
 import { QABanner } from './components/QABanner';
 import { QABottomBanner } from './components/QABottomBanner';
@@ -54,6 +55,12 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { hasCompletedQuiz, hasAccess, isLoading } = useSubscriptionStatus();
+  const { isQAMode, qaAuth } = useQAOverrides();
+  
+  // Apply QA auth override if in QA mode
+  const effectiveSession = isQAMode && qaAuth !== null 
+    ? (qaAuth === 'on' ? { user: { id: 'qa-user' } } : null)
+    : session;
   
   // Read all existing runtime flags for rollback safety
   const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
@@ -103,7 +110,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   
   // Self-check: Signed out user accessing protected page
-  if (!session) {
+  if (!effectiveSession) {
     if (location.pathname !== '/') {
       // Determine where to redirect based on quiz completion
       const redirectTarget = hasCompletedQuiz ? '/' : '/quiz';
