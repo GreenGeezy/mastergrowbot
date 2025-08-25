@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '@supabase/auth-helpers-react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import SubscriptionSection from '@/components/settings/SubscriptionSection';
@@ -11,6 +11,7 @@ import ProfileSection from '@/components/settings/ProfileSection';
 import AccountSection from '@/components/settings/AccountSection';
 import { StreakRewardsSection } from '@/components/rewards/StreakRewardsSection';
 import { MilestoneHistory } from '@/components/milestones/MilestoneHistory';
+import SupportDialog from '@/components/support/SupportDialog';
 import {
   Accordion,
   AccordionContent,
@@ -21,6 +22,7 @@ import {
 const Settings = () => {
   const navigate = useNavigate();
   const session = useSession();
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
 
   const handleSignOut = () => {
     // Refresh the page to update auth state
@@ -52,6 +54,15 @@ const Settings = () => {
               <h1 className="text-xl font-medium text-gray-900">Settings</h1>
             </div>
           </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowFeedbackDialog(true)}
+            className="hover:bg-gray-100 text-gray-700 hover:text-green-600 transition-colors"
+          >
+            <MessageSquare className="h-4 w-4 mr-2" />
+            Feedback
+          </Button>
         </div>
       </header>
 
@@ -138,6 +149,11 @@ const Settings = () => {
       </main>
 
       <BottomNavigation />
+      
+      <SupportDialog 
+        isOpen={showFeedbackDialog} 
+        onOpenChange={setShowFeedbackDialog} 
+      />
     </div>
   );
 };
