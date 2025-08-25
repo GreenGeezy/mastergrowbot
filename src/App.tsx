@@ -69,28 +69,32 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     ? qaAccess === 'on'
     : hasAccess;
   
-  // Single runtime flag for gating control
+  // Single runtime flag for gating control - read as string and compare to 'true'
   const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
   
   // QA "enforce gates" mode - when ?qa=1, enforce all gates regardless of runtime flag
   const enforceGatesInQA = isQAMode;
-  const effectiveRequireQuizAndSubscription = enforceGatesInQA || requireQuizAndSubscription;
+  const gatesEnabled = enforceGatesInQA || requireQuizAndSubscription;
   
-  // Log runtime flag variable names for Vercel env matching
-  console.log('Runtime flag being read:', {
-    'VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION': import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION
+  // Guard verification logging (no PII)
+  console.info('Guard state:', {
+    path: location.pathname,
+    gatesEnabled,
+    session: !!effectiveSession,
+    access: effectiveHasAccess,
+    quiz: effectiveHasCompletedQuiz
   });
   
-  // Self-check: iOS preview bypass (ignore in QA mode to enforce gates)
-  if (isIOSPreview && !enforceGatesInQA) {
-    logSelfCheck('iOS-Preview-Bypass', 'PASS', 'all gates disabled');
+  // Self-check: Runtime flags bypass - when gates disabled, open everything
+  if (!gatesEnabled) {
+    logSelfCheck('Runtime-Flags-Bypass', 'PASS', 'all gates disabled by config');
     return <>{children}</>;
   }
   
-  // Self-check: Runtime flags bypass - check if gating is disabled
-  if (!effectiveRequireQuizAndSubscription) {
-    logSelfCheck('Runtime-Flags-Bypass', 'PASS', 'all gates disabled by config');
-    return <>{children}</>;
+  // Self-check: iOS preview bypass - when gates enabled, preview does NOT bypass
+  if (isIOSPreview && gatesEnabled && !enforceGatesInQA) {
+    logSelfCheck('iOS-Preview-No-Bypass', 'PASS', 'preview ignored when gates enabled');
+    // Continue to gate enforcement below
   }
   
   // Self-check: Public route access
