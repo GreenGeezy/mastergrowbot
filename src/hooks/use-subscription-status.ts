@@ -89,6 +89,10 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
 
         console.log("User access data:", data);
         
+        // Check if user has active subscription regardless of quiz completion
+        const hasActiveSubscription = data?.has_active_subscription === true;
+        const hasQuizCompleted = data?.has_completed_quiz === true;
+        
         // If no data was returned, let's manually check user_profiles and subscriptions
         if (!data) {
           console.log("No data returned from user_access_view, checking individual tables");
@@ -114,11 +118,11 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
           if (subError) console.error("Error fetching subscription:", subError);
           
           const hasQuiz = profileData?.has_completed_quiz === true;
-          const hasSubscription = profileData?.subscription_status === 'active';
+          const hasSubscription = profileData?.subscription_status === 'active' || subData?.status === 'active';
           
           setStatus({
             isLoading: false,
-            hasAccess: hasSubscription,
+            hasAccess: hasSubscription, // Grant access if subscription is active
             hasCompletedQuiz: hasQuiz,
             subscriptionType: subData?.subscription_type || null,
             expiresAt: subData?.expires_at || null,
@@ -130,8 +134,8 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
         
         setStatus({
           isLoading: false,
-          hasAccess: data?.has_active_subscription === true,
-          hasCompletedQuiz: data?.has_completed_quiz === true,
+          hasAccess: hasActiveSubscription, // Grant access if subscription is active
+          hasCompletedQuiz: hasQuizCompleted,
           subscriptionType: data?.subscription_type || null,
           expiresAt: data?.expires_at || null,
           error: null

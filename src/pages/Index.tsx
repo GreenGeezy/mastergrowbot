@@ -31,20 +31,20 @@ export default function Index() {
   // Handle post-sign-in flow
   useEffect(() => {
     if (session && !isIOSPreviewMode && !subscriptionLoading) {
+      // If user has active subscription (including Apple App Store), grant access immediately
+      if (hasAccess) {
+        navigate('/chat', { replace: true });
+        return;
+      }
+      
       // If user signed in after completing quiz but doesn't have access yet
       if (hasCompletedQuiz && !hasAccess) {
         // Show paywall by staying on Index page with UserDashboard (which will show paywall)
         return;
       }
       
-      // If user has both quiz completed and access, they should be redirected to main app
-      if (hasCompletedQuiz && hasAccess) {
-        navigate('/chat', { replace: true });
-        return;
-      }
-      
-      // If user signed in but hasn't completed quiz, redirect to quiz
-      if (!hasCompletedQuiz) {
+      // If user signed in but hasn't completed quiz and doesn't have subscription, redirect to quiz
+      if (!hasCompletedQuiz && !hasAccess) {
         navigate('/quiz', { replace: true });
         return;
       }

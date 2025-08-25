@@ -68,29 +68,30 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
   
-  // For protected routes, check the flow: quiz -> auth -> subscription
+  // For protected routes, check the flow
   
   // If loading, show nothing to prevent flash
   if (isLoading) {
     return null;
   }
   
-  // 1. First check: Quiz must be completed
-  if (!hasCompletedQuiz) {
-    return <Navigate to="/quiz" replace />;
-  }
-  
-  // 2. Second check: User must be signed in
+  // 1. User must be signed in first
   if (!session) {
     return <Navigate to="/" replace />;
   }
   
-  // 3. Third check: User must have active access
-  if (!hasAccess) {
-    return <Navigate to="/" replace />;
+  // 2. If user has active subscription (including Apple App Store), allow access even without quiz
+  if (hasAccess) {
+    return <>{children}</>;
   }
   
-  return <>{children}</>;
+  // 3. If user doesn't have subscription, they must complete quiz first
+  if (!hasCompletedQuiz) {
+    return <Navigate to="/quiz" replace />;
+  }
+  
+  // 4. If quiz completed but no access, redirect to paywall (Index page)
+  return <Navigate to="/" replace />;
 }
 
 function App() {
