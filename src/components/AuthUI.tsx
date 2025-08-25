@@ -51,6 +51,48 @@ const AuthUI = ({
         toast.error(error.message);
       } else {
         toast.success('Signed in successfully!');
+        
+        // Check if user completed quiz while signed out and save responses
+        const tempQuizResponses = sessionStorage.getItem('mg_temp_quiz_responses');
+        if (tempQuizResponses && data.user) {
+          try {
+            const quizResponses = JSON.parse(tempQuizResponses);
+            
+            // Save to user profile
+            const profileData = {
+              id: data.user.id,
+              grow_experience_level: quizResponses.experience_level,
+              growing_method: quizResponses.growing_method,
+              monitoring_method: quizResponses.monitoring_method,
+              nutrient_type: quizResponses.nutrient_type,
+              challenges: quizResponses.challenges,
+              goals: Array.isArray(quizResponses.goals) ? quizResponses.goals : [quizResponses.goals].filter(Boolean)
+            };
+            
+            await supabase.from('user_profiles').upsert(profileData);
+            
+            // Save quiz responses
+            await supabase.from('quiz_responses').insert({
+              user_id: data.user.id,
+              experience_level: quizResponses.experience_level,
+              growing_method: quizResponses.growing_method,
+              plant_quantity: quizResponses.plant_quantity,
+              challenges: quizResponses.challenges,
+              monitoring_method: quizResponses.monitoring_method,
+              nutrient_type: quizResponses.nutrient_type,
+              goals: Array.isArray(quizResponses.goals) ? quizResponses.goals : [quizResponses.goals].filter(Boolean)
+            });
+            
+            // Clean up temporary storage
+            sessionStorage.removeItem('mg_temp_quiz_responses');
+            sessionStorage.removeItem('quiz_completed');
+            
+            console.log('Successfully saved quiz responses after sign-in');
+          } catch (err) {
+            console.error('Error saving quiz responses after sign-in:', err);
+          }
+        }
+        
         // Clear form
         setEmail('');
         setPassword('');

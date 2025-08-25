@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { supabase, safeDeleteUser, checkUserExists } from '@/integrations/supabase/client';
 import { isIOSPreview } from '@/utils/flags';
+import { useSubscriptionStatus } from '@/hooks/use-subscription-status';
 import AuthUI from '@/components/AuthUI';
 import UserDashboard from '@/components/UserDashboard';
 import Header from '@/components/Header';
@@ -22,9 +23,33 @@ export default function Index() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const isMobile = useIsMobile();
+  const { hasCompletedQuiz, hasAccess, isLoading: subscriptionLoading } = useSubscriptionStatus();
   
   // Check if we're in iOS preview mode
   const isIOSPreviewMode = isIOSPreview;
+  
+  // Handle post-sign-in flow
+  useEffect(() => {
+    if (session && !isIOSPreviewMode && !subscriptionLoading) {
+      // If user signed in after completing quiz but doesn't have access yet
+      if (hasCompletedQuiz && !hasAccess) {
+        // Show paywall by staying on Index page with UserDashboard (which will show paywall)
+        return;
+      }
+      
+      // If user has both quiz completed and access, they should be redirected to main app
+      if (hasCompletedQuiz && hasAccess) {
+        navigate('/chat', { replace: true });
+        return;
+      }
+      
+      // If user signed in but hasn't completed quiz, redirect to quiz
+      if (!hasCompletedQuiz) {
+        navigate('/quiz', { replace: true });
+        return;
+      }
+    }
+  }, [session, hasCompletedQuiz, hasAccess, subscriptionLoading, navigate, isIOSPreviewMode]);
   
   // Handle redirects from authentication flow
   useEffect(() => {

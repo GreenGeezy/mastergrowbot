@@ -26,10 +26,13 @@ export const useSubscriptionStatus = (): SubscriptionStatus => {
   useEffect(() => {
     const checkSubscription = async () => {
       if (!session?.user?.id) {
+        // For signed-out users, check if quiz is completed client-side
+        const hasCompletedQuizClientSide = sessionStorage.getItem('quiz_completed') === 'true';
+        
         setStatus({
           isLoading: false,
           hasAccess: false,
-          hasCompletedQuiz: false,
+          hasCompletedQuiz: hasCompletedQuizClientSide,
           subscriptionType: null,
           expiresAt: null,
           error: null

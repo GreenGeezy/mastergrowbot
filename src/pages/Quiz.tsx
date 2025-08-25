@@ -332,9 +332,19 @@ export default function Quiz() {
         });
         setShowSubscription(true);
       } else {
-        console.log('User not logged in, storing responses temporarily');
+        console.log('User not logged in, storing responses temporarily and redirecting to sign-in');
         sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
-        setShowSubscription(true);
+        
+        // Mark quiz as completed in sessionStorage for client-side checks
+        sessionStorage.setItem('quiz_completed', 'true');
+        
+        toast({
+          title: "Quiz Complete!",
+          description: "Please sign in to continue your growing journey."
+        });
+        
+        // Redirect to sign-in page
+        navigate('/');
       }
     } catch (error: any) {
       console.error('Error in quiz submission:', error);
