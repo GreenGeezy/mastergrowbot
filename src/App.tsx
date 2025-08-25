@@ -47,8 +47,16 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const { hasCompletedQuiz, hasAccess, isLoading } = useSubscriptionStatus();
   
+  // Read existing runtime flags without adding new ones
+  const requireQuizAndSubscription = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
+  
   // 1. If in iOS preview mode → allow immediately
   if (isIOSPreview) {
+    return <>{children}</>;
+  }
+  
+  // If runtime flags disable the quiz and subscription gates → allow immediately
+  if (!requireQuizAndSubscription) {
     return <>{children}</>;
   }
   
