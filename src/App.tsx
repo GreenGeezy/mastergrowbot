@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import { Toaster } from "sonner";
 import { SessionContextProvider, useSession } from '@supabase/auth-helpers-react';
@@ -39,59 +40,68 @@ const queryClient = new QueryClient({
   },
 });
 
-// Route guard component to enforce quiz -> auth -> paywall flow
+// Route guard component with exact check order
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const session = useSession();
   const location = useLocation();
+  const navigate = useNavigate();
   const { hasCompletedQuiz, hasAccess, isLoading } = useSubscriptionStatus();
   
-  // Skip checks in iOS preview mode
+  // 1. If in iOS preview mode → allow immediately
   if (isIOSPreview) {
     return <>{children}</>;
   }
   
-  // Allow access to public routes always
+  // 2. If on a public route → allow
   const publicRoutes = ['/shared', '/privacy', '/terms'];
   const isPublicRoute = publicRoutes.some(route => location.pathname.startsWith(route));
-  
   if (isPublicRoute) {
     return <>{children}</>;
   }
   
-  // Always allow quiz access (regardless of auth status)
+  // 3. If on the quiz route → allow
   if (location.pathname === '/quiz') {
     return <>{children}</>;
   }
   
-  // Allow landing page access
+  // 4. If on the landing page → allow
   if (location.pathname === '/') {
     return <>{children}</>;
   }
   
-  // For protected routes, check the flow
+  // For all other routes, run the protection checks:
   
-  // If loading, show nothing to prevent flash
+  // 5. If the subscription/status hook is still loading → render nothing (no flash)
   if (isLoading) {
     return null;
   }
   
-  // 1. User must be signed in first
+  // 6. If the user is not signed in and sign-in is required → navigate to the existing sign-in screen
   if (!session) {
-    return <Navigate to="/" replace />;
+    if (location.pathname !== '/') {
+      navigate('/', { replace: true });
+    }
+    return null;
   }
   
-  // 2. If user has active subscription (including Apple App Store), allow access even without quiz
+  // 7. If the user has active access (trial or subscription) → allow immediately (bypass the quiz requirement)
   if (hasAccess) {
     return <>{children}</>;
   }
   
-  // 3. If user doesn't have subscription, they must complete quiz first
+  // 8. If the quiz gate is enabled and the user has not completed the quiz → navigate to the quiz
   if (!hasCompletedQuiz) {
-    return <Navigate to="/quiz" replace />;
+    if (location.pathname !== '/quiz') {
+      navigate('/quiz', { replace: true });
+    }
+    return null;
   }
   
-  // 4. If quiz completed but no access, redirect to paywall (Index page)
-  return <Navigate to="/" replace />;
+  // 9. If access is required and the user still has no active access → navigate to the paywall
+  if (location.pathname !== '/') {
+    navigate('/', { replace: true });
+  }
+  return null;
 }
 
 function App() {
