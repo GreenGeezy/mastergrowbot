@@ -16,6 +16,7 @@ import { SparklesCore } from '@/components/ui/sparkles';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Particles } from '@/components/ui/particles';
 import OnboardingTooltips from '@/components/onboarding/OnboardingTooltips';
+import { useQALogout } from '@/hooks/use-qa-logout';
 
 export default function Index() {
   const session = useSession();
@@ -24,6 +25,9 @@ export default function Index() {
   const [loading, setLoading] = useState(false);
   const isMobile = useIsMobile();
   const { hasCompletedQuiz, hasAccess, isLoading: subscriptionLoading } = useSubscriptionStatus();
+  
+  // QA helper for logout
+  useQALogout();
   
   // Check if we're in iOS preview mode
   const isIOSPreviewMode = isIOSPreview;
