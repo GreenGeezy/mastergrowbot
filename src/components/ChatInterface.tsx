@@ -9,8 +9,8 @@ import { Send, Plus, Mic, MicOff, Volume2, VolumeX, MessageSquare, Settings, Mes
 import ChatMessages from "@/components/ChatMessages";
 import { ConversationList } from "@/components/chat/ConversationList";
 import { ProfileDropdown } from "@/components/profile/ProfileDropdown";
-import SpeechToTextButton from "@/components/chat/SpeechToTextButton";
-
+import VoiceChatButton from "@/components/chat/VoiceChatButton";
+import { VoiceInterface } from "@/components/mobile/VoiceInterface";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
@@ -141,8 +141,8 @@ const ChatInterface = () => {
     console.log("Loading conversation:", conversationId);
   };
 
-  const handleSpeechToText = (transcript: string) => {
-    setMessage(transcript);
+  const handleVoiceMessageReceived = (voiceMessage: string) => {
+    setMessage(voiceMessage);
   };
 
   // Function to play assistant replies using text-to-speech
@@ -296,10 +296,12 @@ const ChatInterface = () => {
                       rows={2}
                     />
                     <div className="flex items-center justify-between">
-                       <div className="flex items-center gap-2">
-                        <SpeechToTextButton
-                          onTranscript={handleSpeechToText}
-                          className="min-w-[44px] h-[44px] rounded-lg"
+                      <div className="flex items-center gap-2">
+                        <VoiceChatButton
+                          onVoiceMessageReceived={handleVoiceMessageReceived}
+                          onStateChange={handleVoiceChatStateChange}
+                          className="min-w-[44px] h-[44px]"
+                          forceClose={forceCloseVoiceChat}
                         />
                       </div>
                       <ChatInputSubmit 
@@ -316,6 +318,25 @@ const ChatInterface = () => {
         </div>
       </div>
 
+      {/* Voice Interface Overlay - Show when voice chat is active */}
+      {isVoiceChatActive && (
+        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm">
+          <VoiceInterface
+            isListening={isListening}
+            isSpeaking={isSpeaking}
+            onToggleListening={() => {
+              console.log('Toggle listening from voice interface');
+              // Toggle the voice chat state
+              if (isListening || isSpeaking) {
+                setIsListening(false);
+                setIsSpeaking(false);
+              }
+            }}
+            onClose={handleVoiceInterfaceClose}
+            className="h-full w-full"
+          />
+        </div>
+      )}
 
       {/* Bottom Navigation - show on all devices */}
       <BottomNavigation />
