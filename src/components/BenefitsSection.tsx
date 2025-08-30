@@ -26,8 +26,8 @@ interface BenefitCard {
 const benefits: BenefitCard[] = [{
   id: 'bigger-buds',
   title: 'Grow Bigger Buds & Higher Yields',
-  description: 'Maximize harvest with abundant buds using AI-powered analysis and nutrient schedules',
-  details: 'Stop issues before $336 losses with weekly inspections and neem oil treatments',
+  description: 'Unleash maximum potential with AI Machine Vision for instant photo scans, vast strain genetics databases for tailored nutrient plans, and cannabinoid/terpene profiles to pump up bud size and volume.',
+  details: 'Stop devastating setbacks before they hit with AI-driven weekly checks and targeted treatments like neem oil, customized to your grow.',
   image: cannabisBeforeAfter,
   icon: <Zap className="w-6 h-6" />,
   gradientFrom: 'from-primary',
@@ -35,8 +35,8 @@ const benefits: BenefitCard[] = [{
 }, {
   id: 'stack-cash',
   title: 'Stack Cash & SuperCharge Profits',
-  description: 'Boost earnings by optimizing operations with Advanced Strain Database and yield-boost tips',
-  details: 'Get 95% confidence scans and preventive actions to maximize your investment',
+  description: 'Ignite earnings growth through powerful AI optimization, advanced strain databases, and smart tips that eliminate waste and crush stalls.',
+  details: 'Tap into 95% accurate scans for proactive detection and easy fixes that protect your crop and multiply returns without the guesswork.',
   image: cashProfitsIcon,
   icon: <DollarSign className="w-6 h-6" />,
   gradientFrom: 'from-gold',
@@ -44,8 +44,8 @@ const benefits: BenefitCard[] = [{
 }, {
   id: 'improve-quality',
   title: 'Improve Quality & Increase Potency',
-  description: 'Elevate plant strength for superior product with Precision Tools like IPM and pH guidance',
-  details: 'Access comprehensive nutrient management and environmental control systems',
+  description: 'Boost plant power and premium results with AI precision tools for IPM, pH balance, nutrients, and environment—all fueled by rich cannabinoid and terpene insights.',
+  details: 'Get instant, spot-on guidance from your Genius Cannabis Growing Assistant, delivering custom fixes that elevate every batch.',
   image: potencyMeterIcon,
   icon: <Award className="w-6 h-6" />,
   gradientFrom: 'from-accent',
@@ -53,8 +53,8 @@ const benefits: BenefitCard[] = [{
 }, {
   id: 'ai-analysis',
   title: 'AI-Powered Plant Analysis',
-  description: 'Advanced 95% confidence scans with instant diagnosis and recommended actions',
-  details: 'Real-time plant health monitoring with precision diagnostic tools',
+  description: 'Snap a photo → unlock AI Machine Vision for rapid 95% confident diagnoses, step-by-step plans, and ongoing health tracking.',
+  details: 'Eliminate risks before they destroy your success, backed by massive databases that keep yields soaring and quality unmatched.',
   image: confidenceScanIcon,
   icon: <Search className="w-6 h-6" />,
   gradientFrom: 'from-secondary',
@@ -92,10 +92,10 @@ export default function BenefitsSection() {
           Transform Your Cannabis Growing Experience
         </h2>
         <p className={`text-gray-600 mb-6 ${isMobile ? 'text-sm' : 'text-base'}`}>
-          Unlock professional-grade growing insights with AI-powered analysis
+          Unlock elite harvests with cutting-edge AI that saves your plants, amplifies yields, and drives massive profits—right from your tablet or phone.
         </p>
         <Badge className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 text-sm font-semibold">
-          Prevent $336/Plant Losses
+          Prevent $336/Plant Losses and Over $100,000 per Harvest
         </Badge>
       </motion.div>
 
