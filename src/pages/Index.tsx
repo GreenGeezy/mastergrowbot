@@ -35,25 +35,22 @@ export default function Index() {
   // Handle post-sign-in flow
   useEffect(() => {
     if (session && !isIOSPreviewMode && !subscriptionLoading) {
-      // If user has active subscription (including Apple App Store), grant access immediately
-      if (hasAccess) {
+      // Only redirect if user came from OAuth callback (has code in URL)
+      const isOAuthCallback = location.search.includes('code=');
+      
+      // If user has active subscription and came from OAuth callback, redirect to chat
+      if (hasAccess && isOAuthCallback) {
         navigate('/chat', { replace: true });
         return;
       }
       
-      // If user signed in after completing quiz but doesn't have access yet
-      if (hasCompletedQuiz && !hasAccess) {
-        // Show paywall by staying on Index page with UserDashboard (which will show paywall)
-        return;
-      }
-      
       // If user signed in but hasn't completed quiz and doesn't have subscription, redirect to quiz
-      if (!hasCompletedQuiz && !hasAccess) {
+      if (!hasCompletedQuiz && !hasAccess && isOAuthCallback) {
         navigate('/quiz', { replace: true });
         return;
       }
     }
-  }, [session, hasCompletedQuiz, hasAccess, subscriptionLoading, navigate, isIOSPreviewMode]);
+  }, [session, hasCompletedQuiz, hasAccess, subscriptionLoading, navigate, isIOSPreviewMode, location.search]);
   
   // Handle redirects from authentication flow
   useEffect(() => {
