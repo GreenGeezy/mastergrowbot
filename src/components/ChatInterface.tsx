@@ -10,6 +10,7 @@ import ChatMessages from "@/components/ChatMessages";
 import { ConversationList } from "@/components/chat/ConversationList";
 import { ProfileDropdown } from "@/components/profile/ProfileDropdown";
 import VoiceChatButton from "@/components/chat/VoiceChatButton";
+import SpeechToTextButton from "@/components/chat/SpeechToTextButton";
 import { VoiceInterface } from "@/components/mobile/VoiceInterface";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -143,6 +144,10 @@ const ChatInterface = () => {
 
   const handleVoiceMessageReceived = (voiceMessage: string) => {
     setMessage(voiceMessage);
+  };
+
+  const handleSpeechToTextTranscript = (transcript: string) => {
+    setMessage(transcript);
   };
 
   // Function to play assistant replies using text-to-speech
@@ -297,6 +302,10 @@ const ChatInterface = () => {
                     />
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
+                        <SpeechToTextButton
+                          onTranscript={handleSpeechToTextTranscript}
+                          className="min-w-[44px] h-[44px] rounded-2xl"
+                        />
                         <VoiceChatButton
                           onVoiceMessageReceived={handleVoiceMessageReceived}
                           onStateChange={handleVoiceChatStateChange}
