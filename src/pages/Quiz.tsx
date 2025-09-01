@@ -626,7 +626,7 @@ export default function Quiz() {
                           </div>
                           <div className="flex-1">
                             <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Maximize Revenue & Boost Profits</h3>
-                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Boost earnings by optimizing harvest timing and yield strategies, through Database and yield-boost tips.</p>
+                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Ignite earnings growth through powerful AI optimization, advanced strain databases, and smart tips that eliminate waste and crush your growing goals!</p>
                             <p className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">Get 95% confidence scans and personalized action to maximize your investment.</p>
                           </div>
                         </div>
