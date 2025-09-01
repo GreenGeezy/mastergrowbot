@@ -25,7 +25,7 @@ interface BenefitCard {
 }
 const benefits: BenefitCard[] = [{
   id: 'bigger-buds',
-  title: 'Grow Bigger Buds & Higher Yields',
+  title: 'Bigger Harvests & Higher Yields',
   description: 'Unleash maximum potential with AI Machine Vision for instant photo scans, vast strain genetics databases for tailored nutrient plans, and cannabinoid/terpene profiles to pump up bud size and volume.',
   details: 'Stop devastating setbacks before they hit with AI-driven weekly checks and targeted treatments like neem oil, customized to your grow.',
   image: cannabisBeforeAfter,
