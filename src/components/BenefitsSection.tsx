@@ -43,7 +43,7 @@ const benefits: BenefitCard[] = [{
   gradientTo: 'to-yellow-400'
 }, {
   id: 'improve-quality',
-  title: 'Improve Quality & Increase Potency',
+  title: 'Improve Plant Health & Quality',
   description: 'Boost plant power and premium results with AI precision tools for IPM, pH balance, nutrients, and environment—all fueled by rich cannabinoid and terpene insights.',
   details: 'Get instant, spot-on guidance from your Genius Cannabis Growing Assistant, delivering custom fixes that elevate every batch.',
   image: potencyMeterIcon,
