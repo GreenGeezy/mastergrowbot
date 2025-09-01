@@ -612,7 +612,7 @@ export default function Quiz() {
                           </div>
                           <div className="flex-1">
                             <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Grow Bigger Buds & Higher Yields</h3>
-                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Maximize harvest with abundant bud-colibrating discipline across all nutrient schedules.</p>
+                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Grow premium quality, healthy, and thriving plants with AI Machine Vision for instant photo scans, vast strain genetics databases for tailored nutrient plans, and cannabinoid/terpene profiles to pump up bud size and volume.</p>
                             <p className="text-green-600 dark:text-green-400 text-sm font-medium">Stop guessing. Get AI guidance with weekly inspections and room adjustments recommendations.</p>
                           </div>
                         </div>
