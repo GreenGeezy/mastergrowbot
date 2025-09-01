@@ -655,7 +655,7 @@ export default function Quiz() {
                           </div>
                           <div className="flex-1">
                             <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">AI-Powered Plant Evaluation</h3>
-                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Advanced 95% confidence scans with intelligent diagnostic and recommended actions.</p>
+                            <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Snap a photo → unlock powerful AI Machine Vision analysis for reliable custom plant health diagnoses, simple effective actions to heal your crops and ongoing health tracking so you can Grow Bigger and Better!</p>
                             <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">Real-time plant health monitoring with precision diagnostic tools.</p>
                           </div>
                         </div>
