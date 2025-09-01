@@ -41,268 +41,209 @@ const TermsOfService = () => {
           <h1 className="text-3xl font-bold mb-6 text-primary border-b pb-2">Terms of Service</h1>
           
           <ScrollArea className="h-[calc(100vh-250px)] pr-4">
-            <div className="space-y-6">
+            <div className="prose max-w-none space-y-6">
               {/* Introduction */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Introduction</h2>
-                <p>
-                  Welcome to Master Growbot's Terms of Service. Master Growbot is an AI-powered cannabis cultivation 
-                  platform designed to help users grow better and improve their cultivation practices through 
-                  advanced technology. These terms govern your use of our services.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Introduction</h2>
+                <p className="text-left leading-relaxed">
+                  Welcome to Master Growbot's Terms of Service. Master Growbot is an AI-powered horticulture and plant health platform designed to help users improve cultivation practices through advanced technology. The service may be applied to a wide range of crops, including cannabis where legally permitted. These terms govern your use of our services.
                 </p>
+                <div className="border-b border-gray-200 my-6"></div>
+              </section>
+              
+              {/* Important Legal Notice */}
+              <section>
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Important Legal Notice</h2>
+                <p className="text-left leading-relaxed">
+                  Master Growbot is intended only for individuals in jurisdictions where cultivation of cannabis is legal. Users are solely responsible for verifying legality and compliance with all applicable local, state, and federal laws before using the service. The platform is strictly educational and does not promote or encourage illegal activity.
+                </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Acceptance of Terms */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Acceptance of Terms</h2>
-                <p>
-                  By accessing or using Master Growbot, you acknowledge that you have read, understood, and agree 
-                  to be bound by these Terms of Service. If you do not agree to these terms, please do not use 
-                  our services. Your continued use of Master Growbot constitutes your ongoing acceptance of these terms.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Acceptance of Terms</h2>
+                <p className="text-left leading-relaxed">
+                  By accessing or using Master Growbot, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree, do not use our services. Continued use constitutes ongoing acceptance.
                 </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Description of Service */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Description of Service</h2>
-                <p>
-                  Master Growbot provides the following features and functionality:
-                </p>
-                <ul className="list-disc pl-6 space-y-1 mt-2">
-                  <li>AI-powered guidance and recommendations for cannabis cultivation</li>
-                  <li>Plant health analysis through image recognition technology</li>
-                  <li>Comprehensive growing guides and educational resources</li>
-                  <li>Personalized cultivation insights based on user inputs and preferences</li>
-                  <li>Community sharing features for cultivation experiences</li>
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Description of Service</h2>
+                <p className="text-left leading-relaxed mb-4">Master Growbot provides:</p>
+                <ul className="list-disc pl-6 space-y-2 text-left">
+                  <li>AI-powered plant health guidance and cultivation insights</li>
+                  <li>Plant analysis through image recognition</li>
+                  <li>Growing guides and educational resources</li>
+                  <li>Personalized cultivation insights based on user inputs</li>
+                  <li>Community features for sharing experiences</li>
                 </ul>
-                <p className="mt-3">
-                  We may update, modify, or enhance our services at any time without prior notice.
+                <p className="mt-4 text-left leading-relaxed">
+                  We may update, enhance, or modify services at any time.
                 </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* User Responsibilities */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">User Responsibilities</h2>
-                <p className="mb-3">
-                  As a user of Master Growbot, you are responsible for:
-                </p>
-                <ul className="list-disc pl-6 space-y-2">
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">User Responsibilities</h2>
+                <p className="text-left leading-relaxed mb-4">As a user, you agree to:</p>
+                <ul className="list-disc pl-6 space-y-3 text-left">
                   <li>
-                    <strong>Legal Compliance:</strong> Complying with all applicable local, state, and federal laws and 
-                    regulations regarding cannabis cultivation and use. Master Growbot does not promote 
-                    illegal activities and assumes users are operating within their legal jurisdiction.
+                    <strong>Legal Compliance:</strong> Follow all applicable laws regarding cultivation and use.
                   </li>
                   <li>
-                    <strong>Legality Verification:</strong> Independently verifying the legality of your growing activities 
-                    in your jurisdiction. Laws vary widely across different locations, and it is solely your 
-                    responsibility to understand and adhere to the laws that apply to you.
+                    <strong>Legality Verification:</strong> Confirm that cultivation is legal in your jurisdiction.
                   </li>
                   <li>
-                    <strong>Medical Consultation:</strong> Consulting qualified healthcare professionals for any medical 
-                    guidance related to cannabis use or cultivation for medical purposes. Master Growbot 
-                    does not provide medical advice.
+                    <strong>Medical Consultation:</strong> Consult licensed healthcare professionals for medical guidance.
                   </li>
                   <li>
-                    <strong>Independent Decision-Making:</strong> Making your own independent decisions about your cultivation 
-                    practices. While our AI provides guidance, you are ultimately responsible for the actions 
-                    you take based on our recommendations.
+                    <strong>Independent Decision-Making:</strong> Use AI recommendations as guidance only.
                   </li>
                   <li>
-                    <strong>Regulatory Adherence:</strong> Following local regulations and guidelines regarding plant counts, 
-                    cultivation licenses, and any other regulatory requirements in your area.
+                    <strong>Regulatory Adherence:</strong> Comply with plant counts, licenses, or other local regulations.
                   </li>
                   <li>
-                    <strong>Account Security:</strong> Maintaining the security of your account credentials and notifying 
-                    us immediately of any unauthorized access to your account.
+                    <strong>Account Security:</strong> Protect your credentials and notify us of unauthorized use.
                   </li>
                   <li>
-                    <strong>Ethical Use:</strong> Using the service in an ethical manner that respects the rights and 
-                    well-being of others.
+                    <strong>Ethical Use:</strong> Use the service responsibly and respectfully.
                   </li>
                 </ul>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Limitations of Master Growbot */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Limitations of Master Growbot</h2>
-                <p className="mb-3">
-                  It is important to understand that Master Growbot has the following limitations:
-                </p>
-                <ul className="list-disc pl-6 space-y-2">
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Limitations of Master Growbot</h2>
+                <ul className="list-disc pl-6 space-y-3 text-left">
                   <li>
-                    <strong>No Medical, Legal, or Compliance Advice:</strong> Master Growbot does not provide medical, 
-                    legal, or compliance advice. Our recommendations are for educational and informational 
-                    purposes only.
+                    <strong>No Medical, Legal, or Compliance Advice:</strong> Information is educational only.
                   </li>
                   <li>
-                    <strong>No Guaranteed Outcomes:</strong> We cannot guarantee specific outcomes, yields, or results 
-                    from following our recommendations. Plant cultivation involves numerous variables beyond 
-                    our control.
+                    <strong>No Guaranteed Outcomes:</strong> Cultivation depends on many variables beyond our control.
                   </li>
                   <li>
-                    <strong>Not a Substitute for Professional Consultation:</strong> Our service is not a substitute for 
-                    consultation with healthcare professionals, legal experts, or compliance specialists. 
-                    Users should seek appropriate professional advice for specific concerns.
+                    <strong>Not a Substitute for Professionals:</strong> Always seek expert advice for medical, legal, or compliance concerns.
                   </li>
                   <li>
-                    <strong>Educational Purpose Only:</strong> All content, recommendations, and analyses provided by 
-                    Master Growbot are for educational purposes only and should be considered general guidance 
-                    rather than definitive instructions.
+                    <strong>Educational Purpose Only:</strong> All AI insights are for learning and general guidance.
                   </li>
                   <li>
-                    <strong>AI Limitations:</strong> Our AI technology, while advanced, has inherent limitations and 
-                    may not account for all possible variables in your specific growing environment.
+                    <strong>AI Limitations:</strong> AI cannot account for all conditions in every grow environment.
                   </li>
                 </ul>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Intellectual Property */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Intellectual Property</h2>
-                <p>
-                  Master Growbot and all its content, features, and functionality are owned by us and are protected 
-                  by intellectual property rights, including but not limited to trademarks, copyrights, and trade 
-                  secrets. You may not reproduce, distribute, modify, create derivative works of, publicly display, 
-                  publicly perform, republish, download, store, or transmit any materials from our service without 
-                  our prior written consent, except for temporary storage in your computer's cache memory during 
-                  your personal use of the service.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Intellectual Property</h2>
+                <p className="text-left leading-relaxed mb-4">
+                  All content, features, and functionality of Master Growbot are our property and protected by intellectual property laws.
                 </p>
-                <p className="mt-3">
-                  Any user-generated content that you submit to Master Growbot remains your property. However, by 
-                  submitting such content, you grant us a worldwide, non-exclusive, royalty-free license to use, 
-                  reproduce, adapt, publish, translate, and distribute it in connection with our service and for 
-                  improving our AI capabilities.
+                <p className="text-left leading-relaxed">
+                  User-generated content remains your property, but by submitting it, you grant Master Growbot a worldwide, royalty-free license to use and improve the platform.
                 </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Disclaimer of Warranties */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Disclaimer of Warranties</h2>
-                <p className="uppercase font-medium">
-                  THE MASTER GROWBOT SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT ANY WARRANTIES OF ANY KIND, 
-                  EITHER EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, 
-                  INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, 
-                  NON-INFRINGEMENT, AND ANY WARRANTIES ARISING OUT OF COURSE OF DEALING OR USAGE OF TRADE.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Disclaimer of Warranties</h2>
+                <p className="text-left leading-relaxed">
+                  Master Growbot is provided "as is" without warranties of any kind. We do not guarantee uninterrupted, error-free service, or specific results.
                 </p>
-                <p className="mt-3 uppercase font-medium">
-                  WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR COMPLETELY SECURE, OR THAT 
-                  ANY DEFECTS WILL BE CORRECTED. WE DO NOT MAKE ANY REPRESENTATIONS OR WARRANTIES REGARDING THE ACCURACY, 
-                  RELIABILITY, COMPLETENESS, OR TIMELINESS OF THE CONTENT PROVIDED THROUGH THE SERVICE.
-                </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Limitation of Liability */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Limitation of Liability</h2>
-                <p className="uppercase font-medium">
-                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL MASTER GROWBOT, ITS AFFILIATES, 
-                  DIRECTORS, EMPLOYEES, AGENTS, OR LICENSORS BE LIABLE FOR ANY INDIRECT, PUNITIVE, INCIDENTAL, SPECIAL, 
-                  CONSEQUENTIAL, OR EXEMPLARY DAMAGES, INCLUDING WITHOUT LIMITATION DAMAGES FOR LOSS OF PROFITS, GOODWILL, 
-                  USE, DATA, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR RELATING TO YOUR USE OF, OR INABILITY TO USE, 
-                  THE SERVICE.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Limitation of Liability</h2>
+                <p className="text-left leading-relaxed">
+                  To the maximum extent permitted by law, Master Growbot is not liable for indirect, incidental, or consequential damages. Liability is limited to amounts you paid in the 12 months preceding the claim.
                 </p>
-                <p className="mt-3 uppercase font-medium">
-                  IN NO EVENT SHALL OUR TOTAL LIABILITY TO YOU FOR ALL CLAIMS EXCEED THE AMOUNT PAID BY YOU TO US FOR 
-                  THE SERVICE DURING THE TWELVE (12) MONTH PERIOD PRIOR TO THE ACT GIVING RISE TO LIABILITY.
-                </p>
-                <p className="mt-3">
-                  SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR THE LIMITATION OR EXCLUSION OF 
-                  LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES. ACCORDINGLY, SOME OF THE ABOVE LIMITATIONS MAY NOT 
-                  APPLY TO YOU.
-                </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Indemnification */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Indemnification</h2>
-                <p>
-                  You agree to indemnify, defend, and hold harmless Master Growbot, its affiliates, officers, directors, 
-                  employees, consultants, agents, and representatives from and against any and all claims, liabilities, 
-                  damages, losses, costs, expenses, or fees (including reasonable attorneys' fees) that such parties may 
-                  incur as a result of or arising from your violation of these Terms of Service, your use of the Service, 
-                  or your violation of any rights of any other person or entity.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Indemnification</h2>
+                <p className="text-left leading-relaxed">
+                  You agree to indemnify and hold harmless Master Growbot and its affiliates against claims arising from your use of the service or violation of these terms.
                 </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Termination */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Termination</h2>
-                <p>
-                  We reserve the right to terminate or suspend your access to Master Growbot, without prior notice or 
-                  liability, for any reason whatsoever, including, without limitation, if you breach these Terms of Service. 
-                  Upon termination, your right to use the service will immediately cease.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Termination</h2>
+                <p className="text-left leading-relaxed">
+                  We may suspend or terminate access at any time if terms are violated. Provisions such as disclaimers, indemnity, and liability limits survive termination.
                 </p>
-                <p className="mt-3">
-                  All provisions of these Terms of Service which by their nature should survive termination shall survive 
-                  termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity, and 
-                  limitations of liability.
-                </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Governing Law */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Governing Law</h2>
-                <p>
-                  These Terms of Service shall be governed by and construed in accordance with the laws of the State of 
-                  California, without regard to its conflict of law principles. Any legal action or proceeding arising 
-                  under these Terms shall be brought exclusively in the federal or state courts located in San Francisco 
-                  County, California, and you hereby consent to the personal jurisdiction and venue therein.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Governing Law</h2>
+                <p className="text-left leading-relaxed">
+                  These terms are governed by California law. Any disputes will be resolved exclusively in San Francisco County courts.
                 </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Changes to Terms */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Changes to Terms</h2>
-                <p>
-                  We reserve the right, at our sole discretion, to modify or replace these Terms of Service at any time. 
-                  If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. 
-                  What constitutes a material change will be determined at our sole discretion.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Changes to Terms</h2>
+                <p className="text-left leading-relaxed">
+                  We may revise these terms at any time. Material changes will be announced at least 30 days before taking effect. Continued use after revisions indicates acceptance.
                 </p>
-                <p className="mt-3">
-                  By continuing to access or use our service after any revisions become effective, you agree to be bound 
-                  by the revised terms. If you do not agree to the new terms, you are no longer authorized to use the service.
+                <div className="border-b border-gray-200 my-6"></div>
+              </section>
+              
+              {/* Compliance with Apple In-App Purchases */}
+              <section>
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Compliance with Apple In-App Purchases</h2>
+                <p className="text-left leading-relaxed">
+                  On iOS devices, all digital subscriptions and in-app services are processed exclusively through Apple's In-App Purchase system, in accordance with App Store guidelines.
                 </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Disclaimers */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Disclaimers</h2>
-                <div className="bg-muted/50 p-4 rounded-md border">
-                  <p className="mb-3">
-                    <strong>Medical Disclaimer:</strong> Master Growbot is a cultivation technology platform and does not 
-                    provide medical advice or guidance. While our AI can assist with general growing techniques, 
-                    all medical decisions should be made in consultation with qualified healthcare professionals. 
-                    Users growing for medical purposes should always follow their healthcare provider's guidance 
-                    and comply with local medical regulations.
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Disclaimers</h2>
+                <div className="bg-muted/50 p-6 rounded-lg border">
+                  <p className="mb-4 text-left leading-relaxed">
+                    <strong>Medical Disclaimer:</strong> We provide cultivation technology and general plant health information only. We do not provide medical advice.
                   </p>
-                  <p className="mb-3">
-                    <strong>General Disclaimer:</strong> Master Growbot is a technology platform providing AI-assisted 
-                    plant cultivation guidance. Any specific plant-related features or examples are for illustrative 
-                    purposes only. No Professional Advice: Our AI technology provides general horticultural information 
-                    only. We do not offer legal, medical, compliance, or professional advice. Users must consult 
-                    qualified professionals for medical, legal, or compliance guidance. 
+                  <p className="mb-4 text-left leading-relaxed">
+                    <strong>General Disclaimer:</strong> All content is educational and not a substitute for professional advice.
                   </p>
-                  <p>
-                    <strong>User Accountability:</strong> Users are solely responsible for verifying and maintaining 
-                    compliance with all applicable laws and regulations regarding their cultivation activities.
+                  <p className="text-left leading-relaxed">
+                    <strong>User Accountability:</strong> You are solely responsible for compliance with all applicable laws regarding cultivation.
                   </p>
                 </div>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Contact Information */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Contact Information</h2>
-                <p>
-                  If you have any questions about these Terms of Service, please contact us at:
+                <h2 className="text-xl md:text-2xl font-bold mb-4 text-primary">Contact Information</h2>
+                <p className="text-left leading-relaxed font-medium">
+                  📧 Email: support@futuristiccannabis.ai
                 </p>
-                <p className="mt-2 font-medium">
-                  Email: support@futuristiccannabis.ai
-                </p>
+                <div className="border-b border-gray-200 my-6"></div>
               </section>
               
               {/* Last Updated */}
-              <section className="mt-8 pt-4 border-t text-muted-foreground text-sm">
-                <p>Last Updated: April 29, 2024</p>
+              <section className="text-center">
+                <p className="text-muted-foreground text-sm mb-2">Last Updated: September 2025</p>
+                <p className="text-muted-foreground text-sm">© 2025 Master Growbot. All rights reserved.</p>
               </section>
             </div>
           </ScrollArea>
