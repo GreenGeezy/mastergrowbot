@@ -626,7 +626,7 @@ export default function Quiz() {
                             <img src="/lovable-uploads/25b167e9-4515-4311-a0a9-b1ecee72a5eb.png" alt="Farmer celebrating profits" className="w-24 h-24 object-contain" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Elevate Revenue & Boost Profits</h3>
+                            <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Maximize Revenue & Boost Profits</h3>
                             <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Boost earnings by optimizing harvest timing and yield strategies, through Database and yield-boost tips.</p>
                             <p className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">Get 95% confidence scans and personalized action to maximize your investment.</p>
                           </div>
