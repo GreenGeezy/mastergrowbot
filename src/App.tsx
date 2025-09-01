@@ -102,7 +102,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     '/shared', 
     '/shared-analysis', 
     '/privacy-policy', 
-    '/terms', 
+    '/terms-of-service', 
     '/404', 
     '/not-found'
   ];
@@ -196,7 +196,7 @@ function App() {
                 <Route path="/quiz" element={<Quiz />} />
                 <Route path="/shared/:shareToken" element={<SharedAnalysis />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
                 <Route path="/thank-you" element={<ThankYou />} />
                 <Route path="/chat" element={<ProtectedRoute><ChatInterface /></ProtectedRoute>} />
                 <Route path="/plant-health" element={<ProtectedRoute><PlantHealthAnalyzer /></ProtectedRoute>} />
