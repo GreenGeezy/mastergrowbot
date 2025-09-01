@@ -34,7 +34,7 @@ const benefits: BenefitCard[] = [{
   gradientTo: 'to-accent'
 }, {
   id: 'stack-cash',
-  title: 'Stack Cash & SuperCharge Profits',
+  title: 'Elevate Revenue & Boost Profits',
   description: 'Ignite earnings growth through powerful AI optimization, advanced strain databases, and smart tips that eliminate waste and crush stalls.',
   details: 'Tap into 95% accurate scans for proactive detection and easy fixes that protect your crop and multiply returns without the guesswork.',
   image: cashProfitsIcon,
