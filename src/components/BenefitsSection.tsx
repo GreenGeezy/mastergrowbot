@@ -53,7 +53,7 @@ const benefits: BenefitCard[] = [{
 }, {
   id: 'ai-analysis',
   title: 'AI-Powered Plant Analysis',
-  description: 'Snap a photo → unlock AI Machine Vision for rapid 95% confident diagnoses, step-by-step plans, and ongoing health tracking.',
+  description: 'Snap a photo → unlock powerful AI Machine Vision analysis for reliable custom plant health diagnoses, simple effective actions to heal your crops and ongoing health tracking so you can Grow Bigger and Better!',
   details: 'Eliminate risks before they destroy your success, backed by massive databases that keep yields soaring and quality unmatched.',
   image: confidenceScanIcon,
   icon: <Search className="w-6 h-6" />,
