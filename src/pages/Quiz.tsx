@@ -334,15 +334,14 @@ export default function Quiz() {
       } else {
         console.log('User not logged in, storing responses temporarily and redirecting to sign-in');
         sessionStorage.setItem(TEMP_QUIZ_RESPONSES_KEY, JSON.stringify(quizResponses));
-        
+
         // Mark quiz as completed in sessionStorage for client-side checks
         sessionStorage.setItem('quiz_completed', 'true');
-        
         toast({
           title: "Quiz Complete!",
           description: "Please sign in to continue your growing journey."
         });
-        
+
         // Redirect to sign-in page
         navigate('/');
       }
@@ -640,7 +639,8 @@ export default function Quiz() {
                             <img src="/lovable-uploads/4c608680-cc4c-478c-9b69-587992e09ba5.png" alt="THC and CBD potency" className="w-24 h-24 object-contain" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Improve Quality & Increase Potency</h3>
+                            <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">Improve Plant Health &amp; Quality
+                          </h3>
                             <p className="text-gray-700 dark:text-white/70 text-sm mb-3">Elevate plant strength for superior harvest with Precision Tools like PM and pH guidance.</p>
                             <p className="text-purple-600 dark:text-purple-400 text-sm font-medium">Access comprehensive nutrient suggestions and environmental control approaches.</p>
                           </div>
@@ -702,14 +702,7 @@ export default function Quiz() {
   };
   return <div className="min-h-screen bg-background circuit-background relative page-fade-in">
       {/* Particles Background */}
-      <Particles
-        className="absolute inset-0"
-        quantity={35}
-        ease={80}
-        color="#22c55e"
-        size={8}
-        refresh
-      />
+      <Particles className="absolute inset-0" quantity={35} ease={80} color="#22c55e" size={8} refresh />
       
       {/* Content with higher z-index */}
       
