@@ -56,7 +56,7 @@ const Header = () => {
           {/* Main Headline with Combined Text */}
           <div className="space-y-2">
             <h2 className={`text-headline-sm font-display text-foreground leading-tight max-w-[720px] mx-auto ${isMobile ? 'text-headline-sm' : 'text-headline-md'}`}>
-              Cultivate Premium Quality Plants in Seconds with AI
+              Grow Premium Quality Plants in Just Seconds with AI
             </h2>
             <p className="text-body-secondary font-body max-w-[600px] mx-auto leading-relaxed">See Why Leading Growers Worldwide Trust MasterGrowbot AI to Prevent $336/Plant to Over $100,000 per Harvest in Losses</p>
           </div>
