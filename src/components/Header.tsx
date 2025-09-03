@@ -86,7 +86,7 @@ const Header = () => {
                   Try it For Free
                 </motion.div>
               </div>
-              <p className="text-sm text-gray-500">Trusted by growers worldwide</p>
+              <p className="text-sm text-gray-500">Trusted by Leading Growers Worldwide</p>
             </motion.div>
           </div>
           
