@@ -96,7 +96,7 @@ const TestimonialCarousel = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-4"
+          className="text-center mb-2"
         >
           <h3 className={`text-headline-xs font-display text-foreground text-center leading-tight ${isMobile ? 'text-headline-xs' : 'text-headline-sm'}`}>
             See what First Time Growers, Large-Scale Cultivators, Hobbyists, Medical Researchers, and Botanists across the Cannabis Industry are saying about Master Growbot AI
