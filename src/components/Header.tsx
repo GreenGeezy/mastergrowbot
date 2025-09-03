@@ -58,7 +58,7 @@ const Header = () => {
             <h2 className={`text-headline-sm font-display text-foreground leading-tight max-w-[720px] mx-auto ${isMobile ? 'text-headline-sm' : 'text-headline-md'}`}>
               Grow Premium Quality Plants in Just Seconds with AI
             </h2>
-            <p className="text-body-secondary font-body max-w-[600px] mx-auto leading-relaxed">See Why Leading Growers Worldwide Trust MasterGrowbot AI to Prevent $336/Plant to Over $100,000 per Harvest in Losses</p>
+            <p className="text-body-secondary font-body max-w-[600px] mx-auto leading-relaxed">Discover Why Top Growers Trust MasterGrowbot AI — where preventing losses of around $336 per plant, or up to $100,000 per harvest for large grows, is made possible with AI</p>
           </div>
           
           {/* Trust Indicators */}
