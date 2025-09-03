@@ -62,28 +62,31 @@ const Header = () => {
           {/* Trust Indicators */}
           <div className="space-y-3 sm:space-y-4">
             
-            <motion.div className="flex items-center justify-center space-x-2 sm:space-x-3 relative" initial={{
+            <motion.div className="flex flex-col items-center justify-center space-y-1" initial={{
             opacity: 0
           }} animate={{
             opacity: 1
           }} transition={{
             delay: 0.5
           }}>
-              <Award className={`text-amber-600 animate-float will-change-transform ${isMobile ? 'w-5 h-5' : 'w-6 h-6 sm:w-7 sm:h-7'}`} />
-              <div className="flex items-center space-x-1">
-                {[...Array(5)].map((_, index) => <Star key={index} className={`fill-amber-400 text-amber-400 ${isMobile ? 'w-4 h-4' : 'w-5 h-5 sm:w-6 sm:h-6'}`} />)}
+              <div className="flex items-center space-x-2 sm:space-x-3 relative">
+                <Award className={`text-amber-600 animate-float will-change-transform ${isMobile ? 'w-5 h-5' : 'w-6 h-6 sm:w-7 sm:h-7'}`} />
+                <div className="flex items-center space-x-1">
+                  {[...Array(5)].map((_, index) => <Star key={index} className={`fill-amber-400 text-amber-400 ${isMobile ? 'w-4 h-4' : 'w-5 h-5 sm:w-6 sm:h-6'}`} />)}
+                </div>
+                {/* Try it For Free Badge */}
+                <motion.div className="bg-gradient-to-r from-amber-400 to-yellow-400 text-black text-sm font-bold px-3 py-1 rounded-full shadow-lg ml-4" initial={{
+                scale: 0
+              }} animate={{
+                scale: 1
+              }} transition={{
+                delay: 0.8,
+                type: "spring"
+              }}>
+                  Try it For Free
+                </motion.div>
               </div>
-              {/* Try it For Free Badge */}
-              <motion.div className="bg-gradient-to-r from-amber-400 to-yellow-400 text-black text-sm font-bold px-3 py-1 rounded-full shadow-lg ml-4" initial={{
-              scale: 0
-            }} animate={{
-              scale: 1
-            }} transition={{
-              delay: 0.8,
-              type: "spring"
-            }}>
-                Try it For Free
-              </motion.div>
+              <p className="text-sm text-gray-500">Trusted by growers worldwide</p>
             </motion.div>
           </div>
           
