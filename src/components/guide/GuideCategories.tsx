@@ -118,16 +118,16 @@ const categories = [
     description: "Important legal information and disclaimers",
     questions: [
       {
-        q: "Does Master Growbot provide medical advice?",
-        a: "Master Growbot is a cultivation technology platform and does not provide medical advice or guidance. While our AI can assist with general growing techniques, all medical decisions should be made in consultation with qualified healthcare professionals. Users growing for medical purposes should always follow their healthcare provider's guidance and comply with local medical regulations."
+        q: "Does MasterGrowbot provide medical advice?",
+        a: "MasterGrowbot is a cultivation technology platform focused on plant health and horticulture. It does not provide medical or healthcare advice of any kind. All medical questions should be directed to a licensed healthcare professional. If you are cultivating cannabis for medical purposes, you must follow your healthcare provider's instructions and all applicable medical regulations."
       },
       {
-        q: "What are Master Growbot's limitations?",
-        a: "Our AI provides sophisticated horticultural guidance but does not: Offer medical, legal, or compliance advice, Guarantee specific outcomes or yields, Replace professional medical or legal consultation. All recommendations are for educational purposes only."
+        q: "What are MasterGrowbot's limitations?",
+        a: "Our AI provides educational, horticultural guidance only. It does not:\n- Provide medical, legal, or compliance advice\n- Guarantee specific yields, outcomes, or profits\n- Replace consultation with licensed professionals (medical, legal, compliance)\nAll recommendations are intended for informational and educational purposes only."
       },
       {
         q: "What are my responsibilities as a user?",
-        a: "Users must: Comply with all applicable laws and regulations, Verify the legality of their growing activities, Consult healthcare professionals for medical guidance, Make independent decisions about their cultivation practices, Follow local regulations and guidelines, and manage personal information responsibly in accordance with the Privacy Policy."
+        a: "You are responsible for:\n- Ensuring your cultivation activities are legal in your jurisdiction\n- Following all local, state, and federal regulations\n- Consulting healthcare professionals for any medical guidance\n- Making independent cultivation decisions (our AI is a support tool, not a substitute for professional advice)\n- Managing your personal data responsibly, in line with our Privacy Policy"
       }
     ]
   },
