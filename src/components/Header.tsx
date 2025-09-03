@@ -35,7 +35,7 @@ const Header = () => {
       
       {/* Content Section */}
       <div className="max-w-4xl mx-auto text-center px-2 sm:px-4">
-        <motion.div className="space-y-4 sm:space-y-6" initial={{
+        <motion.div className="space-y-2 sm:space-y-3" initial={{
         opacity: 0,
         y: 20
       }} animate={{
