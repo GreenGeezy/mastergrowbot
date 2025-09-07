@@ -10,6 +10,7 @@ import CameraCapture from '@/components/plant-health/CameraCapture';
 import StreamlinedCameraCapture from '@/components/plant-health/StreamlinedCameraCapture';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
+import MobileAnalysisResults from '@/components/plant-health/MobileAnalysisResults';
 import OnboardingTutorial from '@/components/plant-health/OnboardingTutorial';
 import AnalysisProgress from '@/components/plant-health/AnalysisProgress';
 import ErrorHandlingModal from '@/components/plant-health/ErrorHandlingModal';
@@ -585,6 +586,20 @@ const PlantHealthAnalyzer = () => {
   }, [selectedFiles, session?.user?.id, haptic]);
 
   // Allow access without authentication for testing and design work
+
+  // If mobile and analysis result exists, show mobile layout
+  if (isMobile && analysisResult) {
+    return <TooltipProvider>
+      <div className="min-h-screen bg-white">
+        <MobileAnalysisResults 
+          analysisResult={analysisResult} 
+          analysisId={`analysis_${Date.now()}`}
+          imageUrls={selectedFiles.map(file => URL.createObjectURL(file))}
+        />
+        <BottomNavigation />
+      </div>
+    </TooltipProvider>;
+  }
 
   return <TooltipProvider>
       <div className="min-h-screen bg-white text-gray-900 pb-20 page-fade-in">
