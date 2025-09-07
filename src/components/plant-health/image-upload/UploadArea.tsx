@@ -2,7 +2,9 @@
 import React from 'react';
 import { Upload, Loader2, Camera, Image, Eye, Lightbulb, FileImage, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import cannabisLeafOutline from '@/assets/cannabis-leaf-outline.png';
 import { useHapticFeedback } from '@/utils/hapticFeedback';
 
 interface UploadAreaProps {
@@ -54,8 +56,18 @@ const UploadArea = ({
             }
           }}
         >
-          <div className={`border-2 border-dashed ${dragActive ? 'border-primary' : 'border-border/50'} rounded-2xl p-12 hover:border-primary/60 transition-all duration-300 bg-gradient-to-br from-background/40 to-card/20 focus-within:ring-2 focus-within:ring-primary/20`}>
-            <div className="flex flex-col items-center gap-6">
+          <div className={`border-2 border-dashed ${dragActive ? 'border-primary' : 'border-border/50'} rounded-2xl p-12 hover:border-primary/60 transition-all duration-300 bg-gradient-to-br from-background/40 to-card/20 focus-within:ring-2 focus-within:ring-primary/20 relative`}>
+            {/* Cannabis leaf placeholder */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <img 
+                src={cannabisLeafOutline} 
+                alt=""
+                className="w-32 h-32 opacity-30 object-contain"
+                aria-hidden="true"
+              />
+            </div>
+            
+            <div className="flex flex-col items-center gap-6 relative z-10">
               <div 
                 className="p-6 rounded-full bg-gradient-to-r from-green-500 to-blue-500 shadow-2xl shadow-green-500/25"
                 aria-hidden="true"
@@ -95,83 +107,24 @@ const UploadArea = ({
           Opens camera interface to capture and analyze your plant immediately
         </span>
 
-        {/* Icon-Based Guidelines */}
-        <div 
-          className="bg-gradient-to-r from-background/50 to-card/30 backdrop-blur-sm rounded-2xl p-6 border border-border/50"
-          role="region"
-          aria-labelledby="photo-guidelines-title"
-        >
-          <h3 id="photo-guidelines-title" className="text-foreground text-lg font-semibold mb-4 text-center">
-            Ensure that your Photos and Images Are
+        {/* Photo Tips as Horizontal Badge Pills */}
+        <div className="space-y-4">
+          <h3 className="text-foreground text-lg font-semibold text-center">
+            Photo Tips for Best Results
           </h3>
-          <div className="grid grid-cols-2 gap-4">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div 
-                  className="flex items-center gap-3 p-3 rounded-xl bg-card/40 hover:bg-card/60 transition-colors cursor-help focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  role="button"
-                  tabIndex={0}
-                  aria-label="Photo guideline: Show full plant for context"
-                >
-                  <Eye className="w-5 h-5 text-green-400" aria-hidden="true" />
-                  <span className="text-white text-sm font-medium">Full Plant</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Show the whole plant for context</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div 
-                  className="flex items-center gap-3 p-3 rounded-xl bg-card/40 hover:bg-card/60 transition-colors cursor-help focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  role="button"
-                  tabIndex={0}
-                  aria-label="Photo guideline: Include close-up shots of problem areas"
-                >
-                  <Image className="w-5 h-5 text-blue-400" aria-hidden="true" />
-                  <span className="text-white text-sm font-medium">Close-ups</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Include close-ups of problem areas</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div 
-                  className="flex items-center gap-3 p-3 rounded-xl bg-card/40 hover:bg-card/60 transition-colors cursor-help focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  role="button"
-                  tabIndex={0}
-                  aria-label="Photo guideline: Ensure photos are well-lit"
-                >
-                  <Lightbulb className="w-5 h-5 text-yellow-400" aria-hidden="true" />
-                  <span className="text-white text-sm font-medium">Well-lit</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Ensure photos are well-lit</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div 
-                  className="flex items-center gap-3 p-3 rounded-xl bg-card/40 hover:bg-card/60 transition-colors cursor-help focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  role="button"
-                  tabIndex={0}
-                  aria-label="Photo guideline: Supported file formats"
-                >
-                  <FileImage className="w-5 h-5 text-purple-400" aria-hidden="true" />
-                  <span className="text-white text-sm font-medium">Formats</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Supported: {supportedFormats.join(', ').toUpperCase()}</p>
-              </TooltipContent>
-            </Tooltip>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Badge className="bg-green-500 text-white rounded-lg px-3 py-2 text-sm font-medium">
+              👁️ Full Plant
+            </Badge>
+            <Badge className="bg-blue-500 text-white rounded-lg px-3 py-2 text-sm font-medium">
+              📷 Close-ups
+            </Badge>
+            <Badge className="bg-yellow-500 text-white rounded-lg px-3 py-2 text-sm font-medium">
+              💡 Well-lit
+            </Badge>
+            <Badge className="bg-purple-500 text-white rounded-lg px-3 py-2 text-sm font-medium">
+              📁 Formats
+            </Badge>
           </div>
         </div>
       </div>

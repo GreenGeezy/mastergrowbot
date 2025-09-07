@@ -674,28 +674,36 @@ const PlantHealthAnalyzer = () => {
           )}
 
           <section className="mb-8">
-            {analysisResult && <AnalysisResults analysisResult={analysisResult} />}
+            {analysisResult && (
+              <div className="animate-fade-in" style={{ animationDuration: '0.5s' }}>
+                <AnalysisResults analysisResult={analysisResult} />
+              </div>
+            )}
           </section>
 
           <PostScanSignInPrompt isVisible={showPostScanSignIn} onSignIn={handlePostScanSignIn} onDismiss={handleDismissSignInPrompt} analysisComplete={!!analysisResult} />
         </main>
         
-        {/* Loading Overlay with Timer */}
-        {isLoading && <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
+        {/* Green Progress Overlay */}
+        {isLoading && <div className="fixed inset-0 bg-green-500/90 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
             <div className="text-center space-y-6 px-4">
               <div className="space-y-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <div className="animate-spin rounded-full h-16 w-16 border-4 border-white/30 border-t-white mx-auto"></div>
+                
+                <h2 className="text-2xl md:text-3xl font-bold text-white">
+                  Analyzing...
+                </h2>
+                
+                <p className="text-lg md:text-xl text-white/80">
+                  Please wait while we examine your plant
+                </p>
                 
                 {/* Slideshow Messages */}
-                <div className="min-h-[3rem] flex items-center justify-center">
-                  <p className="text-lg md:text-xl font-medium text-primary animate-fade-in">
+                <div className="min-h-[3rem] flex items-center justify-center mt-6">
+                  <p className="text-base md:text-lg font-medium text-white/90 animate-fade-in">
                     {slideshowMessages[currentSlideIndex]}
                   </p>
                 </div>
-                
-                <h3 className="text-xl md:text-2xl font-semibold text-white">
-                  Analyzing your plant with your growing preferences...
-                </h3>
               </div>
               <div className="text-lg md:text-xl text-white">
                 Time elapsed: <span className="font-mono font-bold text-primary">{elapsedTime}s</span>
