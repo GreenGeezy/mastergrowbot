@@ -241,38 +241,41 @@ const MobileAnalysisResults = ({ analysisResult, analysisId = '', imageUrls = []
         <div className="h-8"></div>
       </div>
 
-      {/* Bottom Action Buttons */}
-      <div className="fixed bottom-16 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 safe-area-inset-bottom">
-        <div className="flex gap-4">
-          {/* Share Results Button */}
-          <div className="flex-1">
-            <ShareResults analysisId={analysisId} imageUrls={imageUrls} />
-          </div>
-
-          {/* Analysis History Button */}
-          <div
-            onClick={handleViewHistory}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                handleViewHistory();
+      {/* Bottom Pill Bar - Horizontal Button Stack */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 px-4 py-3 safe-area-inset-bottom">
+        <div className="flex gap-4 max-w-md mx-auto">
+          {/* Share Results Button - Primary */}
+          <button
+            onClick={() => {
+              // Create a synthetic click event for ShareResults component
+              const shareButton = document.querySelector('[data-share-button]');
+              if (shareButton) {
+                (shareButton as HTMLElement).click();
               }
             }}
-            className="flex-1 group flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 hover:bg-gray-800 border border-gray-700 hover:border-primary/50"
+            className="flex-1 min-h-[44px] bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-[24px] flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 shadow-lg"
+            aria-label="Share analysis results"
           >
-            <div className="p-1.5 bg-gradient-to-r from-primary to-[#33C3F0] rounded-lg">
-              <History className="w-4 h-4 text-white" />
-            </div>
-            <div className="ml-3 flex flex-col">
-              <h3 className="font-medium text-sm text-gray-900 group-hover:text-[#33C3F0] transition-colors duration-300">
-                Analysis History
-              </h3>
-              <p className="text-gray-500 text-xs">
-                Review past diagnoses and track your plant's health over time
-              </p>
-            </div>
-          </div>
+            <Share2 className="w-5 h-5" />
+            <span className="text-sm font-semibold">Share Results</span>
+          </button>
+
+          {/* View History Button - Secondary */}
+          <button
+            onClick={handleViewHistory}
+            className="flex-1 min-h-[44px] bg-transparent hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-[24px] flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 border-2 border-gray-300"
+            aria-label="View past analyses"
+          >
+            <History className="w-5 h-5" />
+            <span className="text-sm font-semibold">View History</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Hidden ShareResults component for functionality */}
+      <div className="hidden">
+        <div data-share-button>
+          <ShareResults analysisId={analysisId} imageUrls={imageUrls} />
         </div>
       </div>
 
