@@ -129,7 +129,7 @@ const MobileAnalysisResults = ({ analysisResult, analysisId = '', imageUrls = []
       </div>
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 px-6 pb-32 overflow-y-auto">
+      <div className="flex-1 px-6 pb-40 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 200px)' }}>
         {/* Analyzed Image */}
         {imageUrls && imageUrls.length > 0 && (
           <motion.div
@@ -211,10 +211,34 @@ const MobileAnalysisResults = ({ analysisResult, analysisId = '', imageUrls = []
                     <strong>Canopy Management:</strong> {growthTrainingContent}
                   </p>
                 </div>
+
+                {/* Recommended Actions Section */}
+                {analysisResult.recommended_actions && analysisResult.recommended_actions.length > 0 && (
+                  <>
+                    <Separator className="bg-green-300 h-[1px]" />
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="text-blue-600 w-5 h-5 flex items-center justify-center text-lg">💡</div>
+                        <h3 className="font-bold text-gray-900">Recommended Actions</h3>
+                      </div>
+                      <div className="ml-8 space-y-2">
+                        {analysisResult.recommended_actions.map((action, index) => (
+                          <div key={index} className="flex items-start gap-2">
+                            <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-gray-700 text-sm leading-relaxed">{action}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Extra spacing to ensure content is not cut off */}
+        <div className="h-8"></div>
       </div>
 
       {/* Bottom Action Buttons */}
