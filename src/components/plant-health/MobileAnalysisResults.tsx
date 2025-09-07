@@ -129,7 +129,7 @@ const MobileAnalysisResults = ({ analysisResult, analysisId = '', imageUrls = []
       </div>
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 px-6 pb-24 overflow-y-auto">
+      <div className="flex-1 px-6 pb-32 overflow-y-auto">
         {/* Analyzed Image */}
         {imageUrls && imageUrls.length > 0 && (
           <motion.div
@@ -218,7 +218,7 @@ const MobileAnalysisResults = ({ analysisResult, analysisId = '', imageUrls = []
       </div>
 
       {/* Bottom Action Buttons */}
-      <div className="fixed bottom-20 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4">
+      <div className="fixed bottom-16 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 safe-area-inset-bottom">
         <div className="flex gap-4">
           {/* Share Results Button */}
           <div className="flex-1">
