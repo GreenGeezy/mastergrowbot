@@ -42,10 +42,10 @@ const ShareButton = ({ onClick, onMobileShare }: ShareButtonProps) => {
         <Share2 className="w-4 h-4 text-white" />
       </div>
       <div className="ml-3 flex flex-col">
-        <h3 className="font-medium text-sm text-white group-hover:text-[#33C3F0] transition-colors duration-300">
+        <h3 className="font-medium text-sm text-gray-900 group-hover:text-[#33C3F0] transition-colors duration-300">
           Share Results
         </h3>
-        <p className="text-gray-400 text-xs">
+        <p className="text-gray-500 text-xs">
           Share your analysis via email, social media, or copy a direct link
         </p>
       </div>
