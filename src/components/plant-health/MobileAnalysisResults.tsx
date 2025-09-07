@@ -128,16 +128,37 @@ const MobileAnalysisResults = ({ analysisResult, analysisId = '', imageUrls = []
         </motion.div>
       </div>
 
-      {/* Hero Card with Analysis Summary */}
-      <div className="flex-1 px-6 pb-24">
+      {/* Scrollable Content Area */}
+      <div className="flex-1 px-6 pb-24 overflow-y-auto">
+        {/* Analyzed Image */}
+        {imageUrls && imageUrls.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="mb-6"
+          >
+            <div className="relative w-full h-64 rounded-2xl overflow-hidden shadow-lg">
+              <img 
+                src={imageUrls[0]} 
+                alt="Analyzed plant" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-3 left-3 bg-black/50 text-white px-3 py-1 rounded-full text-sm font-medium">
+                AI-Powered Analysis
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Analysis Summary Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="h-full max-h-[80vh]"
         >
-          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 shadow-lg h-full">
-            <CardContent className="p-6 h-full overflow-y-auto">
+          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 shadow-lg">
+            <CardContent className="p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">Analysis Summary</h2>
               
               <div className="space-y-6">
