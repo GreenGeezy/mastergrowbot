@@ -21,7 +21,7 @@ echo "analyze-plant/" > supabase/.funcignore
 
 # Deploy functions (will only deploy analyze-ios due to ignore file)
 echo "📦 Deploying analyze-ios function only..."
-npx supabase functions deploy --no-verify-jwt=false
+npx supabase functions deploy analyze-ios --no-verify-jwt=false
 
 # Clean up ignore file
 rm -f supabase/.funcignore

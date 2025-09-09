@@ -1,5 +1,10 @@
 # Master Growbot MVP
 
+<!-- Branch Deployment Strategy:
+main → deploys analyze-plant (web schema)
+ios-main → deploys analyze-ios (same schema as web, but separate function)
+-->
+
 ## 🚀 Branch Deployment Strategy
 - **main** deploys analyze-plant
 - **ios-main** deploys analyze-ios
