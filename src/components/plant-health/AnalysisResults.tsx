@@ -3,18 +3,32 @@ import { Card } from '@/components/ui/card';
 import { CheckCircle, AlertCircle, Leaf, Heart, Lightbulb } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { motion } from 'framer-motion';
-import { normalizeAnalysisResult } from '@/utils/normalizeAnalysisResult';
+import { normalizeAnalysisResult, type CanonicalAnalysisResult } from '@/utils/normalizeAnalysisResult';
 
 interface AnalysisResult {
-  diagnosis: string;
-  confidence_level: number;
+  diagnosis?: string;
+  confidence_level?: number;
+  confidence?: number;
+  summary?: string;
+  growthStage?: string;
+  healthScore?: number | string;
+  specificIssues?: string[] | string;
+  environmentalFindings?: string[] | string;
+  recommendedActions?: string[] | string;
   detailed_analysis?: {
     growth_stage?: string;
-    health_score?: string;
+    health_score?: string | number;
     specific_issues?: string;
     environmental_factors?: string;
   };
   recommended_actions?: string[] | string;
+  analysis?: {
+    summary?: string;
+    growthStage?: string;
+    issues?: string[] | string;
+    environmental?: string[] | string;
+    actions?: string[] | string;
+  };
 }
 
 interface AnalysisResultsProps {
@@ -22,7 +36,7 @@ interface AnalysisResultsProps {
 }
 
 const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
-  // Normalize the analysis result to ensure consistent format
+  // Normalize the analysis result to ensure consistent canonical format
   const normalizedResult = normalizeAnalysisResult(analysisResult);
   
   const containerVariants = {
@@ -62,11 +76,11 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const growthStageFirstSentence = getFirstSentence(growthStage);
   const growthStageRemainingText = getRemainingText(growthStage);
   
-  const healthScoreFirstSentence = getFirstSentence(healthScore);
-  const healthScoreRemainingText = getRemainingText(healthScore);
+  const healthScoreFirstSentence = getFirstSentence(typeof healthScore === 'string' ? healthScore : 'Health assessment completed');
+  const healthScoreRemainingText = getRemainingText(typeof healthScore === 'string' ? healthScore : '');
 
   // Use normalized recommended actions - guaranteed to be valid array
-  const validActions = normalizedResult.recommendedActions;
+  const validActions = (normalizedResult.recommendedActions || []).slice(0, 9);
 
   // Find the most detailed recommended action (longest text)
   const mostDetailedAction = validActions.reduce((longest, current) => {
@@ -200,9 +214,9 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   <h3 className="text-xl font-bold text-white">Specific Issues</h3>
                 </div>
                 <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-4 backdrop-blur-sm">
-                  {specificIssues.length > 0 ? (
+                  {(specificIssues || []).length > 0 ? (
                     <ul className="text-gray-300 leading-relaxed space-y-2">
-                      {specificIssues.map((issue, index) => (
+                      {(specificIssues || []).map((issue, index) => (
                         <li key={index} className="flex items-start gap-2">
                           <span className="text-yellow-400 mt-1">•</span>
                           <span>{issue}</span>
@@ -226,9 +240,9 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   </div>
                   <h3 className="text-xl font-bold text-white">Environmental</h3>
                 </div>
-                {environmentalFindings.length > 0 ? (
+                {(environmentalFindings || []).length > 0 ? (
                   <ul className="text-gray-300 leading-relaxed space-y-2">
-                    {environmentalFindings.map((finding, index) => (
+                    {(environmentalFindings || []).map((finding, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <span className="text-cyan-400 mt-1">•</span>
                         <span>{finding}</span>
@@ -255,7 +269,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {validActions.map((action: string, index: number) => {
+                  {(validActions || []).map((action: string, index: number) => {
                     const [title, ...descriptionParts] = action.split(':');
                     const description = descriptionParts.join(':').trim();
                     
