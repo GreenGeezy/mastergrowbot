@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { getAnalyzePlantFunctionName } from '@/utils/analyzePlantConfig';
+import { normalizeAnalysisResult } from '@/utils/normalizeAnalysisResult';
 
 const PlantHealthAnalyzer = () => {
   const session = useSession();
@@ -105,6 +106,13 @@ const PlantHealthAnalyzer = () => {
       }
 
       console.log('Analysis data received:', data);
+
+      // Development debugging logs
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('RAW_RESULT_KEYS:', Object.keys(data || {}));
+        const normalizedForLogging = normalizeAnalysisResult(data);
+        console.log('CANONICAL_RESULT_KEYS:', Object.keys(normalizedForLogging || {}));
+      }
 
       if (!data || !data.analysis) {
         console.error('Invalid response data structure:', data);
