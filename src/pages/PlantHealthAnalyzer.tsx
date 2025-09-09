@@ -8,6 +8,7 @@ import PlantHealthHeader from '@/components/plant-health/PlantHealthHeader';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { getAnalyzePlantFunctionName } from '@/utils/analyzePlantConfig';
 
 const PlantHealthAnalyzer = () => {
   const session = useSession();
@@ -89,8 +90,9 @@ const PlantHealthAnalyzer = () => {
         description: `Beginning AI analysis now (uploaded in ${elapsedUploadTime}s)`,
       });
 
-      // Call the analyze-plant function with user ID for personalization
-      const { data, error } = await supabase.functions.invoke('analyze-plant', {
+      // Call the analyze function with user ID for personalization
+      const functionName = getAnalyzePlantFunctionName();
+      const { data, error } = await supabase.functions.invoke(functionName, {
         body: { 
           imageUrls,
           userId: session?.user?.id 
