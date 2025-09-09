@@ -7,6 +7,9 @@ verify_jwt = true
 [functions.analyze-plant]
 verify_jwt = false
 
+[functions.analyze-ios]
+verify_jwt = false
+
 [functions.check-streak-rewards]
 verify_jwt = true
 
