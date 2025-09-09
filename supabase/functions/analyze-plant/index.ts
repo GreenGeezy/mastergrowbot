@@ -77,25 +77,39 @@ serve(async (req) => {
     
     console.log('Parsed analysis result:', JSON.stringify(analysisResult, null, 2));
 
-    // Normalize response to match AnalysisResults.tsx interface exactly
-    const normalizedAnalysis = {
-      diagnosis: analysisResult.diagnosis || "Plant analysis completed successfully",
-      confidence_level: typeof analysisResult.confidence_level === 'number' ? analysisResult.confidence_level : 0.7,
-      detailed_analysis: {
-        growth_stage: analysisResult.detailed_analysis?.growth_stage || "Growth stage assessed",
-        health_score: analysisResult.detailed_analysis?.health_score || "Health score evaluated", 
-        specific_issues: analysisResult.detailed_analysis?.specific_issues || "No critical issues identified",
-        environmental_factors: analysisResult.detailed_analysis?.environmental_factors || "Environmental conditions assessed"
-      },
-      recommended_actions: Array.isArray(analysisResult.recommended_actions) 
-        ? analysisResult.recommended_actions 
-        : (typeof analysisResult.recommended_actions === 'string' 
-          ? [analysisResult.recommended_actions] 
-          : ["Monitor plant regularly", "Maintain consistent care"])
+    // Schema normalizer - ensure canonical fields are returned every time
+    const canonicalPayload = {
+      confidence: typeof analysisResult.confidence_level === 'number' ? analysisResult.confidence_level : 
+                 typeof analysisResult.confidence === 'number' ? analysisResult.confidence : 0.7,
+      summary: analysisResult.diagnosis || analysisResult.summary || "Plant analysis completed successfully",
+      growthStage: analysisResult.detailed_analysis?.growth_stage || analysisResult.growthStage || "Growth stage assessed",
+      healthScore: analysisResult.detailed_analysis?.health_score ? 
+                   (typeof analysisResult.detailed_analysis.health_score === 'number' ? analysisResult.detailed_analysis.health_score : null) : 
+                   (typeof analysisResult.healthScore === 'number' ? analysisResult.healthScore : null),
+      specificIssues: (() => {
+        // Convert any object/strings for issues to string array
+        const issues = analysisResult.detailed_analysis?.specific_issues || analysisResult.specificIssues || analysisResult.analysis?.issues;
+        if (Array.isArray(issues)) return issues.filter(i => typeof i === 'string');
+        if (typeof issues === 'string') return [issues];
+        return [];
+      })(),
+      environmentalFindings: (() => {
+        const env = analysisResult.detailed_analysis?.environmental_factors || analysisResult.environmentalFindings || analysisResult.analysis?.environmental;
+        if (Array.isArray(env)) return env.filter(e => typeof e === 'string');
+        if (typeof env === 'string') return [env];
+        return [];
+      })(),
+      recommendedActions: (() => {
+        // Map analysis.actions or similar to recommendedActions array
+        const actions = analysisResult.recommended_actions || analysisResult.recommendedActions || analysisResult.analysis?.actions;
+        if (Array.isArray(actions)) return actions.filter(a => typeof a === 'string');
+        if (typeof actions === 'string') return [actions];
+        return ["Monitor plant regularly", "Maintain consistent care"];
+      })()
     };
 
-    const responseData = normalizedAnalysis;
-    console.log('Sending normalized response:', JSON.stringify(responseData, null, 2));
+    console.log('analyze-plant response (canonical):', Object.keys(canonicalPayload));
+    const responseData = canonicalPayload;
     
     return new Response(
       JSON.stringify(responseData),
