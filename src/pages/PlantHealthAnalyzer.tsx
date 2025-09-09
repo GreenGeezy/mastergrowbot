@@ -118,7 +118,7 @@ const PlantHealthAnalyzer = () => {
       const normalizedResult = normalizeAnalysisResult(data);
       
       // Track if profile data was used
-      setProfileUsed(!!data.profileUsed);
+      setProfileUsed(!!data?.profileUsed);
 
       // Save analysis results to the database
       const { data: savedAnalysis, error: saveError } = await supabase
@@ -154,7 +154,7 @@ const PlantHealthAnalyzer = () => {
       toast({
         title: "Analysis Complete",
         description: `Your plant health analysis is ready to view (completed in ${totalTimeElapsed}s)${
-          data.profileUsed ? " - Personalized to your growing method" : ""
+          data?.profileUsed ? " - Personalized to your growing method" : ""
         }`,
       });
     } catch (error: any) {
