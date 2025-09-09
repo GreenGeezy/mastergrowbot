@@ -83,9 +83,10 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const validActions = (normalizedResult.recommendedActions || []).slice(0, 9);
 
   // Find the most detailed recommended action (longest text)
-  const mostDetailedAction = validActions.reduce((longest, current) => {
-    return current.length > longest.length ? current : longest;
-  }, '');
+  const mostDetailedAction = (validActions || []).length > 0 ? 
+    (validActions || []).reduce((longest, current) => {
+      return current.length > longest.length ? current : longest;
+    }, '') : '';
 
   return (
     <div className="w-full px-6">

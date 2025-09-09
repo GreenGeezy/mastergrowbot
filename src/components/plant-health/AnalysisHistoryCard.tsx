@@ -29,8 +29,8 @@ const AnalysisHistoryCard = ({ analysis }: AnalysisHistoryCardProps) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {analysis.image_urls && Array.isArray(analysis.image_urls) && analysis.image_urls.length > 0 ? (
-            analysis.image_urls.map((url: string, index: number) => (
+          {(analysis.image_urls || []).length > 0 ? (
+            (analysis.image_urls || []).map((url: string, index: number) => (
               <img
                 key={index}
                 src={url}
@@ -101,11 +101,11 @@ const AnalysisHistoryCard = ({ analysis }: AnalysisHistoryCardProps) => {
           </div>
         )}
 
-        {analysis.recommended_actions && Array.isArray(analysis.recommended_actions) && analysis.recommended_actions.length > 0 && (
+        {(analysis.recommended_actions || []).length > 0 && (
           <div>
             <h4 className="text-lg font-medium text-white mb-2">Recommended Actions</h4>
             <ul className="space-y-2">
-              {analysis.recommended_actions.map((action: string, index: number) => (
+              {(analysis.recommended_actions || []).map((action: string, index: number) => (
                 <li key={index} className="flex items-start gap-2 text-gray-300">
                   <Leaf className="w-5 h-5 text-green-500 mt-1" />
                   <span>{action}</span>

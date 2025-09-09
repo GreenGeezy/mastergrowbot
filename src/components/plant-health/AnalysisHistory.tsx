@@ -74,7 +74,7 @@ const AnalysisHistory = ({ userId }: AnalysisHistoryProps) => {
         </DialogHeader>
         <ScrollArea className="h-full pr-4">
           <div className="space-y-4">
-            {analyses.map((analysis) => (
+            {(analyses || []).map((analysis) => (
               <AnalysisHistoryCard key={analysis.id} analysis={analysis} />
             ))}
           </div>

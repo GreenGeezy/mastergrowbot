@@ -73,9 +73,9 @@ const ImageDropzone = ({
             variant: "destructive"
           });
         } else {
-          const fileNames = invalidFiles.length > 2 
-            ? `${invalidFiles.slice(0, 2).map(f => f.name).join(', ')} and ${invalidFiles.length - 2} more` 
-            : invalidFiles.map(f => f.name).join(', ');
+          const fileNames = (invalidFiles || []).length > 2 
+            ? `${(invalidFiles || []).slice(0, 2).map(f => f.name).join(', ')} and ${(invalidFiles || []).length - 2} more` 
+            : (invalidFiles || []).map(f => f.name).join(', ');
             
           toast({
             title: `${invalidFiles.length} invalid file(s) skipped`,
@@ -92,7 +92,7 @@ const ImageDropzone = ({
         return;
       }
 
-      const compressPromises = filesToProcess.map(file => 
+      const compressPromises = (filesToProcess || []).map(file => 
         compressImage(file, 1, 0.7)
       );
       
@@ -222,7 +222,7 @@ const ImageDropzone = ({
             files={selectedFiles}
             maxFiles={maxFiles}
             onRemove={(index) => {
-              const newFiles = selectedFiles.filter((_, i) => i !== index);
+              const newFiles = (selectedFiles || []).filter((_, i) => i !== index);
               onImagesSelected(newFiles);
             }}
             onAddMore={() => {

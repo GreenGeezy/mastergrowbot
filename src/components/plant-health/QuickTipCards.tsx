@@ -90,7 +90,7 @@ const QuickTipCards = () => {
       )}
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-        {quickTips.map((tip, index) => (
+        {(quickTips || []).map((tip, index) => (
           <Card
             key={index}
             className="bg-[#0F172A] border border-gray-800 hover:border-primary/50 transition-all duration-300 group hover:shadow-lg hover:shadow-primary/10 h-[240px]"

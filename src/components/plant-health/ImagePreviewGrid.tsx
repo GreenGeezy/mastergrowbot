@@ -22,7 +22,7 @@ const ImagePreviewGrid = ({
 }: ImagePreviewGridProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {files.map((file, index) => (
+      {(files || []).map((file, index) => (
         <div key={index} className="relative group">
           <img
             src={URL.createObjectURL(file)}

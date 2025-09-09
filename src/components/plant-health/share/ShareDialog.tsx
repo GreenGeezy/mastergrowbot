@@ -49,7 +49,7 @@ const ShareDialog = ({
         </div>
 
         <div className="grid grid-cols-2 gap-3 mt-2">
-          {shareOptions.map((option, index) => (
+          {(shareOptions || []).map((option, index) => (
             <Button
               key={index}
               onClick={option.action}
