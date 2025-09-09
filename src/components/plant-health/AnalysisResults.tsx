@@ -165,7 +165,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
               </div>
               <div className="flex items-start gap-3">
                 <Heart className="text-blue-400 w-5 h-5 mt-1 flex-shrink-0" />
-                <p className="text-gray-300 leading-relaxed">Health Assessment: {label}</p>
+                <p className="text-gray-300 leading-relaxed">{healthScoreFirstSentence}</p>
               </div>
               {mostDetailedAction && (
                 <div className="flex items-start gap-3">
