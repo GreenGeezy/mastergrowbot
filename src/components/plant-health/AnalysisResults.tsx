@@ -54,11 +54,10 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   };
 
   // Use normalized result - guaranteed to have all required fields
-  const detailedAnalysis = normalizedResult.detailed_analysis;
-  const growthStage = detailedAnalysis.growth_stage;
-  const healthScore = detailedAnalysis.health_score;
-  const specificIssues = detailedAnalysis.specific_issues;
-  const environmentalFactors = detailedAnalysis.environmental_factors;
+  const growthStage = normalizedResult.growthStage;
+  const healthScore = normalizedResult.healthScore;
+  const specificIssues = normalizedResult.specificIssues;
+  const environmentalFindings = normalizedResult.environmentalFindings;
 
   const growthStageFirstSentence = getFirstSentence(growthStage);
   const growthStageRemainingText = getRemainingText(growthStage);
@@ -67,7 +66,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const healthScoreRemainingText = getRemainingText(healthScore);
 
   // Use normalized recommended actions - guaranteed to be valid array
-  const validActions = normalizedResult.recommended_actions;
+  const validActions = normalizedResult.recommendedActions;
 
   // Find the most detailed recommended action (longest text)
   const mostDetailedAction = validActions.reduce((longest, current) => {
@@ -105,11 +104,11 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
             <span className="text-lg text-gray-300">Confidence:</span>
             <div className="flex items-center gap-3">
               <Progress 
-                value={normalizedResult.confidence_level * 100} 
+                value={normalizedResult.confidence * 100} 
                 className="h-3 bg-gray-700 w-32"
               />
               <span className="text-2xl font-bold text-purple-400">
-                {Math.round(normalizedResult.confidence_level * 100)}%
+                {Math.round(normalizedResult.confidence * 100)}%
               </span>
             </div>
           </div>
@@ -201,9 +200,18 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   <h3 className="text-xl font-bold text-white">Specific Issues</h3>
                 </div>
                 <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-4 backdrop-blur-sm">
-                  <p className="text-gray-300 leading-relaxed">
-                    {specificIssues}
-                  </p>
+                  {specificIssues.length > 0 ? (
+                    <ul className="text-gray-300 leading-relaxed space-y-2">
+                      {specificIssues.map((issue, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-yellow-400 mt-1">•</span>
+                          <span>{issue}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-300 leading-relaxed">No specific issues identified</p>
+                  )}
                 </div>
               </div>
             </Card>
@@ -218,9 +226,18 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   </div>
                   <h3 className="text-xl font-bold text-white">Environmental</h3>
                 </div>
-                <p className="text-gray-300 leading-relaxed">
-                  {environmentalFactors}
-                </p>
+                {environmentalFindings.length > 0 ? (
+                  <ul className="text-gray-300 leading-relaxed space-y-2">
+                    {environmentalFindings.map((finding, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-cyan-400 mt-1">•</span>
+                        <span>{finding}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-300 leading-relaxed">Environmental conditions assessed</p>
+                )}
               </div>
             </Card>
           </motion.div>
