@@ -15,10 +15,31 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')!;
 
+// Assistant ID with proper fallback chain
+const assistantId = Deno.env.get('OPENAI_ASSISTANT_ID_WEB') ?? Deno.env.get('OPENAI_ASSISTANT_ID');
+
+// Validate required environment variables
+if (!assistantId) {
+  console.error('Missing required environment variables: OPENAI_ASSISTANT_ID_WEB or OPENAI_ASSISTANT_ID');
+}
+
 serve(async (req) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Early validation of required environment variables
+  if (!assistantId) {
+    const errorMessage = 'Server configuration error: Missing OpenAI Assistant ID';
+    console.error(errorMessage);
+    return new Response(
+      JSON.stringify({ error: errorMessage }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
+    );
   }
 
   try {
