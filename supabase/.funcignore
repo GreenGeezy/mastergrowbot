@@ -1,0 +1,6 @@
+# This file controls which functions are ignored during deployment
+# For ios-main branch: exclude analyze-plant to only deploy analyze-ios
+# For main branch: this file should be empty or not present
+
+# Uncomment the line below when on ios-main branch
+# analyze-plant/

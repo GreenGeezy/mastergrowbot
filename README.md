@@ -1,5 +1,9 @@
 # Master Growbot MVP
 
+## 🚀 Branch Deployment Strategy
+- **main** deploys analyze-plant
+- **ios-main** deploys analyze-ios
+
 ## About
 Master Growbot is an AI-powered cannabis cultivation assistant that helps growers optimize their cultivation process through advanced AI technology and expert guidance.
 

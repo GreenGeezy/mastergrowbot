@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Deployment script for ios-main branch
+# This script ensures only analyze-ios function is deployed
+
+echo "🚀 iOS Branch Deployment - analyze-ios only"
+
+# Check if we're on ios-main branch
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$CURRENT_BRANCH" != "ios-main" ]; then
+    echo "⚠️  Warning: This script is intended for ios-main branch, currently on: $CURRENT_BRANCH"
+    read -p "Continue anyway? (y/N): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        exit 1
+    fi
+fi
+
+# Create temporary ignore file to exclude analyze-plant
+echo "analyze-plant/" > supabase/.funcignore
+
+# Deploy functions (will only deploy analyze-ios due to ignore file)
+echo "📦 Deploying analyze-ios function only..."
+npx supabase functions deploy --no-verify-jwt=false
+
+# Clean up ignore file
+rm -f supabase/.funcignore
+
+echo "✅ iOS deployment complete - analyze-ios deployed, analyze-plant excluded"
