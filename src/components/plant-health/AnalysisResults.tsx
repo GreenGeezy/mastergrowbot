@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { CheckCircle, AlertCircle, Leaf, Heart, Lightbulb } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { motion } from 'framer-motion';
+import { normalizeAnalysisResult } from '@/utils/normalizeAnalysisResult';
 
 interface AnalysisResult {
   diagnosis: string;
@@ -21,6 +22,9 @@ interface AnalysisResultsProps {
 }
 
 const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
+  // Normalize the analysis result to ensure consistent format
+  const normalizedResult = normalizeAnalysisResult(analysisResult);
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -49,12 +53,12 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
     return text.substring(firstSentence.length).trim();
   };
 
-  // Safe access to detailed_analysis properties with defaults
-  const detailedAnalysis = analysisResult.detailed_analysis || {};
-  const growthStage = detailedAnalysis.growth_stage || 'Growth stage information not available';
-  const healthScore = detailedAnalysis.health_score || 'Health score information not available';
-  const specificIssues = detailedAnalysis.specific_issues || 'No specific issues identified';
-  const environmentalFactors = detailedAnalysis.environmental_factors || 'Environmental factors not analyzed';
+  // Use normalized result - guaranteed to have all required fields
+  const detailedAnalysis = normalizedResult.detailed_analysis;
+  const growthStage = detailedAnalysis.growth_stage;
+  const healthScore = detailedAnalysis.health_score;
+  const specificIssues = detailedAnalysis.specific_issues;
+  const environmentalFactors = detailedAnalysis.environmental_factors;
 
   const growthStageFirstSentence = getFirstSentence(growthStage);
   const growthStageRemainingText = getRemainingText(growthStage);
@@ -62,23 +66,8 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const healthScoreFirstSentence = getFirstSentence(healthScore);
   const healthScoreRemainingText = getRemainingText(healthScore);
 
-  // Filter out empty or very short actions and limit to 9 with safe array access
-  const actions = analysisResult.recommended_actions;
-  let validActions: string[] = [];
-  
-  if (Array.isArray(actions)) {
-    validActions = actions
-      .filter(action => action && typeof action === 'string' && action.trim().length > 5)
-      .slice(0, 9); // Limit to maximum 9 actions
-  } else if (typeof actions === 'string' && actions.trim().length > 5) {
-    // Handle case where recommended_actions is a single string
-    validActions = [actions.trim()];
-  }
-  
-  // Ensure we always have at least one action
-  if (validActions.length === 0) {
-    validActions = ['Continue monitoring your plant regularly'];
-  }
+  // Use normalized recommended actions - guaranteed to be valid array
+  const validActions = normalizedResult.recommended_actions;
 
   // Find the most detailed recommended action (longest text)
   const mostDetailedAction = validActions.reduce((longest, current) => {
@@ -116,11 +105,11 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
             <span className="text-lg text-gray-300">Confidence:</span>
             <div className="flex items-center gap-3">
               <Progress 
-                value={analysisResult.confidence_level * 100} 
+                value={normalizedResult.confidence_level * 100} 
                 className="h-3 bg-gray-700 w-32"
               />
               <span className="text-2xl font-bold text-purple-400">
-                {Math.round(analysisResult.confidence_level * 100)}%
+                {Math.round(normalizedResult.confidence_level * 100)}%
               </span>
             </div>
           </div>
