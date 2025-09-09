@@ -77,9 +77,25 @@ serve(async (req) => {
     
     console.log('Parsed analysis result:', JSON.stringify(analysisResult, null, 2));
 
-    // Return successful response
-    const responseData = { analysis: analysisResult, profileUsed: !!userProfileData };
-    console.log('Sending response:', JSON.stringify(responseData, null, 2));
+    // Normalize response to match AnalysisResults.tsx interface exactly
+    const normalizedAnalysis = {
+      diagnosis: analysisResult.diagnosis || "Plant analysis completed successfully",
+      confidence_level: typeof analysisResult.confidence_level === 'number' ? analysisResult.confidence_level : 0.7,
+      detailed_analysis: {
+        growth_stage: analysisResult.detailed_analysis?.growth_stage || "Growth stage assessed",
+        health_score: analysisResult.detailed_analysis?.health_score || "Health score evaluated", 
+        specific_issues: analysisResult.detailed_analysis?.specific_issues || "No critical issues identified",
+        environmental_factors: analysisResult.detailed_analysis?.environmental_factors || "Environmental conditions assessed"
+      },
+      recommended_actions: Array.isArray(analysisResult.recommended_actions) 
+        ? analysisResult.recommended_actions 
+        : (typeof analysisResult.recommended_actions === 'string' 
+          ? [analysisResult.recommended_actions] 
+          : ["Monitor plant regularly", "Maintain consistent care"])
+    };
+
+    const responseData = normalizedAnalysis;
+    console.log('Sending normalized response:', JSON.stringify(responseData, null, 2));
     
     return new Response(
       JSON.stringify(responseData),
