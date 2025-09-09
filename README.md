@@ -6,8 +6,12 @@ ios-main → deploys analyze-ios (same schema as web, but separate function)
 -->
 
 ## 🚀 Branch Deployment Strategy
-- **main** deploys analyze-plant
-- **ios-main** deploys analyze-ios
+- **main** → deploys analyze-plant (web schema)
+- **ios-main** → deploys analyze-ios (normalized schema for mobile)
+
+### Function Deployment Commands
+- **Main branch**: `npm run deploy:main` or `supabase functions deploy --no-verify-jwt=false`
+- **iOS branch**: `npm run deploy:ios` or `supabase functions deploy analyze-ios --no-verify-jwt=false`
 
 ## About
 Master Growbot is an AI-powered cannabis cultivation assistant that helps growers optimize their cultivation process through advanced AI technology and expert guidance.

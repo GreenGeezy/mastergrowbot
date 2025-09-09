@@ -16,14 +16,8 @@ if [ "$CURRENT_BRANCH" != "ios-main" ]; then
     fi
 fi
 
-# Create temporary ignore file to exclude analyze-plant
-echo "analyze-plant/" > supabase/.funcignore
-
-# Deploy functions (will only deploy analyze-ios due to ignore file)
+# Deploy analyze-ios function only (no ignore file needed - direct function deployment)
 echo "📦 Deploying analyze-ios function only..."
 npx supabase functions deploy analyze-ios --no-verify-jwt=false
-
-# Clean up ignore file
-rm -f supabase/.funcignore
 
 echo "✅ iOS deployment complete - analyze-ios deployed, analyze-plant excluded"
