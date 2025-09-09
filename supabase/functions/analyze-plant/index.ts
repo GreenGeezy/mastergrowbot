@@ -79,13 +79,16 @@ serve(async (req) => {
 
     // Schema normalizer - ensure canonical fields are returned every time
     const canonicalPayload = {
-      confidence: typeof analysisResult.confidence_level === 'number' ? analysisResult.confidence_level : 
-                 typeof analysisResult.confidence === 'number' ? analysisResult.confidence : 0.7,
+      confidence: (() => {
+        const conf = analysisResult.confidence_level || analysisResult.confidence;
+        return typeof conf === 'number' ? Math.min(Math.max(conf, 0), 1) : 0.7;
+      })(),
       summary: analysisResult.diagnosis || analysisResult.summary || "Plant analysis completed successfully",
       growthStage: analysisResult.detailed_analysis?.growth_stage || analysisResult.growthStage || "Growth stage assessed",
-      healthScore: analysisResult.detailed_analysis?.health_score ? 
-                   (typeof analysisResult.detailed_analysis.health_score === 'number' ? analysisResult.detailed_analysis.health_score : null) : 
-                   (typeof analysisResult.healthScore === 'number' ? analysisResult.healthScore : null),
+      healthScore: (() => {
+        const health = analysisResult.detailed_analysis?.health_score || analysisResult.healthScore;
+        return typeof health === 'number' ? health : null;
+      })(),
       specificIssues: (() => {
         // Convert any object/strings for issues to string array
         const issues = analysisResult.detailed_analysis?.specific_issues || analysisResult.specificIssues || analysisResult.analysis?.issues;
@@ -104,15 +107,14 @@ serve(async (req) => {
         const actions = analysisResult.recommended_actions || analysisResult.recommendedActions || analysisResult.analysis?.actions;
         if (Array.isArray(actions)) return actions.filter(a => typeof a === 'string');
         if (typeof actions === 'string') return [actions];
-        return ["Monitor plant regularly", "Maintain consistent care"];
+        return [];
       })()
     };
 
     console.log('analyze-plant response (canonical):', Object.keys(canonicalPayload));
-    const responseData = canonicalPayload;
     
     return new Response(
-      JSON.stringify(responseData),
+      JSON.stringify(canonicalPayload),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
