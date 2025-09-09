@@ -109,13 +109,16 @@ const PlantHealthAnalyzer = () => {
 
       // Development debugging logs
       if (process.env.NODE_ENV !== 'production') {
-        console.log('RAW_RESULT_KEYS:', Object.keys(data || {}));
-        const normalizedForLogging = normalizeAnalysisResult(data);
-        console.log('CANONICAL_RESULT_KEYS:', Object.keys(normalizedForLogging || {}));
+        console.log('RAW_RESULT_KEYS', Object.keys(data || {}));
       }
 
       // Normalize the analysis result immediately
       const normalizedResult = normalizeAnalysisResult(data);
+      
+      // Development debugging logs
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('NORMALIZED_RESULT_KEYS', Object.keys(normalizedResult || {}));
+      }
       
       // Track if profile data was used
       setProfileUsed(!!data?.profileUsed);
