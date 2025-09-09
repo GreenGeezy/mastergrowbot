@@ -70,27 +70,44 @@ function parseAnalysisResults(text: string): any {
   };
 }
 
-// Enhanced CORS headers with specific origin support
-const enhancedCorsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-requested-with, accept',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
-  'Access-Control-Max-Age': '86400',
-  'Access-Control-Allow-Credentials': 'false',
-};
+// Allowed origins for CORS
+const allowedOrigins = [
+  'https://www.mastergrowbot.com',
+  'https://4a890707-41df-4980-a668-0e1ebdbeae5f.lovableproject.com',
+  'https://mastergrowbot-git-ios-main-greengeezys-projects.vercel.app',
+  'capacitor://localhost'
+];
+
+// Get CORS headers based on request origin
+function getCorsHeaders(requestOrigin: string | null) {
+  const origin = requestOrigin && allowedOrigins.includes(requestOrigin) 
+    ? requestOrigin 
+    : allowedOrigins[0]; // fallback to primary domain
+
+  return {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-requested-with, accept',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+    'Access-Control-Max-Age': '86400',
+    'Access-Control-Allow-Credentials': 'false',
+  };
+}
 
 serve(async (req) => {
   console.log('=== ANALYZE PLANT FUNCTION START ===');
   console.log('Request method:', req.method);
   console.log('Request URL:', req.url);
-  console.log('Origin:', req.headers.get('origin'));
+  const requestOrigin = req.headers.get('origin');
+  console.log('Origin:', requestOrigin);
+
+  const corsHeaders = getCorsHeaders(requestOrigin);
 
   // Handle CORS preflight with immediate response - CRITICAL FIX
   if (req.method === 'OPTIONS') {
     console.log('Handling CORS preflight request');
     return new Response(null, { 
       status: 200,
-      headers: enhancedCorsHeaders 
+      headers: corsHeaders 
     });
   }
 
@@ -113,7 +130,7 @@ serve(async (req) => {
         JSON.stringify({ error: 'OpenAI API key not configured', success: false }),
         { 
           status: 500, 
-          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
     }
@@ -147,7 +164,7 @@ serve(async (req) => {
         JSON.stringify({ error: 'Invalid request format', success: false }),
         { 
           status: 400, 
-          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
     }
@@ -166,7 +183,7 @@ serve(async (req) => {
         JSON.stringify({ error: 'No valid image URLs provided', success: false }),
         { 
           status: 400, 
-          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
     }
@@ -226,7 +243,7 @@ serve(async (req) => {
         }),
         { 
           status: 200,
-          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
 
@@ -242,7 +259,7 @@ serve(async (req) => {
         }),
         { 
           status: 500,
-          headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
     }
@@ -263,7 +280,7 @@ serve(async (req) => {
       }),
       { 
         status: 500,
-        headers: { ...enhancedCorsHeaders, 'Content-Type': 'application/json' } 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
       }
     );
   }
