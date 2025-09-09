@@ -35,6 +35,29 @@ interface AnalysisResultsProps {
   analysisResult: AnalysisResult;
 }
 
+const normalizeScore = (v: unknown): number | null => {
+  const n = typeof v === 'string' ? Number(v) : (typeof v === 'number' ? v : NaN);
+  if (Number.isNaN(n)) return null;
+  const pct = n <= 1 ? n * 100 : n;            // accept 0–1 or 0–100
+  return Math.max(0, Math.min(100, Math.round(pct)));
+};
+
+const scoreLabel = (pct: number | null): string => {
+  if (pct === null) return 'Not assessed yet';
+  if (pct >= 90) return 'Excellent';
+  if (pct >= 75) return 'Great';
+  if (pct >= 60) return 'Good';
+  if (pct >= 40) return 'Fair';
+  return 'Poor';
+};
+
+// fallback: if backend sends null, derive a rough label from confidence
+const fallbackFromConfidence = (confidence?: unknown): number | null => {
+  const c = typeof confidence === 'number' ? confidence : NaN;
+  if (Number.isNaN(c)) return null;
+  return Math.max(0, Math.min(100, Math.round((c <= 1 ? c : c / 100) * 100)));
+};
+
 const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   // Normalize the analysis result to ensure consistent canonical format
   const normalizedResult = normalizeAnalysisResult(analysisResult);
@@ -72,6 +95,10 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const healthScore = normalizedResult.healthScore;
   const specificIssues = normalizedResult.specificIssues;
   const environmentalFindings = normalizedResult.environmentalFindings;
+
+  // Compute health score percentage and label
+  const pctScore = normalizeScore(healthScore) ?? fallbackFromConfidence(normalizedResult.confidence);
+  const label = scoreLabel(pctScore);
 
   const growthStageFirstSentence = getFirstSentence(growthStage);
   const growthStageRemainingText = getRemainingText(growthStage);
@@ -190,11 +217,20 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   </div>
                   <h3 className="text-xl font-bold text-white">Health Score</h3>
                 </div>
-                {healthScoreRemainingText && (
-                  <p className="text-gray-300 leading-relaxed">
-                    {healthScoreRemainingText}
-                  </p>
-                )}
+                <div className="space-y-4">
+                  <div className="text-2xl font-bold text-blue-400">{label}</div>
+                  {pctScore !== null && (
+                    <Progress 
+                      value={pctScore} 
+                      className={`h-2 ${label === 'Not assessed yet' ? 'opacity-50' : ''}`}
+                    />
+                  )}
+                  {healthScoreRemainingText && (
+                    <p className="text-gray-300 leading-relaxed">
+                      {healthScoreRemainingText}
+                    </p>
+                  )}
+                </div>
               </div>
             </Card>
           </motion.div>
