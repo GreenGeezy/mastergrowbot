@@ -114,12 +114,8 @@ const PlantHealthAnalyzer = () => {
         console.log('CANONICAL_RESULT_KEYS:', Object.keys(normalizedForLogging || {}));
       }
 
-      if (!data || !data.analysis) {
-        console.error('Invalid response data structure:', data);
-        console.error('Expected structure: { analysis: {...}, profileUsed: boolean }');
-        console.error('Actual data keys:', data ? Object.keys(data) : 'data is null/undefined');
-        throw new Error('Received invalid analysis data');
-      }
+      // Normalize the analysis result immediately
+      const normalizedResult = normalizeAnalysisResult(data);
       
       // Track if profile data was used
       setProfileUsed(!!data.profileUsed);
@@ -131,10 +127,15 @@ const PlantHealthAnalyzer = () => {
           user_id: session?.user?.id,
           image_url: imageUrls[0], // Keep first image as primary
           image_urls: imageUrls, // Store all images
-          diagnosis: data.analysis.diagnosis,
-          confidence_level: data.analysis.confidence_level,
-          detailed_analysis: data.analysis.detailed_analysis,
-          recommended_actions: data.analysis.recommended_actions,
+          diagnosis: normalizedResult.summary,
+          confidence_level: normalizedResult.confidence,
+          detailed_analysis: {
+            growth_stage: normalizedResult.growthStage,
+            health_score: normalizedResult.healthScore,
+            specific_issues: (normalizedResult.specificIssues || []).join('; '),
+            environmental_factors: (normalizedResult.environmentalFindings || []).join('; ')
+          },
+          recommended_actions: normalizedResult.recommendedActions || [],
         })
         .select()
         .single();
