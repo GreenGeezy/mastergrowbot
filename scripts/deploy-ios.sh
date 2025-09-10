@@ -18,6 +18,6 @@ fi
 
 # Deploy analyze-ios function only (no ignore file needed - direct function deployment)
 echo "📦 Deploying analyze-ios function only..."
-npx supabase functions deploy analyze-ios --no-verify-jwt=false
+npx supabase functions deploy analyze-ios --project-ref inbfxduleyhygxatxmre
 
 echo "✅ iOS deployment complete - analyze-ios deployed, analyze-plant excluded"
