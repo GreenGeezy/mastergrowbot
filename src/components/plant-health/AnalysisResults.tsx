@@ -35,28 +35,6 @@ interface AnalysisResultsProps {
   analysisResult: AnalysisResult;
 }
 
-const normalizeScore = (v: unknown): number | null => {
-  const n = typeof v === 'string' ? Number(v) : (typeof v === 'number' ? v : NaN);
-  if (Number.isNaN(n)) return null;
-  const pct = n <= 1 ? n * 100 : n;            // accept 0–1 or 0–100
-  return Math.max(0, Math.min(100, Math.round(pct)));
-};
-
-const scoreLabel = (pct: number | null): string => {
-  if (pct === null) return 'Not assessed yet';
-  if (pct >= 90) return 'Excellent';
-  if (pct >= 75) return 'Great';
-  if (pct >= 60) return 'Good';
-  if (pct >= 40) return 'Fair';
-  return 'Poor';
-};
-
-// fallback: if backend sends null, derive a rough label from confidence
-const fallbackFromConfidence = (confidence?: unknown): number | null => {
-  const c = typeof confidence === 'number' ? confidence : NaN;
-  if (Number.isNaN(c)) return null;
-  return Math.max(0, Math.min(100, Math.round((c <= 1 ? c : c / 100) * 100)));
-};
 
 const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   // Normalize the analysis result to ensure consistent canonical format
@@ -96,9 +74,9 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const specificIssues = normalizedResult.specificIssues;
   const environmentalFindings = normalizedResult.environmentalFindings;
 
-  // Compute health score percentage and label
-  const pctScore = normalizeScore(healthScore) ?? fallbackFromConfidence(normalizedResult.confidence);
-  const label = scoreLabel(pctScore);
+  // Replace health score in summary with normalized label
+  const displayedSummary = (normalizedResult.summary || '')
+    .replace(/Health\s*Score:\s*(Excellent|Great|Good|Fair|Poor)/gi, `Health Score: ${normalizedResult.healthScoreLabel}`);
 
   const growthStageFirstSentence = getFirstSentence(growthStage);
   const growthStageRemainingText = getRemainingText(growthStage);
@@ -165,7 +143,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
               </div>
               <div className="flex items-start gap-3">
                 <Heart className="text-blue-400 w-5 h-5 mt-1 flex-shrink-0" />
-                <p className="text-gray-300 leading-relaxed">{healthScoreFirstSentence}</p>
+                <p className="text-gray-300 leading-relaxed">Health Score: {normalizedResult.healthScoreLabel}</p>
               </div>
               {mostDetailedAction && (
                 <div className="flex items-start gap-3">
@@ -218,13 +196,11 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
                   <h3 className="text-xl font-bold text-white">Health Score</h3>
                 </div>
                 <div className="space-y-4">
-                  <div className="text-2xl font-bold text-blue-400">{label}</div>
-                  {pctScore !== null && (
-                    <Progress 
-                      value={pctScore} 
-                      className={`h-2 ${label === 'Not assessed yet' ? 'opacity-50' : ''}`}
-                    />
-                  )}
+                  <div className="text-2xl font-bold text-blue-400">{normalizedResult.healthScoreLabel}</div>
+                  <Progress 
+                    value={normalizedResult.healthScore ? (normalizedResult.healthScore <= 1 ? normalizedResult.healthScore * 100 : normalizedResult.healthScore) : normalizedResult.confidence * 100} 
+                    className={`h-2 ${normalizedResult.healthScoreLabel === 'Not assessed yet' ? 'opacity-50' : ''}`}
+                  />
                   {healthScoreRemainingText && (
                     <p className="text-gray-300 leading-relaxed">
                       {healthScoreRemainingText}
