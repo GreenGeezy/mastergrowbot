@@ -224,7 +224,14 @@ const App = () => {
           <BrowserRouter>
             <AuthVerification />
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route 
+                path="/" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Index />
+                  </Suspense>
+                } 
+              />
               <Route 
                 path="/privacy-policy" 
                 element={
