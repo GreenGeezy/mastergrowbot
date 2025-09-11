@@ -226,11 +226,7 @@ const App = () => {
             <Routes>
               <Route 
                 path="/" 
-                element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <Index />
-                  </Suspense>
-                } 
+                element={<Index />} 
               />
               <Route 
                 path="/privacy-policy" 
