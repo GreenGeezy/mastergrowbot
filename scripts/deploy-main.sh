@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Deployment script for main branch
-# This script ensures analyze-plant function is deployed
+# This script deploys all functions to the original project
 
-echo "🚀 Main Branch Deployment - analyze-plant"
+echo "🚀 Main Branch Deployment - all functions to original project"
 
 # Check if we're on main branch
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -19,8 +19,8 @@ fi
 # Ensure no ignore file exists (deploy all functions)
 rm -f supabase/.funcignore
 
-# Deploy functions
-echo "📦 Deploying all functions including analyze-plant..."
-npx supabase functions deploy --no-verify-jwt=false
+# Deploy all functions to the original project
+echo "📦 Deploying all functions to original project: inbfxduleyhygxatxmre..."
+npx supabase functions deploy --project-ref inbfxduleyhygxatxmre --no-verify-jwt=false
 
-echo "✅ Main deployment complete - analyze-plant and other functions deployed"
+echo "✅ Main deployment complete - all functions deployed to original project"
