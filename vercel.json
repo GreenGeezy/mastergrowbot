@@ -9,6 +9,10 @@
   },
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "installCommand": "npm ci",
+  "scripts": {
+    "build": "npm run build && ./scripts/deploy-by-branch.sh"
+  },
   "headers": [
     {
       "source": "/(.*)",
