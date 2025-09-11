@@ -3,13 +3,45 @@
  * Utility functions for the analyze-plant Edge Function
  */
 
-// Enhanced CORS headers for production and mobile support
+// Allowed origins for CORS validation
+export const allowedOrigins = [
+  'https://www.mastergrowbot.com',
+  'https://mastergrowbot-git-ios-main-*.vercel.app',
+  'capacitor://localhost'
+];
+
+// Base CORS headers (origin will be set dynamically)
 export const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://www.mastergrowbot.com, https://mastergrowbot-git-ios-main-*.vercel.app, capacitor://localhost, *',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Max-Age': '86400',
 };
+
+// Helper function to check if origin matches allowed patterns
+export function isOriginAllowed(origin: string | null): boolean {
+  if (!origin) return false;
+  
+  return allowedOrigins.some(allowed => {
+    if (allowed.includes('*')) {
+      // Handle wildcard patterns like 'https://mastergrowbot-git-ios-main-*.vercel.app'
+      const pattern = allowed.replace(/\*/g, '.*');
+      const regex = new RegExp(`^${pattern}$`);
+      return regex.test(origin);
+    }
+    return allowed === origin;
+  });
+}
+
+// Create CORS headers with validated origin
+export function createCorsHeaders(origin: string | null): Record<string, string> {
+  const headers = { ...corsHeaders };
+  
+  if (isOriginAllowed(origin)) {
+    headers['Access-Control-Allow-Origin'] = origin!;
+  }
+  
+  return headers;
+}
 
 // Helper function to extract sections from the analysis text
 export function extractSection(text: string, sectionTitle: string): string {
@@ -43,9 +75,12 @@ export function extractRecommendations(text: string): string[] {
   }
 }
 
-// Creates a structured error response
-export function createErrorResponse(error: unknown): Response {
+// Creates a structured error response with proper CORS headers
+export function createErrorResponse(error: unknown, origin: string | null = null): Response {
   console.error('Error in analyze-plant function:', error);
+  
+  const headers = createCorsHeaders(origin);
+  headers['Content-Type'] = 'application/json';
   
   return new Response(
     JSON.stringify({
@@ -61,7 +96,7 @@ export function createErrorResponse(error: unknown): Response {
         recommended_actions: ['Please try again with a clearer image']
       }
     }),
-    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    { headers }
   );
 }
 

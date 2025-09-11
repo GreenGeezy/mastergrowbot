@@ -2,7 +2,8 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { 
-  corsHeaders, 
+  createCorsHeaders,
+  isOriginAllowed,
   parseAnalysisResults, 
   createErrorResponse 
 } from "./utils.ts";
@@ -24,23 +25,41 @@ if (!assistantId) {
 }
 
 serve(async (req) => {
+  // Get origin from request headers
+  const origin = req.headers.get('origin');
+  
   // Handle CORS preflight with 204 status
   if (req.method === 'OPTIONS') {
     return new Response(null, { 
       status: 204, 
-      headers: corsHeaders 
+      headers: createCorsHeaders(origin)
     });
+  }
+
+  // Validate origin for non-OPTIONS requests
+  if (!isOriginAllowed(origin)) {
+    console.log(`Unauthorized origin attempted access: ${origin}`);
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized origin' }),
+      { 
+        status: 403,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
   }
 
   // Early validation of required environment variables
   if (!assistantId) {
     const errorMessage = 'Server configuration error: Missing OpenAI Assistant ID';
     console.error(errorMessage);
+    const headers = createCorsHeaders(origin);
+    headers['Content-Type'] = 'application/json';
+    
     return new Response(
       JSON.stringify({ error: errorMessage }),
       { 
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers
       }
     );
   }
@@ -116,15 +135,18 @@ serve(async (req) => {
 
     console.log('analyze-plant response (canonical):', Object.keys(canonicalPayload));
     
+    const headers = createCorsHeaders(origin);
+    headers['Content-Type'] = 'application/json';
+    
     return new Response(
       JSON.stringify(canonicalPayload),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers }
     );
 
   } catch (error) {
     // Handle any errors with a consistent response format
     console.error('Error in analyze-plant function:', error);
-    return createErrorResponse(error);
+    return createErrorResponse(error, origin);
   }
 });
 
