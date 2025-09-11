@@ -3,10 +3,12 @@
  * Utility functions for the analyze-plant Edge Function
  */
 
-// CORS headers for all responses
+// Enhanced CORS headers for production and mobile support
 export const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://www.mastergrowbot.com, https://mastergrowbot-git-ios-main-*.vercel.app, capacitor://localhost, *',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Max-Age': '86400',
 };
 
 // Helper function to extract sections from the analysis text

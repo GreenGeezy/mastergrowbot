@@ -24,9 +24,12 @@ if (!assistantId) {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight
+  // Handle CORS preflight with 204 status
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { 
+      status: 204, 
+      headers: corsHeaders 
+    });
   }
 
   // Early validation of required environment variables
