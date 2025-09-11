@@ -152,13 +152,40 @@ serve(async (req) => {
 
 // Analyze plant images using OpenAI Vision API
 async function analyzeWithVision(apiKey: string, imageUrls: string[], userProfile?: any): Promise<string> {
-  // Prepare base prompt text
-  let promptText = "Analyze this cannabis plant image. Provide a detailed assessment in the following format:\n\n" +
-                  "Growth Stage: (seedling, vegetative, flowering, etc.)\n" +
-                  "Health Score: (excellent, good, fair, poor)\n" +
-                  "Specific Issues: (any visible problems, deficiencies, pests, etc.)\n" +
-                  "Environmental Factors: (lighting, temperature, humidity observations)\n" +
-                  "Recommended Actions: (bullet points of specific actions to take)";
+  // Enhanced prompt for detailed cannabis cultivation insights
+  let promptText = `Analyze this cannabis plant image as an expert cannabis cultivation specialist. Provide a comprehensive assessment with specific, actionable insights:
+
+**Growth Stage & Development:**
+- Exact growth stage (seedling/vegetative/pre-flower/early flower/mid flower/late flower/harvest ready)
+- Estimated weeks into current stage
+- Expected yield potential (low/medium/high) with reasoning
+
+**Health Assessment:**
+- Overall health score (1-10) with detailed explanation
+- Specific nutrient status (N-P-K levels, cal-mag, micronutrients)
+- Any visible deficiencies or toxicities with precise identification
+
+**Issue Identification:**
+- Pest identification (spider mites, aphids, thrips, etc.) with confidence level
+- Disease symptoms (powdery mildew, bud rot, etc.)
+- Stress indicators (light burn, heat stress, overwatering, etc.)
+
+**Environmental Analysis:**
+- Lighting assessment (intensity, spectrum, distance recommendations)
+- Air circulation and humidity observations
+- Temperature stress indicators
+
+**Actionable Recommendations:**
+- Immediate actions needed (next 24-48 hours)
+- Nutrient adjustments with specific NPK ratios or products
+- Environmental modifications (lighting, airflow, humidity)
+- Pest/disease treatment protocols if needed
+- Timeline for next assessment
+
+**Yield Optimization:**
+- Training techniques applicable (LST, SCROG, defoliation)
+- Harvest timing predictions
+- Quality improvement suggestions`;
   
   // Add user profile context if available
   if (userProfile) {

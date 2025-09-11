@@ -91,11 +91,27 @@ serve(async (req) => {
 
 // Analyze plant images using OpenAI Vision API (iOS-optimized)
 async function analyzeWithVision(apiKey: string, imageUrls: string[], userProfile?: any): Promise<string> {
-  // iOS-optimized prompt
-  let promptText = "Analyze this cannabis plant image for mobile app display. Provide a concise but thorough assessment:\n\n" +
-                  "Growth Stage & Health: Brief overview\n" +
-                  "Key Issues: Priority concerns if any\n" +
-                  "Quick Actions: 2-3 immediate recommendations";
+  // Enhanced iOS-optimized prompt for detailed insights
+  let promptText = `Expert cannabis analysis for mobile display. Provide detailed but mobile-friendly assessment:
+
+**Stage & Health (1-2 lines):**
+- Growth stage, health score (1-10), yield potential
+
+**Priority Issues:**
+- Nutrient deficiencies/toxicities (N-P-K, Cal-Mag, etc.)
+- Pest identification (mites, aphids, thrips) with confidence
+- Environmental stress (light burn, heat, humidity)
+
+**Immediate Actions (3-4 specific steps):**
+- Nutrient adjustments with ratios
+- Environmental fixes (lighting distance, airflow)
+- Pest/disease treatments
+- Next assessment timing
+
+**Yield Tips:**
+- Training opportunities (LST, defoliation)
+- Harvest timing estimate
+- Quality improvement suggestions`;
   
   // Add user profile context if available
   if (userProfile) {
