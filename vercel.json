@@ -11,7 +11,7 @@
   "outputDirectory": "dist",
   "installCommand": "npm ci",
   "scripts": {
-    "build": "npm run build && ./scripts/deploy-by-branch.sh"
+    "build": "npm run build"
   },
   "headers": [
     {

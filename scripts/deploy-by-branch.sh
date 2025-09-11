@@ -38,9 +38,8 @@ case "$CURRENT_BRANCH" in
         echo "✅ Main branch deployment complete - analyze-plant deployed"
         ;;
     "ios-main")
-        echo "📦 Deploying analyze-ios function for ios-main branch..."
-        npx supabase functions deploy analyze-ios --project-ref inbfxduleyhygxatxmre
-        echo "✅ iOS branch deployment complete - analyze-ios deployed"
+        echo "ℹ️  iOS branch detected - deployments handled separately"
+        echo "✅ No shared project deployment for ios-main branch"
         ;;
     *)
         echo "ℹ️  Branch '$CURRENT_BRANCH' does not require Edge Function deployment"
