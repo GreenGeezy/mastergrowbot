@@ -1,25 +1,29 @@
 #!/bin/bash
 
 # Master Growbot iOS Branch Deployment Script  
-# ONLY deploys analyze-ios function - NO main functions
+# EXPLICIT SCOPE: ONLY deploys analyze-ios function - NO main functions
+# AUTO-SYNC DISABLED: Prevents unintended shared project deployment
 
 set -e  # Exit on any error
 
 # Branch protection: Only deploy on ios-main branch
 CURRENT_BRANCH=${VERCEL_GIT_COMMIT_REF:-$(git branch --show-current 2>/dev/null || echo "unknown")}
 
-echo "🔍 Branch protection check..."
+echo "🔍 SCOPED DEPLOYMENT: iOS branch protection check..."
 echo "📍 Current branch: $CURRENT_BRANCH"
+echo "🚫 AUTO-SYNC DISABLED: No shared project deployments"
 
 # Explicit safeguard: Block analyze-plant deployment on ios-main
 if [ "$CURRENT_BRANCH" = "ios-main" ]; then
-    echo "✅ iOS branch confirmed - proceeding with analyze-ios deployment"
+    echo "✅ iOS branch confirmed - proceeding with SCOPED analyze-ios deployment"
+    echo "🚫 DISABLED: Auto-sync to prevent analyze-plant deployment"
 else
     echo "⚠️  Not on ios-main branch ($CURRENT_BRANCH) - skipping deployment"
+    echo "🚫 AUTO-SYNC BLOCKED: No deployments on non-ios branches"
     exit 0
 fi
 
-echo "🚀 Starting iOS branch deployment..."
+echo "🚀 Starting SCOPED iOS branch deployment (analyze-ios only)..."
 
 # Ensure we're in the project root
 cd "$(dirname "$0")/.."
@@ -46,12 +50,15 @@ fi
 echo "🔐 Logging into Supabase..."
 npx supabase login
 
-# CRITICAL: Explicitly block main function deployment on ios-main branch  
-echo "🛡️  Enforcing iOS branch isolation - analyze-plant will NOT be deployed"
+# CRITICAL: Explicitly block main function deployment and auto-sync
+echo "🛡️  Enforcing strict iOS branch isolation - analyze-plant will NOT be deployed"
+echo "🚫 AUTO-SYNC DISABLED: Preventing shared project (inbfxduleyhygxatxmre) deployments"
 
-# Deploy only analyze-ios function to NEW project
-echo "📦 Deploying analyze-ios function to dedicated iOS project..."
+# Deploy only analyze-ios function to separate project - SCOPED DEPLOYMENT
+echo "📦 SCOPED DEPLOYMENT: analyze-ios function to dedicated iOS project only..."
+echo "🎯 TARGET: $NEW_SUPABASE_PROJECT_REF (analyze-ios only, NOT shared project)"
 npx supabase functions deploy analyze-ios --project-ref $NEW_SUPABASE_PROJECT_REF
 
-echo "✅ iOS branch deployment complete!"
-echo "🔒 analyze-ios deployed, analyze-plant blocked on ios-main branch"
+echo "✅ SCOPED iOS branch deployment complete!"
+echo "🔒 analyze-ios deployed to separate project, analyze-plant blocked, auto-sync disabled"
+echo "🚫 CONFIRMATION: No shared project deployments, no auto-sync features active"
