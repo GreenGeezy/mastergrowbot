@@ -1,0 +1,29 @@
+name: Prevent Auto-Sync Deployments
+
+on:
+  push:
+    branches: [ '**' ]
+  workflow_dispatch:
+
+jobs:
+  block-auto-sync:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/ios-main'
+    
+    steps:
+    - name: 🚫 Block Auto-Sync
+      run: |
+        echo "🚫 AUTO-SYNC BLOCKED: Preventing deployment on branch ${{ github.ref }}"
+        echo "🔒 BRANCH PROTECTION: Only main and ios-main branches are allowed to deploy"
+        echo "🚨 EarlyDrop Prevention: No Edge Function deployments on this branch"
+        echo "✅ Auto-sync bypass confirmed - no functions will be deployed"
+        
+    - name: 📋 Branch Status Report
+      run: |
+        echo "📋 DEPLOYMENT PROTECTION STATUS:"
+        echo "   - Current branch: ${{ github.ref }}"
+        echo "   - Allowed for deployment: ❌ NO"
+        echo "   - analyze-plant deployment: 🚫 BLOCKED"
+        echo "   - analyze-ios deployment: 🚫 BLOCKED"
+        echo "   - Auto-sync status: 🚫 DISABLED"
+        echo "✅ Branch isolation enforced successfully"

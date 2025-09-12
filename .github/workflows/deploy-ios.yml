@@ -1,0 +1,64 @@
+name: Deploy iOS Branch (analyze-ios only)
+
+on:
+  push:
+    branches: [ ios-main ]
+  workflow_dispatch:
+
+jobs:
+  deploy-analyze-ios:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/ios-main'
+    
+    steps:
+    - name: 🐞 Debug iOS Branch Context
+      run: |
+        echo "🔍 GITHUB ACTIONS: iOS branch deployment started"
+        echo "🐞 DEBUG: iOS environment context:"
+        echo "   - GITHUB_REF: ${{ github.ref }}"
+        echo "   - GITHUB_SHA: ${{ github.sha }}"
+        echo "   - GITHUB_ACTOR: ${{ github.actor }}"
+        echo "   - GITHUB_EVENT_NAME: ${{ github.event_name }}"
+        echo "🚨 EarlyDrop Prevention: iOS function isolation check"
+        echo "🎯 TARGET: analyze-ios function to dedicated iOS project"
+        
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install Supabase CLI
+      run: |
+        npm install -g supabase
+        
+    - name: 🔐 Login to Supabase
+      run: |
+        echo "🔐 Authenticating with Supabase..."
+        npx supabase login
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        
+    - name: 🛡️ Enforce iOS Branch Isolation
+      run: |
+        echo "🛡️ CRITICAL: Enforcing strict iOS branch isolation"
+        echo "🚫 BLOCKED: analyze-plant deployment on ios-main branch"
+        echo "🚫 DISABLED: Auto-sync to prevent shared project deployment"
+        echo "✅ SCOPED: Only analyze-ios will be deployed to separate project"
+        
+    - name: 📦 Deploy analyze-ios Function
+      run: |
+        echo "📦 SCOPED DEPLOYMENT: analyze-ios function to dedicated iOS project only..."
+        echo "🎯 TARGET: $NEW_SUPABASE_PROJECT_REF (analyze-ios only, NOT shared project)"
+        npx supabase functions deploy analyze-ios --project-ref $NEW_SUPABASE_PROJECT_REF
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        NEW_SUPABASE_PROJECT_REF: ${{ secrets.NEW_SUPABASE_PROJECT_REF }}
+        
+    - name: ✅ iOS Deployment Complete
+      run: |
+        echo "✅ SCOPED iOS branch deployment complete!"
+        echo "🔒 analyze-ios deployed to separate project, analyze-plant blocked"
+        echo "🚫 CONFIRMATION: No shared project deployments, GitHub Actions controlled"

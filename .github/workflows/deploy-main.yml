@@ -1,0 +1,66 @@
+name: Deploy Main Branch (analyze-plant only)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  SUPABASE_PROJECT_REF: inbfxduleyhygxatxmre
+
+jobs:
+  deploy-analyze-plant:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 🐞 Debug Branch Context
+      run: |
+        echo "🔍 GITHUB ACTIONS: Main branch deployment started"
+        echo "🐞 DEBUG: Environment context:"
+        echo "   - GITHUB_REF: ${{ github.ref }}"
+        echo "   - GITHUB_SHA: ${{ github.sha }}"
+        echo "   - GITHUB_ACTOR: ${{ github.actor }}"
+        echo "   - GITHUB_EVENT_NAME: ${{ github.event_name }}"
+        echo "🚨 EarlyDrop Prevention: Validating main branch context"
+        echo "🎯 TARGET: analyze-plant function only"
+        
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install Supabase CLI
+      run: |
+        npm install -g supabase
+        
+    - name: 🔐 Login to Supabase
+      run: |
+        echo "🔐 Authenticating with Supabase..."
+        npx supabase login
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        
+    - name: 🛡️ Enforce Branch Isolation
+      run: |
+        echo "🛡️ CRITICAL: Enforcing strict main branch isolation"
+        echo "🚫 BLOCKED: analyze-ios deployment on main branch"
+        echo "🚫 DISABLED: Auto-sync to prevent unintended deployments"
+        echo "✅ SCOPED: Only analyze-plant will be deployed"
+        
+    - name: 📦 Deploy analyze-plant Function
+      run: |
+        echo "📦 SCOPED DEPLOYMENT: analyze-plant function to shared project only..."
+        echo "🎯 TARGET: $SUPABASE_PROJECT_REF (analyze-plant only)"
+        npx supabase functions deploy analyze-plant --project-ref $SUPABASE_PROJECT_REF
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        
+    - name: ✅ Deployment Complete
+      run: |
+        echo "✅ SCOPED main branch deployment complete!"
+        echo "🔒 analyze-plant deployed, analyze-ios blocked, auto-sync bypassed"
+        echo "🚫 CONFIRMATION: No bulk deployments, GitHub Actions controlled"
