@@ -8,22 +8,21 @@ on:
 jobs:
   block-auto-sync:
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/ios-main'
+    if: github.ref == 'refs/heads/ios-main'
     
     steps:
     - name: 🚫 Block Auto-Sync
       run: |
-        echo "🚫 AUTO-SYNC BLOCKED: Preventing deployment on branch ${{ github.ref }}"
-        echo "🔒 BRANCH PROTECTION: Only main and ios-main branches are allowed to deploy"
-        echo "🚨 EarlyDrop Prevention: No Edge Function deployments on this branch"
-        echo "✅ Auto-sync bypass confirmed - no functions will be deployed"
+        echo "🚫 AUTO-SYNC BLOCKED: Preventing analyze-plant deployment on ios-main branch"
+        echo "🔒 BRANCH PROTECTION: ios-main should only deploy analyze-ios, not analyze-plant"
+        echo "🚨 EarlyDrop Prevention: Blocking analyze-plant function deployment to prevent conflicts"
+        echo "✅ Auto-sync bypass confirmed - analyze-plant function will not be deployed from ios-main"
         
     - name: 📋 Branch Status Report
       run: |
         echo "📋 DEPLOYMENT PROTECTION STATUS:"
         echo "   - Current branch: ${{ github.ref }}"
-        echo "   - Allowed for deployment: ❌ NO"
-        echo "   - analyze-plant deployment: 🚫 BLOCKED"
-        echo "   - analyze-ios deployment: 🚫 BLOCKED"
-        echo "   - Auto-sync status: 🚫 DISABLED"
-        echo "✅ Branch isolation enforced successfully"
+        echo "   - analyze-plant deployment: 🚫 BLOCKED (prevents conflicts with main branch)"
+        echo "   - analyze-ios deployment: ✅ ALLOWED (ios-specific function)"
+        echo "   - Auto-sync status: 🔄 SELECTIVE (only analyze-ios)"
+        echo "✅ Branch isolation enforced - preventing shared function conflicts"

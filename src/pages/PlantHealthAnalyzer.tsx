@@ -149,7 +149,19 @@ const PlantHealthAnalyzer = () => {
       }
 
       console.log('Analysis saved to database:', savedAnalysis);
-      setAnalysisResult(savedAnalysis);
+      
+      // CRITICAL FIX: Set analysis result from normalized data with database ID for sharing
+      // This ensures UI displays content from function result, not potentially missing DB fields
+      const displayResult = {
+        ...normalizedResult,
+        // Merge essential database fields for sharing functionality
+        id: savedAnalysis.id,
+        image_urls: imageUrls,
+        image_url: imageUrls[0],
+        user_id: session?.user?.id
+      };
+      
+      setAnalysisResult(displayResult);
       
       // Calculate total time elapsed
       const totalTimeElapsed = ((Date.now() - (analysisStartTime || 0)) / 1000).toFixed(1);
