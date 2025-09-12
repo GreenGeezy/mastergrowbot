@@ -58,7 +58,8 @@ const PlantHealthAnalyzer = () => {
       // Upload images to Supabase storage
       const imageUrls = await Promise.all(
         selectedFiles.map(async (file, index) => {
-          const fileName = `${Date.now()}-${file.name}`;
+          const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+          const fileName = `${Date.now()}-${safeName}`;
           const { data, error } = await supabase.storage
             .from('plant-images')
             .upload(fileName, file);
@@ -108,7 +109,7 @@ const PlantHealthAnalyzer = () => {
       console.log('Analysis data received:', data);
 
       // Development debugging logs
-      if (process.env.NODE_ENV !== 'production') {
+      if (import.meta.env.MODE !== 'production') {
         console.log('RAW_RESULT_KEYS', Object.keys(data || {}));
       }
 
@@ -116,7 +117,7 @@ const PlantHealthAnalyzer = () => {
       const normalizedResult = normalizeAnalysisResult(data);
       
       // Development debugging logs
-      if (process.env.NODE_ENV !== 'production') {
+      if (import.meta.env.MODE !== 'production') {
         console.log('NORMALIZED_RESULT_KEYS', Object.keys(normalizedResult || {}));
       }
       
