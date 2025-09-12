@@ -12,7 +12,13 @@ echo "🚫 AUTO-SYNC DISABLED: No bulk deployments will occur"
 # Get the current branch from Vercel environment or fallback to git
 CURRENT_BRANCH=${VERCEL_GIT_COMMIT_REF:-$(git branch --show-current 2>/dev/null || echo "unknown")}
 
+# DEBUG: Enhanced branch detection and EarlyDrop prevention
+echo "🐞 DEBUG: Environment variables:"
+echo "   - VERCEL_GIT_COMMIT_REF: ${VERCEL_GIT_COMMIT_REF:-'unset'}"
+echo "   - VERCEL_ENV: ${VERCEL_ENV:-'unset'}"
+echo "   - Git branch fallback: $(git branch --show-current 2>/dev/null || echo 'git unavailable')"
 echo "📍 Current branch: $CURRENT_BRANCH"
+echo "🚨 EarlyDrop Prevention: Validating branch context before deployment"
 echo "🎯 SCOPE: Only deploying branch-specific functions"
 
 # Ensure we're in the project root

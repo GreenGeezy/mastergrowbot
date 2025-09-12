@@ -10,7 +10,12 @@ set -e  # Exit on any error
 CURRENT_BRANCH=${VERCEL_GIT_COMMIT_REF:-$(git branch --show-current 2>/dev/null || echo "unknown")}
 
 echo "🔍 SCOPED DEPLOYMENT: iOS branch protection check..."
+echo "🐞 DEBUG: iOS branch validation context:"
+echo "   - VERCEL_GIT_COMMIT_REF: ${VERCEL_GIT_COMMIT_REF:-'unset'}"
+echo "   - VERCEL_GIT_PREVIOUS_SHA: ${VERCEL_GIT_PREVIOUS_SHA:-'unset'}"
+echo "   - Expected: ios-main"
 echo "📍 Current branch: $CURRENT_BRANCH"
+echo "🚨 EarlyDrop Prevention: iOS function isolation check"
 echo "🚫 AUTO-SYNC DISABLED: No shared project deployments"
 
 # Explicit safeguard: Block analyze-plant deployment on ios-main

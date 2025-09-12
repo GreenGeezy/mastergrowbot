@@ -9,8 +9,15 @@ set -e  # Exit on any error
 # Branch protection: Only deploy on main branch
 CURRENT_BRANCH=${VERCEL_GIT_COMMIT_REF:-$(git branch --show-current 2>/dev/null || echo "unknown")}
 
+# DEBUG: Enhanced branch detection for EarlyDrop prevention
 echo "🔍 SCOPED DEPLOYMENT: Branch protection check..."
+echo "🐞 DEBUG: Full environment context:"
+echo "   - VERCEL_GIT_COMMIT_REF: ${VERCEL_GIT_COMMIT_REF:-'unset'}"
+echo "   - VERCEL_GIT_COMMIT_SHA: ${VERCEL_GIT_COMMIT_SHA:-'unset'}"
+echo "   - VERCEL_ENV: ${VERCEL_ENV:-'unset'}"
+echo "   - VERCEL_URL: ${VERCEL_URL:-'unset'}"
 echo "📍 Current branch: $CURRENT_BRANCH"
+echo "🚨 EarlyDrop Guard: Ensuring main-only deployment to prevent cross-contamination"
 echo "🚫 AUTO-SYNC DISABLED: No bulk deployments"
 
 # Explicit safeguard: Block analyze-ios deployment on main
