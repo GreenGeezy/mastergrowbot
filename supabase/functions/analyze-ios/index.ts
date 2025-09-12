@@ -156,7 +156,7 @@ function getCorsHeaders(requestOrigin: string | null) {
     : allowedOrigins[0]; // fallback to primary domain
 
   return {
-    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-requested-with, accept',
     'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
     'Access-Control-Max-Age': '86400',

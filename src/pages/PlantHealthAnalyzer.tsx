@@ -10,6 +10,7 @@ import CameraCapture from '@/components/plant-health/CameraCapture';
 import StreamlinedCameraCapture from '@/components/plant-health/StreamlinedCameraCapture';
 import ImageDropzone from '@/components/plant-health/ImageDropzone';
 import AnalysisResults from '@/components/plant-health/AnalysisResults';
+import { getAnalyzePlantFunctionName } from '@/utils/analyzePlantConfig';
 import MobileAnalysisResults from '@/components/plant-health/MobileAnalysisResults';
 import OnboardingTutorial from '@/components/plant-health/OnboardingTutorial';
 import AnalysisProgress from '@/components/plant-health/AnalysisProgress';
@@ -334,12 +335,16 @@ const PlantHealthAnalyzer = () => {
             if (uploadResponse.data?.publicUrl) imageUrls.push(uploadResponse.data.publicUrl);
           }
           if (imageUrls.length === 0) throw new Error('No images were successfully uploaded');
-          const analysisResponse = await supabase.functions.invoke('analyze-plant', {
+          const functionName = getAnalyzePlantFunctionName();
+          console.log('Making analysis request to function:', functionName);
+          const analysisResponse = await supabase.functions.invoke(functionName, {
             body: {
               imageUrls,
               userId: session?.user?.id || `anonymous-${Date.now()}`
             }
           });
+          console.log('Analysis response error:', analysisResponse.error);
+          console.log('Analysis response data keys:', Object.keys(analysisResponse.data || {}));
           if (analysisResponse.error || !analysisResponse.data?.success) {
             throw new Error(analysisResponse.error?.message || 'Analysis failed');
           }
@@ -446,12 +451,16 @@ const PlantHealthAnalyzer = () => {
       if (imageUrls.length === 0) {
         throw new Error('No images were successfully uploaded');
       }
-      const analysisResponse = await supabase.functions.invoke('analyze-plant', {
+      const functionName = getAnalyzePlantFunctionName();
+      console.log('Making manual analysis request to function:', functionName);
+      const analysisResponse = await supabase.functions.invoke(functionName, {
         body: {
           imageUrls,
           userId: session?.user?.id || `anonymous-${Date.now()}`
         }
       });
+      console.log('Manual analysis response error:', analysisResponse.error);
+      console.log('Manual analysis response data keys:', Object.keys(analysisResponse.data || {}));
       if (analysisResponse.error || !analysisResponse.data?.success) {
         throw new Error(analysisResponse.error?.message || 'Analysis failed');
       }
@@ -534,12 +543,16 @@ const PlantHealthAnalyzer = () => {
         if (imageUrls.length === 0) {
           throw new Error('No images were successfully uploaded');
         }
-        const analysisResponse = await supabase.functions.invoke('analyze-plant', {
+        const functionName = getAnalyzePlantFunctionName();
+        console.log('Making camera analysis request to function:', functionName);
+        const analysisResponse = await supabase.functions.invoke(functionName, {
           body: {
             imageUrls,
             userId: session?.user?.id || `anonymous-${Date.now()}`
           }
         });
+        console.log('Camera analysis response error:', analysisResponse.error);
+        console.log('Camera analysis response data keys:', Object.keys(analysisResponse.data || {}));
         if (analysisResponse.error || !analysisResponse.data?.success) {
           throw new Error(analysisResponse.error?.message || 'Analysis failed');
         }
