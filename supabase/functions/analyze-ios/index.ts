@@ -56,20 +56,21 @@ serve(async (req) => {
     // Use OpenAI Vision API for plant analysis (iOS-optimized)
     const analysisText = await analyzeWithVision(OPENAI_API_KEY, imageUrls, userProfileData);
     
-    // iOS-specific response format
-    const iosResponse = {
-      success: true,
-      analysis: {
-        summary: analysisText,
-        confidence: 0.85,
-        timestamp: new Date().toISOString()
-      }
+    // Return canonical format compatible with web app
+    const canonicalResponse = {
+      confidence: 0.85,
+      summary: analysisText,
+      growthStage: "Growth stage assessed",
+      healthScore: null,
+      specificIssues: [],
+      environmentalFindings: [],
+      recommendedActions: []
     };
 
-    console.log('analyze-ios response generated');
+    console.log('analyze-ios response generated (canonical format)');
     
     return new Response(
-      JSON.stringify(iosResponse),
+      JSON.stringify(canonicalResponse),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
@@ -77,9 +78,7 @@ serve(async (req) => {
     console.error('Error in analyze-ios function:', error);
     return new Response(
       JSON.stringify({
-        success: false,
-        error: error instanceof Error ? error.message : 'An error occurred during analysis',
-        timestamp: new Date().toISOString()
+        error: error instanceof Error ? error.message : 'An error occurred during analysis'
       }),
       { 
         status: 500,
