@@ -10,9 +10,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm ci",
-  "scripts": {
-    "build": "npm run build"
-  },
   "headers": [
     {
       "source": "/(.*)",
