@@ -1,8 +1,8 @@
 /**
  * Helper to get the plant analysis function name from environment variables
- * Defaults to 'analyze-ios' if not configured
+ * Web app always uses 'analyze-plant' for consistency
  */
 export const getAnalyzePlantFunctionName = (): string => {
-  // Check for Next.js style env var first, then fallback to default
-  return import.meta.env.NEXT_PUBLIC_ANALYZE_FN || 'analyze-ios';
+  // Web app should always use analyze-plant for production compatibility
+  return 'analyze-plant';
 };
