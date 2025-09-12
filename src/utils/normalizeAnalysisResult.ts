@@ -64,11 +64,16 @@ export function normalizeAnalysisResult(raw: any): CanonicalAnalysisResult {
     confidence = Math.min(Math.max(raw.confidence_level, 0), 1);
   }
   
-  // Extract growth stage
-  const growthStage = raw?.detailed_analysis?.growth_stage || 
+  // Extract growth stage with fallback to first sentence of summary
+  let growthStage = raw?.detailed_analysis?.growth_stage || 
                      raw?.growthStage || 
                      raw?.analysis?.growthStage || '';
   
+  // Fallback: infer a concise growth-stage line from the summary text if missing
+  if (!growthStage && summary) {
+    const m = summary.match(/^[^.!?]*[.!?]/);
+    growthStage = (m ? m[0] : summary.split(' ').slice(0, 15).join(' ') + '...').trim();
+  }
   // Extract health score
   const healthScore = typeof raw?.detailed_analysis?.health_score === 'number' ? raw.detailed_analysis.health_score :
                      typeof raw?.healthScore === 'number' ? raw.healthScore : null;

@@ -81,6 +81,12 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
   const growthStageFirstSentence = getFirstSentence(growthStage);
   const growthStageRemainingText = getRemainingText(growthStage);
   
+  // Prefer a concise summary line if available, else fall back to growth stage
+  const summaryFirstSentence = getFirstSentence(normalizedResult.summary);
+  const primarySummaryLine = (normalizedResult.summary && normalizedResult.summary.trim().length > 0)
+    ? summaryFirstSentence
+    : growthStageFirstSentence;
+  
   const healthScoreFirstSentence = getFirstSentence(typeof healthScore === 'string' ? healthScore : 'Health assessment completed');
   const healthScoreRemainingText = getRemainingText(typeof healthScore === 'string' ? healthScore : '');
 
@@ -139,7 +145,7 @@ const AnalysisResults = ({ analysisResult }: AnalysisResultsProps) => {
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <Leaf className="text-green-400 w-5 h-5 mt-1 flex-shrink-0" />
-                <p className="text-gray-300 leading-relaxed">{growthStageFirstSentence}</p>
+                <p className="text-gray-300 leading-relaxed">{primarySummaryLine}</p>
               </div>
               <div className="flex items-start gap-3">
                 <Heart className="text-blue-400 w-5 h-5 mt-1 flex-shrink-0" />
