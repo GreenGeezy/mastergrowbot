@@ -116,6 +116,64 @@ const PlantHealthAnalyzer = () => {
     };
   }, [isLoading, slideshowMessages.length]);
 
+  // Helper function to normalize analysis payload from backend response
+  const normalizeAnalysisPayload = (data: any): StructuredAnalysisResult => {
+    console.log("=== Analysis payload normalization ===");
+    console.log("Data keys:", Object.keys(data || {}));
+    
+    // Branch 1: Prefer data.result fields (unified response format)
+    if (data.result && typeof data.result === 'object') {
+      console.log("Normalizer branch used: result");
+      console.log("Result keys:", Object.keys(data.result));
+      
+      const diagnosis = data.diagnosis || data.result.summary || "Analysis completed successfully!";
+      console.log("Diagnosis preview:", diagnosis.substring(0, 120));
+      
+      // Normalize confidence to 0-1 range
+      let confidence = data.result.confidence || 0.95;
+      if (confidence > 1) confidence = confidence / 100;
+      
+      return {
+        diagnosis,
+        confidence_level: confidence,
+        detailed_analysis: {
+          growth_stage: data.result.growthStage || "Growth stage analysis",
+          health_score: data.result.healthScore || "Health assessment",
+          specific_issues: data.result.specificIssues || "No specific issues detected",
+          environmental_factors: data.result.environmentalFindings || "Environmental conditions optimal"
+        },
+        recommended_actions: data.result.recommendedActions || ["Continue current care routine"]
+      };
+    }
+    
+    // Branch 2: Check if data.analysis is already structured (from analyze-ios)
+    if (data.analysis && typeof data.analysis === 'object' && data.analysis.detailed_analysis) {
+      console.log("Normalizer branch used: structured");
+      
+      const diagnosis = data.diagnosis || data.analysis.diagnosis || "Analysis completed successfully!";
+      console.log("Diagnosis preview:", diagnosis.substring(0, 120));
+      
+      // Ensure confidence is in 0-1 range
+      let confidence = data.analysis.confidence_level || data.confidence_level || 0.95;
+      if (confidence > 1) confidence = confidence / 100;
+      
+      return {
+        ...data.analysis,
+        diagnosis,
+        confidence_level: confidence
+      };
+    }
+    
+    // Branch 3: Fallback to text parsing
+    console.log("Normalizer branch used: text");
+    const textContent = data.diagnosis || data.result?.summary || data.analysis?.summary || 
+                       (typeof data.analysis === 'string' ? data.analysis : JSON.stringify(data.analysis || {}));
+    console.log("Text content preview:", textContent.substring(0, 120));
+    
+    const confidence = data.confidence_level || data.result?.confidence || 0.95;
+    return parseAnalysisText(textContent, confidence > 1 ? confidence / 100 : confidence);
+  };
+
   // Helper function to parse analysis text into structured data
   const parseAnalysisText = (analysisText: string, confidence: number): StructuredAnalysisResult => {
     console.log("Parsing analysis text:", analysisText.substring(0, 500));
@@ -357,9 +415,7 @@ const PlantHealthAnalyzer = () => {
           if (analysisResponse.error || (!hasSuccessFlag && !hasCanonicalKeys)) {
             throw new Error(analysisResponse.error?.message || 'Analysis failed');
           }
-          let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
-          if (typeof analysisText !== 'string') analysisText = JSON.stringify(analysisText, null, 2);
-          const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
+          const structuredResult = normalizeAnalysisPayload(analysisResponse.data);
           setAnalysisResult(structuredResult);
           toast.success("Plant analysis complete!");
           if (session?.user?.id) {
@@ -367,7 +423,7 @@ const PlantHealthAnalyzer = () => {
               user_id: session.user.id,
               image_url: imageUrls[0],
               image_urls: imageUrls,
-              diagnosis: analysisText,
+           diagnosis: structuredResult.diagnosis,
               confidence_level: analysisResponse.data.confidence_level || 0.95,
               detailed_analysis: analysisResponse.data.detailed_analysis || {},
               recommended_actions: analysisResponse.data.recommended_actions || []
@@ -482,11 +538,7 @@ const PlantHealthAnalyzer = () => {
           if (analysisResponse.error || (!hasSuccessFlag && !hasCanonicalKeys)) {
             throw new Error(analysisResponse.error?.message || 'Analysis failed');
           }
-      let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
-      if (typeof analysisText !== 'string') {
-        analysisText = JSON.stringify(analysisText, null, 2);
-      }
-      const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
+      const structuredResult = normalizeAnalysisPayload(analysisResponse.data);
       setAnalysisResult(structuredResult);
       haptic.success();
       toast.success("Plant analysis complete!");
@@ -495,7 +547,7 @@ const PlantHealthAnalyzer = () => {
           user_id: session.user.id,
           image_url: imageUrls[0],
           image_urls: imageUrls,
-          diagnosis: analysisText,
+           diagnosis: structuredResult.diagnosis,
           confidence_level: analysisResponse.data.confidence_level || 0.95,
           detailed_analysis: analysisResponse.data.detailed_analysis || {},
           recommended_actions: analysisResponse.data.recommended_actions || []
@@ -583,11 +635,7 @@ const PlantHealthAnalyzer = () => {
         if (analysisResponse.error || (!hasSuccessFlag && !hasCanonicalKeys)) {
           throw new Error(analysisResponse.error?.message || 'Analysis failed');
         }
-        let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
-        if (typeof analysisText !== 'string') {
-          analysisText = JSON.stringify(analysisText, null, 2);
-        }
-        const structuredResult = parseAnalysisText(analysisText, analysisResponse.data.confidence_level || 0.95);
+        const structuredResult = normalizeAnalysisPayload(analysisResponse.data);
         setAnalysisResult(structuredResult);
         haptic.success();
         toast.success("Plant analysis complete!");
@@ -596,7 +644,7 @@ const PlantHealthAnalyzer = () => {
             user_id: session.user.id,
             image_url: imageUrls[0],
             image_urls: imageUrls,
-            diagnosis: analysisText,
+            diagnosis: structuredResult.diagnosis,
             confidence_level: analysisResponse.data.confidence_level || 0.95,
             detailed_analysis: analysisResponse.data.detailed_analysis || {},
             recommended_actions: analysisResponse.data.recommended_actions || []
