@@ -13,46 +13,75 @@ import { normalizeAnalysisResult } from '@/utils/normalizeAnalysisResult';
 
 // Helper to normalize analysis payload from backend response
 const normalizeAnalysisPayload = (data: any) => {
-  console.log('Normalizer input data keys:', Object.keys(data || {}));
+  console.log('🔍 Normalizer input data:', JSON.stringify(data, null, 2));
+  console.log('📊 Input data keys:', Object.keys(data || {}));
   
   // Branch 1: Use data.result if available (preferred from unified backend)
   if (data?.result) {
-    console.log('Normalizer branch used: result');
+    console.log('✅ Normalizer branch used: result');
     const r = data.result;
-    const diagnosis = data.diagnosis || r.summary || 'Analysis completed';
-    console.log('Diagnosis preview:', diagnosis.substring(0, 120));
+    const diagnosis = data.diagnosis || r.summary || r.diagnosis || 'Analysis completed';
+    console.log('📝 Diagnosis found:', diagnosis?.substring(0, 120));
     
     return {
       diagnosis,
       confidence_level: r.confidence > 1 ? r.confidence / 100 : (r.confidence || 0.95),
       detailed_analysis: {
-        growth_stage: r.growthStage || 'Not specified',
-        health_score: r.healthScore || null,
-        specific_issues: Array.isArray(r.specificIssues) ? r.specificIssues.join('; ') : '',
-        environmental_factors: Array.isArray(r.environmentalFindings) ? r.environmentalFindings.join('; ') : ''
+        growth_stage: r.growthStage || r.growth_stage || 'Not specified',
+        health_score: r.healthScore || r.health_score || null,
+        specific_issues: Array.isArray(r.specificIssues) ? r.specificIssues.join('; ') : 
+                        Array.isArray(r.specific_issues) ? r.specific_issues.join('; ') : 
+                        typeof r.specificIssues === 'string' ? r.specificIssues : 
+                        typeof r.specific_issues === 'string' ? r.specific_issues : '',
+        environmental_factors: Array.isArray(r.environmentalFindings) ? r.environmentalFindings.join('; ') : 
+                              Array.isArray(r.environmental_factors) ? r.environmental_factors.join('; ') :
+                              typeof r.environmentalFindings === 'string' ? r.environmentalFindings :
+                              typeof r.environmental_factors === 'string' ? r.environmental_factors : ''
       },
-      recommended_actions: Array.isArray(r.recommendedActions) ? r.recommendedActions : []
+      recommended_actions: Array.isArray(r.recommendedActions) ? r.recommendedActions : 
+                          Array.isArray(r.recommended_actions) ? r.recommended_actions :
+                          typeof r.recommendedActions === 'string' ? [r.recommendedActions] :
+                          typeof r.recommended_actions === 'string' ? [r.recommended_actions] : []
     };
   }
   
-  // Branch 2: Use data.analysis if already structured
-  if (data?.analysis && typeof data.analysis === 'object' && data.analysis.detailed_analysis) {
-    console.log('Normalizer branch used: structured');
-    const diagnosis = data.diagnosis || data.analysis.diagnosis || 'Analysis completed';
-    console.log('Diagnosis preview:', diagnosis.substring(0, 120));
+  // Branch 2: Direct analysis object from backend
+  if (data?.analysis && typeof data.analysis === 'object') {
+    console.log('✅ Normalizer branch used: analysis object');
+    const a = data.analysis;
+    const diagnosis = data.diagnosis || a.diagnosis || a.summary || 'Analysis completed';
+    console.log('📝 Diagnosis found:', diagnosis?.substring(0, 120));
+    
+    // Handle both nested detailed_analysis and flat structure
+    const detailedAnalysis = a.detailed_analysis || a;
     
     return {
-      ...data.analysis,
       diagnosis,
-      confidence_level: data.analysis.confidence_level > 1 ? data.analysis.confidence_level / 100 : (data.analysis.confidence_level || 0.95)
+      confidence_level: a.confidence_level > 1 ? a.confidence_level / 100 : (a.confidence_level || a.confidence || 0.95),
+      detailed_analysis: {
+        growth_stage: detailedAnalysis.growth_stage || detailedAnalysis.growthStage || 'Not specified',
+        health_score: detailedAnalysis.health_score || detailedAnalysis.healthScore || null,
+        specific_issues: typeof detailedAnalysis.specific_issues === 'string' ? detailedAnalysis.specific_issues :
+                        Array.isArray(detailedAnalysis.specific_issues) ? detailedAnalysis.specific_issues.join('; ') :
+                        typeof detailedAnalysis.specificIssues === 'string' ? detailedAnalysis.specificIssues :
+                        Array.isArray(detailedAnalysis.specificIssues) ? detailedAnalysis.specificIssues.join('; ') : '',
+        environmental_factors: typeof detailedAnalysis.environmental_factors === 'string' ? detailedAnalysis.environmental_factors :
+                              Array.isArray(detailedAnalysis.environmental_factors) ? detailedAnalysis.environmental_factors.join('; ') :
+                              typeof detailedAnalysis.environmentalFindings === 'string' ? detailedAnalysis.environmentalFindings :
+                              Array.isArray(detailedAnalysis.environmentalFindings) ? detailedAnalysis.environmentalFindings.join('; ') : ''
+      },
+      recommended_actions: Array.isArray(a.recommended_actions) ? a.recommended_actions :
+                          Array.isArray(a.recommendedActions) ? a.recommendedActions :
+                          typeof a.recommended_actions === 'string' ? [a.recommended_actions] :
+                          typeof a.recommendedActions === 'string' ? [a.recommendedActions] : []
     };
   }
   
   // Branch 3: Parse from text (fallback)
-  console.log('Normalizer branch used: text');
+  console.log('⚠️ Normalizer branch used: text fallback');
   const text = data.diagnosis || data.result?.summary || data.analysis?.summary || 
                (typeof data.analysis === 'string' ? data.analysis : JSON.stringify(data.analysis || {}));
-  console.log('Text to parse preview:', text.substring(0, 120));
+  console.log('📄 Text to parse:', text?.substring(0, 120));
   
   const normalized = normalizeAnalysisResult({ diagnosis: text, confidence: 0.95 });
   return {
