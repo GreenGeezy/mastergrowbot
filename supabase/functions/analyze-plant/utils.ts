@@ -46,9 +46,27 @@ export function createCorsHeaders(origin: string | null): Record<string, string>
 // Helper function to extract sections from the analysis text
 export function extractSection(text: string, sectionTitle: string): string {
   try {
-    const pattern = new RegExp(`${sectionTitle}\\s*:?\\s*([^\\n]*(\\n(?!\\w+\\s*:)[^\\n]*)*)`, 'i');
-    const match = text.match(pattern);
-    return match ? match[1].trim() : '';
+    // Handle markdown formatting like "**Growth Stage & Development:**"
+    const cleanTitle = sectionTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    
+    // More robust pattern to capture multi-line content including bullet points
+    const patterns = [
+      // Pattern for markdown headers like "**Growth Stage & Development:**"
+      new RegExp(`\\*\\*${cleanTitle}[^*]*\\*\\*\\s*([\\s\\S]*?)(?=\\n\\*\\*|$)`, 'i'),
+      // Pattern for regular headers like "Growth Stage:"
+      new RegExp(`${cleanTitle}\\s*:?\\s*([\\s\\S]*?)(?=\\n\\w+[\\s&]*:|\n\n|$)`, 'i'),
+      // Fallback pattern for partial matches
+      new RegExp(`${cleanTitle}[^\\n]*\\n([\\s\\S]*?)(?=\\n[A-Z]|$)`, 'i')
+    ];
+    
+    for (const pattern of patterns) {
+      const match = text.match(pattern);
+      if (match && match[1] && match[1].trim()) {
+        return match[1].trim();
+      }
+    }
+    
+    return '';
   } catch (e) {
     console.error(`Error extracting ${sectionTitle}:`, e);
     return '';
@@ -58,17 +76,27 @@ export function extractSection(text: string, sectionTitle: string): string {
 // Helper function to extract recommended actions as an array
 export function extractRecommendations(text: string): string[] {
   try {
-    const recommendationsSection = extractSection(text, "Recommended Actions");
+    // Try multiple section titles for recommendations
+    const sectionTitles = ["Actionable Recommendations", "Recommended Actions", "Recommendations"];
+    let recommendationsSection = '';
+    
+    for (const title of sectionTitles) {
+      recommendationsSection = extractSection(text, title);
+      if (recommendationsSection) break;
+    }
     
     if (!recommendationsSection) {
       return [];
     }
     
-    // Split by lines and bullet points
-    return recommendationsSection
-      .split(/[\n•\-*]+/)
+    // Split by bullet points and lines, handle various formats
+    const recommendations = recommendationsSection
+      .split(/[\n•\-*\d+\.]+/)
       .map(line => line.trim())
-      .filter(line => line.length > 0);
+      .filter(line => line.length > 10) // Filter out very short lines
+      .slice(0, 10); // Limit to reasonable number
+    
+    return recommendations.length > 0 ? recommendations : [];
   } catch (e) {
     console.error('Error extracting recommendations:', e);
     return [];
@@ -102,32 +130,46 @@ export function createErrorResponse(error: unknown, origin: string | null = null
 
 // Parses and structures analysis results to match AnalysisResults.tsx interface
 export function parseAnalysisResults(analysisText: string): any {
-  // Extract sections with better fallbacks
-  const growthStage = extractSection(analysisText, "Growth Stage") || 
+  console.log('Raw analysis text:', analysisText.substring(0, 500) + '...');
+  
+  // Extract sections with multiple fallback titles
+  const growthStage = extractSection(analysisText, "Growth Stage & Development") || 
+                     extractSection(analysisText, "Growth Stage") || 
                      extractSection(analysisText, "Growth") || 
                      "Growth stage information not available";
                      
-  const healthScore = extractSection(analysisText, "Health Score") || 
-                     extractSection(analysisText, "Health") || 
-                     "Health score information not available";
+  const healthScore = extractSection(analysisText, "Health Assessment") || 
+                     extractSection(analysisText, "Health Score") || 
+                     extractSection(analysisText, "Overall Health") ||
+                     "Health assessment not available";
                      
-  const specificIssues = extractSection(analysisText, "Specific Issues") || 
+  const specificIssues = extractSection(analysisText, "Issue Identification") || 
+                        extractSection(analysisText, "Specific Issues") || 
                         extractSection(analysisText, "Issues") || 
                         extractSection(analysisText, "Problems") || 
                         "No specific issues identified";
                         
-  const environmentalFactors = extractSection(analysisText, "Environmental Factors") || 
+  const environmentalFactors = extractSection(analysisText, "Environmental Analysis") || 
+                              extractSection(analysisText, "Environmental Factors") || 
                               extractSection(analysisText, "Environmental") || 
-                              extractSection(analysisText, "Environment") || 
-                              "Environmental factors not analyzed";
+                              "Environmental analysis not available";
                               
   const recommendedActions = extractRecommendations(analysisText);
+  
+  // Log extracted sections for debugging
+  console.log('Extracted sections:', {
+    growthStage: growthStage.substring(0, 100),
+    healthScore: healthScore.substring(0, 100),
+    specificIssues: specificIssues.substring(0, 100),
+    environmentalFactors: environmentalFactors.substring(0, 100),
+    recommendedActionsCount: recommendedActions.length
+  });
   
   // Ensure we always have an array of recommendations with meaningful defaults
   let finalRecommendations: string[] = [];
   if (Array.isArray(recommendedActions) && recommendedActions.length > 0) {
     finalRecommendations = recommendedActions.filter(action => 
-      action && typeof action === 'string' && action.trim().length > 0
+      action && typeof action === 'string' && action.trim().length > 10
     );
   }
   
@@ -141,7 +183,7 @@ export function parseAnalysisResults(analysisText: string): any {
   }
 
   // Construct analysis response matching AnalysisResults.tsx interface exactly
-  return {
+  const result = {
     diagnosis: analysisText || "Analysis completed successfully",
     confidence_level: 0.95, // Convert to 0-1 decimal as expected by Progress component
     detailed_analysis: {
@@ -152,4 +194,7 @@ export function parseAnalysisResults(analysisText: string): any {
     },
     recommended_actions: finalRecommendations
   };
+  
+  console.log('Parsed analysis result:', result);
+  return result;
 }
