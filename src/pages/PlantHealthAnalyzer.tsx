@@ -16,6 +16,42 @@ const normalizeAnalysisPayload = (data: any) => {
   console.log('🔍 Normalizer input data:', JSON.stringify(data, null, 2));
   console.log('📊 Input data keys:', Object.keys(data || {}));
   
+  // Branch 0: Canonical flat payload from Edge Function
+  if (data && (data.summary !== undefined || data.diagnosis !== undefined) && (data.growthStage !== undefined || data.growth_stage !== undefined)) {
+    console.log('✅ Normalizer branch used: canonical flat');
+    const summary = data.summary || data.diagnosis || 'Analysis completed';
+    const confidence = typeof data.confidence === 'number' ? (data.confidence > 1 ? data.confidence / 100 : data.confidence) : 0.95;
+    const growthStage = data.growthStage || data.growth_stage || 'Not specified';
+    const healthScore = typeof data.healthScore === 'number' ? data.healthScore : (typeof data.health_score === 'number' ? data.health_score : null);
+
+    const specificIssuesArr = Array.isArray(data.specificIssues) ? data.specificIssues :
+                              Array.isArray(data.specific_issues) ? data.specific_issues :
+                              typeof data.specificIssues === 'string' ? [data.specificIssues] :
+                              typeof data.specific_issues === 'string' ? [data.specific_issues] : [];
+
+    const environmentalArr = Array.isArray(data.environmentalFindings) ? data.environmentalFindings :
+                             Array.isArray(data.environmental_factors) ? data.environmental_factors :
+                             typeof data.environmentalFindings === 'string' ? [data.environmentalFindings] :
+                             typeof data.environmental_factors === 'string' ? [data.environmental_factors] : [];
+
+    const recommendedArr = Array.isArray(data.recommendedActions) ? data.recommendedActions :
+                           Array.isArray(data.recommended_actions) ? data.recommended_actions :
+                           typeof data.recommendedActions === 'string' ? [data.recommendedActions] :
+                           typeof data.recommended_actions === 'string' ? [data.recommended_actions] : [];
+
+    return {
+      diagnosis: summary,
+      confidence_level: confidence,
+      detailed_analysis: {
+        growth_stage: growthStage,
+        health_score: healthScore,
+        specific_issues: specificIssuesArr.join('; '),
+        environmental_factors: environmentalArr.join('; ')
+      },
+      recommended_actions: recommendedArr
+    };
+  }
+  
   // Branch 1: Use data.result if available (preferred from unified backend)
   if (data?.result) {
     console.log('✅ Normalizer branch used: result');
