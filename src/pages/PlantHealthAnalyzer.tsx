@@ -11,6 +11,63 @@ import { Loader2 } from 'lucide-react';
 import { getAnalyzePlantFunctionName } from '@/utils/analyzePlantConfig';
 import { normalizeAnalysisResult } from '@/utils/normalizeAnalysisResult';
 
+// Helper to normalize analysis payload from backend response
+const normalizeAnalysisPayload = (data: any) => {
+  console.log('Normalizer input data keys:', Object.keys(data || {}));
+  
+  // Branch 1: Use data.result if available (preferred from unified backend)
+  if (data?.result) {
+    console.log('Normalizer branch used: result');
+    const r = data.result;
+    const diagnosis = data.diagnosis || r.summary || 'Analysis completed';
+    console.log('Diagnosis preview:', diagnosis.substring(0, 120));
+    
+    return {
+      diagnosis,
+      confidence_level: r.confidence > 1 ? r.confidence / 100 : (r.confidence || 0.95),
+      detailed_analysis: {
+        growth_stage: r.growthStage || 'Not specified',
+        health_score: r.healthScore || null,
+        specific_issues: Array.isArray(r.specificIssues) ? r.specificIssues.join('; ') : '',
+        environmental_factors: Array.isArray(r.environmentalFindings) ? r.environmentalFindings.join('; ') : ''
+      },
+      recommended_actions: Array.isArray(r.recommendedActions) ? r.recommendedActions : []
+    };
+  }
+  
+  // Branch 2: Use data.analysis if already structured
+  if (data?.analysis && typeof data.analysis === 'object' && data.analysis.detailed_analysis) {
+    console.log('Normalizer branch used: structured');
+    const diagnosis = data.diagnosis || data.analysis.diagnosis || 'Analysis completed';
+    console.log('Diagnosis preview:', diagnosis.substring(0, 120));
+    
+    return {
+      ...data.analysis,
+      diagnosis,
+      confidence_level: data.analysis.confidence_level > 1 ? data.analysis.confidence_level / 100 : (data.analysis.confidence_level || 0.95)
+    };
+  }
+  
+  // Branch 3: Parse from text (fallback)
+  console.log('Normalizer branch used: text');
+  const text = data.diagnosis || data.result?.summary || data.analysis?.summary || 
+               (typeof data.analysis === 'string' ? data.analysis : JSON.stringify(data.analysis || {}));
+  console.log('Text to parse preview:', text.substring(0, 120));
+  
+  const normalized = normalizeAnalysisResult({ diagnosis: text, confidence: 0.95 });
+  return {
+    diagnosis: normalized.summary,
+    confidence_level: normalized.confidence,
+    detailed_analysis: {
+      growth_stage: normalized.growthStage,
+      health_score: normalized.healthScore,
+      specific_issues: normalized.specificIssues.join('; '),
+      environmental_factors: normalized.environmentalFindings.join('; ')
+    },
+    recommended_actions: normalized.recommendedActions
+  };
+};
+
 const PlantHealthAnalyzer = () => {
   const session = useSession();
   const { toast } = useToast();
@@ -113,12 +170,12 @@ const PlantHealthAnalyzer = () => {
         console.log('RAW_RESULT_KEYS', Object.keys(data || {}));
       }
 
-      // Normalize the analysis result immediately
-      const normalizedResult = normalizeAnalysisResult(data);
+      // Use the new normalizer that prioritizes data.result
+      const structuredResult = normalizeAnalysisPayload(data);
       
       // Development debugging logs
       if (import.meta.env.MODE !== 'production') {
-        console.log('NORMALIZED_RESULT_KEYS', Object.keys(normalizedResult || {}));
+        console.log('STRUCTURED_RESULT_KEYS', Object.keys(structuredResult || {}));
       }
       
       // Track if profile data was used
@@ -131,15 +188,10 @@ const PlantHealthAnalyzer = () => {
           user_id: session?.user?.id,
           image_url: imageUrls[0], // Keep first image as primary
           image_urls: imageUrls, // Store all images
-          diagnosis: normalizedResult.summary,
-          confidence_level: normalizedResult.confidence,
-          detailed_analysis: {
-            growth_stage: normalizedResult.growthStage,
-            health_score: normalizedResult.healthScore,
-            specific_issues: (normalizedResult.specificIssues || []).join('; '),
-            environmental_factors: (normalizedResult.environmentalFindings || []).join('; ')
-          },
-          recommended_actions: normalizedResult.recommendedActions || [],
+          diagnosis: structuredResult.diagnosis,
+          confidence_level: structuredResult.confidence_level,
+          detailed_analysis: structuredResult.detailed_analysis,
+          recommended_actions: structuredResult.recommended_actions,
         })
         .select()
         .single();
@@ -151,10 +203,9 @@ const PlantHealthAnalyzer = () => {
 
       console.log('Analysis saved to database:', savedAnalysis);
       
-      // CRITICAL FIX: Set analysis result from normalized data with database ID for sharing
-      // This ensures UI displays content from function result, not potentially missing DB fields
+      // Set analysis result from structured data with database ID for sharing
       const displayResult = {
-        ...normalizedResult,
+        ...structuredResult,
         // Merge essential database fields for sharing functionality
         id: savedAnalysis.id,
         image_urls: imageUrls,
