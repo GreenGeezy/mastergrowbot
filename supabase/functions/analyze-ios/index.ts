@@ -303,14 +303,25 @@ serve(async (req) => {
       console.log('Total analysis time:', totalTime, 'ms');
       console.log('=== ANALYZE IOS FUNCTION SUCCESS ===');
 
-      // Return successful response with CORS headers
+      // Return successful response with CORS headers and backward compatibility
       return new Response(
         JSON.stringify({ 
+          // New unified response format
+          success: true,
+          result: {
+            confidence: analysisResult.confidence_level || 0.95,
+            summary: analysisResult.diagnosis || analysisText,
+            growthStage: analysisResult.detailed_analysis?.growth_stage || "Analysis completed",
+            healthScore: analysisResult.detailed_analysis?.health_score || "Health assessment completed", 
+            specificIssues: analysisResult.detailed_analysis?.specific_issues || "No critical issues identified",
+            environmentalFindings: analysisResult.detailed_analysis?.environmental_factors || "Environmental conditions assessed",
+            recommendedActions: analysisResult.recommended_actions || ["Monitor plant regularly", "Maintain consistent care", "Check for changes"]
+          },
+          // Legacy canonical keys for backward compatibility with main branch
           analysis: analysisResult, 
           diagnosis: analysisText,
           profileUsed: !!userProfileData,
-          processingTime: totalTime,
-          success: true
+          processingTime: totalTime
         }),
         { 
           status: 200,

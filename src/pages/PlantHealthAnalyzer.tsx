@@ -345,7 +345,16 @@ const PlantHealthAnalyzer = () => {
           });
           console.log('Analysis response error:', analysisResponse.error);
           console.log('Analysis response data keys:', Object.keys(analysisResponse.data || {}));
-          if (analysisResponse.error || !analysisResponse.data?.success) {
+          
+          // Tolerant success check: accept either success flag OR canonical keys
+          const hasSuccessFlag = analysisResponse.data?.success === true;
+          const hasCanonicalKeys = analysisResponse.data && (
+            analysisResponse.data.analysis || 
+            analysisResponse.data.diagnosis ||
+            (analysisResponse.data.result && typeof analysisResponse.data.result === 'object')
+          );
+          
+          if (analysisResponse.error || (!hasSuccessFlag && !hasCanonicalKeys)) {
             throw new Error(analysisResponse.error?.message || 'Analysis failed');
           }
           let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
@@ -459,11 +468,20 @@ const PlantHealthAnalyzer = () => {
           userId: session?.user?.id || `anonymous-${Date.now()}`
         }
       });
-      console.log('Manual analysis response error:', analysisResponse.error);
-      console.log('Manual analysis response data keys:', Object.keys(analysisResponse.data || {}));
-      if (analysisResponse.error || !analysisResponse.data?.success) {
-        throw new Error(analysisResponse.error?.message || 'Analysis failed');
-      }
+          console.log('Manual analysis response error:', analysisResponse.error);
+          console.log('Manual analysis response data keys:', Object.keys(analysisResponse.data || {}));
+          
+          // Tolerant success check: accept either success flag OR canonical keys  
+          const hasSuccessFlag = analysisResponse.data?.success === true;
+          const hasCanonicalKeys = analysisResponse.data && (
+            analysisResponse.data.analysis || 
+            analysisResponse.data.diagnosis ||
+            (analysisResponse.data.result && typeof analysisResponse.data.result === 'object')
+          );
+          
+          if (analysisResponse.error || (!hasSuccessFlag && !hasCanonicalKeys)) {
+            throw new Error(analysisResponse.error?.message || 'Analysis failed');
+          }
       let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";
       if (typeof analysisText !== 'string') {
         analysisText = JSON.stringify(analysisText, null, 2);
@@ -553,7 +571,16 @@ const PlantHealthAnalyzer = () => {
         });
         console.log('Camera analysis response error:', analysisResponse.error);
         console.log('Camera analysis response data keys:', Object.keys(analysisResponse.data || {}));
-        if (analysisResponse.error || !analysisResponse.data?.success) {
+        
+        // Tolerant success check: accept either success flag OR canonical keys
+        const hasSuccessFlag = analysisResponse.data?.success === true;
+        const hasCanonicalKeys = analysisResponse.data && (
+          analysisResponse.data.analysis || 
+          analysisResponse.data.diagnosis ||
+          (analysisResponse.data.result && typeof analysisResponse.data.result === 'object')
+        );
+        
+        if (analysisResponse.error || (!hasSuccessFlag && !hasCanonicalKeys)) {
           throw new Error(analysisResponse.error?.message || 'Analysis failed');
         }
         let analysisText = analysisResponse.data.analysis || "Analysis completed successfully!";

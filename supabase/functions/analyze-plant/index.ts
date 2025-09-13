@@ -232,14 +232,25 @@ serve(async (req) => {
       console.log('Total analysis time:', totalTime, 'ms');
       console.log('=== ANALYZE PLANT FUNCTION SUCCESS ===');
 
-      // Return successful response with CORS headers
+      // Return successful response with CORS headers and backward compatibility
       return new Response(
         JSON.stringify({ 
+          // New unified response format
+          success: true,
+          result: {
+            confidence: analysisResult.confidence || 0.9,
+            summary: analysisResult.summary || analysisText,
+            growthStage: analysisResult.growth_stage || "Analysis completed",
+            healthScore: analysisResult.health_score || "Health assessment completed",
+            specificIssues: analysisResult.specific_issues || "No critical issues identified",
+            environmentalFindings: analysisResult.environmental_factors || "Environmental conditions assessed", 
+            recommendedActions: analysisResult.recommended_actions || ["Monitor plant regularly", "Maintain consistent care", "Check for changes"]
+          },
+          // Legacy canonical keys for backward compatibility with main branch
           analysis: analysisResult, 
           diagnosis: analysisText,
           profileUsed: !!userProfileData,
-          processingTime: totalTime,
-          success: true
+          processingTime: totalTime
         }),
         { 
           status: 200,

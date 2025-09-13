@@ -1,8 +1,11 @@
 /**
  * Helper to get the plant analysis function name from environment variables
- * Web app always uses 'analyze-plant' for consistency
+ * Supports Vite-style environment variables with fallback to analyze-plant
  */
 export const getAnalyzePlantFunctionName = (): string => {
-  // Web app should always use analyze-plant for production compatibility
-  return 'analyze-plant';
+  // Check for Vite-style environment variable first
+  const envFunctionName = import.meta.env.VITE_ANALYZE_FN;
+  
+  // Default to analyze-plant for consistency across branches
+  return envFunctionName || 'analyze-plant';
 };
