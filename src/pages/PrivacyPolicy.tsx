@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
               alt="Master Growbot Logo" 
               className="w-10 h-10" 
             />
-            <span className="font-bold text-xl text-primary">Master Growbot</span>
+            <span className="font-bold text-xl text-white">Master Growbot</span>
           </Link>
           <Link to="/">
             <Button variant="outline">Return Home</Button>
@@ -27,12 +27,12 @@ const PrivacyPolicy = () => {
       {/* Content */}
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-8">
         <div className="bg-card border rounded-lg shadow-lg p-6 md:p-8">
-          <h1 className="text-3xl font-bold mb-6 text-primary border-b pb-2">Privacy Policy</h1>
+          <h1 className="text-3xl font-bold mb-6 text-white border-b pb-2">Privacy Policy</h1>
           
           <div className="space-y-6">
               {/* Introduction */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Introduction</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Introduction</h2>
                 <p>
                   Welcome to Master Growbot's Privacy Policy. Master Growbot is an AI-powered cannabis cultivation 
                   platform designed to help users grow better and improve their cultivation practices through 
@@ -43,7 +43,7 @@ const PrivacyPolicy = () => {
               
               {/* iOS App Coverage */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">iOS App Coverage</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">iOS App Coverage</h2>
                 <p>
                   This Privacy Policy also applies to the MasterGrowbot AI iOS app available on the Apple App Store. 
                   It explains how user data—including photos, identifiers, and analytics—is collected, processed, 
@@ -53,7 +53,7 @@ const PrivacyPolicy = () => {
               
               {/* Information Collection */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Information Collection</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Information Collection</h2>
                 <p className="mb-2">We collect the following types of information:</p>
                 
                 <h3 className="text-xl font-medium mt-4 mb-2">Cultivation-Related Information</h3>
@@ -85,7 +85,7 @@ const PrivacyPolicy = () => {
               
               {/* Photo Uploads & AI Analysis */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Photo Uploads & AI Analysis</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Photo Uploads & AI Analysis</h2>
                 <p>
                   When you upload plant images through the app or web interface, we store them securely, run 
                   AI-based diagnostics, and may retain them for up to 365 days unless you request deletion. 
@@ -95,7 +95,7 @@ const PrivacyPolicy = () => {
               
               {/* Use of Information */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Use of Information</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Use of Information</h2>
                 <p className="mb-2">We use your information for the following purposes:</p>
                 <ul className="list-disc pl-6 space-y-1">
                   <li>Providing and maintaining our services</li>
@@ -111,7 +111,7 @@ const PrivacyPolicy = () => {
               
               {/* Sharing of Information */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Sharing of Information</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Sharing of Information</h2>
                 <p className="mb-3">
                   We may share your information with the following third parties:
                 </p>
@@ -140,7 +140,7 @@ const PrivacyPolicy = () => {
               
               {/* Data Security */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Data Security</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Data Security</h2>
                 <p>
                   We implement appropriate technical and organizational measures to protect your data, including:
                 </p>
@@ -159,7 +159,7 @@ const PrivacyPolicy = () => {
               
               {/* User Rights - UPDATED SECTION */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">User Rights</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">User Rights</h2>
                 <p className="mb-3">
                   Depending on your location, you may have certain rights regarding your data:
                 </p>
@@ -181,7 +181,7 @@ const PrivacyPolicy = () => {
               
               {/* Data Deletion & Retention */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Data Deletion & Retention</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Data Deletion & Retention</h2>
                 <p>
                   Users may request deletion of their personal data or analysis history at any time by contacting 
                   support@futuristiccannabis.ai or through the in-app settings. Upon verified request, data will 
@@ -191,7 +191,7 @@ const PrivacyPolicy = () => {
               
               {/* Children's Privacy */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Children's Privacy</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Children's Privacy</h2>
                 <p>
                   Master Growbot is not intended for children under the age of 18. We do not knowingly 
                   collect personal information from individuals under 18 years of age. If we discover 
@@ -202,7 +202,7 @@ const PrivacyPolicy = () => {
               
               {/* Third-Party Links */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Third-Party Links</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Third-Party Links</h2>
                 <p>
                   Our service may contain links to third-party websites or services that are not owned 
                   or controlled by Master Growbot. We have no control over and assume no responsibility 
@@ -213,7 +213,7 @@ const PrivacyPolicy = () => {
               
               {/* Changes to This Policy */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Changes to This Policy</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Changes to This Policy</h2>
                 <p>
                   We may update our Privacy Policy from time to time. We will notify you of any changes 
                   by posting the new Privacy Policy on this page and updating the "Last Updated" date. 
@@ -227,7 +227,7 @@ const PrivacyPolicy = () => {
               
               {/* Alignment with Google's Privacy Policy */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Alignment with Google's Privacy Policy</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Alignment with Google's Privacy Policy</h2>
                 <p>
                   Master Growbot respects user privacy and handles data in accordance with applicable 
                   privacy laws and Google's policies, particularly regarding data obtained through 
@@ -238,7 +238,7 @@ const PrivacyPolicy = () => {
               
               {/* Disclaimers */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Disclaimers</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Disclaimers</h2>
                 <div className="bg-muted/50 p-4 rounded-md border">
                   <p className="mb-3">
                     <strong>Medical Disclaimer:</strong> Master Growbot is a cultivation technology platform and does not 
@@ -259,7 +259,7 @@ const PrivacyPolicy = () => {
               
               {/* Contact Information */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Contact Information</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Contact Information</h2>
                 <p>
                   If you have any questions or concerns about this Privacy Policy or our data practices, 
                   please contact us at:

@@ -16,7 +16,7 @@ const TermsOfService = () => {
               alt="Master Growbot Logo" 
               className="w-10 h-10" 
             />
-            <span className="font-bold text-xl text-primary">Master Growbot</span>
+            <span className="font-bold text-xl text-white">Master Growbot</span>
           </Link>
           <Link to="/">
             <Button variant="outline">Return Home</Button>
@@ -27,13 +27,13 @@ const TermsOfService = () => {
       {/* Content */}
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-8">
         <div className="bg-card border rounded-lg shadow-lg p-6 md:p-8">
-          <h1 className="text-3xl font-bold mb-6 text-primary border-b pb-2">Terms of Service</h1>
+          <h1 className="text-3xl font-bold mb-6 text-white border-b pb-2">Terms of Service</h1>
           
           <ScrollArea className="h-[calc(100vh-250px)] pr-4">
             <div className="space-y-6">
               {/* Introduction */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Introduction</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Introduction</h2>
                 <p>
                   Welcome to Master Growbot's Terms of Service. Master Growbot is an AI-powered cannabis cultivation 
                   platform designed to help users grow better and improve their cultivation practices through 
@@ -43,7 +43,7 @@ const TermsOfService = () => {
               
               {/* Acceptance of Terms */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Acceptance of Terms</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Acceptance of Terms</h2>
                 <p>
                   By accessing or using Master Growbot, you acknowledge that you have read, understood, and agree 
                   to be bound by these Terms of Service. If you do not agree to these terms, please do not use 
@@ -53,7 +53,7 @@ const TermsOfService = () => {
               
               {/* Description of Service */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Description of Service</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Description of Service</h2>
                 <p>
                   Master Growbot provides the following features and functionality:
                 </p>
@@ -71,7 +71,7 @@ const TermsOfService = () => {
               
               {/* User Responsibilities */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">User Responsibilities</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">User Responsibilities</h2>
                 <p className="mb-3">
                   As a user of Master Growbot, you are responsible for:
                 </p>
@@ -113,7 +113,7 @@ const TermsOfService = () => {
               
               {/* Limitations of Master Growbot */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Limitations of Master Growbot</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Limitations of Master Growbot</h2>
                 <p className="mb-3">
                   It is important to understand that Master Growbot has the following limitations:
                 </p>
@@ -147,7 +147,7 @@ const TermsOfService = () => {
               
               {/* Intellectual Property */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Intellectual Property</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Intellectual Property</h2>
                 <p>
                   Master Growbot and all its content, features, and functionality are owned by us and are protected 
                   by intellectual property rights, including but not limited to trademarks, copyrights, and trade 
@@ -166,7 +166,7 @@ const TermsOfService = () => {
               
               {/* Disclaimer of Warranties */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Disclaimer of Warranties</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Disclaimer of Warranties</h2>
                 <p className="uppercase font-medium">
                   THE MASTER GROWBOT SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT ANY WARRANTIES OF ANY KIND, 
                   EITHER EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, 
@@ -182,7 +182,7 @@ const TermsOfService = () => {
               
               {/* Limitation of Liability */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Limitation of Liability</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Limitation of Liability</h2>
                 <p className="uppercase font-medium">
                   TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL MASTER GROWBOT, ITS AFFILIATES, 
                   DIRECTORS, EMPLOYEES, AGENTS, OR LICENSORS BE LIABLE FOR ANY INDIRECT, PUNITIVE, INCIDENTAL, SPECIAL, 
@@ -203,7 +203,7 @@ const TermsOfService = () => {
               
               {/* Indemnification */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Indemnification</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Indemnification</h2>
                 <p>
                   You agree to indemnify, defend, and hold harmless Master Growbot, its affiliates, officers, directors, 
                   employees, consultants, agents, and representatives from and against any and all claims, liabilities, 
@@ -215,7 +215,7 @@ const TermsOfService = () => {
               
               {/* Termination */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Termination</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Termination</h2>
                 <p>
                   We reserve the right to terminate or suspend your access to Master Growbot, without prior notice or 
                   liability, for any reason whatsoever, including, without limitation, if you breach these Terms of Service. 
@@ -230,7 +230,7 @@ const TermsOfService = () => {
               
               {/* Governing Law */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Governing Law</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Governing Law</h2>
                 <p>
                   These Terms of Service shall be governed by and construed in accordance with the laws of the State of 
                   California, without regard to its conflict of law principles. Any legal action or proceeding arising 
@@ -241,7 +241,7 @@ const TermsOfService = () => {
               
               {/* Changes to Terms */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Changes to Terms</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Changes to Terms</h2>
                 <p>
                   We reserve the right, at our sole discretion, to modify or replace these Terms of Service at any time. 
                   If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. 
@@ -255,7 +255,7 @@ const TermsOfService = () => {
               
               {/* Disclaimers */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Disclaimers</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Disclaimers</h2>
                 <div className="bg-muted/50 p-4 rounded-md border">
                   <p className="mb-3">
                     <strong>Medical Disclaimer:</strong> Master Growbot is a cultivation technology platform and does not 
@@ -280,7 +280,7 @@ const TermsOfService = () => {
               
               {/* Contact Information */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Contact Information</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Contact Information</h2>
                 <p>
                   If you have any questions about these Terms of Service, please contact us at:
                 </p>
