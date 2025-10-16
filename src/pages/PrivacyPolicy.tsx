@@ -29,8 +29,7 @@ const PrivacyPolicy = () => {
         <div className="bg-card border rounded-lg shadow-lg p-6 md:p-8">
           <h1 className="text-3xl font-bold mb-6 text-primary border-b pb-2">Privacy Policy</h1>
           
-          <ScrollArea className="h-[calc(100vh-250px)] pr-4">
-            <div className="space-y-6">
+          <div className="space-y-6">
               {/* Introduction */}
               <section>
                 <h2 className="text-2xl font-semibold mb-3 text-primary/90">Introduction</h2>
@@ -39,6 +38,16 @@ const PrivacyPolicy = () => {
                   platform designed to help users grow better and improve their cultivation practices through 
                   advanced technology. This Privacy Policy explains how we collect, use, and protect your data 
                   when you use our services.
+                </p>
+              </section>
+              
+              {/* iOS App Coverage */}
+              <section>
+                <h2 className="text-2xl font-semibold mb-3 text-primary/90">iOS App Coverage</h2>
+                <p>
+                  This Privacy Policy also applies to the MasterGrowbot AI iOS app available on the Apple App Store. 
+                  It explains how user data—including photos, identifiers, and analytics—is collected, processed, 
+                  and protected when using the app on Apple devices.
                 </p>
               </section>
               
@@ -72,6 +81,16 @@ const PrivacyPolicy = () => {
                   <li>Device information</li>
                   <li>Date and time of visits</li>
                 </ul>
+              </section>
+              
+              {/* Photo Uploads & AI Analysis */}
+              <section>
+                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Photo Uploads & AI Analysis</h2>
+                <p>
+                  When you upload plant images through the app or web interface, we store them securely, run 
+                  AI-based diagnostics, and may retain them for up to 365 days unless you request deletion. 
+                  Uploaded photos are used only to provide health analysis and improve AI accuracy.
+                </p>
               </section>
               
               {/* Use of Information */}
@@ -160,6 +179,16 @@ const PrivacyPolicy = () => {
                 </p>
               </section>
               
+              {/* Data Deletion & Retention */}
+              <section>
+                <h2 className="text-2xl font-semibold mb-3 text-primary/90">Data Deletion & Retention</h2>
+                <p>
+                  Users may request deletion of their personal data or analysis history at any time by contacting 
+                  support@futuristiccannabis.ai or through the in-app settings. Upon verified request, data will 
+                  be permanently removed within 30 days.
+                </p>
+              </section>
+              
               {/* Children's Privacy */}
               <section>
                 <h2 className="text-2xl font-semibold mb-3 text-primary/90">Children's Privacy</h2>
@@ -238,14 +267,11 @@ const PrivacyPolicy = () => {
                 <p className="mt-2 font-medium">
                   Email: support@futuristiccannabis.ai
                 </p>
-              </section>
-              
-              {/* Last Updated */}
-              <section className="mt-8 pt-4 border-t text-muted-foreground text-sm">
-                <p>Last Updated: December 8, 2023</p>
+                <p className="mt-4">
+                  Last Updated: October 2025
+                </p>
               </section>
             </div>
-          </ScrollArea>
         </div>
       </main>
 
