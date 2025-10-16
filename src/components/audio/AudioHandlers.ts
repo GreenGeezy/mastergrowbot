@@ -80,7 +80,11 @@ export class AudioQueue {
     const audioData = this.queue.shift()!;
 
     try {
-      const audioBuffer = await this.audioContext.decodeAudioData(audioData.buffer);
+      // Create a proper ArrayBuffer copy to satisfy TypeScript strict typing
+      const buffer = new ArrayBuffer(audioData.byteLength);
+      const view = new Uint8Array(buffer);
+      view.set(audioData);
+      const audioBuffer = await this.audioContext.decodeAudioData(buffer);
       const source = this.audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(this.audioContext.destination);
