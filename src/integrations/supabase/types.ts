@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -77,6 +77,66 @@ export type Database = {
         }
         Relationships: []
       }
+      avatar_customizations_catalog: {
+        Row: {
+          created_at: string | null
+          customization_type: string | null
+          description: string
+          id: string
+          image_url: string | null
+          name: string
+          unlock_requirement: number
+        }
+        Insert: {
+          created_at?: string | null
+          customization_type?: string | null
+          description: string
+          id: string
+          image_url?: string | null
+          name: string
+          unlock_requirement: number
+        }
+        Update: {
+          created_at?: string | null
+          customization_type?: string | null
+          description?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          unlock_requirement?: number
+        }
+        Relationships: []
+      }
+      badges_catalog: {
+        Row: {
+          badge_type: string | null
+          created_at: string | null
+          description: string
+          icon_url: string | null
+          id: string
+          name: string
+          unlock_requirement: number
+        }
+        Insert: {
+          badge_type?: string | null
+          created_at?: string | null
+          description: string
+          icon_url?: string | null
+          id: string
+          name: string
+          unlock_requirement: number
+        }
+        Update: {
+          badge_type?: string | null
+          created_at?: string | null
+          description?: string
+          icon_url?: string | null
+          id?: string
+          name?: string
+          unlock_requirement?: number
+        }
+        Relationships: []
+      }
       chat_history: {
         Row: {
           conversation_id: string | null
@@ -104,6 +164,57 @@ export type Database = {
           message?: string
           updated_at?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      leaderboard_profiles: {
+        Row: {
+          created_at: string
+          is_opt_in: boolean
+          leaderboard_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          is_opt_in?: boolean
+          leaderboard_name?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          is_opt_in?: boolean
+          leaderboard_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      milestones_catalog: {
+        Row: {
+          created_at: string | null
+          fun_fact: string
+          id: string
+          milestone_type: string
+          streak_requirement: number
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          fun_fact: string
+          id: string
+          milestone_type?: string
+          streak_requirement: number
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          fun_fact?: string
+          id?: string
+          milestone_type?: string
+          streak_requirement?: number
+          title?: string
         }
         Relationships: []
       }
@@ -210,6 +321,9 @@ export type Database = {
           id: string
           monitoring_method: Database["public"]["Enums"]["monitoring_method"]
           nutrient_type: Database["public"]["Enums"]["nutrient_type"]
+          plant_quantity:
+            | Database["public"]["Enums"]["plant_quantity_type"]
+            | null
           updated_at: string
           user_id: string
         }
@@ -222,6 +336,9 @@ export type Database = {
           id?: string
           monitoring_method: Database["public"]["Enums"]["monitoring_method"]
           nutrient_type: Database["public"]["Enums"]["nutrient_type"]
+          plant_quantity?:
+            | Database["public"]["Enums"]["plant_quantity_type"]
+            | null
           updated_at?: string
           user_id: string
         }
@@ -234,6 +351,9 @@ export type Database = {
           id?: string
           monitoring_method?: Database["public"]["Enums"]["monitoring_method"]
           nutrient_type?: Database["public"]["Enums"]["nutrient_type"]
+          plant_quantity?:
+            | Database["public"]["Enums"]["plant_quantity_type"]
+            | null
           updated_at?: string
           user_id?: string
         }
@@ -369,6 +489,70 @@ export type Database = {
         }
         Relationships: []
       }
+      user_avatars: {
+        Row: {
+          applied_at: string | null
+          avatar_customization_id: string
+          id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string | null
+          avatar_customization_id: string
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          applied_at?: string | null
+          avatar_customization_id?: string
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_avatars_avatar_customization_id_fkey"
+            columns: ["avatar_customization_id"]
+            isOneToOne: false
+            referencedRelation: "avatar_customizations_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          id: string
+          is_active: boolean | null
+          unlocked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          id?: string
+          is_active?: boolean | null
+          unlocked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          id?: string
+          is_active?: boolean | null
+          unlocked_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_feedback: {
         Row: {
           beta_testing_email: string | null
@@ -408,8 +592,44 @@ export type Database = {
         }
         Relationships: []
       }
+      user_milestones: {
+        Row: {
+          celebrated_at: string | null
+          created_at: string | null
+          id: string
+          is_shared: boolean | null
+          milestone_id: string
+          user_id: string
+        }
+        Insert: {
+          celebrated_at?: string | null
+          created_at?: string | null
+          id?: string
+          is_shared?: boolean | null
+          milestone_id: string
+          user_id: string
+        }
+        Update: {
+          celebrated_at?: string | null
+          created_at?: string | null
+          id?: string
+          is_shared?: boolean | null
+          milestone_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_milestones_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_profiles: {
         Row: {
+          avatar_url: string | null
           challenges: string[] | null
           created_at: string
           goals: string[] | null
@@ -423,6 +643,7 @@ export type Database = {
           username: string | null
         }
         Insert: {
+          avatar_url?: string | null
           challenges?: string[] | null
           created_at?: string
           goals?: string[] | null
@@ -436,6 +657,7 @@ export type Database = {
           username?: string | null
         }
         Update: {
+          avatar_url?: string | null
           challenges?: string[] | null
           created_at?: string
           goals?: string[] | null
@@ -447,6 +669,27 @@ export type Database = {
           nutrient_type?: string | null
           subscription_status?: string | null
           username?: string | null
+        }
+        Relationships: []
+      }
+      user_streaks: {
+        Row: {
+          current_streak: number
+          grace_days: number
+          last_action: string
+          user_id: string
+        }
+        Insert: {
+          current_streak?: number
+          grace_days?: number
+          last_action?: string
+          user_id: string
+        }
+        Update: {
+          current_streak?: number
+          grace_days?: number
+          last_action?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -465,72 +708,94 @@ export type Database = {
       }
     }
     Functions: {
-      attempt_delete_users: {
-        Args: Record<PropertyKey, never> | { user_ids: string[] }
-        Returns: undefined
-      }
+      attempt_delete_users:
+        | { Args: never; Returns: undefined }
+        | { Args: { user_ids: string[] }; Returns: string }
       check_and_remove_pending_subscriptions: {
         Args: { email_param: string }
         Returns: undefined
       }
+      check_and_unlock_streak_rewards: {
+        Args: { current_user_streak: number }
+        Returns: Json
+      }
       check_pending_subscription: {
         Args: { check_email: string }
         Returns: {
+          expires_at: string
           has_pending: boolean
           subscription_type: string
-          expires_at: string
         }[]
+      }
+      check_personal_milestone_achievements: {
+        Args: { current_user_streak: number }
+        Returns: Json
       }
       consume_pending_subscription: {
         Args: { sub_email: string }
         Returns: boolean
       }
+      get_bud_boost_leaderboard: {
+        Args: { max_rows?: number }
+        Returns: {
+          last_action: string
+          leaderboard_name: string
+          rank: number
+          run: number
+        }[]
+      }
+      get_my_pending_subscriptions: {
+        Args: never
+        Returns: {
+          consumed: boolean
+          created_at: string
+          expires_at: string
+          id: string
+          subscription_type: string
+        }[]
+      }
       get_pending_subscription: {
         Args: { email_address: string }
         Returns: {
+          expires_at: string
           has_pending: boolean
           subscription_type: string
-          expires_at: string
         }[]
       }
       handle_square_payment: {
         Args: {
-          order_id: string
           customer_email: string
+          order_id: string
           subscription_type?: string
         }
         Returns: boolean
       }
-      has_active_subscription: {
-        Args: { user_uuid: string }
+      has_active_subscription: { Args: { user_uuid: string }; Returns: boolean }
+      is_admin: { Args: { user_id: string }; Returns: boolean }
+      is_quiz_subscription_required: { Args: never; Returns: boolean }
+      mark_milestone_shared: {
+        Args: { milestone_achievement_id: string }
         Returns: boolean
       }
-      is_admin: {
-        Args: { user_id: string }
-        Returns: boolean
-      }
-      is_quiz_subscription_required: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      mark_user_completed_quiz: {
-        Args: { user_email: string }
-        Returns: boolean
-      }
+      mark_user_completed_quiz:
+        | { Args: never; Returns: boolean }
+        | { Args: { user_email: string }; Returns: boolean }
       safely_delete_user: {
         Args: { user_id_to_delete: string }
         Returns: undefined
       }
-      user_has_access: {
+      update_streak_for_user: {
         Args: { user_uuid: string }
-        Returns: boolean
+        Returns: undefined
       }
+      user_has_access: { Args: { user_uuid: string }; Returns: boolean }
     }
     Enums: {
       grow_experience: "new" | "intermediate" | "advanced"
       growing_method: "indoor" | "outdoor" | "greenhouse"
       monitoring_method: "manual" | "basic_sensors" | "advanced_systems"
       nutrient_type: "organic" | "synthetic" | "both" | "none"
+      plant_quantity_type: "1-4" | "5-20" | "21-100" | "101-500" | "500+"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -662,6 +927,7 @@ export const Constants = {
       growing_method: ["indoor", "outdoor", "greenhouse"],
       monitoring_method: ["manual", "basic_sensors", "advanced_systems"],
       nutrient_type: ["organic", "synthetic", "both", "none"],
+      plant_quantity_type: ["1-4", "5-20", "21-100", "101-500", "500+"],
     },
   },
 } as const

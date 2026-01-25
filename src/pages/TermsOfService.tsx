@@ -54,6 +54,11 @@ const TermsOfService = () => {
               {/* Description of Service */}
               <section>
                 <h2 className="text-2xl font-semibold mb-3 text-white">Description of Service</h2>
+                <p className="mb-3">
+                  "Service" or "App" refers to the Master Growbot platform, including the MasterGrowbot AI mobile 
+                  application available on the Apple App Store and Google Play Store, as well as the web application 
+                  accessible at mastergrowbot.com.
+                </p>
                 <p>
                   Master Growbot provides the following features and functionality:
                 </p>
@@ -67,6 +72,75 @@ const TermsOfService = () => {
                 <p className="mt-3">
                   We may update, modify, or enhance our services at any time without prior notice.
                 </p>
+              </section>
+              
+              {/* Mobile Application License */}
+              <section>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Mobile Application License</h2>
+                <p>
+                  Subject to your compliance with these Terms, MasterGrowbot grants you a limited, non-exclusive, 
+                  non-transferable, revocable license to download and use a copy of the App on a mobile device 
+                  that you own or control. This license does not give you any ownership rights in the App or 
+                  its content.
+                </p>
+                <p className="mt-3">
+                  You may not: (a) copy, modify, or distribute the App; (b) reverse engineer, decompile, or 
+                  disassemble the App; (c) rent, lease, lend, sell, or sublicense the App; or (d) use the App 
+                  for any unlawful purpose.
+                </p>
+              </section>
+              
+              {/* App Store Specific Terms */}
+              <section>
+                <h2 className="text-2xl font-semibold mb-3 text-white">App Store Specific Terms</h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-xl font-medium mb-2">Apple App Store</h3>
+                    <p>
+                      If you downloaded the App from the Apple App Store, you agree to use the App only on an 
+                      Apple-branded product running iOS and as permitted by the "Usage Rules" in the Apple Media 
+                      Services Terms. You acknowledge that Apple and its subsidiaries are third-party beneficiaries 
+                      of these Terms and have the right to enforce them against you. Apple has no obligation to 
+                      furnish any maintenance or support services with respect to the App.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-medium mb-2">Google Play Store</h3>
+                    <p>
+                      If you downloaded the App from the Google Play Store, you agree to comply with all applicable 
+                      Google Play policies, including the Google Play Terms of Service. Google is not responsible 
+                      for the App or its content.
+                    </p>
+                  </div>
+                </div>
+              </section>
+              
+              {/* Subscriptions and Billing */}
+              <section>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Subscriptions and Billing</h2>
+                <p className="mb-3">
+                  Subscriptions purchased via a mobile app store (Apple App Store or Google Play) are managed 
+                  directly by that store. The following terms apply:
+                </p>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li>
+                    Payment will be charged to your iTunes or Google Play account at confirmation of purchase.
+                  </li>
+                  <li>
+                    Subscriptions automatically renew unless auto-renew is turned off at least 24 hours before 
+                    the end of the current period.
+                  </li>
+                  <li>
+                    Your account will be charged for renewal within 24 hours prior to the end of the current period.
+                  </li>
+                  <li>
+                    You can manage or cancel your subscription in your Account Settings on the respective app store.
+                  </li>
+                  <li>
+                    MasterGrowbot cannot directly refund purchases made through these stores. Please contact 
+                    Apple or Google for refund requests.
+                  </li>
+                </ul>
               </section>
               
               {/* User Responsibilities */}
@@ -291,7 +365,7 @@ const TermsOfService = () => {
               
               {/* Last Updated */}
               <section className="mt-8 pt-4 border-t text-muted-foreground text-sm">
-                <p>Last Updated: April 29, 2024</p>
+                <p>Last Updated: January 25, 2026</p>
               </section>
             </div>
           </ScrollArea>
