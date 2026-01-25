@@ -41,13 +41,13 @@ const PrivacyPolicy = () => {
                 </p>
               </section>
               
-              {/* iOS App Coverage */}
+              {/* Mobile App Coverage */}
               <section>
-                <h2 className="text-2xl font-semibold mb-3 text-white">iOS App Coverage</h2>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Mobile App Coverage</h2>
                 <p>
-                  This Privacy Policy also applies to the MasterGrowbot AI iOS app available on the Apple App Store. 
-                  It explains how user data—including photos, identifiers, and analytics—is collected, processed, 
-                  and protected when using the app on Apple devices.
+                  This Privacy Policy also applies to the MasterGrowbot AI mobile application available on the Apple App Store (iOS) 
+                  and Google Play Store (Android). It explains how user data—including photos, identifiers, and analytics—is collected, 
+                  processed, and protected when using the app on Apple and Android devices.
                 </p>
               </section>
               
@@ -93,6 +93,30 @@ const PrivacyPolicy = () => {
                 </p>
               </section>
               
+              {/* Data Collection for Core Functionality */}
+              <section>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Data Collection for Core Functionality</h2>
+                <p className="mb-3">
+                  To provide the app's core functionality, we collect the following types of data:
+                </p>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li>
+                    <strong>Images for Plant Diagnosis:</strong> Photos you upload are processed by our AI to analyze 
+                    plant health and provide cultivation recommendations.
+                  </li>
+                  <li>
+                    <strong>Voice Audio for Transcription:</strong> When using voice features, audio is captured and 
+                    transcribed to enable voice-based interactions with the AI assistant.
+                  </li>
+                  <li>
+                    <strong>Chat Inputs:</strong> Text conversations are processed to provide personalized growing advice.
+                  </li>
+                </ul>
+                <p className="mt-3">
+                  This data collection is essential to deliver the core services of the MasterGrowbot AI application.
+                </p>
+              </section>
+              
               {/* Use of Information */}
               <section>
                 <h2 className="text-2xl font-semibold mb-3 text-white">Use of Information</h2>
@@ -117,7 +141,11 @@ const PrivacyPolicy = () => {
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>
-                    <strong>Google:</strong> For authentication purposes when using Google OAuth.
+                    <strong>Google:</strong> For authentication purposes when using Google OAuth, and for app 
+                    distribution and analytics through Google Play Services.
+                  </li>
+                  <li>
+                    <strong>Apple:</strong> For app distribution through the Apple App Store and related services.
                   </li>
                   <li>
                     <strong>Service Providers:</strong> Companies that assist us in providing our services, 
@@ -183,9 +211,13 @@ const PrivacyPolicy = () => {
               <section>
                 <h2 className="text-2xl font-semibold mb-3 text-white">Data Deletion & Retention</h2>
                 <p>
-                  Users may request deletion of their personal data or analysis history at any time by contacting 
-                  support@futuristiccannabis.ai or through the in-app settings. Upon verified request, data will 
-                  be permanently removed within 30 days.
+                  Users may request the deletion of their account and associated data by contacting us at 
+                  support@futuristiccannabis.ai or using the delete account function within the App settings. 
+                  Upon verified request, data will be permanently removed within 30 days.
+                </p>
+                <p className="mt-3">
+                  Users may also request deletion of specific personal data or analysis history at any time 
+                  through the same channels.
                 </p>
               </section>
               
@@ -231,8 +263,9 @@ const PrivacyPolicy = () => {
                 <p>
                   Master Growbot respects user privacy and handles data in accordance with applicable 
                   privacy laws and Google's policies, particularly regarding data obtained through 
-                  Google OAuth. We follow Google's API Services User Data Policy for all data received 
-                  through Google authentication.
+                  Google OAuth and Google Play Services. We follow Google's API Services User Data Policy 
+                  for all data received through Google authentication and comply with all applicable 
+                  Google Play policies for our Android application.
                 </p>
               </section>
               
@@ -268,7 +301,7 @@ const PrivacyPolicy = () => {
                   Email: support@futuristiccannabis.ai
                 </p>
                 <p className="mt-4">
-                  Last Updated: October 2025
+                  Last Updated: January 2026
                 </p>
               </section>
             </div>
