@@ -80,7 +80,7 @@ const DeletionRequestForm = () => {
       <div className="bg-muted/30 border border-primary/20 rounded-lg p-6 text-center space-y-4">
         <CheckCircle2 className="w-12 h-12 text-primary mx-auto" />
         <h3 className="text-xl font-semibold text-white">Request Received</h3>
-        <p className="text-muted-foreground max-w-md mx-auto">
+        <p className="text-foreground max-w-md mx-auto">
           Your request has been received. Our team will process your data deletion within 7 days.
           For urgent inquiries, contact{" "}
           <a
@@ -129,7 +129,7 @@ const DeletionRequestForm = () => {
       {/* Profile Name field */}
       <div className="space-y-2">
         <Label htmlFor="deletion-profile-name" className="text-white">
-          Profile Name <span className="text-muted-foreground text-xs">(Optional)</span>
+          Profile Name <span className="text-foreground text-xs">(Optional)</span>
         </Label>
         <Input
           id="deletion-profile-name"
@@ -152,7 +152,7 @@ const DeletionRequestForm = () => {
         />
         <Label
           htmlFor="deletion-confirm"
-          className="text-sm text-muted-foreground leading-relaxed cursor-pointer"
+          className="text-sm text-foreground leading-relaxed cursor-pointer"
         >
           I confirm I want to permanently delete all my plant logs, photos, and profile data from
           MasterGrowbot AI.
