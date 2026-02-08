@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import DeletionRequestForm from "@/components/privacy/DeletionRequestForm";
 
 const PrivacyPolicy = () => {
   return (
@@ -290,6 +291,14 @@ const PrivacyPolicy = () => {
                 </div>
               </section>
               
+              {/* Data Deletion Request Form */}
+              <section>
+                <h2 className="text-2xl font-semibold mb-3 text-white">Data Deletion Request</h2>
+                <div className="bg-muted/50 p-5 rounded-md border">
+                  <DeletionRequestForm />
+                </div>
+              </section>
+
               {/* Contact Information */}
               <section>
                 <h2 className="text-2xl font-semibold mb-3 text-white">Contact Information</h2>
@@ -301,7 +310,7 @@ const PrivacyPolicy = () => {
                   Email: support@futuristiccannabis.ai
                 </p>
                 <p className="mt-4">
-                  Last Updated: January 2026
+                  Last Updated: February 2026
                 </p>
               </section>
             </div>
