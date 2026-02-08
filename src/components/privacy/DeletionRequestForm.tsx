@@ -97,7 +97,7 @@ const DeletionRequestForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <p className="text-muted-foreground">
+      <p className="text-foreground">
         To request deletion of your account and all associated data (plant logs, photos, and profile
         information), please fill out the form below. You may also email us directly at{" "}
         <a
