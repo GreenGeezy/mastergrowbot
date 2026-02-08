@@ -167,6 +167,27 @@ export type Database = {
         }
         Relationships: []
       }
+      deletion_requests: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          profile_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          profile_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          profile_name?: string | null
+        }
+        Relationships: []
+      }
       leaderboard_profiles: {
         Row: {
           created_at: string
