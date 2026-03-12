@@ -1,6 +1,5 @@
-import ComingSoon from './ComingSoon';
+import LandingPage from '@/components/landing/LandingPage';
 
-// Coming Soon landing page - original homepage backed up in IndexBackup.tsx
 export default function Index() {
-  return <ComingSoon />;
+  return <LandingPage />;
 }
