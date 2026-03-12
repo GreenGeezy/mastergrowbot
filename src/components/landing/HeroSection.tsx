@@ -16,14 +16,14 @@ export default function HeroSection() {
           {/* Logo */}
           <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
             <img
-              src="/lovable-uploads/c346bc72-2133-49aa-a5c8-b0773e68ef3b.png"
-              alt="Master Growbot Logo"
-              className="w-12 h-12 sm:w-14 sm:h-14"
+              src="/images/app-icon.png"
+              alt="MasterGrowbot AI Logo"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl"
               width={56}
               height={56}
             />
             <span className="text-lg sm:text-xl font-semibold tracking-wide text-white/90 font-sans">
-              MasterGrowbot
+              MasterGrowbot AI
             </span>
           </div>
 
