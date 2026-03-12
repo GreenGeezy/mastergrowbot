@@ -48,6 +48,10 @@ export default {
           hover: "#FFC000",
           glow: "#FFE55C",
         },
+        landing: {
+          green: "#1DB954",
+          "green-glow": "#00FF66",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
