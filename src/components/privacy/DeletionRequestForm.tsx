@@ -1,4 +1,4 @@
-export function DeletionRequestForm() {
+export default function DeletionRequestForm() {
   return (
     <div className="w-full max-w-3xl mx-auto mt-8 flex justify-center">
       <iframe
