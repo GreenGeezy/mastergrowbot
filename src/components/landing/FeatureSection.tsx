@@ -1,93 +1,86 @@
 import ScrollReveal from './ScrollReveal';
 import DeviceMockup from './DeviceMockup';
-
-const features = [
-  {
-    headline: 'Save your plants in seconds with a single pic.',
-    body: 'Using advanced multimodal AI, identify pests, diseases, and nutrient deficiencies with high confidence. A second set of expert eyes that never sleeps.',
-    image: '/images/feature-plant-doctor.png',
-    imageAlt: 'Instant AI Plant Doctor',
-    imagePosition: 'right' as const,
-  },
-  {
-    headline: 'Personalized to your exact genetics.',
-    body: 'Upon onboarding, the AI calibrates to your specific environment and experience level. Get real-time health scores and optimal harvest windows tailored to your plant.',
-    image: '/images/feature-grow-plans.png',
-    imageAlt: 'Custom AI Grow Plans',
-    imagePosition: 'left' as const,
-  },
-];
+import StoreBadges from './StoreBadges';
 
 export default function FeatureSection() {
   return (
-    <section className="relative z-10 py-20 sm:py-32 px-4 sm:px-6">
+    <section className="relative z-10 py-24 sm:py-32 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto space-y-24 sm:space-y-36">
-        {features.map((feature, i) => (
-          <div
-            key={i}
-            className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center ${
-              feature.imagePosition === 'left' ? '' : ''
-            }`}
-          >
-            {/* Text Card */}
-            <ScrollReveal
-              className={`${feature.imagePosition === 'left' ? 'lg:order-2' : 'lg:order-1'}`}
-              delay={0.1}
-            >
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl p-8 sm:p-10 space-y-5">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
-                  {feature.headline}
-                </h2>
-                <p className="text-base sm:text-lg text-white/55 leading-relaxed font-sans">
-                  {feature.body}
-                </p>
-              </div>
-            </ScrollReveal>
-
-            {/* Image */}
-            <div className={`${feature.imagePosition === 'left' ? 'lg:order-1' : 'lg:order-2'} flex justify-center`}>
-              <DeviceMockup
-                src={feature.image}
-                alt={feature.imageAlt}
-              />
-            </div>
-          </div>
-        ))}
-
-        {/* Feature 3 - Strain Intelligence with overlapping images */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <ScrollReveal className="lg:order-1" delay={0.1}>
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl p-8 sm:p-10 space-y-5">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
-                Master any genetic.
-              </h2>
-              <p className="text-base sm:text-lg text-white/55 leading-relaxed font-sans">
-                Explore a massive global database or add your own bag seeds. The AI generates specialized, structured cultivation advice tailored to that exact genetic profile.
+        
+        {/* Row 1: Text Left, Image Right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+          <ScrollReveal className="order-1 space-y-6">
+            <span className="text-landing-green font-semibold tracking-wider uppercase text-sm">Vision AI Diagnostics</span>
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
+              Stop Yield-Killing Threats Before They Spread
+            </h3>
+            <p className="text-base sm:text-lg text-white/60 leading-relaxed font-sans">
+              A single spider mite or subtle pH lockout can ruin months of work. Snap a photo of any leaf, and our vision AI instantly identifies the exact pest or deficiency, giving you a step-by-step recovery plan to save your harvest.
+            </p>
+            <div className="pt-2">
+              <StoreBadges className="justify-start pt-2" />
+              <p className="text-xs sm:text-sm text-left text-white/50 font-sans mt-3">
+                Start your Free Trial today Risk Free! <span className="hidden sm:inline"></span>
+                <br className="sm:hidden" />
+                No Sign Up required &bull; Cancel anytime
               </p>
             </div>
           </ScrollReveal>
-
-          {/* Overlapping devices */}
-          <div className="lg:order-2 flex justify-center">
-            <div className="relative w-full max-w-[500px]">
-              <div className="relative -left-4 sm:-left-6 z-10">
-                <DeviceMockup
-                  src="/images/feature-genetics.png"
-                  alt="Find the Perfect Genetics"
-                  className="max-w-[240px] sm:max-w-[270px]"
-                />
-              </div>
-              <div className="absolute top-12 right-0 sm:right-4 z-20">
-                <DeviceMockup
-                  src="/images/feature-strain-intel.png"
-                  alt="AI Strain Intelligence"
-                  className="max-w-[220px] sm:max-w-[250px]"
-                  glowColor="rgba(29, 185, 84, 0.15)"
-                />
-              </div>
-            </div>
+          <div className="order-2 flex justify-center">
+            <DeviceMockup src="/images/feature-plant-doctor.png" alt="Vision AI Diagnostics" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
           </div>
         </div>
+
+        {/* Row 2: Image Left, Text Right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+          {/* Image is first in DOM, but second on mobile, first on desktop */}
+          <div className="order-2 md:order-1 flex justify-center">
+            <DeviceMockup src="/images/feature-strain-intel.png" alt="Strain Intelligence" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
+          </div>
+          {/* Text is second in DOM, but first on mobile, second on desktop */}
+          <ScrollReveal className="order-1 md:order-2 space-y-6">
+            <span className="text-landing-green font-semibold tracking-wider uppercase text-sm">AI Strain Intelligence</span>
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
+              Perfect Your Proprietary Genetics
+            </h3>
+            <p className="text-base sm:text-lg text-white/60 leading-relaxed font-sans">
+              Whether you are hunting elite phenos or dialing in a custom cross, MasterGrowbot tracks your exact strain data. Achieve flawless batch-to-batch consistency and push your yields to their absolute genetic maximum.
+            </p>
+            <div className="pt-2">
+              <StoreBadges className="justify-start pt-2" />
+              <p className="text-xs sm:text-sm text-left text-white/50 font-sans mt-3">
+                Start your Free Trial today Risk Free! <span className="hidden sm:inline"></span>
+                <br className="sm:hidden" />
+                No Sign Up required &bull; Cancel anytime
+              </p>
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* Row 3: Text Left, Image Right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+          <ScrollReveal className="order-1 space-y-6">
+            <span className="text-landing-green font-semibold tracking-wider uppercase text-sm">Expert Grow Consultant</span>
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
+              A Master Grower in Your Pocket, 24/7
+            </h3>
+            <p className="text-base sm:text-lg text-white/60 leading-relaxed font-sans">
+              Stop second-guessing your environmental inputs. Get a relentless, expert set of eyes on your canopy at all times—mitigating risk and optimizing growth without paying thousands for a human consultant.
+            </p>
+            <div className="pt-2">
+              <StoreBadges className="justify-start pt-2" />
+              <p className="text-xs sm:text-sm text-left text-white/50 font-sans mt-3">
+                Start your Free Trial today Risk Free! <span className="hidden sm:inline"></span>
+                <br className="sm:hidden" />
+                No Sign Up required &bull; Cancel anytime
+              </p>
+            </div>
+          </ScrollReveal>
+          <div className="order-2 flex justify-center">
+            <DeviceMockup src="/images/feature-grow-plans.png" alt="Expert Grow Consultant" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
+          </div>
+        </div>
+
       </div>
     </section>
   );

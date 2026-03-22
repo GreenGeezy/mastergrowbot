@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Star } from 'lucide-react';
 import StoreBadges from './StoreBadges';
 import DeviceMockup from './DeviceMockup';
 
@@ -14,7 +15,7 @@ export default function HeroSection() {
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         >
           {/* Logo */}
-          <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
             <img
               src="/images/app-icon.png"
               alt="MasterGrowbot AI Logo"
@@ -27,20 +28,32 @@ export default function HeroSection() {
             </span>
           </div>
 
+          {/* Social Proof */}
+          <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+              ))}
+            </div>
+            <span className="text-sm font-medium text-white/70 font-sans">
+              Trusted by Elite Growers Worldwide
+            </span>
+          </div>
+
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.08] tracking-tight text-white font-sans">
-            The World's Most Advanced{' '}
-            <span className="text-landing-green">AI Cultivation</span>{' '}
-            Assistant
+            Save your harvest in seconds with a single pic
           </h1>
 
           <p className="text-lg sm:text-xl text-white/60 max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans">
-            Bridge the gap between complex botanical science and craft cannabis cultivation. Your 24/7 diagnostic engine.
+            Turn your smartphone into a 24/7 master grower. Instantly diagnose pests, fix nutrient lockouts, and maximize your yield before a single mistake ruins your run.
           </p>
 
           <StoreBadges className="justify-center lg:justify-start pt-2" />
 
-          <p className="text-sm text-white/30 font-sans">
-            Start your 3-Day Free Trial today.
+          <p className="text-xs sm:text-sm text-center lg:text-left text-white/50 font-sans mt-3">
+            Start your Free Trial today Risk Free! <span className="hidden sm:inline"></span>
+            <br className="sm:hidden" />
+            No Sign Up required &bull; Cancel anytime
           </p>
         </motion.div>
 
@@ -52,11 +65,23 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           style={{ perspective: 1200 }}
         >
-          <DeviceMockup
-            src="/images/hero-award-buds.png"
-            alt="MasterGrowbot AI - Grow Award Winning Buds"
-            className="transform lg:rotate-y-3 lg:scale-110"
-          />
+          <div className="flex items-center justify-center gap-2 sm:gap-4 w-full lg:max-w-2xl mx-auto">
+            <DeviceMockup
+              src="/images/hero-award-buds.png"
+              alt="Grow Award Winning Buds"
+              className="w-[30%] max-w-[210px] transform -rotate-2 lg:rotate-y-6 opacity-90 transition-transform duration-500 hover:scale-105 hover:z-20 hover:opacity-100"
+            />
+            <DeviceMockup
+              src="/images/feature-plant-doctor.png"
+              alt="AI Plant Doctor Scanning"
+              className="w-[35%] max-w-[245px] transform lg:rotate-y-3 z-10 shadow-2xl transition-transform duration-500 hover:scale-105"
+            />
+            <DeviceMockup
+              src="/images/feature-genetics.png"
+              alt="Find the Perfect Genetics"
+              className="w-[30%] max-w-[210px] transform rotate-2 lg:-rotate-y-6 opacity-90 transition-transform duration-500 hover:scale-105 hover:z-20 hover:opacity-100"
+            />
+          </div>
         </motion.div>
       </div>
     </section>

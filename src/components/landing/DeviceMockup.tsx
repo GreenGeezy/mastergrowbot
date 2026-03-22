@@ -23,8 +23,7 @@ export default function DeviceMockup({ src, alt, className = '', glowColor = 'rg
       />
       {/* Device frame */}
       <div className="relative rounded-[2.5rem] overflow-hidden border-[3px] border-white/10 shadow-2xl bg-black max-w-[280px] sm:max-w-[320px] mx-auto">
-        {/* Notch */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-black rounded-b-2xl z-10" />
+        {/* Notch removed so text is fully visible */}
         <img
           src={src}
           alt={alt}
