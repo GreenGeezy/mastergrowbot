@@ -62,10 +62,10 @@
         https://*.cloudflare.com
         https://*.google-analytics.com
         https://*.analytics.google.com;
-      frame-src 'self' https://accounts.google.com https://*.supabase.co;
+      frame-src 'self' https://accounts.google.com https://*.supabase.co https://docs.google.com;
       worker-src 'self' blob:;
       media-src 'self' blob:;
-      form-action 'self';
+      form-action 'self' https://docs.google.com;
       base-uri 'self';
       object-src 'none';
       upgrade-insecure-requests;
