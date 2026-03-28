@@ -68,17 +68,17 @@ export default function HeroSection() {
           <div className="flex items-center justify-center gap-2 sm:gap-4 w-full lg:max-w-2xl mx-auto">
             <DeviceMockup
               src="/images/hero-award-buds.png"
-              alt="Grow Award Winning Buds"
+              alt="MasterGrowbot AI cannabis app — grow award winning buds"
               className="w-[30%] max-w-[210px] transform -rotate-2 lg:rotate-y-6 opacity-90 transition-transform duration-500 hover:scale-105 hover:z-20 hover:opacity-100"
             />
             <DeviceMockup
               src="/images/feature-plant-doctor.png"
-              alt="AI Plant Doctor Scanning"
+              alt="MasterGrowbot AI cannabis plant doctor scanning for pests and deficiencies"
               className="w-[35%] max-w-[245px] transform lg:rotate-y-3 z-10 shadow-2xl transition-transform duration-500 hover:scale-105"
             />
             <DeviceMockup
               src="/images/feature-genetics.png"
-              alt="Find the Perfect Genetics"
+              alt="MasterGrowbot AI cannabis strain genetics database"
               className="w-[30%] max-w-[210px] transform rotate-2 lg:-rotate-y-6 opacity-90 transition-transform duration-500 hover:scale-105 hover:z-20 hover:opacity-100"
             />
           </div>

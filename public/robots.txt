@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.mastergrowbot.com/sitemap.xml
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz

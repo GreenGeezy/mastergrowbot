@@ -8,7 +8,7 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
   return (
     <div className={`flex flex-col sm:flex-row items-center gap-4 ${className}`}>
       <motion.a
-        href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060"
+        href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=homepage"
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ scale: 1.05 }}
@@ -24,7 +24,7 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
       </motion.a>
 
       <motion.a
-        href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&pcampaignid=web_share"
+        href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=homepage"
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ scale: 1.05 }}

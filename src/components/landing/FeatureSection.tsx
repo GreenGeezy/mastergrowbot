@@ -27,7 +27,7 @@ export default function FeatureSection() {
             </div>
           </ScrollReveal>
           <div className="order-2 flex justify-center">
-            <DeviceMockup src="/images/feature-plant-doctor.png" alt="Vision AI Diagnostics" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
+            <DeviceMockup src="/images/feature-plant-doctor.png" alt="MasterGrowbot AI vision diagnostics identifying cannabis pest and nutrient deficiency" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
           </div>
         </div>
 
@@ -35,7 +35,7 @@ export default function FeatureSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
           {/* Image is first in DOM, but second on mobile, first on desktop */}
           <div className="order-2 md:order-1 flex justify-center">
-            <DeviceMockup src="/images/feature-strain-intel.png" alt="Strain Intelligence" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
+            <DeviceMockup src="/images/feature-strain-intel.png" alt="MasterGrowbot AI cannabis strain intelligence and genetics tracking" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
           </div>
           {/* Text is second in DOM, but first on mobile, second on desktop */}
           <ScrollReveal className="order-1 md:order-2 space-y-6">
@@ -77,7 +77,7 @@ export default function FeatureSection() {
             </div>
           </ScrollReveal>
           <div className="order-2 flex justify-center">
-            <DeviceMockup src="/images/feature-grow-plans.png" alt="Expert Grow Consultant" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
+            <DeviceMockup src="/images/feature-grow-plans.png" alt="MasterGrowbot AI expert cannabis grow consultant and daily task planner" className="max-w-[280px] sm:max-w-[320px] md:max-w-md w-full" />
           </div>
         </div>
 
