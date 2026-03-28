@@ -3,13 +3,24 @@
 <html lang="en">
   <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJ288C7DSM"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NT1046S3EN"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+      gtag('config', 'G-NT1046S3EN');
 
-      gtag('config', 'G-EJ288C7DSM');
+      // Track app store link clicks
+      document.addEventListener('click', function(e) {
+        var el = e.target.closest('a[href]');
+        if (!el) return;
+        var href = el.getAttribute('href');
+        if (href && href.indexOf('apps.apple.com') !== -1) {
+          gtag('event', 'app_store_click', {'link_url': 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060'});
+        } else if (href && href.indexOf('play.google.com') !== -1) {
+          gtag('event', 'play_store_click', {'link_url': 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app'});
+        }
+      });
     </script>
     
     <meta charset="UTF-8" />
