@@ -174,6 +174,7 @@ export default function GrowGuideArticle() {
                 href={appStoreUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); } }}
                 className="flex-shrink-0 flex items-center gap-2 bg-landing-green text-black font-semibold text-sm px-4 py-2.5 rounded-xl hover:bg-landing-green/90 transition-colors font-sans whitespace-nowrap"
               >
                 Try free 3 days
@@ -195,11 +196,19 @@ export default function GrowGuideArticle() {
                 <h2 className="text-xl sm:text-2xl font-bold text-white font-sans mb-4 leading-snug">
                   {section.heading}
                 </h2>
-                {section.body.split('\n\n').map((para, j) => (
-                  <p key={j} className="text-base text-white/65 leading-relaxed font-sans mb-3">
-                    {para}
-                  </p>
-                ))}
+                {section.bodyHtml ? (
+                  <div
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={{ __html: section.bodyHtml }}
+                    className="text-base text-white/65 leading-relaxed font-sans overflow-x-auto"
+                  />
+                ) : (
+                  section.body.split('\n\n').map((para, j) => (
+                    <p key={j} className="text-base text-white/65 leading-relaxed font-sans mb-3">
+                      {para}
+                    </p>
+                  ))
+                )}
               </motion.section>
             ))}
 
@@ -236,6 +245,7 @@ export default function GrowGuideArticle() {
                   href={appStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); } }}
                 >
                   <img
                     src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
@@ -247,6 +257,7 @@ export default function GrowGuideArticle() {
                   href={playStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'play_store_click', { link_url: 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app' }); } }}
                 >
                   <img
                     src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
@@ -285,6 +296,7 @@ export default function GrowGuideArticle() {
                   href={appStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); } }}
                   className="flex items-center justify-center gap-2 w-full bg-landing-green text-black font-semibold text-sm px-4 py-2.5 rounded-xl hover:bg-landing-green/90 transition-colors font-sans"
                 >
                   iOS: Free 3-Day Trial
@@ -294,6 +306,7 @@ export default function GrowGuideArticle() {
                   href={playStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'play_store_click', { link_url: 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app' }); } }}
                   className="flex items-center justify-center gap-2 w-full border border-white/10 text-white/70 font-medium text-sm px-4 py-2.5 rounded-xl hover:border-landing-green/40 hover:text-white transition-colors font-sans"
                 >
                   Android: Free 3-Day Trial
