@@ -48,6 +48,7 @@ MasterGrowbot AI is a premium cannabis cultivation assistant app (iOS + Android)
 - Include at least 2 internal links: one to /grow-guides/ hub, one to homepage or another guide
 - Include at least 1 app store link with UTM parameters (see App Store Links section above for exact URLs)
 - All images must have descriptive alt text that includes relevant keywords
+- NEVER use em dashes in any article text, page copy, headings, meta descriptions, CTAs, FAQ answers, or any user-facing written content. Use regular hyphens (-), commas, colons, semicolons, or rewrite the sentence to avoid dashes entirely. This rule applies to all grow guides, landing pages, hub pages, and any visible text. It does NOT apply to code logic, analytics strings, or JSON-LD schema.
 
 ### Internal Linking Rules
 - Every grow guide links to the /grow-guides/ hub page

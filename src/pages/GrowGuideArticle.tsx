@@ -226,10 +226,10 @@ export default function GrowGuideArticle() {
             {/* Closing CTA */}
             <div className="mb-12 rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent p-8 text-center space-y-4">
               <h2 className="text-2xl sm:text-3xl font-bold text-landing-green font-sans">
-                Download MasterGrowbot AI — Free 3-Day Trial
+                Download MasterGrowbot AI: Free 3-Day Trial
               </h2>
               <p className="text-white/60 font-sans text-sm sm:text-base max-w-lg mx-auto">
-                Snap a photo. Save your plant. Try MasterGrowbot AI free — AI plant diagnosis, grow journal, strain database, and daily tasks in one app.
+                Snap a photo. Save your plant. Try MasterGrowbot AI free: AI plant diagnosis, grow journal, strain database, and daily tasks in one app.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
                 <a
@@ -279,7 +279,7 @@ export default function GrowGuideArticle() {
                   Download MasterGrowbot AI
                 </p>
                 <p className="text-xs text-white/50 font-sans leading-relaxed">
-                  Your AI master grower, in your pocket. Snap a photo — get an instant diagnosis and treatment plan.
+                  Your AI master grower, in your pocket. Snap a photo and get an instant diagnosis and treatment plan.
                 </p>
                 <a
                   href={appStoreUrl}
@@ -287,7 +287,7 @@ export default function GrowGuideArticle() {
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full bg-landing-green text-black font-semibold text-sm px-4 py-2.5 rounded-xl hover:bg-landing-green/90 transition-colors font-sans"
                 >
-                  iOS — Free 3-Day Trial
+                  iOS: Free 3-Day Trial
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
                 <a
@@ -296,7 +296,7 @@ export default function GrowGuideArticle() {
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full border border-white/10 text-white/70 font-medium text-sm px-4 py-2.5 rounded-xl hover:border-landing-green/40 hover:text-white transition-colors font-sans"
                 >
-                  Android — Free 3-Day Trial
+                  Android: Free 3-Day Trial
                 </a>
               </div>
 

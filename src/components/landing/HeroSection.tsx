@@ -68,7 +68,7 @@ export default function HeroSection() {
           <div className="flex items-center justify-center gap-2 sm:gap-4 w-full lg:max-w-2xl mx-auto">
             <DeviceMockup
               src="/images/hero-award-buds.png"
-              alt="MasterGrowbot AI cannabis app — grow award winning buds"
+              alt="MasterGrowbot AI cannabis app for growing award winning buds"
               className="w-[30%] max-w-[210px] transform -rotate-2 lg:rotate-y-6 opacity-90 transition-transform duration-500 hover:scale-105 hover:z-20 hover:opacity-100"
             />
             <DeviceMockup

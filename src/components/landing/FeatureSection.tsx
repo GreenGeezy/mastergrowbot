@@ -65,7 +65,7 @@ export default function FeatureSection() {
               A Master Grower in Your Pocket, 24/7
             </h3>
             <p className="text-base sm:text-lg text-white/60 leading-relaxed font-sans">
-              Stop second-guessing your environmental inputs. Get a relentless, expert set of eyes on your canopy at all times—mitigating risk and optimizing growth without paying thousands for a human consultant.
+              Stop second-guessing your environmental inputs. Get a relentless, expert set of eyes on your canopy at all times, mitigating risk and optimizing growth without paying thousands for a human consultant.
             </p>
             <div className="pt-2">
               <StoreBadges className="justify-start pt-2" />

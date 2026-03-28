@@ -86,7 +86,7 @@ export default function GrowGuidesHub() {
               Expert Cannabis Cultivation
             </span>
             <h1 className="text-3xl sm:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
-              Cannabis Grow Guides —{' '}
+              Cannabis Grow Guides:{' '}
               <span className="text-landing-green">Expert Tips Powered by AI</span>
             </h1>
             <p className="mt-4 text-base sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed font-sans">
@@ -116,7 +116,7 @@ export default function GrowGuidesHub() {
               rel="noopener noreferrer"
               className="text-sm text-white/50 hover:text-white/80 transition-colors font-sans"
             >
-              Download MasterGrowbot AI — Free 3-Day Trial
+              Download MasterGrowbot AI - Free 3-Day Trial
             </a>
           </motion.div>
         </div>
