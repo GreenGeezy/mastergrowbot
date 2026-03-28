@@ -21,6 +21,8 @@ const ChatInterface = lazy(() => import("@/components/ChatInterface"));
 const PlantHealthAnalyzer = lazy(() => import("@/pages/PlantHealthAnalyzer"));
 const SharedAnalysis = lazy(() => import("@/pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("@/pages/GrowingGuide"));
+const GrowGuidesHub = lazy(() => import("@/pages/GrowGuidesHub"));
+const GrowGuideArticle = lazy(() => import("@/pages/GrowGuideArticle"));
 
 const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
@@ -54,10 +56,11 @@ const AuthVerification = () => {
     '/thank-you', 
     '/auth/callback', 
     '/auth/v1/callback'
-  ].some(route => 
-    location.pathname === route || 
-    location.pathname.startsWith('/auth/') || 
-    location.pathname.startsWith('/shared/')
+  ].some(route =>
+    location.pathname === route ||
+    location.pathname.startsWith('/auth/') ||
+    location.pathname.startsWith('/shared/') ||
+    location.pathname.startsWith('/grow-guides')
   );
   
   useEffect(() => {
@@ -259,6 +262,22 @@ const App = () => {
                     <ThankYou />
                   </Suspense>
                 } 
+              />
+              <Route
+                path="/grow-guides"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <GrowGuidesHub />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/grow-guides/:slug"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <GrowGuideArticle />
+                  </Suspense>
+                }
               />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/auth/v1/callback" element={<AuthCallback />} />

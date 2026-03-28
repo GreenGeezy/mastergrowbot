@@ -6,6 +6,9 @@ export default function LandingFooter() {
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/30 font-sans">
         <p>© {new Date().getFullYear()} AGCOM SOLUTIONS LLC. All rights reserved.</p>
         <div className="flex gap-6">
+          <Link to="/grow-guides" className="hover:text-white/60 transition-colors">
+            Grow Guides
+          </Link>
           <Link to="/privacy-policy" className="hover:text-white/60 transition-colors">
             Privacy Policy
           </Link>
