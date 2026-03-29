@@ -3,10 +3,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import SEOHead from "@/components/SEOHead";
 
 const TermsOfService = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background/80 to-muted/50 flex flex-col">
+      <SEOHead
+        title="Terms of Service | MasterGrowbot AI"
+        description="MasterGrowbot AI terms of service and usage agreement."
+        canonicalUrl="https://www.mastergrowbot.com/terms-of-service"
+      />
       {/* Header */}
       <header className="w-full py-4 px-6 border-b bg-card/60 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">

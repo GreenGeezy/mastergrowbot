@@ -4,10 +4,16 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import DeletionRequestForm from "@/components/privacy/DeletionRequestForm";
+import SEOHead from "@/components/SEOHead";
 
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background/80 to-muted/50 flex flex-col">
+      <SEOHead
+        title="Privacy Policy | MasterGrowbot AI"
+        description="MasterGrowbot AI privacy policy. Learn how we handle your data."
+        canonicalUrl="https://www.mastergrowbot.com/privacy-policy"
+      />
       {/* Header */}
       <header className="w-full py-4 px-6 border-b bg-card/60 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
