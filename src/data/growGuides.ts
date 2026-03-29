@@ -37,8 +37,8 @@ export const growGuides: GrowGuide[] = [
     metaTitle: 'Cannabis Nutrient Deficiency Guide | MasterGrowbot AI',
     metaDescription:
       'Identify and fix cannabis nutrient deficiencies fast. Covers nitrogen, phosphorus, potassium, calcium, magnesium, iron, and more. Download MasterGrowbot AI for instant photo diagnosis.',
-    publishedDate: '2026-03-28',
-    modifiedDate: '2026-03-28',
+    publishedDate: '2026-03-28T00:00:00Z',
+    modifiedDate: '2026-03-28T00:00:00Z',
     intro: `Nutrient deficiencies are the number one reason cannabis growers lose yield, potency, and profit. A nitrogen deficiency can stall a plant's vegetative growth for two weeks before most growers even recognize what they are looking at. A calcium problem during late flower can cost you bud density on the entire canopy. And a misdiagnosed phosphorus issue, where a grower adds more phosphorus to a plant that is already locked out by low pH, can push a salvageable crop into unrecoverable decline.
 
 The frustrating reality is that cannabis shows its problems through its leaves, and most symptoms look deceptively similar to each other. Yellowing can mean nitrogen deficiency, magnesium deficiency, iron lockout, or simple overwatering. Brown leaf edges could be potassium, calcium, nutrient burn, or windburn. Getting the diagnosis wrong and applying the wrong fix is often more damaging than doing nothing at all.
@@ -205,8 +205,8 @@ Use MasterGrowbot AI's daily task system to stay on top of your watering schedul
     metaTitle: 'Spider Mites: Cannabis Treatment Guide | MasterGrowbot AI',
     metaDescription:
       'Identify and eliminate spider mites on cannabis plants. Step-by-step treatment guide with prevention tips. Scan plants instantly with MasterGrowbot AI.',
-    publishedDate: '2026-03-28',
-    modifiedDate: '2026-03-28',
+    publishedDate: '2026-03-28T00:00:00Z',
+    modifiedDate: '2026-03-28T00:00:00Z',
     intro: `Spider mites are among the most destructive cannabis pests, and they are devastating precisely because they operate at a scale that makes them nearly invisible until serious damage is already done. A single infested plant introduced into your grow room on a Monday can have colonies spreading across your entire canopy by Friday. By the time you see the webbing, you are already well behind.
 
 The economic cost is real. Spider mites pierce leaf cells and extract chlorophyll, reducing photosynthesis efficiency and ultimately stunting both vegetative growth and bud development. In severe infestations, they cover buds with fine webbing that makes the final product unsellable. A mite infestation caught in week six of flower can mean the difference between a quality harvest and a total loss.
@@ -339,8 +339,8 @@ For more on diagnosing plant problems, see the cannabis nutrient deficiency guid
     metaTitle: 'When to Harvest Cannabis: Trichome Guide | MasterGrowbot AI',
     metaDescription:
       'Learn when to harvest cannabis using trichome analysis. Maximize potency and yield with MasterGrowbot AI harvest window feature.',
-    publishedDate: '2026-03-28',
-    modifiedDate: '2026-03-28',
+    publishedDate: '2026-03-28T00:00:00Z',
+    modifiedDate: '2026-03-28T00:00:00Z',
     intro: `Harvest timing is the single highest-leverage decision in your entire grow cycle. Every hour of additional cultivation time, the correct nutrients, the perfect VPD, and the pest-free environment you worked to maintain all converge into one window of peak quality. Harvest before that window and you leave potency on the table. Harvest after it and you convert your THC into CBN, shifting the effect profile dramatically toward sedation and degrading the quality you spent weeks building.
 
 Most growers underestimate how much harvest timing matters because they think of it in terms of weeks, using breeder-stated flowering times as their guide. But breeders' timelines are estimates based on average conditions. Your specific genetics, your growing environment, your training methods, and your feeding program all affect when your individual plants actually reach peak maturity. The calendar alone will get you within the ballpark, but trichome analysis gets you to the exact day.
@@ -475,8 +475,8 @@ For a complete overview of pest identification that might be affecting your tric
     metaTitle: 'Indoor Cannabis Growing: Beginner Guide | MasterGrowbot AI',
     metaDescription:
       'Step-by-step guide to growing cannabis indoors for beginners. Equipment, setup, and daily care with AI assistance from MasterGrowbot.',
-    publishedDate: '2026-03-28',
-    modifiedDate: '2026-03-28',
+    publishedDate: '2026-03-28T00:00:00Z',
+    modifiedDate: '2026-03-28T00:00:00Z',
     intro: `Growing cannabis indoors has never been more accessible. Modern LED technology has reduced energy costs and heat management challenges dramatically. Quality genetics are available from reputable seed banks worldwide. And the wealth of cultivation knowledge that used to exist only in expert grower networks is now available to anyone willing to learn.
 
 What most beginner guides will not tell you is that the fundamentals are genuinely straightforward. Cannabis is a resilient plant with clear preferences for light, water, nutrients, and environment. When those preferences are met consistently, the plant does most of the work. The challenge for beginners is not that indoor growing is complicated. It is that there are many variables, and managing them simultaneously while learning the craft requires a system.
@@ -676,8 +676,8 @@ For more in-depth coverage of specific topics covered in this guide, see the can
     metaTitle: 'Best Cannabis Growing Apps 2026 | MasterGrowbot AI',
     metaDescription:
       'Compare the best cannabis growing apps of 2026 including AI features, pricing, and user experience. See why growers choose MasterGrowbot AI.',
-    publishedDate: '2026-03-28',
-    modifiedDate: '2026-03-28',
+    publishedDate: '2026-03-28T00:00:00Z',
+    modifiedDate: '2026-03-28T00:00:00Z',
     intro: `The right growing app can be the difference between a reactive grower who discovers problems too late and a proactive one who prevents them entirely. Cannabis cultivation involves dozens of variables that interact across a grow cycle lasting months: pH, EC, VPD, feeding schedules, training timing, environmental conditions, pest monitoring, and harvest timing. Managing all of these mentally, without a documented system, is how avoidable problems compound into real losses.
 
 Growing apps have matured significantly in recent years. The category has evolved from simple grow diaries and reminder tools into platforms that incorporate AI plant diagnosis, strain databases, environmental tracking, and personalized daily task systems. The gap between the best and the rest is now substantial.

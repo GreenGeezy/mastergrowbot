@@ -28,7 +28,8 @@ export default function GrowGuideArticle() {
     '@type': 'Article',
     headline: guide.h1,
     description: guide.metaDescription,
-    author: { '@type': 'Organization', name: 'MasterGrowbot AI' },
+    image: 'https://www.mastergrowbot.com/lovable-uploads/cdeebe66-3489-4cb2-a2e7-0a4763d845ce.png',
+    author: { '@type': 'Organization', name: 'MasterGrowbot AI', url: 'https://www.mastergrowbot.com' },
     publisher: {
       '@type': 'Organization',
       name: 'MasterGrowbot AI',

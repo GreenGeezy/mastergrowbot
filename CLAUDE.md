@@ -127,14 +127,15 @@ MasterGrowbot AI is a premium cannabis cultivation assistant app (iOS + Android)
   "@type": "Article",
   "headline": "ARTICLE_TITLE",
   "description": "META_DESCRIPTION",
-  "author": {"@type": "Organization", "name": "MasterGrowbot AI"},
+  "image": "https://www.mastergrowbot.com/lovable-uploads/cdeebe66-3489-4cb2-a2e7-0a4763d845ce.png",
+  "author": {"@type": "Organization", "name": "MasterGrowbot AI", "url": "https://www.mastergrowbot.com"},
   "publisher": {
     "@type": "Organization",
     "name": "MasterGrowbot AI",
     "logo": {"@type": "ImageObject", "url": "https://www.mastergrowbot.com/logo.png"}
   },
-  "datePublished": "ISO_DATE",
-  "dateModified": "ISO_DATE",
+  "datePublished": "YYYY-MM-DDT00:00:00Z",
+  "dateModified": "YYYY-MM-DDT00:00:00Z",
   "mainEntityOfPage": "CANONICAL_URL"
 }
 ```
@@ -188,7 +189,7 @@ Before committing any page changes, Claude Code MUST verify ALL of the following
     - Grow guide articles: Article + BreadcrumbList + FAQPage
     - Grow guides hub: FAQPage + BreadcrumbList
 13. All schema uses the real app store URLs (not placeholder text)
-14. Article schema includes correct datePublished and dateModified in ISO format
+14. Article schema includes correct datePublished and dateModified in full ISO 8601 format with timezone (YYYY-MM-DDT00:00:00Z)
 
 ### Links & CTAs
 15. At least 2 internal links exist on the page: one to /grow-guides/ hub and one to the homepage or another guide
