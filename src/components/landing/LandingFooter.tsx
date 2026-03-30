@@ -9,6 +9,9 @@ export default function LandingFooter() {
           <Link to="/grow-guides" className="hover:text-white/60 transition-colors">
             Grow Guides
           </Link>
+          <Link to="/vpd-calculator" className="hover:text-white/60 transition-colors">
+            VPD Calculator
+          </Link>
           <Link to="/privacy-policy" className="hover:text-white/60 transition-colors">
             Privacy Policy
           </Link>

@@ -23,6 +23,7 @@ const SharedAnalysis = lazy(() => import("@/pages/SharedAnalysis"));
 const GrowingGuide = lazy(() => import("@/pages/GrowingGuide"));
 const GrowGuidesHub = lazy(() => import("@/pages/GrowGuidesHub"));
 const GrowGuideArticle = lazy(() => import("@/pages/GrowGuideArticle"));
+const VPDCalculator = lazy(() => import("@/pages/VPDCalculator"));
 
 const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
@@ -60,7 +61,8 @@ const AuthVerification = () => {
     location.pathname === route ||
     location.pathname.startsWith('/auth/') ||
     location.pathname.startsWith('/shared/') ||
-    location.pathname.startsWith('/grow-guides')
+    location.pathname.startsWith('/grow-guides') ||
+    location.pathname.startsWith('/vpd-calculator')
   );
   
   useEffect(() => {
@@ -276,6 +278,14 @@ const App = () => {
                 element={
                   <Suspense fallback={<LoadingSpinner />}>
                     <GrowGuideArticle />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/vpd-calculator"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <VPDCalculator />
                   </Suspense>
                 }
               />

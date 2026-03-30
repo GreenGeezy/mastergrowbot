@@ -15,12 +15,20 @@ export default function LandingNav() {
           MasterGrowbot AI
         </span>
       </Link>
-      <Link
-        to="/grow-guides"
-        className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
-      >
-        Grow Guides
-      </Link>
+      <div className="flex items-center gap-5">
+        <Link
+          to="/grow-guides"
+          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
+        >
+          Grow Guides
+        </Link>
+        <Link
+          to="/vpd-calculator"
+          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
+        >
+          VPD Calculator
+        </Link>
+      </div>
     </nav>
   );
 }
