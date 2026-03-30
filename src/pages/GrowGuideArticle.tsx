@@ -204,7 +204,7 @@ export default function GrowGuideArticle() {
                     className="text-base text-white/65 leading-relaxed font-sans overflow-x-auto"
                   />
                 ) : (
-                  section.body.split('\n\n').map((para, j) => (
+                  (section.body ?? '').split('\n\n').map((para, j) => (
                     <p key={j} className="text-base text-white/65 leading-relaxed font-sans mb-3">
                       {para}
                     </p>

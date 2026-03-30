@@ -122,6 +122,32 @@ export default function GrowGuidesHub() {
         </div>
       </section>
 
+      {/* VPD Calculator Banner */}
+      <section className="relative z-10 px-4 sm:px-6 pb-6">
+        <div className="max-w-6xl mx-auto">
+          <Link
+            to="/vpd-calculator"
+            className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-landing-green/25 bg-landing-green/5 hover:bg-landing-green/10 hover:border-landing-green/40 transition-all duration-300 px-6 py-5"
+          >
+            <div className="space-y-1">
+              <p className="text-xs font-semibold uppercase tracking-wider text-landing-green font-sans">
+                Free Tool
+              </p>
+              <p className="text-base font-semibold text-white font-sans leading-snug">
+                Free VPD Calculator
+              </p>
+              <p className="text-sm text-white/50 font-sans">
+                Check your grow environment in seconds. Enter temp and humidity, get instant diagnosis for your growth stage.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-landing-green text-sm font-semibold font-sans whitespace-nowrap flex-shrink-0">
+              Use the calculator
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* Guides Grid */}
       <section className="relative z-10 py-8 sm:py-12 px-4 sm:px-6 pb-24">
         <div className="max-w-6xl mx-auto">
