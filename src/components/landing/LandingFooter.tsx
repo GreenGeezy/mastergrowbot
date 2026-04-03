@@ -12,6 +12,14 @@ export default function LandingFooter() {
           <Link to="/vpd-calculator" className="hover:text-white/60 transition-colors">
             VPD Calculator
           </Link>
+          <a
+            href="https://www.mastergrowbotai.com?utm_source=website&utm_medium=organic&utm_campaign=footer"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/60 transition-colors"
+          >
+            Web App
+          </a>
           <Link to="/privacy-policy" className="hover:text-white/60 transition-colors">
             Privacy Policy
           </Link>
