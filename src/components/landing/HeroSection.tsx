@@ -49,12 +49,6 @@ export default function HeroSection() {
           </p>
 
           <StoreBadges className="justify-center lg:justify-start pt-2" />
-
-          <p className="text-xs sm:text-sm text-center lg:text-left text-white/50 font-sans mt-3">
-            Start your Free Trial today Risk Free! <span className="hidden sm:inline"></span>
-            <br className="sm:hidden" />
-            No Sign Up required &bull; Cancel anytime
-          </p>
         </motion.div>
 
         {/* Hero Device */}

@@ -19,11 +19,6 @@ export default function FeatureSection() {
             </p>
             <div className="pt-2">
               <StoreBadges className="justify-start pt-2" />
-              <p className="text-xs sm:text-sm text-left text-white/50 font-sans mt-3">
-                Start your Free Trial today Risk Free! <span className="hidden sm:inline"></span>
-                <br className="sm:hidden" />
-                No Sign Up required &bull; Cancel anytime
-              </p>
             </div>
           </ScrollReveal>
           <div className="order-2 flex justify-center">
@@ -48,11 +43,6 @@ export default function FeatureSection() {
             </p>
             <div className="pt-2">
               <StoreBadges className="justify-start pt-2" />
-              <p className="text-xs sm:text-sm text-left text-white/50 font-sans mt-3">
-                Start your Free Trial today Risk Free! <span className="hidden sm:inline"></span>
-                <br className="sm:hidden" />
-                No Sign Up required &bull; Cancel anytime
-              </p>
             </div>
           </ScrollReveal>
         </div>
@@ -69,11 +59,6 @@ export default function FeatureSection() {
             </p>
             <div className="pt-2">
               <StoreBadges className="justify-start pt-2" />
-              <p className="text-xs sm:text-sm text-left text-white/50 font-sans mt-3">
-                Start your Free Trial today Risk Free! <span className="hidden sm:inline"></span>
-                <br className="sm:hidden" />
-                No Sign Up required &bull; Cancel anytime
-              </p>
             </div>
           </ScrollReveal>
           <div className="order-2 flex justify-center">
