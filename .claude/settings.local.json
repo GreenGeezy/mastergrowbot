@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \":*)",
+      "Bash(npm run:*)",
+      "Bash(bash /tmp/extract.sh)",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('scripts/article-queue.json','utf8'\\)\\); console.log\\('Queue valid'\\);\")",
+      "Bash(node scripts/generate-article.mjs)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(node -e \"const q=JSON.parse\\(require\\('fs'\\).readFileSync\\('c:/Users/elidu/.vscode/mastergrowbot/scripts/article-queue.json','utf8'\\)\\); console.log\\('Total entries:',q.length,'; Published:',q.filter\\(x=>x.published\\).length,'; Unpublished:',q.filter\\(x=>!x.published\\).length\\);\")"
+    ]
+  }
+}
