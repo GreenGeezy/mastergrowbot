@@ -1540,6 +1540,120 @@ For experienced photoperiod growers who want maximum yield from a single plant: 
     ],
     relatedSlugs: ['how-to-grow-cannabis-indoors-beginners', 'autoflowering-cannabis-growing-guide', 'cannabis-nutrient-deficiency-guide'],
   },
+  // ─────────────────────────────────────────────────────────────
+  // AUTO-PUBLISHED: Cannabis Nutrient Lockout: How to Diagnose and Fix It
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "cannabis-nutrient-lockout",
+    title: "Cannabis Nutrient Lockout: How to Diagnose and Fix It",
+    h1: "Cannabis Nutrient Lockout: Diagnosis, Recovery, and Prevention",
+    shortDescription: "Cannabis nutrient lockout blocks plants from absorbing nutrients despite proper feeding. Learn to diagnose, flush, and prevent this critical growing issue.",
+    metaTitle: "Cannabis Nutrient Lockout: Diagnose and Fix | MasterGrowbot",
+    metaDescription: "Fix cannabis nutrient lockout fast. Understand causes, spot the difference from deficiency, and flush correctly. Try MasterGrowbot AI free.",
+    publishedDate: "2026-04-04T00:00:00Z",
+    modifiedDate: "2026-04-04T00:00:00Z",
+    intro: `Cannabis nutrient lockout occurs when plants cannot absorb nutrients despite adequate feeding, creating deficiency symptoms even when nutrients are present. This frustrating condition affects millions of cannabis plants and can devastate yields if not addressed quickly. Unlike true deficiencies, nutrient lockout stems from chemical imbalances in the root zone that block nutrient uptake. I've seen experienced growers lose entire crops to lockout because they kept adding more nutrients when the real problem was salt buildup or pH imbalance. The key difference is that lockout shows multiple deficiency symptoms simultaneously across different nutrients, while true deficiencies typically affect one nutrient at a time. Quick action can save your plants, but understanding the root cause prevents future disasters. Download [MasterGrowbot AI](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=cannabis-nutrient-lockout) to track your feeding schedule, monitor pH levels, and get real-time alerts when conditions favor nutrient lockout.`,
+    sections: [
+    {
+      heading: "What Is Cannabis Nutrient Lockout and Why It Happens",
+      body: `Cannabis nutrient lockout is a condition where plants cannot absorb available nutrients due to chemical imbalances in the growing medium or root zone. The nutrients are physically present, but environmental factors prevent the roots from taking them up. This creates a cruel irony where well-fed plants show severe deficiency symptoms.
+
+The primary mechanism behind nutrient lockout involves pH fluctuations, salt accumulation, and antagonistic relationships between different nutrients. When pH drifts outside the optimal range of 6.0-7.0 for soil or 5.5-6.5 for hydro, certain nutrients become chemically unavailable. I've observed that pH swings of just 0.5 units can lock out critical nutrients like iron and phosphorus.
+
+Salt buildup from excessive feeding creates another pathway to lockout. These accumulated salts increase the electrical conductivity (EC) of your medium, making it harder for roots to absorb water and nutrients. In practice, EC readings above 2.5 in hydro systems or TDS above 1750 ppm often signal impending lockout conditions.
+
+Nutrient antagonism adds another layer of complexity. High levels of potassium can block magnesium uptake, while excess calcium interferes with iron absorption. These relationships explain why cannabis nutrient lockout often presents as multiple deficiencies occurring simultaneously. Understanding these mechanisms helps distinguish lockout from simple deficiencies and guides proper treatment strategies. The [cannabis nutrient deficiency guide](/grow-guides/cannabis-nutrient-deficiency-guide/) covers individual deficiencies in detail, making the contrast with lockout symptoms more apparent.`,
+    },
+    {
+      heading: "Nutrient Lockout vs. Deficiency: Key Differences",
+      bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Characteristic</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Nutrient Lockout</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Single Deficiency</th></tr></thead><tbody>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Symptom Pattern</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Multiple nutrients affected</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">One nutrient affected</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Progression Speed</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Rapid, 2-5 days</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Gradual, 1-2 weeks</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">pH Reading</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Outside optimal range</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Usually within range</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">EC/TDS Levels</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Often elevated</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Normal or low</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Response to Feeding</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Symptoms worsen</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Symptoms improve</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Leaf Distribution</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Throughout plant</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Specific leaf positions</td></tr>
+        </tbody></table></div>`,
+    },
+    {
+      heading: "Visual Symptoms of Nutrient Lockout at Each Growth Stage",
+      body: `Recognizing cannabis nutrient lockout requires understanding how symptoms manifest differently throughout the plant's lifecycle. During vegetative growth, lockout typically appears as yellowing lower leaves combined with brown spots on mid-canopy foliage, indicating simultaneous nitrogen and potassium issues. The distinctive pattern shows interveinal chlorosis (yellow between green veins) alongside brown crispy edges, creating a confusing symptom profile.
+
+Early flowering brings more severe manifestations as nutrient demands peak. I've consistently seen lockout present as purple stems, yellowing fan leaves, and brown spots appearing within 48 hours. The rapid progression distinguishes lockout from normal flower fade, which develops gradually over weeks. Upper leaves may show light burn symptoms even under moderate lighting, indicating the plant's inability to process energy properly.
+
+Late flowering lockout creates the most dramatic symptoms and poses the greatest yield threat. Entire fan leaves yellow and drop within days, while sugar leaves develop brown edges and curl upward. The buds themselves may show foxtailing, reduced trichome production, or premature amber coloring. What sets lockout apart is the speed of deterioration combined with multiple nutrient symptoms appearing simultaneously across different plant regions.
+
+The key visual indicator across all growth stages is the scattered, multi-nutrient appearance rather than the systematic progression of single deficiencies. True deficiencies follow predictable patterns based on nutrient mobility, while lockout creates seemingly random symptom clusters. This random distribution, combined with rapid onset, signals that environmental factors rather than nutrient availability are causing the problems.`,
+    },
+    {
+      heading: "The Most Common Causes of Cannabis Nutrient Lockout",
+      body: `Salt buildup represents the leading cause of cannabis nutrient lockout in both hydroponic and soil systems. Accumulated salts from synthetic nutrients create toxic concentrations that prevent proper water and nutrient uptake. I've measured salt accumulations with EC readings exceeding 3.0, far above the 1.2-2.0 optimal range for cannabis. These conditions develop gradually through aggressive feeding schedules or inadequate runoff management.
+
+PH fluctuations rank as the second most common lockout trigger. When growing medium pH drifts outside optimal ranges, essential nutrients become chemically unavailable regardless of concentration. Iron becomes unavailable above pH 7.0, while phosphorus locks out below pH 5.5. The [cannabis pH guide](/grow-guides/cannabis-ph-guide/) explains these relationships in detail. Daily pH swings greater than 0.3 units stress plants and create intermittent lockout conditions.
+
+Overfeeding paradoxically causes lockout by disrupting nutrient ratios and creating salt accumulation. Many growers assume more nutrients equal better growth, but cannabis plants have specific uptake ratios. Excess nitrogen blocks calcium absorption, while too much potassium interferes with magnesium uptake. These antagonistic relationships explain why well-fed plants sometimes show deficiency symptoms.
+
+Environmental stress compounds these primary causes by reducing the plant's ability to process available nutrients. High temperatures above 80°F increase water demand while reducing nutrient uptake efficiency. Poor air circulation creates humid microclimates around leaves, encouraging lockout symptoms even with perfect root zone conditions. Understanding these interconnected factors helps prevent lockout before symptoms appear and guides effective treatment strategies when problems arise.`,
+    },
+    {
+      heading: "How to Flush Your Medium and Reset the Root Zone",
+      body: `Proper flushing technique is critical for resolving cannabis nutrient lockout without causing additional stress. Begin by testing your water source - chlorinated tap water or water with high dissolved solids can worsen lockout conditions. Use filtered water with an EC below 0.3 or reverse osmosis water for best results. I've seen growers use hard tap water for flushing and actually make lockout worse by adding more dissolved minerals.
+
+For soil grows, start the flush with pH-adjusted water at 6.5, using 3 times the container volume. A 5-gallon pot requires 15 gallons of flush water, applied slowly to avoid shocking the roots. Monitor runoff pH and EC - initially acidic runoff with high EC confirms salt buildup. Continue flushing until runoff pH matches input water and EC drops below 1.0. This process typically takes 20-30 minutes of steady watering.
+
+Hydroponic systems require complete reservoir changes followed by continuous circulation of pH-adjusted flush water for 12-24 hours. Replace the nutrient solution with pure water at pH 5.8 and circulate through all lines and growing medium. Check EC hourly during the first 6 hours - readings should drop consistently as salts dissolve and clear from the system.
+
+Coco coir presents unique challenges because of its high cation exchange capacity. Pre-flush with calcium-magnesium water at pH 6.0 to displace accumulated salts, followed by pure water flush. The calcium helps release bound sodium and potassium ions. After flushing any medium, allow 12-24 hours before resuming feeding to let the root zone stabilize and begin recovery.`,
+    },
+    {
+      heading: "Post-Flush Recovery: Getting Your Plant Back on Track",
+      body: `Post-flush recovery requires patience and precise nutrient management to avoid re-triggering lockout conditions. Resume feeding at 25% strength of your normal schedule, using a balanced fertilizer with equal NPK ratios. I've found that jumping back to full strength nutrients within 48 hours of flushing often causes immediate relapse into lockout. The stressed root system needs time to recover its absorption capacity.
+
+Monitor new growth closely during the first week post-flush. Healthy recovery shows bright green new shoots and leaves within 3-5 days. Continuing yellow or brown symptoms indicate incomplete flushing or underlying environmental issues. Check your [VPD calculator](/vpd-calculator/) to ensure optimal growing conditions during recovery - stressed plants are more sensitive to environmental fluctuations.
+
+Water management becomes crucial during recovery. Flushed growing medium retains less water initially, requiring more frequent but lighter watering sessions. Allow the top inch of soil to dry between waterings, but don't let the medium become completely dry. Hydroponic systems should maintain constant moisture with reduced nutrient concentrations.
+
+Gradually increase nutrient strength over 2-3 weeks, monitoring plant response at each step. Increase by 25% weekly until reaching optimal feeding levels. This slow progression allows the root system to rebuild while preventing salt accumulation. Track your feeding schedule carefully - many growers inadvertently recreate lockout conditions by reverting to old habits too quickly. The goal is sustainable nutrient uptake, not rapid recovery that leads to future problems.`,
+    },
+    {
+      heading: "Preventing Nutrient Lockout in Future Grows",
+      body: `Prevention strategies focus on maintaining optimal growing conditions and avoiding the environmental extremes that trigger cannabis nutrient lockout. Establish consistent pH monitoring with daily checks during feeding. Invest in a quality pH meter with automatic temperature compensation - cheap meters give inconsistent readings that lead to pH-related lockout. I test pH both before mixing nutrients and after, as some nutrient combinations can shift pH significantly.
+
+Implement proper feeding schedules based on plant response rather than manufacturer recommendations. Most nutrient companies suggest feeding levels that exceed actual plant needs. Start with 50% recommended strength and increase based on plant response. Monitor runoff EC weekly in soil grows and maintain reservoir EC between 1.2-2.0 in hydroponic systems. Higher concentrations rarely improve growth and increase lockout risk.
+
+Establish environmental controls that support nutrient uptake efficiency. Maintain temperatures between 70-78°F during lights on and 65-70°F during lights off. Higher temperatures increase water demand while reducing nutrient processing ability. Ensure adequate air circulation with gentle air movement across all plant surfaces. Stagnant air creates humid microclimates that stress plants and reduce nutrient uptake.
+
+Develop feeding routines that include periodic flushing even when plants appear healthy. Schedule light flushes every 2-3 weeks in soil grows and weekly reservoir changes in hydro systems. This proactive approach prevents salt accumulation before it reaches lockout levels. The [indoor growing guide](/grow-guides/how-to-grow-cannabis-indoors-beginners/) provides comprehensive environmental control strategies that support nutrient uptake throughout the growth cycle.`,
+    },
+    {
+      heading: "Grow Smarter with MasterGrowbot AI",
+      body: `MasterGrowbot AI transforms nutrient management with intelligent tracking and predictive alerts that prevent cannabis nutrient lockout before it starts. Our advanced algorithms monitor your feeding schedule, pH trends, and environmental data to identify conditions that favor lockout development. The app sends real-time notifications when EC levels climb toward dangerous ranges or when pH drift threatens nutrient availability. Smart feeding schedules adapt to your specific strain and growing medium, preventing the overfeeding that commonly triggers lockout. Download [MasterGrowbot AI](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=cannabis-nutrient-lockout) for iOS or [Google Play](https://play.google.com/store/apps/details?id=com.mastergrowbot.app?utm_source=website&utm_medium=organic&utm_campaign=cannabis-nutrient-lockout) and start your free trial today.`,
+    }
+    ],
+    faqs: [
+    {
+      question: "How do I know if my cannabis has nutrient lockout or deficiency?",
+      answer: "Nutrient lockout shows multiple deficiency symptoms appearing rapidly across different plant areas, while single deficiencies develop gradually in predictable patterns. Lockout typically occurs with high EC readings and pH outside optimal ranges.",
+    },
+    {
+      question: "What causes salt buildup in cannabis plants?",
+      answer: "Salt buildup results from excessive feeding, inadequate runoff, or using nutrients with high salt content. Poor drainage and infrequent flushing allow salts to accumulate in the growing medium.",
+    },
+    {
+      question: "Can I fix nutrient lockout without flushing?",
+      answer: "Flushing is the most effective treatment for severe lockout caused by salt buildup. Minor pH-related lockout may resolve with pH adjustment alone, but flushing ensures complete salt removal.",
+    },
+    {
+      question: "How long does it take to recover from nutrient lockout?",
+      answer: "Recovery typically takes 5-10 days with proper flushing and gradual feeding resumption. New growth appears within 3-5 days, while existing damaged leaves may continue yellowing during recovery.",
+    },
+    {
+      question: "Is it safe to harvest cannabis after nutrient lockout?",
+      answer: "Yes, lockout doesn't make cannabis unsafe to consume. MasterGrowbot AI helps track recovery progress and optimize harvest timing even after lockout events, ensuring maximum potency and quality.",
+    }
+    ],
+    relatedSlugs: ["cannabis-nutrient-deficiency-guide", "cannabis-ph-guide", "how-to-grow-cannabis-indoors-beginners"],
+  },
 ];
 
 export function getGuideBySlug(slug: string): GrowGuide | undefined {
