@@ -1,12 +1,11 @@
 /**
  * generate-article.mjs
- * Reads scripts/article-queue.json, picks the first unpublished entry,
- * calls OpenRouter (Claude Sonnet 4) to generate a full SEO article,
- * appends it to src/data/growGuides.ts, updates public/sitemap.xml,
- * and logs the result to scripts/published-articles-log.json.
+ * Reads scripts/article-queue.json, publishes up to ARTICLES_PER_RUN articles
+ * per invocation by calling OpenRouter (Claude Sonnet 4), appending each to
+ * src/data/growGuides.ts, updating public/sitemap.xml, and logging results.
  *
- * Exit 0 = success (or no key / queue empty)
- * Exit 1 = hard error (API failure, parse failure, file write failure)
+ * Exit 0 = normal completion (0-3 articles published, or queue empty, or no key)
+ * Exit 1 = fatal startup error only (missing queue file, etc.)
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
@@ -17,25 +16,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = join(__dirname, '..');
 
+const ARTICLES_PER_RUN = 3;
+
 // ── paths ──────────────────────────────────────────────────────────────────
-const QUEUE_PATH     = join(__dirname, 'article-queue.json');
-const LOG_PATH       = join(__dirname, 'published-articles-log.json');
-const GUIDES_PATH    = join(ROOT, 'src', 'data', 'growGuides.ts');
-const SITEMAP_PATH   = join(ROOT, 'public', 'sitemap.xml');
+const QUEUE_PATH  = join(__dirname, 'article-queue.json');
+const LOG_PATH    = join(__dirname, 'published-articles-log.json');
+const GUIDES_PATH = join(ROOT, 'src', 'data', 'growGuides.ts');
+const SITEMAP_PATH = join(ROOT, 'public', 'sitemap.xml');
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
 function today() {
-  return new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  return new Date().toISOString().split('T')[0];
 }
 
 function todayISO() {
-  const d = new Date();
-  return `${d.toISOString().split('T')[0]}T00:00:00Z`;
+  return `${today()}T00:00:00Z`;
 }
 
 function escapeTemplateLiteral(str) {
-  // Escape backticks and template expression starts so content is safe inside `...`
   return str
     .replace(/\\/g, '\\\\')
     .replace(/`/g, '\\`')
@@ -51,7 +50,9 @@ function escapeHtml(str) {
 }
 
 function buildTableHtml(headers, rows) {
-  const headerCells = headers.map(h => `<th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">${escapeHtml(h)}</th>`).join('');
+  const headerCells = headers.map(h =>
+    `<th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">${escapeHtml(h)}</th>`
+  ).join('');
   const bodyRows = rows.map(row =>
     `<tr>${row.map(cell => `<td class="border border-white/20 px-3 py-2 text-white/70 text-sm">${escapeHtml(cell)}</td>`).join('')}</tr>`
   ).join('\n        ');
@@ -183,7 +184,7 @@ Respond with ONLY valid JSON. No markdown code fences. No explanation before or 
   "relatedSlugs": ["from-spec"]
 }`;
 
-// ── build user message from queue entry ────────────────────────────────────
+// ── build user message ─────────────────────────────────────────────────────
 
 function buildUserMessage(entry) {
   const sectionList = entry.sections.map((s, i) => `  ${i + 1}. ${s.heading}`).join('\n');
@@ -210,176 +211,199 @@ publishedDate and modifiedDate: ${todayISO()}
 Total word count: 2,200-2,800 words. Never use em dashes.`;
 }
 
+// ── per-article: call API and return parsed article object ─────────────────
+
+async function generateArticle(entry, apiKey) {
+  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://www.mastergrowbot.com',
+      'X-Title': 'MasterGrowbot SEO Generator',
+    },
+    body: JSON.stringify({
+      model: 'anthropic/claude-sonnet-4',
+      max_tokens: 10000,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: buildUserMessage(entry) },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    const errBody = await response.text();
+    throw new Error(`OpenRouter API error ${response.status}: ${errBody}`);
+  }
+
+  const data = await response.json();
+  const rawContent = data.choices?.[0]?.message?.content;
+  if (!rawContent) {
+    throw new Error(`Empty response from OpenRouter: ${JSON.stringify(data)}`);
+  }
+
+  let jsonStr = rawContent.trim();
+  if (jsonStr.startsWith('```')) {
+    jsonStr = jsonStr.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
+  }
+
+  let article;
+  try {
+    article = JSON.parse(jsonStr);
+  } catch (err) {
+    throw new Error(`JSON parse failed: ${err.message}\nRaw response: ${rawContent.slice(0, 500)}`);
+  }
+
+  const required = ['slug', 'title', 'h1', 'metaTitle', 'metaDescription', 'intro', 'sections', 'faqs'];
+  for (const field of required) {
+    if (!article[field]) throw new Error(`Missing required field: ${field}`);
+  }
+
+  // Lock fields to spec values
+  article.slug            = entry.slug;
+  article.metaTitle       = entry.metaTitle;
+  article.metaDescription = entry.metaDescription;
+  article.relatedSlugs    = entry.relatedSlugs;
+  if (!article.publishedDate)    article.publishedDate    = todayISO();
+  if (!article.modifiedDate)     article.modifiedDate     = todayISO();
+  if (!article.shortDescription) article.shortDescription = `${entry.title}. Expert cannabis growing guide.`;
+
+  return article;
+}
+
+// ── per-article: write to growGuides.ts (re-reads file) ───────────────────
+
+function appendToGrowGuides(article) {
+  const content = readFileSync(GUIDES_PATH, 'utf8');
+  const marker = '\n];\n\nexport function';
+  const idx = content.indexOf(marker);
+  if (idx === -1) throw new Error('Could not find insertion point in growGuides.ts');
+  const updated = content.slice(0, idx) + articleToTS(article) + content.slice(idx);
+  writeFileSync(GUIDES_PATH, updated, 'utf8');
+}
+
+// ── per-article: write to sitemap.xml (re-reads file) ─────────────────────
+
+function appendToSitemap(slug) {
+  const content = readFileSync(SITEMAP_PATH, 'utf8');
+  const block = `  <url>
+    <loc>https://www.mastergrowbot.com/grow-guides/${slug}/</loc>
+    <lastmod>${today()}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+  const updated = content.replace('</urlset>', `${block}\n</urlset>`);
+  writeFileSync(SITEMAP_PATH, updated, 'utf8');
+}
+
+// ── per-article: write to log (re-reads file) ─────────────────────────────
+
+function appendToLog(article) {
+  let log = [];
+  if (existsSync(LOG_PATH)) {
+    log = JSON.parse(readFileSync(LOG_PATH, 'utf8'));
+  }
+  log.push({
+    slug: article.slug,
+    title: article.title,
+    url: `https://www.mastergrowbot.com/grow-guides/${article.slug}/`,
+    publishedDate: article.publishedDate,
+    submittedToSearchConsole: false,
+  });
+  writeFileSync(LOG_PATH, JSON.stringify(log, null, 2) + '\n', 'utf8');
+}
+
+// ── per-article: mark published in queue (re-reads file) ──────────────────
+
+function markPublished(slug, publishedDate, error = false) {
+  const queue = JSON.parse(readFileSync(QUEUE_PATH, 'utf8'));
+  const entry = queue.find(a => a.slug === slug);
+  if (entry) {
+    entry.published = true;
+    entry.publishedDate = publishedDate || null;
+    if (error) entry.error = true;
+  }
+  writeFileSync(QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n', 'utf8');
+}
+
 // ── main ───────────────────────────────────────────────────────────────────
 
 async function main() {
-  // Check API key
+  // Fatal startup checks
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
     console.log('OPENROUTER_API_KEY not set. Article generation will run via GitHub Actions (Mon/Wed/Fri 2pm UTC).');
     process.exit(0);
   }
 
-  // Read and validate queue
-  let queue;
-  try {
-    queue = JSON.parse(readFileSync(QUEUE_PATH, 'utf8'));
-  } catch (err) {
-    console.error('Failed to read/parse article-queue.json:', err.message);
+  if (!existsSync(QUEUE_PATH)) {
+    console.error('article-queue.json not found at', QUEUE_PATH);
     process.exit(1);
   }
 
-  // Find first unpublished entry
-  const entry = queue.find(a => !a.published);
-  if (!entry) {
-    console.log('Queue empty -- no articles to publish.');
-    process.exit(0);
-  }
+  let published = 0;
 
-  console.log(`Generating article: "${entry.title}" (${entry.slug})`);
-
-  // Call OpenRouter API
-  let rawContent;
-  try {
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://www.mastergrowbot.com',
-        'X-Title': 'MasterGrowbot SEO Generator',
-      },
-      body: JSON.stringify({
-        model: 'anthropic/claude-sonnet-4',
-        max_tokens: 10000,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: buildUserMessage(entry) },
-        ],
-      }),
-    });
-
-    if (!response.ok) {
-      const errBody = await response.text();
-      console.error(`OpenRouter API error ${response.status}:`, errBody);
-      process.exit(1);
+  while (published < ARTICLES_PER_RUN) {
+    // Re-read queue fresh each iteration
+    let queue;
+    try {
+      queue = JSON.parse(readFileSync(QUEUE_PATH, 'utf8'));
+    } catch (err) {
+      console.error('Failed to read article-queue.json:', err.message);
+      break;
     }
 
-    const data = await response.json();
-    rawContent = data.choices?.[0]?.message?.content;
-    if (!rawContent) {
-      console.error('Empty response from OpenRouter. Full response:', JSON.stringify(data, null, 2));
-      process.exit(1);
+    const entry = queue.find(a => !a.published);
+    if (!entry) {
+      console.log(`Queue empty after ${published} article${published === 1 ? '' : 's'} -- stopping`);
+      break;
     }
-  } catch (err) {
-    console.error('API call failed:', err.message);
-    process.exit(1);
-  }
 
-  // Strip markdown code fences if present
-  let jsonStr = rawContent.trim();
-  if (jsonStr.startsWith('```')) {
-    jsonStr = jsonStr.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
-  }
+    console.log(`\n[${published + 1}/${ARTICLES_PER_RUN}] Generating: "${entry.title}" (${entry.slug})`);
 
-  // Parse response
-  let article;
-  try {
-    article = JSON.parse(jsonStr);
-  } catch (err) {
-    console.error('Failed to parse API response as JSON:', err.message);
-    console.error('Raw response:', rawContent);
-    process.exit(1);
-  }
+    try {
+      // 1. Generate article via API
+      const article = await generateArticle(entry, apiKey);
 
-  // Validate required fields
-  const required = ['slug', 'title', 'h1', 'metaTitle', 'metaDescription', 'intro', 'sections', 'faqs'];
-  for (const field of required) {
-    if (!article[field]) {
-      console.error(`Missing required field in API response: ${field}`);
-      process.exit(1);
+      // 2. Re-read growGuides.ts → append → write
+      appendToGrowGuides(article);
+      console.log('  growGuides.ts updated');
+
+      // 3. Re-read sitemap.xml → insert → write
+      appendToSitemap(article.slug);
+      console.log('  sitemap.xml updated');
+
+      // 4. Re-read log → push → write
+      appendToLog(article);
+      console.log('  published-articles-log.json updated');
+
+      // 5. Re-read queue → mark published → write
+      markPublished(article.slug, article.publishedDate, false);
+      console.log('  article-queue.json marked published');
+
+      console.log(`Published (${published + 1}/${ARTICLES_PER_RUN}): ${article.title} --> /grow-guides/${article.slug}/`);
+      published++;
+
+      // 3-second delay between articles (avoid rate limiting)
+      if (published < ARTICLES_PER_RUN) {
+        await new Promise(r => setTimeout(r, 3000));
+      }
+    } catch (err) {
+      console.error(`\nError publishing "${entry.slug}": ${err.message}`);
+      console.log('Skipping to next article after error');
+      try {
+        markPublished(entry.slug, null, true);
+      } catch (markErr) {
+        console.error('Failed to mark error in queue:', markErr.message);
+      }
+      published++;
+      continue;
     }
   }
 
-  // Ensure slug matches queue entry
-  article.slug = entry.slug;
-  article.metaTitle = entry.metaTitle;
-  article.metaDescription = entry.metaDescription;
-  article.relatedSlugs = entry.relatedSlugs;
-  if (!article.publishedDate) article.publishedDate = todayISO();
-  if (!article.modifiedDate)  article.modifiedDate  = todayISO();
-  if (!article.shortDescription) article.shortDescription = `${entry.title}. Expert guide for cannabis growers.`;
-
-  // ── Update growGuides.ts ─────────────────────────────────────────────────
-  try {
-    let guidesContent = readFileSync(GUIDES_PATH, 'utf8');
-
-    // Find insertion point: right before "];\n\nexport function"
-    const marker = '\n];\n\nexport function';
-    const markerIdx = guidesContent.indexOf(marker);
-    if (markerIdx === -1) {
-      console.error('Could not find insertion point in growGuides.ts. Expected pattern: "];" followed by "export function".');
-      process.exit(1);
-    }
-
-    const articleTS = articleToTS(article);
-    guidesContent = guidesContent.slice(0, markerIdx) + articleTS + guidesContent.slice(markerIdx);
-    writeFileSync(GUIDES_PATH, guidesContent, 'utf8');
-    console.log('Updated src/data/growGuides.ts');
-  } catch (err) {
-    console.error('Failed to update growGuides.ts:', err.message);
-    process.exit(1);
-  }
-
-  // ── Update sitemap.xml ───────────────────────────────────────────────────
-  try {
-    let sitemapContent = readFileSync(SITEMAP_PATH, 'utf8');
-    const newUrl = `  <url>
-    <loc>https://www.mastergrowbot.com/grow-guides/${article.slug}/</loc>
-    <lastmod>${today()}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>`;
-    sitemapContent = sitemapContent.replace('</urlset>', `${newUrl}\n</urlset>`);
-    writeFileSync(SITEMAP_PATH, sitemapContent, 'utf8');
-    console.log('Updated public/sitemap.xml');
-  } catch (err) {
-    console.error('Failed to update sitemap.xml:', err.message);
-    process.exit(1);
-  }
-
-  // ── Update published-articles-log.json ──────────────────────────────────
-  try {
-    let log = [];
-    if (existsSync(LOG_PATH)) {
-      log = JSON.parse(readFileSync(LOG_PATH, 'utf8'));
-    }
-    log.push({
-      slug: article.slug,
-      title: article.title,
-      url: `https://www.mastergrowbot.com/grow-guides/${article.slug}/`,
-      publishedDate: article.publishedDate,
-      submittedToSearchConsole: false,
-    });
-    writeFileSync(LOG_PATH, JSON.stringify(log, null, 2) + '\n', 'utf8');
-    console.log('Updated scripts/published-articles-log.json');
-  } catch (err) {
-    console.error('Failed to update published-articles-log.json:', err.message);
-    process.exit(1);
-  }
-
-  // ── Mark as published in queue ───────────────────────────────────────────
-  try {
-    entry.published = true;
-    entry.publishedDate = article.publishedDate;
-    writeFileSync(QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n', 'utf8');
-    console.log('Marked as published in article-queue.json');
-  } catch (err) {
-    console.error('Failed to update article-queue.json:', err.message);
-    process.exit(1);
-  }
-
-  console.log(`\nPublished: ${article.title} at /grow-guides/${article.slug}/`);
+  console.log(`\nRun complete: ${published} article${published === 1 ? '' : 's'} published`);
+  process.exit(0);
 }
 
 main();

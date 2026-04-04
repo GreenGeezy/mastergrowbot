@@ -1,4 +1,4 @@
-name: "Auto-Publish Grow Guide"
+name: "Auto-Publish 3 Grow Guides"
 
 on:
   schedule:
