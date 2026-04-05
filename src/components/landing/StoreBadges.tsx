@@ -82,7 +82,7 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
 
       {/* Shared subtext below all 3 buttons */}
       <p className="text-xs sm:text-sm text-white/50 font-sans">
-        3 Free AI Scans &bull; Instant Diagnosis &bull; No Download Needed
+        Try it Absolutely Free &bull; Cancel Anytime &bull; No SignUp Needed
       </p>
     </div>
   );
