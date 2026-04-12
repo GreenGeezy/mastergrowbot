@@ -1,1438 +1,661 @@
 [
   {
-    "slug": "cannabis-nutrient-lockout",
-    "title": "Cannabis Nutrient Lockout: How to Diagnose and Fix It",
-    "h1": "Cannabis Nutrient Lockout: Diagnosis, Recovery, and Prevention",
-    "metaTitle": "Cannabis Nutrient Lockout: Diagnose and Fix | MasterGrowbot",
-    "metaDescription": "Fix cannabis nutrient lockout fast. Understand causes, spot the difference from deficiency, and flush correctly. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis nutrient lockout",
+    "slug": "best-ai-cannabis-growing-apps-2026",
+    "title": "Best AI Cannabis Growing Apps of 2026: Smart Tools for Better Harvests",
+    "h1": "Best AI Cannabis Growing Apps of 2026: Smart Tools for Better Harvests",
+    "metaTitle": "Best AI Cannabis Growing Apps 2026 | MasterGrowbot AI",
+    "metaDescription": "Compare the top AI-powered cannabis growing apps of 2026. See which apps use artificial intelligence for plant diagnosis, grow tips, and yield optimization.",
+    "targetKeyword": "ai cannabis growing app",
     "secondaryKeywords": [
-      "nutrient lockout cannabis symptoms",
-      "salt buildup cannabis",
-      "how to flush cannabis",
-      "nutrient lockout vs deficiency cannabis"
+      "ai plant diagnosis app",
+      "smart cannabis growing",
+      "ai grow assistant",
+      "cannabis ai app 2026"
     ],
     "sections": [
-      {
-        "heading": "What Is Cannabis Nutrient Lockout and Why It Happens"
-      },
-      {
-        "heading": "Nutrient Lockout vs. Deficiency: How to Tell the Difference"
-      },
-      {
-        "heading": "Visual Symptoms of Nutrient Lockout at Each Growth Stage"
-      },
-      {
-        "heading": "The Most Common Causes of Cannabis Nutrient Lockout"
-      },
-      {
-        "heading": "How to Flush Your Medium and Reset the Root Zone"
-      },
-      {
-        "heading": "Post-Flush Recovery: Getting Your Plant Back on Track"
-      },
-      {
-        "heading": "Preventing Nutrient Lockout in Future Grows"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
+      { "heading": "What Are AI Cannabis Growing Apps and Why They Matter in 2026" },
+      { "heading": "How AI Plant Diagnosis Changes the Way Growers Solve Problems" },
+      { "heading": "MasterGrowbot AI: The Most Advanced AI Cannabis Growing App" },
+      { "heading": "Top AI Cannabis Growing Apps Compared: Features and Pricing" },
+      { "heading": "AI Capabilities Side by Side: Which Apps Use Real Machine Learning" },
+      { "heading": "Which AI Cannabis App Is Best for Your Grow Setup" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
     ],
-    "faqCount": 5,
+    "faqCount": 6,
     "relatedSlugs": [
-      "cannabis-nutrient-deficiency-guide",
-      "cannabis-ph-guide",
-      "how-to-grow-cannabis-indoors-beginners"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-04T00:00:00Z"
-  },
-  {
-    "slug": "cal-mag-deficiency-cannabis",
-    "title": "Cal-Mag Deficiency in Cannabis: Symptoms and Fix",
-    "h1": "Cal-Mag Deficiency in Cannabis: Identify and Fix Calcium and Magnesium Problems",
-    "metaTitle": "Cal-Mag Deficiency Cannabis: Fix It | MasterGrowbot AI",
-    "metaDescription": "Fix calcium and magnesium deficiency in cannabis. Visual symptoms, root causes, and step-by-step treatment. Diagnose with MasterGrowbot AI free.",
-    "targetKeyword": "cal mag deficiency cannabis",
-    "secondaryKeywords": [
-      "calcium deficiency cannabis",
-      "magnesium deficiency cannabis",
-      "cal mag cannabis symptoms",
-      "cal mag supplement for cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "Why Cannabis Needs Calcium and Magnesium at Every Growth Stage"
-      },
-      {
-        "heading": "Calcium Deficiency Symptoms: What to Look For and Which Leaves Show It First"
-      },
-      {
-        "heading": "Magnesium Deficiency Symptoms: How to Tell It Apart from Calcium"
-      },
-      {
-        "heading": "Root Causes of Cal-Mag Deficiency in Soil, Coco, and Hydro"
-      },
-      {
-        "heading": "Step-by-Step Cal-Mag Deficiency Treatment"
-      },
-      {
-        "heading": "Choosing the Right Cal-Mag Supplement"
-      },
-      {
-        "heading": "Preventing Cal-Mag Problems in Future Grows"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "cannabis-nutrient-deficiency-guide",
-      "cannabis-ph-guide",
-      "cannabis-nutrient-lockout"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-04T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-light-schedules",
-    "title": "Cannabis Light Schedules: Complete Guide for Every Stage",
-    "h1": "Cannabis Light Schedules: How to Optimize Light for Every Growth Stage",
-    "metaTitle": "Cannabis Light Schedules Guide | MasterGrowbot AI",
-    "metaDescription": "Master cannabis light schedules for veg and flower. Photoperiod vs autoflower, light hours, spectrum, and intensity. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis light schedules",
-    "secondaryKeywords": [
-      "cannabis light cycle",
-      "18/6 vs 12/12 light schedule",
-      "cannabis flowering light schedule",
-      "light schedule for cannabis seedlings"
-    ],
-    "sections": [
-      {
-        "heading": "Why Cannabis Light Schedules Control Everything About Your Grow"
-      },
-      {
-        "heading": "Seedling Stage Light Requirements"
-      },
-      {
-        "heading": "Vegetative Stage: The 18/6 Light Schedule Explained"
-      },
-      {
-        "heading": "Flowering Stage: Switching to 12/12 and What Happens Next"
-      },
-      {
-        "heading": "Photoperiod vs Autoflower Light Schedules: Side-by-Side"
-      },
-      {
-        "heading": "Light Spectrum and Intensity at Each Stage"
-      },
-      {
-        "heading": "Common Light Schedule Mistakes That Kill Yields"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "autoflowering-cannabis-growing-guide",
-      "how-to-grow-cannabis-indoors-beginners",
-      "cannabis-training-techniques"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-04T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-root-problems",
-    "title": "Cannabis Root Problems: Signs, Causes, and Fixes",
-    "h1": "Cannabis Root Problems: How to Identify and Fix Root Issues Before They Kill Your Plant",
-    "metaTitle": "Cannabis Root Problems: Diagnose and Fix | MasterGrowbot AI",
-    "metaDescription": "Identify and fix cannabis root problems including root rot, bound roots, and pH damage. Save your plant before it's too late. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis root problems",
-    "secondaryKeywords": [
-      "cannabis root rot",
-      "root bound cannabis",
-      "cannabis root health",
-      "pythium cannabis root rot"
-    ],
-    "sections": [
-      {
-        "heading": "Why Cannabis Root Health Determines Everything Above Ground"
-      },
-      {
-        "heading": "Signs of Cannabis Root Problems You Can See Without Pulling the Plant"
-      },
-      {
-        "heading": "Cannabis Root Rot (Pythium): Causes, Symptoms, and Treatment"
-      },
-      {
-        "heading": "Root-Bound Cannabis: When to Transplant and How"
-      },
-      {
-        "heading": "pH Damage to Cannabis Roots: What It Looks Like and How to Recover"
-      },
-      {
-        "heading": "Oxygen, Temperature, and Root Zone Health"
-      },
-      {
-        "heading": "Preventing Root Problems from Seed to Harvest"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "cannabis-nutrient-deficiency-guide",
-      "cannabis-ph-guide",
-      "how-to-grow-cannabis-indoors-beginners"
-    ],
-    "published": true,
-    "publishedDate": "2024-04-04T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-botrytis-bud-rot",
-    "title": "Cannabis Bud Rot (Botrytis): Identify and Treat It Fast",
-    "h1": "Cannabis Bud Rot: How to Identify, Treat, and Prevent Botrytis cinerea",
-    "metaTitle": "Cannabis Bud Rot Treatment | MasterGrowbot AI",
-    "metaDescription": "Identify and treat cannabis bud rot (Botrytis cinerea) before it destroys your harvest. Proven treatment and prevention steps. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis bud rot",
-    "secondaryKeywords": [
-      "botrytis cannabis",
-      "Botrytis cinerea cannabis",
-      "bud rot symptoms cannabis",
-      "how to prevent bud rot cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "What Is Cannabis Bud Rot and Why It Destroys Harvests"
-      },
-      {
-        "heading": "Early Visual Signs of Botrytis cinerea on Cannabis"
-      },
-      {
-        "heading": "Environmental Conditions That Trigger Bud Rot Outbreaks"
-      },
-      {
-        "heading": "Immediate Steps When You Find Bud Rot Mid-Grow"
-      },
-      {
-        "heading": "Treatment Options for Early-Stage Botrytis"
-      },
-      {
-        "heading": "Preventing Bud Rot with Airflow, Humidity, and Canopy Management"
-      },
-      {
-        "heading": "Is Cannabis Affected by Bud Rot Safe to Consume"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "spider-mites-cannabis-treatment",
-      "powdery-mildew-cannabis-treatment",
-      "cannabis-harvest-timing-trichomes"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-06T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-flushing-guide",
-    "title": "Cannabis Flushing: When, Why, and How to Flush Your Plants",
-    "h1": "Cannabis Flushing Guide: When to Flush, How Long, and Whether It Actually Works",
-    "metaTitle": "Cannabis Flushing Guide: When and How | MasterGrowbot AI",
-    "metaDescription": "The complete cannabis flushing guide. When to flush, how long before harvest, and what the research actually says. Track your flush with MasterGrowbot AI.",
-    "targetKeyword": "cannabis flushing",
-    "secondaryKeywords": [
-      "how to flush cannabis",
-      "when to flush cannabis before harvest",
-      "cannabis flushing debate",
-      "flush cannabis soil hydro"
-    ],
-    "sections": [
-      {
-        "heading": "What Is Cannabis Flushing and Why Growers Do It"
-      },
-      {
-        "heading": "The Science Behind Flushing: What the Research Actually Says"
-      },
-      {
-        "heading": "When to Flush Cannabis Before Harvest by Growing Medium"
-      },
-      {
-        "heading": "How to Flush Cannabis: Step-by-Step for Soil, Coco, and Hydro"
-      },
-      {
-        "heading": "Signs Your Flush Is Working"
-      },
-      {
-        "heading": "Flushing for Nutrient Lockout Recovery vs Pre-Harvest Flushing"
-      },
-      {
-        "heading": "Common Flushing Mistakes That Stress Your Plants"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "cannabis-nutrient-lockout",
-      "cannabis-harvest-timing-trichomes",
-      "how-to-cure-cannabis"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-06T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-grow-journal",
-    "title": "Cannabis Grow Journal: Why Tracking Every Grow Matters",
-    "h1": "Cannabis Grow Journal: How Tracking Your Grows Makes You a Better Grower",
-    "metaTitle": "Cannabis Grow Journal Guide | MasterGrowbot AI",
-    "metaDescription": "A cannabis grow journal turns every mistake into a lesson. What to track, how to log it, and how MasterGrowbot AI automates your entire journal.",
-    "targetKeyword": "cannabis grow journal",
-    "secondaryKeywords": [
-      "cannabis grow journal app",
-      "digital grow journal cannabis",
-      "tracking cannabis grow data",
-      "grow log cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "Why a Cannabis Grow Journal Is the Secret Weapon of Expert Growers"
-      },
-      {
-        "heading": "What to Track in Your Cannabis Grow Journal at Every Stage"
-      },
-      {
-        "heading": "Daily and Weekly Logging: How Much Detail Is Enough"
-      },
-      {
-        "heading": "Paper Journals vs Digital Apps: The Real Comparison"
-      },
-      {
-        "heading": "How Grow Journal Data Improves Your Next Run"
-      },
-      {
-        "heading": "The Mistakes That Are Invisible Without a Grow Log"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 4,
-    "relatedSlugs": [
-      "how-to-grow-cannabis-indoors-beginners",
       "best-cannabis-growing-apps-2026",
-      "cannabis-training-techniques"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-06T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-vpd-guide",
-    "title": "VPD for Cannabis: Complete Guide to Vapor Pressure Deficit",
-    "h1": "VPD for Cannabis: How to Use Vapor Pressure Deficit to Maximize Yields",
-    "metaTitle": "VPD Cannabis Guide: Maximize Yields | MasterGrowbot AI",
-    "metaDescription": "Master VPD for cannabis. Ideal ranges by growth stage, how to calculate it, and how to dial in your grow room environment. Use our free VPD calculator.",
-    "targetKeyword": "VPD cannabis",
-    "secondaryKeywords": [
-      "vapor pressure deficit cannabis",
-      "VPD chart cannabis",
-      "ideal VPD cannabis flowering",
-      "how to calculate VPD grow room"
-    ],
-    "sections": [
-      {
-        "heading": "What VPD Is and Why It Controls Cannabis Growth Rate"
-      },
-      {
-        "heading": "The Science Behind Vapor Pressure Deficit in the Grow Room"
-      },
-      {
-        "heading": "Ideal VPD Ranges for Cannabis by Growth Stage"
-      },
-      {
-        "heading": "How to Calculate VPD Using Temperature and Humidity"
-      },
-      {
-        "heading": "Adjusting Your Grow Room to Hit Target VPD"
-      },
-      {
-        "heading": "VPD and Nutrient Uptake: The Link Most Growers Miss"
-      },
-      {
-        "heading": "Common VPD Mistakes and How to Fix Them"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "how-to-grow-cannabis-indoors-beginners",
-      "cannabis-nutrient-deficiency-guide",
-      "autoflowering-cannabis-growing-guide"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-08T00:00:00Z"
-  },
-  {
-    "slug": "weed-growing-tips-beginners",
-    "title": "Weed Growing Tips for Beginners: Start Right, Avoid Mistakes",
-    "h1": "Weed Growing Tips for Beginners: Everything First-Time Growers Need to Know",
-    "metaTitle": "Weed Growing Tips for Beginners | MasterGrowbot AI",
-    "metaDescription": "Essential weed growing tips for first-time growers. Avoid common mistakes, choose the right setup, and grow with confidence. Try MasterGrowbot AI free.",
-    "targetKeyword": "weed growing tips beginners",
-    "secondaryKeywords": [
-      "beginner cannabis growing tips",
-      "how to grow weed for the first time",
-      "first time cannabis grower mistakes",
-      "easiest cannabis strains to grow"
-    ],
-    "sections": [
-      {
-        "heading": "The Most Important Weed Growing Tips Before You Spend a Dollar"
-      },
-      {
-        "heading": "Indoor vs Outdoor Growing: Which Is Right for a First-Timer"
-      },
-      {
-        "heading": "Essential Equipment on a Beginner Budget"
-      },
-      {
-        "heading": "The Best Cannabis Strains for First-Time Growers"
-      },
-      {
-        "heading": "The 6 Biggest Mistakes First-Time Cannabis Growers Make"
-      },
-      {
-        "heading": "Watering and Feeding Basics That Every Beginner Gets Wrong"
-      },
-      {
-        "heading": "When to Worry and When to Wait: Reading Your Plants"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "how-to-grow-cannabis-indoors-beginners",
-      "cannabis-nutrient-deficiency-guide",
-      "autoflowering-cannabis-growing-guide"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-08T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-yield-optimization",
-    "title": "Cannabis Yield Optimization: How to Grow Bigger Harvests",
-    "h1": "Cannabis Yield Optimization: Proven Techniques for Bigger, Denser Harvests",
-    "metaTitle": "Cannabis Yield Optimization Guide | MasterGrowbot AI",
-    "metaDescription": "Maximize your cannabis yield with proven optimization techniques. Light, nutrients, training, and environment dialed in for maximum harvest. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis yield optimization",
-    "secondaryKeywords": [
-      "how to increase cannabis yield",
-      "maximize cannabis harvest",
-      "cannabis yield tips",
-      "cannabis yield per plant"
-    ],
-    "sections": [
-      {
-        "heading": "The Variables That Actually Control Cannabis Yield"
-      },
-      {
-        "heading": "Optimizing Light Intensity and Coverage for Maximum Yield"
-      },
-      {
-        "heading": "Nutrient Timing and Feeding Schedules That Maximize Bud Production"
-      },
-      {
-        "heading": "Training Techniques That Double Your Canopy"
-      },
-      {
-        "heading": "Environmental Optimization: VPD, CO2, and Temperature"
-      },
-      {
-        "heading": "Harvest Timing: The Yield-Killer Most Growers Miss"
-      },
-      {
-        "heading": "Tracking and Improving Yield Run by Run"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
       "cannabis-training-techniques",
-      "cannabis-harvest-timing-trichomes",
       "cannabis-nutrient-deficiency-guide"
     ],
-    "published": true,
-    "publishedDate": "2026-04-08T00:00:00Z"
+    "additionalInstructions": "Write a comprehensive comparison of AI-powered cannabis growing apps in 2026. MasterGrowbot AI should be featured as the top recommendation, highlighting its Gemini 3.1 Pro AI engine, photo-based plant health analysis, AI Strain Intelligence, and digital grow journal. Compare against Hempie, GrowDoc, Grow with Jane, and GrowBuddy. Include a comparison table with features, pricing, AI capabilities, and platform availability. Include an FAQ section with 6 questions. Every H2 section must open with a 40-60 word definitive answer paragraph that can be extracted by AI systems. Include app store links for MasterGrowbot AI: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide). End with a clear CTA to download MasterGrowbot AI. Mention the free VPD calculator tool at mastergrowbot.com/vpd-calculator.",
+    "published": false,
+    "publishedDate": null
   },
   {
-    "slug": "cannabis-defoliation-guide",
-    "title": "Cannabis Defoliation: When, Why, and How to Do It Right",
-    "h1": "Cannabis Defoliation Guide: When to Remove Leaves for Bigger Yields",
-    "metaTitle": "Cannabis Defoliation Guide | MasterGrowbot AI",
-    "metaDescription": "Learn when and how to defoliate cannabis for bigger yields. Techniques, timing, and common mistakes. Track your grow with MasterGrowbot AI.",
-    "targetKeyword": "cannabis defoliation",
+    "slug": "best-cannabis-grow-journal-apps-2026",
+    "title": "Best Cannabis Grow Journal Apps of 2026: Track Your Plants Like a Pro",
+    "h1": "Best Cannabis Grow Journal Apps of 2026: Track Your Plants Like a Pro",
+    "metaTitle": "Best Cannabis Grow Journal Apps 2026 | MasterGrowbot AI",
+    "metaDescription": "Find the best cannabis grow journal apps for 2026. Compare features, AI analysis, photo logging, and community features across top grow tracking apps.",
+    "targetKeyword": "best cannabis grow journal apps 2026",
     "secondaryKeywords": [
-      "defoliating cannabis plants",
-      "cannabis leaf removal",
-      "defoliation during flowering",
-      "cannabis defoliation timing"
+      "cannabis grow journal app",
+      "weed grow journal",
+      "grow journal software",
+      "marijuana grow journal",
+      "grow tracking app"
     ],
     "sections": [
-      {
-        "heading": "What Is Cannabis Defoliation and Why Growers Do It"
-      },
-      {
-        "heading": "When to Defoliate: Veg vs Early Flower vs Never"
-      },
-      {
-        "heading": "Which Leaves to Remove and Which to Leave"
-      },
-      {
-        "heading": "Step-by-Step Defoliation Technique"
-      },
-      {
-        "heading": "Defoliation Mistakes That Stress Your Plants"
-      },
-      {
-        "heading": "Defoliation for Different Grow Setups: Tent, SOG, SCROG"
-      },
-      {
-        "heading": "How Long It Takes Plants to Recover"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
+      { "heading": "Why Every Serious Cannabis Grower Needs a Grow Journal App" },
+      { "heading": "What to Look for in a Cannabis Grow Journal App" },
+      { "heading": "MasterGrowbot AI Digital Living Journal: AI-Powered Grow Tracking" },
+      { "heading": "Best Cannabis Grow Journal Apps Compared: Features and Pricing" },
+      { "heading": "Paper Journal vs Digital App: What Experienced Growers Actually Use" },
+      { "heading": "How AI-Powered Journal Analysis Improves Your Next Harvest" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
     ],
-    "faqCount": 5,
+    "faqCount": 6,
     "relatedSlugs": [
-      "cannabis-training-techniques",
-      "how-to-grow-cannabis-indoors-beginners",
+      "best-cannabis-growing-apps-2026",
       "cannabis-yield-optimization"
     ],
-    "published": true,
-    "publishedDate": "2026-04-10T00:00:00Z"
+    "additionalInstructions": "Compare the top cannabis grow journal apps available in 2026. Position MasterGrowbot AI's Digital Living Journal as the standout option with AI-powered journal analysis, photo logging with canvas sketching, yield predictions, and health trend tracking. Compare against Grow with Jane, GrowDiaries, GrowBuddy, and Grower Helper. Include an HTML comparison table. Include FAQ section with 6 questions targeting queries like 'what is the best app to track cannabis growth' and 'do I need a grow journal app.' Open each H2 section with a self-contained 40-60 word answer block. Include both app store download links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide). Never use em dashes.",
+    "published": false,
+    "publishedDate": null
   },
   {
-    "slug": "cannabis-humidity-guide",
-    "title": "Cannabis Humidity: Ideal Levels at Every Growth Stage",
-    "h1": "Cannabis Humidity Guide: Optimal Levels from Seedling to Harvest",
-    "metaTitle": "Cannabis Humidity Guide by Growth Stage | MasterGrowbot AI",
-    "metaDescription": "Get cannabis humidity right at every stage. Seedling, veg, flower, and drying humidity ranges plus how to control them. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis humidity",
+    "slug": "best-vpd-calculator-apps-cannabis",
+    "title": "Best VPD Calculator Apps and Tools for Cannabis in 2026",
+    "h1": "Best VPD Calculator Apps and Tools for Cannabis in 2026",
+    "metaTitle": "Best VPD Calculator for Cannabis 2026 | MasterGrowbot AI",
+    "metaDescription": "Compare the best VPD calculator apps and tools for cannabis growers. Free online calculators, mobile apps, and VPD charts for every grow stage.",
+    "targetKeyword": "vpd calculator app",
     "secondaryKeywords": [
-      "ideal humidity for cannabis",
-      "cannabis humidity by stage",
-      "humidity for cannabis flowering",
-      "cannabis grow room humidity control"
+      "vpd calculator cannabis",
+      "cannabis vpd calculator",
+      "vpd chart calculator",
+      "vpd calc",
+      "vpd chart cannabis"
     ],
     "sections": [
-      {
-        "heading": "Why Humidity Is One of the Most Critical Cannabis Variables"
-      },
-      {
-        "heading": "Ideal Humidity for Cannabis Seedlings and Clones"
-      },
-      {
-        "heading": "Vegetative Stage Humidity: The Sweet Spot and Why It Matters"
-      },
-      {
-        "heading": "Flowering Stage Humidity: How to Prevent Mold and Maximize Trichomes"
-      },
-      {
-        "heading": "Late Flower and Pre-Harvest Humidity Strategy"
-      },
-      {
-        "heading": "How to Control Humidity in Your Grow Room"
-      },
-      {
-        "heading": "Humidity and VPD: How They Work Together"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
+      { "heading": "What Is VPD and Why Every Cannabis Grower Needs to Track It" },
+      { "heading": "The Best Free VPD Calculator for Cannabis: MasterGrowbot VPD Tool" },
+      { "heading": "VPD Calculator Apps Compared: Free vs Paid Options" },
+      { "heading": "Ideal VPD Ranges for Cannabis by Growth Stage: A Reference Table" },
+      { "heading": "How to Use a VPD Calculator to Adjust Your Grow Room" },
+      { "heading": "VPD Calculator vs VPD Chart: Which Is More Useful" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
     ],
-    "faqCount": 5,
+    "faqCount": 6,
     "relatedSlugs": [
       "cannabis-vpd-guide",
-      "powdery-mildew-cannabis-treatment",
-      "cannabis-botrytis-bud-rot"
+      "best-cannabis-growing-apps-2026"
     ],
-    "published": true,
-    "publishedDate": "2026-04-10T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-led-grow-lights",
-    "title": "Best LED Grow Lights for Cannabis: What Actually Works",
-    "h1": "Cannabis LED Grow Lights: How to Choose the Right Light for Your Setup",
-    "metaTitle": "Best LED Grow Lights for Cannabis | MasterGrowbot AI",
-    "metaDescription": "Choose the right LED grow lights for cannabis. PPFD, wattage, spectrum, and top light picks by budget and grow space. Try MasterGrowbot AI free.",
-    "targetKeyword": "LED grow lights cannabis",
-    "secondaryKeywords": [
-      "best LED lights for cannabis",
-      "cannabis grow light PPFD",
-      "full spectrum LED cannabis",
-      "LED wattage per plant cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "Why LED Is Now the Dominant Choice for Indoor Cannabis"
-      },
-      {
-        "heading": "Understanding PPFD, PAR, and DLI for Cannabis Lighting"
-      },
-      {
-        "heading": "How Much Light Does Cannabis Actually Need at Each Stage"
-      },
-      {
-        "heading": "Full Spectrum vs Targeted Spectrum LEDs for Cannabis"
-      },
-      {
-        "heading": "How to Size Your LED for Your Grow Space"
-      },
-      {
-        "heading": "Mounting Height and Light Distribution"
-      },
-      {
-        "heading": "Common LED Grow Light Mistakes"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "cannabis-light-schedules",
-      "how-to-grow-cannabis-indoors-beginners",
-      "cannabis-yield-optimization"
-    ],
-    "published": true,
-    "publishedDate": "2026-04-10T00:00:00Z"
-  },
-  {
-    "slug": "cannabis-transplanting-guide",
-    "title": "Transplanting Cannabis: When and How to Do It Without Stress",
-    "h1": "Transplanting Cannabis: The Right Time, Method, and Recovery",
-    "metaTitle": "Cannabis Transplanting Guide | MasterGrowbot AI",
-    "metaDescription": "Transplant cannabis without stress or root shock. Timing, pot sizes, step-by-step method, and recovery tips. Track with MasterGrowbot AI free.",
-    "targetKeyword": "transplanting cannabis",
-    "secondaryKeywords": [
-      "cannabis transplant shock",
-      "when to transplant cannabis seedlings",
-      "pot size for cannabis",
-      "cannabis repotting guide"
-    ],
-    "sections": [
-      {
-        "heading": "When to Transplant Cannabis: Signs the Plant Is Ready"
-      },
-      {
-        "heading": "Choosing the Right Pot Size at Each Stage"
-      },
-      {
-        "heading": "Step-by-Step Cannabis Transplant Method"
-      },
-      {
-        "heading": "How to Minimize Transplant Shock"
-      },
-      {
-        "heading": "Transplant Recovery: What to Expect in the First 48-72 Hours"
-      },
-      {
-        "heading": "When NOT to Transplant: High-Risk Windows"
-      },
-      {
-        "heading": "Final Container Strategy: Fabric Pots, Air Pots, and Plastic"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 4,
-    "relatedSlugs": [
-      "cannabis-root-problems",
-      "how-to-grow-cannabis-indoors-beginners",
-      "weed-growing-tips-beginners"
-    ],
+    "additionalInstructions": "Compare VPD calculator tools and apps for cannabis growers. Feature the MasterGrowbot free VPD calculator at mastergrowbot.com/vpd-calculator as the top recommendation, highlighting that it is free, requires no download, and works on any device. Compare against Pulse VPD app, Dimlux Maxi Controller app, and generic VPD chart images. Explain what VPD is in a clear 50-word definition at the top of the article. Include a VPD range reference table covering seedling (0.4-0.8 kPa), veg (0.8-1.2 kPa), and flower (1.0-1.5 kPa) stages. Include FAQ with 6 questions. Link to the existing cannabis-vpd-guide article at /grow-guides/cannabis-vpd-guide/ using descriptive anchor text. Include app store links for MasterGrowbot AI: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
     "published": false,
     "publishedDate": null
   },
   {
-    "slug": "cannabis-nutrient-schedule",
-    "title": "Cannabis Nutrient Schedule: Feeding Guide by Growth Stage",
-    "h1": "Cannabis Nutrient Schedule: What to Feed and When at Every Stage",
-    "metaTitle": "Cannabis Nutrient Schedule by Stage | MasterGrowbot AI",
-    "metaDescription": "Follow the right cannabis nutrient schedule at every stage. NPK ratios, feeding frequency, and flush timing explained. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis nutrient schedule",
+    "slug": "outdoor-cannabis-growing-guide-beginners",
+    "title": "Outdoor Cannabis Growing Guide for Beginners: Seed to Harvest",
+    "h1": "Outdoor Cannabis Growing Guide for Beginners: Seed to Harvest",
+    "metaTitle": "Outdoor Cannabis Growing Guide Beginners | MasterGrowbot AI",
+    "metaDescription": "Learn how to grow cannabis outdoors from seed to harvest. Complete beginner guide covering strain selection, soil prep, planting timelines, and pest prevention.",
+    "targetKeyword": "outdoor cannabis growing guide",
     "secondaryKeywords": [
-      "cannabis feeding schedule",
-      "cannabis NPK ratio by stage",
-      "how often to feed cannabis",
-      "cannabis nutrient chart"
+      "how to grow weed outside",
+      "outdoor cannabis growing",
+      "growing marijuana outdoors",
+      "outdoor grow guide",
+      "cannabis outdoor grow"
     ],
     "sections": [
-      {
-        "heading": "Understanding NPK: What Each Nutrient Does for Cannabis"
-      },
-      {
-        "heading": "Seedling Stage: Why Less Nutrients Is Always More"
-      },
-      {
-        "heading": "Vegetative Stage Nutrient Schedule: Building the Plant"
-      },
-      {
-        "heading": "Flowering Stage Nutrient Schedule: Shifting to Phosphorus and Potassium"
-      },
-      {
-        "heading": "Late Flower and the Pre-Harvest Flush Decision"
-      },
-      {
-        "heading": "How to Read Nutrient Deficiency vs Toxicity"
-      },
-      {
-        "heading": "EC, PPM, and Feeding Strength: The Numbers That Matter"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
+      { "heading": "Why Outdoor Cannabis Growing Produces the Largest Yields" },
+      { "heading": "Choosing the Right Outdoor Cannabis Strain: Photoperiod vs Autoflower" },
+      { "heading": "Site Selection: Sun Exposure, Privacy, and Drainage Requirements" },
+      { "heading": "Soil Preparation and Amendments for Outdoor Cannabis" },
+      { "heading": "Outdoor Planting Timelines by Hemisphere and Climate" },
+      { "heading": "Watering and Feeding Schedules for Outdoor Cannabis Plants" },
+      { "heading": "Outdoor Pest Prevention and Organic Pest Control" },
+      { "heading": "Harvesting and Drying Cannabis Grown Outdoors" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
     ],
-    "faqCount": 5,
+    "faqCount": 6,
     "relatedSlugs": [
-      "cannabis-nutrient-deficiency-guide",
-      "cal-mag-deficiency-cannabis",
-      "cannabis-flushing-guide"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-seed-germination",
-    "title": "Cannabis Seed Germination: Methods, Timing, and Success Rates",
-    "h1": "Cannabis Seed Germination: Best Methods and How to Get 100 Percent Success",
-    "metaTitle": "Cannabis Seed Germination Guide | MasterGrowbot AI",
-    "metaDescription": "Germinate cannabis seeds successfully every time. Paper towel, water glass, and direct soil methods compared. Track your seedlings with MasterGrowbot AI.",
-    "targetKeyword": "cannabis seed germination",
-    "secondaryKeywords": [
-      "how to germinate cannabis seeds",
-      "cannabis germination methods",
-      "cannabis seed germination time",
-      "cannabis seeds not germinating"
-    ],
-    "sections": [
-      {
-        "heading": "What Cannabis Seeds Need to Germinate Successfully"
-      },
-      {
-        "heading": "The Paper Towel Method: Step by Step"
-      },
-      {
-        "heading": "Water Glass Soaking: When and How to Use It"
-      },
-      {
-        "heading": "Direct Soil Germination: The Simplest Approach"
-      },
-      {
-        "heading": "Germination Timing: What Is Normal vs a Problem"
-      },
-      {
-        "heading": "Why Cannabis Seeds Fail to Germinate"
-      },
-      {
-        "heading": "Seedling Care After Germination: The First Week"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "weed-growing-tips-beginners",
-      "how-to-grow-cannabis-indoors-beginners",
-      "autoflowering-cannabis-growing-guide"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-scrog-guide",
-    "title": "SCROG Cannabis: The Screen of Green Training Method Explained",
-    "h1": "SCROG Cannabis Guide: How to Use the Screen of Green for Maximum Yield",
-    "metaTitle": "SCROG Cannabis Guide | MasterGrowbot AI",
-    "metaDescription": "Master the SCROG method for cannabis. Setup, weaving technique, when to flip, and common mistakes. Maximize your yield with MasterGrowbot AI.",
-    "targetKeyword": "SCROG cannabis",
-    "secondaryKeywords": [
-      "screen of green cannabis",
-      "SCROG cannabis setup",
-      "SCROG vs SOG cannabis",
-      "how to SCROG cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "What Is SCROG and Why It Maximizes Indoor Cannabis Yields"
-      },
-      {
-        "heading": "How to Set Up Your SCROG Screen"
-      },
-      {
-        "heading": "When to Start Weaving and Training Your Canopy"
-      },
-      {
-        "heading": "Knowing When to Flip to Flower with a SCROG Setup"
-      },
-      {
-        "heading": "Defoliation and Canopy Management During SCROG"
-      },
-      {
-        "heading": "SCROG vs SOG: Which Method Is Right for Your Grow"
-      },
-      {
-        "heading": "Common SCROG Mistakes and How to Avoid Them"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 4,
-    "relatedSlugs": [
-      "cannabis-training-techniques",
-      "cannabis-defoliation-guide",
-      "cannabis-yield-optimization"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-watering-guide",
-    "title": "How to Water Cannabis: Schedule, Amount, and Common Mistakes",
-    "h1": "Cannabis Watering Guide: How to Water Correctly at Every Stage",
-    "metaTitle": "Cannabis Watering Guide: Schedule and Tips | MasterGrowbot AI",
-    "metaDescription": "Learn exactly how to water cannabis plants. Frequency, amount, signs of overwatering vs underwatering, and watering by medium. Try MasterGrowbot AI free.",
-    "targetKeyword": "how to water cannabis",
-    "secondaryKeywords": [
-      "cannabis watering schedule",
-      "overwatering cannabis",
-      "underwatering cannabis symptoms",
-      "how often to water cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "The Wet-Dry Cycle: The Foundation of Cannabis Watering"
-      },
-      {
-        "heading": "How to Know When Cannabis Needs Water"
-      },
-      {
-        "heading": "How Much Water to Give Cannabis at Each Stage"
-      },
-      {
-        "heading": "Overwatering Cannabis: Symptoms, Causes, and Recovery"
-      },
-      {
-        "heading": "Underwatering Cannabis: How to Tell and How to Fix It"
-      },
-      {
-        "heading": "Watering Cannabis in Different Growing Media"
-      },
-      {
-        "heading": "Water Quality: pH, Temperature, and Chlorine"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "cannabis-nutrient-schedule",
-      "cannabis-root-problems",
-      "weed-growing-tips-beginners"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-terpenes-guide",
-    "title": "Cannabis Terpenes: What They Are and How They Affect Your Grow",
-    "h1": "Cannabis Terpenes Guide: How to Preserve and Maximize Them in Your Grow",
-    "metaTitle": "Cannabis Terpenes Guide | MasterGrowbot AI",
-    "metaDescription": "Understand cannabis terpenes and how to maximize them in your grow. Temperature, humidity, harvest timing, and curing tips. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis terpenes",
-    "secondaryKeywords": [
-      "cannabis terpene profiles",
-      "how to increase terpenes cannabis",
-      "cannabis terpenes growing",
-      "terpene preservation cannabis harvest"
-    ],
-    "sections": [
-      {
-        "heading": "What Are Cannabis Terpenes and Why They Matter"
-      },
-      {
-        "heading": "The Major Cannabis Terpenes and Their Effects"
-      },
-      {
-        "heading": "How Growing Conditions Affect Terpene Production"
-      },
-      {
-        "heading": "Temperature and Terpene Preservation in Late Flower"
-      },
-      {
-        "heading": "Harvest Timing for Maximum Terpene Expression"
-      },
-      {
-        "heading": "How Drying and Curing Preserve or Destroy Terpenes"
-      },
-      {
-        "heading": "Strain Selection for Terpene-Rich Genetics"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "cannabis-harvest-timing-trichomes",
-      "how-to-cure-cannabis",
-      "cannabis-yield-optimization"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-clone-guide",
-    "title": "How to Clone Cannabis: Step-by-Step Cloning Guide",
-    "h1": "Cannabis Cloning Guide: How to Take Clones That Root Every Time",
-    "metaTitle": "How to Clone Cannabis: Complete Guide | MasterGrowbot AI",
-    "metaDescription": "Clone cannabis successfully every time. When to take cuttings, rooting methods, humidity dome setup, and transplant timing. Try MasterGrowbot AI free.",
-    "targetKeyword": "how to clone cannabis",
-    "secondaryKeywords": [
-      "cannabis cloning guide",
-      "cannabis cuttings rooting",
-      "cannabis clone humidity dome",
-      "best rooting hormone cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "Why Cloning Cannabis Beats Growing from Seed"
-      },
-      {
-        "heading": "Selecting the Best Mother Plant for Cloning"
-      },
-      {
-        "heading": "When and Where to Take Your Cuttings"
-      },
-      {
-        "heading": "Step-by-Step Cloning Method and Rooting Setup"
-      },
-      {
-        "heading": "Rooting Hormones: Gel, Powder, and Natural Alternatives"
-      },
-      {
-        "heading": "Humidity Dome and Environment for Rooting Clones"
-      },
-      {
-        "heading": "Transplanting Rooted Clones: Timing and Method"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "how-to-grow-cannabis-indoors-beginners",
-      "cannabis-transplanting-guide",
-      "cannabis-nutrient-schedule"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-co2-growing",
-    "title": "CO2 for Cannabis: Does It Increase Yields and Is It Worth It?",
-    "h1": "CO2 for Cannabis Growing: How to Use It, When It Helps, and When to Skip It",
-    "metaTitle": "CO2 for Cannabis Growing | MasterGrowbot AI",
-    "metaDescription": "Does CO2 supplementation increase cannabis yields? The honest answer, correct PPM levels, and when it actually makes sense. Try MasterGrowbot AI free.",
-    "targetKeyword": "CO2 cannabis growing",
-    "secondaryKeywords": [
-      "CO2 for cannabis",
-      "cannabis CO2 PPM",
-      "CO2 supplementation cannabis yield",
-      "CO2 generator vs tank cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "What CO2 Does for Cannabis and How Photosynthesis Works"
-      },
-      {
-        "heading": "Ideal CO2 PPM Levels for Cannabis at Each Stage"
-      },
-      {
-        "heading": "When CO2 Supplementation Actually Increases Yields"
-      },
-      {
-        "heading": "CO2 Tank vs CO2 Generator: Which Is Right for Your Grow"
-      },
-      {
-        "heading": "The Other Requirements Before CO2 Makes Sense"
-      },
-      {
-        "heading": "Risks and Safety Considerations for CO2 in Grow Rooms"
-      },
-      {
-        "heading": "Is CO2 Worth the Cost for Home Growers"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 4,
-    "relatedSlugs": [
-      "cannabis-yield-optimization",
-      "cannabis-light-schedules",
-      "how-to-grow-cannabis-indoors-beginners"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-grow-tent-setup",
-    "title": "Cannabis Grow Tent Setup: Complete Beginner's Guide",
-    "h1": "Cannabis Grow Tent Setup: Everything You Need to Build Your First Grow",
-    "metaTitle": "Cannabis Grow Tent Setup Guide | MasterGrowbot AI",
-    "metaDescription": "Set up your cannabis grow tent correctly the first time. Size, lights, ventilation, and environment setup explained. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis grow tent setup",
-    "secondaryKeywords": [
-      "grow tent setup for cannabis",
-      "cannabis grow tent size",
-      "grow tent ventilation cannabis",
-      "best grow tent for cannabis beginners"
-    ],
-    "sections": [
-      {
-        "heading": "Choosing the Right Grow Tent Size for Cannabis"
-      },
-      {
-        "heading": "Lighting Setup: Hanging Height and Coverage"
-      },
-      {
-        "heading": "Ventilation: Inline Fan, Carbon Filter, and Ducting"
-      },
-      {
-        "heading": "Temperature and Humidity Control Inside the Tent"
-      },
-      {
-        "heading": "Electrical Safety and Power Management"
-      },
-      {
-        "heading": "Setting Up Your Growing Medium and Pots"
-      },
-      {
-        "heading": "First-Run Checklist Before You Put Plants In"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "cannabis-light-schedules",
-      "cannabis-humidity-guide",
-      "weed-growing-tips-beginners"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-aphids-treatment",
-    "title": "Aphids on Cannabis: How to Identify and Eliminate Them",
-    "h1": "Cannabis Aphids: Complete Identification, Treatment, and Prevention Guide",
-    "metaTitle": "Cannabis Aphids Treatment | MasterGrowbot AI",
-    "metaDescription": "Eliminate aphids on cannabis plants fast. Identification, organic and chemical treatments, and prevention strategies. Detect with MasterGrowbot AI free.",
-    "targetKeyword": "cannabis aphids",
-    "secondaryKeywords": [
-      "aphids on cannabis plants",
-      "cannabis aphid treatment",
-      "how to get rid of aphids cannabis",
-      "organic aphid treatment cannabis"
-    ],
-    "sections": [
-      {
-        "heading": "Identifying Aphids on Cannabis: What to Look For"
-      },
-      {
-        "heading": "Why Aphids Are Dangerous for Cannabis Plants"
-      },
-      {
-        "heading": "Organic Treatment Methods That Eliminate Cannabis Aphids"
-      },
-      {
-        "heading": "Chemical Treatment Options for Severe Infestations"
-      },
-      {
-        "heading": "Beneficial Insects: Using Nature to Control Aphids"
-      },
-      {
-        "heading": "Preventing Aphid Infestations in Your Grow"
-      },
-      {
-        "heading": "Aphids vs Other Cannabis Pests: How to Tell the Difference"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 4,
-    "relatedSlugs": [
-      "spider-mites-cannabis-treatment",
-      "cannabis-nutrient-deficiency-guide",
-      "powdery-mildew-cannabis-treatment"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-outdoor-growing",
-    "title": "Outdoor Cannabis Growing: Complete Seasonal Guide",
-    "h1": "Outdoor Cannabis Growing: How to Plan, Plant, and Harvest Outdoors",
-    "metaTitle": "Outdoor Cannabis Growing Guide | MasterGrowbot AI",
-    "metaDescription": "Grow cannabis outdoors successfully. Site selection, seasonal timing, strain choice, pest management, and harvest. Try MasterGrowbot AI free.",
-    "targetKeyword": "outdoor cannabis growing",
-    "secondaryKeywords": [
-      "growing cannabis outdoors",
-      "outdoor cannabis grow guide",
-      "best strains for outdoor cannabis",
-      "outdoor cannabis harvest time"
-    ],
-    "sections": [
-      {
-        "heading": "Why Outdoor Cannabis Growing Produces the Largest Yields"
-      },
-      {
-        "heading": "Site Selection: Sun, Privacy, and Drainage"
-      },
-      {
-        "heading": "Outdoor Cannabis Seasonal Calendar by Climate"
-      },
-      {
-        "heading": "Choosing the Right Strains for Your Outdoor Environment"
-      },
-      {
-        "heading": "Soil Preparation and Amendments for Outdoor Cannabis"
-      },
-      {
-        "heading": "Pest and Disease Management Without a Controlled Environment"
-      },
-      {
-        "heading": "Reading Outdoor Harvest Timing with Trichomes"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "cannabis-harvest-timing-trichomes",
+      "autoflowering-cannabis-growing-guide",
       "cannabis-training-techniques",
       "spider-mites-cannabis-treatment"
     ],
+    "additionalInstructions": "Write a comprehensive outdoor cannabis growing guide for beginners covering the full lifecycle from seed to harvest. Include: choosing outdoor strains, site selection and sunlight requirements (minimum 6 hours direct sun), soil preparation and amendments, planting timelines by hemisphere, watering and feeding schedules, training techniques for outdoor plants, pest prevention and organic pest control, harvesting and drying outdoors. Each H2 section must open with a definitive 40-60 word answer paragraph. Include FAQ with 6 questions. Mention MasterGrowbot AI plant health scanner as a tool for outdoor growers to diagnose issues in the field by photographing plants. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide). Link to the spider mites treatment and autoflowering articles using descriptive anchor text.",
     "published": false,
     "publishedDate": null
   },
   {
-    "slug": "cannabis-potassium-deficiency",
-    "title": "Potassium Deficiency in Cannabis: Symptoms and Fix",
-    "h1": "Cannabis Potassium Deficiency: How to Identify and Correct It",
-    "metaTitle": "Cannabis Potassium Deficiency Guide | MasterGrowbot AI",
-    "metaDescription": "Fix potassium deficiency in cannabis. Visual symptoms, root causes, and step-by-step treatment for soil and hydro. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis potassium deficiency",
+    "slug": "cannabis-plant-identifier-apps-2026",
+    "title": "Best Cannabis Plant Identifier Apps of 2026: AI Photo Diagnosis Tools",
+    "h1": "Best Cannabis Plant Identifier Apps of 2026: AI Photo Diagnosis Tools",
+    "metaTitle": "Cannabis Plant Identifier Apps 2026 | MasterGrowbot AI",
+    "metaDescription": "Discover the best cannabis plant identifier apps that use AI photo analysis to diagnose plant problems, pests, and nutrient deficiencies in seconds.",
+    "targetKeyword": "cannabis plant identifier app",
     "secondaryKeywords": [
-      "potassium deficiency cannabis symptoms",
-      "cannabis K deficiency",
-      "potassium for cannabis flowering",
-      "brown leaf tips cannabis potassium"
+      "cannabis plant diagnosis app",
+      "weed plant scanner",
+      "cannabis leaf identifier",
+      "plant problem identifier cannabis"
     ],
     "sections": [
-      {
-        "heading": "What Potassium Does for Cannabis and Why It Is Critical in Flower"
-      },
-      {
-        "heading": "Visual Symptoms of Potassium Deficiency in Cannabis"
-      },
-      {
-        "heading": "Potassium Deficiency vs Nutrient Burn: How to Tell Them Apart"
-      },
-      {
-        "heading": "Root Causes of Potassium Deficiency in Cannabis"
-      },
-      {
-        "heading": "Step-by-Step Treatment for Cannabis Potassium Deficiency"
-      },
-      {
-        "heading": "Preventing Potassium Deficiency in Your Next Grow"
-      },
-      {
-        "heading": "Potassium Toxicity: When You Overcorrect"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
+      { "heading": "What Cannabis Plant Identifier Apps Actually Do" },
+      { "heading": "MasterGrowbot AI: The Best Cannabis Plant Identifier App" },
+      { "heading": "Cannabis Plant Identifier Apps Compared: Accuracy and Features" },
+      { "heading": "Why Cannabis-Specific AI Outperforms General Plant Identifier Apps" },
+      { "heading": "What Problems Can a Cannabis Plant Identifier App Detect" },
+      { "heading": "How to Get the Most Accurate Results from AI Plant Diagnosis" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
     ],
-    "faqCount": 5,
+    "faqCount": 6,
     "relatedSlugs": [
+      "best-cannabis-growing-apps-2026",
       "cannabis-nutrient-deficiency-guide",
-      "cal-mag-deficiency-cannabis",
-      "cannabis-nutrient-schedule"
+      "best-ai-cannabis-growing-apps-2026"
     ],
+    "additionalInstructions": "Compare apps that identify cannabis plant problems from photos. MasterGrowbot AI should be the primary recommendation, emphasizing its Gemini 3.1 Pro multimodal AI that analyzes photos to identify pests (aphids, mites), diseases (powdery mildew, botrytis), and nutrient deficiencies (nitrogen, cal-mag) with high confidence scores and actionable treatment plans. Compare against GrowDoc, Hempie, and PlantIn (a general plant identifier adapted for cannabis). Include a feature comparison table with columns: AI type, cannabis-specific training, pests detected, diseases detected, deficiencies detected, platform, cost. Include FAQ with 6 questions. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
     "published": false,
     "publishedDate": null
   },
   {
-    "slug": "cannabis-nitrogen-deficiency",
-    "title": "Nitrogen Deficiency in Cannabis: Symptoms and How to Fix It",
-    "h1": "Cannabis Nitrogen Deficiency: Identify, Fix, and Prevent It",
-    "metaTitle": "Cannabis Nitrogen Deficiency Guide | MasterGrowbot AI",
-    "metaDescription": "Fix nitrogen deficiency in cannabis fast. Yellowing leaves, causes, and treatment for soil and hydro grows. Diagnose with MasterGrowbot AI free.",
-    "targetKeyword": "cannabis nitrogen deficiency",
+    "slug": "cannabis-trichome-stages-harvest-guide",
+    "title": "Cannabis Trichome Stages: When to Harvest for Maximum Potency",
+    "h1": "Cannabis Trichome Stages: When to Harvest for Maximum Potency",
+    "metaTitle": "Cannabis Trichome Stages Harvest Guide | MasterGrowbot AI",
+    "metaDescription": "Learn to read cannabis trichome stages for perfect harvest timing. Clear, cloudy, and amber trichomes explained with a harvest readiness chart.",
+    "targetKeyword": "trichome stages cannabis",
     "secondaryKeywords": [
-      "nitrogen deficiency cannabis symptoms",
-      "cannabis N deficiency",
-      "yellow leaves cannabis nitrogen",
-      "nitrogen for cannabis veg"
+      "cannabis trichomes stages",
+      "when to harvest trichomes",
+      "trichome harvest chart",
+      "trichomes when ready to harvest",
+      "trichome development timeline"
     ],
     "sections": [
-      {
-        "heading": "What Nitrogen Does for Cannabis and When Deficiency Strikes"
-      },
-      {
-        "heading": "Visual Symptoms of Nitrogen Deficiency: What Yellowing Actually Means"
-      },
-      {
-        "heading": "Nitrogen Deficiency vs Natural Senescence in Late Flower"
-      },
-      {
-        "heading": "Root Causes of Nitrogen Deficiency in Cannabis"
-      },
-      {
-        "heading": "How to Fix Nitrogen Deficiency in Soil and Hydro"
-      },
-      {
-        "heading": "Nitrogen Toxicity: What Overfeeding Looks Like"
-      },
-      {
-        "heading": "Preventing Nitrogen Problems Through the Grow Cycle"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
+      { "heading": "What Cannabis Trichomes Are and Why They Determine Harvest Timing" },
+      { "heading": "The Three Types of Cannabis Trichomes" },
+      { "heading": "The Four Trichome Development Stages: Clear, Cloudy, Amber, and Mixed" },
+      { "heading": "How to Examine Trichomes: Loupe, Microscope, and USB Camera" },
+      { "heading": "Harvest Timing by Trichome Stage: Which Window Is Right for You" },
+      { "heading": "Common Mistakes When Reading Cannabis Trichomes" },
+      { "heading": "Trichome Stages Harvest Readiness Reference Chart" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "cannabis-harvest-timing-trichomes",
+      "cannabis-yield-optimization"
+    ],
+    "additionalInstructions": "Write a comprehensive guide to cannabis trichome stages and harvest timing. Cover: what trichomes are and why they matter, the three types of trichomes (bulbous, capitate-sessile, capitate-stalked), the four stages (clear, mostly cloudy, mixed cloudy/amber, mostly amber), how to use a jeweler's loupe or digital microscope, how different harvest windows affect potency and effects (energetic head high vs relaxing body stone), common mistakes in trichome reading. Include a descriptive harvest timing chart as a table showing stage, appearance, effect profile, and recommended use. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's photo analysis feature for monitoring trichome development and the harvest timing indicator. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "grow-with-jane-vs-mastergrowbot",
+    "title": "Grow with Jane vs MasterGrowbot AI: Which Cannabis App Is Better in 2026?",
+    "h1": "Grow with Jane vs MasterGrowbot AI: Which Cannabis App Is Better in 2026?",
+    "metaTitle": "Grow With Jane vs MasterGrowbot AI 2026 | MasterGrowbot",
+    "metaDescription": "Detailed comparison of Grow with Jane and MasterGrowbot AI cannabis growing apps. Features, AI capabilities, pricing, and which app is best for your grow.",
+    "targetKeyword": "grow with jane vs mastergrowbot",
+    "secondaryKeywords": [
+      "grow with jane alternative",
+      "best cannabis grow app comparison",
+      "grow with jane review 2026",
+      "cannabis app comparison"
+    ],
+    "sections": [
+      { "heading": "Grow with Jane vs MasterGrowbot AI: The Quick Verdict" },
+      { "heading": "What Grow with Jane Offers: Strengths and Limitations" },
+      { "heading": "What MasterGrowbot AI Offers: AI Diagnosis and Smart Growing" },
+      { "heading": "Feature Comparison: Journal, AI, Strain Database, and Community" },
+      { "heading": "Pricing Comparison: Grow with Jane vs MasterGrowbot AI" },
+      { "heading": "Which App Should You Choose Based on Your Growing Goals" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
     ],
     "faqCount": 5,
     "relatedSlugs": [
-      "cannabis-nutrient-deficiency-guide",
-      "cannabis-nutrient-schedule",
-      "cannabis-ph-guide"
+      "best-cannabis-growing-apps-2026",
+      "best-ai-cannabis-growing-apps-2026",
+      "best-cannabis-grow-journal-apps-2026"
     ],
+    "additionalInstructions": "Write a detailed head-to-head comparison between Grow with Jane and MasterGrowbot AI. Compare across: AI capabilities (MasterGrowbot AI has Gemini 3.1 Pro AI photo diagnosis and AI Strain Intelligence; Grow with Jane has basic task tracking without AI diagnosis), journal features, strain database, community features, pricing and free tier differences, platform availability. Be fair and acknowledge Grow with Jane's strengths (active community, free tier, task reminders) while clearly explaining MasterGrowbot AI's advantages (AI plant health analysis from photos, personalized grow plans, VPD tools, harvest window detection). Include an HTML comparison table with rows for each feature category. Include FAQ with 5 questions. Include app store links for MasterGrowbot AI: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
     "published": false,
     "publishedDate": null
   },
   {
-    "slug": "cannabis-drying-guide",
-    "title": "Drying Cannabis: How to Dry Your Harvest for Maximum Quality",
-    "h1": "Cannabis Drying Guide: How to Dry Buds Correctly After Harvest",
-    "metaTitle": "Cannabis Drying Guide | MasterGrowbot AI",
-    "metaDescription": "Dry cannabis correctly after harvest. Ideal temperature, humidity, drying time, and how to avoid mold. Pair with curing for best results. Try MasterGrowbot AI free.",
-    "targetKeyword": "drying cannabis",
+    "slug": "cannabis-watering-schedule-guide",
+    "title": "Cannabis Watering Schedule: How Much and How Often to Water Your Plants",
+    "h1": "Cannabis Watering Schedule: How Much and How Often to Water Your Plants",
+    "metaTitle": "Cannabis Watering Schedule Guide | MasterGrowbot AI",
+    "metaDescription": "Master your cannabis watering schedule with this complete guide. Learn proper watering frequency, volume, drainage, and how to avoid overwatering and underwatering.",
+    "targetKeyword": "cannabis watering schedule",
     "secondaryKeywords": [
-      "how to dry cannabis buds",
-      "cannabis drying temperature",
-      "cannabis drying room setup",
-      "how long to dry cannabis"
+      "how often to water cannabis",
+      "overwatering cannabis",
+      "underwatering cannabis",
+      "watering weed plants",
+      "cannabis water schedule"
     ],
     "sections": [
-      {
-        "heading": "Why Drying Is as Important as the Grow Itself"
-      },
-      {
-        "heading": "Ideal Temperature and Humidity for Drying Cannabis"
-      },
-      {
-        "heading": "Hang Drying vs Rack Drying: Which Is Better"
-      },
-      {
-        "heading": "How Long to Dry Cannabis: Signs It Is Ready for Curing"
-      },
-      {
-        "heading": "Preventing Mold During the Drying Process"
-      },
-      {
-        "heading": "Fast Drying Methods and Why to Avoid Them"
-      },
-      {
-        "heading": "The Drying-to-Curing Transition"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
+      { "heading": "How to Tell When Cannabis Plants Need Water: Three Reliable Methods" },
+      { "heading": "Cannabis Watering Frequency by Growth Stage" },
+      { "heading": "How Much Water to Give Cannabis: Volume and Runoff Targets" },
+      { "heading": "Overwatering Cannabis: Symptoms, Causes, and Recovery Steps" },
+      { "heading": "Underwatering Cannabis: How to Identify and Fix It Fast" },
+      { "heading": "Watering Cannabis in Different Growing Media: Soil, Coco, and Hydro" },
+      { "heading": "Water Quality, pH, and Temperature for Optimal Cannabis Growth" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
     ],
-    "faqCount": 5,
-    "relatedSlugs": [
-      "how-to-cure-cannabis",
-      "cannabis-botrytis-bud-rot",
-      "cannabis-harvest-timing-trichomes"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-phosphorus-deficiency",
-    "title": "Phosphorus Deficiency in Cannabis: Symptoms and Fix",
-    "h1": "Cannabis Phosphorus Deficiency: Identify, Treat, and Prevent It",
-    "metaTitle": "Cannabis Phosphorus Deficiency | MasterGrowbot AI",
-    "metaDescription": "Fix phosphorus deficiency in cannabis. Purple stems, dark spots, and slow flowering -- causes and treatment explained. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis phosphorus deficiency",
-    "secondaryKeywords": [
-      "phosphorus deficiency cannabis symptoms",
-      "cannabis P deficiency",
-      "purple stems cannabis phosphorus",
-      "phosphorus for cannabis flowering"
-    ],
-    "sections": [
-      {
-        "heading": "What Phosphorus Does for Cannabis and When It Becomes Critical"
-      },
-      {
-        "heading": "Visual Symptoms of Phosphorus Deficiency in Cannabis"
-      },
-      {
-        "heading": "Purple Stems in Cannabis: Phosphorus or Genetics"
-      },
-      {
-        "heading": "Root Causes of Phosphorus Deficiency"
-      },
-      {
-        "heading": "How to Treat Phosphorus Deficiency in Soil and Hydro"
-      },
-      {
-        "heading": "Phosphorus and pH Lockout: The Most Common Cause"
-      },
-      {
-        "heading": "Preventing Phosphorus Problems in Flowering"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 5,
+    "faqCount": 6,
     "relatedSlugs": [
       "cannabis-nutrient-deficiency-guide",
       "cannabis-ph-guide",
-      "cal-mag-deficiency-cannabis"
-    ],
-    "published": false,
-    "publishedDate": null
-  },
-  {
-    "slug": "cannabis-hermaphrodite-guide",
-    "title": "Cannabis Hermaphrodites: How to Identify and Prevent Them",
-    "h1": "Cannabis Hermaphrodites: What Causes Them and How to Protect Your Grow",
-    "metaTitle": "Cannabis Hermaphrodite Guide | MasterGrowbot AI",
-    "metaDescription": "Identify and prevent cannabis hermaphrodites. What causes bananas and pollen sacs, and how to protect your harvest. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis hermaphrodite",
-    "secondaryKeywords": [
-      "hermaphrodite cannabis plant",
-      "cannabis bananas pollen sacs",
-      "how to prevent hermaphrodite cannabis",
-      "cannabis stress hermaphrodite"
-    ],
-    "sections": [
-      {
-        "heading": "What Is a Cannabis Hermaphrodite and Why It Ruins Crops"
-      },
-      {
-        "heading": "Types of Hermaphroditism: Pollen Sacs vs Bananas"
-      },
-      {
-        "heading": "What Causes Cannabis Plants to Hermaphrodite"
-      },
-      {
-        "heading": "How to Identify Hermaphroditism Early"
-      },
-      {
-        "heading": "What to Do When You Find a Hermaphrodite"
-      },
-      {
-        "heading": "Preventing Hermaphroditism Through Stress Management"
-      },
-      {
-        "heading": "Genetics and Hermaphrodite Tendency"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
-    ],
-    "faqCount": 4,
-    "relatedSlugs": [
-      "cannabis-light-schedules",
-      "cannabis-training-techniques",
       "how-to-grow-cannabis-indoors-beginners"
     ],
+    "additionalInstructions": "Write a complete guide to cannabis watering covering frequency, volume, drainage, pH, and common problems. Include: how to tell when cannabis needs water (lift test, finger test, moisture meter), watering frequency by growth stage (seedling, veg, flower), how pot size affects watering, overwatering signs and recovery, underwatering signs and recovery, water quality and pH targets (6.0-7.0 for soil, 5.5-6.5 for coco/hydro), runoff percentage targets (10-20%). Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's daily task system for watering reminders and the AI journal for tracking watering patterns across grows. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
     "published": false,
     "publishedDate": null
   },
   {
-    "slug": "cannabis-iron-deficiency",
-    "title": "Iron Deficiency in Cannabis: Symptoms and How to Fix It",
-    "h1": "Cannabis Iron Deficiency: Identify Yellow New Growth and Fix It Fast",
-    "metaTitle": "Cannabis Iron Deficiency Guide | MasterGrowbot AI",
-    "metaDescription": "Identify and fix iron deficiency in cannabis. Yellowing new growth, pH causes, and chelated iron treatment explained. Try MasterGrowbot AI free.",
-    "targetKeyword": "cannabis iron deficiency",
+    "slug": "cannabis-flowering-stage-week-by-week",
+    "title": "Cannabis Flowering Stage Week by Week: Complete Timeline and Tips",
+    "h1": "Cannabis Flowering Stage Week by Week: Complete Timeline and Tips",
+    "metaTitle": "Cannabis Flowering Stage Week by Week | MasterGrowbot AI",
+    "metaDescription": "Follow the cannabis flowering stage week by week from first pistils to harvest. Learn what to expect each week with feeding tips and troubleshooting.",
+    "targetKeyword": "cannabis flowering stage week by week",
     "secondaryKeywords": [
-      "iron deficiency cannabis symptoms",
-      "cannabis iron chlorosis",
-      "chelated iron cannabis",
-      "iron deficiency vs nitrogen cannabis"
+      "flowering stage cannabis",
+      "cannabis flower stages",
+      "weed flowering timeline",
+      "cannabis bud development stages"
     ],
     "sections": [
-      {
-        "heading": "What Iron Does for Cannabis and Why New Growth Shows It First"
-      },
-      {
-        "heading": "Visual Symptoms of Iron Deficiency: Interveinal Chlorosis"
-      },
-      {
-        "heading": "Iron Deficiency vs Nitrogen Deficiency: How to Tell Them Apart"
-      },
-      {
-        "heading": "Why pH Is Almost Always the Root Cause"
-      },
-      {
-        "heading": "How to Treat Iron Deficiency in Cannabis"
-      },
-      {
-        "heading": "Chelated Iron: What It Is and When to Use It"
-      },
-      {
-        "heading": "Preventing Iron Deficiency Through pH Management"
-      },
-      {
-        "heading": "Grow Smarter with MasterGrowbot AI"
-      }
+      { "heading": "Cannabis Flowering Stage Overview: What Happens Week by Week" },
+      { "heading": "Early Flower Weeks 1-3: Transition, Stretch, and First Pistils" },
+      { "heading": "Mid Flower Weeks 4-6: Bud Sites Form and Stack" },
+      { "heading": "Late Flower Weeks 7-9: Ripening, Swelling, and Resin Production" },
+      { "heading": "Harvest Window Weeks 9 and Beyond: Trichome Reading and Final Flush" },
+      { "heading": "Environmental Targets by Flowering Week: Temperature, Humidity, and VPD" },
+      { "heading": "Feeding Adjustments by Flowering Week: NPK Ratios and Supplements" },
+      { "heading": "Common Problems During Flowering and How to Fix Them" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
     ],
-    "faqCount": 4,
+    "faqCount": 6,
+    "relatedSlugs": [
+      "cannabis-harvest-timing-trichomes",
+      "cannabis-trichome-stages-harvest-guide",
+      "cannabis-light-schedules"
+    ],
+    "additionalInstructions": "Write a detailed week-by-week guide to the cannabis flowering stage covering weeks 1 through 10 or longer. For each week group, describe: what the plant looks like, environmental changes to make (temperature targets, humidity targets, VPD targets), feeding adjustments, and common problems to watch for. Include early flower (weeks 1-3), mid flower (weeks 4-6), late flower/ripening (weeks 7-9), and harvest window (week 9 and beyond). Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's AI scan for monitoring bud development week by week and the grow journal for tracking progress. Link to the free VPD calculator at mastergrowbot.com/vpd-calculator for environmental optimization. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "how-to-increase-thc-cannabis",
+    "title": "How to Increase THC in Cannabis: 12 Proven Methods for Maximum Potency",
+    "h1": "How to Increase THC in Cannabis: 12 Proven Methods for Maximum Potency",
+    "metaTitle": "How to Increase THC in Cannabis | MasterGrowbot AI",
+    "metaDescription": "Learn 12 proven methods to increase THC levels in your cannabis plants. From genetics and lighting to nutrients, stress training, and harvest timing.",
+    "targetKeyword": "how to increase thc",
+    "secondaryKeywords": [
+      "increase thc cannabis",
+      "boost thc levels",
+      "maximize cannabis potency",
+      "higher thc growing tips"
+    ],
+    "sections": [
+      { "heading": "What Actually Controls THC Production in Cannabis Plants" },
+      { "heading": "Start with High-THC Genetics: The Single Biggest Factor" },
+      { "heading": "Lighting for THC: Spectrum, Intensity, and UV-B Supplementation" },
+      { "heading": "Nutrient Ratios During Flower That Drive Trichome Production" },
+      { "heading": "Temperature and Humidity Manipulation for Higher Potency" },
+      { "heading": "Training Techniques That Maximize Bud Sites and Trichome Coverage" },
+      { "heading": "Harvest Timing: The Mistake That Destroys Months of Work" },
+      { "heading": "Drying and Curing to Preserve Every Percent of THC" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "cannabis-trichome-stages-harvest-guide",
+      "cannabis-training-techniques",
+      "cannabis-light-schedules"
+    ],
+    "additionalInstructions": "Write a guide covering 12 proven methods to increase THC production in cannabis plants. Cover: choosing high-THC genetics, optimal light spectrum and intensity (UV-B supplementation increases terpene and THC production), proper nutrient ratios during flower (lower nitrogen, higher P and K), temperature manipulation (day/night differential of 10-15F in late flower), humidity control in late flower (45-55% RH), training techniques (LST, topping, SCROG) for even canopy and light penetration, CO2 supplementation above 1000 PPM with high light, harvest timing based on trichome maturity, proper slow drying (60-70F, 55-65% RH for 10-14 days), and curing to preserve THC. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's AI Strain Intelligence for finding high-THC genetics and the AI scan for tracking trichome development. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "best-cannabis-nutrient-calculators-2026",
+    "title": "Best Cannabis Nutrient Calculators and Feeding Charts in 2026",
+    "h1": "Best Cannabis Nutrient Calculators and Feeding Charts in 2026",
+    "metaTitle": "Cannabis Nutrient Calculator 2026 | MasterGrowbot AI",
+    "metaDescription": "Compare the best cannabis nutrient calculators, feeding charts, and nutrient schedule tools for 2026. Find the right feeding ratios for every growth stage.",
+    "targetKeyword": "cannabis nutrient calculator",
+    "secondaryKeywords": [
+      "cannabis feeding chart",
+      "weed nutrient calculator",
+      "cannabis nutrient schedule calculator",
+      "marijuana feeding schedule"
+    ],
+    "sections": [
+      { "heading": "What Cannabis Nutrient Calculators Do and Why Growers Use Them" },
+      { "heading": "NPK Ratios by Growth Stage: The Feeding Foundation" },
+      { "heading": "Top Cannabis Nutrient Calculators and Feeding Chart Tools Compared" },
+      { "heading": "Brand-Specific Feeding Charts: General Hydroponics, Fox Farm, Advanced Nutrients" },
+      { "heading": "EC and PPM Targets by Growth Stage: Reference Table" },
+      { "heading": "AI-Powered Nutrient Advice vs Static Feeding Charts" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
     "relatedSlugs": [
       "cannabis-nutrient-deficiency-guide",
-      "cannabis-ph-guide",
-      "cal-mag-deficiency-cannabis"
+      "cannabis-nutrient-lockout",
+      "cannabis-ph-guide"
     ],
+    "additionalInstructions": "Compare cannabis nutrient calculators and feeding chart tools available in 2026. Cover online calculators (General Hydroponics nutrient calculator, Fox Farm feeding schedule, Advanced Nutrients calculator), app-based tools, and how to read NPK ratios. Explain NPK targets for each growth stage (seedling: very low, veg: high N, flower: high P and K, late flower: near zero). Include EC/PPM target table. Position MasterGrowbot AI's AI-powered grow tips as a smart alternative that provides personalized nutrient advice based on the user's specific strain, setup, and growth stage. Include comparison table. Include FAQ with 6 questions. Link to nutrient deficiency guide and pH guide. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "cannabis-seed-germination-methods",
+    "title": "Cannabis Seed Germination: 5 Best Methods for Fast, Reliable Sprouting",
+    "h1": "Cannabis Seed Germination: 5 Best Methods for Fast, Reliable Sprouting",
+    "metaTitle": "Cannabis Seed Germination Methods | MasterGrowbot AI",
+    "metaDescription": "Learn the 5 best cannabis seed germination methods with step-by-step instructions. Paper towel, water soak, direct soil, starter plugs, and more.",
+    "targetKeyword": "cannabis seed germination",
+    "secondaryKeywords": [
+      "how to germinate cannabis seeds",
+      "germinating weed seeds",
+      "cannabis seed sprouting",
+      "best way to germinate marijuana seeds"
+    ],
+    "sections": [
+      { "heading": "What Cannabis Seeds Need to Germinate: Temperature, Moisture, and Darkness" },
+      { "heading": "Method 1: The Paper Towel Germination Method Step by Step" },
+      { "heading": "Method 2: Water Glass Soaking for Hard-Shell Seeds" },
+      { "heading": "Method 3: Direct Soil Planting for Simplest Results" },
+      { "heading": "Method 4: Starter Plugs and Rockwool Cubes" },
+      { "heading": "Method 5: Jiffy Peat Pellets for Beginners" },
+      { "heading": "Germination Timeline and Seedling Care After Sprouting" },
+      { "heading": "Why Cannabis Seeds Fail to Germinate and How to Fix It" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "how-to-grow-cannabis-indoors-beginners",
+      "outdoor-cannabis-growing-guide-beginners"
+    ],
+    "additionalInstructions": "Write a comprehensive guide to cannabis seed germination covering 5 proven methods: paper towel method, water glass soaking, direct soil planting, starter plugs and rockwool, and Jiffy peat pellets. For each method provide step-by-step instructions, estimated success rate, pros and cons, and the most common mistake. Include sections on seed viability and age, ideal germination temperature (70-85F, 21-29C), ideal humidity (70-90% RH), how long germination takes by method (24-120 hours), seedling care after sprouting (18/6 light, low nutrients), and transplanting timing (when first true leaves appear). Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's strain database for choosing seeds and the grow journal for tracking germination rates. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "best-outdoor-cannabis-growing-apps-2026",
+    "title": "Best Outdoor Cannabis Growing Apps of 2026: Track Your Garden with AI",
+    "h1": "Best Outdoor Cannabis Growing Apps of 2026: Track Your Garden with AI",
+    "metaTitle": "Best Outdoor Cannabis Growing Apps 2026 | MasterGrowbot",
+    "metaDescription": "Find the best apps for outdoor cannabis growing in 2026. Compare weather tracking, pest alerts, harvest timing, and AI-powered outdoor grow assistants.",
+    "targetKeyword": "outdoor cannabis growing app",
+    "secondaryKeywords": [
+      "outdoor grow tracker app",
+      "cannabis garden app",
+      "outdoor weed growing app",
+      "best app outdoor cannabis"
+    ],
+    "sections": [
+      { "heading": "What Makes a Cannabis App Genuinely Useful for Outdoor Growers" },
+      { "heading": "MasterGrowbot AI for Outdoor Cannabis: No Sensors, Just Your Phone" },
+      { "heading": "Best Outdoor Cannabis Growing Apps Compared in 2026" },
+      { "heading": "Weather Tracking and Photoperiod Apps for Outdoor Growers" },
+      { "heading": "Pest Identification and Plant Health Apps for Outdoor Cannabis" },
+      { "heading": "Harvest Timing Apps: Which Tools Help You Hit the Right Window" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "outdoor-cannabis-growing-guide-beginners",
+      "best-cannabis-growing-apps-2026",
+      "best-ai-cannabis-growing-apps-2026"
+    ],
+    "additionalInstructions": "Compare apps specifically useful for outdoor cannabis growing. Focus on features that matter outdoors: pest identification from photos, plant health diagnosis, photoperiod tracking, harvest window alerts, growing tips for outdoor conditions. Position MasterGrowbot AI as the top choice for outdoor growers because its AI photo diagnosis works anywhere (no sensors needed, just a smartphone camera), its personalized grow plans adapt to outdoor environments, and its daily tasks adjust for outdoor growing conditions. Compare against Grow with Jane outdoor features, GrowBuddy, and Moon Phase apps used by organic growers. Include comparison table. Include FAQ with 6 questions. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "cannabis-soil-vs-hydro-growing",
+    "title": "Soil vs Hydro Cannabis Growing: Which Method Is Better for You?",
+    "h1": "Soil vs Hydro Cannabis Growing: Which Method Is Better for You?",
+    "metaTitle": "Soil vs Hydro Cannabis Growing Guide | MasterGrowbot AI",
+    "metaDescription": "Soil vs hydroponic cannabis growing compared. Learn the pros, cons, costs, difficulty, and yield differences to choose the best growing medium for your setup.",
+    "targetKeyword": "soil vs hydro cannabis",
+    "secondaryKeywords": [
+      "soil or hydroponics cannabis",
+      "hydroponic vs soil weed",
+      "best growing medium cannabis",
+      "should I grow in soil or hydro"
+    ],
+    "sections": [
+      { "heading": "Soil vs Hydro Cannabis: Which Method Is Better for Your Goals" },
+      { "heading": "Growing Cannabis in Soil: Pros, Cons, and Who It Is Best For" },
+      { "heading": "Growing Cannabis Hydroponically: Pros, Cons, and Who It Is Best For" },
+      { "heading": "Hydroponic Cannabis Methods Compared: DWC, Coco, Ebb and Flow, NFT" },
+      { "heading": "Soil vs Hydro: Setup Cost, Running Cost, and Yield Comparison" },
+      { "heading": "Flavor, Terpenes, and Quality: Does Growing Medium Affect the Final Product" },
+      { "heading": "How to Choose Between Soil and Hydro Based on Your Situation" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "how-to-grow-cannabis-indoors-beginners",
+      "cannabis-watering-schedule-guide",
+      "cannabis-nutrient-deficiency-guide"
+    ],
+    "additionalInstructions": "Write a balanced comparison of soil-based and hydroponic cannabis growing. Compare: ease of use for beginners, setup costs (soil setup: $100-500; DWC hydroponics: $200-800), running costs, growth speed (hydro typically 20-30% faster growth), yield potential, flavor and terpene profiles, pest and disease risk, nutrient control precision, pH management requirements (soil 6.0-7.0, hydro 5.5-6.5), and environmental impact. Include a comprehensive HTML comparison table covering all categories. Cover main hydro methods (DWC, ebb and flow, drip, NFT, coco) briefly with a secondary table. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention that MasterGrowbot AI works for both soil and hydro setups with personalized advice based on the user's growing medium selected during onboarding. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "ai-plant-diagnosis-apps-compared-2026",
+    "title": "AI Plant Diagnosis Apps Compared: Which One Actually Works in 2026?",
+    "h1": "AI Plant Diagnosis Apps Compared: Which One Actually Works in 2026?",
+    "metaTitle": "AI Plant Diagnosis Apps Compared 2026 | MasterGrowbot AI",
+    "metaDescription": "We tested the top AI plant diagnosis apps to see which ones actually identify cannabis problems accurately. Real results, accuracy scores, and honest reviews.",
+    "targetKeyword": "ai plant diagnosis app",
+    "secondaryKeywords": [
+      "plant disease identifier app",
+      "ai plant scanner",
+      "plant problem diagnosis app",
+      "best plant identifier app 2026"
+    ],
+    "sections": [
+      { "heading": "How AI Plant Diagnosis Apps Work: Computer Vision and Cannabis" },
+      { "heading": "Cannabis-Specific AI vs General Plant Identifier Apps: Why It Matters" },
+      { "heading": "MasterGrowbot AI: The Most Accurate Cannabis Diagnosis App" },
+      { "heading": "AI Plant Diagnosis Apps Ranked: Accuracy, Speed, and Usefulness" },
+      { "heading": "What These Apps Can and Cannot Identify Reliably" },
+      { "heading": "How to Take Photos That Get the Most Accurate AI Diagnosis" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "best-ai-cannabis-growing-apps-2026",
+      "cannabis-plant-identifier-apps-2026",
+      "cannabis-nutrient-deficiency-guide"
+    ],
+    "additionalInstructions": "Write a comparison review of AI plant diagnosis apps framed as a practical test evaluation. Cover both cannabis-specific apps (MasterGrowbot AI, GrowDoc, Hempie) and general plant identifier apps (PlantIn, PictureThis, Google Lens). Explain why cannabis-specific AI models outperform general plant identifiers for cannabis problems: trained on cannabis-specific symptom data, understands growth stage context, provides cannabis-specific treatment protocols. Position MasterGrowbot AI's Gemini 3.1 Pro as the most advanced AI engine purpose-built for cannabis diagnosis with support for pests, diseases, deficiencies, and environmental stress. Include a ranked comparison table with: AI model type, cannabis training, problem categories detected, treatment recommendations, platform, cost. Include FAQ with 6 questions. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "cannabis-pest-identification-guide",
+    "title": "Cannabis Pest Identification Guide: Spot and Stop Every Common Pest",
+    "h1": "Cannabis Pest Identification Guide: Spot and Stop Every Common Pest",
+    "metaTitle": "Cannabis Pest Identification Guide | MasterGrowbot AI",
+    "metaDescription": "Identify every common cannabis pest with this visual guide. Spider mites, fungus gnats, aphids, thrips, and more with organic treatment solutions.",
+    "targetKeyword": "cannabis pest identification",
+    "secondaryKeywords": [
+      "cannabis pests",
+      "weed plant pests",
+      "marijuana pest guide",
+      "cannabis bug identification",
+      "pests on cannabis plants"
+    ],
+    "sections": [
+      { "heading": "How to Identify Cannabis Pests Before They Cause Serious Damage" },
+      { "heading": "Spider Mites: The Most Damaging Indoor Cannabis Pest" },
+      { "heading": "Fungus Gnats: Identifying and Eliminating the Larvae That Destroy Roots" },
+      { "heading": "Aphids, Thrips, and Whiteflies on Cannabis: Identification and Treatment" },
+      { "heading": "Broad Mites and Russet Mites: The Invisible Cannabis Pests" },
+      { "heading": "Caterpillars, Root Aphids, and Less Common Cannabis Pests" },
+      { "heading": "Organic vs Chemical Pest Control: Which Approach Is Right for Your Grow" },
+      { "heading": "How AI Photo Diagnosis Identifies Cannabis Pests in Seconds" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "spider-mites-cannabis-treatment",
+      "cannabis-nutrient-deficiency-guide",
+      "outdoor-cannabis-growing-guide-beginners"
+    ],
+    "additionalInstructions": "Write a comprehensive cannabis pest identification guide covering the 10 most common pests: spider mites, fungus gnats, aphids, thrips, whiteflies, broad mites, russet mites, caterpillars, root aphids, and leaf miners. For each pest include: how to identify it (visual symptoms on leaves, stems, and roots), lifecycle and reproduction speed, damage severity rating (1-5), organic treatment methods, chemical treatment options, and prevention strategies. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Emphasize that MasterGrowbot AI's photo diagnosis can identify these pests from a single photo within seconds, providing a treatment plan matched to growth stage. Link to the spider mites treatment article at /grow-guides/spider-mites-cannabis-treatment/. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "how-to-use-vpd-chart-cannabis",
+    "title": "How to Use a VPD Chart for Cannabis: Complete Guide with Examples",
+    "h1": "How to Use a VPD Chart for Cannabis: Complete Guide with Examples",
+    "metaTitle": "How to Use a VPD Chart for Cannabis | MasterGrowbot AI",
+    "metaDescription": "Learn how to read and use a VPD chart for cannabis growing. Understand leaf temperature, humidity targets, and optimal VPD ranges for every growth stage.",
+    "targetKeyword": "how to read vpd chart",
+    "secondaryKeywords": [
+      "vpd chart cannabis",
+      "how to use vpd chart",
+      "vpd chart for flowering",
+      "ideal vpd for veg",
+      "flowering vpd chart"
+    ],
+    "sections": [
+      { "heading": "What Is a VPD Chart and How Cannabis Growers Use It" },
+      { "heading": "How to Read a VPD Chart: Rows, Columns, and Color Zones" },
+      { "heading": "VPD Reference Chart for Cannabis by Growth Stage" },
+      { "heading": "Leaf Surface Temperature vs Air Temperature: Why the Difference Matters" },
+      { "heading": "How to Adjust Your Grow Room to Hit Target VPD" },
+      { "heading": "What Happens When VPD Is Too High or Too Low" },
+      { "heading": "Using the MasterGrowbot Free VPD Calculator Instead of a Chart" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "cannabis-vpd-guide",
+      "best-vpd-calculator-apps-cannabis"
+    ],
+    "additionalInstructions": "Write a comprehensive guide on how to read and use VPD charts for cannabis cultivation. Cover: what VPD is and why it matters (explained in plain language), how to measure leaf surface temperature vs air temperature (leaf temp is typically 2-5 degrees Fahrenheit below air temperature under LED, or 3-8 degrees above air under HPS), how to calculate VPD manually using the Tetens equation, how to read a VPD chart (temperature on one axis, relative humidity on the other, VPD values in the cells), optimal VPD ranges for each stage (clones: 0.4-0.8 kPa, veg: 0.8-1.2 kPa, early flower: 1.0-1.3 kPa, late flower: 1.2-1.6 kPa), what happens when VPD is too high (wilting, nutrient lockout, tip burn) or too low (slow growth, mold risk). Include a text-based VPD reference table. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Link prominently to the MasterGrowbot free VPD calculator at mastergrowbot.com/vpd-calculator as an easier alternative to charts. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "cannabis-nutrient-schedule-calculator",
+    "title": "Cannabis Nutrient Schedule Calculator: Feed Your Plants Perfectly",
+    "h1": "Cannabis Nutrient Schedule Calculator: Feed Your Plants Perfectly",
+    "metaTitle": "Cannabis Nutrient Schedule Calculator | MasterGrowbot AI",
+    "metaDescription": "Use this cannabis nutrient schedule guide to calculate the perfect feeding amounts for every growth stage. NPK ratios, EC targets, and feeding frequency explained.",
+    "targetKeyword": "cannabis nutrient schedule",
+    "secondaryKeywords": [
+      "cannabis feeding schedule",
+      "nutrient schedule weed",
+      "cannabis npk ratio by week",
+      "marijuana nutrient calculator"
+    ],
+    "sections": [
+      { "heading": "Cannabis Nutrient Schedule Fundamentals: What Plants Need and When" },
+      { "heading": "Macronutrients by Growth Stage: NPK Ratios Week by Week" },
+      { "heading": "Micronutrients and Secondary Nutrients: Calcium, Magnesium, and More" },
+      { "heading": "EC and PPM Targets by Growth Stage: Complete Reference Table" },
+      { "heading": "Organic vs Synthetic Nutrient Schedules: How They Differ" },
+      { "heading": "How to Read Nutrient Labels and Build Your Own Feeding Schedule" },
+      { "heading": "Common Nutrient Schedule Mistakes and How to Fix Them" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "cannabis-nutrient-deficiency-guide",
+      "best-cannabis-nutrient-calculators-2026",
+      "cannabis-ph-guide"
+    ],
+    "additionalInstructions": "Write a comprehensive cannabis nutrient schedule guide that functions as a reference resource. Include: macronutrients explained (N for vegetative growth, P for root and flower development, K for overall health and resin), micronutrients explained (Ca for cell walls, Mg for chlorophyll, Fe for photosynthesis, etc.), NPK ratio targets by growth stage (seedling: minimal feeding, veg: 3-1-2 ratio, early flower: 1-3-2, mid flower: 1-3-3, late flower: 0-1-2, flush: plain water), EC/PPM targets by stage (seedling: 300-500 PPM, veg: 500-900 PPM, flower: 700-1200 PPM), feeding frequency recommendations, organic vs synthetic comparison, how to read nutrient labels and three-part vs two-part vs one-part systems, and common mistakes (overfeeding, pH issues, ignoring runoff). Include reference tables. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's personalized nutrient advice through AI Strain Intelligence and daily grow tips. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "cannabis-light-schedule-calculator",
+    "title": "Cannabis Light Schedule Calculator: Photoperiod and Autoflower Lighting Guide",
+    "h1": "Cannabis Light Schedule Calculator: Photoperiod and Autoflower Lighting Guide",
+    "metaTitle": "Cannabis Light Schedule Calculator | MasterGrowbot AI",
+    "metaDescription": "Calculate the perfect cannabis light schedule for every growth stage. Photoperiod vs autoflower lighting, DLI targets, and light cycle timing explained.",
+    "targetKeyword": "cannabis light schedule calculator",
+    "secondaryKeywords": [
+      "cannabis light schedule",
+      "weed light schedule",
+      "18/6 vs 20/4 cannabis",
+      "light schedule for flowering",
+      "autoflower light schedule"
+    ],
+    "sections": [
+      { "heading": "How Cannabis Light Schedules Control Growth and Flowering" },
+      { "heading": "Vegetative Light Schedule Options: 18/6, 20/4, and 24/0 Compared" },
+      { "heading": "Switching to Flower: The 12/12 Light Schedule and What Triggers It" },
+      { "heading": "Autoflower Light Schedules: 18/6, 20/4, and Why 24/0 Can Backfire" },
+      { "heading": "DLI and PPFD: The Numbers That Actually Predict Your Yield" },
+      { "heading": "Light Schedule Mistakes That Cause Hermaphrodites and Revegging" },
+      { "heading": "Light Schedule Reference Table by Growth Stage and Strain Type" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "cannabis-light-schedules",
+      "autoflowering-cannabis-growing-guide",
+      "how-to-increase-thc-cannabis"
+    ],
+    "additionalInstructions": "Write a comprehensive cannabis light schedule guide covering both photoperiod and autoflower strains. Include: light cycle options for veg (18/6 most common, 20/4 for faster growth, 24/0 debate including recovery and root growth arguments), switching to flower with 12/12 (what triggers the photoperiod response), autoflower light schedules (18/6 recommended, 20/4 acceptable, 24/0 risks), DLI (Daily Light Integral) targets by stage (veg: 20-40 mol/m2/day, flower: 40-65 mol/m2/day), PPFD intensity recommendations (veg: 400-600 umol, flower: 600-1000 umol), the relationship between light hours and yield for photoperiod plants, light stress signs (light bleaching, nanners, revegging), supplemental lighting for outdoor grows, and light schedule mistakes that cause hermaphrodites (interrupting dark period). Include reference tables. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Link to the autoflowering guide. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
+    "published": false,
+    "publishedDate": null
+  },
+  {
+    "slug": "cannabis-yield-calculator-guide",
+    "title": "Cannabis Yield Calculator: How to Estimate and Maximize Your Harvest",
+    "h1": "Cannabis Yield Calculator: How to Estimate and Maximize Your Harvest",
+    "metaTitle": "Cannabis Yield Calculator Guide | MasterGrowbot AI",
+    "metaDescription": "Estimate your cannabis yield with this guide. Learn the factors that determine harvest weight and how to maximize grams per plant and grams per watt.",
+    "targetKeyword": "cannabis yield calculator",
+    "secondaryKeywords": [
+      "cannabis yield per plant",
+      "grams per watt cannabis",
+      "how much does one cannabis plant yield",
+      "marijuana yield estimator"
+    ],
+    "sections": [
+      { "heading": "What Determines Cannabis Yield: The Variables That Actually Matter" },
+      { "heading": "Cannabis Yield Benchmarks: Indoor, Outdoor, and Greenhouse" },
+      { "heading": "Grams per Watt and Grams per Square Foot: How to Use These Metrics" },
+      { "heading": "How to Estimate Your Cannabis Yield Before Harvest" },
+      { "heading": "Training Techniques That Double or Triple Your Yield" },
+      { "heading": "Common Yield-Killing Mistakes and How to Avoid Them" },
+      { "heading": "Tracking and Improving Yield Across Multiple Grows" },
+      { "heading": "Grow Smarter with MasterGrowbot AI" }
+    ],
+    "faqCount": 6,
+    "relatedSlugs": [
+      "cannabis-yield-optimization",
+      "cannabis-training-techniques",
+      "cannabis-flowering-stage-week-by-week"
+    ],
+    "additionalInstructions": "Write a comprehensive cannabis yield estimation and optimization guide. Cover: average yields by growing method (indoor autoflower: 50-150g per plant, indoor photoperiod: 100-500g per plant, outdoor: 500-3000g per plant), factors that affect yield (genetics, light intensity, training, pot size, nutrients, environment), grams per watt benchmarks (beginners: 0.5-0.75g/w, intermediate: 0.75-1.25g/w, advanced: 1.5g/w+), grams per square foot benchmarks (2-7g/sqft depending on method), how to estimate yield based on plant size and structure, yield optimization techniques (SOG, SCROG, mainlining, defoliation), and common yield-killing mistakes (harvesting too early, poor VPD, underfeeding in flower). Include reference tables for yield benchmarks. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's Digital Living Journal for tracking yields across grows and AI journal analysis for identifying patterns that affect harvest weight. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
     "published": false,
     "publishedDate": null
   }

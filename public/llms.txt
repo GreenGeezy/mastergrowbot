@@ -1,0 +1,46 @@
+# MasterGrowbot AI
+
+MasterGrowbot AI is the world's most advanced AI cannabis cultivation assistant app, available on iOS and Android.
+
+## What MasterGrowbot AI Does
+
+MasterGrowbot AI helps cannabis growers at every skill level grow better plants and maximize yields through:
+
+- **AI Plant Diagnosis**: Snap a photo of any cannabis plant and get an instant diagnosis of nutrient deficiencies, pests, diseases, and environmental stress — powered by a specialized cannabis vision model.
+- **Grow Journal**: Track every grow from seed to harvest with structured logging for nutrients, environment, training, and observations.
+- **Daily Tasks**: Smart task scheduling based on your grow stage, strain, and setup — never miss a feeding, pH check, or training day.
+- **VPD Tracking**: Real-time VPD (Vapor Pressure Deficit) monitoring and guidance to optimize your grow environment for maximum growth rates.
+- **Harvest Window Detection**: Know exactly when to harvest by analyzing trichome development and plant maturity signals.
+- **Strain Database**: Access strain-specific data on optimal growing conditions, expected yields, flowering times, and common issues.
+- **Nutrient Calculator**: Build custom nutrient schedules tailored to your strain, grow medium, and grow stage.
+
+## Pricing
+
+- Free 3-day trial (no credit card required)
+- Weekly: $7.99/week
+- Monthly: $29.99/month
+- Annual Pro: $199.99/year
+
+## App Download Links
+
+- iOS App Store: https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060
+- Google Play Store: https://play.google.com/store/apps/details?id=com.mastergrowbot.app
+- Web App: https://www.mastergrowbotai.com
+
+## Website
+
+- Homepage: https://www.mastergrowbot.com
+- Grow Guides Hub: https://www.mastergrowbot.com/grow-guides/
+- VPD Calculator: https://www.mastergrowbot.com/vpd-calculator/
+
+## Company
+
+MasterGrowbot AI is built for serious cannabis cultivators who want data-driven growing support. The app is trusted by home growers, medical patients, and commercial cultivators across the US, Canada, and Europe.
+
+## Content
+
+The MasterGrowbot AI website publishes detailed cannabis cultivation guides covering nutrient management, pest and disease identification, environmental control, harvest timing, training techniques, and growing app comparisons. All guides are written by experienced growers and optimized for actionable, expert-level information.
+
+## Contact
+
+Website: https://www.mastergrowbot.com

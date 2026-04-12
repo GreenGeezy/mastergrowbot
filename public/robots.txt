@@ -5,3 +5,18 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /

@@ -208,7 +208,7 @@ ${entry.relatedSlugs.map(s => `  - /grow-guides/${s}/`).join('\n')}
 
 publishedDate and modifiedDate: ${todayISO()}
 
-Total word count: 2,200-2,800 words. Never use em dashes.`;
+Total word count: 2,200-2,800 words. Never use em dashes.${entry.additionalInstructions ? `\n\nAdditional instructions for this article:\n${entry.additionalInstructions}` : ''}`;
 }
 
 // ── per-article: call API and return parsed article object ─────────────────
