@@ -13,13 +13,27 @@
       "cannabis ai app 2026"
     ],
     "sections": [
-      { "heading": "What Are AI Cannabis Growing Apps and Why They Matter in 2026" },
-      { "heading": "How AI Plant Diagnosis Changes the Way Growers Solve Problems" },
-      { "heading": "MasterGrowbot AI: The Most Advanced AI Cannabis Growing App" },
-      { "heading": "Top AI Cannabis Growing Apps Compared: Features and Pricing" },
-      { "heading": "AI Capabilities Side by Side: Which Apps Use Real Machine Learning" },
-      { "heading": "Which AI Cannabis App Is Best for Your Grow Setup" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Are AI Cannabis Growing Apps and Why They Matter in 2026"
+      },
+      {
+        "heading": "How AI Plant Diagnosis Changes the Way Growers Solve Problems"
+      },
+      {
+        "heading": "MasterGrowbot AI: The Most Advanced AI Cannabis Growing App"
+      },
+      {
+        "heading": "Top AI Cannabis Growing Apps Compared: Features and Pricing"
+      },
+      {
+        "heading": "AI Capabilities Side by Side: Which Apps Use Real Machine Learning"
+      },
+      {
+        "heading": "Which AI Cannabis App Is Best for Your Grow Setup"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -28,8 +42,8 @@
       "cannabis-nutrient-deficiency-guide"
     ],
     "additionalInstructions": "Write a comprehensive comparison of AI-powered cannabis growing apps in 2026. MasterGrowbot AI should be featured as the top recommendation, highlighting its Gemini 3.1 Pro AI engine, photo-based plant health analysis, AI Strain Intelligence, and digital grow journal. Compare against Hempie, GrowDoc, Grow with Jane, and GrowBuddy. Include a comparison table with features, pricing, AI capabilities, and platform availability. Include an FAQ section with 6 questions. Every H2 section must open with a 40-60 word definitive answer paragraph that can be extracted by AI systems. Include app store links for MasterGrowbot AI: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide). End with a clear CTA to download MasterGrowbot AI. Mention the free VPD calculator tool at mastergrowbot.com/vpd-calculator.",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-13T00:00:00Z"
   },
   {
     "slug": "best-cannabis-grow-journal-apps-2026",
@@ -46,13 +60,27 @@
       "grow tracking app"
     ],
     "sections": [
-      { "heading": "Why Every Serious Cannabis Grower Needs a Grow Journal App" },
-      { "heading": "What to Look for in a Cannabis Grow Journal App" },
-      { "heading": "MasterGrowbot AI Digital Living Journal: AI-Powered Grow Tracking" },
-      { "heading": "Best Cannabis Grow Journal Apps Compared: Features and Pricing" },
-      { "heading": "Paper Journal vs Digital App: What Experienced Growers Actually Use" },
-      { "heading": "How AI-Powered Journal Analysis Improves Your Next Harvest" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "Why Every Serious Cannabis Grower Needs a Grow Journal App"
+      },
+      {
+        "heading": "What to Look for in a Cannabis Grow Journal App"
+      },
+      {
+        "heading": "MasterGrowbot AI Digital Living Journal: AI-Powered Grow Tracking"
+      },
+      {
+        "heading": "Best Cannabis Grow Journal Apps Compared: Features and Pricing"
+      },
+      {
+        "heading": "Paper Journal vs Digital App: What Experienced Growers Actually Use"
+      },
+      {
+        "heading": "How AI-Powered Journal Analysis Improves Your Next Harvest"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -60,8 +88,8 @@
       "cannabis-yield-optimization"
     ],
     "additionalInstructions": "Compare the top cannabis grow journal apps available in 2026. Position MasterGrowbot AI's Digital Living Journal as the standout option with AI-powered journal analysis, photo logging with canvas sketching, yield predictions, and health trend tracking. Compare against Grow with Jane, GrowDiaries, GrowBuddy, and Grower Helper. Include an HTML comparison table. Include FAQ section with 6 questions targeting queries like 'what is the best app to track cannabis growth' and 'do I need a grow journal app.' Open each H2 section with a self-contained 40-60 word answer block. Include both app store download links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide). Never use em dashes.",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-13T00:00:00Z"
   },
   {
     "slug": "best-vpd-calculator-apps-cannabis",
@@ -78,13 +106,27 @@
       "vpd chart cannabis"
     ],
     "sections": [
-      { "heading": "What Is VPD and Why Every Cannabis Grower Needs to Track It" },
-      { "heading": "The Best Free VPD Calculator for Cannabis: MasterGrowbot VPD Tool" },
-      { "heading": "VPD Calculator Apps Compared: Free vs Paid Options" },
-      { "heading": "Ideal VPD Ranges for Cannabis by Growth Stage: A Reference Table" },
-      { "heading": "How to Use a VPD Calculator to Adjust Your Grow Room" },
-      { "heading": "VPD Calculator vs VPD Chart: Which Is More Useful" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Is VPD and Why Every Cannabis Grower Needs to Track It"
+      },
+      {
+        "heading": "The Best Free VPD Calculator for Cannabis: MasterGrowbot VPD Tool"
+      },
+      {
+        "heading": "VPD Calculator Apps Compared: Free vs Paid Options"
+      },
+      {
+        "heading": "Ideal VPD Ranges for Cannabis by Growth Stage: A Reference Table"
+      },
+      {
+        "heading": "How to Use a VPD Calculator to Adjust Your Grow Room"
+      },
+      {
+        "heading": "VPD Calculator vs VPD Chart: Which Is More Useful"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -92,8 +134,8 @@
       "best-cannabis-growing-apps-2026"
     ],
     "additionalInstructions": "Compare VPD calculator tools and apps for cannabis growers. Feature the MasterGrowbot free VPD calculator at mastergrowbot.com/vpd-calculator as the top recommendation, highlighting that it is free, requires no download, and works on any device. Compare against Pulse VPD app, Dimlux Maxi Controller app, and generic VPD chart images. Explain what VPD is in a clear 50-word definition at the top of the article. Include a VPD range reference table covering seedling (0.4-0.8 kPa), veg (0.8-1.2 kPa), and flower (1.0-1.5 kPa) stages. Include FAQ with 6 questions. Link to the existing cannabis-vpd-guide article at /grow-guides/cannabis-vpd-guide/ using descriptive anchor text. Include app store links for MasterGrowbot AI: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-13T00:00:00Z"
   },
   {
     "slug": "outdoor-cannabis-growing-guide-beginners",
@@ -110,15 +152,33 @@
       "cannabis outdoor grow"
     ],
     "sections": [
-      { "heading": "Why Outdoor Cannabis Growing Produces the Largest Yields" },
-      { "heading": "Choosing the Right Outdoor Cannabis Strain: Photoperiod vs Autoflower" },
-      { "heading": "Site Selection: Sun Exposure, Privacy, and Drainage Requirements" },
-      { "heading": "Soil Preparation and Amendments for Outdoor Cannabis" },
-      { "heading": "Outdoor Planting Timelines by Hemisphere and Climate" },
-      { "heading": "Watering and Feeding Schedules for Outdoor Cannabis Plants" },
-      { "heading": "Outdoor Pest Prevention and Organic Pest Control" },
-      { "heading": "Harvesting and Drying Cannabis Grown Outdoors" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "Why Outdoor Cannabis Growing Produces the Largest Yields"
+      },
+      {
+        "heading": "Choosing the Right Outdoor Cannabis Strain: Photoperiod vs Autoflower"
+      },
+      {
+        "heading": "Site Selection: Sun Exposure, Privacy, and Drainage Requirements"
+      },
+      {
+        "heading": "Soil Preparation and Amendments for Outdoor Cannabis"
+      },
+      {
+        "heading": "Outdoor Planting Timelines by Hemisphere and Climate"
+      },
+      {
+        "heading": "Watering and Feeding Schedules for Outdoor Cannabis Plants"
+      },
+      {
+        "heading": "Outdoor Pest Prevention and Organic Pest Control"
+      },
+      {
+        "heading": "Harvesting and Drying Cannabis Grown Outdoors"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -144,13 +204,27 @@
       "plant problem identifier cannabis"
     ],
     "sections": [
-      { "heading": "What Cannabis Plant Identifier Apps Actually Do" },
-      { "heading": "MasterGrowbot AI: The Best Cannabis Plant Identifier App" },
-      { "heading": "Cannabis Plant Identifier Apps Compared: Accuracy and Features" },
-      { "heading": "Why Cannabis-Specific AI Outperforms General Plant Identifier Apps" },
-      { "heading": "What Problems Can a Cannabis Plant Identifier App Detect" },
-      { "heading": "How to Get the Most Accurate Results from AI Plant Diagnosis" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Cannabis Plant Identifier Apps Actually Do"
+      },
+      {
+        "heading": "MasterGrowbot AI: The Best Cannabis Plant Identifier App"
+      },
+      {
+        "heading": "Cannabis Plant Identifier Apps Compared: Accuracy and Features"
+      },
+      {
+        "heading": "Why Cannabis-Specific AI Outperforms General Plant Identifier Apps"
+      },
+      {
+        "heading": "What Problems Can a Cannabis Plant Identifier App Detect"
+      },
+      {
+        "heading": "How to Get the Most Accurate Results from AI Plant Diagnosis"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -177,14 +251,30 @@
       "trichome development timeline"
     ],
     "sections": [
-      { "heading": "What Cannabis Trichomes Are and Why They Determine Harvest Timing" },
-      { "heading": "The Three Types of Cannabis Trichomes" },
-      { "heading": "The Four Trichome Development Stages: Clear, Cloudy, Amber, and Mixed" },
-      { "heading": "How to Examine Trichomes: Loupe, Microscope, and USB Camera" },
-      { "heading": "Harvest Timing by Trichome Stage: Which Window Is Right for You" },
-      { "heading": "Common Mistakes When Reading Cannabis Trichomes" },
-      { "heading": "Trichome Stages Harvest Readiness Reference Chart" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Cannabis Trichomes Are and Why They Determine Harvest Timing"
+      },
+      {
+        "heading": "The Three Types of Cannabis Trichomes"
+      },
+      {
+        "heading": "The Four Trichome Development Stages: Clear, Cloudy, Amber, and Mixed"
+      },
+      {
+        "heading": "How to Examine Trichomes: Loupe, Microscope, and USB Camera"
+      },
+      {
+        "heading": "Harvest Timing by Trichome Stage: Which Window Is Right for You"
+      },
+      {
+        "heading": "Common Mistakes When Reading Cannabis Trichomes"
+      },
+      {
+        "heading": "Trichome Stages Harvest Readiness Reference Chart"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -209,13 +299,27 @@
       "cannabis app comparison"
     ],
     "sections": [
-      { "heading": "Grow with Jane vs MasterGrowbot AI: The Quick Verdict" },
-      { "heading": "What Grow with Jane Offers: Strengths and Limitations" },
-      { "heading": "What MasterGrowbot AI Offers: AI Diagnosis and Smart Growing" },
-      { "heading": "Feature Comparison: Journal, AI, Strain Database, and Community" },
-      { "heading": "Pricing Comparison: Grow with Jane vs MasterGrowbot AI" },
-      { "heading": "Which App Should You Choose Based on Your Growing Goals" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "Grow with Jane vs MasterGrowbot AI: The Quick Verdict"
+      },
+      {
+        "heading": "What Grow with Jane Offers: Strengths and Limitations"
+      },
+      {
+        "heading": "What MasterGrowbot AI Offers: AI Diagnosis and Smart Growing"
+      },
+      {
+        "heading": "Feature Comparison: Journal, AI, Strain Database, and Community"
+      },
+      {
+        "heading": "Pricing Comparison: Grow with Jane vs MasterGrowbot AI"
+      },
+      {
+        "heading": "Which App Should You Choose Based on Your Growing Goals"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 5,
     "relatedSlugs": [
@@ -242,14 +346,30 @@
       "cannabis water schedule"
     ],
     "sections": [
-      { "heading": "How to Tell When Cannabis Plants Need Water: Three Reliable Methods" },
-      { "heading": "Cannabis Watering Frequency by Growth Stage" },
-      { "heading": "How Much Water to Give Cannabis: Volume and Runoff Targets" },
-      { "heading": "Overwatering Cannabis: Symptoms, Causes, and Recovery Steps" },
-      { "heading": "Underwatering Cannabis: How to Identify and Fix It Fast" },
-      { "heading": "Watering Cannabis in Different Growing Media: Soil, Coco, and Hydro" },
-      { "heading": "Water Quality, pH, and Temperature for Optimal Cannabis Growth" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "How to Tell When Cannabis Plants Need Water: Three Reliable Methods"
+      },
+      {
+        "heading": "Cannabis Watering Frequency by Growth Stage"
+      },
+      {
+        "heading": "How Much Water to Give Cannabis: Volume and Runoff Targets"
+      },
+      {
+        "heading": "Overwatering Cannabis: Symptoms, Causes, and Recovery Steps"
+      },
+      {
+        "heading": "Underwatering Cannabis: How to Identify and Fix It Fast"
+      },
+      {
+        "heading": "Watering Cannabis in Different Growing Media: Soil, Coco, and Hydro"
+      },
+      {
+        "heading": "Water Quality, pH, and Temperature for Optimal Cannabis Growth"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -275,15 +395,33 @@
       "cannabis bud development stages"
     ],
     "sections": [
-      { "heading": "Cannabis Flowering Stage Overview: What Happens Week by Week" },
-      { "heading": "Early Flower Weeks 1-3: Transition, Stretch, and First Pistils" },
-      { "heading": "Mid Flower Weeks 4-6: Bud Sites Form and Stack" },
-      { "heading": "Late Flower Weeks 7-9: Ripening, Swelling, and Resin Production" },
-      { "heading": "Harvest Window Weeks 9 and Beyond: Trichome Reading and Final Flush" },
-      { "heading": "Environmental Targets by Flowering Week: Temperature, Humidity, and VPD" },
-      { "heading": "Feeding Adjustments by Flowering Week: NPK Ratios and Supplements" },
-      { "heading": "Common Problems During Flowering and How to Fix Them" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "Cannabis Flowering Stage Overview: What Happens Week by Week"
+      },
+      {
+        "heading": "Early Flower Weeks 1-3: Transition, Stretch, and First Pistils"
+      },
+      {
+        "heading": "Mid Flower Weeks 4-6: Bud Sites Form and Stack"
+      },
+      {
+        "heading": "Late Flower Weeks 7-9: Ripening, Swelling, and Resin Production"
+      },
+      {
+        "heading": "Harvest Window Weeks 9 and Beyond: Trichome Reading and Final Flush"
+      },
+      {
+        "heading": "Environmental Targets by Flowering Week: Temperature, Humidity, and VPD"
+      },
+      {
+        "heading": "Feeding Adjustments by Flowering Week: NPK Ratios and Supplements"
+      },
+      {
+        "heading": "Common Problems During Flowering and How to Fix Them"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -309,15 +447,33 @@
       "higher thc growing tips"
     ],
     "sections": [
-      { "heading": "What Actually Controls THC Production in Cannabis Plants" },
-      { "heading": "Start with High-THC Genetics: The Single Biggest Factor" },
-      { "heading": "Lighting for THC: Spectrum, Intensity, and UV-B Supplementation" },
-      { "heading": "Nutrient Ratios During Flower That Drive Trichome Production" },
-      { "heading": "Temperature and Humidity Manipulation for Higher Potency" },
-      { "heading": "Training Techniques That Maximize Bud Sites and Trichome Coverage" },
-      { "heading": "Harvest Timing: The Mistake That Destroys Months of Work" },
-      { "heading": "Drying and Curing to Preserve Every Percent of THC" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Actually Controls THC Production in Cannabis Plants"
+      },
+      {
+        "heading": "Start with High-THC Genetics: The Single Biggest Factor"
+      },
+      {
+        "heading": "Lighting for THC: Spectrum, Intensity, and UV-B Supplementation"
+      },
+      {
+        "heading": "Nutrient Ratios During Flower That Drive Trichome Production"
+      },
+      {
+        "heading": "Temperature and Humidity Manipulation for Higher Potency"
+      },
+      {
+        "heading": "Training Techniques That Maximize Bud Sites and Trichome Coverage"
+      },
+      {
+        "heading": "Harvest Timing: The Mistake That Destroys Months of Work"
+      },
+      {
+        "heading": "Drying and Curing to Preserve Every Percent of THC"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -343,13 +499,27 @@
       "marijuana feeding schedule"
     ],
     "sections": [
-      { "heading": "What Cannabis Nutrient Calculators Do and Why Growers Use Them" },
-      { "heading": "NPK Ratios by Growth Stage: The Feeding Foundation" },
-      { "heading": "Top Cannabis Nutrient Calculators and Feeding Chart Tools Compared" },
-      { "heading": "Brand-Specific Feeding Charts: General Hydroponics, Fox Farm, Advanced Nutrients" },
-      { "heading": "EC and PPM Targets by Growth Stage: Reference Table" },
-      { "heading": "AI-Powered Nutrient Advice vs Static Feeding Charts" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Cannabis Nutrient Calculators Do and Why Growers Use Them"
+      },
+      {
+        "heading": "NPK Ratios by Growth Stage: The Feeding Foundation"
+      },
+      {
+        "heading": "Top Cannabis Nutrient Calculators and Feeding Chart Tools Compared"
+      },
+      {
+        "heading": "Brand-Specific Feeding Charts: General Hydroponics, Fox Farm, Advanced Nutrients"
+      },
+      {
+        "heading": "EC and PPM Targets by Growth Stage: Reference Table"
+      },
+      {
+        "heading": "AI-Powered Nutrient Advice vs Static Feeding Charts"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -375,15 +545,33 @@
       "best way to germinate marijuana seeds"
     ],
     "sections": [
-      { "heading": "What Cannabis Seeds Need to Germinate: Temperature, Moisture, and Darkness" },
-      { "heading": "Method 1: The Paper Towel Germination Method Step by Step" },
-      { "heading": "Method 2: Water Glass Soaking for Hard-Shell Seeds" },
-      { "heading": "Method 3: Direct Soil Planting for Simplest Results" },
-      { "heading": "Method 4: Starter Plugs and Rockwool Cubes" },
-      { "heading": "Method 5: Jiffy Peat Pellets for Beginners" },
-      { "heading": "Germination Timeline and Seedling Care After Sprouting" },
-      { "heading": "Why Cannabis Seeds Fail to Germinate and How to Fix It" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Cannabis Seeds Need to Germinate: Temperature, Moisture, and Darkness"
+      },
+      {
+        "heading": "Method 1: The Paper Towel Germination Method Step by Step"
+      },
+      {
+        "heading": "Method 2: Water Glass Soaking for Hard-Shell Seeds"
+      },
+      {
+        "heading": "Method 3: Direct Soil Planting for Simplest Results"
+      },
+      {
+        "heading": "Method 4: Starter Plugs and Rockwool Cubes"
+      },
+      {
+        "heading": "Method 5: Jiffy Peat Pellets for Beginners"
+      },
+      {
+        "heading": "Germination Timeline and Seedling Care After Sprouting"
+      },
+      {
+        "heading": "Why Cannabis Seeds Fail to Germinate and How to Fix It"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -408,13 +596,27 @@
       "best app outdoor cannabis"
     ],
     "sections": [
-      { "heading": "What Makes a Cannabis App Genuinely Useful for Outdoor Growers" },
-      { "heading": "MasterGrowbot AI for Outdoor Cannabis: No Sensors, Just Your Phone" },
-      { "heading": "Best Outdoor Cannabis Growing Apps Compared in 2026" },
-      { "heading": "Weather Tracking and Photoperiod Apps for Outdoor Growers" },
-      { "heading": "Pest Identification and Plant Health Apps for Outdoor Cannabis" },
-      { "heading": "Harvest Timing Apps: Which Tools Help You Hit the Right Window" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Makes a Cannabis App Genuinely Useful for Outdoor Growers"
+      },
+      {
+        "heading": "MasterGrowbot AI for Outdoor Cannabis: No Sensors, Just Your Phone"
+      },
+      {
+        "heading": "Best Outdoor Cannabis Growing Apps Compared in 2026"
+      },
+      {
+        "heading": "Weather Tracking and Photoperiod Apps for Outdoor Growers"
+      },
+      {
+        "heading": "Pest Identification and Plant Health Apps for Outdoor Cannabis"
+      },
+      {
+        "heading": "Harvest Timing Apps: Which Tools Help You Hit the Right Window"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -440,14 +642,30 @@
       "should I grow in soil or hydro"
     ],
     "sections": [
-      { "heading": "Soil vs Hydro Cannabis: Which Method Is Better for Your Goals" },
-      { "heading": "Growing Cannabis in Soil: Pros, Cons, and Who It Is Best For" },
-      { "heading": "Growing Cannabis Hydroponically: Pros, Cons, and Who It Is Best For" },
-      { "heading": "Hydroponic Cannabis Methods Compared: DWC, Coco, Ebb and Flow, NFT" },
-      { "heading": "Soil vs Hydro: Setup Cost, Running Cost, and Yield Comparison" },
-      { "heading": "Flavor, Terpenes, and Quality: Does Growing Medium Affect the Final Product" },
-      { "heading": "How to Choose Between Soil and Hydro Based on Your Situation" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "Soil vs Hydro Cannabis: Which Method Is Better for Your Goals"
+      },
+      {
+        "heading": "Growing Cannabis in Soil: Pros, Cons, and Who It Is Best For"
+      },
+      {
+        "heading": "Growing Cannabis Hydroponically: Pros, Cons, and Who It Is Best For"
+      },
+      {
+        "heading": "Hydroponic Cannabis Methods Compared: DWC, Coco, Ebb and Flow, NFT"
+      },
+      {
+        "heading": "Soil vs Hydro: Setup Cost, Running Cost, and Yield Comparison"
+      },
+      {
+        "heading": "Flavor, Terpenes, and Quality: Does Growing Medium Affect the Final Product"
+      },
+      {
+        "heading": "How to Choose Between Soil and Hydro Based on Your Situation"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -473,13 +691,27 @@
       "best plant identifier app 2026"
     ],
     "sections": [
-      { "heading": "How AI Plant Diagnosis Apps Work: Computer Vision and Cannabis" },
-      { "heading": "Cannabis-Specific AI vs General Plant Identifier Apps: Why It Matters" },
-      { "heading": "MasterGrowbot AI: The Most Accurate Cannabis Diagnosis App" },
-      { "heading": "AI Plant Diagnosis Apps Ranked: Accuracy, Speed, and Usefulness" },
-      { "heading": "What These Apps Can and Cannot Identify Reliably" },
-      { "heading": "How to Take Photos That Get the Most Accurate AI Diagnosis" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "How AI Plant Diagnosis Apps Work: Computer Vision and Cannabis"
+      },
+      {
+        "heading": "Cannabis-Specific AI vs General Plant Identifier Apps: Why It Matters"
+      },
+      {
+        "heading": "MasterGrowbot AI: The Most Accurate Cannabis Diagnosis App"
+      },
+      {
+        "heading": "AI Plant Diagnosis Apps Ranked: Accuracy, Speed, and Usefulness"
+      },
+      {
+        "heading": "What These Apps Can and Cannot Identify Reliably"
+      },
+      {
+        "heading": "How to Take Photos That Get the Most Accurate AI Diagnosis"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -506,15 +738,33 @@
       "pests on cannabis plants"
     ],
     "sections": [
-      { "heading": "How to Identify Cannabis Pests Before They Cause Serious Damage" },
-      { "heading": "Spider Mites: The Most Damaging Indoor Cannabis Pest" },
-      { "heading": "Fungus Gnats: Identifying and Eliminating the Larvae That Destroy Roots" },
-      { "heading": "Aphids, Thrips, and Whiteflies on Cannabis: Identification and Treatment" },
-      { "heading": "Broad Mites and Russet Mites: The Invisible Cannabis Pests" },
-      { "heading": "Caterpillars, Root Aphids, and Less Common Cannabis Pests" },
-      { "heading": "Organic vs Chemical Pest Control: Which Approach Is Right for Your Grow" },
-      { "heading": "How AI Photo Diagnosis Identifies Cannabis Pests in Seconds" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "How to Identify Cannabis Pests Before They Cause Serious Damage"
+      },
+      {
+        "heading": "Spider Mites: The Most Damaging Indoor Cannabis Pest"
+      },
+      {
+        "heading": "Fungus Gnats: Identifying and Eliminating the Larvae That Destroy Roots"
+      },
+      {
+        "heading": "Aphids, Thrips, and Whiteflies on Cannabis: Identification and Treatment"
+      },
+      {
+        "heading": "Broad Mites and Russet Mites: The Invisible Cannabis Pests"
+      },
+      {
+        "heading": "Caterpillars, Root Aphids, and Less Common Cannabis Pests"
+      },
+      {
+        "heading": "Organic vs Chemical Pest Control: Which Approach Is Right for Your Grow"
+      },
+      {
+        "heading": "How AI Photo Diagnosis Identifies Cannabis Pests in Seconds"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -541,14 +791,30 @@
       "flowering vpd chart"
     ],
     "sections": [
-      { "heading": "What Is a VPD Chart and How Cannabis Growers Use It" },
-      { "heading": "How to Read a VPD Chart: Rows, Columns, and Color Zones" },
-      { "heading": "VPD Reference Chart for Cannabis by Growth Stage" },
-      { "heading": "Leaf Surface Temperature vs Air Temperature: Why the Difference Matters" },
-      { "heading": "How to Adjust Your Grow Room to Hit Target VPD" },
-      { "heading": "What Happens When VPD Is Too High or Too Low" },
-      { "heading": "Using the MasterGrowbot Free VPD Calculator Instead of a Chart" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Is a VPD Chart and How Cannabis Growers Use It"
+      },
+      {
+        "heading": "How to Read a VPD Chart: Rows, Columns, and Color Zones"
+      },
+      {
+        "heading": "VPD Reference Chart for Cannabis by Growth Stage"
+      },
+      {
+        "heading": "Leaf Surface Temperature vs Air Temperature: Why the Difference Matters"
+      },
+      {
+        "heading": "How to Adjust Your Grow Room to Hit Target VPD"
+      },
+      {
+        "heading": "What Happens When VPD Is Too High or Too Low"
+      },
+      {
+        "heading": "Using the MasterGrowbot Free VPD Calculator Instead of a Chart"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -573,14 +839,30 @@
       "marijuana nutrient calculator"
     ],
     "sections": [
-      { "heading": "Cannabis Nutrient Schedule Fundamentals: What Plants Need and When" },
-      { "heading": "Macronutrients by Growth Stage: NPK Ratios Week by Week" },
-      { "heading": "Micronutrients and Secondary Nutrients: Calcium, Magnesium, and More" },
-      { "heading": "EC and PPM Targets by Growth Stage: Complete Reference Table" },
-      { "heading": "Organic vs Synthetic Nutrient Schedules: How They Differ" },
-      { "heading": "How to Read Nutrient Labels and Build Your Own Feeding Schedule" },
-      { "heading": "Common Nutrient Schedule Mistakes and How to Fix Them" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "Cannabis Nutrient Schedule Fundamentals: What Plants Need and When"
+      },
+      {
+        "heading": "Macronutrients by Growth Stage: NPK Ratios Week by Week"
+      },
+      {
+        "heading": "Micronutrients and Secondary Nutrients: Calcium, Magnesium, and More"
+      },
+      {
+        "heading": "EC and PPM Targets by Growth Stage: Complete Reference Table"
+      },
+      {
+        "heading": "Organic vs Synthetic Nutrient Schedules: How They Differ"
+      },
+      {
+        "heading": "How to Read Nutrient Labels and Build Your Own Feeding Schedule"
+      },
+      {
+        "heading": "Common Nutrient Schedule Mistakes and How to Fix Them"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -607,14 +889,30 @@
       "autoflower light schedule"
     ],
     "sections": [
-      { "heading": "How Cannabis Light Schedules Control Growth and Flowering" },
-      { "heading": "Vegetative Light Schedule Options: 18/6, 20/4, and 24/0 Compared" },
-      { "heading": "Switching to Flower: The 12/12 Light Schedule and What Triggers It" },
-      { "heading": "Autoflower Light Schedules: 18/6, 20/4, and Why 24/0 Can Backfire" },
-      { "heading": "DLI and PPFD: The Numbers That Actually Predict Your Yield" },
-      { "heading": "Light Schedule Mistakes That Cause Hermaphrodites and Revegging" },
-      { "heading": "Light Schedule Reference Table by Growth Stage and Strain Type" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "How Cannabis Light Schedules Control Growth and Flowering"
+      },
+      {
+        "heading": "Vegetative Light Schedule Options: 18/6, 20/4, and 24/0 Compared"
+      },
+      {
+        "heading": "Switching to Flower: The 12/12 Light Schedule and What Triggers It"
+      },
+      {
+        "heading": "Autoflower Light Schedules: 18/6, 20/4, and Why 24/0 Can Backfire"
+      },
+      {
+        "heading": "DLI and PPFD: The Numbers That Actually Predict Your Yield"
+      },
+      {
+        "heading": "Light Schedule Mistakes That Cause Hermaphrodites and Revegging"
+      },
+      {
+        "heading": "Light Schedule Reference Table by Growth Stage and Strain Type"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
@@ -640,14 +938,30 @@
       "marijuana yield estimator"
     ],
     "sections": [
-      { "heading": "What Determines Cannabis Yield: The Variables That Actually Matter" },
-      { "heading": "Cannabis Yield Benchmarks: Indoor, Outdoor, and Greenhouse" },
-      { "heading": "Grams per Watt and Grams per Square Foot: How to Use These Metrics" },
-      { "heading": "How to Estimate Your Cannabis Yield Before Harvest" },
-      { "heading": "Training Techniques That Double or Triple Your Yield" },
-      { "heading": "Common Yield-Killing Mistakes and How to Avoid Them" },
-      { "heading": "Tracking and Improving Yield Across Multiple Grows" },
-      { "heading": "Grow Smarter with MasterGrowbot AI" }
+      {
+        "heading": "What Determines Cannabis Yield: The Variables That Actually Matter"
+      },
+      {
+        "heading": "Cannabis Yield Benchmarks: Indoor, Outdoor, and Greenhouse"
+      },
+      {
+        "heading": "Grams per Watt and Grams per Square Foot: How to Use These Metrics"
+      },
+      {
+        "heading": "How to Estimate Your Cannabis Yield Before Harvest"
+      },
+      {
+        "heading": "Training Techniques That Double or Triple Your Yield"
+      },
+      {
+        "heading": "Common Yield-Killing Mistakes and How to Avoid Them"
+      },
+      {
+        "heading": "Tracking and Improving Yield Across Multiple Grows"
+      },
+      {
+        "heading": "Grow Smarter with MasterGrowbot AI"
+      }
     ],
     "faqCount": 6,
     "relatedSlugs": [
