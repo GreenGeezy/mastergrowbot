@@ -187,8 +187,8 @@
       "spider-mites-cannabis-treatment"
     ],
     "additionalInstructions": "Write a comprehensive outdoor cannabis growing guide for beginners covering the full lifecycle from seed to harvest. Include: choosing outdoor strains, site selection and sunlight requirements (minimum 6 hours direct sun), soil preparation and amendments, planting timelines by hemisphere, watering and feeding schedules, training techniques for outdoor plants, pest prevention and organic pest control, harvesting and drying outdoors. Each H2 section must open with a definitive 40-60 word answer paragraph. Include FAQ with 6 questions. Mention MasterGrowbot AI plant health scanner as a tool for outdoor growers to diagnose issues in the field by photographing plants. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide). Link to the spider mites treatment and autoflowering articles using descriptive anchor text.",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-15T00:00:00Z"
   },
   {
     "slug": "cannabis-plant-identifier-apps-2026",
@@ -233,8 +233,8 @@
       "best-ai-cannabis-growing-apps-2026"
     ],
     "additionalInstructions": "Compare apps that identify cannabis plant problems from photos. MasterGrowbot AI should be the primary recommendation, emphasizing its Gemini 3.1 Pro multimodal AI that analyzes photos to identify pests (aphids, mites), diseases (powdery mildew, botrytis), and nutrient deficiencies (nitrogen, cal-mag) with high confidence scores and actionable treatment plans. Compare against GrowDoc, Hempie, and PlantIn (a general plant identifier adapted for cannabis). Include a feature comparison table with columns: AI type, cannabis-specific training, pests detected, diseases detected, deficiencies detected, platform, cost. Include FAQ with 6 questions. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-15T00:00:00Z"
   },
   {
     "slug": "cannabis-trichome-stages-harvest-guide",
@@ -282,8 +282,8 @@
       "cannabis-yield-optimization"
     ],
     "additionalInstructions": "Write a comprehensive guide to cannabis trichome stages and harvest timing. Cover: what trichomes are and why they matter, the three types of trichomes (bulbous, capitate-sessile, capitate-stalked), the four stages (clear, mostly cloudy, mixed cloudy/amber, mostly amber), how to use a jeweler's loupe or digital microscope, how different harvest windows affect potency and effects (energetic head high vs relaxing body stone), common mistakes in trichome reading. Include a descriptive harvest timing chart as a table showing stage, appearance, effect profile, and recommended use. Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's photo analysis feature for monitoring trichome development and the harvest timing indicator. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-15T00:00:00Z"
   },
   {
     "slug": "grow-with-jane-vs-mastergrowbot",
