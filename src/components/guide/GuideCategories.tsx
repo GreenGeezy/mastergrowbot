@@ -134,7 +134,7 @@ const categories = [
     questions: [
       {
         q: "How can I get help with Master Growbot?",
-        a: "We're committed to your success and protecting your privacy. For questions regarding your personal data, privacy rights, technical support, or growing guidance, email us at support@futuristiccannabis.ai. Our dedicated team will promptly assist you."
+        a: "We're committed to your success and protecting your privacy. For questions regarding your personal data, privacy rights, technical support, or growing guidance, email us at support@mastergrowbot.com. Our dedicated team will promptly assist you."
       },
       {
         q: "What are the important legal disclaimers?",

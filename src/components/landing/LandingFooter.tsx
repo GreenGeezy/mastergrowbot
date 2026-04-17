@@ -20,6 +20,9 @@ export default function LandingFooter() {
           >
             Web App
           </a>
+          <Link to="/contact" className="hover:text-white/60 transition-colors">
+            Contact
+          </Link>
           <Link to="/privacy-policy" className="hover:text-white/60 transition-colors">
             Privacy Policy
           </Link>

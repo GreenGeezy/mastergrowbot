@@ -28,6 +28,12 @@ export default function LandingNav() {
         >
           VPD Calculator
         </Link>
+        <Link
+          to="/contact"
+          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
+        >
+          Contact
+        </Link>
         <a
           href="https://www.mastergrowbotai.com?utm_source=website&utm_medium=organic&utm_campaign=nav"
           target="_blank"

@@ -24,6 +24,7 @@ const GrowingGuide = lazy(() => import("@/pages/GrowingGuide"));
 const GrowGuidesHub = lazy(() => import("@/pages/GrowGuidesHub"));
 const GrowGuideArticle = lazy(() => import("@/pages/GrowGuideArticle"));
 const VPDCalculator = lazy(() => import("@/pages/VPDCalculator"));
+const Contact = lazy(() => import("@/pages/Contact"));
 
 const REQUIRE_QUIZ_AND_SUBSCRIPTION = import.meta.env.VITE_REQUIRE_QUIZ_AND_SUBSCRIPTION === 'true';
 
@@ -50,12 +51,13 @@ const AuthVerification = () => {
   const location = useLocation();
   
   const isPublicRoute = [
-    '/', 
-    '/privacy-policy', 
-    '/terms-of-service', 
-    '/quiz', 
-    '/thank-you', 
-    '/auth/callback', 
+    '/',
+    '/privacy-policy',
+    '/terms-of-service',
+    '/contact',
+    '/quiz',
+    '/thank-you',
+    '/auth/callback',
     '/auth/v1/callback'
   ].some(route =>
     location.pathname === route ||
@@ -286,6 +288,14 @@ const App = () => {
                 element={
                   <Suspense fallback={<LoadingSpinner />}>
                     <VPDCalculator />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/contact"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Contact />
                   </Suspense>
                 }
               />
