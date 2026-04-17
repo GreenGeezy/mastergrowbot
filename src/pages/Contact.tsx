@@ -6,20 +6,28 @@ import SEOHead from '@/components/SEOHead';
 
 const FAQS = [
   {
-    q: 'How do I cancel my subscription?',
-    a: 'Subscriptions are managed through the App Store (iOS) or Google Play (Android). Go to your device subscription settings and cancel from there. Cancellations take effect at the end of the current billing period.',
+    q: 'What makes MasterGrowbot AI different from other growing apps?',
+    a: 'MasterGrowbot AI is built specifically for cannabis cultivation from the ground up — not a generic plant app adapted for cannabis. It combines AI-powered photo diagnosis, a personalized daily task system, strain-specific grow coaching, VPD tracking, and a full grow journal in one place. The AI is trained on cannabis-specific data so diagnoses are accurate for the unique challenges of cannabis cultivation.',
   },
   {
-    q: 'How do I delete my account and data?',
-    a: 'Use the delete account option inside the app settings, or email support@mastergrowbot.com. All personal data is permanently removed within 30 days of a verified request.',
+    q: "What's included in the free 3-day trial?",
+    a: 'Your free trial gives you full access to every premium feature: unlimited AI plant scans, personalized grow coaching, the complete strain database, daily task scheduling, grow journal, and harvest window detection. No credit card is required to start on the web app. After the trial, a subscription keeps all premium features active for every grow you run.',
   },
   {
-    q: 'I found a bug — how do I report it?',
-    a: 'Email support@mastergrowbot.com with a description of the issue, your device model, and your iOS or Android version. Screenshots are always helpful and speed up our response.',
+    q: 'Is my grow data safe and private?',
+    a: 'Absolutely. Your photos, grow data, and personal information are encrypted and stored securely. We never sell your personal information to third parties. You are always in control of your data and can request full deletion at any time through the app settings or by emailing support@mastergrowbot.com.',
   },
   {
-    q: 'How do I get a refund?',
-    a: 'iOS refunds are handled by Apple at reportaproblem.apple.com. Android refunds are handled by Google Play. We are unable to process in-app purchase refunds directly.',
+    q: 'How does the AI plant diagnosis feature work?',
+    a: "Take a photo of any leaf, bud, or growth abnormality and MasterGrowbot AI's advanced vision AI analyzes it within seconds. The AI is trained on cannabis-specific cultivation data to identify nutrient deficiencies, pests, diseases, and environmental stress with high accuracy. Each diagnosis includes a step-by-step treatment plan matched to your current growth stage and growing medium.",
+  },
+  {
+    q: 'Can I use MasterGrowbot AI for both indoor and outdoor grows?',
+    a: 'Yes — MasterGrowbot AI is designed for all growing environments including indoor tents, greenhouses, and outdoor plots. Set up your grow profile with your environment details and the AI tailors all recommendations, feeding schedules, and task reminders specifically to your setup.',
+  },
+  {
+    q: 'How do I manage or cancel my subscription?',
+    a: 'Subscriptions are managed through the App Store (iOS) or Google Play (Android). Go to your device subscription settings to upgrade, downgrade, or cancel at any time. Cancellations take effect at the end of the current billing period so you keep access until then.',
   },
 ];
 
@@ -99,7 +107,7 @@ export default function Contact() {
             support@mastergrowbot.com
           </a>
           <p className="text-white/35 text-sm mt-4">
-            We typically respond within 24 hours, Monday through Friday.
+            We appreciate every single MasterGrowbot user and will respond to you as soon as possible. Thank you for your patience and support.
           </p>
         </div>
 
@@ -114,8 +122,8 @@ export default function Contact() {
             <p className="text-white text-sm font-semibold">iOS & Android</p>
           </div>
           <div className="p-4 bg-[#1a1e26] border border-white/[0.06] rounded-xl text-center">
-            <p className="text-white/35 text-xs mb-1">Response</p>
-            <p className="text-white text-sm font-semibold">Within 24 hrs</p>
+            <p className="text-white/35 text-xs mb-1">Support</p>
+            <p className="text-white text-sm font-semibold">Always Here</p>
           </div>
         </div>
 

@@ -105,9 +105,7 @@ const TermsOfService = () => {
                 </p>
                 <div className="mt-4 p-4 bg-[#1a1e26] border border-white/[0.08] rounded-xl">
                   <p className="text-sm text-white/50 leading-relaxed">
-                    <span className="font-semibold text-white/70">Note for Apple iOS App Store submission:</span> Apple's standard End User License Agreement (EULA) is selected in App Store Connect rather than a custom terms document. The official Support URL for App Store Review is{' '}
-                    <a href="https://www.mastergrowbot.com/contact" className="text-landing-green hover:underline">https://www.mastergrowbot.com/contact</a>, and the Privacy Policy URL is{' '}
-                    <a href="https://www.mastergrowbot.com/privacy-policy" className="text-landing-green hover:underline">https://www.mastergrowbot.com/privacy-policy</a>.
+                    <span className="font-semibold text-white/70">Note:</span> This page is not used for Apple iOS App Store submission — Apple's standard terms of use (EULA) are selected in App Store Connect instead.
                   </p>
                 </div>
               </div>

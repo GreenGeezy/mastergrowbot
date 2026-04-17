@@ -21,36 +21,6 @@ const breadcrumbSchema = {
   ],
 };
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'What is MasterGrowbot AI?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'MasterGrowbot AI is a premium mobile app that uses artificial intelligence to help cannabis growers diagnose plant problems, optimize yields, and manage their grows from seed to harvest.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How do cannabis grow guides help me?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Our grow guides cover common cultivation challenges like nutrient deficiencies, pest identification, and harvest timing. Combined with MasterGrowbot AI\'s photo diagnosis feature, you can solve plant problems in seconds.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is MasterGrowbot AI free?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'MasterGrowbot AI offers a free 3-day trial so you can experience AI-powered plant diagnosis, grow tracking, and personalized cultivation plans before subscribing.',
-      },
-    },
-  ],
-};
 
 export default function GrowGuidesHub() {
   return (
@@ -62,7 +32,6 @@ export default function GrowGuidesHub() {
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 
       <LandingNav />

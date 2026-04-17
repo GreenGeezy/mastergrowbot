@@ -50,15 +50,6 @@ export default function GrowGuideArticle() {
     ],
   };
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: guide.faqs.map((faq) => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-    })),
-  };
 
   const relatedGuides = growGuides.filter(
     (g) => g.slug !== guide.slug && (guide.relatedSlugs.includes(g.slug) || guide.relatedSlugs.length === 0)
@@ -77,7 +68,6 @@ export default function GrowGuideArticle() {
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 
       <LandingNav />
@@ -137,15 +127,6 @@ export default function GrowGuideArticle() {
                     </a>
                   </li>
                 ))}
-                <li>
-                  <a
-                    href="#faq"
-                    className="text-sm text-white/60 hover:text-landing-green transition-colors duration-150 font-sans flex items-center gap-2 group"
-                  >
-                    <ChevronRight className="w-3 h-3 text-white/20 group-hover:text-landing-green transition-colors flex-shrink-0" />
-                    Frequently Asked Questions
-                  </a>
-                </li>
               </ol>
             </motion.nav>
 
@@ -213,25 +194,6 @@ export default function GrowGuideArticle() {
               </motion.section>
             ))}
 
-            {/* FAQ Section */}
-            {guide.faqs.length > 0 && (
-              <section id="faq" className="mb-12 scroll-mt-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-white font-sans mb-6">
-                  Frequently Asked Questions
-                </h2>
-                <div className="space-y-5">
-                  {guide.faqs.map((faq) => (
-                    <div
-                      key={faq.question}
-                      className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-5 space-y-2"
-                    >
-                      <h3 className="text-base font-semibold text-white font-sans">{faq.question}</h3>
-                      <p className="text-sm text-white/60 leading-relaxed font-sans">{faq.answer}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
 
             {/* Closing CTA */}
             <div className="mb-12 rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent p-8 text-center space-y-4">
