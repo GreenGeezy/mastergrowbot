@@ -236,8 +236,8 @@ export default function VPDCalculator() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <SEOHead
-        title="Free VPD Calculator for Cannabis Growers 2026 | MasterGrowbot AI"
-        description="Free VPD calculator with actionable recommendations for every cannabis growth stage. Enter temp and humidity, get instant diagnosis and fix. No signup required."
+        title="Free Cannabis VPD Calculator 2026 | MasterGrowbot AI"
+        description="Enter your grow room temp and humidity. Get instant VPD diagnosis for your plant's growth stage with actionable fixes. Free, no signup required."
         canonicalUrl="https://www.mastergrowbot.com/vpd-calculator"
       />
       <Helmet>
