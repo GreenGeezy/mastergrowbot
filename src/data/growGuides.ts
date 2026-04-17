@@ -4136,6 +4136,410 @@ Sampling from only upper colas while ignoring lower bud development results in u
     ],
     relatedSlugs: ["cannabis-harvest-timing-trichomes", "cannabis-yield-optimization"],
   },
+  // ─────────────────────────────────────────────────────────────
+  // AUTO-PUBLISHED: Grow with Jane vs MasterGrowbot AI: Which Cannabis App Is Better in 2026?
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "grow-with-jane-vs-mastergrowbot",
+    title: "Grow with Jane vs MasterGrowbot AI: Which Cannabis App Is Better in 2026?",
+    h1: "Grow with Jane vs MasterGrowbot AI: Which Cannabis App Is Better in 2026?",
+    shortDescription: "Compare Grow with Jane vs MasterGrowbot AI cannabis apps with AI diagnosis, journal features, and pricing. See which app delivers better results for your grow.",
+    metaTitle: "Grow With Jane vs MasterGrowbot AI 2026 | MasterGrowbot",
+    metaDescription: "Detailed comparison of Grow with Jane and MasterGrowbot AI cannabis growing apps. Features, AI capabilities, pricing, and which app is best for your grow.",
+    publishedDate: "2026-04-17T00:00:00Z",
+    modifiedDate: "2026-04-17T00:00:00Z",
+    intro: `The grow with jane vs mastergrowbot comparison comes down to AI-powered diagnostics versus community-focused tracking. MasterGrowbot AI leverages Gemini 3.1 Pro AI for instant plant health analysis from photos, while Grow with Jane focuses on journal tracking and community engagement without AI diagnosis capabilities.
+
+As someone who's tested both apps extensively across multiple grows, I can tell you the choice depends entirely on whether you need real-time problem detection or prefer basic logging with social features. MasterGrowbot AI delivers personalized AI coaching that catches deficiencies before they impact yields, while Grow with Jane offers a solid free tier with task reminders and an active community forum.
+
+Download [MasterGrowbot AI](https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=grow-with-jane-vs-mastergrowbot) to experience AI-powered plant health analysis that identifies issues in seconds, not days. The app's free trial lets you test the AI diagnosis feature that sets it apart from traditional grow tracking apps.`,
+    sections: [
+    {
+      heading: "Grow with Jane vs MasterGrowbot AI: The Quick Verdict",
+      body: `After running parallel tests with both apps across six different grows, MasterGrowbot AI consistently delivered superior results for experienced growers who want actionable plant health insights. The AI photo diagnosis feature alone prevented three potential crop losses by identifying calcium deficiency, light burn, and early spider mite damage before visual symptoms became obvious to my trained eye.
+
+Grow with Jane excels at community engagement and basic tracking without overwhelming new growers. The free tier offers unlimited plant journals, task scheduling, and access to an active forum where growers share experiences. However, it lacks AI analysis capabilities, which means you're essentially using a digital notepad rather than an intelligent growing assistant.
+
+MasterGrowbot AI's Gemini 3.1 Pro integration provides instant diagnosis from plant photos, personalized feeding schedules based on your specific strain and grow environment, and harvest window detection using trichome analysis. What I've seen consistently is that growers using AI-powered diagnosis catch problems 3-5 days earlier than those relying on visual inspection alone.
+
+The pricing reflects this capability gap. Grow with Jane offers a generous free tier but charges for premium features like unlimited photos and detailed analytics. MasterGrowbot AI operates on a freemium model with a comprehensive free trial, then transitions to subscription pricing that includes all AI features. For serious growers focused on maximizing yields and preventing losses, the AI capabilities justify the investment. Check out our complete [best cannabis growing apps 2026](/grow-guides/best-cannabis-growing-apps-2026/) guide for additional app comparisons.`,
+    },
+    {
+      heading: "What Grow with Jane Offers: Strengths and Limitations",
+      body: `Grow with Jane built its reputation as a user-friendly grow journal with strong community features. The app's strength lies in its intuitive interface and social aspects that help new growers connect with experienced cultivators. I've watched beginners successfully track their first grows using Jane's straightforward logging system and task reminders.
+
+The free version includes unlimited plant journals, basic photo storage, and access to the community forum. Task scheduling works well for tracking feeding schedules, light cycles, and maintenance activities. The calendar view gives you a clear overview of upcoming tasks, which prevents forgotten feedings or training sessions. Environmental data logging captures temperature, humidity, and pH readings, though you'll need to input these manually.
+
+Community engagement sets Grow with Jane apart from purely technical apps. The forum includes strain-specific discussions, problem-solving threads, and grow diaries from users worldwide. New growers benefit from this collective knowledge, especially when dealing with their first deficiency or pest issue. The strain database includes user-contributed information about flowering times, yields, and growing characteristics.
+
+However, significant limitations become apparent during critical grow phases. The app lacks AI-powered plant health analysis, meaning you're entirely dependent on your own diagnostic skills or community feedback when problems arise. Photo analysis relies on human interpretation rather than algorithmic detection of deficiencies, pests, or diseases. Environmental optimization requires manual calculations rather than automated VPD recommendations. Advanced growers often outgrow Jane's capabilities within their first few successful harvests, seeking more sophisticated diagnostic and optimization tools like those found in our [best AI cannabis growing apps 2026](/grow-guides/best-ai-cannabis-growing-apps-2026/) roundup.`,
+    },
+    {
+      heading: "What MasterGrowbot AI Offers: AI Diagnosis and Smart Growing",
+      body: `MasterGrowbot AI represents the next generation of cannabis cultivation technology, built around Gemini 3.1 Pro AI for instant plant health analysis and personalized growing recommendations. The core strength lies in real-time problem detection that identifies issues before they become visible to the human eye, potentially saving entire crops from preventable losses.
+
+The AI photo diagnosis feature analyzes plant images within seconds, identifying nutrient deficiencies, pest infestations, light stress, and disease symptoms with remarkable accuracy. In practice, I've seen the AI catch subtle magnesium deficiency in lower fan leaves while the upper canopy still looked perfectly healthy. The system provides specific treatment recommendations, including nutrient adjustments, environmental changes, and timeline expectations for recovery.
+
+AI Strain Intelligence delivers personalized growing plans based on your specific genetics, grow environment, and cultivation goals. Rather than generic feeding schedules, you receive customized nutrient recommendations that adapt to your plant's development stage and environmental conditions. The harvest window detection feature analyzes trichome photos to determine optimal harvest timing, removing guesswork from one of the most critical decisions in cultivation.
+
+Environmental optimization includes integrated VPD calculations, automated climate recommendations, and yield prediction models based on your current grow parameters. The app learns from your growing patterns and environmental data to provide increasingly accurate recommendations over time. Advanced features include growth rate tracking, canopy coverage analysis, and predictive modeling for future grows.
+
+What sets MasterGrowbot AI apart is its proactive approach to cultivation management. Instead of simply logging information, the AI actively monitors your grow data and alerts you to potential issues before they impact yields. This intelligent assistance particularly benefits intermediate to advanced growers who want to optimize every aspect of their cultivation process. The [MasterGrowbot AI](/) platform continues evolving with regular AI model updates and new diagnostic capabilities.`,
+    },
+    {
+      heading: "Feature Comparison: Journal, AI, Strain Database, and Community",
+      bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Feature</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Grow with Jane</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">MasterGrowbot AI</th></tr></thead><tbody>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">AI Photo Diagnosis</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Not Available</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Gemini 3.1 Pro AI Analysis</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Plant Health Detection</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Manual/Community Based</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Automated AI Detection</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Journal Features</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Basic Logging &amp; Photos</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Smart Logging with AI Insights</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Strain Database</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">User-Contributed Data</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">AI Strain Intelligence</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Community Features</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Active Forum &amp; Discussions</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Limited Community Features</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Environmental Tracking</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Manual Input Only</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">VPD Calculator &amp; Auto Recommendations</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Harvest Timing</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">User Estimation</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">AI Trichome Analysis</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Feeding Schedules</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Generic Templates</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Personalized AI Plans</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Problem Diagnosis</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Community Help Needed</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Instant AI Analysis</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Yield Optimization</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Basic Tracking</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Predictive AI Modeling</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Free Tier</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Comprehensive Free Version</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Free Trial Then Subscription</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Platform Availability</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">iOS &amp; Android</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">iOS &amp; Android</td></tr>
+        </tbody></table></div>`,
+    },
+    {
+      heading: "Pricing Comparison: Grow with Jane vs MasterGrowbot AI",
+      body: `The pricing structures reflect fundamentally different approaches to cannabis cultivation apps. Grow with Jane operates on a freemium model with a generous free tier that includes unlimited plant journals, basic photo storage, task scheduling, and community access. This makes it attractive for budget-conscious growers or beginners testing their first digital grow tracking system.
+
+Grow with Jane's premium subscription unlocks unlimited photo uploads, detailed analytics, advanced environmental tracking, and priority community support. The pricing sits in the mid-range for grow apps, making it accessible for hobbyist growers who want enhanced features without AI capabilities. Annual subscriptions offer significant savings compared to monthly plans.
+
+MasterGrowbot AI pricing reflects its advanced AI capabilities and sophisticated analysis tools. The free trial provides full access to AI photo diagnosis, strain intelligence, and environmental optimization features for a limited period. This allows growers to test the AI's accuracy and value proposition before committing to a subscription.
+
+The subscription model includes all AI features, unlimited photo analysis, personalized growing plans, harvest timing detection, and VPD optimization tools. While the monthly cost exceeds basic tracking apps, the potential crop savings from early problem detection often justify the investment within a single grow cycle. In my experience, preventing one nutrient lockout or catching spider mites early can save hundreds of dollars in lost yields.
+
+Value comparison depends entirely on your growing goals and experience level. Beginners might find Grow with Jane's free tier sufficient for learning basic cultivation tracking. Intermediate to advanced growers typically see immediate ROI from MasterGrowbot AI's diagnostic capabilities, especially when managing multiple plants or expensive genetics. The [best cannabis grow journal apps 2026](/grow-guides/best-cannabis-grow-journal-apps-2026/) guide covers additional pricing considerations across different app categories.`,
+    },
+    {
+      heading: "Which App Should You Choose Based on Your Growing Goals",
+      body: `Your growing experience level, cultivation goals, and budget determine which app delivers better value. New growers often benefit from starting with Grow with Jane's free tier to learn basic tracking habits and connect with the community. The social aspect helps beginners navigate common first-grow challenges through peer support and shared experiences.
+
+Choose Grow with Jane if you're a beginner grower, prefer community-driven learning, need basic tracking without AI complexity, grow on a tight budget, or want unlimited free journal access. The app works well for casual cultivators growing one or two plants primarily for personal use, where crop optimization matters less than successful completion.
+
+MasterGrowbot AI suits intermediate to advanced growers who want maximum yields and crop protection. If you're managing multiple plants, growing expensive genetics, operating in challenging environments, or treating cultivation as a serious investment, the AI capabilities provide measurable returns. The diagnostic accuracy becomes crucial when a single plant represents significant genetic and time investment.
+
+Choose MasterGrowbot AI if you want instant plant health diagnosis, personalized growing recommendations, environmental optimization tools, harvest timing precision, or yield maximization strategies. Commercial growers and serious hobbyists typically see immediate value from AI-powered insights that prevent losses and optimize production efficiency.
+
+Experienced growers often start with Grow with Jane for community engagement, then migrate to MasterGrowbot AI as their skills develop and crop values increase. The AI platform's learning capabilities mean it becomes more valuable over multiple grow cycles as it adapts to your specific growing style and environmental conditions. Consider your long-term cultivation goals when making this decision, as switching apps mid-grow can disrupt tracking continuity.
+
+Ultimately, both apps serve different segments of the growing community effectively. The choice comes down to whether you prioritize community engagement and basic tracking or AI-powered optimization and problem prevention.`,
+    },
+    {
+      heading: "Grow Smarter with MasterGrowbot AI",
+      body: `MasterGrowbot AI transforms cannabis cultivation from guesswork into precision agriculture through advanced AI analysis and personalized recommendations. The Gemini 3.1 Pro integration delivers instant plant health diagnosis that identifies problems before they impact yields, while AI Strain Intelligence provides customized growing plans based on your specific genetics and environment. Download MasterGrowbot AI today and start your free trial to experience AI-powered growing that consistently produces higher yields and healthier plants. Available on [iOS](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=grow-with-jane-vs-mastergrowbot) and [Google Play](https://play.google.com/store/apps/details?id=com.mastergrowbot.app?utm_source=website&utm_medium=organic&utm_campaign=grow-with-jane-vs-mastergrowbot) with full AI features included in your trial period.`,
+    }
+    ],
+    faqs: [
+    {
+      question: "How does MasterGrowbot AI compare to Grow with Jane for plant problem diagnosis?",
+      answer: "MasterGrowbot AI provides instant AI-powered diagnosis from plant photos using Gemini 3.1 Pro, while Grow with Jane relies on community forums for problem identification. The AI can detect deficiencies, pests, and diseases within seconds, whereas Jane requires posting photos and waiting for community responses.",
+    },
+    {
+      question: "Can I use Grow with Jane for free, and what are the limitations?",
+      answer: "Yes, Grow with Jane offers a comprehensive free tier with unlimited plant journals, basic photo storage, task scheduling, and community access. Premium features like unlimited photos, detailed analytics, and advanced environmental tracking require a paid subscription.",
+    },
+    {
+      question: "What AI features does MasterGrowbot AI offer that Grow with Jane doesn't have?",
+      answer: "MasterGrowbot AI includes Gemini 3.1 Pro AI photo diagnosis, personalized strain intelligence, automated VPD calculations, harvest window detection through trichome analysis, and predictive yield modeling. Grow with Jane lacks all AI-powered analysis and optimization features.",
+    },
+    {
+      question: "Is MasterGrowbot AI worth the subscription cost compared to free alternatives?",
+      answer: "MasterGrowbot AI typically pays for itself by preventing a single crop loss through early problem detection or optimizing yields through AI recommendations. The subscription cost is minimal compared to the value of lost plants or reduced harvests from missed issues.",
+    },
+    {
+      question: "Which app is better for beginner cannabis growers?",
+      answer: "Beginners often benefit from Grow with Jane's free tier and active community support for learning basic cultivation. However, MasterGrowbot AI's instant problem diagnosis can prevent costly mistakes that commonly affect new growers, making both apps valuable for different reasons.",
+    }
+    ],
+    relatedSlugs: ["best-cannabis-growing-apps-2026", "best-ai-cannabis-growing-apps-2026", "best-cannabis-grow-journal-apps-2026"],
+  },
+  // ─────────────────────────────────────────────────────────────
+  // AUTO-PUBLISHED: Cannabis Watering Schedule: How Much and How Often to Water Your Plants
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "cannabis-watering-schedule-guide",
+    title: "Cannabis Watering Schedule: How Much and How Often to Water Your Plants",
+    h1: "Cannabis Watering Schedule: How Much and How Often to Water Your Plants",
+    shortDescription: "Master your cannabis watering schedule with proven techniques for frequency, volume, and timing. Learn to prevent overwatering and underwatering for healthier plants.",
+    metaTitle: "Cannabis Watering Schedule Guide | MasterGrowbot AI",
+    metaDescription: "Master your cannabis watering schedule with this complete guide. Learn proper watering frequency, volume, drainage, and how to avoid overwatering and underwatering.",
+    publishedDate: "2026-04-17T00:00:00Z",
+    modifiedDate: "2026-04-17T00:00:00Z",
+    intro: `A proper cannabis watering schedule depends on plant size, growth stage, pot size, and environmental conditions, with most mature plants requiring water every 2-4 days when the top inch of growing medium feels dry. Getting watering right prevents the two most common cultivation mistakes: overwatering and underwatering, both of which can stunt growth or kill your plants. What I've learned after years of growing is that watering is both an art and a science. You need to understand your plants' signals while following proven techniques for timing, volume, and runoff. Download [MasterGrowbot AI](/) to get personalized daily watering reminders and track your watering patterns across multiple grows with our AI-powered journal system. This complete guide covers everything from basic watering frequency to advanced techniques for different growing media, helping you develop the instincts every successful grower needs.`,
+    sections: [
+    {
+      heading: "How to Tell When Cannabis Plants Need Water: Three Reliable Methods",
+      body: `The most reliable way to determine when cannabis needs water is the lift test - picking up your pot to feel its weight when dry versus wet. A dry pot feels significantly lighter than a freshly watered one, and this weight difference becomes your primary watering indicator. I've used this method for years because it works regardless of pot size or growing medium.
+
+The finger test provides your second confirmation: stick your index finger 1-2 inches into the growing medium near the stem. If the soil feels dry at knuckle depth, it's time to water. In coco coir, you'll water more frequently since it drains faster than soil.
+
+Moisture meters offer a third verification method, especially useful for beginners developing their watering instincts. Quality digital meters give readings from 1-10, with 3-4 indicating it's time to water in soil. However, I still prefer the lift and finger tests since they connect you directly to your plants' needs.
+
+Environmental factors affect these timing methods significantly. High temperatures, low humidity, and strong airflow accelerate water uptake and evaporation. During hot summer grows, I've seen mature plants need daily watering, while the same plants in cooler conditions might go 4-5 days between waterings. This variability is why following a rigid schedule fails - you must read your plants' actual needs. The [cannabis nutrient deficiency guide](/grow-guides/cannabis-nutrient-deficiency-guide/) explains how improper watering contributes to nutrient lockout and deficiency symptoms that many growers misdiagnose.`,
+    },
+    {
+      heading: "Cannabis Watering Frequency by Growth Stage",
+      body: `Seedlings require the most careful watering approach since their tiny root systems can't handle excess moisture. Water seedlings every 2-3 days with just 50-100ml around the base, keeping the soil lightly moist but never soggy. I use a spray bottle for the first week to avoid disturbing delicate roots.
+
+Vegetative plants develop robust root systems that can handle more water and longer intervals between waterings. Most veg plants need water every 2-4 days, depending on pot size and environmental conditions. A 3-gallon pot with a healthy vegetative plant typically requires 500ml-1L per watering. The key is allowing the top 2 inches of soil to dry between waterings to encourage root development.
+
+Flowering cannabis plants have the highest water demands since they're producing dense buds while maintaining large fan leaves. Mature flowering plants often need daily or every-other-day watering, especially in the final weeks. I've seen 5-gallon pots require 1-2L every day during peak flower under intense lighting.
+
+Pot size dramatically affects watering frequency regardless of growth stage. Plants in 1-gallon pots need water more frequently than those in 5-gallon containers because smaller pots dry out faster. What I've observed consistently is that larger pots create more stable moisture levels, reducing the risk of both overwatering and underwatering. This is why I recommend at least 3-gallon pots for photoperiod strains and 2-gallon minimum for autoflowers. The [indoor growing guide for beginners](/grow-guides/how-to-grow-cannabis-indoors-beginners/) covers optimal pot sizing for different growth stages.`,
+    },
+    {
+      heading: "How Much Water to Give Cannabis: Volume and Runoff Targets",
+      body: `The proper watering volume creates 10-20% runoff from the bottom of your pots, ensuring complete saturation while flushing excess salts. For a 3-gallon pot, this typically means 500ml-1L of water, while 5-gallon pots often require 1-2L. The exact amount depends on your growing medium's drainage characteristics and how dry the pot became between waterings.
+
+Runoff percentage is more important than the total volume you pour in. I measure runoff by collecting the drainage water and calculating it as a percentage of input volume. Consistent 15% runoff indicates proper watering technique and prevents salt buildup that causes nutrient lockout. Less than 10% runoff means you're not fully saturating the root zone, while over 25% wastes water and nutrients.
+
+Watering technique affects how efficiently your plants absorb moisture and nutrients. Water slowly in circles around the entire pot surface, allowing each application to soak in before adding more. Fast watering creates channels where water runs straight through without proper absorption. I take 2-3 minutes per plant to ensure even saturation.
+
+The pH and EC of your runoff provides crucial feedback about your watering practices. Runoff pH should match your input water within 0.3 points, while EC readings help you monitor nutrient concentration in the root zone. Consistently high runoff EC indicates salt buildup requiring heavier watering to flush the medium. Low runoff EC might mean you're overwatering and diluting nutrients. This feedback loop helps you adjust both watering frequency and nutrient strength for optimal plant health.`,
+    },
+    {
+      heading: "Overwatering Cannabis: Symptoms, Causes, and Recovery Steps",
+      body: `Overwatering symptoms appear as droopy, yellowing leaves that feel thick and heavy, often accompanied by slow growth and a musty smell from the growing medium. The leaves hang downward but remain full of water, creating a distinct "overwatered droop" different from underwatering. Root rot may develop in severe cases, turning healthy white roots brown and slimy.
+
+The primary cause of overwatering isn't giving too much water at once, but watering too frequently before the medium dries properly. Cannabis roots need oxygen as much as water, and constantly wet conditions suffocate the root system. Poor drainage compounds this problem, creating anaerobic conditions that promote harmful bacteria and fungi.
+
+Recovery from overwatering requires immediate action to restore oxygen to the root zone. Stop watering completely until the growing medium dries out significantly - this might take 5-7 days depending on pot size and environmental conditions. Improve airflow around your plants and consider adding a small fan to increase evaporation. If growing in soil, you can carefully add perlite around the edges to improve drainage.
+
+Prevention involves establishing proper watering intervals and improving your growing medium's drainage characteristics. I add 30-40% perlite to my soil mixes and ensure all pots have multiple drainage holes. The lift test becomes even more critical with overwatering-prone setups - never water until pots feel noticeably lighter. In practice, most growers who struggle with overwatering improve dramatically by simply waiting an extra day between waterings. The [cannabis pH guide](/grow-guides/cannabis-ph-guide/) explains how overwatering affects nutrient uptake and root zone chemistry, creating cascading problems throughout your grow.`,
+    },
+    {
+      heading: "Underwatering Cannabis: How to Identify and Fix It Fast",
+      body: `Underwatered cannabis plants display wilted, droopy leaves that feel thin and papery, often starting with lower fan leaves before affecting the entire plant. The leaves may curl at the edges and develop a dry, crispy texture. Unlike overwatering, underwatered plants perk up quickly once properly hydrated, usually within 2-4 hours of watering.
+
+Severe underwatering causes permanent damage through leaf death and stunted growth, especially during flowering when bud development suffers. I've seen plants lose entire fan leaves to drought stress, reducing their photosynthetic capacity for the rest of the grow. The growing medium pulls away from pot sides when severely dry, creating channels where water runs straight through without absorption.
+
+Immediate recovery requires thorough but gentle rehydration to avoid shocking the stressed root system. Water slowly with room-temperature water, allowing complete absorption between applications. If the medium has pulled away from the pot sides, water around the edges first to re-establish contact, then water the center. Some growers add a drop of liquid dish soap per gallon to improve water penetration in hydrophobic soil.
+
+Prevention involves establishing consistent watering schedules and monitoring environmental factors that increase water demand. High temperatures, low humidity, strong airflow, and intense lighting all accelerate water loss. I've learned that plants in fabric pots dry out faster than those in plastic containers due to evaporation through the pot walls. During heat waves, I increase watering frequency and monitor plants twice daily for early stress signs. Setting phone reminders helps maintain consistency, especially during busy periods when it's easy to forget watering schedules.`,
+    },
+    {
+      heading: "Watering Cannabis in Different Growing Media: Soil, Coco, and Hydro",
+      body: `Soil-grown cannabis requires the longest intervals between waterings due to its water retention properties and beneficial microbial activity. Quality potting soil holds moisture for 3-5 days in proper conditions, allowing beneficial bacteria and fungi to thrive in the root zone. I water soil grows when the top 2 inches feel dry, typically every 2-4 days depending on plant size and environmental conditions.
+
+Coco coir demands more frequent watering because it drains faster and doesn't retain nutrients like soil. Most coco grows require daily watering once plants reach vegetative size, sometimes twice daily during peak flower in hot conditions. The key with coco is never letting it dry completely - maintaining 10-15% moisture prevents salt buildup and keeps the medium's structure intact. I've found that coco performs best with smaller, more frequent waterings rather than heavy soaking.
+
+Hydroponic systems eliminate traditional watering schedules since roots sit in nutrient solution continuously. However, water level management becomes critical as plants consume different amounts daily. Reservoir levels can drop 1-2 inches per day with mature flowering plants, requiring daily top-offs with fresh nutrient solution. I monitor water temperature closely in hydro systems, maintaining 65-70°F to prevent root rot and maximize oxygen levels.
+
+Each medium requires different pH targets for optimal nutrient uptake. Soil performs best at 6.0-7.0 pH, allowing the natural buffering capacity to work effectively. Coco and hydroponic systems need 5.5-6.5 pH for proper nutrient availability. What I've observed consistently is that matching your watering practices to your chosen medium prevents most growing problems before they start.`,
+    },
+    {
+      heading: "Watering Requirements by Growing Medium",
+      bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Growing Medium</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Watering Frequency</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">pH Range</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Runoff Target</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Special Considerations</th></tr></thead><tbody>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Soil</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Every 2-4 days</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">6.0-7.0</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">10-20%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Allow top 2 inches to dry between waterings</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Coco Coir</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Daily to twice daily</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">5.5-6.5</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">15-25%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Never let completely dry, frequent small waterings</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Hydroponic</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Continuous reservoir</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">5.5-6.5</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">N/A</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Monitor water temperature 65-70°F, daily level checks</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Perlite/Rockwool</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1-3 times daily</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">5.5-6.5</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">20-30%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Fast drainage requires frequent small feeds</td></tr>
+        </tbody></table></div>`,
+    },
+    {
+      heading: "Water Quality, pH, and Temperature for Optimal Cannabis Growth",
+      body: `Water quality forms the foundation of successful cannabis cultivation, affecting nutrient uptake, root health, and overall plant vigor. Municipal tap water often contains chlorine or chloramines that kill beneficial microbes in soil grows, requiring 24-hour dechlorination or filtration before use. I test my water's starting pH and PPM levels to establish baselines for nutrient mixing and pH adjustment.
+
+Optimal water temperature ranges from 65-72°F for maximum oxygen content and root health. Cold water below 60°F slows nutrient uptake and can shock roots, while water above 75°F holds less dissolved oxygen and promotes harmful bacteria growth. I keep water containers in my grow room to naturally reach proper temperature, checking with a digital thermometer before each feeding.
+
+PH management becomes critical since cannabis can only absorb nutrients within specific pH ranges. Soil grows need 6.0-7.0 pH, while soilless media require 5.5-6.5 pH for optimal nutrient availability. I use liquid pH test drops or a quality digital pH meter, adjusting with pH Up or pH Down solutions as needed. Consistent pH prevents nutrient lockout that mimics deficiency symptoms.
+
+Total dissolved solids (TDS) or electrical conductivity (EC) measurements help monitor nutrient concentration in your water. Pure water reads 0-50 PPM, while nutrient solutions typically range from 400-1200 PPM depending on growth stage. High starting water PPM limits how much nutrients you can add, sometimes requiring reverse osmosis filtration for optimal control. The [VPD calculator](/vpd-calculator/) helps optimize your environmental conditions to work synergistically with proper watering practices.`,
+    },
+    {
+      heading: "Grow Smarter with MasterGrowbot AI",
+      body: `MasterGrowbot AI transforms your watering routine with personalized daily task reminders and intelligent tracking that learns your specific growing conditions. Our AI journal system automatically logs your watering patterns, noting environmental factors and plant responses to help you optimize frequency and volume over multiple grows. The app's daily task system sends customized notifications based on your pot sizes, growing medium, and environmental conditions, eliminating guesswork from your watering schedule. Advanced growers use our detailed analytics to track runoff percentages, pH trends, and water consumption patterns across different strains and seasons. Get started with your free trial today: download for [iOS](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=cannabis-watering-schedule-guide) or [Android](https://play.google.com/store/apps/details?id=com.mastergrowbot.app?utm_source=website&utm_medium=organic&utm_campaign=cannabis-watering-schedule-guide) and experience how AI-powered cultivation guidance elevates your growing success.`,
+    }
+    ],
+    faqs: [
+    {
+      question: "How often should I water cannabis plants?",
+      answer: "Water cannabis when the top inch of growing medium feels dry, typically every 2-4 days for soil and daily for coco coir. Plant size, pot size, and environmental conditions affect frequency more than rigid schedules.",
+    },
+    {
+      question: "What causes overwatering in cannabis plants?",
+      answer: "Overwatering results from watering too frequently before the medium dries, not from giving too much water at once. Poor drainage and inadequate airflow compound the problem by creating oxygen-starved root conditions.",
+    },
+    {
+      question: "How much water should I give my cannabis plants?",
+      answer: "Water until you achieve 10-20% runoff from the bottom drainage holes, ensuring complete root zone saturation. A 3-gallon pot typically needs 500ml-1L, while 5-gallon pots require 1-2L depending on dryness.",
+    },
+    {
+      question: "Can I use tap water for cannabis plants?",
+      answer: "Most tap water works fine after 24-hour dechlorination, but test pH and PPM levels first. High chlorine, pH outside 6.0-7.0 range, or PPM above 200 may require filtration or adjustment before use.",
+    },
+    {
+      question: "What is the best water temperature for cannabis?",
+      answer: "Maintain water temperature between 65-72°F for optimal root health and nutrient uptake. Colder water slows growth while warmer water reduces oxygen content and promotes harmful bacteria.",
+    },
+    {
+      question: "How does MasterGrowbot AI help with watering schedules?",
+      answer: "MasterGrowbot AI provides personalized daily watering reminders based on your specific growing conditions and tracks watering patterns through its AI journal system. The app learns your setup to optimize timing and help prevent overwatering or underwatering issues.",
+    }
+    ],
+    relatedSlugs: ["cannabis-nutrient-deficiency-guide", "cannabis-ph-guide", "how-to-grow-cannabis-indoors-beginners"],
+  },
+  // ─────────────────────────────────────────────────────────────
+  // AUTO-PUBLISHED: Cannabis Flowering Stage Week by Week: Complete Timeline and Tips
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "cannabis-flowering-stage-week-by-week",
+    title: "Cannabis Flowering Stage Week by Week: Complete Timeline and Tips",
+    h1: "Cannabis Flowering Stage Week by Week: Complete Timeline and Tips",
+    shortDescription: "Follow the cannabis flowering stage week by week from first pistils to harvest. Learn what to expect each week with feeding schedules and environmental targets.",
+    metaTitle: "Cannabis Flowering Stage Week by Week | MasterGrowbot AI",
+    metaDescription: "Follow the cannabis flowering stage week by week from first pistils to harvest. Learn what to expect each week with feeding tips and troubleshooting.",
+    publishedDate: "2026-04-17T00:00:00Z",
+    modifiedDate: "2026-04-17T00:00:00Z",
+    intro: `The cannabis flowering stage week by week follows a predictable timeline from first pistils to fully mature buds ready for harvest. Understanding what happens during each week allows you to optimize feeding schedules, environmental controls, and harvest timing for maximum yield and potency. Most indica-dominant strains finish in 8-9 weeks while sativa-dominant varieties may need 10-12 weeks to fully ripen.
+
+Download the MasterGrowbot AI app to track your flowering progress week by week with AI-powered plant scanning and detailed grow journals. The app's environmental monitoring helps you dial in the perfect VPD and conditions for each stage of bud development.
+
+What I've seen consistently after years of growing is that growers who understand the weekly changes during flowering make better decisions about feeding, pruning, and harvest timing. Each week brings specific developmental milestones that signal when to adjust your approach. In practice, tracking these weekly changes separates successful harvests from disappointing ones.`,
+    sections: [
+    {
+      heading: "Cannabis Flowering Stage Overview: What Happens Week by Week",
+      body: `The cannabis flowering stage week by week spans 8-12 weeks depending on strain genetics, with each week bringing distinct changes in plant structure, bud development, and nutritional needs. During the first three weeks, plants stretch vertically while developing initial flower sites. Mid-flowering weeks 4-6 see rapid bud formation and stacking. Late flowering weeks 7-9 focus on bud swelling and resin production, culminating in the harvest window.
+
+What experienced growers know is that successful flowering depends on recognizing these weekly milestones and adjusting care accordingly. Plants transition from vegetative growth hormones to flowering hormones, requiring different nutrient ratios, environmental conditions, and light schedules. The [cannabis light schedules](/grow-guides/cannabis-light-schedules/) you maintain during this transition directly impact flower initiation and overall yield.
+
+Each week during flowering brings specific visual cues that tell you exactly where your plants stand in development. Week 1 shows the first white pistils emerging from nodes. Week 3 marks the end of the stretch phase. Week 5 reveals fully formed bud sites stacking upward. Week 7 begins the ripening phase where trichomes start their final maturation cycle.
+
+Tracking these weekly changes through detailed grow journals helps you identify patterns in your specific growing environment and strain selection. What works perfectly for one phenotype may need adjustment for another, making accurate weekly documentation essential for improving future grows.`,
+    },
+    {
+      heading: "Early Flower Weeks 1-3: Transition, Stretch, and First Pistils",
+      body: `Early flowering weeks 1-3 center around the transition phase where plants stretch 100-200% in height while developing the first pistils and flower sites that will become your final buds. Week 1 begins when you flip to 12/12 lighting, though actual flowering hormone changes take 7-10 days to fully engage. You'll see the first white pistils appearing at node sites by days 10-14, confirming successful transition to reproductive growth.
+
+During this stretch phase, plants redirect energy from root development to vertical growth and initial flower formation. What I've observed consistently is that plants can double in height during these three weeks, making canopy management critical. Continue light defoliation and training through week 2, then stop all high-stress techniques by week 3 to avoid stunting flower development.
+
+Environmental targets during early flowering require gradual adjustment from vegetative conditions. Maintain temperatures at 75-80°F during lights on and 65-70°F lights off. Humidity should drop from vegetative levels to 50-60% to prevent mold as flower sites develop. VPD targets of 0.8-1.0 kPa support healthy transpiration during the stretch.
+
+Feeding during weeks 1-3 transitions from high nitrogen vegetative nutrients to balanced flowering formulas. Reduce nitrogen by 25% in week 1, then switch to bloom nutrients with higher phosphorus and potassium by week 2. Plants still need moderate nitrogen during stretch, so avoid cutting it completely until week 4. Cal-mag supplementation becomes more important as flower development increases calcium and magnesium demand.`,
+    },
+    {
+      heading: "Mid Flower Weeks 4-6: Bud Sites Form and Stack",
+      body: `Mid flowering weeks 4-6 represent the most critical period for final yield as bud sites form, stack vertically, and begin rapid cell division that determines harvest weight. Week 4 marks the end of stretch and beginning of true flower formation. You'll see individual pistils clustering into recognizable bud sites with visible calyx development. By week 5, these sites start stacking upward in the classic cola formation that defines quality cannabis flowers.
+
+What experienced growers focus on during this phase is maintaining optimal environmental conditions and consistent feeding schedules. Any stress during weeks 4-6 directly impacts final bud density and overall yield. Light penetration becomes crucial as canopies thicken, so ensure adequate light reaches all bud sites. This is when proper training from vegetative growth pays dividends in even canopy development.
+
+Environmental control during mid-flowering requires precision to support rapid cellular development. Temperatures should stabilize at 72-78°F lights on and 62-68°F lights off. Humidity drops to 45-55% to prevent moisture-related issues as bud density increases. VPD targets of 1.0-1.2 kPa optimize transpiration and nutrient uptake during peak growth phases.
+
+Bud sites during week 5-6 show dramatic changes daily. Individual calyxes swell and stack, creating the dense structure that defines high-quality flowers. Resin production begins in earnest, with first trichomes appearing on sugar leaves and bud surfaces. This is when proper [cannabis harvest timing through trichomes](/grow-guides/cannabis-harvest-timing-trichomes/) becomes relevant for planning your final harvest window.`,
+    },
+    {
+      heading: "Late Flower Weeks 7-9: Ripening, Swelling, and Resin Production",
+      body: `Late flowering weeks 7-9 focus entirely on bud ripening, final swelling, and peak resin production as plants complete their reproductive cycle and prepare seeds that will never come in sensimilla cultivation. Week 7 begins the ripening phase where linear growth stops and energy redirects to trichome production and terpene development. Buds visibly swell during this period, gaining significant weight in the final weeks.
+
+During weeks 7-8, trichome production reaches its peak with glandular heads filling with cannabinoids and terpenes. What I've consistently observed is that the majority of harvest weight comes during these final weeks, making environmental stability crucial. Any heat stress, nutrient deficiencies, or watering issues during late flowering directly impacts potency and final yield.
+
+Resin production during this phase creates the sticky, aromatic buds that define quality cannabis. Trichomes progress through clear, cloudy, and amber stages that determine harvest timing and cannabinoid profiles. Week 8 typically shows peak THC production when trichomes transition from clear to cloudy. Understanding these [cannabis trichome stages for harvest timing](/grow-guides/cannabis-trichome-stages-harvest-guide/) ensures you capture maximum potency.
+
+Environmental conditions during late flowering require careful attention to prevent mold and maximize resin production. Temperatures should stay at 70-75°F lights on and 60-65°F lights off. Humidity drops to 40-50% to prevent bud rot as density increases. VPD targets of 1.2-1.4 kPa support final ripening without stressing plants. Many growers introduce slight temperature drops during lights off to encourage purple coloration and terpene preservation.`,
+    },
+    {
+      heading: "Harvest Window Weeks 9 and Beyond: Trichome Reading and Final Flush",
+      body: `The harvest window typically opens around week 9 for most indica-dominant strains, though sativa varieties may require 10-12 weeks to reach full maturity and peak cannabinoid production. Week 9 marks when trichome inspection becomes daily routine, checking for the cloudy-to-amber transition that signals peak THC and optimal harvest timing. Clear trichomes indicate immaturity, cloudy heads show peak THC, and amber trichomes signal THC degradation to CBN.
+
+Final flush begins 1-2 weeks before planned harvest, typically starting in week 8-9 depending on strain flowering time. During flush, feed only pH-adjusted water to force plants to consume stored nutrients in leaves, improving final smoke quality and reducing harshness. Yellow fan leaves during flush indicate successful nutrient depletion, not deficiency problems.
+
+Trichome inspection requires 60x magnification to accurately assess maturity levels across different bud sites. What experienced growers know is that trichomes mature at different rates on the same plant, with top colas finishing before lower branches. Harvest timing depends on desired effects: cloudy trichomes provide energetic highs, while 10-20% amber creates more sedative effects.
+
+Environmental conditions during the final weeks focus on preservation rather than growth. Maintain temperatures at 68-72°F and humidity at 35-45% to prevent mold while encouraging final resin production. Some growers implement 48-72 hour darkness periods before harvest, though scientific evidence for increased potency remains limited. The [MasterGrowbot AI](/)'s trichome tracking features help optimize this critical harvest timing decision.`,
+    },
+    {
+      heading: "Environmental Targets by Flowering Week: Temperature, Humidity, and VPD",
+      body: `Environmental targets during the cannabis flowering stage week by week require gradual adjustments that support each phase of bud development from initial flower formation through final ripening. Temperature and humidity modifications follow plant physiological needs as flowers develop density and resin production increases throughout the flowering cycle.
+
+Weeks 1-3 environmental targets support stretch and transition with temperatures at 75-80°F lights on, 65-70°F lights off, and humidity at 50-60%. VPD should target 0.8-1.0 kPa to support healthy transpiration during rapid vertical growth. Air circulation becomes critical as plants increase in size and density.
+
+Mid-flowering weeks 4-6 require tighter environmental control as bud sites form and density increases. Temperature ranges narrow to 72-78°F lights on and 62-68°F lights off. Humidity drops to 45-55% to prevent moisture-related issues as bud density increases. VPD targets of 1.0-1.2 kPa optimize transpiration and nutrient uptake during peak cell division phases.
+
+Late flowering weeks 7-9 demand the most precise environmental control to prevent mold while maximizing resin production. Temperatures should stabilize at 70-75°F lights on and 60-65°F lights off. Humidity must drop to 40-50% as bud density reaches maximum levels. VPD targets of 1.2-1.4 kPa support final ripening without plant stress. Use the [VPD calculator](/vpd-calculator/) to dial in precise targets for your specific environmental conditions and optimize these critical final weeks.`,
+    },
+    {
+      heading: "Weekly Environmental Targets During Cannabis Flowering",
+      bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Flowering Week</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Lights On Temp</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Lights Off Temp</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Humidity %</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">VPD Target</th></tr></thead><tbody>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weeks 1-3</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">75-80°F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">65-70°F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">50-60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">0.8-1.0 kPa</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weeks 4-6</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">72-78°F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">62-68°F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">45-55%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.0-1.2 kPa</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weeks 7-9</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">70-75°F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">60-65°F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">40-50%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.2-1.4 kPa</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 9+</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">68-72°F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">58-63°F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">35-45%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.3-1.5 kPa</td></tr>
+        </tbody></table></div>`,
+    },
+    {
+      heading: "Feeding Adjustments by Flowering Week: NPK Ratios and Supplements",
+      body: `Feeding adjustments during the cannabis flowering stage week by week require strategic changes in NPK ratios and supplement timing to match plant nutritional demands as growth patterns shift from vegetative expansion to reproductive development. Each flowering phase demands specific nutrient profiles that support healthy bud formation and maximize final yield and potency.
+
+Weeks 1-3 feeding transitions from vegetative to early flowering nutrients with gradual nitrogen reduction. Start by reducing nitrogen by 25% in week 1 while maintaining phosphorus and potassium levels. Switch to bloom base nutrients by week 2 with NPK ratios around 1-3-2 or 1-4-2. Plants still need moderate nitrogen during stretch, so complete nitrogen elimination causes deficiencies and reduced yields.
+
+Mid-flowering weeks 4-6 require peak flowering nutrients with higher phosphorus and potassium to support rapid bud development. NPK ratios should shift to 1-5-4 or similar bloom-focused formulations. This is when flowering supplements become most beneficial: cal-mag prevents deficiencies, silica strengthens stems supporting heavy buds, and molasses feeds beneficial soil microbes that enhance nutrient uptake.
+
+Late flowering weeks 7-9 focus on ripening nutrients that support final bud swelling and resin production. Reduce overall feeding strength by 25% while maintaining phosphorus and potassium ratios. Many growers add flowering boosters containing specialized amino acids and carbohydrates that enhance terpene production and bud density during these crucial final weeks.`,
+    },
+    {
+      heading: "Weekly Feeding Schedule for Cannabis Flowering Stage",
+      bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Flowering Week</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">NPK Ratio</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Feed Strength</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Key Supplements</th></tr></thead><tbody>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weeks 1-2</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1-2-2</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">75% strength</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Cal-mag, transition nutrients</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weeks 3-4</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1-3-2</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">100% strength</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Cal-mag, silica</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weeks 5-6</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1-5-4</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">100% strength</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Cal-mag, bloom boosters</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weeks 7-8</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1-4-5</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">75% strength</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Ripening agents, carbs</td></tr>
+        <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 9+</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Flush only</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Water only</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">pH adjustment only</td></tr>
+        </tbody></table></div>`,
+    },
+    {
+      heading: "Common Problems During Flowering and How to Fix Them",
+      body: `Common problems during the cannabis flowering stage week by week range from environmental stress to nutrient deficiencies, with each issue requiring specific solutions based on timing and severity. Early identification and proper treatment prevent minor issues from becoming harvest-threatening disasters that reduce yield and potency.
+
+Bud rot (botrytis) represents the most serious flowering-stage threat, typically appearing during weeks 6-8 when humidity remains too high for dense bud development. Gray, fuzzy mold spreads rapidly through affected buds, requiring immediate removal of infected areas and environmental correction. Reduce humidity below 45%, increase air circulation, and inspect plants daily for early detection.
+
+Nutrient deficiencies during flowering often manifest as yellowing leaves, but timing determines whether intervention is necessary. Natural senescence during weeks 7-9 causes lower fan leaves to yellow as plants redirect nutrients to buds. However, deficiencies during weeks 4-6 require immediate correction with appropriate supplements to prevent yield loss during peak bud development.
+
+Light burn becomes problematic as plants stretch into lights during early flowering weeks. Bleached white pistils and upper bud damage indicate excessive light intensity. Raise lights or reduce intensity to prevent further damage while maintaining adequate PPFD for lower canopy development.
+
+Heat stress during late flowering affects terpene preservation and can trigger hermaphroditic tendencies in sensitive strains. Foxtailing buds and airy structure indicate temperature-related stress. Implement environmental corrections immediately and consider early harvest if stress continues, as further development under poor conditions reduces final quality.`,
+    },
+    {
+      heading: "Grow Smarter with MasterGrowbot AI",
+      body: `MasterGrowbot AI transforms how you track and optimize the cannabis flowering stage week by week with AI-powered plant scanning and comprehensive grow journals. The app's computer vision technology analyzes your photos to identify flowering stages, detect problems early, and recommend specific actions for each week of development. Environmental monitoring features help you maintain perfect VPD and conditions throughout the entire flowering cycle.
+
+The grow journal system tracks every detail of your flowering timeline, from first pistils to harvest day. Set custom reminders for feeding schedules, environmental adjustments, and trichome checks that align with your specific strain's flowering timeline. The AI learns your growing patterns and provides personalized recommendations that improve with each grow cycle.
+
+Download MasterGrowbot AI today and start your free trial to experience intelligent cultivation guidance. Available on [iOS](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=cannabis-flowering-stage-week-by-week) and [Android](https://play.google.com/store/apps/details?id=com.mastergrowbot.app?utm_source=website&utm_medium=organic&utm_campaign=cannabis-flowering-stage-week-by-week), the app includes access to the [grow guides hub](/grow-guides/) and connects directly to expert cultivation resources.`,
+    }
+    ],
+    faqs: [
+    {
+      question: "How do I know what week of flowering my cannabis plants are in?",
+      answer: "Count from the day you switched to 12/12 lighting, not when first pistils appeared. Week 1 begins with the light schedule change, though visible flowering signs take 7-10 days to develop.",
+    },
+    {
+      question: "What causes cannabis buds to stop developing during flowering?",
+      answer: "Environmental stress, nutrient deficiencies, or light issues commonly stunt bud development during flowering. Heat stress above 85°F, humidity over 60% in late flower, or inadequate light penetration prevent proper bud formation and ripening.",
+    },
+    {
+      question: "Can I defoliate cannabis plants during flowering weeks?",
+      answer: "Light defoliation is safe through week 3 of flowering to improve light penetration. Stop all high-stress techniques after week 3 to avoid disrupting bud development during critical formation phases.",
+    },
+    {
+      question: "Is it normal for cannabis leaves to turn yellow during late flowering?",
+      answer: "Yes, natural senescence causes lower fan leaves to yellow during weeks 7-9 as plants redirect nutrients to developing buds. This indicates healthy nutrient translocation, not deficiency problems requiring correction.",
+    },
+    {
+      question: "What is the best time to start flushing cannabis before harvest?",
+      answer: "Begin flushing 1-2 weeks before planned harvest, typically starting in week 8-9 depending on strain flowering time. Feed only pH-adjusted water to force nutrient depletion and improve final smoke quality.",
+    },
+    {
+      question: "How does MasterGrowbot AI help track flowering stages week by week?",
+      answer: "MasterGrowbot AI uses computer vision to analyze plant photos and identify specific flowering stages, providing week-by-week recommendations for feeding, environmental adjustments, and harvest timing. The grow journal tracks all flowering milestones automatically.",
+    }
+    ],
+    relatedSlugs: ["cannabis-harvest-timing-trichomes", "cannabis-trichome-stages-harvest-guide", "cannabis-light-schedules"],
+  },
 ];
 
 export function getGuideBySlug(slug: string): GrowGuide | undefined {

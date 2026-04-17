@@ -328,8 +328,8 @@
       "best-cannabis-grow-journal-apps-2026"
     ],
     "additionalInstructions": "Write a detailed head-to-head comparison between Grow with Jane and MasterGrowbot AI. Compare across: AI capabilities (MasterGrowbot AI has Gemini 3.1 Pro AI photo diagnosis and AI Strain Intelligence; Grow with Jane has basic task tracking without AI diagnosis), journal features, strain database, community features, pricing and free tier differences, platform availability. Be fair and acknowledge Grow with Jane's strengths (active community, free tier, task reminders) while clearly explaining MasterGrowbot AI's advantages (AI plant health analysis from photos, personalized grow plans, VPD tools, harvest window detection). Include an HTML comparison table with rows for each feature category. Include FAQ with 5 questions. Include app store links for MasterGrowbot AI: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-17T00:00:00Z"
   },
   {
     "slug": "cannabis-watering-schedule-guide",
@@ -378,8 +378,8 @@
       "how-to-grow-cannabis-indoors-beginners"
     ],
     "additionalInstructions": "Write a complete guide to cannabis watering covering frequency, volume, drainage, pH, and common problems. Include: how to tell when cannabis needs water (lift test, finger test, moisture meter), watering frequency by growth stage (seedling, veg, flower), how pot size affects watering, overwatering signs and recovery, underwatering signs and recovery, water quality and pH targets (6.0-7.0 for soil, 5.5-6.5 for coco/hydro), runoff percentage targets (10-20%). Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's daily task system for watering reminders and the AI journal for tracking watering patterns across grows. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-17T00:00:00Z"
   },
   {
     "slug": "cannabis-flowering-stage-week-by-week",
@@ -430,8 +430,8 @@
       "cannabis-light-schedules"
     ],
     "additionalInstructions": "Write a detailed week-by-week guide to the cannabis flowering stage covering weeks 1 through 10 or longer. For each week group, describe: what the plant looks like, environmental changes to make (temperature targets, humidity targets, VPD targets), feeding adjustments, and common problems to watch for. Include early flower (weeks 1-3), mid flower (weeks 4-6), late flower/ripening (weeks 7-9), and harvest window (week 9 and beyond). Each H2 must open with a definitive 40-60 word answer. Include FAQ with 6 questions. Mention MasterGrowbot AI's AI scan for monitoring bud development week by week and the grow journal for tracking progress. Link to the free VPD calculator at mastergrowbot.com/vpd-calculator for environmental optimization. Include app store links: iOS (https://apps.apple.com/app/mastergrowbot-ai/id6752221060?utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide) and Android (https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=mastergrowbot&utm_medium=web&utm_campaign=grow_guide).",
-    "published": false,
-    "publishedDate": null
+    "published": true,
+    "publishedDate": "2026-04-17T00:00:00Z"
   },
   {
     "slug": "how-to-increase-thc-cannabis",
