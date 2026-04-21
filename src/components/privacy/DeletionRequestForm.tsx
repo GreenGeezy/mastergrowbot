@@ -30,7 +30,12 @@ export default function DeletionRequestForm() {
           placeholder="Your name"
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
         />
-        <ValidationError field="name" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
+        <ValidationError
+          prefix="Name"
+          field="name"
+          errors={state.errors}
+          className="text-red-400 text-xs mt-1 block"
+        />
       </div>
 
       <div>
@@ -45,7 +50,12 @@ export default function DeletionRequestForm() {
           placeholder="you@example.com"
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
         />
-        <ValidationError field="email" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
+        <ValidationError
+          prefix="Email"
+          field="email"
+          errors={state.errors}
+          className="text-red-400 text-xs mt-1 block"
+        />
       </div>
 
       <div>
@@ -59,10 +69,14 @@ export default function DeletionRequestForm() {
           placeholder="Describe what data you'd like deleted, or simply write 'Delete my account and all data'..."
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors resize-none"
         />
-        <ValidationError field="message" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
+        <ValidationError
+          prefix="Message"
+          field="message"
+          errors={state.errors}
+          className="text-red-400 text-xs mt-1 block"
+        />
       </div>
 
-      {/* Form-level errors (e.g. inactive form, blocked) */}
       {state.errors && state.errors.getFormErrors().length > 0 && (
         <p className="text-red-400 text-sm">
           Something went wrong. Please email your request directly to{' '}

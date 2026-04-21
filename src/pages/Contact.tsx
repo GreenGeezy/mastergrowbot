@@ -117,10 +117,13 @@ export default function Contact() {
           {state.succeeded ? (
             <div className="p-6 bg-landing-green/10 border border-landing-green/30 rounded-xl text-center">
               <p className="text-landing-green font-semibold mb-1">Message sent!</p>
-              <p className="text-white/50 text-sm">We'll get back to you at your email address within 24 hours.</p>
+              <p className="text-white/50 text-sm">
+                We'll get back to you at your email address within 24 hours.
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+
               <div>
                 <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-name">
                   Name
@@ -133,7 +136,12 @@ export default function Contact() {
                   placeholder="Your name"
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
                 />
-                <ValidationError field="name" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
+                <ValidationError
+                  prefix="Name"
+                  field="name"
+                  errors={state.errors}
+                  className="text-red-400 text-xs mt-1 block"
+                />
               </div>
 
               <div>
@@ -148,7 +156,12 @@ export default function Contact() {
                   placeholder="you@example.com"
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
                 />
-                <ValidationError field="email" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
+                <ValidationError
+                  prefix="Email"
+                  field="email"
+                  errors={state.errors}
+                  className="text-red-400 text-xs mt-1 block"
+                />
               </div>
 
               <div>
@@ -163,10 +176,14 @@ export default function Contact() {
                   placeholder="Describe your issue or question..."
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors resize-none"
                 />
-                <ValidationError field="message" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
+                <ValidationError
+                  prefix="Message"
+                  field="message"
+                  errors={state.errors}
+                  className="text-red-400 text-xs mt-1 block"
+                />
               </div>
 
-              {/* Form-level errors (e.g. inactive form, blocked) */}
               {state.errors && state.errors.getFormErrors().length > 0 && (
                 <p className="text-red-400 text-sm">
                   Something went wrong. Please email us directly at support@mastergrowbot.com.
@@ -180,6 +197,7 @@ export default function Contact() {
               >
                 {state.submitting ? 'Sending…' : 'Send Message'}
               </button>
+
             </form>
           )}
         </div>
@@ -200,7 +218,13 @@ export default function Contact() {
         {/* Bottom CTA */}
         <div className="text-center p-6 bg-[#1a1e26] border border-white/[0.06] rounded-2xl">
           <div className="flex items-center justify-center gap-2 mb-1">
-            <img src="/images/app-icon.png" alt="MasterGrowbot AI" className="w-5 h-5 rounded-md" width={20} height={20} />
+            <img
+              src="/images/app-icon.png"
+              alt="MasterGrowbot AI"
+              className="w-5 h-5 rounded-md"
+              width={20}
+              height={20}
+            />
             <span className="text-white text-sm font-semibold">MasterGrowbot AI</span>
           </div>
           <p className="text-white/40 text-xs mb-4">Your AI master grower, in your pocket. Free 3-day trial.</p>
