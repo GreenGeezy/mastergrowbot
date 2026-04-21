@@ -17,6 +17,7 @@ export default function DeletionRequestForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <input type="hidden" name="_subject" value="Data Deletion Request" />
+
       <div>
         <label className="block text-sm text-white/50 mb-1.5" htmlFor="deletion-name">
           Name
@@ -29,8 +30,9 @@ export default function DeletionRequestForm() {
           placeholder="Your name"
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
         />
-        <ValidationError field="name" errors={state.errors} className="text-red-400 text-xs mt-1" />
+        <ValidationError field="name" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
       </div>
+
       <div>
         <label className="block text-sm text-white/50 mb-1.5" htmlFor="deletion-email">
           Email address on your account
@@ -43,8 +45,9 @@ export default function DeletionRequestForm() {
           placeholder="you@example.com"
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
         />
-        <ValidationError field="email" errors={state.errors} className="text-red-400 text-xs mt-1" />
+        <ValidationError field="email" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
       </div>
+
       <div>
         <label className="block text-sm text-white/50 mb-1.5" htmlFor="deletion-message">
           Request details (optional)
@@ -56,9 +59,11 @@ export default function DeletionRequestForm() {
           placeholder="Describe what data you'd like deleted, or simply write 'Delete my account and all data'..."
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors resize-none"
         />
-        <ValidationError field="message" errors={state.errors} className="text-red-400 text-xs mt-1" />
+        <ValidationError field="message" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
       </div>
-      {state.errors && Object.keys(state.errors).length > 0 && !state.succeeded && (
+
+      {/* Form-level errors (e.g. inactive form, blocked) */}
+      {state.errors && state.errors.getFormErrors().length > 0 && (
         <p className="text-red-400 text-sm">
           Something went wrong. Please email your request directly to{' '}
           <a href="mailto:support@mastergrowbot.com" className="underline">
@@ -67,6 +72,7 @@ export default function DeletionRequestForm() {
           .
         </p>
       )}
+
       <button
         type="submit"
         disabled={state.submitting}

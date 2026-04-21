@@ -113,6 +113,7 @@ export default function Contact() {
         {/* Contact Form */}
         <div className="mb-12">
           <h2 className="text-lg font-semibold text-white mb-5">Send a Message</h2>
+
           {state.succeeded ? (
             <div className="p-6 bg-landing-green/10 border border-landing-green/30 rounded-xl text-center">
               <p className="text-landing-green font-semibold mb-1">Message sent!</p>
@@ -121,7 +122,9 @@ export default function Contact() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-name">Name</label>
+                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-name">
+                  Name
+                </label>
                 <input
                   id="contact-name"
                   type="text"
@@ -130,10 +133,13 @@ export default function Contact() {
                   placeholder="Your name"
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
                 />
-                <ValidationError field="name" errors={state.errors} className="text-red-400 text-xs mt-1" />
+                <ValidationError field="name" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
               </div>
+
               <div>
-                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-email">Email</label>
+                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-email">
+                  Email
+                </label>
                 <input
                   id="contact-email"
                   type="email"
@@ -142,10 +148,13 @@ export default function Contact() {
                   placeholder="you@example.com"
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
                 />
-                <ValidationError field="email" errors={state.errors} className="text-red-400 text-xs mt-1" />
+                <ValidationError field="email" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
               </div>
+
               <div>
-                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-message">Message</label>
+                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-message">
+                  Message
+                </label>
                 <textarea
                   id="contact-message"
                   name="message"
@@ -154,11 +163,16 @@ export default function Contact() {
                   placeholder="Describe your issue or question..."
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors resize-none"
                 />
-                <ValidationError field="message" errors={state.errors} className="text-red-400 text-xs mt-1" />
+                <ValidationError field="message" errors={state.errors} className="text-red-400 text-xs mt-1 block" />
               </div>
-              {state.errors && Object.keys(state.errors).length > 0 && (
-                <p className="text-red-400 text-sm">Something went wrong. Please email us directly at support@mastergrowbot.com.</p>
+
+              {/* Form-level errors (e.g. inactive form, blocked) */}
+              {state.errors && state.errors.getFormErrors().length > 0 && (
+                <p className="text-red-400 text-sm">
+                  Something went wrong. Please email us directly at support@mastergrowbot.com.
+                </p>
               )}
+
               <button
                 type="submit"
                 disabled={state.submitting}
