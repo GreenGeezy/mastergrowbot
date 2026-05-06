@@ -8,13 +8,13 @@ const Success: React.FC = () => {
       <div className="bg-gray-800 rounded-lg shadow-lg p-8 max-w-lg w-full text-center">
         <h1 className="text-3xl font-bold mb-4">Purchase Successful! Your canopy is protected.</h1>
         <p className="text-lg text-gray-300 mb-6">
-          Your playbook is ready. Whop has sent a secure download link directly to your email. You can also access it immediately in your Whop library.
+          Your playbook is ready. A secure download link has been sent directly to your email. You can also access it immediately in your Whop library.
         </p>
         <button
           onClick={() => navigate('/')}
           className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg shadow-lg transition-colors duration-200"
         >
-          Return to Dashboard
+          Return to Homepage
         </button>
       </div>
     </main>

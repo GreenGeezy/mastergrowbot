@@ -12,7 +12,20 @@
       "Bash(where gh:*)",
       "Bash(winget list:*)",
       "Bash(node -e \"const q = JSON.parse\\(require\\('fs'\\).readFileSync\\('scripts/article-queue.json','utf8'\\)\\); console.log\\('Queue valid. Total articles:', q.length, '| Unpublished:', q.filter\\(a=>!a.published\\).length\\);\")",
-      "Bash(node -e \"const q=JSON.parse\\(require\\('fs'\\).readFileSync\\('scripts/article-queue.json','utf8'\\)\\); console.log\\('Unpublished remaining:',q.filter\\(a=>!a.published\\).length,'/',q.length\\);\")"
+      "Bash(node -e \"const q=JSON.parse\\(require\\('fs'\\).readFileSync\\('scripts/article-queue.json','utf8'\\)\\); console.log\\('Unpublished remaining:',q.filter\\(a=>!a.published\\).length,'/',q.length\\);\")",
+      "Bash(node -e \"const q=JSON.parse\\(require\\('fs'\\).readFileSync\\('scripts/article-queue.json','utf8'\\)\\); console.log\\('Total:',q.length,'| Published:',q.filter\\(a=>a.published\\).length,'| Unpublished:',q.filter\\(a=>!a.published\\).length\\); q.filter\\(a=>a.published\\).forEach\\(a=>console.log\\(' DONE:',a.slug\\)\\);\")",
+      "Bash(node -e \"const q=JSON.parse\\(require\\('fs'\\).readFileSync\\('c:/Users/elidu/.vscode/mastergrowbot/scripts/article-queue.json','utf8'\\)\\); console.log\\('Current queue entries:',q.length,'| Published:',q.filter\\(a=>a.published\\).length\\);\")",
+      "Bash(node -e \"const q=JSON.parse\\(require\\('fs'\\).readFileSync\\('scripts/article-queue.json','utf8'\\)\\); console.log\\('Total:', q.length, '| Unpublished:', q.filter\\(a=>!a.published\\).length, '| Published:', q.filter\\(a=>a.published\\).length\\); q.forEach\\(\\(a,i\\) => console.log\\(i+1, a.slug, a.published ? '[PUBLISHED]' : ''\\)\\);\")",
+      "Bash(grep -E \"\\\\.tsx$\")",
+      "Bash(npm install *)",
+      "Bash(npm list *)",
+      "Bash(npx tsc *)",
+      "Bash(git stash *)",
+      "Bash(git pull *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git commit *)"
     ]
   }
 }
