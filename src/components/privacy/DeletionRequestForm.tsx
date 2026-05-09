@@ -10,28 +10,24 @@ export default function DeletionRequestForm() {
     setStatus('submitting');
 
     const form = e.currentTarget;
-    const data = new URLSearchParams();
-    const formData = new FormData(form);
-    formData.forEach((value, key) => {
-      data.append(key, value as string);
-    });
+    const data = new FormData(form);
 
     try {
       const response = await fetch('https://formspree.io/f/mrerazdy', {
         method: 'POST',
         body: data,
-        headers: {
-          Accept: 'application/json',
-        },
       });
 
       if (response.ok) {
         setStatus('success');
         form.reset();
       } else {
+        const errorText = await response.text();
+        console.error('Formspree error response:', response.status, errorText);
         setStatus('error');
       }
-    } catch {
+    } catch (error) {
+      console.error('Formspree fetch error:', error);
       setStatus('error');
     }
   };
