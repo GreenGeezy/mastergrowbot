@@ -1,4 +1,3 @@
-import { useForm, ValidationError } from '@formspree/react';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import SEOHead from '@/components/SEOHead';
@@ -31,8 +30,6 @@ const FAQS = [
 ];
 
 export default function Contact() {
-  const [state, handleSubmit] = useForm('mrerazdy');
-
   return (
     <div className="min-h-screen bg-[#0f1117] flex flex-col">
       <SEOHead
@@ -114,92 +111,56 @@ export default function Contact() {
         <div className="mb-12">
           <h2 className="text-lg font-semibold text-white mb-5">Send a Message</h2>
 
-          {state.succeeded ? (
-            <div className="p-6 bg-landing-green/10 border border-landing-green/30 rounded-xl text-center">
-              <p className="text-landing-green font-semibold mb-1">Message sent!</p>
-              <p className="text-white/50 text-sm">
-                We'll get back to you at your email address within 24 hours.
-              </p>
+          <form action="https://formspree.io/f/mrerazdy" method="POST" className="space-y-4">
+            <div>
+              <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-name">
+                Name
+              </label>
+              <input
+                id="contact-name"
+                type="text"
+                name="name"
+                required
+                placeholder="Your name"
+                className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
+              />
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
 
-              <div>
-                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-name">
-                  Name
-                </label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  name="name"
-                  required
-                  placeholder="Your name"
-                  className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
-                />
-                <ValidationError
-                  prefix="Name"
-                  field="name"
-                  errors={state.errors}
-                  className="text-red-400 text-xs mt-1 block"
-                />
-              </div>
+            <div>
+              <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-email">
+                Email
+              </label>
+              <input
+                id="contact-email"
+                type="email"
+                name="email"
+                required
+                placeholder="you@example.com"
+                className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
+              />
+            </div>
 
-              <div>
-                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-email">
-                  Email
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  name="email"
-                  required
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
-                />
-                <ValidationError
-                  prefix="Email"
-                  field="email"
-                  errors={state.errors}
-                  className="text-red-400 text-xs mt-1 block"
-                />
-              </div>
+            <div>
+              <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-message">
+                Message
+              </label>
+              <textarea
+                id="contact-message"
+                name="message"
+                required
+                rows={5}
+                placeholder="Describe your issue or question..."
+                className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors resize-none"
+              />
+            </div>
 
-              <div>
-                <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-message">
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  required
-                  rows={5}
-                  placeholder="Describe your issue or question..."
-                  className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors resize-none"
-                />
-                <ValidationError
-                  prefix="Message"
-                  field="message"
-                  errors={state.errors}
-                  className="text-red-400 text-xs mt-1 block"
-                />
-              </div>
-
-              {state.errors && state.errors.getFormErrors().length > 0 && (
-                <p className="text-red-400 text-sm">
-                  Something went wrong. Please email us directly at support@mastergrowbot.com.
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={state.submitting}
-                className="w-full py-3 rounded-xl bg-landing-green text-black font-semibold text-sm hover:bg-landing-green/90 disabled:opacity-50 transition-colors duration-200"
-              >
-                {state.submitting ? 'Sending…' : 'Send Message'}
-              </button>
-
-            </form>
-          )}
+            <button
+              type="submit"
+              className="w-full py-3 rounded-xl bg-landing-green text-black font-semibold text-sm hover:bg-landing-green/90 transition-colors duration-200"
+            >
+              Send Message
+            </button>
+          </form>
         </div>
 
         {/* FAQ */}
