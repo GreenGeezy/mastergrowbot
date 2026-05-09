@@ -1,38 +1,9 @@
-import { useState, FormEvent } from 'react';
-
-type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+import { useForm, ValidationError } from '@formspree/react';
 
 export default function DeletionRequestForm() {
-  const [status, setStatus] = useState<FormStatus>('idle');
+  const [state, handleSubmit] = useForm('mrerazdy');
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus('submitting');
-
-    const form = e.currentTarget;
-    const data = new FormData(form);
-
-    try {
-      const response = await fetch('https://formspree.io/f/mrerazdy', {
-        method: 'POST',
-        body: data,
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        form.reset();
-      } else {
-        const errorText = await response.text();
-        console.error('Formspree error response:', response.status, errorText);
-        setStatus('error');
-      }
-    } catch (error) {
-      console.error('Formspree fetch error:', error);
-      setStatus('error');
-    }
-  };
-
-  if (status === 'success') {
+  if (state.succeeded) {
     return (
       <div className="p-6 bg-landing-green/10 border border-landing-green/30 rounded-xl text-center">
         <p className="text-landing-green font-semibold mb-1">Request received!</p>
@@ -59,6 +30,12 @@ export default function DeletionRequestForm() {
           placeholder="Your name"
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
         />
+        <ValidationError
+          prefix="Name"
+          field="name"
+          errors={state.errors}
+          className="text-red-400 text-xs mt-1 block"
+        />
       </div>
 
       <div>
@@ -73,6 +50,12 @@ export default function DeletionRequestForm() {
           placeholder="you@example.com"
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
         />
+        <ValidationError
+          prefix="Email"
+          field="email"
+          errors={state.errors}
+          className="text-red-400 text-xs mt-1 block"
+        />
       </div>
 
       <div>
@@ -86,9 +69,15 @@ export default function DeletionRequestForm() {
           placeholder="Describe what data you'd like deleted, or simply write 'Delete my account and all data'..."
           className="w-full px-4 py-3 rounded-xl bg-[#0f1117] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors resize-none"
         />
+        <ValidationError
+          prefix="Message"
+          field="message"
+          errors={state.errors}
+          className="text-red-400 text-xs mt-1 block"
+        />
       </div>
 
-      {status === 'error' && (
+      {state.errors && state.errors.getFormErrors().length > 0 && (
         <p className="text-red-400 text-sm">
           Something went wrong. Please email your request directly to{' '}
           <a href="mailto:support@mastergrowbot.com" className="underline">
@@ -100,10 +89,10 @@ export default function DeletionRequestForm() {
 
       <button
         type="submit"
-        disabled={status === 'submitting'}
+        disabled={state.submitting}
         className="w-full py-3 rounded-xl bg-landing-green text-black font-semibold text-sm hover:bg-landing-green/90 disabled:opacity-50 transition-colors duration-200"
       >
-        {status === 'submitting' ? 'Submitting…' : 'Submit Deletion Request'}
+        {state.submitting ? 'Submitting…' : 'Submit Deletion Request'}
       </button>
     </form>
   );

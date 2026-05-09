@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useForm, ValidationError } from '@formspree/react';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import SEOHead from '@/components/SEOHead';
@@ -30,37 +30,8 @@ const FAQS = [
   },
 ];
 
-type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
-
 export default function Contact() {
-  const [status, setStatus] = useState<FormStatus>('idle');
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus('submitting');
-
-    const form = e.currentTarget;
-    const data = new FormData(form);
-
-    try {
-      const response = await fetch('https://formspree.io/f/mrerazdy', {
-        method: 'POST',
-        body: data,
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        form.reset();
-      } else {
-        const errorText = await response.text();
-        console.error('Formspree error response:', response.status, errorText);
-        setStatus('error');
-      }
-    } catch (error) {
-      console.error('Formspree fetch error:', error);
-      setStatus('error');
-    }
-  };
+  const [state, handleSubmit] = useForm('mrerazdy');
 
   return (
     <div className="min-h-screen bg-[#0f1117] flex flex-col">
@@ -143,7 +114,7 @@ export default function Contact() {
         <div className="mb-12">
           <h2 className="text-lg font-semibold text-white mb-5">Send a Message</h2>
 
-          {status === 'success' ? (
+          {state.succeeded ? (
             <div className="p-6 bg-landing-green/10 border border-landing-green/30 rounded-xl text-center">
               <p className="text-landing-green font-semibold mb-1">Message sent!</p>
               <p className="text-white/50 text-sm">
@@ -152,6 +123,7 @@ export default function Contact() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+
               <div>
                 <label className="block text-sm text-white/50 mb-1.5" htmlFor="contact-name">
                   Name
@@ -163,6 +135,12 @@ export default function Contact() {
                   required
                   placeholder="Your name"
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
+                />
+                <ValidationError
+                  prefix="Name"
+                  field="name"
+                  errors={state.errors}
+                  className="text-red-400 text-xs mt-1 block"
                 />
               </div>
 
@@ -178,6 +156,12 @@ export default function Contact() {
                   placeholder="you@example.com"
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors"
                 />
+                <ValidationError
+                  prefix="Email"
+                  field="email"
+                  errors={state.errors}
+                  className="text-red-400 text-xs mt-1 block"
+                />
               </div>
 
               <div>
@@ -192,9 +176,15 @@ export default function Contact() {
                   placeholder="Describe your issue or question..."
                   className="w-full px-4 py-3 rounded-xl bg-[#1a1e26] border border-white/10 text-white placeholder-white/25 text-sm focus:outline-none focus:border-landing-green/50 transition-colors resize-none"
                 />
+                <ValidationError
+                  prefix="Message"
+                  field="message"
+                  errors={state.errors}
+                  className="text-red-400 text-xs mt-1 block"
+                />
               </div>
 
-              {status === 'error' && (
+              {state.errors && state.errors.getFormErrors().length > 0 && (
                 <p className="text-red-400 text-sm">
                   Something went wrong. Please email us directly at support@mastergrowbot.com.
                 </p>
@@ -202,11 +192,12 @@ export default function Contact() {
 
               <button
                 type="submit"
-                disabled={status === 'submitting'}
+                disabled={state.submitting}
                 className="w-full py-3 rounded-xl bg-landing-green text-black font-semibold text-sm hover:bg-landing-green/90 disabled:opacity-50 transition-colors duration-200"
               >
-                {status === 'submitting' ? 'Sending…' : 'Send Message'}
+                {state.submitting ? 'Sending…' : 'Send Message'}
               </button>
+
             </form>
           )}
         </div>
