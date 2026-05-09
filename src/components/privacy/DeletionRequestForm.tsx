@@ -1,6 +1,54 @@
+import { useState, FormEvent } from 'react';
+
+type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+
 export default function DeletionRequestForm() {
+  const [status, setStatus] = useState<FormStatus>('idle');
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('submitting');
+
+    const form = e.currentTarget;
+    const data = new URLSearchParams();
+    const formData = new FormData(form);
+    formData.forEach((value, key) => {
+      data.append(key, value as string);
+    });
+
+    try {
+      const response = await fetch('https://formspree.io/f/mrerazdy', {
+        method: 'POST',
+        body: data,
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        form.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="p-6 bg-landing-green/10 border border-landing-green/30 rounded-xl text-center">
+        <p className="text-landing-green font-semibold mb-1">Request received!</p>
+        <p className="text-white/50 text-sm">
+          We will process your data deletion request and confirm via email within 30 days.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <form action="https://formspree.io/f/mrerazdy" method="POST" className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <input type="hidden" name="_subject" value="Data Deletion Request" />
 
       <div>
@@ -44,11 +92,22 @@ export default function DeletionRequestForm() {
         />
       </div>
 
+      {status === 'error' && (
+        <p className="text-red-400 text-sm">
+          Something went wrong. Please email your request directly to{' '}
+          <a href="mailto:support@mastergrowbot.com" className="underline">
+            support@mastergrowbot.com
+          </a>
+          .
+        </p>
+      )}
+
       <button
         type="submit"
-        className="w-full py-3 rounded-xl bg-landing-green text-black font-semibold text-sm hover:bg-landing-green/90 transition-colors duration-200"
+        disabled={status === 'submitting'}
+        className="w-full py-3 rounded-xl bg-landing-green text-black font-semibold text-sm hover:bg-landing-green/90 disabled:opacity-50 transition-colors duration-200"
       >
-        Submit Deletion Request
+        {status === 'submitting' ? 'Submitting…' : 'Submit Deletion Request'}
       </button>
     </form>
   );
