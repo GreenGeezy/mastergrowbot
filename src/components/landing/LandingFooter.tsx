@@ -20,7 +20,7 @@ export default function LandingFooter() {
             data-cta-location="footer:amazon-book"
             className="hover:text-white/60 transition-colors"
           >
-            Book
+            IPM Playbook
           </a>
           <Link to="/contact" className="hover:text-white/60 transition-colors">
             Contact

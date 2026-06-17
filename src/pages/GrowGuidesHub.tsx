@@ -5,8 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
+import { AmazonBookButton } from '@/components/landing/AmazonBookButton';
 import { AppPlatformButtons } from '@/components/landing/cta';
-import { AMAZON_BOOK_URL } from '@/components/landing/ctaLinks';
 import { growGuides } from '@/data/growGuides';
 
 const breadcrumbSchema = {
@@ -68,16 +68,12 @@ export default function GrowGuidesHub() {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
             <AppPlatformButtons campaign="grow-guides" location="grow-guides-hero" />
-            <a
-              href={AMAZON_BOOK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cta-location="grow-guides-hero:amazon-book"
-              className="mt-1 inline-flex flex-col items-center justify-center rounded-xl border border-landing-green/30 bg-black/50 px-5 py-3 font-sans transition-colors duration-200 hover:border-landing-green/60 hover:bg-landing-green/10"
-            >
-              <span className="text-sm font-semibold text-landing-green">Protect Your Grow with the IPM Playbook</span>
-              <span className="text-xs text-white/50">Available on Amazon</span>
-            </a>
+            <div className="flex flex-col items-center gap-2 pt-1">
+              <p className="text-sm font-semibold text-landing-green font-sans">
+                Protect Your Grow with the IPM Playbook
+              </p>
+              <AmazonBookButton location="grow-guides-hero" />
+            </div>
           </motion.div>
         </div>
       </section>

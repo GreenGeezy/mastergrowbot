@@ -5,8 +5,9 @@ import { ArrowRight, ChevronRight, Copy, Check, Info } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
+import { AmazonBookButton } from '@/components/landing/AmazonBookButton';
 import { AppPlatformButtons } from '@/components/landing/cta';
-import { AMAZON_BOOK_URL, appStoreUrl, playStoreUrl } from '@/components/landing/ctaLinks';
+import { appStoreUrl, playStoreUrl } from '@/components/landing/ctaLinks';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -727,15 +728,7 @@ export default function VPDCalculator() {
             <p className="mt-1 text-sm font-semibold text-white font-sans">
               Get The Master Cannabis IPM Playbook on Amazon.
             </p>
-            <a
-              href={AMAZON_BOOK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cta-location="vpd-closing:amazon-book"
-              className="mt-4 inline-flex items-center justify-center rounded-xl border border-landing-green/40 px-5 py-3 text-sm font-semibold text-landing-green transition-colors hover:border-landing-green/70 hover:bg-landing-green/10 font-sans"
-            >
-              Available on Amazon
-            </a>
+            <AmazonBookButton location="vpd-closing" className="mt-4" />
           </div>
           <div className="pt-3 flex items-center justify-center gap-5 text-sm text-white/30 font-sans">
             <Link to="/grow-guides" className="hover:text-landing-green transition-colors">

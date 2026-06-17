@@ -5,8 +5,9 @@ import { ArrowRight, ChevronRight, BookOpen } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
+import { AmazonBookButton } from '@/components/landing/AmazonBookButton';
 import { AppPlatformButtons, RatingStars } from '@/components/landing/cta';
-import { AMAZON_BOOK_URL, appStoreUrl as buildAppStoreUrl, playStoreUrl as buildPlayStoreUrl } from '@/components/landing/ctaLinks';
+import { appStoreUrl as buildAppStoreUrl, playStoreUrl as buildPlayStoreUrl } from '@/components/landing/ctaLinks';
 import { growGuides, getGuideBySlug } from '@/data/growGuides';
 
 function slugify(text: string): string {
@@ -205,15 +206,7 @@ export default function GrowGuideArticle() {
                 <p className="mt-2 text-sm text-white/60 font-sans">
                   Use The Master Cannabis IPM Playbook as your weekly pest and disease prevention system.
                 </p>
-                <a
-                  href={AMAZON_BOOK_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-cta-location="article-closing:amazon-book"
-                  className="mt-4 inline-flex items-center justify-center rounded-xl border border-landing-green/40 px-5 py-3 text-sm font-semibold text-landing-green transition-colors hover:border-landing-green/70 hover:bg-landing-green/10 font-sans"
-                >
-                  Available on Amazon
-                </a>
+                <AmazonBookButton location="article-closing" className="mt-4" />
               </div>
             </div>
 
@@ -272,16 +265,11 @@ export default function GrowGuideArticle() {
                 <p className="text-xs text-white/50 font-sans leading-relaxed">
                   Use The Master Cannabis IPM Playbook as your weekly pest and disease prevention system.
                 </p>
-                <a
-                  href={AMAZON_BOOK_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-cta-location="article-sidebar:amazon-book"
-                  className="flex items-center justify-center gap-2 w-full border border-landing-green/40 text-landing-green font-semibold text-sm px-4 py-2.5 rounded-xl hover:border-landing-green/70 hover:bg-landing-green/10 transition-colors font-sans"
-                >
-                  Available on Amazon
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+                <AmazonBookButton
+                  location="article-sidebar"
+                  className="w-full"
+                  imageClassName="h-[52px] max-w-full sm:h-[58px]"
+                />
               </div>
 
               {/* Related guides in sidebar */}

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { AmazonBookBadge } from './cta';
+import { AmazonBookButton } from './AmazonBookButton';
 import { appStoreUrl, playStoreUrl } from './ctaLinks';
 
 interface StoreBadgesProps {
@@ -53,9 +53,7 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
           />
         </motion.a>
 
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-          <AmazonBookBadge location="homepage-store-badges" />
-        </motion.div>
+        <AmazonBookButton location="homepage-store-badges" />
       </div>
 
       {/* Shared subtext below all 3 buttons */}

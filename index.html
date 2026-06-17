@@ -20,7 +20,9 @@
         } else if (href && href.indexOf('play.google.com') !== -1) {
           gtag('event', 'play_store_click', {'link_url': href, 'location': location});
         } else if (href && href.indexOf('amazon.com/dp/B0H5LWKBSV') !== -1) {
-          gtag('event', 'amazon_book_click', {'link_url': href, 'location': location});
+          if (el.getAttribute('data-analytics-manual') !== 'true') {
+            gtag('event', 'amazon_book_click', {'link_url': href, 'location': location});
+          }
         }
       });
     </script>

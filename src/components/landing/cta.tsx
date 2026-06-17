@@ -1,5 +1,5 @@
-import { ArrowRight, BookOpen, Star } from 'lucide-react';
-import { AMAZON_BOOK_URL, appStoreUrl, playStoreUrl } from './ctaLinks';
+import { ArrowRight, Star } from 'lucide-react';
+import { appStoreUrl, playStoreUrl } from './ctaLinks';
 
 interface RatingStarsProps {
   className?: string;
@@ -41,31 +41,5 @@ export function AppPlatformButtons({ campaign, location, className = '' }: AppPl
         Get instant AI plant diagnosis on Android
       </a>
     </div>
-  );
-}
-
-interface AmazonBookBadgeProps {
-  location: string;
-  className?: string;
-  compact?: boolean;
-}
-
-export function AmazonBookBadge({ location, className = '', compact = false }: AmazonBookBadgeProps) {
-  return (
-    <a
-      href={AMAZON_BOOK_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-cta-location={`${location}:amazon-book`}
-      className={`group relative inline-flex items-center gap-3 rounded-2xl border border-landing-green/40 bg-black/60 px-4 transition-all duration-300 hover:border-landing-green/80 hover:bg-black/80 ${compact ? 'py-3' : 'h-[65px] sm:h-[70px]'} ${className}`}
-    >
-      <div className="absolute inset-0 rounded-2xl bg-landing-green/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      <div className="absolute -inset-px rounded-2xl opacity-0 shadow-[0_0_16px_2px_rgba(74,222,128,0.25)] transition-opacity duration-300 group-hover:opacity-100" />
-      <BookOpen className="relative h-8 w-8 flex-shrink-0 text-landing-green" />
-      <div className="relative text-left">
-        <p className="text-sm font-semibold leading-tight text-landing-green">IPM Playbook</p>
-        <p className="mt-0.5 text-[10px] leading-tight text-white/55">Available on Amazon</p>
-      </div>
-    </a>
   );
 }
