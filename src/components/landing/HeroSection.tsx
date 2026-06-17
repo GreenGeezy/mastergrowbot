@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { Star } from 'lucide-react';
 import StoreBadges from './StoreBadges';
 import DeviceMockup from './DeviceMockup';
+import { RatingStars } from './cta';
 
 export default function HeroSection() {
   return (
@@ -30,13 +30,9 @@ export default function HeroSection() {
 
           {/* Social Proof */}
           <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
-            <div className="flex gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-              ))}
-            </div>
+            <RatingStars />
             <span className="text-sm font-medium text-white/70 font-sans">
-              Trusted by Elite Growers Worldwide
+              Rated 5 Stars by Growers Just Like You
             </span>
           </div>
 

@@ -131,6 +131,8 @@ CTA RULES:
 - App Store URL: https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=[article-slug]
 - Google Play URL: https://play.google.com/store/apps/details?id=com.mastergrowbot.app?utm_source=website&utm_medium=organic&utm_campaign=[article-slug]
 - The closing CTA section body must include both store links with the article's UTM params substituted in.
+- Mention The Master Cannabis IPM Playbook as a companion pest and disease prevention system where it fits naturally.
+- Amazon IPM Playbook URL: https://www.amazon.com/dp/B0H5LWKBSV
 
 INTERNAL LINKING RULES:
 - In the article body (sections), include at least 2 markdown links to other grow guides using format: [anchor text](/grow-guides/[slug]/)

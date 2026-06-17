@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     q: "What's included in the free 3-day trial?",
-    a: 'Your free trial gives you full access to every premium feature: unlimited AI plant scans, personalized grow coaching, the complete strain database, daily task scheduling, grow journal, and harvest window detection. No credit card is required to start on the web app. After the trial, a subscription keeps all premium features active for every grow you run.',
+    a: 'Your free trial gives you full access to every premium feature: unlimited AI plant scans, personalized grow coaching, the complete strain database, daily task scheduling, grow journal, and harvest window detection. No credit card is required to start on iOS or Android. After the trial, a subscription keeps all premium features active for every grow you run.',
   },
   {
     q: 'Is my grow data safe and private?',
@@ -63,16 +63,14 @@ export default function Contact() {
           <div className="flex justify-center gap-3 mt-4">
             <a
               href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=contact"
-              target="_blank"
-              rel="noopener noreferrer"
+              data-cta-location="contact-header:ios"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 text-xs text-white/50 hover:text-white/80 hover:border-white/30 transition-colors duration-200"
             >
               iOS App
             </a>
             <a
               href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=contact"
-              target="_blank"
-              rel="noopener noreferrer"
+              data-cta-location="contact-header:android"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 text-xs text-white/50 hover:text-white/80 hover:border-white/30 transition-colors duration-200"
             >
               Android App
@@ -231,19 +229,15 @@ export default function Contact() {
           <div className="flex justify-center gap-3 flex-wrap">
             <a
               href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=contact"
-              target="_blank"
-              rel="noopener noreferrer"
+              data-cta-location="contact-bottom:ios"
               className="px-4 py-2 rounded-lg bg-landing-green/10 border border-landing-green/25 text-landing-green text-xs font-semibold hover:bg-landing-green/20 transition-colors duration-200"
-              onClick={() => { if (typeof gtag !== 'undefined') gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); }}
             >
               Download on App Store
             </a>
             <a
               href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=contact"
-              target="_blank"
-              rel="noopener noreferrer"
+              data-cta-location="contact-bottom:android"
               className="px-4 py-2 rounded-lg bg-landing-green/10 border border-landing-green/25 text-landing-green text-xs font-semibold hover:bg-landing-green/20 transition-colors duration-200"
-              onClick={() => { if (typeof gtag !== 'undefined') gtag('event', 'play_store_click', { link_url: 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app' }); }}
             >
               Get it on Google Play
             </a>

@@ -5,6 +5,8 @@ import { ArrowRight, ChevronRight, Copy, Check, Info } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
+import { AppPlatformButtons } from '@/components/landing/cta';
+import { AMAZON_BOOK_URL, appStoreUrl, playStoreUrl } from '@/components/landing/ctaLinks';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -28,10 +30,8 @@ const LEAF_OFFSETS_F: Record<'led' | 'hps', number> = {
   hps:  5,
 };
 
-const APP_STORE_URL =
-  'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=vpd-calculator';
-const PLAY_STORE_URL =
-  'https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=vpd-calculator';
+const APP_STORE_URL = appStoreUrl('vpd-calculator');
+const PLAY_STORE_URL = playStoreUrl('vpd-calculator');
 
 // ─── VPD Math ─────────────────────────────────────────────────────────────────
 
@@ -267,7 +267,7 @@ export default function VPDCalculator() {
           </p>
           <p className="text-sm text-white/40 font-sans">
             Track VPD over time in your grow journal with{' '}
-            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="text-landing-green hover:underline">
+            <a href={APP_STORE_URL} data-cta-location="vpd-hero-text:ios" className="text-landing-green hover:underline">
               MasterGrowbot AI
             </a>{' '}
             - free 3-day trial, no signup required.
@@ -680,9 +680,9 @@ export default function VPDCalculator() {
               </p>
               <p>
                 <strong className="text-white">Step 5: Track VPD trends over time.</strong> A single VPD reading is useful. A log of readings across a full grow cycle is how you understand your environment well enough to repeat your best results in the next run. MasterGrowbot AI tracks VPD alongside your full grow journal, nutrient logs, and AI photo diagnosis. Download free with a 3-day trial on{' '}
-                <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="text-landing-green hover:underline">iOS</a>{' '}
+                <a href={APP_STORE_URL} data-cta-location="vpd-body-text:ios" className="text-landing-green hover:underline">iOS</a>{' '}
                 or{' '}
-                <a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer" className="text-landing-green hover:underline">Android</a>.
+                <a href={PLAY_STORE_URL} data-cta-location="vpd-body-text:android" className="text-landing-green hover:underline">Android</a>.
               </p>
               <p>
                 For more on growing fundamentals, visit the{' '}
@@ -719,42 +719,22 @@ export default function VPDCalculator() {
           <p className="text-white/60 font-sans text-sm sm:text-base max-w-lg mx-auto">
             Download MasterGrowbot AI for VPD tracking, AI plant diagnosis, and a complete digital grow journal. Free 3-day trial on iOS and Android.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <AppPlatformButtons campaign="vpd-calculator" location="vpd-closing" className="pt-2" />
+          <div className="mx-auto mt-5 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">
+            <p className="text-sm text-white/60 font-sans">
+              Prevent the pest and disease problems VPD mistakes can make worse.
+            </p>
+            <p className="mt-1 text-sm font-semibold text-white font-sans">
+              Get The Master Cannabis IPM Playbook on Amazon.
+            </p>
             <a
-              href={APP_STORE_URL}
+              href={AMAZON_BOOK_URL}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => {
-                if (typeof window !== 'undefined' && (window as any).gtag) {
-                  (window as any).gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' });
-                }
-              }}
+              data-cta-location="vpd-closing:amazon-book"
+              className="mt-4 inline-flex items-center justify-center rounded-xl border border-landing-green/40 px-5 py-3 text-sm font-semibold text-landing-green transition-colors hover:border-landing-green/70 hover:bg-landing-green/10 font-sans"
             >
-              <img
-                src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-                alt="Download MasterGrowbot AI on the App Store"
-                width={156}
-                height={52}
-                className="h-[52px]"
-              />
-            </a>
-            <a
-              href={PLAY_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                if (typeof window !== 'undefined' && (window as any).gtag) {
-                  (window as any).gtag('event', 'play_store_click', { link_url: 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app' });
-                }
-              }}
-            >
-              <img
-                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                alt="Get MasterGrowbot AI on Google Play"
-                width={180}
-                height={52}
-                className="h-[52px]"
-              />
+              Available on Amazon
             </a>
           </div>
           <div className="pt-3 flex items-center justify-center gap-5 text-sm text-white/30 font-sans">

@@ -336,24 +336,20 @@ const PrivacyPolicy = () => {
             <span className="text-white text-sm font-semibold">MasterGrowbot AI</span>
           </div>
           <p className="text-white/40 text-xs mb-4">
-            We protect your privacy so you can focus on growing. Free 3-day trial — no signup required for the web app.
+            We protect your privacy so you can focus on growing. Free 3-day trial on iOS and Android.
           </p>
           <div className="flex justify-center gap-3 flex-wrap">
             <a
               href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
+              data-cta-location="privacy-bottom:ios"
               className="px-4 py-2 rounded-lg bg-landing-green/10 border border-landing-green/25 text-landing-green text-xs font-semibold hover:bg-landing-green/20 transition-colors duration-200"
-              onClick={() => { if (typeof gtag !== 'undefined') gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); }}
             >
               Download on App Store
             </a>
             <a
               href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
+              data-cta-location="privacy-bottom:android"
               className="px-4 py-2 rounded-lg bg-landing-green/10 border border-landing-green/25 text-landing-green text-xs font-semibold hover:bg-landing-green/20 transition-colors duration-200"
-              onClick={() => { if (typeof gtag !== 'undefined') gtag('event', 'play_store_click', { link_url: 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app' }); }}
             >
               Get it on Google Play
             </a>

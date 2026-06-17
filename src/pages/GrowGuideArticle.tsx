@@ -5,6 +5,8 @@ import { ArrowRight, ChevronRight, BookOpen } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
+import { AppPlatformButtons, RatingStars } from '@/components/landing/cta';
+import { AMAZON_BOOK_URL, appStoreUrl as buildAppStoreUrl, playStoreUrl as buildPlayStoreUrl } from '@/components/landing/ctaLinks';
 import { growGuides, getGuideBySlug } from '@/data/growGuides';
 
 function slugify(text: string): string {
@@ -19,8 +21,8 @@ export default function GrowGuideArticle() {
     return <Navigate to="/grow-guides" replace />;
   }
 
-  const appStoreUrl = `https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=${guide.slug}`;
-  const playStoreUrl = `https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=${guide.slug}`;
+  const appStoreUrl = buildAppStoreUrl(guide.slug);
+  const playStoreUrl = buildPlayStoreUrl(guide.slug);
   const canonicalUrl = `https://www.mastergrowbot.com/grow-guides/${guide.slug}`;
 
   const articleSchema = {
@@ -145,23 +147,14 @@ export default function GrowGuideArticle() {
             </motion.div>
 
             {/* Inline CTA (within first 300 words) */}
-            <div className="mb-10 rounded-2xl border border-landing-green/20 bg-landing-green/5 p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="mb-10 rounded-2xl border border-landing-green/20 bg-landing-green/5 p-6 flex flex-col gap-4">
               <div className="flex-1">
                 <p className="text-sm font-semibold text-landing-green font-sans mb-1">Skip the guesswork</p>
                 <p className="text-sm text-white/60 font-sans">
                   Snap a photo of your plant and MasterGrowbot AI diagnoses the exact issue in seconds.
                 </p>
               </div>
-              <a
-                href={appStoreUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); } }}
-                className="flex-shrink-0 flex items-center gap-2 bg-landing-green text-black font-semibold text-sm px-4 py-2.5 rounded-xl hover:bg-landing-green/90 transition-colors font-sans whitespace-nowrap"
-              >
-                Try free 3 days
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
+              <AppPlatformButtons campaign={guide.slug} location="article-inline" className="sm:justify-start" />
             </div>
 
             {/* Article Sections */}
@@ -180,7 +173,6 @@ export default function GrowGuideArticle() {
                 </h2>
                 {section.bodyHtml ? (
                   <div
-                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{ __html: section.bodyHtml }}
                     className="text-base text-white/65 leading-relaxed font-sans overflow-x-auto"
                   />
@@ -197,36 +189,30 @@ export default function GrowGuideArticle() {
 
             {/* Closing CTA */}
             <div className="mb-12 rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent p-8 text-center space-y-4">
+              <div className="flex items-center justify-center gap-2 text-sm text-white/65 font-sans">
+                <RatingStars iconClassName="w-3.5 h-3.5" />
+                <span>Rated 5 Stars by Growers Just Like You</span>
+              </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-landing-green font-sans">
                 Download MasterGrowbot AI: Free 3-Day Trial
               </h2>
               <p className="text-white/60 font-sans text-sm sm:text-base max-w-lg mx-auto">
                 Snap a photo. Save your plant. Try MasterGrowbot AI free: AI plant diagnosis, grow journal, strain database, and daily tasks in one app.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <AppPlatformButtons campaign={guide.slug} location="article-closing" className="pt-2" />
+              <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">
+                <h3 className="text-lg font-bold text-white font-sans">Save Your Grow from Pests & Diseases</h3>
+                <p className="mt-2 text-sm text-white/60 font-sans">
+                  Use The Master Cannabis IPM Playbook as your weekly pest and disease prevention system.
+                </p>
                 <a
-                  href={appStoreUrl}
+                  href={AMAZON_BOOK_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); } }}
+                  data-cta-location="article-closing:amazon-book"
+                  className="mt-4 inline-flex items-center justify-center rounded-xl border border-landing-green/40 px-5 py-3 text-sm font-semibold text-landing-green transition-colors hover:border-landing-green/70 hover:bg-landing-green/10 font-sans"
                 >
-                  <img
-                    src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-                    alt="Download MasterGrowbot AI on the App Store"
-                    className="h-[52px]"
-                  />
-                </a>
-                <a
-                  href={playStoreUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'play_store_click', { link_url: 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app' }); } }}
-                >
-                  <img
-                    src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                    alt="Get MasterGrowbot AI on Google Play"
-                    className="h-[52px]"
-                  />
+                  Available on Amazon
                 </a>
               </div>
             </div>
@@ -252,27 +238,49 @@ export default function GrowGuideArticle() {
                 <p className="text-sm font-semibold text-white font-sans leading-snug">
                   Download MasterGrowbot AI
                 </p>
+                <div className="flex items-center gap-1 text-[11px] text-white/50 font-sans">
+                  <RatingStars iconClassName="w-3 h-3" />
+                  <span>Rated 5 Stars by Growers Just Like You</span>
+                </div>
                 <p className="text-xs text-white/50 font-sans leading-relaxed">
                   Your AI master grower, in your pocket. Snap a photo and get an instant diagnosis and treatment plan.
                 </p>
                 <a
                   href={appStoreUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); } }}
+                  data-cta-location="article-sidebar:ios"
                   className="flex items-center justify-center gap-2 w-full bg-landing-green text-black font-semibold text-sm px-4 py-2.5 rounded-xl hover:bg-landing-green/90 transition-colors font-sans"
                 >
-                  iOS: Free 3-Day Trial
+                  Get instant AI plant diagnosis on iOS
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
                 <a
                   href={playStoreUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => { if (typeof window !== 'undefined' && (window as any).gtag) { (window as any).gtag('event', 'play_store_click', { link_url: 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app' }); } }}
+                  data-cta-location="article-sidebar:android"
                   className="flex items-center justify-center gap-2 w-full border border-white/10 text-white/70 font-medium text-sm px-4 py-2.5 rounded-xl hover:border-landing-green/40 hover:text-white transition-colors font-sans"
                 >
-                  Android: Free 3-Day Trial
+                  Get instant AI plant diagnosis on Android
+                </a>
+              </div>
+
+              <div className="rounded-2xl border border-landing-green/20 bg-landing-green/5 p-5 space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-landing-green font-sans">
+                  IPM Playbook
+                </p>
+                <p className="text-sm font-semibold text-white font-sans leading-snug">
+                  Save Your Grow from Pests & Diseases
+                </p>
+                <p className="text-xs text-white/50 font-sans leading-relaxed">
+                  Use The Master Cannabis IPM Playbook as your weekly pest and disease prevention system.
+                </p>
+                <a
+                  href={AMAZON_BOOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cta-location="article-sidebar:amazon-book"
+                  className="flex items-center justify-center gap-2 w-full border border-landing-green/40 text-landing-green font-semibold text-sm px-4 py-2.5 rounded-xl hover:border-landing-green/70 hover:bg-landing-green/10 transition-colors font-sans"
+                >
+                  Available on Amazon
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               </div>
 

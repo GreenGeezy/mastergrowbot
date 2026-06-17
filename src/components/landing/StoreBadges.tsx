@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import { AmazonBookBadge } from './cta';
+import { appStoreUrl, playStoreUrl } from './ctaLinks';
 
 interface StoreBadgesProps {
   className?: string;
@@ -22,10 +24,8 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
       {/* All 3 buttons on the same row */}
       <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
         <motion.a
-          href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=homepage"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => { if (typeof gtag !== 'undefined') gtag('event', 'app_store_click', { link_url: 'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060' }); }}
+          href={appStoreUrl('homepage')}
+          data-cta-location="homepage-store-badges:ios"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.97 }}
           className="group relative"
@@ -39,10 +39,8 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
         </motion.a>
 
         <motion.a
-          href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=homepage"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => { if (typeof gtag !== 'undefined') gtag('event', 'play_store_click', { link_url: 'https://play.google.com/store/apps/details?id=com.mastergrowbot.app' }); }}
+          href={playStoreUrl('homepage')}
+          data-cta-location="homepage-store-badges:android"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.97 }}
           className="group relative"
@@ -55,34 +53,14 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
           />
         </motion.a>
 
-        {/* Web App Button - same row, matching height */}
-        <motion.a
-          href="https://www.mastergrowbotai.com?utm_source=website&utm_medium=organic&utm_campaign=homepage"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.97 }}
-          className="group relative inline-flex items-center gap-3 h-[65px] sm:h-[70px] px-4 rounded-2xl border border-landing-green/40 bg-black/60 hover:border-landing-green/80 hover:bg-black/80 transition-all duration-300"
-        >
-          <div className="absolute inset-0 rounded-2xl bg-landing-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_16px_2px_rgba(74,222,128,0.25)]" />
-          <img
-            src="/images/app-icon.png"
-            alt="MasterGrowbot AI"
-            className="relative w-8 h-8 rounded-lg flex-shrink-0"
-            width={32}
-            height={32}
-          />
-          <div className="relative text-left">
-            <p className="text-sm font-semibold text-landing-green leading-tight">Open Free Web App</p>
-            <p className="text-[10px] text-white/40 leading-tight mt-0.5">No Download Needed</p>
-          </div>
-        </motion.a>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+          <AmazonBookBadge location="homepage-store-badges" />
+        </motion.div>
       </div>
 
       {/* Shared subtext below all 3 buttons */}
       <p className="text-xs sm:text-sm text-white/50 font-sans">
-        Try it Absolutely FREE &bull; Cancel Anytime &bull; No Signup Needed
+        Use the app for instant diagnosis. Use the playbook for weekly pest prevention.
       </p>
     </div>
   );

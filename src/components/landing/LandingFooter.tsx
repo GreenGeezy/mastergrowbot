@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { AMAZON_BOOK_URL } from './ctaLinks';
 
 export default function LandingFooter() {
   return (
@@ -13,12 +14,13 @@ export default function LandingFooter() {
             VPD Calculator
           </Link>
           <a
-            href="https://www.mastergrowbotai.com?utm_source=website&utm_medium=organic&utm_campaign=footer"
+            href={AMAZON_BOOK_URL}
             target="_blank"
             rel="noopener noreferrer"
+            data-cta-location="footer:amazon-book"
             className="hover:text-white/60 transition-colors"
           >
-            Web App
+            Book
           </a>
           <Link to="/contact" className="hover:text-white/60 transition-colors">
             Contact

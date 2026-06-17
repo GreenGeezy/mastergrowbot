@@ -5,12 +5,9 @@ import { Helmet } from 'react-helmet-async';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
+import { AppPlatformButtons } from '@/components/landing/cta';
+import { AMAZON_BOOK_URL } from '@/components/landing/ctaLinks';
 import { growGuides } from '@/data/growGuides';
-
-const APP_STORE_URL =
-  'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=grow-guides';
-const PLAY_STORE_URL =
-  'https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=grow-guides';
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -65,27 +62,21 @@ export default function GrowGuidesHub() {
 
           {/* CTA */}
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2"
+            className="flex flex-col items-center justify-center gap-3 pt-2"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
+            <AppPlatformButtons campaign="grow-guides" location="grow-guides-hero" />
             <a
-              href={APP_STORE_URL}
+              href={AMAZON_BOOK_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-landing-green text-black font-semibold text-sm px-5 py-3 rounded-xl hover:bg-landing-green/90 transition-colors duration-200 font-sans"
+              data-cta-location="grow-guides-hero:amazon-book"
+              className="mt-1 inline-flex flex-col items-center justify-center rounded-xl border border-landing-green/30 bg-black/50 px-5 py-3 font-sans transition-colors duration-200 hover:border-landing-green/60 hover:bg-landing-green/10"
             >
-              Get instant AI plant diagnosis
-              <ArrowRight className="w-4 h-4" />
-            </a>
-            <a
-              href={PLAY_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-white/50 hover:text-white/80 transition-colors font-sans"
-            >
-              Download MasterGrowbot AI - Free 3-Day Trial
+              <span className="text-sm font-semibold text-landing-green">Protect Your Grow with the IPM Playbook</span>
+              <span className="text-xs text-white/50">Available on Amazon</span>
             </a>
           </motion.div>
         </div>

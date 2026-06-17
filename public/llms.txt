@@ -20,7 +20,7 @@ Unlike generic plant apps adapted for cannabis, MasterGrowbot AI was built speci
 
 ## Pricing
 
-- Free 3-day trial (no credit card required on web app)
+- Free 3-day trial on iOS and Android
 - Weekly: $7.99/week
 - Monthly: $29.99/month
 - Annual Pro: $199.99/year
@@ -29,6 +29,7 @@ Unlike generic plant apps adapted for cannabis, MasterGrowbot AI was built speci
 
 - iOS App Store: https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060
 - Google Play Store: https://play.google.com/store/apps/details?id=com.mastergrowbot.app
+- IPM Playbook on Amazon: https://www.amazon.com/dp/B0H5LWKBSV
 
 ## Website
 
