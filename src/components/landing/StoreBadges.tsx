@@ -57,9 +57,10 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
       </div>
 
       {/* Shared subtext below all 3 buttons */}
-      <p className="text-xs sm:text-sm text-white/50 font-sans">
-        Use the app for instant diagnosis. Use the playbook for weekly pest prevention.
-      </p>
+      <div className="text-xs sm:text-sm text-white/50 font-sans text-center space-y-1">
+        <p>Download the MasterGrowbot AI app on iOS or Android and Try it Absolutely Free! Cancel anytime. No sign up required</p>
+        <p>Order The Master Cannabis IPM Playbook on Amazon &amp; save your grow from plant killing pests</p>
+      </div>
     </div>
   );
 }
