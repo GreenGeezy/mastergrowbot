@@ -58,8 +58,8 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
 
       {/* Shared subtext below all 3 buttons */}
       <div className="text-xs sm:text-sm text-white/50 font-sans text-center space-y-1">
-        <p>Download the MasterGrowbot AI app on iOS or Android and Try it Absolutely Free! Cancel anytime. No sign up required</p>
-        <p>Order The Master Cannabis IPM Playbook on Amazon &amp; save your grow from plant killing pests</p>
+        <p className="whitespace-nowrap">Download &amp; Try 100% Free. Cancel Anytime No Sign Up Needed</p>
+        <p>Get The Master Cannabis IPM Playbook on Amazon &amp; Save your Grow from Plant Killing Pests</p>
       </div>
     </div>
   );
