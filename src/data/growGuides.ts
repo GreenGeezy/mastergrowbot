@@ -5029,6 +5029,130 @@ Temperature requirements shift after germination - maintain 70-75°F during ligh
     ],
     relatedSlugs: ["how-to-grow-cannabis-indoors-beginners", "outdoor-cannabis-growing-guide-beginners"],
   },
+  {
+    slug: "cannabis-vpd-chart-by-growth-stage",
+    title: "Cannabis VPD Chart by Growth Stage",
+    h1: "Cannabis VPD Chart by Growth Stage: Seedling, Veg, Flower, and Drying",
+    shortDescription:
+      "Use this cannabis VPD chart to dial in temperature, humidity, and leaf temperature targets for seedlings, veg, flower, late flower, and drying.",
+    metaTitle: "Cannabis VPD Chart by Growth Stage | MasterGrowbot AI",
+    metaDescription:
+      "Cannabis VPD chart for seedlings, veg, flower, late flower, and drying. Learn the ideal VPD range by stage and use the free MasterGrowbot VPD calculator.",
+    publishedDate: "2026-06-19T00:00:00Z",
+    modifiedDate: "2026-06-19T00:00:00Z",
+    intro: `VPD is one of the fastest ways to separate average cannabis grows from dialed-in, repeatable harvests. Vapor pressure deficit tells you how strongly the air is pulling moisture from your plant. When VPD is too low, plants transpire slowly, nutrient movement stalls, and the canopy becomes more vulnerable to mold. When VPD is too high, plants lose water faster than roots can replace it, stomata close, and growth slows even when the room looks healthy on a basic humidity chart.
+
+Most growers search for a cannabis VPD chart because they want a simple answer: what humidity should my grow room be at this temperature? That question is useful, but incomplete. VPD changes by growth stage, leaf temperature, air temperature, and whether the plant is a seedling, in vegetative growth, stacking flowers, finishing late bloom, or drying after harvest.
+
+This guide gives you a practical cannabis VPD chart by growth stage, explains how to use it without overcomplicating your grow, and shows when to use the free MasterGrowbot VPD calculator for more accurate readings. If you want the app to track environment, plant notes, diagnosis photos, and daily grow tasks in one place, download MasterGrowbot AI on iOS or Android and use this chart as your baseline.`,
+    sections: [
+      {
+        heading: "Quick Cannabis VPD Chart",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Use this chart as your starting target for healthy cannabis growth. For the most accurate calculation, measure canopy-level temperature, relative humidity, and leaf temperature, then confirm the exact number with the <a href="/vpd-calculator" class="text-landing-green hover:underline">free MasterGrowbot VPD calculator</a>.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Growth Stage</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Target VPD</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Typical RH Range</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Why It Matters</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Clones and seedlings</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">0.4 to 0.8 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">65% to 80%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Protects small roots and tender leaves from drying out</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Vegetative growth</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">0.8 to 1.1 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">55% to 70%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Drives fast transpiration, nutrient uptake, and canopy expansion</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Early flower</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.0 to 1.3 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">45% to 60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Supports stretch, bud site development, and stronger nutrient flow</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Mid to late flower</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.2 to 1.5 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">40% to 50%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Reduces mold pressure while keeping plants active</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Drying room</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">0.8 to 1.1 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">55% to 60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Slows moisture loss enough to protect flavor and terpene quality</td></tr>
+</tbody></table></div>`,
+      },
+      {
+        heading: "What VPD Means for Cannabis Plants",
+        body: `VPD measures the drying power of the air around your cannabis canopy. Low VPD means the air is already holding a lot of moisture, so the plant has less reason to move water from roots to leaves. High VPD means the air is dry relative to temperature, so the plant loses water quickly and may close stomata to protect itself.
+
+That matters because transpiration is tied directly to nutrient transport. Calcium, magnesium, potassium, and many micronutrients move through the plant with water. When VPD is wrong, the plant may look like it has a feeding problem even when the nutrient mix is technically correct. A plant in low VPD can show weak growth and slow uptake. A plant in high VPD can show tacoing leaves, dry edges, wilting, and stalled photosynthesis.
+
+The goal is not to chase a perfect number every minute. The goal is to keep your canopy inside a healthy VPD range for the current stage, then watch plant response. MasterGrowbot AI helps by connecting plant observations, environmental notes, and daily tasks so you can see which ranges produce the strongest growth in your room.`,
+      },
+      {
+        heading: "Seedling and Clone VPD Targets",
+        body: `Clones and seedlings need the gentlest VPD range because their root systems are not mature enough to replace water quickly. A target of 0.4 to 0.8 kPa keeps transpiration low enough to prevent drying while still allowing the plant to move water and begin healthy growth.
+
+At this stage, many growers run humidity too low because they are thinking ahead to flower. That mistake forces small plants to work harder than their roots can handle. Slow growth, curling edges, and weak stems often show up when seedlings are exposed to dry air too early.
+
+For clones, a humidity dome can help during the first few days, but do not trap stagnant air for too long. Gradual hardening matters. Open vents over time, keep leaf surfaces clean, and slowly move the plant toward a vegetative VPD range once roots are established. If you are tracking clones in MasterGrowbot AI, log humidity changes and rooting speed so you can repeat the best setup on the next run.`,
+      },
+      {
+        heading: "Vegetative VPD Targets",
+        body: `Vegetative cannabis plants usually perform best around 0.8 to 1.1 kPa. This range encourages faster water movement, stronger nutrient uptake, and healthy canopy expansion without pushing plants into drought stress.
+
+During veg, VPD is a growth accelerator when the rest of the environment is aligned. Light intensity, root health, watering frequency, and airflow all matter. A plant under strong LED lighting with high VPD may need more frequent watering than a plant under moderate light in the same room. This is why VPD should never be viewed alone.
+
+If your veg plants are praying upward, growing quickly, and drying pots at a predictable pace, your VPD is probably close. If leaves are drooping despite wet pots, humidity may be too high or roots may be struggling. If leaves are curling upward with dry edges, VPD may be too high for the current root system. Use the chart as a target, then use plant response as the final judge.`,
+      },
+      {
+        heading: "Flowering VPD Targets",
+        body: `Flowering cannabis needs a slightly more aggressive VPD range because dense buds raise mold risk. Early flower usually performs well around 1.0 to 1.3 kPa. Mid and late flower often benefit from 1.2 to 1.5 kPa, especially when buds become thick and airflow through the canopy gets harder.
+
+The tradeoff is important. Push humidity too high and you invite powdery mildew, botrytis, and weak transpiration. Push humidity too low and plants may slow down, drink erratically, or show stress that looks like nutrient burn. The sweet spot is enough drying power to protect flowers while keeping stomata active.
+
+Late flower is also where growers should pay attention to nighttime conditions. Lights-off temperature drops can raise relative humidity quickly, which drops VPD and increases condensation risk inside dense buds. If your daytime VPD is perfect but nighttime humidity spikes, your flower room is still at risk. Track day and night readings separately and use the MasterGrowbot VPD calculator whenever temperature changes across the light cycle.`,
+      },
+      {
+        heading: "How Leaf Temperature Changes the Chart",
+        body: `Leaf temperature is the detail that makes many basic VPD charts inaccurate. Under LED lights, cannabis leaves often run cooler than the surrounding air. Under some high-intensity setups, leaf temperature can run closer to air temperature or even warmer in hot spots. A difference of only 2 to 4 F can change the real VPD number enough to affect your decision.
+
+If a chart only uses room temperature and humidity, it gives a useful estimate. If you want precision, measure leaf temperature with an infrared thermometer at canopy height. Then enter air temperature, humidity, and leaf temperature into the free VPD calculator. This is especially valuable when dialing in LED rooms, high-CO2 environments, or late flower rooms where small humidity mistakes can cause major losses.
+
+Do not chase leaf temperature readings from one leaf. Measure several spots across the canopy, including the center and edges. Average the readings and look for hot or cold zones. Uneven VPD across the canopy can explain why one section grows faster while another section shows stress.`,
+      },
+      {
+        heading: "Common VPD Mistakes That Cost Yield",
+        body: `The first mistake is using a generic houseplant VPD chart instead of a cannabis-specific chart. Cannabis has different growth stages, denser flower structures, and higher light intensity than most houseplants, so the targets need to match cultivation reality.
+
+The second mistake is treating VPD as a fixed number. Seedlings, veg plants, flowering plants, and drying rooms do not need the same conditions. A humidity level that is safe for seedlings can be dangerous in late flower. A late-flower range that protects buds can punish clones.
+
+The third mistake is ignoring airflow. VPD tells you the moisture gradient, but airflow determines how evenly that environment reaches the canopy. Poor airflow creates wet pockets around leaves and buds, even when the room sensor looks fine.
+
+The fourth mistake is changing humidity too aggressively. Plants adapt best when you move ranges gradually. If you need to lower humidity from veg to flower, step it down over several days instead of shocking the room overnight.`,
+      },
+      {
+        heading: "Build a VPD Action Plan with MasterGrowbot AI",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Use this cannabis VPD chart as your baseline, then let your own grow data refine it. MasterGrowbot AI gives you a grow journal, plant diagnosis, daily task tracking, strain notes, and environmental records in one place, so you can connect VPD targets to real plant outcomes.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Start by checking your room with the <a href="/vpd-calculator" class="text-landing-green hover:underline">free cannabis VPD calculator</a>. Then log plant response in the app for each stage. Over time, you will know which VPD ranges produce the fastest veg growth, strongest flower development, and best drying results in your exact setup.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">For deeper pest and disease prevention, use the Master Cannabis IPM Playbook linked below. VPD control is part of prevention because humidity mistakes create the conditions where mold, mildew, and weak plants take over. Pair the app with the book and you have a practical system for monitoring the room, diagnosing plant issues, and protecting each harvest.</p>`,
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the best VPD for cannabis?",
+        answer:
+          "The best VPD for cannabis depends on the growth stage. Seedlings and clones usually prefer 0.4 to 0.8 kPa, vegetative plants prefer 0.8 to 1.1 kPa, early flower prefers 1.0 to 1.3 kPa, and mid to late flower often performs best around 1.2 to 1.5 kPa.",
+      },
+      {
+        question: "Is VPD more important than humidity?",
+        answer:
+          "VPD is more useful than humidity alone because it combines temperature and relative humidity into one plant-focused number. Humidity tells you how much moisture is in the air, while VPD tells you how strongly the air is pulling moisture from the plant.",
+      },
+      {
+        question: "What VPD should I use for cannabis seedlings?",
+        answer:
+          "Cannabis seedlings usually do best around 0.4 to 0.8 kPa. This lower range protects small plants from drying out before their roots are developed enough to replace water quickly.",
+      },
+      {
+        question: "What VPD should I use in cannabis flower?",
+        answer:
+          "Early flower usually performs well around 1.0 to 1.3 kPa. Mid and late flower often need 1.2 to 1.5 kPa to reduce mold pressure while still keeping plants actively transpiring.",
+      },
+      {
+        question: "Do I need leaf temperature to calculate VPD?",
+        answer:
+          "You can estimate VPD with air temperature and humidity, but leaf temperature makes the calculation more accurate. LED-grown cannabis leaves often run cooler than room air, which can change the real VPD number.",
+      },
+      {
+        question: "How does MasterGrowbot AI help with VPD?",
+        answer:
+          "MasterGrowbot AI helps growers track environmental readings, plant notes, daily tasks, diagnosis photos, and grow-stage changes in one place. Use the free VPD calculator for exact readings, then use the app to connect those readings to plant response over time.",
+      },
+    ],
+    relatedSlugs: [
+      "cannabis-vpd-guide",
+      "best-vpd-calculator-apps-cannabis",
+      "cannabis-humidity-guide",
+      "cannabis-botrytis-bud-rot",
+    ],
+  },
 ];
 
 export function getGuideBySlug(slug: string): GrowGuide | undefined {
