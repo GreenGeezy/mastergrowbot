@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
 import { useToast } from '@/hooks/use-toast'
 import { sendMessageToSupabase, fetchChatHistory, invokeAIChat } from '@/services/messageService'
@@ -32,8 +32,8 @@ export const useChatMessages = (
   }, [])
 
   // Debounced version of setMessages to reduce renders
-  const debouncedSetMessages = useCallback(
-    debounce((newMessages: Message[]) => {
+  const debouncedSetMessages = useMemo(
+    () => debounce((newMessages: Message[]) => {
       if (isMounted.current) {
         setMessages(newMessages)
       }
@@ -176,11 +176,11 @@ export const useChatMessages = (
         console.error('No response data from AI');
         throw new Error('No response received from AI');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error in sendMessage:', error)
       toast({
         title: 'Error',
-        description: error.message || 'Failed to send message',
+        description: error instanceof Error ? error.message : 'Failed to send message',
         variant: 'destructive',
       })
     } finally {

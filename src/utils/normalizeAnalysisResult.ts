@@ -31,19 +31,48 @@ export interface CanonicalAnalysisResult {
   healthScoreLabel: string;
 }
 
-export function normalizeAnalysisResult(raw: any): CanonicalAnalysisResult {
+type AnalysisShape = {
+  confidence?: unknown;
+  confidence_level?: unknown;
+  summary?: unknown;
+  diagnosis?: unknown;
+  growthStage?: unknown;
+  healthScore?: unknown;
+  specificIssues?: unknown;
+  environmentalFindings?: unknown;
+  recommendedActions?: unknown;
+  recommended_actions?: unknown;
+  analysis?: {
+    summary?: unknown;
+    growthStage?: unknown;
+    issues?: unknown;
+    environmental?: unknown;
+    actions?: unknown;
+  };
+  detailed_analysis?: {
+    growth_stage?: unknown;
+    health_score?: unknown;
+    specific_issues?: unknown;
+    environmental_factors?: unknown;
+  };
+};
+
+const toStringValue = (value: unknown): string => (typeof value === 'string' ? value : '');
+const toStringArray = (value: unknown): string[] => (Array.isArray(value) ? value.filter((item) => typeof item === 'string') : []);
+
+export function normalizeAnalysisResult(raw: AnalysisShape | null | undefined): CanonicalAnalysisResult {
   // If already in canonical format, return as-is
   if (raw?.confidence !== undefined && raw?.summary && raw?.growthStage !== undefined && 
       Array.isArray(raw?.specificIssues) && Array.isArray(raw?.environmentalFindings) && 
       Array.isArray(raw?.recommendedActions)) {
     const result = {
       confidence: typeof raw.confidence === 'number' ? Math.min(Math.max(raw.confidence, 0), 1) : 0.7,
-      summary: raw.summary || '',
-      growthStage: raw.growthStage || '',
+      summary: toStringValue(raw.summary),
+      growthStage: toStringValue(raw.growthStage),
       healthScore: typeof raw.healthScore === 'number' ? raw.healthScore : null,
-      specificIssues: raw.specificIssues || [],
-      environmentalFindings: raw.environmentalFindings || [],
-      recommendedActions: raw.recommendedActions || []
+      specificIssues: toStringArray(raw.specificIssues),
+      environmentalFindings: toStringArray(raw.environmentalFindings),
+      recommendedActions: toStringArray(raw.recommendedActions)
     };
 
     const pctScore = coercePct(result.healthScore) ?? coercePct(result.confidence);
@@ -54,7 +83,7 @@ export function normalizeAnalysisResult(raw: any): CanonicalAnalysisResult {
   }
 
   // Map from various formats to canonical format
-  const summary = raw?.diagnosis || raw?.analysis?.summary || raw?.summary || '';
+  const summary = toStringValue(raw?.diagnosis) || toStringValue(raw?.analysis?.summary) || toStringValue(raw?.summary);
   
   // Handle confidence - ensure 0-1 range
   let confidence = 0.7;
@@ -65,9 +94,9 @@ export function normalizeAnalysisResult(raw: any): CanonicalAnalysisResult {
   }
   
   // Extract growth stage with fallback to first sentence of summary
-  let growthStage = raw?.detailed_analysis?.growth_stage || 
-                     raw?.growthStage || 
-                     raw?.analysis?.growthStage || '';
+  let growthStage = toStringValue(raw?.detailed_analysis?.growth_stage) || 
+                     toStringValue(raw?.growthStage) || 
+                     toStringValue(raw?.analysis?.growthStage);
   
   // Fallback: infer a concise growth-stage line from the summary text if missing
   if (!growthStage && summary) {

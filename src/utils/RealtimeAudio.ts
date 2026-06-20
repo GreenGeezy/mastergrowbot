@@ -75,7 +75,7 @@ export class RealtimeChat {
   private recorder: AudioRecorder | null = null
 
   constructor(
-    private onMessage: (message: any) => void, 
+    private onMessage: (message: unknown) => void, 
     private onStatusChange: (status: 'connecting' | 'connected' | 'disconnected') => void
   ) {
     this.audioEl = document.createElement("audio")

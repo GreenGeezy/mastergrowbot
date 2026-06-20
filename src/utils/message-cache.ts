@@ -11,7 +11,7 @@ type CacheEntry<T> = {
 const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
 
 export class MessageCache {
-  private static cache: Map<string, CacheEntry<any>> = new Map();
+  private static cache: Map<string, CacheEntry<unknown>> = new Map();
 
   static getCacheKey(userId: string, conversationId: string): string {
     return `${userId}:${conversationId}`;
