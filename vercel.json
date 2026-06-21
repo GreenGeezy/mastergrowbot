@@ -10,6 +10,12 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm ci",
+  "crons": [
+    {
+      "path": "/api/newsletter/weekly-send",
+      "schedule": "0 16 * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -329,13 +329,17 @@ function WaitlistModal({
     setIsSubmitting(true);
     const lead = {
       email: normalizedEmail,
-      productName,
-      createdAt: new Date().toISOString(),
+      interestProduct: productName,
       sourcePage: "/grow-tech",
+      sourceForm: "grow_tech_waitlist",
+      utm_source: "website",
+      utm_medium: "organic",
+      utm_campaign: "grow_tech_waitlist",
+      utm_content: productName.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, ""),
     };
 
     try {
-      const response = await fetch("/api/grow-tech-waitlist", {
+      const response = await fetch("/api/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(lead),
@@ -343,7 +347,7 @@ function WaitlistModal({
 
       if (!response.ok) {
         if (import.meta.env.DEV && response.status === 404) {
-          console.info("Grow Tech waitlist lead (local dev fallback):", lead);
+          console.info("Grow Tech newsletter lead (local dev fallback):", lead);
           setSuccess(true);
           setEmail("");
           return;
