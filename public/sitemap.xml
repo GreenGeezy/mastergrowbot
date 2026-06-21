@@ -8,7 +8,7 @@
   </url>
   <url>
     <loc>https://www.mastergrowbot.com/grow-guides</loc>
-    <lastmod>2026-03-28</lastmod>
+    <lastmod>2026-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -249,6 +249,12 @@
   <url>
     <loc>https://www.mastergrowbot.com/grow-guides/cannabis-vpd-chart-by-growth-stage</loc>
     <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mastergrowbot.com/grow-guides/how-to-calculate-vpd-for-cannabis</loc>
+    <lastmod>2026-06-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

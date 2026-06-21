@@ -5153,6 +5153,132 @@ The fourth mistake is changing humidity too aggressively. Plants adapt best when
       "cannabis-botrytis-bud-rot",
     ],
   },
+  {
+    slug: "how-to-calculate-vpd-for-cannabis",
+    title: "How to Calculate VPD for Cannabis",
+    h1: "How to Calculate VPD for Cannabis: Formula, Examples, and Free Calculator",
+    shortDescription:
+      "Learn the cannabis VPD formula, how to use leaf temperature correctly, and how to calculate VPD with step-by-step examples for seedlings, veg, and flower.",
+    metaTitle: "How to Calculate VPD for Cannabis: Formula + Examples | MasterGrowbot AI",
+    metaDescription:
+      "Calculate cannabis VPD with the correct formula, worked examples, leaf temperature adjustments, and a free VPD calculator from MasterGrowbot AI.",
+    publishedDate: "2026-06-20T00:00:00Z",
+    modifiedDate: "2026-06-20T00:00:00Z",
+    intro: `If you want to calculate VPD for cannabis correctly, you need three inputs: air temperature, relative humidity, and leaf temperature. The formula is simple once you break it into parts, but many growers get the wrong answer because they use room temperature only and ignore the leaf surface. That mistake can push a healthy flower room into hidden stress or make a seedling tent look safer than it really is.
+
+VPD matters because it tells you how hard the air is pulling water from the plant. When VPD is too low, transpiration slows, calcium movement weakens, and mold pressure rises. When VPD is too high, the plant loses water faster than roots can replace it, stomata tighten, and growth slows even when your feed chart looks perfect.
+
+This guide shows the exact cannabis VPD formula, walks through real examples, explains when leaf temperature changes the result, and points you to the free calculator at www.mastergrowbot.com/vpd-calculator when you want a faster answer. If you want to track those readings alongside photos, notes, and daily tasks, MasterGrowbot AI is also available on iOS and Android.`,
+    sections: [
+      {
+        heading: "Direct Answer: The Cannabis VPD Formula",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Cannabis VPD is measured in kilopascals (kPa). For the most useful grow-room reading, calculate leaf VPD with this formula:</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Step</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Formula</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">What It Means</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm"><code>C = (F - 32) x 5 / 9</code></td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Convert Fahrenheit to Celsius if needed</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">2</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm"><code>SVP = 0.6108 x e^((17.27 x T) / (T + 237.3))</code></td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Saturation vapor pressure at a given temperature</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">3</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm"><code>AVP = SVP(air) x RH / 100</code></td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Actual vapor pressure in the room air</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">4</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm"><code>Leaf VPD = SVP(leaf) - AVP(air)</code></td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">The drying force acting on the leaf</td></tr>
+</tbody></table></div>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Use leaf temperature for <code>SVP(leaf)</code> and air temperature plus RH for <code>AVP(air)</code>. If you do not have a leaf-temperature reading yet, air temperature gives you a rough estimate, but it is less accurate under LED lighting. For a faster answer, use the <a href="/vpd-calculator" class="text-landing-green hover:underline">free MasterGrowbot VPD calculator</a>.</p>`,
+      },
+      {
+        heading: "How to Calculate Cannabis VPD Step by Step",
+        body: `Start with canopy-level measurements, not readings from the floor or a wall sensor. Measure the air temperature where the leaves actually sit, then measure relative humidity in that same zone. If possible, check leaf temperature with an infrared thermometer across a few representative fan leaves and average the result.
+
+Next, convert your temperatures to Celsius if your sensor reads Fahrenheit. The VPD equations use Celsius. Once you have temperature in Celsius, calculate saturation vapor pressure for the leaf and the room air separately. Then multiply the air-side saturation value by relative humidity to find actual vapor pressure.
+
+Finally, subtract actual vapor pressure from saturation vapor pressure at the leaf. That result is your leaf VPD in kPa. Lower numbers mean gentler drying conditions. Higher numbers mean more aggressive transpiration demand. For cannabis, the right number depends on whether you are managing clones, pushing vegetative growth, or protecting dense flowers from mold.`,
+      },
+      {
+        heading: "Worked VPD Examples for Cannabis",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">These examples use the full leaf-VPD method, not a simplified room-only estimate.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Scenario</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Air Temp</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Leaf Temp</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">RH</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Leaf VPD</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Takeaway</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Seedling tent</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">78 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">77 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">75%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">0.71 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Good range for seedlings and fresh clones</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Vegetative room</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">82 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">80 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.26 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Strong for veg if plants are drinking well</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Flower room</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">80 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">78 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">50%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.53 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Useful late-flower range if plants are not over-stressed</td></tr>
+</tbody></table></div>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The important point is not the math alone. It is the interpretation. A value that is excellent for week 6 flower can be too aggressive for clones. A value that protects seedlings can be too humid for dense colas. If you want stage-specific targets after you calculate the number, use the <a href="/grow-guides/cannabis-vpd-chart-by-growth-stage" class="text-landing-green hover:underline">cannabis VPD chart by growth stage</a> as the next reference.</p>`,
+      },
+      {
+        heading: "Why Leaf Temperature Changes the Answer",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Leaf temperature is the reason many growers misread VPD. In LED rooms, leaves often run a few degrees cooler than the room air. That lowers saturation vapor pressure at the leaf and changes the final VPD number.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Air Temp</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">RH</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Leaf Temp</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Leaf VPD</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">82 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">76 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">0.83 kPa</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">82 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">78 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.04 kPa</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">82 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">80 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.26 kPa</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">82 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">82 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.49 kPa</td></tr>
+</tbody></table></div>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">That spread is large enough to change a grower decision. A room that looks like mild veg conditions on a wall chart can actually be pushing flower-level stress at the leaf surface. This is why the <a href="/grow-guides/cannabis-vpd-guide" class="text-landing-green hover:underline">full cannabis VPD guide</a> and the MasterGrowbot calculator both treat leaf temperature as a serious input, not an optional extra.</p>`,
+      },
+      {
+        heading: "Target VPD Ranges After You Calculate",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Once you have the number, compare it against the current growth stage. These ranges are practical starting points for most cannabis rooms.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Stage</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Target VPD</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Use It For</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Clones and seedlings</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">0.4 to 0.8 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Protecting small root systems and soft tissue</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Vegetative growth</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">0.8 to 1.1 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Fast canopy growth and healthy nutrient movement</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Early flower</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.0 to 1.3 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Stretch control and strong bud-site development</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Mid to late flower</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1.2 to 1.5 kPa</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Mold prevention with active transpiration</td></tr>
+</tbody></table></div>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If you are struggling to keep RH stable, read the <a href="/grow-guides/cannabis-humidity-guide" class="text-landing-green hover:underline">cannabis humidity guide</a> after this one. Humidity control is usually the fastest lever for moving VPD in a home grow.</p>`,
+      },
+      {
+        heading: "Common VPD Calculation Mistakes",
+        body: `Mistake: Using a room sensor mounted far from the canopy. Fix: measure temperature and humidity where the top leaves actually sit.
+
+Mistake: Ignoring leaf temperature under LEDs. Fix: use an infrared thermometer and average several leaves instead of trusting one hot or cold spot.
+
+Mistake: Treating one good daytime number as enough. Fix: calculate day and night conditions separately because lights-off humidity spikes can undo a healthy daytime environment.
+
+Mistake: Changing humidity before checking plant stage. Fix: decide whether you are protecting clones, driving vegetative growth, or lowering mold pressure in flower before you move the room.
+
+Mistake: Chasing math without watching the plant. Fix: use VPD as a decision tool, then confirm the decision with leaf posture, drinking speed, growth rate, and disease pressure.`,
+      },
+      {
+        heading: "Use the Free Calculator and Track the Result",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If you do not want to run the formula by hand every time, use the free calculator at <a href="/vpd-calculator" class="text-landing-green hover:underline">www.mastergrowbot.com/vpd-calculator</a>. It is the fastest way to check whether a room is in range before you change a humidifier, exhaust speed, or nighttime temperature plan.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">After you calculate the number, log what happened next. MasterGrowbot AI on iOS and Android helps you tie VPD readings to watering behavior, nutrient uptake, diagnosis photos, and daily grow tasks so you can stop guessing which environment actually worked.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If VPD mistakes are feeding powdery mildew, botrytis, or weak airflow habits, the Master Cannabis IPM Playbook is also worth keeping in the same workflow. The calculator tells you what the room is doing. The app and the playbook help you turn that reading into repeatable cultivation decisions.</p>`,
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the formula for cannabis VPD?",
+        answer:
+          "Leaf VPD for cannabis is calculated as saturation vapor pressure at leaf temperature minus actual vapor pressure of the room air. In practical terms: VPD = SVP(leaf) - [SVP(air) x RH/100].",
+      },
+      {
+        question: "Do I need leaf temperature to calculate VPD for cannabis?",
+        answer:
+          "Leaf temperature is not strictly required for a rough estimate, but it makes the result much more accurate. Under LED lighting, cannabis leaves often run cooler than room air, which can change VPD enough to affect your humidity target.",
+      },
+      {
+        question: "What units is cannabis VPD measured in?",
+        answer:
+          "Cannabis VPD is usually measured in kilopascals, written as kPa. Most cannabis charts and calculators use kPa because it clearly shows how strong the moisture pull is at the leaf surface.",
+      },
+      {
+        question: "What is a good VPD for cannabis seedlings?",
+        answer:
+          "A good VPD range for cannabis seedlings and fresh clones is usually 0.4 to 0.8 kPa. That range protects small plants from drying out before the root zone is fully established.",
+      },
+      {
+        question: "What is a good VPD for cannabis in flower?",
+        answer:
+          "Early flower commonly performs well around 1.0 to 1.3 kPa, while mid to late flower often benefits from 1.2 to 1.5 kPa if the plants are healthy and not showing drought stress.",
+      },
+      {
+        question: "Where can I calculate cannabis VPD quickly?",
+        answer:
+          "You can calculate it quickly with the free VPD calculator at www.mastergrowbot.com/vpd-calculator. MasterGrowbot AI also helps you track those readings alongside plant notes, tasks, and diagnosis photos on iOS and Android.",
+      },
+    ],
+    relatedSlugs: [
+      "cannabis-vpd-guide",
+      "cannabis-vpd-chart-by-growth-stage",
+      "best-vpd-calculator-apps-cannabis",
+      "cannabis-humidity-guide",
+    ],
+  },
 ];
 
 export function getGuideBySlug(slug: string): GrowGuide | undefined {

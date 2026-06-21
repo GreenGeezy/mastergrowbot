@@ -1,10 +1,18 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.mastergrowbot.com/sitemap.xml
 Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
 
 User-agent: GPTBot
 Allow: /
@@ -18,5 +26,7 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-User-agent: Googlebot
+User-agent: Applebot
 Allow: /
+
+Sitemap: https://www.mastergrowbot.com/sitemap.xml
