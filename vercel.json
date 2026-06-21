@@ -12,7 +12,7 @@
   "installCommand": "npm ci",
   "crons": [
     {
-      "path": "/api/newsletter/weekly-send",
+      "path": "/api/newsletter/monthly-send",
       "schedule": "0 16 * * *"
     }
   ],

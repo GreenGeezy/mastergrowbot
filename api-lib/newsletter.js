@@ -2,11 +2,11 @@ export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const RESEND_API_BASE = "https://api.resend.com";
 const DEFAULT_NOTIFY_EMAILS = ["mastergrowbotai@gmail.com", "agcomsol@gmail.com"];
-const DEFAULT_FROM_EMAIL = "AI Cannabis Monthly <newsletter@mastergrowbot.com>";
+const DEFAULT_FROM_EMAIL = "Cannabis AI Signal <newsletter@mastergrowbot.com>";
 const MEXICO_CITY_TIME_ZONE = "America/Mexico_City";
 const NEWSLETTER_START_DATE = process.env.NEWSLETTER_START_DATE || "2026-07-03";
 
-export const newsletterTitle = "AI Cannabis Monthly Newsletter";
+export const newsletterTitle = "Cannabis AI Signal";
 
 export const productLinks = {
   ios: "https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060",
@@ -144,7 +144,7 @@ export function withUtm(url, issueKey, content) {
   const target = new URL(url);
   target.searchParams.set("utm_source", "newsletter");
   target.searchParams.set("utm_medium", "email");
-  target.searchParams.set("utm_campaign", `ai_cannabis_weekly_${issueKey.replace("ai-cannabis-friday-", "")}`);
+  target.searchParams.set("utm_campaign", `cannabis_ai_signal_${issueKey.replace("ai-cannabis-friday-", "")}`);
   target.searchParams.set("utm_content", content);
   return target.toString();
 }
@@ -228,13 +228,16 @@ export function getMexicoCityParts(date) {
   };
 }
 
-export function shouldSendWeeklyNewsletter(date = new Date()) {
+export function shouldSendMonthlyNewsletter(date = new Date()) {
   const parts = getMexicoCityParts(date);
+  const dayNumber = Number(parts.day);
 
   return {
     shouldSend:
       parts.dateKey >= NEWSLETTER_START_DATE &&
-      parts.weekday === "Friday",
+      parts.weekday === "Friday" &&
+      dayNumber >= 1 &&
+      dayNumber <= 7,
     ...parts,
   };
 }
@@ -246,7 +249,7 @@ export function buildNewsletterIssue(issueKey, signals = []) {
   const growTechUrl = withUtm(productLinks.growTech, issueKey, "grow_tech_kit_waitlist");
   const growGuidesUrl = withUtm(productLinks.growGuides, issueKey, "grow_guides");
   const vpdUrl = withUtm(productLinks.vpdCalculator, issueKey, "vpd_calculator");
-  const subject = "AI Cannabis Friday: 5 grow-tech bullets for better plants";
+  const subject = "Cannabis AI Signal: Where AI and Cannabis Collide";
   const newsText =
     signals.length > 0
       ? signals
@@ -267,7 +270,7 @@ export function buildNewsletterIssue(issueKey, signals = []) {
 
 Hi Grower,
 
-Here is your weekly dose of AI Cannabis Friday: five useful things for growers, extractors, geneticists, and cannabis operators watching AI, grow tech, and plant performance.
+Here is this month's Cannabis AI Signal: where the cutting edge of AI and cannabis collide for growers, extractors, geneticists, and cannabis operators.
 
 1. Grow-tech news to watch
 AI vision tools are getting better at turning messy grow-room photos into structured observations. The practical move: keep your photos consistent so your records become more useful over time.
@@ -278,7 +281,7 @@ ${newsText}
 2. AI workflow worth trying
 Before asking AI for help, write down cultivar, stage, medium, last watering, EC or ppm if known, pH if known, temperature, humidity, and what changed recently. Better context produces better guidance.
 
-3. Cultivation tip to use this week
+3. Cultivation tip to use this month
 Take one canopy-wide photo and one close-up photo every time you document a problem. The pair helps you see both pattern and symptom.
 
 4. Extraction and genetics angle
@@ -305,16 +308,16 @@ Unsubscribe: {{{RESEND_UNSUBSCRIBE_URL}}}`;
     <title>${subject}</title>
   </head>
   <body style="margin:0;background:#020604;color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
-    <div style="display:none;max-height:0;overflow:hidden;color:transparent;">Five weekly grow-tech bullets for better cannabis decisions with AI.</div>
+    <div style="display:none;max-height:0;overflow:hidden;color:transparent;">Monthly AI, cannabis, grow tech, extraction, and cannabis science signals.</div>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#020604;padding:28px 12px;">
       <tr>
         <td align="center">
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;border:1px solid rgba(34,197,94,0.22);border-radius:18px;overflow:hidden;background:#07110c;box-shadow:0 0 48px rgba(34,197,94,0.13);">
             <tr>
               <td style="padding:28px 24px 18px;background:linear-gradient(145deg,#07110c,#020604);">
-                <div style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#22c55e;font-weight:700;">AI Cannabis Friday</div>
-                <h1 style="margin:14px 0 0;font-size:34px;line-height:1.08;color:#ffffff;letter-spacing:-0.02em;">5 bullets for better plants with AI.</h1>
-                <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:rgba(255,255,255,0.68);">Hi Grower, here is your weekly dose of cannabis AI, grow tech, cultivation, extraction, and genetics signals worth watching.</p>
+                <div style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#22c55e;font-weight:700;">Cannabis AI Signal</div>
+                <h1 style="margin:14px 0 0;font-size:34px;line-height:1.08;color:#ffffff;letter-spacing:-0.02em;">Where AI and cannabis collide.</h1>
+                <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:rgba(255,255,255,0.68);">Hi Grower, here is this month's signal from the cutting edge of AI, cannabis science, grow tech, extraction, genetics, and smarter cultivation.</p>
                 <div style="margin-top:24px;"><a href="${iosUrl}" style="display:inline-block;background:#22c55e;color:#020604;text-decoration:none;font-weight:800;border-radius:10px;padding:14px 18px;">Download MasterGrowbot AI on iOS</a></div>
               </td>
             </tr>
@@ -330,7 +333,7 @@ Unsubscribe: {{{RESEND_UNSUBSCRIBE_URL}}}`;
                   <p style="margin:10px 0 0;color:rgba(255,255,255,0.66);font-size:15px;line-height:1.65;">Before asking AI for help, write down cultivar, stage, medium, last watering, pH if known, temperature, humidity, and what changed recently. Better context produces better guidance.</p>
                 </div>
                 <div style="margin-top:14px;padding:18px;border:1px solid rgba(255,255,255,0.08);border-radius:14px;background:rgba(255,255,255,0.035);">
-                  <h2 style="margin:0;color:#ffffff;font-size:20px;">3. Cultivation tip to use this week</h2>
+                  <h2 style="margin:0;color:#ffffff;font-size:20px;">3. Cultivation tip to use this month</h2>
                   <p style="margin:10px 0 0;color:rgba(255,255,255,0.66);font-size:15px;line-height:1.65;">Take one canopy-wide photo and one close-up photo every time you document a problem. The pair helps you see both pattern and symptom.</p>
                 </div>
                 <div style="margin-top:14px;padding:18px;border:1px solid rgba(255,255,255,0.08);border-radius:14px;background:rgba(255,255,255,0.035);">

@@ -29,11 +29,11 @@ export default function NewsletterSignup() {
           email: normalizedEmail,
           sourcePage: '/',
           sourceForm: 'homepage_newsletter',
-          interestProduct: 'AI Cannabis Monthly Newsletter',
+          interestProduct: 'Cannabis AI Signal',
           utm_source: 'website',
           utm_medium: 'organic',
-          utm_campaign: 'homepage_weekly_newsletter_signup',
-          utm_content: 'ai_cannabis_friday',
+          utm_campaign: 'homepage_monthly_newsletter_signup',
+          utm_content: 'cannabis_ai_signal',
         }),
       });
 
@@ -56,22 +56,22 @@ export default function NewsletterSignup() {
       <div className="mb-4 flex flex-col items-center gap-3 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-landing-green/25 bg-black/35 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
           <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-          Weekly 5-bullet brief
+          Monthly signal brief
         </div>
         <div>
           <h3 className="text-2xl font-bold tracking-tight text-white font-sans sm:text-3xl">
-            AI Cannabis Monthly Newsletter
+            Cannabis AI Signal
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-white/55 sm:text-base">
-            Five useful Friday bullets on cannabis AI, grow tech news, cultivation tactics, extraction, genetics,
-            and smarter ways to use MasterGrowbot AI.
+            Where the cutting edge of AI and cannabis collide. Monthly news, opinions, AI grow tactics,
+            extraction ideas, and cannabis science signals sent the first Friday of every month.
           </p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-2xl">
         <label htmlFor="newsletter-email" className="sr-only">
-          Join AI Cannabis Monthly Newsletter
+          Join Cannabis AI Signal
         </label>
         <div className="flex flex-col gap-3 sm:flex-row">
           <div className="relative flex-1">
@@ -106,12 +106,12 @@ export default function NewsletterSignup() {
 
         {success && (
           <p className="mt-3 rounded-lg border border-landing-green/30 bg-landing-green/10 px-3 py-2 text-sm font-medium text-landing-green">
-            You are on the list. Watch for the next Friday edition.
+            You are on the list. Watch for the next first-Friday edition.
           </p>
         )}
 
         <p className="mt-3 text-xs leading-relaxed text-white/38">
-          Free weekly email. No spam. Unsubscribe anytime.
+          Free monthly email. No spam. Unsubscribe anytime.
         </p>
       </form>
     </div>

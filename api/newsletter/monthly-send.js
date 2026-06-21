@@ -6,7 +6,7 @@ import {
   isNewsletterConfigured,
   newsletterTitle,
   resendRequest,
-  shouldSendWeeklyNewsletter,
+  shouldSendMonthlyNewsletter,
 } from "../../api-lib/newsletter.js";
 
 function getBearerToken(req) {
@@ -85,13 +85,13 @@ export default async function handler(req, res) {
   }
 
   const now = req.query?.date ? new Date(String(req.query.date)) : new Date();
-  const schedule = shouldSendWeeklyNewsletter(Number.isNaN(now.getTime()) ? new Date() : now);
+  const schedule = shouldSendMonthlyNewsletter(Number.isNaN(now.getTime()) ? new Date() : now);
 
   if (!schedule.shouldSend) {
     return res.status(200).json({
       ok: true,
       skipped: true,
-      reason: "Not the Friday send window.",
+      reason: "Not the first Friday send window.",
       dateKey: schedule.dateKey,
       issueKey: schedule.issueKey,
     });
@@ -171,14 +171,14 @@ export default async function handler(req, res) {
       result: sent,
     });
   } catch (error) {
-    console.error("Newsletter weekly send failed:", {
+    console.error("Newsletter monthly send failed:", {
       message: error.message,
       status: error.status,
       data: error.data,
     });
 
     return res.status(500).json({
-      error: "Newsletter weekly send failed.",
+      error: "Newsletter monthly send failed.",
       issueKey: schedule.issueKey,
     });
   }

@@ -3,6 +3,7 @@ import {
   createNewsletterContact,
   emailPattern,
   isNewsletterConfigured,
+  newsletterTitle,
   normalizeEmail,
   sendOwnerNotification,
 } from "../../api-lib/newsletter.js";
@@ -21,7 +22,7 @@ export default async function handler(req, res) {
 
   const sourcePage = body.sourcePage || req.headers.referer || "/";
   const sourceForm = body.sourceForm || "newsletter";
-  const interestProduct = body.interestProduct || body.productName || "";
+  const interestProduct = body.interestProduct || body.productName || newsletterTitle;
   const lead = {
     email,
     name: body.name || "",
