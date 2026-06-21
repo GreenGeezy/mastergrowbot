@@ -1,12 +1,14 @@
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import { ArrowRight, BookOpen, Search, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import { AmazonBookButton } from '@/components/landing/AmazonBookButton';
 import { AppPlatformButtons } from '@/components/landing/cta';
+import { Input } from '@/components/ui/input';
 import { growGuides } from '@/data/growGuides';
 
 const breadcrumbSchema = {
@@ -20,6 +22,33 @@ const breadcrumbSchema = {
 
 
 export default function GrowGuidesHub() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+
+  const filteredGuides = useMemo(() => {
+    if (!normalizedQuery) {
+      return growGuides;
+    }
+
+    return growGuides.filter((guide) => {
+      const searchableText = [
+        guide.title,
+        guide.h1,
+        guide.shortDescription,
+        guide.metaTitle,
+        guide.metaDescription,
+        guide.intro,
+        guide.slug.replace(/-/g, ' '),
+        ...guide.sections.flatMap((section) => [section.heading, section.body ?? '', section.bodyHtml ?? '']),
+        ...guide.faqs.flatMap((faq) => [faq.question, faq.answer]),
+      ]
+        .join(' ')
+        .toLowerCase();
+
+      return searchableText.includes(normalizedQuery);
+    });
+  }, [normalizedQuery]);
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <SEOHead
@@ -104,44 +133,80 @@ export default function GrowGuidesHub() {
         </div>
       </section>
 
+      {/* Search */}
+      <section className="relative z-10 px-4 sm:px-6 pb-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
+            <Input
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search grow guides by topic, pest, nutrient, VPD, harvest, app, or symptom"
+              aria-label="Search grow guides"
+              className="h-12 rounded-2xl border-white/[0.08] bg-white/[0.04] pl-11 pr-12 text-white placeholder:text-white/35 focus-visible:ring-landing-green/50 focus-visible:ring-offset-0"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                aria-label="Clear grow guide search"
+                className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-white/45 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* Guides Grid */}
       <section className="relative z-10 py-8 sm:py-12 px-4 sm:px-6 pb-24">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-xl font-semibold text-white/70 font-sans mb-8">
-            All Grow Guides ({growGuides.length})
+            {normalizedQuery ? `Search Results (${filteredGuides.length})` : `All Grow Guides (${growGuides.length})`}
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {growGuides.map((guide, i) => (
-              <motion.div
-                key={guide.slug}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.6, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <Link
-                  to={`/grow-guides/${guide.slug}`}
-                  className="group block h-full rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent hover:border-landing-green/30 hover:from-white/[0.07] transition-all duration-300 p-6 space-y-4"
+          {filteredGuides.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredGuides.map((guide, i) => (
+                <motion.div
+                  key={guide.slug}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.6, delay: Math.min(i, 8) * 0.07, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-landing-green/10 flex items-center justify-center">
-                      <BookOpen className="w-4 h-4 text-landing-green" />
+                  <Link
+                    to={`/grow-guides/${guide.slug}`}
+                    className="group block h-full rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent hover:border-landing-green/30 hover:from-white/[0.07] transition-all duration-300 p-6 space-y-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-landing-green/10 flex items-center justify-center">
+                        <BookOpen className="w-4 h-4 text-landing-green" />
+                      </div>
+                      <h3 className="text-base font-semibold text-white leading-snug font-sans group-hover:text-landing-green transition-colors duration-200">
+                        {guide.title}
+                      </h3>
                     </div>
-                    <h3 className="text-base font-semibold text-white leading-snug font-sans group-hover:text-landing-green transition-colors duration-200">
-                      {guide.title}
-                    </h3>
-                  </div>
-                  <p className="text-sm text-white/50 leading-relaxed font-sans">
-                    {guide.shortDescription}
-                  </p>
-                  <div className="flex items-center gap-1.5 text-landing-green text-sm font-medium font-sans">
-                    Read guide
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                    <p className="text-sm text-white/50 leading-relaxed font-sans">
+                      {guide.shortDescription}
+                    </p>
+                    <div className="flex items-center gap-1.5 text-landing-green text-sm font-medium font-sans">
+                      Read guide
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] px-6 py-10 text-center">
+              <p className="text-base font-semibold text-white font-sans">No grow guides found</p>
+              <p className="mt-2 text-sm text-white/50 font-sans">
+                Try searching for VPD, nutrients, pests, harvest, humidity, or grow apps.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
