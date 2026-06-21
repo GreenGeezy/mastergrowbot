@@ -42,6 +42,10 @@ export function isNewsletterConfigured() {
   return Boolean(process.env.RESEND_API_KEY && process.env.RESEND_NEWSLETTER_SEGMENT_ID);
 }
 
+export function isGoogleLeadWebhookConfigured() {
+  return Boolean(process.env.GOOGLE_LEADS_WEBHOOK_URL);
+}
+
 export async function resendRequest(path, options = {}) {
   const response = await fetch(`${RESEND_API_BASE}${path}`, {
     ...options,
@@ -138,6 +142,35 @@ export async function sendOwnerNotification({ email, sourcePage, sourceForm, int
       html: `<div style="font-family:Arial,sans-serif;line-height:1.5;color:#111827"><h1 style="font-size:20px">${subject}</h1><pre style="white-space:pre-wrap;background:#f3f4f6;padding:16px;border-radius:8px">${details}</pre></div>`,
     }),
   });
+}
+
+export async function sendLeadToGoogleWebhook(lead) {
+  if (!process.env.GOOGLE_LEADS_WEBHOOK_URL) {
+    return null;
+  }
+
+  const response = await fetch(process.env.GOOGLE_LEADS_WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      secret: process.env.GOOGLE_LEADS_WEBHOOK_SECRET || "",
+      ...lead,
+    }),
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok || data?.ok === false) {
+    const message = data?.error || `Google lead webhook failed: ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    error.data = data;
+    throw error;
+  }
+
+  return data;
 }
 
 export function withUtm(url, issueKey, content) {

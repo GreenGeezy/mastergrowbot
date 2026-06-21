@@ -2,9 +2,11 @@ import {
   buildContactPayload,
   createNewsletterContact,
   emailPattern,
+  isGoogleLeadWebhookConfigured,
   isNewsletterConfigured,
   newsletterTitle,
   normalizeEmail,
+  sendLeadToGoogleWebhook,
   sendOwnerNotification,
 } from "../../api-lib/newsletter.js";
 
@@ -26,9 +28,11 @@ export default async function handler(req, res) {
   const lead = {
     email,
     name: body.name || "",
+    createdAt: new Date().toISOString(),
     sourcePage,
     sourceForm,
     interestProduct,
+    userAgent: req.headers["user-agent"] || "",
     utm: {
       utm_source: body.utm_source || body.utm?.utm_source || "",
       utm_medium: body.utm_medium || body.utm?.utm_medium || "",
@@ -37,11 +41,10 @@ export default async function handler(req, res) {
     },
   };
 
-  if (!isNewsletterConfigured()) {
+  if (!isGoogleLeadWebhookConfigured() && !isNewsletterConfigured()) {
     if (process.env.NODE_ENV !== "production") {
       console.info("Newsletter setup required. Lead accepted locally:", {
         ...lead,
-        createdAt: new Date().toISOString(),
       });
     }
 
@@ -53,19 +56,37 @@ export default async function handler(req, res) {
   }
 
   try {
-    const contact = await createNewsletterContact(buildContactPayload(lead));
-
-    await sendOwnerNotification({
-      email,
-      sourcePage,
-      sourceForm,
-      interestProduct,
-    }).catch((error) => {
-      console.error("Newsletter owner notification failed:", error.message);
+    const googleLead = await sendLeadToGoogleWebhook(lead).catch((error) => {
+      console.error("Google lead webhook failed:", {
+        message: error.message,
+        status: error.status,
+        data: error.data,
+      });
+      return null;
     });
+
+    let contact = null;
+
+    if (isNewsletterConfigured()) {
+      contact = await createNewsletterContact(buildContactPayload(lead));
+
+      await sendOwnerNotification({
+        email,
+        sourcePage,
+        sourceForm,
+        interestProduct,
+      }).catch((error) => {
+        console.error("Newsletter owner notification failed:", error.message);
+      });
+    }
+
+    if (!googleLead && !contact) {
+      throw new Error("Lead storage is not configured.");
+    }
 
     return res.status(200).json({
       ok: true,
+      googleLeadSaved: Boolean(googleLead),
       contactId: contact?.id || contact?.data?.id || null,
     });
   } catch (error) {
