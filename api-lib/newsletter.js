@@ -149,6 +149,60 @@ export function withUtm(url, issueKey, content) {
   return target.toString();
 }
 
+function decodeXml(value) {
+  return String(value || "")
+    .replace(/<!\[CDATA\[(.*?)\]\]>/gs, "$1")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .trim();
+}
+
+function extractRssItems(xml, limit = 2) {
+  const matches = Array.from(String(xml || "").matchAll(/<item>([\s\S]*?)<\/item>/g));
+
+  return matches
+    .map((match) => {
+      const item = match[1];
+      const title = decodeXml(item.match(/<title>([\s\S]*?)<\/title>/)?.[1]);
+      const link = decodeXml(item.match(/<link>([\s\S]*?)<\/link>/)?.[1]);
+      const source = decodeXml(item.match(/<source[^>]*>([\s\S]*?)<\/source>/)?.[1]);
+
+      return title && link ? { title, link, source } : null;
+    })
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
+export async function fetchNewsletterSignals() {
+  const queries = [
+    "cannabis AI grow technology",
+    "cannabis cultivation technology greenhouse AI",
+    "cannabis extraction genetics research",
+  ];
+
+  const results = await Promise.allSettled(
+    queries.map(async (query) => {
+      const url = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
+      const response = await fetch(url, {
+        headers: {
+          "User-Agent": "MasterGrowbotAI-Newsletter/1.0",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`News fetch failed: ${response.status}`);
+      }
+
+      return extractRssItems(await response.text(), 2);
+    }),
+  );
+
+  return results.flatMap((result) => (result.status === "fulfilled" ? result.value : [])).slice(0, 5);
+}
+
 export function getMexicoCityParts(date) {
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: MEXICO_CITY_TIME_ZONE,
@@ -185,7 +239,7 @@ export function shouldSendWeeklyNewsletter(date = new Date()) {
   };
 }
 
-export function buildNewsletterIssue(issueKey) {
+export function buildNewsletterIssue(issueKey, signals = []) {
   const iosUrl = withUtm(productLinks.ios, issueKey, "ios_app_primary");
   const androidUrl = withUtm(productLinks.android, issueKey, "android_app_secondary");
   const bookUrl = withUtm(productLinks.book, issueKey, "amazon_ipm_playbook");
@@ -193,6 +247,21 @@ export function buildNewsletterIssue(issueKey) {
   const growGuidesUrl = withUtm(productLinks.growGuides, issueKey, "grow_guides");
   const vpdUrl = withUtm(productLinks.vpdCalculator, issueKey, "vpd_calculator");
   const subject = "AI Cannabis Friday: 5 grow-tech bullets for better plants";
+  const newsText =
+    signals.length > 0
+      ? signals
+          .map((item, index) => `${index + 1}. ${item.title}${item.source ? ` (${item.source})` : ""}: ${item.link}`)
+          .join("\n")
+      : "No live headlines were available at send time, so this issue uses the evergreen grow-tech brief.";
+  const newsHtml =
+    signals.length > 0
+      ? `<ul style="margin:10px 0 0;padding-left:20px;color:rgba(255,255,255,0.66);font-size:15px;line-height:1.65;">${signals
+          .map(
+            (item) =>
+              `<li style="margin-bottom:8px;"><a href="${item.link}" style="color:#22c55e;font-weight:700;">${item.title}</a>${item.source ? ` <span style="color:rgba(255,255,255,0.42);">(${item.source})</span>` : ""}</li>`,
+          )
+          .join("")}</ul>`
+      : `<p style="margin:10px 0 0;color:rgba(255,255,255,0.66);font-size:15px;line-height:1.65;">No live headlines were available at send time, so this issue uses the evergreen grow-tech brief.</p>`;
 
   const text = `${newsletterTitle}
 
@@ -202,6 +271,9 @@ Here is your weekly dose of AI Cannabis Friday: five useful things for growers, 
 
 1. Grow-tech news to watch
 AI vision tools are getting better at turning messy grow-room photos into structured observations. The practical move: keep your photos consistent so your records become more useful over time.
+
+Current news signals:
+${newsText}
 
 2. AI workflow worth trying
 Before asking AI for help, write down cultivar, stage, medium, last watering, EC or ppm if known, pH if known, temperature, humidity, and what changed recently. Better context produces better guidance.
@@ -251,6 +323,7 @@ Unsubscribe: {{{RESEND_UNSUBSCRIBE_URL}}}`;
                 <div style="padding:18px;border:1px solid rgba(255,255,255,0.08);border-radius:14px;background:rgba(255,255,255,0.035);">
                   <h2 style="margin:0;color:#ffffff;font-size:20px;">1. Grow-tech news to watch</h2>
                   <p style="margin:10px 0 0;color:rgba(255,255,255,0.66);font-size:15px;line-height:1.65;">AI vision tools are getting better at turning messy grow-room photos into structured observations. The practical move: keep your photos consistent so your records become more useful over time.</p>
+                  ${newsHtml}
                 </div>
                 <div style="margin-top:14px;padding:18px;border:1px solid rgba(255,255,255,0.08);border-radius:14px;background:rgba(255,255,255,0.035);">
                   <h2 style="margin:0;color:#ffffff;font-size:20px;">2. AI workflow worth trying</h2>

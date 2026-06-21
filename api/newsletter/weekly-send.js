@@ -1,5 +1,6 @@
 import {
   buildNewsletterIssue,
+  fetchNewsletterSignals,
   getFromEmail,
   getNotifyEmails,
   isNewsletterConfigured,
@@ -133,7 +134,11 @@ export default async function handler(req, res) {
       });
     }
 
-    const issue = buildNewsletterIssue(schedule.issueKey);
+    const signals = await fetchNewsletterSignals().catch((error) => {
+      console.error("Newsletter news signal fetch failed:", error.message);
+      return [];
+    });
+    const issue = buildNewsletterIssue(schedule.issueKey, signals);
     const created = await resendRequest("/broadcasts", {
       method: "POST",
       body: JSON.stringify({
