@@ -3,6 +3,7 @@ export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RESEND_API_BASE = "https://api.resend.com";
 const DEFAULT_NOTIFY_EMAILS = ["mastergrowbotai@gmail.com", "agcomsol@gmail.com"];
 const DEFAULT_FROM_EMAIL = "Cannabis AI Signal <newsletter@mastergrowbot.com>";
+const DEFAULT_FORMSPREE_FORM_ID = "mrerazdy";
 const MEXICO_CITY_TIME_ZONE = "America/Mexico_City";
 const NEWSLETTER_START_DATE = process.env.NEWSLETTER_START_DATE || "2026-07-03";
 
@@ -44,6 +45,10 @@ export function isNewsletterConfigured() {
 
 export function isGoogleLeadWebhookConfigured() {
   return Boolean(process.env.GOOGLE_LEADS_WEBHOOK_URL);
+}
+
+export function isFormspreeLeadBackupConfigured() {
+  return Boolean(process.env.FORMSPREE_NEWSLETTER_FORM_ID || DEFAULT_FORMSPREE_FORM_ID);
 }
 
 export async function resendRequest(path, options = {}) {
@@ -164,6 +169,56 @@ export async function sendLeadToGoogleWebhook(lead) {
 
   if (!response.ok || data?.ok === false) {
     const message = data?.error || `Google lead webhook failed: ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    error.data = data;
+    throw error;
+  }
+
+  return data;
+}
+
+export async function sendLeadToFormspree(lead) {
+  const formId = process.env.FORMSPREE_NEWSLETTER_FORM_ID || DEFAULT_FORMSPREE_FORM_ID;
+
+  if (!formId) {
+    return null;
+  }
+
+  const details = [
+    "A new email was submitted on mastergrowbot.com.",
+    `Email: ${lead.email}`,
+    `Name: ${lead.name || ""}`,
+    `Source page: ${lead.sourcePage || ""}`,
+    `Source form: ${lead.sourceForm || ""}`,
+    `Interest: ${lead.interestProduct || ""}`,
+    `Created at: ${lead.createdAt || new Date().toISOString()}`,
+    "Notify: Agcomsol@gmail.com, mastergrowbotai@gmail.com",
+  ].join("\n");
+
+  const response = await fetch(`https://formspree.io/f/${encodeURIComponent(formId)}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: lead.email,
+      name: lead.name || "",
+      sourcePage: lead.sourcePage || "",
+      sourceForm: lead.sourceForm || "",
+      interestProduct: lead.interestProduct || "",
+      createdAt: lead.createdAt || new Date().toISOString(),
+      utm: JSON.stringify(lead.utm || {}),
+      message: details,
+      _subject: "New MasterGrowbot AI website email signup",
+    }),
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok || data?.ok === false) {
+    const message = data?.error || `Formspree lead backup failed: ${response.status}`;
     const error = new Error(message);
     error.status = response.status;
     error.data = data;

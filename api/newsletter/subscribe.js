@@ -2,10 +2,12 @@ import {
   buildContactPayload,
   createNewsletterContact,
   emailPattern,
+  isFormspreeLeadBackupConfigured,
   isGoogleLeadWebhookConfigured,
   isNewsletterConfigured,
   newsletterTitle,
   normalizeEmail,
+  sendLeadToFormspree,
   sendLeadToGoogleWebhook,
   sendOwnerNotification,
 } from "../../api-lib/newsletter.js";
@@ -41,7 +43,7 @@ export default async function handler(req, res) {
     },
   };
 
-  if (!isGoogleLeadWebhookConfigured() && !isNewsletterConfigured()) {
+  if (!isFormspreeLeadBackupConfigured() && !isGoogleLeadWebhookConfigured() && !isNewsletterConfigured()) {
     if (process.env.NODE_ENV !== "production") {
       console.info("Newsletter setup required. Lead accepted locally:", {
         ...lead,
@@ -56,6 +58,15 @@ export default async function handler(req, res) {
   }
 
   try {
+    const formspreeLead = await sendLeadToFormspree(lead).catch((error) => {
+      console.error("Formspree lead backup failed:", {
+        message: error.message,
+        status: error.status,
+        data: error.data,
+      });
+      return null;
+    });
+
     const googleLead = await sendLeadToGoogleWebhook(lead).catch((error) => {
       console.error("Google lead webhook failed:", {
         message: error.message,
@@ -80,12 +91,13 @@ export default async function handler(req, res) {
       });
     }
 
-    if (!googleLead && !contact) {
+    if (!formspreeLead && !googleLead && !contact) {
       throw new Error("Lead storage is not configured.");
     }
 
     return res.status(200).json({
       ok: true,
+      formspreeSaved: Boolean(formspreeLead),
       googleLeadSaved: Boolean(googleLead),
       contactId: contact?.id || contact?.data?.id || null,
     });
