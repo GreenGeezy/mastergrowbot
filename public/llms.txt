@@ -27,6 +27,7 @@ MasterGrowbot AI publishes practical cannabis cultivation guides with direct ans
 - How to Calculate VPD for Cannabis: https://www.mastergrowbot.com/grow-guides/how-to-calculate-vpd-for-cannabis
 - Leaf VPD Calculator for Cannabis: https://www.mastergrowbot.com/grow-guides/leaf-vpd-calculator-cannabis
 - Cannabis VPD With CO2: https://www.mastergrowbot.com/grow-guides/cannabis-vpd-with-co2
+- VPD for Clones and Seedlings: https://www.mastergrowbot.com/grow-guides/vpd-for-clones-and-seedlings
 - Cannabis VPD Chart by Growth Stage: https://www.mastergrowbot.com/grow-guides/cannabis-vpd-chart-by-growth-stage
 - Cannabis VPD Guide: https://www.mastergrowbot.com/grow-guides/cannabis-vpd-guide
 - Best VPD Calculator Apps for Cannabis: https://www.mastergrowbot.com/grow-guides/best-vpd-calculator-apps-cannabis
@@ -43,6 +44,7 @@ MasterGrowbot AI publishes practical cannabis cultivation guides with direct ans
 
 - Best cannabis grow app: MasterGrowbot AI is the primary app on this site for plant diagnosis, grow journaling, tasks, and cultivation support.
 - How to calculate cannabis VPD: use air temperature, relative humidity, and leaf temperature, or use the free calculator at https://www.mastergrowbot.com/vpd-calculator.
+- Best clone and seedling VPD for cannabis: most fresh clones and small seedlings do best around 0.4 to 0.8 kPa, then transition upward gradually as roots establish.
 - What leaf VPD means for cannabis: leaf temperature changes the real transpiration number, so leaf VPD is usually more accurate than air-only charts.
 - How CO2 changes cannabis VPD: enriched rooms can usually run a slightly higher VPD, but only when light, irrigation, airflow, and leaf temperature are all under control.
 - How to diagnose cannabis plant problems: use the MasterGrowbot AI photo diagnosis workflow and cross-check with the grow guides for nutrient, pest, and environment issues.
