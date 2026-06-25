@@ -17,12 +17,15 @@ export default function LandingNav() {
         </span>
       </Link>
       <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
-        <Link
-          to="/grow-tech"
-          className="text-sm font-medium text-white/60 transition-colors duration-200 hover:text-landing-green font-sans"
+        <a
+          href={AMAZON_BOOK_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cta-location="nav:amazon-book"
+          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
         >
-          Grow Tech
-        </Link>
+          IPM Playbook
+        </a>
         <Link
           to="/grow-guides"
           className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
@@ -41,15 +44,16 @@ export default function LandingNav() {
         >
           Contact
         </Link>
-        <a
-          href={AMAZON_BOOK_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cta-location="nav:amazon-book"
-          className="text-sm font-semibold text-landing-green hover:text-landing-green/80 transition-colors duration-200 font-sans border border-landing-green/30 hover:border-landing-green/60 px-3 py-1 rounded-lg"
+        <Link
+          to="/grow-tech"
+          data-cta-location="nav:growtech-shop"
+          className="group inline-flex items-center gap-2 rounded-lg border border-amber-300/50 bg-gradient-to-r from-amber-300/14 via-landing-green/10 to-landing-green/5 px-3 py-1.5 text-sm font-semibold text-white shadow-[0_0_22px_rgba(251,191,36,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-300/80 hover:text-amber-100 hover:shadow-[0_0_28px_rgba(251,191,36,0.22)] focus:outline-none focus:ring-2 focus:ring-amber-300/70 focus:ring-offset-2 focus:ring-offset-black font-sans"
         >
-          IPM Playbook
-        </a>
+          <span>GrowTech Shop</span>
+          <span className="rounded-full border border-amber-300/55 bg-amber-300 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-black shadow-[0_0_14px_rgba(251,191,36,0.35)] transition-transform duration-200 group-hover:scale-105">
+            New Products
+          </span>
+        </Link>
       </div>
     </nav>
   );
