@@ -5669,6 +5669,136 @@ Mistake four is ignoring the relationship between VPD and irrigation. If plugs s
       "cannabis-humidity-guide",
     ],
   },
+  {
+    slug: "flowering-humidity-chart-cannabis",
+    title: "Flowering Humidity Chart for Cannabis",
+    h1: "Flowering Humidity Chart for Cannabis: Week-by-Week RH Targets",
+    shortDescription:
+      "Use a week-by-week cannabis flowering humidity chart to lower mold risk, protect flower quality, and match RH targets to stretch, stacking, and ripening.",
+    metaTitle: "Flowering Humidity Chart for Cannabis | MasterGrowbot AI",
+    metaDescription:
+      "Use week-by-week RH targets for cannabis flower. Learn the safest humidity ranges for early, mid, and late flower, plus VPD, night humidity, and mold prevention.",
+    publishedDate: "2026-06-25T00:00:00Z",
+    modifiedDate: "2026-06-25T00:00:00Z",
+    intro: `Flowering humidity is where a healthy cannabis room either protects the harvest or quietly starts losing it. Early flower still needs enough moisture to support stretch and steady nutrient movement. Mid flower needs tighter control as bud sites stack. Late flower demands discipline because dense colas, trapped moisture, and soft night conditions are how growers end up with botrytis, powdery mildew, or flowers that look finished from the outside but degrade from inside the canopy.
+
+The practical answer is simple: most cannabis rooms do best around 55% to 60% RH in the first week or two of flower, around 45% to 55% RH through mid flower, and around 35% to 45% RH late in flower, with the exact target shaped by temperature, leaf temperature, canopy density, and how aggressive your irrigation and airflow are. Treat that as a working chart, not a magic number. A packed trellis full of broad leaves needs a drier target than a lightly loaded small tent.
+
+This guide gives you a true week-by-week flowering humidity chart, shows how RH and VPD work together, explains what to tighten first when buds start stacking, and points you to the free calculator at www.mastergrowbot.com/vpd-calculator when you want to check the room fast. If you want the same climate notes, diagnosis photos, daily tasks, and stage history in one workflow, MasterGrowbot AI is available on iOS and Android through www.mastergrowbot.com.`,
+    sections: [
+      {
+        heading: "Direct Answer: Best Flowering Humidity for Cannabis by Week",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Most cannabis growers should <strong>lower humidity progressively through flower</strong> rather than hold one RH number from flip to harvest. Early flower usually runs best around 50% to 60% RH, mid flower often lands around 45% to 55% RH, and late flower commonly finishes around 35% to 45% RH. Dense canopies, cool nights, and heavy irrigation push you toward the drier end faster.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Flower Week</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Target RH</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Typical Canopy Temp</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">VPD Direction</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Grower Meaning</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 1</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">55% to 60%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">74 to 80 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Gentle early-flower range</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Supports stretch without running the room too wet</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 2</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">50% to 58%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">74 to 79 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Move slightly firmer</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Pistils build, stretch continues, airflow matters more</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 3</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">50% to 55%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">73 to 78 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Balanced transition</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Bud sites are established and extra moisture stops helping</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 4</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">45% to 52%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">72 to 77 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Moderate flower push</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Stacking begins and hidden moisture pockets become expensive</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 5</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">45% to 50%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">70 to 76 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Productive mid-flower range</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Dense flower formation raises mildew and botrytis pressure</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 6</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">40% to 48%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">70 to 75 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Firm late-mid target</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Good for swelling buds if irrigation and leaf health stay steady</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 7</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">40% to 45%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">68 to 75 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Dryer finishing range</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Protects ripening flowers as biomass peaks</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Week 8+</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">35% to 45%</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">67 to 74 F</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Strong finish if plants are healthy</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Useful for dense cultivars close to harvest, but do not overdry a struggling room</td></tr>
+</tbody></table></div>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If you want the exact VPD behind those rows, check air temperature, RH, and leaf temperature in the <a href="/vpd-calculator" class="text-landing-green hover:underline">free MasterGrowbot VPD calculator</a>. Air-only humidity charts are useful, but the plant responds to the leaf-level number.</p>`,
+      },
+      {
+        heading: "Why Humidity Should Drop as Flower Progresses",
+        body: `Flowering cannabis changes the room around itself. The canopy gets denser, leaves overlap more aggressively, and developing buds create more places for moisture to linger after irrigation or lights-off. That means the same RH that felt harmless in early flower can become a mold problem in mid to late flower.
+
+Early in flower, cannabis is still stretching and building structure. The plant can usually tolerate a slightly softer room because flowers are not yet dense. By the time you reach stacked bud sites, the goal changes. You are no longer just supporting growth. You are managing the microclimate inside the canopy and between bracts where stale, damp air becomes invisible risk.
+
+This is why late flower humidity targets are not mainly about comfort. They are about risk control. Lower RH improves your margin against bud rot, powdery mildew, and soft flowers that never quite finish cleanly. If you need the broader all-stage baseline, the <a href="/grow-guides/cannabis-humidity-guide" class="text-landing-green hover:underline">cannabis humidity guide</a> covers the full lifecycle outside the flowering window.`,
+      },
+      {
+        heading: "Early Flower Weeks 1 and 2: Support Stretch Without Running Wet",
+        body: `Weeks one and two are where growers often overcorrect. They hear that flower needs lower humidity, so they drop RH too hard right after the flip. The result is a room that asks for more transpiration while the plant is still transitioning hormonally and stretching hard. That can show up as clawing, stalled tops, uneven water use, or a room that suddenly needs feed adjustments that did not seem necessary in late veg.
+
+In most rooms, the better move is a gradual descent. Start near the upper half of the flower range, often around 55% to 60% RH, then tighten as the first pistils and early bud sites become consistent. If your canopy is unusually thick, if you flipped large plants, or if lights-off humidity spikes badly, move toward the lower half faster.
+
+This stage pairs well with the workflow in the <a href="/grow-guides/cannabis-flowering-stage-week-by-week" class="text-landing-green hover:underline">flowering stage week-by-week guide</a>. The visual development and the humidity target should move together, not as separate decisions.`,
+      },
+      {
+        heading: "Mid Flower Weeks 3 to 5: Bud Stacking Is Where RH Discipline Starts Paying Off",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Mid flower is when buds start creating their own weather. Stacked sites, less open canopy space, and repeated irrigation cycles make moisture harder to clear. This is the point where many growers need to stop asking whether 55% RH is technically possible and start asking whether the room is actually safe at that number.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Mid-Flower Problem</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">What It Usually Means</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Practical Fix</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Room reads 50% RH but inner canopy feels damp</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Air distribution is weak and the sensor is not reading the risky zone</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Add circulation through the canopy, reposition sensors, and thin obvious blockage if needed</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Leaves stay wet long after irrigation or foliar work</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Too much surface moisture for the current RH target</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Stop foliar spraying in flower, water earlier, and tighten RH a few points</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Powdery mildew reappears even though daytime RH looks acceptable</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Night humidity or stagnant pockets are undermining daytime control</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Focus on lights-off dehumidification and uninterrupted airflow</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Plants feel stressed after dropping RH fast</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">You changed humidity faster than the root zone and leaf temperature could adapt</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Move in smaller steps and verify VPD, not RH alone</td></tr>
+</tbody></table></div>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">A common mid-flower target is roughly 45% to 55% RH, but many growers with dense cultivar structure finish the transition closer to 45% to 50%. If your room has a history of <a href="/grow-guides/powdery-mildew-cannabis-treatment" class="text-landing-green hover:underline">powdery mildew</a> or <a href="/grow-guides/cannabis-botrytis-bud-rot" class="text-landing-green hover:underline">bud rot</a>, that drier bias is usually the safer call.</p>`,
+      },
+      {
+        heading: "Late Flower Weeks 6 to Harvest: Protect Dense Colas and Finish Clean",
+        body: `Late flower is where humidity mistakes become irreversible. A room that was forgiving in weeks one through four can lose flowers fast once buds are swollen, resinous, and holding moisture deep inside the structure. This is why many experienced growers tighten RH into the 40% to 45% range, or even the high 30s in very dense rooms close to harvest.
+
+The goal is not to dry the plant out aggressively for its own sake. The goal is to create a clean finishing environment where the flowers can ripen without internal moisture pockets. If you push RH low while the room is too hot, the plants are underfed, or irrigation cannot keep up, you can trade mold prevention for avoidable stress. That is not optimization. That is just a different mistake.
+
+Late flower is also the stage where hygiene and prevention matter more than rescue treatments. If your room repeatedly struggles with late-flower moisture pressure, the Master Cannabis IPM Playbook on <a href="https://www.amazon.com/dp/B0H5LWKBSV" class="text-landing-green hover:underline">Amazon</a> is a useful companion because it helps you tighten sanitation, scouting, and disease-prevention routines before the next run gets expensive.`,
+      },
+      {
+        heading: "Night Humidity Is Often the Real Problem",
+        body: `A lot of flowering rooms look fine during lights-on and fail during lights-off. Temperatures drop, the air holds less moisture, and RH climbs fast if the room is sealed, the biomass is heavy, or the dehumidifier strategy depends too much on daytime heat. That is how growers end up confused by a safe daytime average and still find mold or mildew pressure building inside the canopy.
+
+If your night RH jumps 8% to 15% above daytime levels, your flowering chart is incomplete. You do not have one humidity condition. You have a daytime room and a nighttime room. The nighttime room is often the one that decides whether dense flowers stay clean.
+
+Practical rule: if you want 45% RH to be your meaningful late-flower target, you cannot let the room coast into the upper 50s every night and call the average acceptable. Use dehumidification, air mixing, irrigation timing, and sensible lights-off temperature management so the room stays controlled when the canopy is releasing moisture in darkness.`,
+      },
+      {
+        heading: "Use VPD to Make the Humidity Chart Smarter",
+        body: `Relative humidity by itself is useful, but it does not tell the full story because temperature changes what the plant actually feels. A 50% RH room at one canopy temperature can be productive, while the same 50% RH at another temperature can be too soft or too aggressive. That is why flowering humidity charts work best as a starting range and VPD confirms the final target.
+
+Leaf temperature matters here too. Under LEDs, leaves can run cooler than room air, which changes real VPD at the leaf surface. If you only read wall RH and air temperature, you can miss the fact that the canopy is running softer than expected. The <a href="/grow-guides/leaf-vpd-calculator-cannabis" class="text-landing-green hover:underline">leaf VPD calculator guide</a> explains that adjustment in detail.
+
+The simplest workflow is to check your room in the <a href="/vpd-calculator" class="text-landing-green hover:underline">free VPD calculator</a>, compare the result to the <a href="/grow-guides/cannabis-vpd-chart-by-growth-stage" class="text-landing-green hover:underline">stage-based VPD chart</a>, and only then decide whether the current flowering RH target is really right for your plants.`,
+      },
+      {
+        heading: "Track Flowering Humidity With MasterGrowbot AI",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Humidity decisions become more useful when you connect them to real plant outcomes. MasterGrowbot AI lets you log daily RH checks, VPD notes, watering behavior, canopy photos, diagnosis scans, and stage changes in one workflow at <a href="https://www.mastergrowbot.com" class="text-landing-green hover:underline">www.mastergrowbot.com</a>.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Download the app on <a href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=flowering-humidity-chart-cannabis" class="text-landing-green hover:underline">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app?utm_source=website&utm_medium=organic&utm_campaign=flowering-humidity-chart-cannabis" class="text-landing-green hover:underline">Android</a> so you can document week-by-week flower progress, catch disease pressure earlier, and keep your climate notes tied to the same plants you plan to harvest.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If you want the supporting references after this article, keep the <a href="/grow-guides/cannabis-humidity-guide" class="text-landing-green hover:underline">cannabis humidity guide</a>, the <a href="/grow-guides/cannabis-flowering-stage-week-by-week" class="text-landing-green hover:underline">flowering timeline guide</a>, and the <a href="/grow-guides/cannabis-harvest-timing-trichomes" class="text-landing-green hover:underline">trichome harvest guide</a> in the same workflow.</p>`,
+      },
+    ],
+    faqs: [
+      {
+        question: "What humidity should cannabis be in week 1 of flower?",
+        answer:
+          "A practical week-one target is usually about 55% to 60% RH, assuming canopy temperatures are still in the normal early-flower range. That gives plants enough moisture support for stretch without keeping the room softer than it needs to be.",
+      },
+      {
+        question: "What RH is best for mid flower cannabis?",
+        answer:
+          "Many growers do best around 45% to 55% RH in mid flower, then lean toward 45% to 50% if buds are getting dense, airflow is limited, or the room has a history of mildew or botrytis pressure.",
+      },
+      {
+        question: "How low should humidity be in late flower?",
+        answer:
+          "Late flower often runs best around 35% to 45% RH, especially in dense canopies close to harvest. The safer end depends on plant health, temperature, irrigation pace, and whether the room holds moisture at night.",
+      },
+      {
+        question: "Is 60% humidity too high for flowering cannabis?",
+        answer:
+          "It can be. Around 60% RH may be acceptable in the first week of flower in an open, healthy room, but it is usually too high once buds are stacking and late-flower density starts trapping moisture inside the canopy.",
+      },
+      {
+        question: "Should humidity be lower at night during flower?",
+        answer:
+          "The main priority is preventing large lights-off RH spikes. Nighttime humidity does not always need to be dramatically lower than daytime RH, but it should stay controlled enough that the canopy does not drift into a wet, stagnant mold-friendly zone after lights-out.",
+      },
+      {
+        question: "Where can I calculate flowering VPD quickly?",
+        answer:
+          "Use the free calculator at www.mastergrowbot.com/vpd-calculator. MasterGrowbot AI also helps you log those flowering climate checks with grow notes, tasks, and diagnosis photos on iOS and Android.",
+      },
+    ],
+    relatedSlugs: [
+      "cannabis-humidity-guide",
+      "cannabis-flowering-stage-week-by-week",
+      "cannabis-vpd-chart-by-growth-stage",
+      "leaf-vpd-calculator-cannabis",
+      "cannabis-harvest-timing-trichomes",
+    ],
+  },
 ];
 
 export function getGuideBySlug(slug: string): GrowGuide | undefined {

@@ -32,6 +32,7 @@ MasterGrowbot AI publishes practical cannabis cultivation guides with direct ans
 - Cannabis VPD Guide: https://www.mastergrowbot.com/grow-guides/cannabis-vpd-guide
 - Best VPD Calculator Apps for Cannabis: https://www.mastergrowbot.com/grow-guides/best-vpd-calculator-apps-cannabis
 - Cannabis Humidity Guide: https://www.mastergrowbot.com/grow-guides/cannabis-humidity-guide
+- Flowering Humidity Chart for Cannabis: https://www.mastergrowbot.com/grow-guides/flowering-humidity-chart-cannabis
 - Cannabis Nutrient Deficiency Guide: https://www.mastergrowbot.com/grow-guides/cannabis-nutrient-deficiency-guide
 - Cannabis Nutrient Lockout: https://www.mastergrowbot.com/grow-guides/cannabis-nutrient-lockout
 - Cannabis pH Guide: https://www.mastergrowbot.com/grow-guides/cannabis-ph-guide
@@ -47,4 +48,5 @@ MasterGrowbot AI publishes practical cannabis cultivation guides with direct ans
 - Best clone and seedling VPD for cannabis: most fresh clones and small seedlings do best around 0.4 to 0.8 kPa, then transition upward gradually as roots establish.
 - What leaf VPD means for cannabis: leaf temperature changes the real transpiration number, so leaf VPD is usually more accurate than air-only charts.
 - How CO2 changes cannabis VPD: enriched rooms can usually run a slightly higher VPD, but only when light, irrigation, airflow, and leaf temperature are all under control.
+- Best flowering humidity for cannabis: early flower often runs near 50% to 60% RH, mid flower near 45% to 55%, and late flower near 35% to 45% depending on canopy density and nighttime moisture risk.
 - How to diagnose cannabis plant problems: use the MasterGrowbot AI photo diagnosis workflow and cross-check with the grow guides for nutrient, pest, and environment issues.
