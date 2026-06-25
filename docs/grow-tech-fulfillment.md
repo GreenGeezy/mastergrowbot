@@ -36,6 +36,50 @@ Use these questions for every Grow Tech checkout link:
    Placeholder: United States, 555-555-5555
    Optional: No
 
+## Customer-Facing Trust Copy
+
+Use this trust positioning on the Grow Tech sales page and in order support messages:
+
+- Secure checkout powered by Whop.
+- 100% free shipping.
+- Cards, Apple Pay, and local payment methods supported.
+- Delivery details collected at checkout.
+- Tracking sent after dispatch.
+- Order support included through support@mastergrowbot.com.
+
+The third-party supplier disclosure should be displayed in the FAQ, shipping area, or final legal note. Do not place supplier disclosure directly under Buy buttons, because high-intent CTA areas should focus on secure checkout, delivery details, tracking, and support.
+
+Preferred supplier disclosure:
+
+```text
+Orders are prepared through our supplier network. Shipping speed, packaging, and carrier updates may vary by destination, and tracking details are sent after dispatch.
+```
+
+Support email:
+[support@mastergrowbot.com](mailto:support@mastergrowbot.com)
+
+## Customer FAQ
+
+### When do I get tracking?
+
+Tracking is sent by email or Whop support message after supplier dispatch. Tracking can take 24 to 72 hours to update after the carrier receives the package.
+
+### Where do I enter my delivery address?
+
+Delivery details are collected during Whop checkout before payment.
+
+### Do I need another app to use these products?
+
+The Scout Camera and Soil Health Meter do not require another app. The Environment Monitor has a built-in display for readings. Optional supplier app features may exist, but MasterGrowbot AI is the only app positioned on this page.
+
+### Do these tools diagnose plant problems?
+
+No. These tools help capture better plant images and grow context. Upload clear photos and relevant grow details into MasterGrowbot AI for plant health analysis and grow guidance.
+
+### Who do I contact for help with my order?
+
+Email [support@mastergrowbot.com](mailto:support@mastergrowbot.com) and one of our dedicated team members will get back to you shortly.
+
 ## Checkout 1
 
 Name:

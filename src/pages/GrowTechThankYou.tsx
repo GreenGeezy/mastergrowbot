@@ -46,8 +46,8 @@ export default function GrowTechThankYou() {
               Thank you for your MasterGrowbot AI Grow Tech order
             </h1>
             <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
-              Your purchase has been received. Please check the email address you entered at checkout for your receipt,
-              order details, and delivery updates.
+              Your order is confirmed through Whop. Please check the email address you used at checkout for your
+              receipt, order details, and delivery updates.
             </p>
             <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-white/[0.08] bg-black/35 p-5 text-left text-sm leading-relaxed text-white/58">
               <p>
@@ -55,9 +55,7 @@ export default function GrowTechThankYou() {
                 tracking details and estimated delivery information will be sent to the email address used during
                 checkout.
               </p>
-              <p className="mt-4">
-                Please check your inbox and spam folder so you do not miss important order updates.
-              </p>
+              <p className="mt-4">Check your inbox and spam folder so you do not miss your tracking update.</p>
             </div>
           </div>
         </section>

@@ -1,6 +1,19 @@
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, Check, ChevronLeft, ChevronRight, Leaf, ShieldCheck, Star, Truck } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  CircleHelp,
+  CreditCard,
+  Headphones,
+  Leaf,
+  PackageCheck,
+  ShieldCheck,
+  Star,
+  Truck,
+} from "lucide-react";
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import ParticleBackground from "@/components/landing/ParticleBackground";
@@ -17,6 +30,7 @@ type GrowTechProduct = {
   badge: string;
   price: string;
   description: string;
+  whyBuy: string;
   bestFor: string[];
   buttonLabel: string;
   image: string;
@@ -40,6 +54,7 @@ const products: GrowTechProduct[] = [
     price: "$149",
     description:
       "Upgrade your plant photos before uploading them into MasterGrowbot AI. The Scout Camera 10-20X clips onto your iPhone or Android phone so you can capture sharper close-up photos of leaves, stems, buds, pest damage, trichomes, and plant health symptoms without losing the full plant context AI analysis needs.",
+    whyBuy: "Sharper plant photos before asking MasterGrowbot AI.",
     bestFor: [
       "AI plant health scans",
       "Leaf and bud closeups",
@@ -58,6 +73,7 @@ const products: GrowTechProduct[] = [
     price: "$89",
     description:
       "Track grow-room temperature, humidity, CO2, air quality, particulates, and VOC context before asking MasterGrowbot AI for plant health guidance. The Environment Monitor helps growers document grow-room conditions alongside plant photos and grow journal notes.",
+    whyBuy: "Better grow-room context for plant scans and journal notes.",
     bestFor: [
       "Temperature monitoring",
       "Humidity monitoring",
@@ -76,6 +92,7 @@ const products: GrowTechProduct[] = [
     price: "$59",
     description:
       "Check soil moisture, pH, temperature, fertility, light, and air humidity context before asking MasterGrowbot AI for plant health guidance. The Soil Health Meter 6-in-1 helps growers document root-zone and environment readings for better grow journal notes, watering decisions, and AI scan context.",
+    whyBuy: "Quick soil, light, and humidity context before AI scans.",
     bestFor: [
       "Soil moisture checks",
       "pH context",
@@ -97,6 +114,7 @@ const bundle: GrowTechProduct = {
   price: "$247",
   description:
     "Get the full MasterGrowbot AI Grow Tech setup with the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want better plant photos, better environment data, and better soil and light context for MasterGrowbot AI.",
+  whyBuy: "The complete AI scan setup with $50 bundle savings.",
   bestFor: [
     "Complete AI scan setup",
     "Better plant photos",
@@ -104,7 +122,7 @@ const bundle: GrowTechProduct = {
     "Soil and light context",
     "Premium grow documentation",
   ],
-  buttonLabel: "Buy the Kit",
+  buttonLabel: "Buy the Kit and Save $50",
   image: "/images/grow-tech/grow-tech-kit.png",
   alt: "MasterGrowbot AI Grow Tech Kit with camera lens, environment monitor, and soil health meter.",
   checkoutKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL",
@@ -122,6 +140,36 @@ const useCases = [
   {
     title: "Less guessing during the grow",
     text: "Use simple grow tech tools to document what changed before small issues become bigger problems.",
+  },
+];
+
+const trustStripItems = [
+  { text: "Secure checkout powered by Whop", icon: ShieldCheck },
+  { text: "100% free shipping", icon: Truck },
+  { text: "Cards, Apple Pay, and local payment methods supported", icon: CreditCard },
+  { text: "Tracking sent after supplier dispatch", icon: PackageCheck },
+];
+
+const trustCards = [
+  {
+    title: "Secure Whop Checkout",
+    text: "Complete your one-time purchase through Whop's hosted checkout with supported card, Apple Pay, and local payment options.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "100% Free Shipping",
+    text: "Every MasterGrowbot AI Grow Tech product includes free shipping, with no surprise shipping charge added on the product page.",
+    icon: Truck,
+  },
+  {
+    title: "Delivery Details at Checkout",
+    text: "Whop asks for your delivery name, address, country, and delivery phone before payment so your order can be fulfilled correctly.",
+    icon: CreditCard,
+  },
+  {
+    title: "Tracking After Dispatch",
+    text: "After your order ships, tracking details are sent by email or Whop support message.",
+    icon: PackageCheck,
   },
 ];
 
@@ -155,6 +203,35 @@ const educationCards = [
   },
 ];
 
+const faqs = [
+  {
+    question: "When do I get tracking?",
+    answer:
+      "Tracking is sent by email or Whop support message after supplier dispatch. Tracking can take 24 to 72 hours to update after the carrier receives the package.",
+  },
+  {
+    question: "Where do I enter my delivery address?",
+    answer: "Delivery details are collected during Whop checkout before payment.",
+  },
+  {
+    question: "Do I need another app to use these products?",
+    answer:
+      "The Scout Camera and Soil Health Meter do not require another app. The Environment Monitor has a built-in display for readings. Optional supplier app features may exist, but MasterGrowbot AI is the only app positioned on this page.",
+  },
+  {
+    question: "Do these tools diagnose plant problems?",
+    answer:
+      "No. These tools help capture better plant images and grow context. Upload clear photos and relevant grow details into MasterGrowbot AI for plant health analysis and grow guidance.",
+  },
+  {
+    question: "Who do I contact for help with my order?",
+    answer: "Email support@mastergrowbot.com and one of our dedicated team members will get back to you shortly.",
+  },
+];
+
+const supplierDisclosure =
+  "Orders are prepared through our supplier network. Shipping speed, packaging, and carrier updates may vary by destination, and tracking details are sent after dispatch.";
+
 function RatingLine() {
   return (
     <div className="space-y-1">
@@ -168,7 +245,37 @@ function RatingLine() {
   );
 }
 
-function CheckoutButton({ product, className = "" }: { product: GrowTechProduct; className?: string }) {
+function PaymentChips({ bundleStyle = false }: { bundleStyle?: boolean }) {
+  const chips = bundleStyle
+    ? ["Secure Whop checkout", "100% free shipping", "Tracking sent after dispatch", "Order support included"]
+    : ["Card", "Apple Pay", "Local Payments", "100% Free Shipping"];
+
+  return (
+    <div className="mt-3 flex flex-wrap gap-2">
+      {chips.map((chip) => (
+        <span
+          key={chip}
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/35 px-2.5 py-1 text-[11px] font-semibold text-white/60"
+        >
+          <Check className="h-3 w-3 text-landing-green" aria-hidden="true" />
+          {chip}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function CheckoutButton({
+  product,
+  className = "",
+  compact = false,
+  showTrust = true,
+}: {
+  product: GrowTechProduct;
+  className?: string;
+  compact?: boolean;
+  showTrust?: boolean;
+}) {
   const checkoutUrl = checkoutUrls[product.checkoutKey];
 
   if (!checkoutUrl) {
@@ -179,7 +286,7 @@ function CheckoutButton({ product, className = "" }: { product: GrowTechProduct;
           disabled
           className="inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-white/10 px-4 py-3 text-sm font-semibold text-white/45"
         >
-          {product.buttonLabel}
+          {compact ? "Buy the Kit" : product.buttonLabel}
         </button>
         <p className="mt-2 text-xs font-medium text-amber-200/80">Checkout link coming soon.</p>
       </div>
@@ -194,12 +301,20 @@ function CheckoutButton({ product, className = "" }: { product: GrowTechProduct;
         rel="noopener noreferrer"
         className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
       >
-        {product.buttonLabel}
+        {compact ? "Buy the Kit" : product.buttonLabel}
         <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </a>
-      <p className="mt-2 text-xs font-medium text-white/45">
-        Shipping details are collected during Whop checkout before payment.
-      </p>
+      {showTrust && (
+        <div className="mt-3 rounded-lg border border-white/[0.08] bg-black/30 p-3">
+          <p className="flex items-center gap-2 text-sm font-semibold text-white/78">
+            <ShieldCheck className="h-4 w-4 text-landing-green" aria-hidden="true" />
+            Secure checkout powered by Whop
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-white/58">
+            Delivery details collected at checkout. Tracking sent after dispatch.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
@@ -230,8 +345,16 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
         <div className="space-y-3">
           <h2 className="text-xl font-semibold leading-snug tracking-tight text-white font-sans">{product.name}</h2>
           <RatingLine />
-          <p className="text-3xl font-semibold text-white">{product.price}</p>
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Launch price</p>
+            <p className="text-3xl font-semibold text-white">{product.price}</p>
+          </div>
           <p className="text-sm leading-relaxed text-white/62">{product.description}</p>
+        </div>
+
+        <div className="mt-5 rounded-lg border border-landing-green/15 bg-landing-green/5 p-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Why growers buy it</p>
+          <p className="mt-1 text-sm font-medium leading-relaxed text-white/72">{product.whyBuy}</p>
         </div>
 
         <div className="mt-5 space-y-3">
@@ -247,8 +370,53 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
         </div>
 
         <CheckoutButton product={product} className="mt-auto pt-6" />
+        <PaymentChips />
       </div>
     </article>
+  );
+}
+
+function HeroTrustStrip() {
+  return (
+    <div className="grid grid-cols-2 gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] p-3 shadow-xl shadow-black/20 backdrop-blur-xl sm:grid-cols-4">
+      {trustStripItems.map(({ text, icon: Icon }) => (
+        <div key={text} className="flex items-center gap-2 text-left text-xs font-semibold leading-snug text-white/64">
+          <Icon className="h-4 w-4 shrink-0 text-landing-green" aria-hidden="true" />
+          <span>{text}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TrustSection() {
+  return (
+    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mx-auto mb-10 max-w-3xl text-center">
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
+            BUY WITH CONFIDENCE
+          </span>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+            Secure checkout. Free shipping. Clear order updates.
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {trustCards.map(({ title, text, icon: Icon }) => (
+            <article
+              key={title}
+              className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
+            >
+              <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-landing-green/12 text-landing-green">
+                <Icon className="h-5 w-5" aria-hidden="true" />
+              </div>
+              <h3 className="text-xl font-semibold text-white font-sans">{title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-white/60">{text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -321,6 +489,228 @@ function UseCaseCarousel() {
   );
 }
 
+function MidPageKitCta() {
+  return (
+    <section className="relative z-10 px-4 pb-6 sm:px-6">
+      <div className="mx-auto flex max-w-6xl flex-col gap-5 rounded-xl border border-landing-green/20 bg-landing-green/10 p-5 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div>
+          <h2 className="text-2xl font-semibold tracking-tight text-white font-sans">
+            Want the complete scan setup?
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/62">
+            Get the Scout Camera, Environment Monitor, and Soil Health Meter 6-in-1 together and save $50.
+          </p>
+        </div>
+        <CheckoutButton product={bundle} compact showTrust={false} className="sm:w-44" />
+      </div>
+    </section>
+  );
+}
+
+function BundleSection() {
+  return (
+    <section id="bundle" className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto mb-8 max-w-7xl">
+        <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
+          Best Value Setup
+        </span>
+        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+          Get the full scan workflow for less than buying each tool separately.
+        </h2>
+      </div>
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 rounded-xl border border-landing-green/25 bg-gradient-to-br from-landing-green/14 via-white/[0.04] to-white/[0.02] p-5 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
+        <div className="overflow-hidden rounded-lg border border-white/10 bg-black/40">
+          <img
+            src={bundle.image}
+            alt={bundle.alt}
+            className="aspect-[4/3] h-full w-full object-cover"
+            loading="lazy"
+            width={900}
+            height={675}
+          />
+        </div>
+        <div className="flex flex-col justify-center">
+          <div className="mb-3 flex flex-wrap gap-2">
+            <span className="inline-flex w-fit rounded-full border border-landing-green/35 bg-black/35 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-landing-green">
+              {bundle.badge}
+            </span>
+            <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-landing-green/25 bg-black/35 px-3 py-1 text-xs font-semibold text-white/75">
+              <Truck className="h-3.5 w-3.5 text-landing-green" aria-hidden="true" />
+              100% Free Shipping
+            </span>
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">{bundle.name}</h2>
+          <div className="mt-3">
+            <RatingLine />
+          </div>
+          <div className="mt-5 grid gap-3 rounded-xl border border-white/[0.08] bg-black/30 p-4 sm:grid-cols-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/38">Individual total</p>
+              <p className="mt-1 text-2xl font-semibold text-white/60">$297</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Kit price</p>
+              <p className="mt-1 text-3xl font-semibold text-white">{bundle.price}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">You save</p>
+              <p className="mt-1 text-3xl font-semibold text-landing-green">$50</p>
+            </div>
+          </div>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/62">{bundle.description}</p>
+          <div className="mt-5 rounded-lg border border-landing-green/15 bg-landing-green/5 p-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Why growers buy it</p>
+            <p className="mt-1 text-sm font-medium leading-relaxed text-white/72">{bundle.whyBuy}</p>
+          </div>
+          <ul className="mt-6 grid gap-2 sm:grid-cols-2">
+            {bundle.bestFor.map((item) => (
+              <li key={item} className="flex gap-2 text-sm text-white/65">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-landing-green" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <CheckoutButton product={bundle} className="mt-7 sm:w-fit" />
+          <PaymentChips bundleStyle />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ShippingSection() {
+  return (
+    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-10 max-w-3xl">
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">Fulfillment</span>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+            How Shipping Works
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          {shippingCards.map((card) => (
+            <article
+              key={card.title}
+              className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
+            >
+              <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-landing-green/12 text-landing-green">
+                <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+              </div>
+              <h3 className="text-xl font-semibold text-white font-sans">{card.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-white/60">{card.text}</p>
+            </article>
+          ))}
+        </div>
+        <p className="mt-6 rounded-xl border border-white/[0.08] bg-white/[0.035] p-5 text-sm leading-relaxed text-white/58 backdrop-blur-xl">
+          {supplierDisclosure}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function OrderSupportSection() {
+  return (
+    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-5xl rounded-xl border border-landing-green/20 bg-white/[0.035] p-6 shadow-2xl shadow-black/25 backdrop-blur-xl sm:p-8">
+        <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">ORDER SUPPORT</span>
+        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+          We keep you updated after purchase
+        </h2>
+        <p className="mt-4 max-w-3xl text-base leading-relaxed text-white/64">
+          After checkout, you will receive your Whop receipt and MasterGrowbot AI order message. Once your product
+          ships, tracking details are sent to the email used during checkout.
+        </p>
+        <p className="mt-5 flex flex-col gap-2 rounded-lg border border-white/[0.08] bg-black/30 p-4 text-sm leading-relaxed text-white/62 sm:flex-row sm:items-center">
+          <Headphones className="h-5 w-5 shrink-0 text-landing-green" aria-hidden="true" />
+          <span>
+            Need help with your order? Email{" "}
+            <a href="mailto:support@mastergrowbot.com" className="font-semibold text-landing-green hover:underline">
+              support@mastergrowbot.com
+            </a>{" "}
+            and one of our dedicated team members will get back to you shortly.
+          </span>
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function FaqSection() {
+  return (
+    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-5xl">
+        <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">QUESTIONS</span>
+        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+          Grow Tech Order FAQ
+        </h2>
+        <div className="mt-8 space-y-4">
+          {faqs.map((faq) => (
+            <article
+              key={faq.question}
+              className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-5 shadow-xl shadow-black/20 backdrop-blur-xl"
+            >
+              <div className="flex gap-3">
+                <CircleHelp className="mt-1 h-5 w-5 shrink-0 text-landing-green" aria-hidden="true" />
+                <div>
+                  <h3 className="text-lg font-semibold text-white font-sans">{faq.question}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/60">
+                    {faq.answer.includes("support@mastergrowbot.com") ? (
+                      <>
+                        Email{" "}
+                        <a
+                          href="mailto:support@mastergrowbot.com"
+                          className="font-semibold text-landing-green hover:underline"
+                        >
+                          support@mastergrowbot.com
+                        </a>{" "}
+                        and one of our dedicated team members will get back to you shortly.
+                      </>
+                    ) : (
+                      faq.answer
+                    )}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StickyMobileCta() {
+  const checkoutUrl = checkoutUrls.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL;
+
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/88 px-4 py-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:hidden">
+      <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
+        <p className="text-sm font-semibold text-white">Grow Tech Kit saves $50</p>
+        {checkoutUrl ? (
+          <a
+            href={checkoutUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-landing-green px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-landing-green/90 focus:outline-none focus:ring-2 focus:ring-landing-green"
+          >
+            Buy the Kit
+          </a>
+        ) : (
+          <button
+            type="button"
+            disabled
+            className="inline-flex shrink-0 cursor-not-allowed items-center justify-center rounded-lg bg-white/10 px-4 py-2.5 text-sm font-semibold text-white/45"
+          >
+            Buy the Kit
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function GrowTech() {
   const productJsonLd = useMemo(
     () => ({
@@ -347,7 +737,7 @@ export default function GrowTech() {
   );
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-black text-white">
+    <div className="min-h-screen overflow-x-hidden bg-black pb-24 text-white sm:pb-0">
       <SEOHead
         title="MasterGrowbot AI Grow Tech | AI Plant Cameras and Grow Tools"
         description="Shop MasterGrowbot AI Grow Tech for plant cameras, environment monitors, soil health meters, and better AI-assisted cannabis plant analysis."
@@ -390,12 +780,13 @@ export default function GrowTech() {
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </a>
                 <a
-                  href="#products"
+                  href="#bundle"
                   className="inline-flex w-full items-center justify-center rounded-lg border border-white/10 px-5 py-3.5 text-sm font-semibold text-white/75 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green sm:w-auto"
                 >
-                  Explore Products
+                  Compare the Kit
                 </a>
               </div>
+              <HeroTrustStrip />
             </div>
 
             <div className="relative mx-auto w-full max-w-xl">
@@ -411,7 +802,7 @@ export default function GrowTech() {
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/75 to-transparent p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
-                    Complete setup
+                    Launch kit pricing
                   </p>
                   <p className="mt-1 text-lg font-semibold text-white">{bundle.name}</p>
                 </div>
@@ -438,82 +829,12 @@ export default function GrowTech() {
           </div>
         </section>
 
+        <TrustSection />
         <UseCaseCarousel />
-
-        <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 rounded-xl border border-landing-green/20 bg-gradient-to-br from-landing-green/12 via-white/[0.035] to-white/[0.02] p-5 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
-            <div className="overflow-hidden rounded-lg border border-white/10 bg-black/40">
-              <img
-                src={bundle.image}
-                alt={bundle.alt}
-                className="aspect-[4/3] h-full w-full object-cover"
-                loading="lazy"
-                width={900}
-                height={675}
-              />
-            </div>
-            <div className="flex flex-col justify-center">
-              <div className="mb-3 flex flex-wrap gap-2">
-                <span className="inline-flex w-fit rounded-full border border-landing-green/35 bg-black/35 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-landing-green">
-                  {bundle.badge}
-                </span>
-                <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-landing-green/25 bg-black/35 px-3 py-1 text-xs font-semibold text-white/75">
-                  <Truck className="h-3.5 w-3.5 text-landing-green" aria-hidden="true" />
-                  100% Free Shipping
-                </span>
-              </div>
-              <h2 className="text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">{bundle.name}</h2>
-              <div className="mt-3">
-                <RatingLine />
-              </div>
-              <p className="mt-4 text-4xl font-semibold text-white">{bundle.price}</p>
-              <p className="mt-2 text-sm font-semibold text-landing-green">
-                Individual total is $297. Bundle price is $247.
-              </p>
-              <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/62">{bundle.description}</p>
-              <ul className="mt-6 grid gap-2 sm:grid-cols-2">
-                {bundle.bestFor.map((item) => (
-                  <li key={item} className="flex gap-2 text-sm text-white/65">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-landing-green" aria-hidden="true" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <CheckoutButton product={bundle} className="mt-7 sm:w-fit" />
-            </div>
-          </div>
-        </section>
-
-        <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-10 max-w-3xl">
-              <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
-                Fulfillment
-              </span>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-                How Shipping Works
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-              {shippingCards.map((card) => (
-                <article
-                  key={card.title}
-                  className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
-                >
-                  <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-landing-green/12 text-landing-green">
-                    <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white font-sans">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">{card.text}</p>
-                </article>
-              ))}
-            </div>
-            <p className="mt-6 rounded-xl border border-white/[0.08] bg-white/[0.035] p-5 text-sm leading-relaxed text-white/56 backdrop-blur-xl">
-              Orders are fulfilled through third-party suppliers. Packaging, shipping speed, and carrier updates may
-              vary. Tracking information will be sent after supplier dispatch.
-            </p>
-          </div>
-        </section>
+        <MidPageKitCta />
+        <BundleSection />
+        <ShippingSection />
+        <OrderSupportSection />
 
         <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
           <div className="mx-auto max-w-7xl">
@@ -542,6 +863,8 @@ export default function GrowTech() {
           </div>
         </section>
 
+        <FaqSection />
+
         <section className="relative z-10 px-4 pb-20 sm:px-6 sm:pb-28">
           <div className="mx-auto max-w-4xl space-y-5 rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 text-sm leading-relaxed text-white/58 backdrop-blur-xl sm:p-8">
             <p>
@@ -549,15 +872,13 @@ export default function GrowTech() {
               diagnose plant issues by themselves. Upload clear photos and relevant grow details into MasterGrowbot AI
               for plant health analysis and grow guidance.
             </p>
-            <p>
-              Orders are fulfilled through third-party suppliers. Packaging, shipping speed, and carrier updates may
-              vary. Tracking information will be sent after supplier dispatch.
-            </p>
+            <p>{supplierDisclosure}</p>
           </div>
         </section>
       </main>
 
       <LandingFooter />
+      <StickyMobileCta />
     </div>
   );
 }
