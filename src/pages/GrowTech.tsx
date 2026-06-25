@@ -27,11 +27,17 @@ type CheckoutKey =
 
 type GrowTechProduct = {
   name: string;
+  displayName?: string;
   badge: string;
   price: string;
   description: string;
   whyBuy: string;
   bestFor: string[];
+  dataCollected: string;
+  comparisonBestFor: string;
+  aiHelp: string;
+  sku: string;
+  category: string;
   buttonLabel: string;
   image: string;
   alt: string;
@@ -52,16 +58,14 @@ const products: GrowTechProduct[] = [
     name: "MasterGrowbot AI Scout Camera 10-20X",
     badge: "Premium",
     price: "$149",
-    description:
-      "Upgrade your plant photos before uploading them into MasterGrowbot AI. The Scout Camera 10-20X clips onto your iPhone or Android phone so you can capture sharper close-up photos of leaves, stems, buds, pest damage, trichomes, and plant health symptoms without losing the full plant context AI analysis needs.",
-    whyBuy: "Sharper plant photos before asking MasterGrowbot AI.",
-    bestFor: [
-      "AI plant health scans",
-      "Leaf and bud closeups",
-      "Pest and disease photos",
-      "Grow journal documentation",
-      "Better photos before asking MasterGrowbot AI",
-    ],
+    description: "Capture sharper close-up plant photos before uploading them into MasterGrowbot AI.",
+    whyBuy: "Sharper plant photos before AI analysis.",
+    bestFor: ["Plant health scans", "Leaf and bud closeups", "Pest and disease photos", "Grow journal photos"],
+    dataCollected: "Leaf, bud, pest, and trichome images",
+    comparisonBestFor: "Clearer close-up plant photos",
+    aiHelp: "Improves photo inputs for plant scans",
+    sku: "MGB-AI-SCOUT-10-20X",
+    category: "Plant health scan camera",
     buttonLabel: "Buy Now",
     image: "/images/grow-tech/ai-scout-camera-10-20x.png",
     alt: "MasterGrowbot AI Scout Camera 10-20X clipped onto a smartphone for cannabis plant close-up scans.",
@@ -71,16 +75,14 @@ const products: GrowTechProduct[] = [
     name: "MasterGrowbot AI Environment Monitor",
     badge: "Environment Data",
     price: "$89",
-    description:
-      "Track grow-room temperature, humidity, CO2, air quality, particulates, and VOC context before asking MasterGrowbot AI for plant health guidance. The Environment Monitor helps growers document grow-room conditions alongside plant photos and grow journal notes.",
-    whyBuy: "Better grow-room context for plant scans and journal notes.",
-    bestFor: [
-      "Temperature monitoring",
-      "Humidity monitoring",
-      "CO2 context",
-      "Air quality checks",
-      "Better environmental notes for MasterGrowbot AI",
-    ],
+    description: "Track grow-room temperature, humidity, CO2, and air quality context for better grow notes.",
+    whyBuy: "Better grow-room context for AI scans.",
+    bestFor: ["Temperature monitoring", "Humidity monitoring", "CO2 context", "Air quality checks"],
+    dataCollected: "Temperature, humidity, CO2, air quality, particulates, VOC context",
+    comparisonBestFor: "Grow-room environment context",
+    aiHelp: "Adds environment notes to plant scans and grow journals",
+    sku: "MGB-AI-ENV-MONITOR",
+    category: "Grow room environment monitor",
     buttonLabel: "Buy Now",
     image: "/images/grow-tech/climate-sensor.png",
     alt: "MasterGrowbot AI Environment Monitor tracking air quality, temperature, humidity, and CO2 in an indoor cannabis grow tent.",
@@ -88,19 +90,17 @@ const products: GrowTechProduct[] = [
   },
   {
     name: "MasterGrowbot AI Soil Health Meter 6-in-1",
+    displayName: "MasterGrowbot AI Soil Health Meter 6-in-1",
     badge: "Soil Data",
     price: "$59",
-    description:
-      "Check soil moisture, pH, temperature, fertility, light, and air humidity context before asking MasterGrowbot AI for plant health guidance. The Soil Health Meter 6-in-1 helps growers document root-zone and environment readings for better grow journal notes, watering decisions, and AI scan context.",
-    whyBuy: "Quick soil, light, and humidity context before AI scans.",
-    bestFor: [
-      "Soil moisture checks",
-      "pH context",
-      "Temperature readings",
-      "Fertility context",
-      "Light and humidity notes",
-      "Better grow journal data",
-    ],
+    description: "Check soil, light, and humidity context before asking MasterGrowbot AI for plant guidance.",
+    whyBuy: "Quick soil and light context before AI scans.",
+    bestFor: ["Soil moisture checks", "pH context", "Temperature readings", "Light and humidity notes"],
+    dataCollected: "Soil moisture, pH, temperature, fertility, light, air humidity",
+    comparisonBestFor: "Soil, light, and root-zone context",
+    aiHelp: "Adds soil and environment readings to grow notes",
+    sku: "MGB-AI-SOIL-6IN1",
+    category: "Soil health meter for cannabis",
     buttonLabel: "Buy Now",
     image: "/images/grow-tech/root-zone-meter.png",
     alt: "MasterGrowbot AI Soil Health Meter 6-in-1 checking soil moisture and plant context in a cannabis fabric pot.",
@@ -122,6 +122,11 @@ const bundle: GrowTechProduct = {
     "Soil and light context",
     "Premium grow documentation",
   ],
+  dataCollected: "Photos, environment data, soil and light context",
+  comparisonBestFor: "Complete AI scan setup",
+  aiHelp: "Combines cleaner photos with better grow context",
+  sku: "MGB-AI-GROW-TECH-KIT",
+  category: "Cannabis grow tech kit",
   buttonLabel: "Buy the Kit and Save $50",
   image: "/images/grow-tech/grow-tech-kit.png",
   alt: "MasterGrowbot AI Grow Tech Kit with camera lens, environment monitor, and soil health meter.",
@@ -205,13 +210,13 @@ const educationCards = [
 
 const faqs = [
   {
+    question: "Where do I enter my shipping address?",
+    answer: "Shipping address and delivery details are collected during Whop checkout before payment.",
+  },
+  {
     question: "When do I get tracking?",
     answer:
       "Tracking is sent by email or Whop support message after supplier dispatch. Tracking can take 24 to 72 hours to update after the carrier receives the package.",
-  },
-  {
-    question: "Where do I enter my delivery address?",
-    answer: "Delivery details are collected during Whop checkout before payment.",
   },
   {
     question: "Do I need another app to use these products?",
@@ -227,41 +232,136 @@ const faqs = [
     question: "Who do I contact for help with my order?",
     answer: "Email support@mastergrowbot.com and one of our dedicated team members will get back to you shortly.",
   },
+  {
+    question: "What is the return policy?",
+    answer:
+      "Unused, unopened Grow Tech products may be eligible for return within 30 days of delivery. Customers are responsible for return shipping unless the item arrives damaged or incorrect. Email support@mastergrowbot.com for help.",
+  },
 ];
 
 const supplierDisclosure =
   "Orders are prepared through our supplier network. Shipping speed, packaging, and carrier updates may vary by destination, and tracking details are sent after dispatch.";
 
+const shippingDetails = {
+  "@type": "OfferShippingDetails",
+  shippingRate: {
+    "@type": "MonetaryAmount",
+    value: 0,
+    currency: "USD",
+  },
+  shippingDestination: {
+    "@type": "DefinedRegion",
+    addressCountry: "US",
+  },
+  deliveryTime: {
+    "@type": "ShippingDeliveryTime",
+    handlingTime: {
+      "@type": "QuantitativeValue",
+      minValue: 1,
+      maxValue: 5,
+      unitCode: "DAY",
+    },
+    transitTime: {
+      "@type": "QuantitativeValue",
+      minValue: 7,
+      maxValue: 21,
+      unitCode: "DAY",
+    },
+  },
+};
+
+const hasMerchantReturnPolicy = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: "US",
+  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+  merchantReturnDays: 30,
+  returnMethod: "https://schema.org/ReturnByMail",
+  returnFees: "https://schema.org/ReturnShippingFees",
+};
+
 function RatingLine() {
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       <div className="flex items-center gap-1" aria-label="Five star product pick">
         {Array.from({ length: 5 }).map((_, index) => (
-          <Star key={index} className="h-4 w-4 fill-gold text-gold" aria-hidden="true" />
+          <Star key={index} className="h-3.5 w-3.5 fill-gold text-gold" aria-hidden="true" />
         ))}
       </div>
-      <p className="text-xs font-medium text-white/50">Premium grow-tech pick</p>
+      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/42">Premium grow-tech pick</p>
     </div>
   );
 }
 
-function PaymentChips({ bundleStyle = false }: { bundleStyle?: boolean }) {
-  const chips = bundleStyle
-    ? ["Secure Whop checkout", "100% free shipping", "Tracking sent after dispatch", "Order support included"]
-    : ["Card", "Apple Pay", "Local Payments", "100% Free Shipping"];
+function PaymentBadges() {
+  const badges = ["VISA", "Mastercard", "AMEX", "Apple Pay", "Local Payments"];
+
+  return (
+    <div className="mt-3 flex flex-wrap gap-2" aria-label="Supported payment methods">
+      {badges.map((badge) => (
+        <span
+          key={badge}
+          className="inline-flex min-h-7 items-center rounded-md border border-white/12 bg-black/45 px-2.5 py-1 text-[11px] font-bold tracking-wide text-white/72 shadow-inner shadow-white/[0.03]"
+        >
+          {badge === "Mastercard" && (
+            <span className="mr-1.5 inline-flex items-center" aria-hidden="true">
+              <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
+              <span className="-ml-1 h-2.5 w-2.5 rounded-full bg-amber-300/85" />
+            </span>
+          )}
+          {badge}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function TrustBadges() {
+  const chips = ["Secure Whop Checkout", "100% Free Shipping", "Tracking After Dispatch", "Order Support Included"];
 
   return (
     <div className="mt-3 flex flex-wrap gap-2">
       {chips.map((chip) => (
         <span
           key={chip}
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/35 px-2.5 py-1 text-[11px] font-semibold text-white/60"
+          className="inline-flex items-center gap-1.5 rounded-full border border-landing-green/18 bg-landing-green/7 px-2.5 py-1 text-[11px] font-semibold text-white/66"
         >
           <Check className="h-3 w-3 text-landing-green" aria-hidden="true" />
           {chip}
         </span>
       ))}
     </div>
+  );
+}
+
+function ProductTitle({ product }: { product: GrowTechProduct }) {
+  if (product.name !== "MasterGrowbot AI Soil Health Meter 6-in-1") {
+    return <>{product.displayName || product.name}</>;
+  }
+
+  return (
+    <>
+      MasterGrowbot AI Soil Health Meter <span className="whitespace-nowrap">6-in-1</span>
+    </>
+  );
+}
+
+function LinkedEmailAnswer({ text }: { text: string }) {
+  const email = "support@mastergrowbot.com";
+
+  if (!text.includes(email)) {
+    return <>{text}</>;
+  }
+
+  const [before, after] = text.split(email);
+
+  return (
+    <>
+      {before}
+      <a href={`mailto:${email}`} className="font-semibold text-landing-green hover:underline">
+        {email}
+      </a>
+      {after}
+    </>
   );
 }
 
@@ -311,7 +411,7 @@ function CheckoutButton({
             Secure checkout powered by Whop
           </p>
           <p className="mt-1 text-sm leading-relaxed text-white/58">
-            Delivery details collected at checkout. Tracking sent after dispatch.
+            Shipping address collected at checkout. Tracking sent after dispatch.
           </p>
         </div>
       )}
@@ -322,7 +422,7 @@ function CheckoutButton({
 function ProductCard({ product }: { product: GrowTechProduct }) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035] shadow-2xl shadow-black/30 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-landing-green/35 hover:bg-white/[0.055] hover:shadow-landing-green/10">
-      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-emerald-950/40 via-black to-black">
+      <div className="relative aspect-[4/3] min-h-[230px] overflow-hidden bg-gradient-to-br from-emerald-950/40 via-black to-black">
         <img
           src={product.image}
           alt={product.alt}
@@ -341,27 +441,32 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <div className="space-y-3">
-          <h2 className="text-xl font-semibold leading-snug tracking-tight text-white font-sans">{product.name}</h2>
+      <div className="flex flex-1 flex-col p-6 sm:p-7">
+        <div className="space-y-4">
+          <h2
+            className="line-clamp-2 min-h-[3.25rem] text-[1.28rem] font-semibold leading-[1.22] tracking-tight text-white font-sans"
+            title={product.name}
+          >
+            <ProductTitle product={product} />
+          </h2>
           <RatingLine />
           <div className="space-y-1">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Launch price</p>
-            <p className="text-3xl font-semibold text-white">{product.price}</p>
+            <p className="text-4xl font-semibold tracking-tight text-white">{product.price}</p>
           </div>
-          <p className="text-sm leading-relaxed text-white/62">{product.description}</p>
+          <p className="min-h-[3.75rem] text-[15px] leading-7 text-white/66">{product.description}</p>
         </div>
 
-        <div className="mt-5 rounded-lg border border-landing-green/15 bg-landing-green/5 p-3">
+        <div className="mt-5 rounded-lg border border-landing-green/15 bg-landing-green/5 p-3.5">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Why growers buy it</p>
-          <p className="mt-1 text-sm font-medium leading-relaxed text-white/72">{product.whyBuy}</p>
+          <p className="mt-1 text-sm font-medium leading-6 text-white/72">{product.whyBuy}</p>
         </div>
 
         <div className="mt-5 space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35">Best for</p>
-          <ul className="space-y-2">
+          <ul className="space-y-2.5">
             {product.bestFor.map((item) => (
-              <li key={item} className="flex gap-2 text-sm text-white/62">
+              <li key={item} className="flex gap-2 text-sm leading-6 text-white/64">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-landing-green" aria-hidden="true" />
                 <span>{item}</span>
               </li>
@@ -370,7 +475,7 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
         </div>
 
         <CheckoutButton product={product} className="mt-auto pt-6" />
-        <PaymentChips />
+        <PaymentBadges />
       </div>
     </article>
   );
@@ -391,7 +496,7 @@ function HeroTrustStrip() {
 
 function TrustSection() {
   return (
-    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+    <section className="relative z-10 px-4 pt-20 pb-16 sm:px-6 sm:pt-28 sm:pb-24">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto mb-10 max-w-3xl text-center">
           <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
@@ -412,6 +517,132 @@ function TrustSection() {
               </div>
               <h3 className="text-xl font-semibold text-white font-sans">{title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-white/60">{text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AnswerSection() {
+  const cards = [
+    {
+      title: "What it helps with",
+      text: "Better plant scan photos, grow-room readings, soil context, and more useful grow journal notes.",
+    },
+    {
+      title: "Who it is for",
+      text: "Home growers, craft growers, indoor tent growers, and cannabis cultivators who want cleaner inputs before asking MasterGrowbot AI for guidance.",
+    },
+    {
+      title: "What it does not do",
+      text: "The hardware tools do not diagnose plants by themselves. They help collect clearer images and better grow context for MasterGrowbot AI.",
+    },
+  ];
+
+  return (
+    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="max-w-4xl">
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
+            AI-READY GROW TOOLS
+          </span>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+            What is MasterGrowbot AI Grow Tech?
+          </h2>
+          <p className="mt-5 text-base leading-8 text-white/64 sm:text-lg">
+            MasterGrowbot AI Grow Tech is a curated set of cannabis grow tech tools designed to help growers capture
+            better plant photos, document environment readings, and record soil context before using MasterGrowbot AI
+            for plant health analysis and grow guidance. These AI plant scan tools pair a plant health scan camera, a
+            grow room environment monitor, and a soil health meter for cannabis with the MasterGrowbot AI cannabis
+            growing app, grow journal tools, and indoor grow tent tools.
+          </p>
+        </div>
+        <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+          {cards.map((card) => (
+            <article
+              key={card.title}
+              className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
+            >
+              <h3 className="text-xl font-semibold text-white font-sans">{card.title}</h3>
+              <p className="mt-3 text-sm leading-7 text-white/62">{card.text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ComparisonTable() {
+  const rows = [...products, bundle];
+
+  return (
+    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 max-w-3xl">
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
+            Tool comparison
+          </span>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+            Compare the Grow Tech Tools
+          </h2>
+        </div>
+        <div className="hidden overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035] shadow-2xl shadow-black/25 backdrop-blur-xl lg:block">
+          <table className="w-full border-collapse text-left">
+            <thead className="bg-white/[0.04]">
+              <tr>
+                {["Tool", "Best for", "Data collected", "How it helps MasterGrowbot AI", "Price"].map((header) => (
+                  <th key={header} className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white/44">
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((product) => (
+                <tr key={product.name} className="border-t border-white/[0.06]">
+                  <td className="px-5 py-5 text-sm font-semibold leading-6 text-white">
+                    <ProductTitle product={product} />
+                  </td>
+                  <td className="px-5 py-5 text-sm leading-6 text-white/64">{product.comparisonBestFor}</td>
+                  <td className="px-5 py-5 text-sm leading-6 text-white/64">{product.dataCollected}</td>
+                  <td className="px-5 py-5 text-sm leading-6 text-white/64">{product.aiHelp}</td>
+                  <td className="px-5 py-5 text-xl font-semibold text-white">{product.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="grid grid-cols-1 gap-4 lg:hidden">
+          {rows.map((product) => (
+            <article
+              key={product.name}
+              className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-5 shadow-xl shadow-black/20 backdrop-blur-xl"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="text-lg font-semibold leading-6 text-white font-sans">
+                  <ProductTitle product={product} />
+                </h3>
+                <p className="shrink-0 text-xl font-semibold text-white">{product.price}</p>
+              </div>
+              <dl className="mt-4 space-y-3">
+                <div>
+                  <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-white/36">Best for</dt>
+                  <dd className="mt-1 text-sm leading-6 text-white/64">{product.comparisonBestFor}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-white/36">Data collected</dt>
+                  <dd className="mt-1 text-sm leading-6 text-white/64">{product.dataCollected}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-white/36">
+                    How it helps MasterGrowbot AI
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-white/64">{product.aiHelp}</dd>
+                </div>
+              </dl>
             </article>
           ))}
         </div>
@@ -571,7 +802,8 @@ function BundleSection() {
             ))}
           </ul>
           <CheckoutButton product={bundle} className="mt-7 sm:w-fit" />
-          <PaymentChips bundleStyle />
+          <TrustBadges />
+          <PaymentBadges />
         </div>
       </div>
     </section>
@@ -656,20 +888,7 @@ function FaqSection() {
                 <div>
                   <h3 className="text-lg font-semibold text-white font-sans">{faq.question}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-white/60">
-                    {faq.answer.includes("support@mastergrowbot.com") ? (
-                      <>
-                        Email{" "}
-                        <a
-                          href="mailto:support@mastergrowbot.com"
-                          className="font-semibold text-landing-green hover:underline"
-                        >
-                          support@mastergrowbot.com
-                        </a>{" "}
-                        and one of our dedicated team members will get back to you shortly.
-                      </>
-                    ) : (
-                      faq.answer
-                    )}
+                    <LinkedEmailAnswer text={faq.answer} />
                   </p>
                 </div>
               </div>
@@ -712,40 +931,82 @@ function StickyMobileCta() {
 }
 
 export default function GrowTech() {
-  const productJsonLd = useMemo(
+  const structuredData = useMemo(
     () => ({
       "@context": "https://schema.org",
-      "@graph": [...products, bundle].map((product) => ({
-        "@type": "Product",
-        name: product.name,
-        description: product.description,
-        brand: {
-          "@type": "Brand",
-          name: "MasterGrowbot AI",
+      "@graph": [
+        ...[...products, bundle].map((product) => ({
+          "@type": "Product",
+          name: product.name,
+          description: product.description,
+          image: `https://www.mastergrowbot.com${product.image}`,
+          sku: product.sku,
+          category: product.category,
+          brand: {
+            "@type": "Brand",
+            name: "MasterGrowbot AI",
+          },
+          offers: {
+            "@type": "Offer",
+            url: "https://www.mastergrowbot.com/grow-tech",
+            priceCurrency: "USD",
+            price: product.price.replace("$", ""),
+            availability: "https://schema.org/InStock",
+            itemCondition: "https://schema.org/NewCondition",
+            shippingDetails,
+            hasMerchantReturnPolicy,
+          },
+        })),
+        {
+          "@type": "FAQPage",
+          mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
         },
-        image: `https://www.mastergrowbot.com${product.image}`,
-        offers: {
-          "@type": "Offer",
-          price: product.price.replace("$", ""),
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-          url: "https://www.mastergrowbot.com/grow-tech",
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.mastergrowbot.com/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Grow Tech",
+              item: "https://www.mastergrowbot.com/grow-tech",
+            },
+          ],
         },
-      })),
+      ],
     }),
     [],
   );
 
+  // TODO: Only add aggregateRating and Review structured data after real customer reviews are collected and displayed visibly on the page.
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-black pb-24 text-white sm:pb-0">
       <SEOHead
-        title="MasterGrowbot AI Grow Tech | AI Plant Cameras and Grow Tools"
-        description="Shop MasterGrowbot AI Grow Tech for plant cameras, environment monitors, soil health meters, and better AI-assisted cannabis plant analysis."
+        title="MasterGrowbot AI Grow Tech | AI Plant Scan Tools for Cannabis Growers"
+        description="Shop MasterGrowbot AI Grow Tech for cannabis plant scan cameras, environment monitors, soil health meters, and AI-ready grow tools with secure checkout and free shipping."
         canonicalUrl="https://www.mastergrowbot.com/grow-tech"
         ogImage="https://www.mastergrowbot.com/images/grow-tech/grow-tech-kit.png"
       />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>
+        <meta property="og:title" content="MasterGrowbot AI Grow Tech | AI Plant Scan Tools" />
+        <meta
+          property="og:description"
+          content="Upgrade plant photos, environment data, and soil context with MasterGrowbot AI-ready grow tech for serious cannabis growers."
+        />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
 
       <ParticleBackground />
@@ -830,6 +1091,8 @@ export default function GrowTech() {
         </section>
 
         <TrustSection />
+        <AnswerSection />
+        <ComparisonTable />
         <UseCaseCarousel />
         <MidPageKitCta />
         <BundleSection />

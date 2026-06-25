@@ -64,9 +64,9 @@ Support email:
 
 Tracking is sent by email or Whop support message after supplier dispatch. Tracking can take 24 to 72 hours to update after the carrier receives the package.
 
-### Where do I enter my delivery address?
+### Where do I enter my shipping address?
 
-Delivery details are collected during Whop checkout before payment.
+Shipping address and delivery details are collected during Whop checkout before payment.
 
 ### Do I need another app to use these products?
 
@@ -79,6 +79,48 @@ No. These tools help capture better plant images and grow context. Upload clear 
 ### Who do I contact for help with my order?
 
 Email [support@mastergrowbot.com](mailto:support@mastergrowbot.com) and one of our dedicated team members will get back to you shortly.
+
+### What is the return policy?
+
+Unused, unopened Grow Tech products may be eligible for return within 30 days of delivery. Customers are responsible for return shipping unless the item arrives damaged or incorrect. Email [support@mastergrowbot.com](mailto:support@mastergrowbot.com) for help.
+
+## SEO And Structured Data Rules
+
+- Do not add fake customer reviews.
+- Do not claim verified reviews unless real reviews are collected and displayed visibly on the page.
+- Do not add `aggregateRating`, `Review`, `reviewCount`, or `ratingValue` structured data until real customer reviews exist.
+- Visual 5-star premium icons can remain in the UI as long as they are not described as verified reviews.
+- Product JSON-LD should include `shippingDetails` and `hasMerchantReturnPolicy` for each Grow Tech product offer.
+- FAQPage JSON-LD must match visible FAQ questions and answers.
+- BreadcrumbList JSON-LD should include Home > Grow Tech.
+
+Future review schema instruction:
+
+```text
+Only add aggregateRating and Review structured data after real customer reviews are collected and displayed visibly on the page.
+```
+
+## Google Search Console Post-Deploy Checklist
+
+1. Deploy the latest `main` branch to production.
+2. Open Google Search Console > URL Inspection.
+3. Inspect `https://www.mastergrowbot.com/grow-tech`.
+4. Request indexing after the deployed page is live.
+5. Check Merchant listings warnings for:
+   - Missing field `shippingDetails`
+   - Missing field `hasMerchantReturnPolicy`
+6. Confirm no fake review or aggregate rating fields appear in structured data.
+7. Recheck after Google recrawls the page.
+
+## Rich Results Test Checklist
+
+1. Open Google's Rich Results Test.
+2. Test `https://www.mastergrowbot.com/grow-tech`.
+3. Confirm Product structured data appears for all 4 Grow Tech products.
+4. Confirm each Product offer includes free shipping details and a 30-day return policy.
+5. Confirm FAQPage structured data matches the visible FAQ.
+6. Confirm BreadcrumbList shows Home > Grow Tech.
+7. Confirm there is no `aggregateRating` or `Review` schema until real customer reviews are live.
 
 ## Checkout 1
 
