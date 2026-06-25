@@ -334,7 +334,7 @@ export function buildNewsletterIssue(issueKey, signals = []) {
   const iosUrl = withUtm(productLinks.ios, issueKey, "ios_app_primary");
   const androidUrl = withUtm(productLinks.android, issueKey, "android_app_secondary");
   const bookUrl = withUtm(productLinks.book, issueKey, "amazon_ipm_playbook");
-  const growTechUrl = withUtm(productLinks.growTech, issueKey, "grow_tech_kit_waitlist");
+  const growTechUrl = withUtm(productLinks.growTech, issueKey, "grow_tech_kit");
   const growGuidesUrl = withUtm(productLinks.growGuides, issueKey, "grow_guides");
   const vpdUrl = withUtm(productLinks.vpdCalculator, issueKey, "vpd_calculator");
   const subject = "Cannabis AI Signal: Where AI and Cannabis Collide";
@@ -376,12 +376,12 @@ Take one canopy-wide photo and one close-up photo every time you document a prob
 For extractors and breeders, start connecting plant observations to finished-product notes. Resin quality, terpene expression, vigor, and stress response become more valuable when they are tracked together.
 
 5. MasterGrowbot AI pick
-Use MasterGrowbot AI for scan support, keep the IPM Playbook close, and join the Grow Tech waitlist if you want better photo and grow-room inputs.
+Use MasterGrowbot AI for scan support, keep the IPM Playbook close, and shop the Grow Tech Kit if you want better photo and grow-room inputs.
 
 Download MasterGrowbot AI on iOS: ${iosUrl}
 Download MasterGrowbot AI on Android: ${androidUrl}
 Get the Amazon IPM Playbook: ${bookUrl}
-Join the Grow Tech Kit waitlist: ${growTechUrl}
+Shop the Grow Tech Kit: ${growTechUrl}
 Use the VPD Calculator: ${vpdUrl}
 Read Grow Guides: ${growGuidesUrl}
 
@@ -430,10 +430,10 @@ Unsubscribe: {{{RESEND_UNSUBSCRIBE_URL}}}`;
                 </div>
                 <div style="margin-top:14px;padding:18px;border:1px solid rgba(34,197,94,0.18);border-radius:14px;background:rgba(34,197,94,0.08);">
                   <h2 style="margin:0;color:#ffffff;font-size:20px;">5. MasterGrowbot AI pick</h2>
-                  <p style="margin:10px 0 16px;color:rgba(255,255,255,0.66);font-size:15px;line-height:1.65;">Use the app for scan support, keep the IPM Playbook close, and join the Grow Tech waitlist if you want better photo and grow-room inputs.</p>
+                  <p style="margin:10px 0 16px;color:rgba(255,255,255,0.66);font-size:15px;line-height:1.65;">Use the app for scan support, keep the IPM Playbook close, and shop the Grow Tech Kit if you want better photo and grow-room inputs.</p>
                   <p style="margin:0 0 10px;"><a href="${androidUrl}" style="color:#22c55e;font-weight:700;">Download on Android</a></p>
                   <p style="margin:0 0 10px;"><a href="${bookUrl}" style="color:#22c55e;font-weight:700;">Get the Amazon IPM Playbook</a></p>
-                  <p style="margin:0;"><a href="${growTechUrl}" style="color:#22c55e;font-weight:700;">Join the Grow Tech Kit waitlist</a></p>
+                  <p style="margin:0;"><a href="${growTechUrl}" style="color:#22c55e;font-weight:700;">Shop the Grow Tech Kit</a></p>
                 </div>
                 <div style="margin-top:14px;padding:18px;border:1px solid rgba(255,255,255,0.08);border-radius:14px;background:rgba(255,255,255,0.035);">
                   <h2 style="margin:0;color:#ffffff;font-size:20px;">Free tools to keep close</h2>

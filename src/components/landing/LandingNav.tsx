@@ -19,12 +19,9 @@ export default function LandingNav() {
       <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
         <Link
           to="/grow-tech"
-          className="group flex items-center gap-2 text-sm font-medium text-white/60 transition-colors duration-200 hover:text-landing-green font-sans"
+          className="text-sm font-medium text-white/60 transition-colors duration-200 hover:text-landing-green font-sans"
         >
-          <span>Grow Tech</span>
-          <span className="rounded-full border border-landing-green/30 bg-landing-green/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-landing-green shadow-[0_0_16px_rgba(29,185,84,0.18)]">
-            Coming Soon
-          </span>
+          Grow Tech
         </Link>
         <Link
           to="/grow-guides"

@@ -1,21 +1,36 @@
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, Check, ChevronLeft, ChevronRight, Leaf, Mail, Star, X } from "lucide-react";
+import { ArrowRight, Check, ChevronLeft, ChevronRight, Leaf, ShieldCheck, Star, Truck } from "lucide-react";
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import ParticleBackground from "@/components/landing/ParticleBackground";
 import SEOHead from "@/components/SEOHead";
 
+type CheckoutKey =
+  | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL";
+
 type GrowTechProduct = {
   name: string;
   badge: string;
   price: string;
-  shortDescription: string;
-  fullDescription: string;
+  description: string;
   bestFor: string[];
   buttonLabel: string;
   image: string;
   alt: string;
+  checkoutKey: CheckoutKey;
+};
+
+const checkoutUrls: Record<CheckoutKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL,
+  NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL:
+    import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL,
+  NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL:
+    import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL,
+  NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL,
 };
 
 const products: GrowTechProduct[] = [
@@ -23,9 +38,8 @@ const products: GrowTechProduct[] = [
     name: "MasterGrowbot AI Scout Camera 10-20X",
     badge: "Premium",
     price: "$149",
-    shortDescription: "The premium phone camera lens for better MasterGrowbot AI plant scans.",
-    fullDescription:
-      "Capture sharper close-up photos of leaves, stems, buds, pest damage, trichomes, and plant health symptoms without losing the full plant context your AI analysis needs.",
+    description:
+      "Upgrade your plant photos before uploading them into MasterGrowbot AI. The Scout Camera 10-20X clips onto your iPhone or Android phone so you can capture sharper close-up photos of leaves, stems, buds, pest damage, trichomes, and plant health symptoms without losing the full plant context AI analysis needs.",
     bestFor: [
       "AI plant health scans",
       "Leaf and bud closeups",
@@ -33,66 +47,67 @@ const products: GrowTechProduct[] = [
       "Grow journal documentation",
       "Better photos before asking MasterGrowbot AI",
     ],
-    buttonLabel: "Notify Me",
+    buttonLabel: "Buy Now",
     image: "/images/grow-tech/ai-scout-camera-10-20x.png",
     alt: "MasterGrowbot AI Scout Camera 10-20X clipped onto a smartphone for cannabis plant close-up scans.",
+    checkoutKey: "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL",
   },
   {
-    name: "MasterGrowbot AI Climate Sensor",
-    badge: "Environment",
+    name: "MasterGrowbot AI Environment Monitor",
+    badge: "Environment Data",
     price: "$89",
-    shortDescription: "Track grow-room temperature and humidity for better MasterGrowbot AI plant guidance.",
-    fullDescription:
-      "Track temperature and humidity so MasterGrowbot AI users can add better grow-room context to plant health scans, watering decisions, mold-risk checks, and flower-stage monitoring.",
+    description:
+      "Track grow-room temperature, humidity, CO2, air quality, particulates, and VOC context before asking MasterGrowbot AI for plant health guidance. The Environment Monitor helps growers document grow-room conditions alongside plant photos and grow journal notes.",
     bestFor: [
-      "Temperature tracking",
-      "Humidity tracking",
-      "Mold-risk context",
-      "Flower-stage monitoring",
-      "Better AI grow guidance",
+      "Temperature monitoring",
+      "Humidity monitoring",
+      "CO2 context",
+      "Air quality checks",
+      "Better environmental notes for MasterGrowbot AI",
     ],
-    buttonLabel: "Notify Me",
+    buttonLabel: "Buy Now",
     image: "/images/grow-tech/climate-sensor.png",
-    alt: "MasterGrowbot AI Climate Sensor tracking temperature and humidity in an indoor cannabis grow tent.",
+    alt: "MasterGrowbot AI Environment Monitor tracking air quality, temperature, humidity, and CO2 in an indoor cannabis grow tent.",
+    checkoutKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL",
   },
   {
-    name: "MasterGrowbot AI Root Zone Meter",
-    badge: "Root Data",
-    price: "$49",
-    shortDescription: "A simple root-zone meter for better watering decisions and stronger AI grow context.",
-    fullDescription:
-      "Check soil moisture and root-zone conditions before asking MasterGrowbot AI for plant health guidance. Designed to help growers reduce guesswork around watering, overwatering risk, seedlings, veg plants, and grow journal notes.",
+    name: "MasterGrowbot AI Soil Health Meter 6-in-1",
+    badge: "Soil Data",
+    price: "$59",
+    description:
+      "Check soil moisture, pH, temperature, fertility, light, and air humidity context before asking MasterGrowbot AI for plant health guidance. The Soil Health Meter 6-in-1 helps growers document root-zone and environment readings for better grow journal notes, watering decisions, and AI scan context.",
     bestFor: [
-      "Watering decisions",
-      "Root-zone checks",
-      "Overwatering prevention",
-      "Seedlings and veg plants",
-      "Better grow journal notes",
+      "Soil moisture checks",
+      "pH context",
+      "Temperature readings",
+      "Fertility context",
+      "Light and humidity notes",
+      "Better grow journal data",
     ],
-    buttonLabel: "Notify Me",
+    buttonLabel: "Buy Now",
     image: "/images/grow-tech/root-zone-meter.png",
-    alt: "MasterGrowbot AI Root Zone Meter checking soil moisture in a cannabis fabric pot.",
+    alt: "MasterGrowbot AI Soil Health Meter 6-in-1 checking soil moisture and plant context in a cannabis fabric pot.",
+    checkoutKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL",
   },
 ];
 
 const bundle: GrowTechProduct = {
   name: "MasterGrowbot AI Grow Tech Kit",
-  badge: "Best Setup",
-  price: "$249",
-  shortDescription:
-    "Includes the MasterGrowbot AI Scout Camera 10-20X, MasterGrowbot AI Climate Sensor, and MasterGrowbot AI Root Zone Meter for growers who want better photos, better grow data, and better AI plant guidance.",
-  fullDescription:
-    "Includes the MasterGrowbot AI Scout Camera 10-20X, MasterGrowbot AI Climate Sensor, and MasterGrowbot AI Root Zone Meter for growers who want better photos, better grow data, and better AI plant guidance.",
+  badge: "Save $50",
+  price: "$247",
+  description:
+    "Get the full MasterGrowbot AI Grow Tech setup with the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want better plant photos, better environment data, and better soil and light context for MasterGrowbot AI.",
   bestFor: [
     "Complete AI scan setup",
     "Better plant photos",
-    "Grow-room climate tracking",
-    "Root-zone context",
+    "Environment data",
+    "Soil and light context",
     "Premium grow documentation",
   ],
-  buttonLabel: "Join Bundle Waitlist",
+  buttonLabel: "Buy the Kit",
   image: "/images/grow-tech/grow-tech-kit.png",
-  alt: "MasterGrowbot AI Grow Tech Kit with camera lens, climate sensor, and root-zone meter.",
+  alt: "MasterGrowbot AI Grow Tech Kit with camera lens, environment monitor, and soil health meter.",
+  checkoutKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL",
 };
 
 const useCases = [
@@ -102,11 +117,26 @@ const useCases = [
   },
   {
     title: "More useful grow context",
-    text: "Pair plant photos with root-zone and climate notes so the AI has better information to work with.",
+    text: "Pair plant photos with soil and environment readings so the AI has better information to work with.",
   },
   {
     title: "Less guessing during the grow",
-    text: "Use simple grow tech tools to document what changed before small issues become harvest problems.",
+    text: "Use simple grow tech tools to document what changed before small issues become bigger problems.",
+  },
+];
+
+const shippingCards = [
+  {
+    title: "1. Enter Delivery Details",
+    text: "Whop asks for your delivery details before checkout so your order can be fulfilled correctly.",
+  },
+  {
+    title: "2. Complete Secure Checkout",
+    text: "Finish your one-time purchase through Whop's secure checkout.",
+  },
+  {
+    title: "3. Receive Tracking",
+    text: "After supplier dispatch, tracking details are sent by email or Whop support message.",
   },
 ];
 
@@ -117,7 +147,7 @@ const educationCards = [
   },
   {
     title: "Better Context",
-    text: "Root-zone and climate notes help explain what the plant photo alone may not show.",
+    text: "Soil and environment readings help explain what the plant photo alone may not show.",
   },
   {
     title: "Better Decisions",
@@ -125,28 +155,56 @@ const educationCards = [
   },
 ];
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function RatingPreview() {
+function RatingLine() {
   return (
     <div className="space-y-1">
-      <div className="flex items-center gap-1" aria-label="Five star early access preview">
+      <div className="flex items-center gap-1" aria-label="Five star product pick">
         {Array.from({ length: 5 }).map((_, index) => (
           <Star key={index} className="h-4 w-4 fill-gold text-gold" aria-hidden="true" />
         ))}
       </div>
-      <p className="text-xs font-medium text-white/45">Early access preview</p>
+      <p className="text-xs font-medium text-white/50">Premium grow-tech pick</p>
     </div>
   );
 }
 
-function ProductCard({
-  product,
-  onNotify,
-}: {
-  product: GrowTechProduct;
-  onNotify: (productName: string) => void;
-}) {
+function CheckoutButton({ product, className = "" }: { product: GrowTechProduct; className?: string }) {
+  const checkoutUrl = checkoutUrls[product.checkoutKey];
+
+  if (!checkoutUrl) {
+    return (
+      <div className={className}>
+        <button
+          type="button"
+          disabled
+          className="inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-white/10 px-4 py-3 text-sm font-semibold text-white/45"
+        >
+          {product.buttonLabel}
+        </button>
+        <p className="mt-2 text-xs font-medium text-amber-200/80">Checkout link coming soon.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className={className}>
+      <a
+        href={checkoutUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
+      >
+        {product.buttonLabel}
+        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      </a>
+      <p className="mt-2 text-xs font-medium text-white/45">
+        Shipping details are collected during Whop checkout before payment.
+      </p>
+    </div>
+  );
+}
+
+function ProductCard({ product }: { product: GrowTechProduct }) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035] shadow-2xl shadow-black/30 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-landing-green/35 hover:bg-white/[0.055] hover:shadow-landing-green/10">
       <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-emerald-950/40 via-black to-black">
@@ -162,20 +220,18 @@ function ProductCard({
         <span className="absolute left-4 top-4 rounded-full border border-landing-green/35 bg-black/55 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-landing-green backdrop-blur">
           {product.badge}
         </span>
-        <span className="absolute bottom-4 right-4 rounded-full border border-white/10 bg-black/65 px-3 py-1 text-xs font-semibold text-white/70 backdrop-blur">
-          Coming Soon
+        <span className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full border border-landing-green/30 bg-black/65 px-3 py-1 text-xs font-semibold text-white/80 backdrop-blur">
+          <Truck className="h-3.5 w-3.5 text-landing-green" aria-hidden="true" />
+          100% Free Shipping
         </span>
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div className="space-y-3">
-          <h2 className="text-xl font-semibold leading-snug tracking-tight text-white font-sans">
-            {product.name}
-          </h2>
-          <RatingPreview />
+          <h2 className="text-xl font-semibold leading-snug tracking-tight text-white font-sans">{product.name}</h2>
+          <RatingLine />
           <p className="text-3xl font-semibold text-white">{product.price}</p>
-          <p className="text-sm font-medium text-landing-green">{product.shortDescription}</p>
-          <p className="text-sm leading-relaxed text-white/58">{product.fullDescription}</p>
+          <p className="text-sm leading-relaxed text-white/62">{product.description}</p>
         </div>
 
         <div className="mt-5 space-y-3">
@@ -190,14 +246,7 @@ function ProductCard({
           </ul>
         </div>
 
-        <button
-          type="button"
-          onClick={() => onNotify(product.name)}
-          className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
-        >
-          {product.buttonLabel}
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </button>
+        <CheckoutButton product={product} className="mt-auto pt-6" />
       </div>
     </article>
   );
@@ -217,10 +266,10 @@ function UseCaseCarousel() {
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
-              Use-case preview
+              Grow workflows
             </span>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-              What Growers Will Use It For
+              What Growers Use It For
             </h2>
           </div>
           <div className="flex gap-2">
@@ -247,7 +296,7 @@ function UseCaseCarousel() {
           <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
             <div className="max-w-2xl">
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/35">
-                Placeholder use case {activeIndex + 1} of {useCases.length}
+                Use case {activeIndex + 1} of {useCases.length}
               </p>
               <h3 className="text-2xl font-semibold text-white font-sans">{active.title}</h3>
               <p className="mt-3 text-base leading-relaxed text-white/60">{active.text}</p>
@@ -272,207 +321,14 @@ function UseCaseCarousel() {
   );
 }
 
-function WaitlistModal({
-  productName,
-  onClose,
-}: {
-  productName: string | null;
-  onClose: () => void;
-}) {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (!productName) {
-      return;
-    }
-
-    setEmail("");
-    setError("");
-    setSuccess(false);
-    window.setTimeout(() => inputRef.current?.focus(), 0);
-  }, [productName]);
-
-  useEffect(() => {
-    if (!productName) {
-      return;
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose, productName]);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!productName) {
-      return;
-    }
-
-    const normalizedEmail = email.trim();
-
-    if (!emailPattern.test(normalizedEmail)) {
-      setError("Enter a valid email address.");
-      return;
-    }
-
-    setError("");
-    setIsSubmitting(true);
-    const lead = {
-      email: normalizedEmail,
-      interestProduct: productName,
-      sourcePage: "/grow-tech",
-      sourceForm: "grow_tech_waitlist",
-      utm_source: "website",
-      utm_medium: "organic",
-      utm_campaign: "grow_tech_waitlist",
-      utm_content: productName.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, ""),
-    };
-
-    try {
-      const response = await fetch("/api/newsletter/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(lead),
-      });
-
-      if (!response.ok) {
-        if (import.meta.env.DEV && response.status === 404) {
-          console.info("Grow Tech newsletter lead (local dev fallback):", lead);
-          setSuccess(true);
-          setEmail("");
-          return;
-        }
-
-        const data = (await response.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(data?.error || "Something went wrong. Please try again.");
-      }
-
-      setSuccess(true);
-      setEmail("");
-    } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "Something went wrong. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (!productName) {
-    return null;
-  }
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 backdrop-blur-sm"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) {
-          onClose();
-        }
-      }}
-      role="presentation"
-    >
-      <div
-        className="relative w-full max-w-md rounded-xl border border-white/10 bg-[#07110c] p-6 text-white shadow-2xl shadow-landing-green/10 sm:p-7"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="grow-tech-modal-title"
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-lg text-white/55 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-landing-green"
-          aria-label="Close coming soon modal"
-        >
-          <X className="h-5 w-5" />
-        </button>
-
-        <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-landing-green/12 text-landing-green">
-          <Mail className="h-5 w-5" aria-hidden="true" />
-        </div>
-
-        <h2 id="grow-tech-modal-title" className="text-2xl font-semibold tracking-tight text-white font-sans">
-          Coming Soon
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-white/60">
-          Enter your email and we'll let you know when this MasterGrowbot AI Grow Tech product is ready.
-        </p>
-        <p className="mt-3 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-medium text-white/55">
-          {productName}
-        </p>
-
-        <form onSubmit={handleSubmit} className="mt-5 space-y-4">
-          <input type="hidden" name="productName" value={productName} />
-          <div>
-            <label htmlFor="grow-tech-email" className="mb-2 block text-sm font-medium text-white/75">
-              Email
-            </label>
-            <input
-              ref={inputRef}
-              id="grow-tech-email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
-              className="w-full rounded-lg border border-white/10 bg-black/45 px-4 py-3 text-white placeholder:text-white/30 transition focus:border-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green/40"
-              aria-invalid={Boolean(error)}
-              aria-describedby={error ? "grow-tech-email-error" : undefined}
-              required
-            />
-          </div>
-
-          {error && (
-            <p id="grow-tech-email-error" className="text-sm font-medium text-red-300">
-              {error}
-            </p>
-          )}
-
-          {success && (
-            <p className="rounded-lg border border-landing-green/30 bg-landing-green/10 px-3 py-2 text-sm font-medium text-landing-green">
-              You're on the list. We'll email you when this product is ready.
-            </p>
-          )}
-
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="inline-flex flex-1 items-center justify-center rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition hover:bg-landing-green/90 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isSubmitting ? "Submitting..." : "Notify Me"}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="inline-flex flex-1 items-center justify-center rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold text-white/70 transition hover:border-white/25 hover:text-white focus:outline-none focus:ring-2 focus:ring-landing-green"
-            >
-              Close
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
-
 export default function GrowTech() {
-  const [selectedProductName, setSelectedProductName] = useState<string | null>(null);
-
   const productJsonLd = useMemo(
     () => ({
       "@context": "https://schema.org",
       "@graph": [...products, bundle].map((product) => ({
         "@type": "Product",
         name: product.name,
-        description: product.shortDescription,
+        description: product.description,
         brand: {
           "@type": "Brand",
           name: "MasterGrowbot AI",
@@ -482,7 +338,7 @@ export default function GrowTech() {
           "@type": "Offer",
           price: product.price.replace("$", ""),
           priceCurrency: "USD",
-          availability: "https://schema.org/PreOrder",
+          availability: "https://schema.org/InStock",
           url: "https://www.mastergrowbot.com/grow-tech",
         },
       })),
@@ -494,7 +350,7 @@ export default function GrowTech() {
     <div className="min-h-screen overflow-x-hidden bg-black text-white">
       <SEOHead
         title="MasterGrowbot AI Grow Tech | AI Plant Cameras and Grow Tools"
-        description="MasterGrowbot AI Grow Tech helps cannabis growers capture better plant photos, track grow-room conditions, monitor root-zone data, and improve AI-assisted plant health analysis."
+        description="Shop MasterGrowbot AI Grow Tech for plant cameras, environment monitors, soil health meters, and better AI-assisted cannabis plant analysis."
         canonicalUrl="https://www.mastergrowbot.com/grow-tech"
         ogImage="https://www.mastergrowbot.com/images/grow-tech/grow-tech-kit.png"
       />
@@ -511,29 +367,28 @@ export default function GrowTech() {
             <div className="space-y-7 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full border border-landing-green/25 bg-landing-green/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
                 <Leaf className="h-3.5 w-3.5" aria-hidden="true" />
-                Coming soon
+                Live grow hardware
               </div>
               <div className="space-y-5">
                 <h1 className="text-4xl font-bold leading-[1.06] tracking-tight text-white font-sans sm:text-5xl lg:text-7xl">
                   Grow Tech for Better AI Plant Scans
                 </h1>
                 <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/62 sm:text-xl lg:mx-0">
-                  Upgrade your plant photos, grow-room environment data, and root-zone context with MasterGrowbot
-                  AI-ready tools built for serious cannabis growers.
+                  Upgrade your plant photos, grow-room environment data, and soil context with MasterGrowbot AI-ready
+                  tools built for serious cannabis growers.
                 </p>
               </div>
               <p className="mx-auto max-w-xl text-sm font-medium text-white/45 lg:mx-0">
-                Coming soon. Join the waitlist to get notified when MasterGrowbot AI Grow Tech is ready.
+                100% free shipping on every MasterGrowbot AI Grow Tech product.
               </p>
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
-                <button
-                  type="button"
-                  onClick={() => setSelectedProductName(bundle.name)}
+                <a
+                  href="#products"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black sm:w-auto"
                 >
-                  Join the Grow Tech Waitlist
+                  Shop Grow Tech
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </button>
+                </a>
                 <a
                   href="#products"
                   className="inline-flex w-full items-center justify-center rounded-lg border border-white/10 px-5 py-3.5 text-sm font-semibold text-white/75 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green sm:w-auto"
@@ -555,7 +410,9 @@ export default function GrowTech() {
                   height={750}
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/75 to-transparent p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">Bundle preview</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
+                    Complete setup
+                  </p>
                   <p className="mt-1 text-lg font-semibold text-white">{bundle.name}</p>
                 </div>
               </div>
@@ -567,15 +424,15 @@ export default function GrowTech() {
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto mb-10 max-w-3xl text-center">
               <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
-                Early access hardware
+                AI-ready grow hardware
               </span>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-                MasterGrowbot AI-ready tools for cleaner scan inputs
+                Tools for cleaner scan inputs and better grow notes
               </h2>
             </div>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
-                <ProductCard key={product.name} product={product} onNotify={setSelectedProductName} />
+                <ProductCard key={product.name} product={product} />
               ))}
             </div>
           </div>
@@ -596,13 +453,24 @@ export default function GrowTech() {
               />
             </div>
             <div className="flex flex-col justify-center">
-              <span className="mb-3 inline-flex w-fit rounded-full border border-landing-green/35 bg-black/35 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-landing-green">
-                {bundle.badge}
-              </span>
+              <div className="mb-3 flex flex-wrap gap-2">
+                <span className="inline-flex w-fit rounded-full border border-landing-green/35 bg-black/35 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-landing-green">
+                  {bundle.badge}
+                </span>
+                <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-landing-green/25 bg-black/35 px-3 py-1 text-xs font-semibold text-white/75">
+                  <Truck className="h-3.5 w-3.5 text-landing-green" aria-hidden="true" />
+                  100% Free Shipping
+                </span>
+              </div>
               <h2 className="text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">{bundle.name}</h2>
-              <RatingPreview />
+              <div className="mt-3">
+                <RatingLine />
+              </div>
               <p className="mt-4 text-4xl font-semibold text-white">{bundle.price}</p>
-              <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/62">{bundle.shortDescription}</p>
+              <p className="mt-2 text-sm font-semibold text-landing-green">
+                Individual total is $297. Bundle price is $247.
+              </p>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/62">{bundle.description}</p>
               <ul className="mt-6 grid gap-2 sm:grid-cols-2">
                 {bundle.bestFor.map((item) => (
                   <li key={item} className="flex gap-2 text-sm text-white/65">
@@ -611,15 +479,39 @@ export default function GrowTech() {
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                onClick={() => setSelectedProductName(bundle.name)}
-                className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black sm:w-fit"
-              >
-                Join Bundle Waitlist
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
+              <CheckoutButton product={bundle} className="mt-7 sm:w-fit" />
             </div>
+          </div>
+        </section>
+
+        <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-10 max-w-3xl">
+              <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
+                Fulfillment
+              </span>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+                How Shipping Works
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {shippingCards.map((card) => (
+                <article
+                  key={card.title}
+                  className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
+                >
+                  <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-landing-green/12 text-landing-green">
+                    <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white font-sans">{card.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/60">{card.text}</p>
+                </article>
+              ))}
+            </div>
+            <p className="mt-6 rounded-xl border border-white/[0.08] bg-white/[0.035] p-5 text-sm leading-relaxed text-white/56 backdrop-blur-xl">
+              Orders are fulfilled through third-party suppliers. Packaging, shipping speed, and carrier updates may
+              vary. Tracking information will be sent after supplier dispatch.
+            </p>
           </div>
         </section>
 
@@ -651,16 +543,21 @@ export default function GrowTech() {
         </section>
 
         <section className="relative z-10 px-4 pb-20 sm:px-6 sm:pb-28">
-          <div className="mx-auto max-w-4xl rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 text-sm leading-relaxed text-white/58 backdrop-blur-xl sm:p-8">
-            MasterGrowbot AI Grow Tech products help capture better plant images and grow-room context. They do
-            not diagnose plant issues by themselves. Upload clear photos and relevant grow details into MasterGrowbot
-            AI for plant health analysis and grow guidance.
+          <div className="mx-auto max-w-4xl space-y-5 rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 text-sm leading-relaxed text-white/58 backdrop-blur-xl sm:p-8">
+            <p>
+              MasterGrowbot AI Grow Tech products help capture better plant images and grow-room context. They do not
+              diagnose plant issues by themselves. Upload clear photos and relevant grow details into MasterGrowbot AI
+              for plant health analysis and grow guidance.
+            </p>
+            <p>
+              Orders are fulfilled through third-party suppliers. Packaging, shipping speed, and carrier updates may
+              vary. Tracking information will be sent after supplier dispatch.
+            </p>
           </div>
         </section>
       </main>
 
       <LandingFooter />
-      <WaitlistModal productName={selectedProductName} onClose={() => setSelectedProductName(null)} />
     </div>
   );
 }

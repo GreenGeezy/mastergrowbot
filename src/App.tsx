@@ -15,6 +15,7 @@ const GrowGuideArticle = lazy(() => import("@/pages/GrowGuideArticle"));
 const VPDCalculator = lazy(() => import("@/pages/VPDCalculator"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const GrowTech = lazy(() => import("@/pages/GrowTech"));
+const GrowTechThankYou = lazy(() => import("@/pages/GrowTechThankYou"));
 
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -83,6 +84,14 @@ const App = () => {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <GrowTech />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/grow-tech/thank-you"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <GrowTechThankYou />
               </Suspense>
             }
           />
