@@ -17,23 +17,23 @@ export default function LandingNav() {
           MasterGrowbot AI
         </span>
       </Link>
-      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-5">
+      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:gap-5">
         <GrowTechCTA variant="nav" ctaLocation="nav:growtech-shop" />
         <Link
           to="/grow-guides"
-          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
+          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans sm:pt-[11px]"
         >
           Grow Guides
         </Link>
         <Link
           to="/vpd-calculator"
-          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
+          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans sm:pt-[11px]"
         >
           VPD Calculator
         </Link>
         <Link
           to="/contact"
-          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
+          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans sm:pt-[11px]"
         >
           Contact
         </Link>
@@ -41,13 +41,13 @@ export default function LandingNav() {
           <a
             href="/#ipm-playbook"
             data-cta-location="nav:ipm-playbook-section"
-            className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
+            className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans sm:pt-[11px]"
           >
             IPM Playbook
           </a>
           <AmazonBookButton
             location="nav"
-            imageClassName="h-[24px] max-w-[88px] rounded-md sm:h-[26px]"
+            imageClassName="h-[54px] max-w-[168px] rounded-lg sm:h-[60px]"
           />
         </div>
       </div>
