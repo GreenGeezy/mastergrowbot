@@ -57,14 +57,14 @@ Current primary usage:
 
 Preferred image asset paths for the homepage IPM Playbook promo section:
 
-- `/images/ipm-playbook/ipm-hero.png`
-- `/images/ipm-playbook/ipm-threats.png`
-- `/images/ipm-playbook/ipm-logs.png`
+- `/images/A%2BKDPImage1.png`
+- `/images/A%2BKDPImage4.png`
+- `/images/A%2BKDPImage5.png`
 
-Source filenames requested for those assets:
+Source filenames in `public/images`:
 
 - `/images/A+KDPImage1.png`
 - `/images/A+KDPImage4.png`
 - `/images/A+KDPImage5.png`
 
-If these files are not present, do not render broken image cards. Add the assets first, then wire them into `IPMPlaybookSection.tsx`.
+The section uses encoded browser paths first because the source filenames contain `+`. It also includes raw-path fallbacks in `IPMPlaybookSection.tsx`.

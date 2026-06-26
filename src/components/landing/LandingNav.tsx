@@ -17,7 +17,7 @@ export default function LandingNav() {
           MasterGrowbot AI
         </span>
       </Link>
-      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-5">
         <GrowTechCTA variant="nav" ctaLocation="nav:growtech-shop" />
         <Link
           to="/grow-guides"
@@ -37,23 +37,25 @@ export default function LandingNav() {
         >
           Contact
         </Link>
-        <a
-          href="/#ipm-playbook"
-          data-cta-location="nav:ipm-playbook-section"
-          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
-        >
-          IPM Playbook
-        </a>
-        <a
-          href={AMAZON_BOOK_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Available on Amazon, opens in new tab"
-          data-cta-location="nav:amazon-book"
-          className="rounded-lg border border-landing-green/25 px-3 py-1 text-sm font-semibold text-landing-green transition-colors duration-200 hover:border-landing-green/55 hover:text-landing-green/85 font-sans"
-        >
-          Available on Amazon
-        </a>
+        <div className="flex flex-col items-center gap-1 leading-none">
+          <a
+            href="/#ipm-playbook"
+            data-cta-location="nav:ipm-playbook-section"
+            className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans"
+          >
+            IPM Playbook
+          </a>
+          <a
+            href={AMAZON_BOOK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Available on Amazon, opens in new tab"
+            data-cta-location="nav:amazon-book"
+            className="rounded-md border border-landing-green/25 px-2.5 py-1 text-[11px] font-semibold text-landing-green transition-colors duration-200 hover:border-landing-green/55 hover:text-landing-green/85 font-sans"
+          >
+            Available on Amazon
+          </a>
+        </div>
       </div>
     </nav>
   );

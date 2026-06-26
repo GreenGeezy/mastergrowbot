@@ -22,44 +22,45 @@ export default function StoreBadges({ className = '', growTechLocation = 'hero:g
 
   return (
     <div className={`flex flex-col gap-3 ${alignItems || 'items-center'} ${otherClasses}`}>
-      {/* All 3 buttons on the same row */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
-        <motion.a
-          href={appStoreUrl('homepage')}
-          data-cta-location="homepage-store-badges:ios"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.97 }}
-          className="group relative"
-        >
-          <div className="absolute -inset-1 bg-landing-green/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <img
-            src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-            alt="Download on the App Store"
-            className="relative h-[65px] sm:h-[70px]"
-          />
-        </motion.a>
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-5">
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-5">
+            <motion.a
+              href={appStoreUrl('homepage')}
+              data-cta-location="homepage-store-badges:ios"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="group relative"
+            >
+              <div className="absolute -inset-1 bg-landing-green/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <img
+                src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                alt="Download on the App Store"
+                className="relative h-[65px] sm:h-[70px]"
+              />
+            </motion.a>
 
-        <motion.a
-          href={playStoreUrl('homepage')}
-          data-cta-location="homepage-store-badges:android"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.97 }}
-          className="group relative"
-        >
-          <div className="absolute -inset-1 bg-landing-green/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <img
-            src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-            alt="Get it on Google Play"
-            className="relative h-[65px] sm:h-[70px]"
-          />
-        </motion.a>
+            <motion.a
+              href={playStoreUrl('homepage')}
+              data-cta-location="homepage-store-badges:android"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="group relative"
+            >
+              <div className="absolute -inset-1 bg-landing-green/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <img
+                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                alt="Get it on Google Play"
+                className="relative h-[65px] sm:h-[70px]"
+              />
+            </motion.a>
+          </div>
+          <p className="text-center text-xs font-medium text-white/55 sm:text-sm">
+            Download and try MasterGrowbot AI free.
+          </p>
+        </div>
 
-        <GrowTechCTA variant="hero" showBadge showSubtext={false} ctaLocation={growTechLocation} />
-      </div>
-
-      {/* Shared subtext below all 3 buttons */}
-      <div className="text-xs sm:text-sm text-white/50 font-sans text-center space-y-1">
-        <p>Download and try MasterGrowbot AI free. Upgrade your scans with GrowTech tools when you are ready.</p>
+        <GrowTechCTA variant="hero" showBadge showSubtext ctaLocation={growTechLocation} />
       </div>
     </div>
   );

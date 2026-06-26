@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShoppingBag } from 'lucide-react';
 import { GROW_TECH_URL } from './ctaLinks';
 
 type GrowTechCTAVariant = 'hero' | 'nav' | 'compact' | 'inline';
@@ -14,20 +14,20 @@ interface GrowTechCTAProps {
 
 const variantStyles: Record<GrowTechCTAVariant, string> = {
   hero:
-    'min-h-12 rounded-xl bg-gradient-to-r from-landing-green via-emerald-400 to-lime-300 px-5 py-3.5 text-sm font-extrabold text-black shadow-[0_0_28px_rgba(29,185,84,0.24)] hover:-translate-y-0.5 hover:shadow-[0_0_38px_rgba(163,230,53,0.32)] focus:ring-lime-300',
+    'min-h-[52px] rounded-2xl border border-landing-green/45 bg-gradient-to-r from-[#06150c] via-[#0b2a17] to-[#12351f] px-5 py-3.5 text-sm font-extrabold text-white shadow-[0_0_28px_rgba(34,197,94,0.18)] hover:-translate-y-0.5 hover:border-landing-green/80 hover:shadow-[0_0_36px_rgba(34,197,94,0.32)] focus:ring-landing-green',
   nav:
-    'min-h-11 rounded-lg border border-amber-300/50 bg-gradient-to-r from-amber-300/14 via-landing-green/10 to-landing-green/5 px-3 py-1.5 text-sm font-semibold text-white shadow-[0_0_22px_rgba(251,191,36,0.12)] hover:-translate-y-0.5 hover:border-amber-300/80 hover:text-amber-100 hover:shadow-[0_0_28px_rgba(251,191,36,0.22)] focus:ring-amber-300/70',
+    'min-h-11 rounded-xl border border-landing-green/35 bg-gradient-to-r from-[#06150c] via-[#0a2414] to-black/80 px-3 py-1.5 text-sm font-semibold text-white shadow-[0_0_18px_rgba(34,197,94,0.14)] hover:-translate-y-0.5 hover:border-landing-green/70 hover:text-white hover:shadow-[0_0_26px_rgba(34,197,94,0.24)] focus:ring-landing-green',
   compact:
-    'min-h-11 rounded-xl bg-gradient-to-r from-landing-green via-emerald-400 to-lime-300 px-4 py-2.5 text-sm font-bold text-black shadow-[0_0_22px_rgba(29,185,84,0.2)] hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(163,230,53,0.28)] focus:ring-lime-300',
+    'min-h-11 rounded-xl border border-landing-green/40 bg-gradient-to-r from-[#06150c] via-[#0b2a17] to-[#12351f] px-4 py-2.5 text-sm font-bold text-white shadow-[0_0_20px_rgba(34,197,94,0.16)] hover:-translate-y-0.5 hover:border-landing-green/75 hover:shadow-[0_0_28px_rgba(34,197,94,0.26)] focus:ring-landing-green',
   inline:
     'min-h-11 rounded-lg border border-landing-green/35 bg-landing-green/10 px-4 py-2.5 text-sm font-semibold text-landing-green hover:-translate-y-0.5 hover:border-landing-green/60 hover:bg-landing-green/15 focus:ring-landing-green',
 };
 
 const badgeStyles: Record<GrowTechCTAVariant, string> = {
-  hero: 'border-black/10 bg-black/15 text-black',
-  nav: 'border-amber-300/55 bg-amber-300 text-black shadow-[0_0_14px_rgba(251,191,36,0.35)]',
-  compact: 'border-black/10 bg-black/15 text-black',
-  inline: 'border-lime-300/30 bg-lime-300/10 text-lime-200',
+  hero: 'border-amber-300/35 bg-amber-300/12 text-amber-100',
+  nav: 'border-amber-300/35 bg-amber-300/12 text-amber-100',
+  compact: 'border-amber-300/35 bg-amber-300/12 text-amber-100',
+  inline: 'border-amber-300/30 bg-amber-300/10 text-amber-100',
 };
 
 const subtextByVariant: Record<GrowTechCTAVariant, string> = {
@@ -52,15 +52,18 @@ export default function GrowTechCTA({
       <Link
         to={GROW_TECH_URL}
         data-cta-location={ctaLocation}
-        className={`group relative inline-flex items-center justify-center gap-2 overflow-hidden font-sans transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black ${variantStyles[variant]}`}
+        className={`group relative inline-flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap font-sans transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black ${variantStyles[variant]}`}
       >
-        <span className="absolute inset-x-3 top-0 h-px bg-white/35" aria-hidden="true" />
-        <span>{label}</span>
+        <span className="absolute inset-x-3 top-0 h-px bg-landing-green/45" aria-hidden="true" />
+        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-landing-green/25 bg-landing-green/12 text-landing-green">
+          <ShoppingBag className="h-3.5 w-3.5" aria-hidden="true" />
+        </span>
+        <span className="leading-none">{label}</span>
         {showBadge && (
           <span
-            className={`rounded-full border px-2 py-0.5 text-[10px] font-black uppercase tracking-wide transition-transform duration-200 group-hover:scale-105 ${badgeStyles[variant]}`}
+            className={`rounded-full border px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] transition-transform duration-200 group-hover:scale-105 ${badgeStyles[variant]}`}
           >
-            New Products
+            NEW PRODUCTS
           </span>
         )}
         <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
