@@ -70,11 +70,15 @@ Shipping address and delivery details are collected during Whop checkout before 
 
 ### Do I need another app to use these products?
 
-The Scout Camera and Soil Health Meter do not require another app. The Environment Monitor has a built-in display for readings. Optional supplier app features may exist, but MasterGrowbot AI is the only app positioned on this page.
+No. The Scout Camera, Environment Monitor, and Soil Health Meter can be used on their own for plant photos, grow-room readings, and grow records. MasterGrowbot AI is optional if you want AI-assisted plant health guidance.
 
 ### Do these tools diagnose plant problems?
 
-No. These tools help capture better plant images and grow context. Upload clear photos and relevant grow details into MasterGrowbot AI for plant health analysis and grow guidance.
+No. These tools help capture better plant images and grow context. Growers can use the information for inspection, documentation, and troubleshooting. MasterGrowbot AI users can also upload photos and readings into the app for AI-assisted guidance.
+
+### Do I need to use MasterGrowbot AI to buy these?
+
+No. GrowTech products are useful for any cannabis grower who wants better photos, environment readings, soil context, and grow documentation. They also pair well with MasterGrowbot AI if you use the app.
 
 ### Who do I contact for help with my order?
 
@@ -128,13 +132,13 @@ Name:
 MasterGrowbot AI Scout Camera 10-20X
 
 Headline:
-Upgrade your plant photos before AI analysis
+Upgrade your plant photos and grow records
 
 Price:
 $149
 
 Description:
-Clip a 10-20X phone camera lens onto your iPhone or Android phone to capture sharper close-up plant photos before uploading them into MasterGrowbot AI. Best for leaves, stems, buds, pest damage, trichomes, grow journal photos, and better AI scan inputs.
+Clip a 10-20X phone camera lens onto your iPhone or Android phone to capture sharper close-up plant photos for inspection, pest documentation, trichome closeups, grow journal photos, and optional AI-assisted review.
 
 Includes:
 100% free shipping.
@@ -153,7 +157,7 @@ Price:
 $89
 
 Description:
-Track grow-room temperature, humidity, CO2, air quality, particulates, and VOC context before asking MasterGrowbot AI for plant health guidance. This rechargeable environment monitor gives growers a quick way to document grow-room conditions alongside plant photos and grow journal notes.
+Track grow-room temperature, humidity, CO2, air quality, particulates, and VOC context. This rechargeable environment monitor gives growers a quick way to document grow-room conditions alongside plant photos and grow journal notes.
 
 Includes:
 100% free shipping.
@@ -166,13 +170,13 @@ Name:
 MasterGrowbot AI Soil Health Meter 6-in-1
 
 Headline:
-Check soil, light, and grow context before AI scans
+Check soil, light, and grow context
 
 Price:
 $59
 
 Description:
-A 6-in-1 digital soil detector for checking soil moisture, pH, temperature, fertility, light, and air humidity context before asking MasterGrowbot AI for plant health guidance. Built for better watering decisions, grow journal notes, and stronger AI scan context.
+A 6-in-1 digital soil detector for checking soil moisture, pH, temperature, fertility, light, and air humidity context. Built for better watering decisions, grow journal notes, and clearer plant health documentation.
 
 Includes:
 100% free shipping.
@@ -191,7 +195,7 @@ Price:
 $247
 
 Description:
-Includes the MasterGrowbot AI Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want better plant photos, better environment data, and better soil and light context for MasterGrowbot AI.
+Includes the MasterGrowbot AI Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want sharper plant photos, better environment records, and clearer soil and light context in one kit.
 
 Includes:
 100% free shipping.

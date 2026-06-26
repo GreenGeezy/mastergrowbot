@@ -36,6 +36,7 @@ type GrowTechProduct = {
   dataCollected: string;
   comparisonBestFor: string;
   aiHelp: string;
+  schemaDescription: string;
   sku: string;
   category: string;
   buttonLabel: string;
@@ -58,12 +59,15 @@ const products: GrowTechProduct[] = [
     name: "MasterGrowbot AI Scout Camera 10-20X",
     badge: "Premium",
     price: "$149",
-    description: "Capture sharper close-up plant photos before uploading them into MasterGrowbot AI.",
-    whyBuy: "Sharper plant photos before AI analysis.",
-    bestFor: ["Plant health scans", "Leaf and bud closeups", "Pest and disease photos", "Grow journal photos"],
+    description:
+      "Capture sharper close-up photos of leaves, buds, pests, trichomes, and plant symptoms for better inspection, documentation, and grow journal records.",
+    whyBuy: "Sharper plant photos for better grow records.",
+    bestFor: ["Plant inspection photos", "Leaf and bud closeups", "Pest and disease photos", "Grow journal documentation"],
     dataCollected: "Leaf, bud, pest, and trichome images",
     comparisonBestFor: "Clearer close-up plant photos",
-    aiHelp: "Improves photo inputs for plant scans",
+    aiHelp: "Captures clearer close-up photos for inspection, documentation, grow journals, and optional AI-assisted review.",
+    schemaDescription:
+      "A 10-20X phone camera lens for clearer plant inspection photos, pest documentation, trichome closeups, and grow journal records.",
     sku: "MGB-AI-SCOUT-10-20X",
     category: "Plant health scan camera",
     buttonLabel: "Buy Now",
@@ -75,12 +79,15 @@ const products: GrowTechProduct[] = [
     name: "MasterGrowbot AI Environment Monitor",
     badge: "Environment Data",
     price: "$89",
-    description: "Track grow-room temperature, humidity, CO2, and air quality context for better grow notes.",
-    whyBuy: "Better grow-room context for AI scans.",
-    bestFor: ["Temperature monitoring", "Humidity monitoring", "CO2 context", "Air quality checks"],
+    description:
+      "Track grow-room temperature, humidity, CO2, and air-quality context so you can document conditions and spot environment changes faster.",
+    whyBuy: "Better grow-room context for better decisions.",
+    bestFor: ["Temperature monitoring", "Humidity monitoring", "CO2 context", "Air quality checks", "Grow-room records"],
     dataCollected: "Temperature, humidity, CO2, air quality, particulates, VOC context",
     comparisonBestFor: "Grow-room environment context",
-    aiHelp: "Adds environment notes to plant scans and grow journals",
+    aiHelp: "Adds temperature, humidity, CO2, and air-quality context to grow-room records and troubleshooting notes.",
+    schemaDescription:
+      "A grow-room environment monitor for tracking temperature, humidity, CO2, and air-quality context for cultivation records.",
     sku: "MGB-AI-ENV-MONITOR",
     category: "Grow room environment monitor",
     buttonLabel: "Buy Now",
@@ -93,12 +100,15 @@ const products: GrowTechProduct[] = [
     displayName: "MasterGrowbot AI Soil Health Meter 6-in-1",
     badge: "Soil Data",
     price: "$59",
-    description: "Check soil, light, and humidity context before asking MasterGrowbot AI for plant guidance.",
-    whyBuy: "Quick soil and light context before AI scans.",
-    bestFor: ["Soil moisture checks", "pH context", "Temperature readings", "Light and humidity notes"],
+    description:
+      "Check soil moisture, pH, temperature, fertility, light, and humidity context so you can document root-zone and grow conditions more clearly.",
+    whyBuy: "Quick soil and light context for grow notes.",
+    bestFor: ["Soil moisture checks", "pH context", "Temperature readings", "Light and humidity notes", "Root-zone documentation"],
     dataCollected: "Soil moisture, pH, temperature, fertility, light, air humidity",
     comparisonBestFor: "Soil, light, and root-zone context",
-    aiHelp: "Adds soil and environment readings to grow notes",
+    aiHelp: "Adds soil, light, and root-zone readings to grow notes and watering decisions.",
+    schemaDescription:
+      "A 6-in-1 soil health meter for checking soil moisture, pH, temperature, fertility, light, and humidity context.",
     sku: "MGB-AI-SOIL-6IN1",
     category: "Soil health meter for cannabis",
     buttonLabel: "Buy Now",
@@ -113,18 +123,20 @@ const bundle: GrowTechProduct = {
   badge: "Save $50",
   price: "$247",
   description:
-    "Get the full MasterGrowbot AI Grow Tech setup with the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want better plant photos, better environment data, and better soil and light context for MasterGrowbot AI.",
-  whyBuy: "The complete AI scan setup with $50 bundle savings.",
+    "Get the full MasterGrowbot AI Grow Tech setup with the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want sharper plant photos, better environment records, and clearer soil and light context in one kit.",
+  whyBuy: "The complete grow documentation setup with $50 bundle savings.",
   bestFor: [
-    "Complete AI scan setup",
-    "Better plant photos",
+    "Complete grow documentation setup",
+    "Sharper plant photos",
     "Environment data",
     "Soil and light context",
-    "Premium grow documentation",
+    "Premium grow records",
   ],
   dataCollected: "Photos, environment data, soil and light context",
-  comparisonBestFor: "Complete AI scan setup",
-  aiHelp: "Combines cleaner photos with better grow context",
+  comparisonBestFor: "Complete grow documentation setup",
+  aiHelp: "Combines plant photos, environment readings, and soil context into one grow documentation setup.",
+  schemaDescription:
+    "A cannabis grow hardware kit with a plant inspection camera, environment monitor, and soil health meter for better grow documentation.",
   sku: "MGB-AI-GROW-TECH-KIT",
   category: "Cannabis grow tech kit",
   buttonLabel: "Buy the Kit and Save $50",
@@ -135,16 +147,16 @@ const bundle: GrowTechProduct = {
 
 const useCases = [
   {
-    title: "Better close-up plant scans",
-    text: "Capture clearer leaf, bud, and pest photos before uploading them into MasterGrowbot AI.",
+    title: "Better plant inspection photos",
+    text: "Capture clearer leaf, bud, pest, and trichome photos for grow records, troubleshooting, and journal updates.",
   },
   {
-    title: "More useful grow context",
-    text: "Pair plant photos with soil and environment readings so the AI has better information to work with.",
+    title: "Cleaner grow-room records",
+    text: "Track temperature, humidity, CO2, and air-quality context so environment changes are easier to document.",
   },
   {
-    title: "Less guessing during the grow",
-    text: "Use simple grow tech tools to document what changed before small issues become bigger problems.",
+    title: "More useful soil notes",
+    text: "Check soil, light, and root-zone context before watering decisions, grow updates, or plant health reviews.",
   },
 ];
 
@@ -196,7 +208,7 @@ const shippingCards = [
 const educationCards = [
   {
     title: "Better Photos",
-    text: "Sharper plant images help MasterGrowbot AI review visible symptoms more clearly.",
+    text: "Sharper plant images help growers document visible symptoms, pest pressure, trichomes, and plant changes more clearly.",
   },
   {
     title: "Better Context",
@@ -221,12 +233,17 @@ const faqs = [
   {
     question: "Do I need another app to use these products?",
     answer:
-      "The Scout Camera and Soil Health Meter do not require another app. The Environment Monitor has a built-in display for readings. Optional supplier app features may exist, but MasterGrowbot AI is the only app positioned on this page.",
+      "No. The Scout Camera, Environment Monitor, and Soil Health Meter can be used on their own for plant photos, grow-room readings, and grow records. MasterGrowbot AI is optional if you want AI-assisted plant health guidance.",
   },
   {
     question: "Do these tools diagnose plant problems?",
     answer:
-      "No. These tools help capture better plant images and grow context. Upload clear photos and relevant grow details into MasterGrowbot AI for plant health analysis and grow guidance.",
+      "No. These tools help capture better plant images and grow context. Growers can use the information for inspection, documentation, and troubleshooting. MasterGrowbot AI users can also upload photos and readings into the app for AI-assisted guidance.",
+  },
+  {
+    question: "Do I need to use MasterGrowbot AI to buy these?",
+    answer:
+      "No. GrowTech products are useful for any cannabis grower who wants better photos, environment readings, soil context, and grow documentation. They also pair well with MasterGrowbot AI if you use the app.",
   },
   {
     question: "Who do I contact for help with my order?",
@@ -527,15 +544,15 @@ function AnswerSection() {
   const cards = [
     {
       title: "What it helps with",
-      text: "Better plant scan photos, grow-room readings, soil context, and more useful grow journal notes.",
+      text: "Clearer plant photos, grow-room readings, soil context, pest documentation, and more useful grow journal notes.",
     },
     {
       title: "Who it is for",
-      text: "Home growers, craft growers, indoor tent growers, and cannabis cultivators who want cleaner inputs before asking MasterGrowbot AI for guidance.",
+      text: "Home growers, craft growers, indoor tent growers, caregivers, cultivation teams, and cannabis growers who want better documentation and troubleshooting context.",
     },
     {
-      title: "What it does not do",
-      text: "The hardware tools do not diagnose plants by themselves. They help collect clearer images and better grow context for MasterGrowbot AI.",
+      title: "How it works with MasterGrowbot AI",
+      text: "Use the tools on their own for grow records, or add the photos and readings into MasterGrowbot AI when you want AI-assisted plant health guidance.",
     },
   ];
 
@@ -544,17 +561,18 @@ function AnswerSection() {
       <div className="mx-auto max-w-7xl">
         <div className="max-w-4xl">
           <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
-            AI-READY GROW TOOLS
+            GROWER-READY HARDWARE
           </span>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
             What is MasterGrowbot AI Grow Tech?
           </h2>
           <p className="mt-5 text-base leading-8 text-white/64 sm:text-lg">
-            MasterGrowbot AI Grow Tech is a curated set of cannabis grow tech tools designed to help growers capture
-            better plant photos, document environment readings, and record soil context before using MasterGrowbot AI
-            for plant health analysis and grow guidance. These AI plant scan tools pair a plant health scan camera, a
-            grow room environment monitor, and a soil health meter for cannabis with the MasterGrowbot AI cannabis
-            growing app, grow journal tools, and indoor grow tent tools.
+            MasterGrowbot AI Grow Tech is a curated set of cannabis grow hardware for growers who want better plant
+            photos, cleaner grow-room records, and more useful soil and environment notes. These grow tech tools work as
+            standalone grow documentation hardware and can also be paired with MasterGrowbot AI for stronger plant health
+            context. The kit brings together a plant inspection camera, a grow room environment monitor, a soil health
+            meter for cannabis, grow journal tools, indoor grow tent tools, and AI-compatible grow tools for cleaner
+            cannabis cultivation records.
           </p>
         </div>
         <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -591,7 +609,7 @@ function ComparisonTable() {
           <table className="w-full border-collapse text-left">
             <thead className="bg-white/[0.04]">
               <tr>
-                {["Tool", "Best for", "Data collected", "How it helps MasterGrowbot AI", "Price"].map((header) => (
+                {["Tool", "Best for", "Data collected", "How growers use it", "Price"].map((header) => (
                   <th key={header} className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white/44">
                     {header}
                   </th>
@@ -636,7 +654,7 @@ function ComparisonTable() {
                 </div>
                 <div>
                   <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-white/36">
-                    How it helps MasterGrowbot AI
+                    How growers use it
                   </dt>
                   <dd className="mt-1 text-sm leading-6 text-white/64">{product.aiHelp}</dd>
                 </div>
@@ -724,7 +742,7 @@ function MidPageKitCta() {
       <div className="mx-auto flex max-w-6xl flex-col gap-5 rounded-xl border border-landing-green/20 bg-landing-green/10 p-5 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-6">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight text-white font-sans">
-            Want the complete scan setup?
+            Want the complete grow documentation setup?
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/62">
             Get the Scout Camera, Environment Monitor, and Soil Health Meter 6-in-1 together and save $50.
@@ -744,7 +762,7 @@ function BundleSection() {
           Best Value Setup
         </span>
         <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-          Get the full scan workflow for less than buying each tool separately.
+          Get the full grow documentation setup for less than buying each tool separately.
         </h2>
       </div>
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 rounded-xl border border-landing-green/25 bg-gradient-to-br from-landing-green/14 via-white/[0.04] to-white/[0.02] p-5 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
@@ -934,7 +952,7 @@ export default function GrowTech() {
         ...[...products, bundle].map((product) => ({
           "@type": "Product",
           name: product.name,
-          description: product.description,
+          description: product.schemaDescription,
           image: `https://www.mastergrowbot.com${product.image}`,
           sku: product.sku,
           category: product.category,
@@ -991,16 +1009,16 @@ export default function GrowTech() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-black pb-24 text-white sm:pb-0">
       <SEOHead
-        title="MasterGrowbot AI Grow Tech | AI Plant Scan Tools for Cannabis Growers"
-        description="Shop MasterGrowbot AI Grow Tech for cannabis plant scan cameras, environment monitors, soil health meters, and AI-ready grow tools with secure checkout and free shipping."
+        title="MasterGrowbot AI Grow Tech | Cannabis Grow Hardware and Plant Tools"
+        description="Shop MasterGrowbot AI Grow Tech for cannabis grow hardware, plant inspection cameras, environment monitors, soil health meters, and grow documentation tools with secure checkout and free shipping."
         canonicalUrl="https://www.mastergrowbot.com/grow-tech"
         ogImage="https://www.mastergrowbot.com/images/grow-tech/grow-tech-kit.png"
       />
       <Helmet>
-        <meta property="og:title" content="MasterGrowbot AI Grow Tech | AI Plant Scan Tools" />
+        <meta property="og:title" content="MasterGrowbot AI Grow Tech | Cannabis Grow Hardware" />
         <meta
           property="og:description"
-          content="Upgrade plant photos, environment data, and soil context with MasterGrowbot AI-ready grow tech for serious cannabis growers."
+          content="Upgrade your grow records with plant inspection cameras, grow-room environment monitors, soil health meters, and AI-compatible grow tools for cannabis cultivators."
         />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
@@ -1018,11 +1036,11 @@ export default function GrowTech() {
               </div>
               <div className="space-y-5">
                 <h1 className="text-4xl font-bold leading-[1.06] tracking-tight text-white font-sans sm:text-5xl lg:text-7xl">
-                  Grow Tech for Better AI Plant Scans
+                  Grow Tech for Better Plant Data
                 </h1>
                 <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/62 sm:text-xl lg:mx-0">
-                  Upgrade your plant photos, grow-room environment data, and soil context with MasterGrowbot AI-ready
-                  tools built for serious cannabis growers.
+                  Upgrade your grow with sharper plant photos, grow-room environment readings, and soil context tools
+                  built for cannabis growers who want cleaner records and better decisions.
                 </p>
               </div>
               <p className="mx-auto max-w-xl text-sm font-medium text-white/45 lg:mx-0">
@@ -1072,11 +1090,15 @@ export default function GrowTech() {
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto mb-10 max-w-3xl text-center">
               <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
-                AI-ready grow hardware
+                Cannabis grow hardware
               </span>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-                Tools for cleaner scan inputs and better grow notes
+                Tools for Better Grow Documentation
               </h2>
+              <p className="mt-3 text-base leading-relaxed text-white/58">
+                Capture clearer plant photos, track environment context, and check soil data for stronger grow records,
+                troubleshooting, and cultivation decisions.
+              </p>
             </div>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
@@ -1102,7 +1124,7 @@ export default function GrowTech() {
                 Better inputs
               </span>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-                Why Grow Tech Helps MasterGrowbot AI
+                Why Grow Tech Helps Growers
               </h2>
             </div>
             <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -1119,6 +1141,10 @@ export default function GrowTech() {
                 </article>
               ))}
             </div>
+            <p className="mt-6 max-w-3xl rounded-xl border border-landing-green/15 bg-landing-green/7 p-5 text-sm leading-relaxed text-white/62">
+              MasterGrowbot AI users can also upload GrowTech photos and readings into the app for AI-assisted plant
+              health guidance.
+            </p>
           </div>
         </section>
 
@@ -1127,9 +1153,10 @@ export default function GrowTech() {
         <section className="relative z-10 px-4 pb-20 sm:px-6 sm:pb-28">
           <div className="mx-auto max-w-4xl space-y-5 rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 text-sm leading-relaxed text-white/58 backdrop-blur-xl sm:p-8">
             <p>
-              MasterGrowbot AI Grow Tech products help capture better plant images and grow-room context. They do not
-              diagnose plant issues by themselves. Upload clear photos and relevant grow details into MasterGrowbot AI
-              for plant health analysis and grow guidance.
+              MasterGrowbot AI Grow Tech products help growers capture clearer plant photos, grow-room readings, and
+              soil context. They do not diagnose plant issues by themselves and do not replace grower judgment, lab
+              testing, or professional cultivation advice. MasterGrowbot AI app users can upload photos and readings into
+              the app for AI-assisted plant health guidance.
             </p>
             <p>{supplierDisclosure}</p>
           </div>
