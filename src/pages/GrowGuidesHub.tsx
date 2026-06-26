@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
-import { AmazonBookButton } from '@/components/landing/AmazonBookButton';
+import GrowTechCTA from '@/components/landing/GrowTechCTA';
 import { AppPlatformButtons } from '@/components/landing/cta';
 import { Input } from '@/components/ui/input';
 import { growGuides } from '@/data/growGuides';
@@ -98,10 +98,7 @@ export default function GrowGuidesHub() {
           >
             <AppPlatformButtons campaign="grow-guides" location="grow-guides-hero" />
             <div className="flex flex-col items-center gap-2 pt-1">
-              <p className="text-sm font-semibold text-landing-green font-sans">
-                Protect Your Grow with the IPM Playbook
-              </p>
-              <AmazonBookButton location="grow-guides-hero" />
+              <GrowTechCTA variant="compact" showSubtext ctaLocation="grow-guides:growtech" />
             </div>
           </motion.div>
         </div>

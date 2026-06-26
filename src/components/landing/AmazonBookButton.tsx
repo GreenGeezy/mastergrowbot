@@ -27,6 +27,7 @@ export function AmazonBookButton({
       href={AMAZON_BOOK_URL}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label="Available on Amazon, opens in new tab"
       data-cta-location={`${location}:amazon-book`}
       data-analytics-manual="true"
       onClick={handleClick}

@@ -1,3 +1,5 @@
+import { AMAZON_BOOK_URL } from '@/components/landing/ctaLinks';
+
 export interface GrowGuideFAQ {
   question: string;
   answer: string;
@@ -5362,7 +5364,7 @@ MasterGrowbot AI is useful here because the climate reading alone is never the f
         heading: "Leaf VPD, Humidity Risk, and Disease Prevention",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Leaf VPD is not only about growth rate. It is also a disease-management tool. If leaf VPD stays too low in late flower, the crop can sit in a comfort zone for powdery mildew and botrytis even when the grower thinks the room is safe.</p>
 <p class="text-base text-white/65 leading-relaxed font-sans mb-3">That is why serious growers look at leaf VPD alongside airflow, nighttime humidity spikes, leaf wetness, and plant density. A dense canopy with low leaf VPD and weak air exchange is exactly the kind of setup where hidden flower rot starts building before you smell anything wrong.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If your climate problems are spilling into mold prevention and sanitation decisions, pair this guide with the <a href="/grow-guides/cannabis-botrytis-bud-rot" class="text-landing-green hover:underline">bud rot guide</a> and keep the <a href="https://www.amazon.com/dp/B0H5LWKBSV" class="text-landing-green hover:underline">Master Cannabis IPM Playbook on Amazon</a> in the same workflow. The book is most useful when environment mistakes keep turning into repeat pest and pathogen pressure.</p>`,
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If your climate problems are spilling into mold prevention and sanitation decisions, pair this guide with the <a href="/grow-guides/cannabis-botrytis-bud-rot" class="text-landing-green hover:underline">bud rot guide</a> and keep the <a href="${AMAZON_BOOK_URL}" target="_blank" rel="noopener noreferrer" aria-label="Master Cannabis IPM Playbook on Amazon, opens in new tab" class="text-landing-green hover:underline">Master Cannabis IPM Playbook on Amazon</a> in the same workflow. The book is most useful when environment mistakes keep turning into repeat pest and pathogen pressure.</p>`,
       },
       {
         heading: "Use the Free Leaf VPD Calculator and Track What Happens Next",
@@ -5486,7 +5488,7 @@ The fix is not always more fertilizer. Sometimes it is shorter dry-backs, better
         heading: "Humidity Risk in Sealed CO2 Flower Rooms",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Sealed rooms enriched with CO2 can produce heavy, dense flowers, but those same conditions can hide humidity problems until they become expensive. High biomass, limited air exchange, and nighttime moisture release can create a mold-friendly environment even when daytime VPD looks strong.</p>
 <p class="text-base text-white/65 leading-relaxed font-sans mb-3">This is where growers get into trouble by chasing daytime productivity and ignoring lights-off moisture control. A room can run a strong daytime VPD with CO2 and still collapse into a low-VPD danger zone overnight. Bud rot does not care that your daytime charts looked optimized if humidity pooled inside dense colas after lights-out.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If your room is packed, sealed, and being pushed hard, pair this guide with the <a href="/grow-guides/cannabis-botrytis-bud-rot" class="text-landing-green hover:underline">bud rot guide</a> and keep the <a href="https://www.amazon.com/dp/B0H5LWKBSV" class="text-landing-green hover:underline">Master Cannabis IPM Playbook on Amazon</a> in the same workflow. It is most useful when environmental optimization and disease prevention need to be managed together, not as separate projects.</p>`,
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If your room is packed, sealed, and being pushed hard, pair this guide with the <a href="/grow-guides/cannabis-botrytis-bud-rot" class="text-landing-green hover:underline">bud rot guide</a> and keep the <a href="${AMAZON_BOOK_URL}" target="_blank" rel="noopener noreferrer" aria-label="Master Cannabis IPM Playbook on Amazon, opens in new tab" class="text-landing-green hover:underline">Master Cannabis IPM Playbook on Amazon</a> in the same workflow. It is most useful when environmental optimization and disease prevention need to be managed together, not as separate projects.</p>`,
       },
       {
         heading: "How to Adjust a CO2 Room Without Guessing",
@@ -5734,7 +5736,7 @@ This stage pairs well with the workflow in the <a href="/grow-guides/cannabis-fl
 
 The goal is not to dry the plant out aggressively for its own sake. The goal is to create a clean finishing environment where the flowers can ripen without internal moisture pockets. If you push RH low while the room is too hot, the plants are underfed, or irrigation cannot keep up, you can trade mold prevention for avoidable stress. That is not optimization. That is just a different mistake.
 
-Late flower is also the stage where hygiene and prevention matter more than rescue treatments. If your room repeatedly struggles with late-flower moisture pressure, the Master Cannabis IPM Playbook on <a href="https://www.amazon.com/dp/B0H5LWKBSV" class="text-landing-green hover:underline">Amazon</a> is a useful companion because it helps you tighten sanitation, scouting, and disease-prevention routines before the next run gets expensive.`,
+Late flower is also the stage where hygiene and prevention matter more than rescue treatments. If your room repeatedly struggles with late-flower moisture pressure, the Master Cannabis IPM Playbook on <a href="${AMAZON_BOOK_URL}" target="_blank" rel="noopener noreferrer" aria-label="Master Cannabis IPM Playbook on Amazon, opens in new tab" class="text-landing-green hover:underline">Amazon</a> is a useful companion because it helps you tighten sanitation, scouting, and disease-prevention routines before the next run gets expensive.`,
       },
       {
         heading: "Night Humidity Is Often the Real Problem",

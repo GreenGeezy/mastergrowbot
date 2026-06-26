@@ -1,4 +1,5 @@
 export const AMAZON_BOOK_URL = 'https://www.amazon.com/dp/B0H5LWKBSV';
+export const GROW_TECH_URL = '/grow-tech';
 export const APP_STORE_BASE_URL =
   'https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060';
 export const PLAY_STORE_BASE_URL =

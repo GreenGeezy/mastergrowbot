@@ -18,7 +18,7 @@ export default function FeatureSection() {
               A single spider mite or subtle pH lockout can ruin months of work. Snap a photo of any leaf, and our vision AI instantly identifies the exact pest or deficiency, giving you a step-by-step recovery plan to save your harvest.
             </p>
             <div className="pt-2">
-              <StoreBadges className="justify-start pt-2" />
+              <StoreBadges className="justify-start pt-2" growTechLocation="vision-ai-section:growtech" />
             </div>
           </ScrollReveal>
           <div className="order-2 flex justify-center">
@@ -42,7 +42,7 @@ export default function FeatureSection() {
               Whether you are hunting elite phenos or dialing in a custom cross, MasterGrowbot tracks your exact strain data. Achieve flawless batch-to-batch consistency and push your yields to their absolute genetic maximum.
             </p>
             <div className="pt-2">
-              <StoreBadges className="justify-start pt-2" />
+              <StoreBadges className="justify-start pt-2" growTechLocation="strain-intelligence-section:growtech" />
             </div>
           </ScrollReveal>
         </div>
@@ -58,7 +58,7 @@ export default function FeatureSection() {
               Stop second-guessing your environmental inputs. Get a relentless, expert set of eyes on your canopy at all times, mitigating risk and optimizing growth without paying thousands for a human consultant.
             </p>
             <div className="pt-2">
-              <StoreBadges className="justify-start pt-2" />
+              <StoreBadges className="justify-start pt-2" growTechLocation="master-grower-section:growtech" />
             </div>
           </ScrollReveal>
           <div className="order-2 flex justify-center">

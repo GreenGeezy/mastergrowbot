@@ -397,8 +397,6 @@ function CheckoutButton({
     <div className={className}>
       <a
         href={checkoutUrl}
-        target="_blank"
-        rel="noopener noreferrer"
         className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
       >
         {compact ? "Buy the Kit" : product.buttonLabel}
@@ -910,8 +908,6 @@ function StickyMobileCta() {
         {checkoutUrl ? (
           <a
             href={checkoutUrl}
-            target="_blank"
-            rel="noopener noreferrer"
             className="inline-flex shrink-0 items-center justify-center rounded-lg bg-landing-green px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-landing-green/90 focus:outline-none focus:ring-2 focus:ring-landing-green"
           >
             Buy the Kit

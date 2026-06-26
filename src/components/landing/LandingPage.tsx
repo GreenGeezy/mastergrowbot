@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import HeroSection from './HeroSection';
 import FeatureSection from './FeatureSection';
 import ConversionBanner from './ConversionBanner';
+import IPMPlaybookSection from './IPMPlaybookSection';
 import LandingFooter from './LandingFooter';
 import LandingNav from './LandingNav';
 import ParticleBackground from './ParticleBackground';
@@ -18,6 +19,7 @@ export default function LandingPage() {
       <LandingNav />
       <HeroSection />
       <FeatureSection />
+      <IPMPlaybookSection />
       <ConversionBanner />
       <LandingFooter />
     </div>

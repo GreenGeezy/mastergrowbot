@@ -44,7 +44,7 @@ export default function HeroSection() {
             Turn your smartphone into a 24/7 master grower. Instantly diagnose pests, fix nutrient lockouts, and maximize your yield before a single mistake ruins your run.
           </p>
 
-          <StoreBadges className="justify-center lg:justify-start pt-2" />
+          <StoreBadges className="justify-center lg:justify-start pt-2" growTechLocation="hero:growtech" />
         </motion.div>
 
         {/* Hero Device */}

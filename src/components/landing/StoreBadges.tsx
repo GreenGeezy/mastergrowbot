@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion';
-import { AmazonBookButton } from './AmazonBookButton';
 import { appStoreUrl, playStoreUrl } from './ctaLinks';
+import GrowTechCTA from './GrowTechCTA';
 
 interface StoreBadgesProps {
   className?: string;
+  growTechLocation?: string;
 }
 
-export default function StoreBadges({ className = '' }: StoreBadgesProps) {
+export default function StoreBadges({ className = '', growTechLocation = 'hero:growtech' }: StoreBadgesProps) {
   // Convert justify-* to items-* for flex-col alignment, pass other classes through
   const alignItems = className
     .split(' ')
@@ -53,13 +54,12 @@ export default function StoreBadges({ className = '' }: StoreBadgesProps) {
           />
         </motion.a>
 
-        <AmazonBookButton location="homepage-store-badges" />
+        <GrowTechCTA variant="hero" showBadge showSubtext={false} ctaLocation={growTechLocation} />
       </div>
 
       {/* Shared subtext below all 3 buttons */}
       <div className="text-xs sm:text-sm text-white/50 font-sans text-center space-y-1">
-        <p className="whitespace-nowrap">Download &amp; Try 100% Free. Cancel Anytime No Sign Up Needed</p>
-        <p>Get The Master Cannabis IPM Playbook on Amazon &amp; Save your Grow from Plant Killing Pests</p>
+        <p>Download and try MasterGrowbot AI free. Upgrade your scans with GrowTech tools when you are ready.</p>
       </div>
     </div>
   );
