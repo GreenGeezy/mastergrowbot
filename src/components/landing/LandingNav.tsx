@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AMAZON_BOOK_URL } from './ctaLinks';
+import { AmazonBookButton } from './AmazonBookButton';
 import GrowTechCTA from './GrowTechCTA';
 
 export default function LandingNav() {
@@ -37,7 +37,7 @@ export default function LandingNav() {
         >
           Contact
         </Link>
-        <div className="flex flex-col items-center gap-1 leading-none">
+        <div className="flex flex-col items-center gap-1.5 leading-none">
           <a
             href="/#ipm-playbook"
             data-cta-location="nav:ipm-playbook-section"
@@ -45,16 +45,10 @@ export default function LandingNav() {
           >
             IPM Playbook
           </a>
-          <a
-            href={AMAZON_BOOK_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Available on Amazon, opens in new tab"
-            data-cta-location="nav:amazon-book"
-            className="rounded-md border border-landing-green/25 px-2.5 py-1 text-[11px] font-semibold text-landing-green transition-colors duration-200 hover:border-landing-green/55 hover:text-landing-green/85 font-sans"
-          >
-            Available on Amazon
-          </a>
+          <AmazonBookButton
+            location="nav"
+            imageClassName="h-[24px] max-w-[88px] rounded-md sm:h-[26px]"
+          />
         </div>
       </div>
     </nav>

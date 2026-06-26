@@ -22,9 +22,9 @@ export default function StoreBadges({ className = '', growTechLocation = 'hero:g
 
   return (
     <div className={`flex flex-col gap-3 ${alignItems || 'items-center'} ${otherClasses}`}>
-      <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-5">
+      <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start sm:gap-4 lg:gap-5">
         <div className="flex flex-col items-center gap-2">
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-5">
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-3 lg:gap-4">
             <motion.a
               href={appStoreUrl('homepage')}
               data-cta-location="homepage-store-badges:ios"
@@ -36,7 +36,7 @@ export default function StoreBadges({ className = '', growTechLocation = 'hero:g
               <img
                 src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
                 alt="Download on the App Store"
-                className="relative h-[65px] sm:h-[70px]"
+                className="relative h-[62px] sm:h-[66px]"
               />
             </motion.a>
 
@@ -51,7 +51,7 @@ export default function StoreBadges({ className = '', growTechLocation = 'hero:g
               <img
                 src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
                 alt="Get it on Google Play"
-                className="relative h-[65px] sm:h-[70px]"
+                className="relative h-[62px] sm:h-[66px]"
               />
             </motion.a>
           </div>
@@ -60,7 +60,7 @@ export default function StoreBadges({ className = '', growTechLocation = 'hero:g
           </p>
         </div>
 
-        <GrowTechCTA variant="hero" showBadge showSubtext ctaLocation={growTechLocation} />
+        <GrowTechCTA variant="hero" showSubtext ctaLocation={growTechLocation} className="sm:pt-1" />
       </div>
     </div>
   );

@@ -36,7 +36,9 @@ export function AmazonBookButton({
       <img
         src={AMAZON_BUTTON_IMAGE_URL}
         alt="Buy The Master Cannabis IPM Playbook on Amazon"
-        className={`h-[58px] w-auto max-w-[220px] rounded-lg transition-transform duration-200 group-hover:scale-[1.03] sm:h-[65px] ${imageClassName}`}
+        className={`w-auto rounded-lg transition-transform duration-200 group-hover:scale-[1.03] ${
+          imageClassName || 'h-[58px] max-w-[220px] sm:h-[65px]'
+        }`}
       />
     </a>
   );
