@@ -14,13 +14,13 @@ interface GrowTechCTAProps {
 
 const variantStyles: Record<GrowTechCTAVariant, string> = {
   hero:
-    'h-[54px] sm:h-[56px]',
+    'h-[108px] sm:h-[112px]',
   nav:
-    'h-[38px] sm:h-[40px]',
+    'h-[76px] sm:h-[80px]',
   compact:
-    'h-[46px]',
+    'h-[92px]',
   inline:
-    'h-[42px]',
+    'h-[84px]',
 };
 
 const subtextByVariant: Record<GrowTechCTAVariant, string> = {
