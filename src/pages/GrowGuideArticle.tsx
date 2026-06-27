@@ -14,6 +14,10 @@ function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
+function hasAnyKeyword(text: string, keywords: string[]) {
+  return keywords.some((keyword) => text.includes(keyword));
+}
+
 export default function GrowGuideArticle() {
   const { slug } = useParams<{ slug: string }>();
   const guide = getGuideBySlug(slug ?? '');
@@ -25,6 +29,40 @@ export default function GrowGuideArticle() {
   const appStoreUrl = buildAppStoreUrl(guide.slug);
   const playStoreUrl = buildPlayStoreUrl(guide.slug);
   const canonicalUrl = `https://www.mastergrowbot.com/grow-guides/${guide.slug}`;
+  const intentText = [
+    guide.slug,
+    guide.title,
+    guide.h1,
+    guide.metaTitle,
+    guide.metaDescription,
+    guide.shortDescription,
+  ].join(' ').toLowerCase();
+  const isIpmIntent = hasAnyKeyword(intentText, [
+    'pest',
+    'disease',
+    'ipm',
+    'spider mite',
+    'spider-mite',
+    'powdery mildew',
+    'powdery-mildew',
+    'bud rot',
+    'botrytis',
+    'sanitation',
+    'quarantine',
+    'scouting',
+  ]);
+  const appCtaIntro = isIpmIntent
+    ? 'Scan Your Plant with MasterGrowbot AI'
+    : 'Skip the guesswork';
+  const appCtaBody = isIpmIntent
+    ? 'Take a photo and get instant AI grow help when pest or disease symptoms show up.'
+    : 'Sick plant? Scan it before the problem gets worse.';
+  const bookCtaHeading = isIpmIntent
+    ? 'Protect Your Grow with the IPM Playbook'
+    : 'Save Your Grow from Pests & Diseases';
+  const bookCtaBody = isIpmIntent
+    ? 'Use the IPM Playbook as your weekly pest prevention system.'
+    : 'Use The Master Cannabis IPM Playbook as your weekly pest and disease prevention system.';
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -150,9 +188,9 @@ export default function GrowGuideArticle() {
             {/* Inline CTA (within first 300 words) */}
             <div className="mb-10 rounded-2xl border border-landing-green/20 bg-landing-green/5 p-6 flex flex-col gap-4">
               <div className="flex-1">
-                <p className="text-sm font-semibold text-landing-green font-sans mb-1">Skip the guesswork</p>
+                <p className="text-sm font-semibold text-landing-green font-sans mb-1">{appCtaIntro}</p>
                 <p className="text-sm text-white/60 font-sans">
-                  Snap a photo of your plant and MasterGrowbot AI diagnoses the exact issue in seconds.
+                  {appCtaBody}
                 </p>
               </div>
               <AppPlatformButtons campaign={guide.slug} location="article-inline" className="sm:justify-start" />
@@ -200,14 +238,25 @@ export default function GrowGuideArticle() {
               <p className="text-white/60 font-sans text-sm sm:text-base max-w-lg mx-auto">
                 Snap a photo. Save your plant. Try MasterGrowbot AI free: AI plant diagnosis, grow journal, strain database, and daily tasks in one app.
               </p>
+              {isIpmIntent && (
+                <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">
+                  <h3 className="text-lg font-bold text-white font-sans">{bookCtaHeading}</h3>
+                  <p className="mt-2 text-sm text-white/60 font-sans">
+                    {bookCtaBody}
+                  </p>
+                  <AmazonBookButton location="article-closing" className="mt-4" />
+                </div>
+              )}
               <AppPlatformButtons campaign={guide.slug} location="article-closing" className="pt-2" />
+              {!isIpmIntent && (
               <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">
-                <h3 className="text-lg font-bold text-white font-sans">Save Your Grow from Pests & Diseases</h3>
+                <h3 className="text-lg font-bold text-white font-sans">{bookCtaHeading}</h3>
                 <p className="mt-2 text-sm text-white/60 font-sans">
-                  Use The Master Cannabis IPM Playbook as your weekly pest and disease prevention system.
+                  {bookCtaBody}
                 </p>
                 <AmazonBookButton location="article-closing" className="mt-4" />
               </div>
+              )}
             </div>
 
             {/* Internal links */}
@@ -224,6 +273,25 @@ export default function GrowGuideArticle() {
           {/* Sticky Sidebar — desktop only */}
           <aside className="hidden lg:block">
             <div className="sticky top-8 space-y-5">
+              {isIpmIntent && (
+                <div className="rounded-2xl border border-landing-green/20 bg-landing-green/5 p-5 space-y-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-landing-green font-sans">
+                    IPM Playbook
+                  </p>
+                  <p className="text-sm font-semibold text-white font-sans leading-snug">
+                    {bookCtaHeading}
+                  </p>
+                  <p className="text-xs text-white/50 font-sans leading-relaxed">
+                    {bookCtaBody}
+                  </p>
+                  <AmazonBookButton
+                    location="article-sidebar"
+                    className="w-full"
+                    imageClassName="h-[52px] max-w-full sm:h-[58px]"
+                  />
+                </div>
+              )}
+
               <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] p-5 space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-white/40 font-sans">
                   AI Plant Diagnosis
@@ -255,15 +323,16 @@ export default function GrowGuideArticle() {
                 </a>
               </div>
 
+              {!isIpmIntent && (
               <div className="rounded-2xl border border-landing-green/20 bg-landing-green/5 p-5 space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-landing-green font-sans">
                   IPM Playbook
                 </p>
                 <p className="text-sm font-semibold text-white font-sans leading-snug">
-                  Save Your Grow from Pests & Diseases
+                  {bookCtaHeading}
                 </p>
                 <p className="text-xs text-white/50 font-sans leading-relaxed">
-                  Use The Master Cannabis IPM Playbook as your weekly pest and disease prevention system.
+                  {bookCtaBody}
                 </p>
                 <AmazonBookButton
                   location="article-sidebar"
@@ -271,6 +340,7 @@ export default function GrowGuideArticle() {
                   imageClassName="h-[52px] max-w-full sm:h-[58px]"
                 />
               </div>
+              )}
 
               {/* Related guides in sidebar */}
               {relatedGuides.length > 0 && (

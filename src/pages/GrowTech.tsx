@@ -414,6 +414,7 @@ function CheckoutButton({
     <div className={className}>
       <a
         href={checkoutUrl}
+        data-cta-location={`growtech_page:${product.checkoutKey}`}
         className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
       >
         {compact ? "Buy the Kit" : product.buttonLabel}
@@ -1049,6 +1050,7 @@ export default function GrowTech() {
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
                 <a
                   href="#products"
+                  data-cta-location="growtech_page:products"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black sm:w-auto"
                 >
                   Shop Grow Tech

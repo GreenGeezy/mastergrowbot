@@ -9,20 +9,22 @@
       gtag('js', new Date());
       gtag('config', 'G-NT1046S3EN');
 
-      // Track app and book link clicks
+      // Track CTA clicks
       document.addEventListener('click', function(e) {
         var el = e.target.closest('a[href]');
         if (!el) return;
         var href = el.getAttribute('href');
         var location = el.getAttribute('data-cta-location') || window.location.pathname;
         if (href && href.indexOf('apps.apple.com') !== -1) {
-          gtag('event', 'app_store_click', {'link_url': href, 'location': location});
+          gtag('event', 'ios_app_click', {'link_url': href, 'location': location});
         } else if (href && href.indexOf('play.google.com') !== -1) {
-          gtag('event', 'play_store_click', {'link_url': href, 'location': location});
-        } else if (href && href.indexOf('amazon.com/dp/B0H5LWKBSV') !== -1) {
+          gtag('event', 'android_app_click', {'link_url': href, 'location': location});
+        } else if (href && href.indexOf('a.co/d/07dQFaw0') !== -1) {
           if (el.getAttribute('data-analytics-manual') !== 'true') {
             gtag('event', 'amazon_book_click', {'link_url': href, 'location': location});
           }
+        } else if (href && (href === '/grow-tech' || href.indexOf('/grow-tech') !== -1 || location.indexOf('growtech') !== -1)) {
+          gtag('event', 'growtech_click', {'link_url': href, 'location': location});
         }
       });
     </script>

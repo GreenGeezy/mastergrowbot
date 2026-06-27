@@ -8,7 +8,7 @@ export default function LandingFooter() {
         <p>© {new Date().getFullYear()} AGCOM SOLUTIONS LLC. All rights reserved.</p>
         <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
           <Link to={GROW_TECH_URL} data-cta-location="footer:growtech" className="hover:text-landing-green transition-colors">
-            GrowTech Shop
+            Shop GrowTech
           </Link>
           <Link to="/grow-guides" className="hover:text-white/60 transition-colors">
             Grow Guides

@@ -24,10 +24,10 @@ const variantStyles: Record<GrowTechCTAVariant, string> = {
 };
 
 const subtextByVariant: Record<GrowTechCTAVariant, string> = {
-  hero: 'AI-ready tools for better plant scans',
-  nav: 'AI-ready tools for better plant scans',
-  compact: 'Upgrade plant scans with AI-ready grow tools',
-  inline: 'Better AI plant scans',
+  hero: 'AI Intelligent GrowTech for growers of all types and experience levels',
+  nav: 'AI Intelligent GrowTech for every grower',
+  compact: 'AI Intelligent GrowTech for growers of all types and experience levels',
+  inline: 'AI Intelligent GrowTech for every grower',
 };
 
 export default function GrowTechCTA({

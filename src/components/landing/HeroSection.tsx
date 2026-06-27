@@ -41,7 +41,7 @@ export default function HeroSection() {
           </h1>
 
           <p className="text-lg sm:text-xl text-white/60 max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans">
-            Turn your smartphone into a 24/7 master grower. Instantly diagnose pests, fix nutrient lockouts, and maximize your yield before a single mistake ruins your run.
+            Scan your cannabis plant and get instant grow help. Get help with sick plants, pests, deficiencies, and grow-room problems before they get worse.
           </p>
 
           <StoreBadges className="justify-center lg:justify-start pt-2" growTechLocation="hero:growtech" />
