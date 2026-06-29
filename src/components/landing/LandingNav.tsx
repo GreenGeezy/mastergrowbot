@@ -26,6 +26,14 @@ export default function LandingNav() {
         >
           Grow Guides
         </Link>
+        <a
+          href="/ai-strategy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans sm:pt-[11px]"
+        >
+          AI Strategy
+        </a>
         <Link
           to="/vpd-calculator"
           className="text-sm font-medium text-white/60 hover:text-landing-green transition-colors duration-200 font-sans sm:pt-[11px]"

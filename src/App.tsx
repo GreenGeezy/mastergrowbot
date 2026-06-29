@@ -16,6 +16,8 @@ const VPDCalculator = lazy(() => import("@/pages/VPDCalculator"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const GrowTech = lazy(() => import("@/pages/GrowTech"));
 const GrowTechThankYou = lazy(() => import("@/pages/GrowTechThankYou"));
+const AIStrategy = lazy(() => import("@/pages/AIStrategy"));
+const AIStrategyBook = lazy(() => import("@/pages/AIStrategyBook"));
 
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -92,6 +94,22 @@ const App = () => {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <GrowTechThankYou />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/ai-strategy"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AIStrategy />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/ai-strategy/book"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AIStrategyBook />
               </Suspense>
             }
           />
