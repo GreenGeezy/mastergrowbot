@@ -3,7 +3,7 @@ import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import SEOHead from "@/components/SEOHead";
 
-export const BOOKING_URL = "PASTE_HIDDEN_GOOGLE_CALENDAR_OR_ZOOM_SCHEDULER_LINK_HERE";
+export const BOOKING_URL = "PASTE_HIDDEN_BOOKING_LINK_HERE";
 
 export default function AIStrategyBook() {
   return (

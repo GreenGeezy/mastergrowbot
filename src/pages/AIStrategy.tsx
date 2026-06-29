@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
 import {
   ArrowLeft,
   ArrowRight,
-  BadgeCheck,
   BrainCircuit,
   Building2,
   Check,
@@ -13,24 +13,21 @@ import {
   FlaskConical,
   Landmark,
   Layers3,
-  LineChart,
-  Map,
   Microscope,
   Network,
   Quote,
-  ShieldCheck,
   Sparkles,
   Sprout,
   Store,
   Users,
 } from "lucide-react";
-import CannabisGenomeScan from "@/components/landing/CannabisGenomeScan";
+import CannabisAICommandMatrix from "@/components/landing/CannabisAICommandMatrix";
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import SEOHead from "@/components/SEOHead";
 
-export const WHOP_AI_OPPORTUNITY_MAP_URL = "PASTE_WHOP_999_CHECKOUT_LINK_HERE";
-export const WHOP_AGENT_BUILDOUT_URL = "PASTE_WHOP_4999_OR_APPLICATION_LINK_HERE";
+export const WHOP_AI_OPPORTUNITY_MAP_URL = "PASTE_WHOP_899_CHECKOUT_LINK_HERE";
+export const WHOP_AGENT_BUILDOUT_URL = "PASTE_WHOP_AGENT_BUILDOUT_APPLICATION_OR_CHECKOUT_LINK_HERE";
 
 const bookingRedirectPath = "/ai-strategy/book";
 const assetBase = "/images/ai-strategy";
@@ -42,20 +39,12 @@ const heroProof = [
   "A decade building cannabis technology and AI companies",
 ];
 
-const authorityProof = [
-  "Created Growbot, the first cannabis growing app on the Apple App Store",
-  "Co-founder and former CEO of Grownetics, early cannabis AI cultivation technology",
-  "Grownetics combined hardware, software, sensing, automation, and AI for advanced cannabis cultivation",
-  "Winner of the University of Colorado New Venture Challenge IT Competition",
-  "Founder of MasterGrowbot AI, rated 5.0 on the App Store",
-  "A decade building and advising cannabis technology, cultivation, and AI companies",
-];
-
-const proofTimeline = [
-  { year: "2014", label: "Growbot launches", detail: "First cannabis growing app on the Apple App Store." },
-  { year: "2016", label: "Grownetics wins", detail: "CU Boulder New Venture Challenge IT Competition winner." },
-  { year: "AI", label: "Cultivation intelligence", detail: "Hardware, sensing, automation, analytics, and AI for cannabis." },
-  { year: "Now", label: "MasterGrowbot AI", detail: "AI strategy and tools built around real cannabis workflows." },
+const credibilityChips = [
+  "First cannabis growing app on the Apple App Store",
+  "Co-founder and former CEO of Grownetics",
+  "Award-winning cannabis technology founder",
+  "MasterGrowbot AI rated 5.0 on the App Store",
+  "Cannabis AI advisor for operators, brands, and investors",
 ];
 
 const testimonials = [
@@ -112,15 +101,16 @@ const offers = [
     price: "$899",
     originalPrice: "$999",
     capacity: "Limited advisory slots",
-    subtitle: "A private strategy call plus a custom 10-page AI roadmap for your cannabis business.",
+    subtitle:
+      "A private 60-minute cannabis AI strategy session plus a custom 10-page roadmap showing exactly where AI can create value in your business.",
     includes: [
-      "Private 60-minute cannabis AI strategy session",
+      "Private 60-minute AI strategy call",
       "Custom 10-page AI Opportunity Map",
-      "Top AI opportunities ranked by impact and difficulty",
+      "Top workflows ranked by impact and difficulty",
       "Quick-win automations for the next 7 to 30 days",
       "Custom AI agent concepts",
-      "Data, SOP, and workflow readiness score",
-      "Recommended tools and implementation roadmap",
+      "Data, SOP, and team readiness score",
+      "Tool/platform recommendations",
       "Report delivered within 5 business days",
     ],
     cta: "Book AI Opportunity Map",
@@ -133,12 +123,12 @@ const offers = [
     price: "Starting at $4,499",
     originalPrice: "$4,999",
     capacity: "Limited buildout capacity",
-    subtitle: "For cannabis companies ready to move from strategy to implementation.",
+    subtitle: "For cannabis companies ready to turn the AI roadmap into a working agent, workflow, or internal copilot.",
     includes: [
-      "AI agent design workshop",
+      "Agent design workshop",
       "Custom agent architecture",
       "Prompt system and workflow logic",
-      "Platform recommendation: OpenAI, Claude, or open-source stack",
+      "OpenAI, Claude, or open-source recommendation",
       "Prototype or guided implementation",
       "Team training call",
       "Agent operating guide",
@@ -153,43 +143,38 @@ const offers = [
 const reportSlides = [
   {
     title: "Cannabis AI Opportunity Map",
-    label: "Cover",
-    content: ["Business type", "Strategy session summary", "AI roadmap snapshot"],
-  },
-  {
-    title: "Executive AI Opportunity Summary",
-    label: "Page 01",
-    content: ["Top priorities", "Business impact", "Implementation effort"],
+    subtitle: "Custom 10-page AI strategy report",
+    label: "Slide 01",
+    type: "cover",
+    metrics: ["Executive summary", "Workflow snapshot", "Build roadmap"],
   },
   {
     title: "AI Opportunity Heatmap",
-    label: "Page 03",
-    content: ["High-impact workflows", "Quick wins", "Technical lift"],
+    subtitle: "Impact vs. difficulty matrix",
+    label: "Slide 02",
+    type: "heatmap",
+    metrics: ["Quick wins", "High-ROI automation", "Workflow risk"],
   },
   {
     title: "Custom AI Agent Concepts",
-    label: "Page 05",
-    content: ["Agent jobs-to-be-done", "Inputs and outputs", "Human review points"],
+    subtitle: "Agent ideas mapped to real workflows",
+    label: "Slide 03",
+    type: "agents",
+    metrics: ["Cultivation SOP Agent", "Sales Follow-Up Agent", "Training Copilot"],
   },
   {
     title: "Data & SOP Readiness Score",
-    label: "Page 06",
-    content: ["Document quality", "Data access", "Workflow maturity"],
+    subtitle: "Documents, team, tools, and controls",
+    label: "Slide 04",
+    type: "score",
+    metrics: ["Documents", "Workflows", "Human review"],
   },
   {
-    title: "Human Review & Risk Controls",
-    label: "Page 08",
-    content: ["Approval paths", "Compliance boundaries", "Escalation logic"],
-  },
-  {
-    title: "30/60/90-Day Implementation Roadmap",
-    label: "Page 09",
-    content: ["Quick wins", "Prototype plan", "Team rollout"],
-  },
-  {
-    title: "Next-Step Build Plan",
-    label: "Page 10",
-    content: ["Recommended buildout", "Tool stack", "Training plan"],
+    title: "30/60/90-Day Build Plan",
+    subtitle: "Phased implementation roadmap",
+    label: "Slide 05",
+    type: "roadmap",
+    metrics: ["Quick wins", "Prototype", "Rollout"],
   },
 ];
 
@@ -329,7 +314,7 @@ function CtaButton({
   return (
     <a
       href={href}
-      className={`group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg px-5 py-3.5 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black sm:w-auto ${classes}`}
+      className={`group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg px-6 py-4 text-base font-semibold transition focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black sm:w-auto ${classes}`}
     >
       <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/18 to-transparent opacity-0 transition duration-700 group-hover:translate-x-full group-hover:opacity-100" />
       <span className="relative">{children}</span>
@@ -376,7 +361,7 @@ function HeroSection() {
         </Reveal>
 
         <Reveal delay={0.15}>
-          <CannabisGenomeScan />
+          <CannabisAICommandMatrix />
         </Reveal>
       </div>
 
@@ -435,60 +420,113 @@ function AuthorityVideoSection() {
   );
 }
 
-function AuthorityProofSection() {
+function AwardCredibilityCard() {
+  return (
+    <div className="relative overflow-hidden rounded-lg border border-gold/24 bg-[linear-gradient(145deg,rgba(255,215,0,0.12),rgba(29,185,84,0.06),rgba(255,255,255,0.025))] p-5 shadow-2xl shadow-black/35">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,215,0,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(29,185,84,0.06)_1px,transparent_1px)] bg-[size:28px_28px] opacity-35" />
+      <div className="relative z-10">
+        <div className="flex items-center gap-3">
+          <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-gold/35 bg-gold/12 text-2xl text-gold shadow-[0_0_28px_rgba(255,215,0,0.15)]">
+            <Sparkles className="h-7 w-7" aria-hidden="true" />
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase text-gold">Award Credibility</p>
+            <h3 className="mt-1 text-xl font-bold text-white font-sans">Award-Winning Cannabis Technology</h3>
+          </div>
+        </div>
+        <p className="mt-5 text-sm leading-relaxed text-white/66">
+          Grownetics won University of Colorado New Venture Challenge Information Technology recognition and earned
+          early cannabis technology credibility.
+        </p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {["CU Boulder", "New Venture Challenge", "Cannabist Awards", "Cannabis AI Pioneer"].map((chip) => (
+            <span
+              key={chip}
+              className="rounded-full border border-white/10 bg-black/36 px-3 py-1 text-xs font-bold uppercase text-white/58"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
+        <div className="mt-5 overflow-hidden rounded-md border border-white/[0.08] bg-black/40">
+          <img
+            src={`${assetBase}/best-technology-awards.png`}
+            alt="Award recognition source image for Grownetics and early cannabis technology credibility."
+            className="h-28 w-full object-cover opacity-55 mix-blend-screen"
+            loading="lazy"
+            width={1171}
+            height={675}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FounderAuthoritySection() {
   return (
     <section className="relative z-10 border-y border-white/[0.06] bg-[#030806] px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-7xl">
-        <Reveal className="mb-10 max-w-3xl">
-          <SectionLabel>Award-Winning Cannabis AI Credibility</SectionLabel>
-          <h2 className="mt-3 text-3xl font-bold leading-tight text-white font-sans sm:text-4xl">
-            Authority Ledger
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-white/62">
-            A tighter look at the founder-level proof behind the strategy offer.
-          </p>
-        </Reveal>
-
-        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <Reveal>
-            <div className="rounded-lg border border-gold/22 bg-[linear-gradient(145deg,rgba(255,215,0,0.1),rgba(29,185,84,0.05),rgba(255,255,255,0.025))] p-4 shadow-2xl shadow-gold/5">
-              <div className="overflow-hidden rounded-md border border-white/[0.08] bg-black/55">
+            <div className="relative">
+              <div className="absolute -inset-5 rounded-full bg-landing-green/12 blur-3xl" aria-hidden="true" />
+              <div className="relative overflow-hidden rounded-lg border border-landing-green/22 bg-black/45 p-3 shadow-2xl shadow-black/40">
                 <img
-                  src={`${assetBase}/best-technology-awards.png`}
-                  alt="University of Colorado Boulder New Venture Challenge Best Technology Awards recognition."
-                  className="w-full object-cover"
+                  src={`${assetBase}/eli-arcview-investor-forum.png`}
+                  alt="Eli Duffy speaking at the ArcView Investor Forum in Las Vegas."
+                  className="aspect-[4/3] w-full rounded-md object-cover object-center"
                   loading="lazy"
-                  width={1171}
-                  height={675}
+                  width={960}
+                  height={640}
                 />
+                <div className="absolute inset-x-6 bottom-6 rounded-lg border border-white/10 bg-black/64 p-4 backdrop-blur-md">
+                  <p className="text-xs font-bold uppercase text-gold">Cannabis AI Pioneer</p>
+                  <p className="mt-1 text-sm font-semibold text-white/78">
+                    Founder, operator, speaker, and cannabis technology builder.
+                  </p>
+                </div>
               </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {proofTimeline.map((item) => (
-                  <div key={item.label} className="rounded-lg border border-white/[0.08] bg-black/42 p-4">
-                    <p className="text-xs font-bold uppercase text-gold">{item.year}</p>
-                    <h3 className="mt-1 text-sm font-semibold text-white">{item.label}</h3>
-                    <p className="mt-2 text-xs leading-relaxed text-white/54">{item.detail}</p>
-                  </div>
-                ))}
+              <div className="mt-5">
+                <AwardCredibilityCard />
               </div>
             </div>
           </Reveal>
 
-          <Reveal delay={0.1} className="grid gap-3 sm:grid-cols-2">
-            {authorityProof.map((statement, index) => (
-              <motion.div
-                key={statement}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="rounded-lg border border-white/[0.08] bg-white/[0.035] p-5 shadow-xl shadow-black/15"
-              >
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <BadgeCheck className="h-5 w-5 text-gold" aria-hidden="true" />
-                  <span className="text-[10px] font-bold uppercase text-white/32">Proof {index + 1}</span>
-                </div>
-                <p className="text-sm leading-relaxed text-white/70">{statement}</p>
-              </motion.div>
-            ))}
+          <Reveal delay={0.1}>
+            <SectionLabel>Founder Authority</SectionLabel>
+            <h2 className="mt-3 max-w-4xl text-3xl font-bold leading-tight text-white font-sans sm:text-5xl">
+              The World's Leading Expert in the Convergence of Cannabis and AI Technology
+            </h2>
+            <div className="mt-6 space-y-5 text-base leading-relaxed text-white/66">
+              <p>
+                For more than a decade, Eli Duffy has been building at the intersection of cannabis, cultivation
+                technology, automation, and artificial intelligence. He created Growbot, the first cannabis growing app
+                on the Apple App Store, then co-founded and led Grownetics, one of the earliest cannabis AI cultivation
+                technology companies.
+              </p>
+              <p>
+                Today, Eli brings that experience into MasterGrowbot AI and private cannabis AI strategy work, helping
+                cultivations, extraction labs, dispensaries, brands, cloning and breeding companies, consultants, and
+                investors identify the highest-value AI workflows before wasting money on random tools.
+              </p>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {credibilityChips.map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-full border border-landing-green/22 bg-landing-green/8 px-3 py-1.5 text-xs font-bold uppercase text-white/68"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
+              <CtaButton href={WHOP_AGENT_BUILDOUT_URL} variant="secondary">
+                Apply for Agent Buildout
+              </CtaButton>
+            </div>
           </Reveal>
         </div>
       </div>
@@ -509,7 +547,7 @@ function TestimonialsCarousel() {
           <div className="max-w-3xl">
             <SectionLabel>Industry Recognition</SectionLabel>
             <h2 className="mt-3 text-3xl font-bold leading-tight text-white font-sans sm:text-4xl">
-              What cannabis leaders have said about Eli.
+              Trusted by cannabis innovators before AI was mainstream.
             </h2>
           </div>
           <div className="flex gap-2">
@@ -530,6 +568,22 @@ function TestimonialsCarousel() {
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
+        </Reveal>
+
+        <Reveal delay={0.06}>
+          <figure className="mb-10 overflow-hidden rounded-lg border border-landing-green/18 bg-black/50 p-2 shadow-2xl shadow-black/35">
+            <img
+              src={`${assetBase}/AIStrategyTestimonialsImage.png`}
+              alt="MasterGrowbot AI cannabis technology credibility collage with award recognition and industry testimonials."
+              className="aspect-[16/9] w-full rounded-md object-cover"
+              loading="lazy"
+              width={1778}
+              height={1000}
+            />
+            <figcaption className="px-3 py-3 text-xs uppercase tracking-[0.18em] text-white/38">
+              Cannabis AI pioneer credibility, award recognition, and public industry testimonials.
+            </figcaption>
+          </figure>
         </Reveal>
 
         <div className="overflow-hidden">
@@ -583,6 +637,9 @@ function TestimonialsCarousel() {
         <p className="mt-5 text-center text-sm text-white/42">
           Testimonials shown from public/past industry recognition.
         </p>
+        <div className="mt-7 flex justify-center">
+          <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
+        </div>
       </div>
     </section>
   );
@@ -696,112 +753,210 @@ function OffersSection() {
   );
 }
 
+function ReportSlideVisual({ slide }: { slide: (typeof reportSlides)[number] }) {
+  return (
+    <div className="relative min-h-[470px] overflow-hidden rounded-lg border border-landing-green/24 bg-[#04100c] p-6 shadow-2xl shadow-black/35">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(29,185,84,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(29,185,84,0.06)_1px,transparent_1px)] bg-[size:30px_30px] opacity-45" />
+      <div className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-landing-green/14 blur-3xl" />
+      <div className="absolute -bottom-20 left-12 h-52 w-52 rounded-full bg-gold/10 blur-3xl" />
+      <div className="relative z-10">
+        <div className="mb-8 flex items-center justify-between gap-4">
+          <span className="rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs font-bold uppercase text-gold">
+            {slide.label}
+          </span>
+          <span className="text-xs font-bold uppercase text-white/34">MasterGrowbot AI</span>
+        </div>
+        <h3 className="max-w-2xl text-3xl font-bold leading-tight text-white font-sans sm:text-4xl">{slide.title}</h3>
+        <p className="mt-3 text-base font-medium text-white/58">{slide.subtitle}</p>
+
+        {slide.type === "cover" && (
+          <div className="mt-10 grid gap-4 sm:grid-cols-[0.9fr_1.1fr]">
+            <div className="rounded-lg border border-landing-green/22 bg-landing-green/8 p-5">
+              <BrainCircuit className="h-8 w-8 text-landing-green" aria-hidden="true" />
+              <p className="mt-4 text-sm font-bold uppercase text-white/42">Strategy package</p>
+              <p className="mt-1 text-2xl font-bold text-white font-sans">$899 Founder Launch Rate</p>
+            </div>
+            <div className="grid gap-3">
+              {slide.metrics.map((item) => (
+                <div key={item} className="rounded-md border border-white/10 bg-black/36 p-4 text-sm font-semibold text-white/72">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {slide.type === "heatmap" && (
+          <div className="mt-10 grid grid-cols-3 gap-3">
+            {["SOP Agent", "Sales Follow-up", "Training Copilot", "Data Cleanup", "Menu Content", "Risk Review", "Room Notes", "QA Checklist", "CRM Summary"].map(
+              (item, index) => (
+                <div
+                  key={item}
+                  className={`min-h-20 rounded-md border p-3 text-xs font-bold leading-relaxed ${
+                    index < 3
+                      ? "border-landing-green/35 bg-landing-green/14 text-white"
+                      : index < 6
+                        ? "border-gold/28 bg-gold/10 text-white/76"
+                        : "border-white/10 bg-black/35 text-white/52"
+                  }`}
+                >
+                  {item}
+                </div>
+              ),
+            )}
+          </div>
+        )}
+
+        {slide.type === "agents" && (
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {slide.metrics.map((item, index) => (
+              <div key={item} className="rounded-lg border border-white/[0.08] bg-black/42 p-5">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-landing-green/10 text-landing-green">
+                  <Network className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <p className="text-sm font-bold text-white">{item}</p>
+                <p className="mt-3 text-xs leading-relaxed text-white/48">
+                  {index === 0 ? "SOP lookup, room notes, and grower guidance." : index === 1 ? "Buyer follow-up and CRM context." : "Team onboarding and answer retrieval."}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {slide.type === "score" && (
+          <div className="mt-10 grid gap-4">
+            {slide.metrics.map((item, index) => (
+              <div key={item} className="rounded-lg border border-white/[0.08] bg-black/42 p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <p className="text-sm font-bold text-white">{item}</p>
+                  <p className="text-xs font-bold uppercase text-gold">{index === 2 ? "Controlled" : "Ready"}</p>
+                </div>
+                <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-landing-green to-gold"
+                    style={{ width: `${index === 0 ? 76 : index === 1 ? 68 : 84}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {slide.type === "roadmap" && (
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {["30 Days", "60 Days", "90 Days"].map((phase, index) => (
+              <div key={phase} className="rounded-lg border border-white/[0.08] bg-black/42 p-5">
+                <p className="text-xs font-bold uppercase text-gold">{phase}</p>
+                <p className="mt-3 text-lg font-bold text-white font-sans">{slide.metrics[index]}</p>
+                <p className="mt-3 text-xs leading-relaxed text-white/48">
+                  {index === 0 ? "Automate obvious repetitive workflows first." : index === 1 ? "Prototype the highest-value agent workflow." : "Train the team and operationalize review controls."}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ReportPreviewCarousel() {
-  const [index, setIndex] = useState(0);
-  const slide = reportSlides[index];
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi]);
+
+  const scrollTo = (index: number) => emblaApi?.scrollTo(index);
 
   return (
     <section className="relative z-10 border-y border-white/[0.06] bg-[#020706] px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-7xl">
-        <Reveal className="mb-10 max-w-3xl">
-          <SectionLabel>Preview the AI Opportunity Map</SectionLabel>
-          <h2 className="mt-3 text-3xl font-bold leading-tight text-white font-sans sm:text-4xl">
-            A premium 10-page strategy report customized to your cannabis business, workflows, tools, and goals.
-          </h2>
-        </Reveal>
-
-        <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-stretch">
+        <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
           <Reveal>
-            <div className="relative min-h-[420px] overflow-hidden rounded-lg border border-landing-green/24 bg-black/55 p-5 shadow-2xl shadow-black/35">
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(29,185,84,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(29,185,84,0.06)_1px,transparent_1px)] bg-[size:30px_30px] opacity-45" />
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={slide.title}
-                  initial={{ opacity: 0, x: 24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -24 }}
-                  transition={{ duration: 0.25 }}
-                  className="relative z-10 flex min-h-[380px] flex-col justify-between rounded-lg border border-white/[0.08] bg-[#04100c]/90 p-6"
-                >
-                  <div>
-                    <div className="mb-8 flex items-center justify-between">
-                      <span className="rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs font-bold uppercase text-gold">
-                        {slide.label}
-                      </span>
-                      <span className="text-xs font-bold uppercase text-white/34">MasterGrowbot AI</span>
-                    </div>
-                    <h3 className="text-3xl font-bold leading-tight text-white font-sans sm:text-4xl">{slide.title}</h3>
-                    <div className="mt-8 grid gap-3">
-                      {slide.content.map((item, itemIndex) => (
-                        <div key={item} className="rounded-lg border border-white/[0.08] bg-white/[0.035] p-4">
-                          <p className="text-xs font-bold uppercase text-landing-green">
-                            Module {String(itemIndex + 1).padStart(2, "0")}
-                          </p>
-                          <p className="mt-1 text-sm font-semibold text-white/78">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="mt-8 grid grid-cols-3 gap-2">
-                    {["Impact", "Difficulty", "Readiness"].map((item, itemIndex) => (
-                      <div key={item} className="rounded-md border border-white/10 bg-black/35 p-3">
-                        <p className="text-[10px] font-bold uppercase text-white/36">{item}</p>
-                        <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
-                          <div
-                            className="h-full rounded-full bg-gradient-to-r from-landing-green to-gold"
-                            style={{ width: `${48 + itemIndex * 18}%` }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+            <SectionLabel>Sample Deliverable</SectionLabel>
+            <h2 className="mt-3 text-3xl font-bold leading-tight text-white font-sans sm:text-5xl">
+              See Exactly What You Get After the Strategy Call
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-white/64">
+              Every paid strategy session includes a custom AI Opportunity Map designed around your business type,
+              workflows, team, tools, and goals.
+            </p>
+            <div className="mt-7 flex gap-2">
+              <button
+                type="button"
+                aria-label="Previous report sample"
+                onClick={() => emblaApi?.scrollPrev()}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/10 bg-black/35 text-white/70 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                aria-label="Next report sample"
+                onClick={() => emblaApi?.scrollNext()}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/10 bg-black/35 text-white/70 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green"
+              >
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+            <p className="mt-6 rounded-lg border border-gold/18 bg-gold/8 p-4 text-sm leading-relaxed text-white/58">
+              Sample preview only. Final report is customized after your paid strategy session.
+            </p>
+            <div className="mt-7">
+              <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
             </div>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="flex h-full flex-col justify-between rounded-lg border border-white/[0.08] bg-white/[0.035] p-5">
-              <div>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    aria-label="Previous report preview"
-                    onClick={() => setIndex((value) => (value - 1 + reportSlides.length) % reportSlides.length)}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/10 bg-black/35 text-white/70 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Next report preview"
-                    onClick={() => setIndex((value) => (value + 1) % reportSlides.length)}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/10 bg-black/35 text-white/70 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green"
-                  >
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="mt-5 grid gap-2">
-                  {reportSlides.map((item, itemIndex) => (
-                    <button
-                      key={item.title}
-                      type="button"
-                      onClick={() => setIndex(itemIndex)}
-                      className={`rounded-lg border p-3 text-left transition ${
-                        itemIndex === index
-                          ? "border-landing-green/36 bg-landing-green/10"
-                          : "border-white/[0.08] bg-black/24 hover:border-white/18"
-                      }`}
-                    >
-                      <p className="text-[10px] font-bold uppercase text-gold">{item.label}</p>
-                      <p className="mt-1 text-sm font-semibold text-white/72">{item.title}</p>
-                    </button>
-                  ))}
-                </div>
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                {reportSlides.map((slide) => (
+                  <div key={slide.title} className="min-w-0 flex-[0_0_100%] pr-4">
+                    <ReportSlideVisual slide={slide} />
+                  </div>
+                ))}
               </div>
-              <p className="mt-5 rounded-lg border border-gold/18 bg-gold/8 p-4 text-sm leading-relaxed text-white/58">
-                Sample preview only. Final report is customized after your paid strategy session.
-              </p>
+            </div>
+            <div className="mt-5 grid grid-cols-5 gap-2">
+              {reportSlides.map((slide, index) => (
+                <button
+                  key={slide.title}
+                  type="button"
+                  aria-label={`Show report sample ${index + 1}`}
+                  onClick={() => scrollTo(index)}
+                  className={`min-h-20 rounded-lg border p-2 text-left transition ${
+                    selectedIndex === index
+                      ? "border-landing-green/40 bg-landing-green/12"
+                      : "border-white/[0.08] bg-white/[0.025] hover:border-white/20"
+                  }`}
+                >
+                  <p className="text-[9px] font-bold uppercase text-gold">{slide.label}</p>
+                  <p className="mt-1 line-clamp-2 text-xs font-semibold text-white/68">{slide.title}</p>
+                </button>
+              ))}
+            </div>
+            <div className="mt-4 flex justify-center gap-2" aria-label="Report sample pagination">
+              {reportSlides.map((slide, index) => (
+                <button
+                  key={slide.title}
+                  type="button"
+                  aria-label={`Go to ${slide.title}`}
+                  onClick={() => scrollTo(index)}
+                  className={`h-2 rounded-full transition ${
+                    selectedIndex === index ? "w-8 bg-landing-green" : "w-2 bg-white/18 hover:bg-white/35"
+                  }`}
+                />
+              ))}
             </div>
           </Reveal>
         </div>
@@ -978,7 +1133,7 @@ export default function AIStrategy() {
       <main>
         <HeroSection />
         <AuthorityVideoSection />
-        <AuthorityProofSection />
+        <FounderAuthoritySection />
         <TestimonialsCarousel />
         <ProblemSection />
         <OffersSection />
