@@ -56,10 +56,19 @@ export default function CannabisAICommandMatrix() {
   return (
     <div
       aria-hidden="true"
-      className="command-matrix group relative mx-auto aspect-[0.9] w-full max-w-[520px] overflow-hidden rounded-lg border border-landing-green/30 bg-black/70 shadow-[0_0_90px_rgba(29,185,84,0.18)] transition duration-500 hover:-translate-y-1 hover:rotate-[0.35deg] hover:border-gold/35"
+      className="command-matrix group relative mx-auto aspect-[0.95] w-full max-w-[560px] overflow-hidden rounded-lg border border-landing-green/30 bg-black/70 shadow-[0_0_90px_rgba(29,185,84,0.18)] transition duration-500 hover:-translate-y-1 hover:rotate-[0.35deg] hover:border-gold/35"
     >
       <div className="matrix-aurora absolute -inset-20" />
       <div className="matrix-grid absolute inset-0" />
+      <img
+        src="/images/ai-strategy/cannabis-ai-dna-hero.png"
+        alt=""
+        className="matrix-dna-image absolute inset-0 h-full w-full object-cover object-center"
+        loading="eager"
+        width={1778}
+        height={1000}
+      />
+      <div className="matrix-bio-glass absolute inset-0" />
       <div className="matrix-vignette absolute inset-0" />
 
       {Array.from({ length: 26 }).map((_, index) => (
@@ -83,7 +92,7 @@ export default function CannabisAICommandMatrix() {
         Founder Sprint
       </div>
 
-      <svg className="absolute inset-0 z-10 h-full w-full" viewBox="0 0 100 100" role="presentation">
+      <svg className="absolute inset-0 z-10 h-full w-full opacity-80" viewBox="0 0 100 100" role="presentation">
         <defs>
           <filter id="matrixGlow" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur stdDeviation="1.4" result="blur" />
@@ -101,7 +110,7 @@ export default function CannabisAICommandMatrix() {
 
         <path
           className="matrix-helix"
-          d="M44 12 C64 24 28 34 58 48 C80 64 25 70 58 86"
+          d="M2 58 C24 35 42 79 62 52 C78 30 94 50 100 42"
           fill="none"
           stroke="url(#matrixPath)"
           strokeWidth="0.9"
@@ -110,7 +119,7 @@ export default function CannabisAICommandMatrix() {
         />
         <path
           className="matrix-helix matrix-helix-alt"
-          d="M58 18 C28 30 70 42 43 52 C22 66 76 74 45 78"
+          d="M0 66 C18 82 32 38 52 58 C72 78 86 37 100 50"
           fill="none"
           stroke="url(#matrixPath)"
           strokeWidth="0.75"
@@ -179,6 +188,9 @@ export default function CannabisAICommandMatrix() {
 
       <div className="matrix-scan-y absolute left-0 right-0 z-20 h-px" />
       <div className="matrix-scan-x absolute bottom-0 top-0 z-20 w-px" />
+      <div className="matrix-analysis-window absolute z-20 rounded-full border border-landing-green/28" />
+      <div className="matrix-analysis-window matrix-analysis-window-two absolute z-20 rounded-full border border-gold/28" />
+      <div className="matrix-dna-readout absolute left-[15%] top-[53%] z-20 h-px w-[70%]" />
 
       {cards.map((card) => (
         <div
@@ -230,15 +242,37 @@ export default function CannabisAICommandMatrix() {
           filter: blur(18px);
           animation: matrixAura 9s ease-in-out infinite;
         }
+        .matrix-dna-image {
+          z-index: 1;
+          opacity: .78;
+          filter: saturate(1.15) contrast(1.05);
+          transform: scale(1.04);
+          transition: transform .7s ease, opacity .7s ease, filter .7s ease;
+        }
+        .command-matrix:hover .matrix-dna-image {
+          transform: scale(1.075);
+          opacity: .88;
+          filter: saturate(1.28) contrast(1.1);
+        }
+        .matrix-bio-glass {
+          z-index: 2;
+          background:
+            radial-gradient(circle at 52% 54%, rgba(var(--emerald), .04), transparent 28%),
+            linear-gradient(90deg, rgba(0,0,0,.62), transparent 26%, transparent 72%, rgba(0,0,0,.68)),
+            linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.1) 42%, rgba(0,0,0,.56));
+          box-shadow: inset 0 0 70px rgba(0,0,0,.62);
+        }
         .matrix-grid {
+          z-index: 3;
           background-image:
             linear-gradient(rgba(var(--emerald), .11) 1px, transparent 1px),
             linear-gradient(90deg, rgba(var(--emerald), .09) 1px, transparent 1px);
           background-size: 28px 28px;
           animation: matrixGrid 18s linear infinite;
-          opacity: .55;
+          opacity: .34;
         }
         .matrix-vignette {
+          z-index: 4;
           background:
             linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.72)),
             radial-gradient(circle at 50% 50%, transparent 34%, rgba(0,0,0,.58) 100%);
@@ -272,15 +306,51 @@ export default function CannabisAICommandMatrix() {
         }
         .matrix-scan-y {
           top: 0;
-          background: linear-gradient(90deg, transparent, rgba(var(--emerald), .95), rgba(var(--gold), .95), transparent);
-          filter: drop-shadow(0 0 13px rgba(var(--emerald), .88));
+          height: 72px;
+          background:
+            linear-gradient(180deg, transparent, rgba(var(--emerald), .15), transparent),
+            linear-gradient(90deg, transparent, rgba(var(--emerald), .95), rgba(var(--gold), .95), transparent);
+          filter: drop-shadow(0 0 18px rgba(var(--emerald), .88));
+          mix-blend-mode: screen;
           animation: matrixScanY 5.2s ease-in-out infinite;
         }
         .matrix-scan-x {
           left: 50%;
-          background: linear-gradient(180deg, transparent, rgba(var(--emerald), .55), transparent);
-          filter: drop-shadow(0 0 10px rgba(var(--emerald), .7));
+          width: 84px;
+          background:
+            linear-gradient(90deg, transparent, rgba(var(--emerald), .12), transparent),
+            linear-gradient(180deg, transparent, rgba(var(--emerald), .62), rgba(var(--gold), .32), transparent);
+          filter: drop-shadow(0 0 14px rgba(var(--emerald), .78));
+          mix-blend-mode: screen;
           animation: matrixScanX 7.5s ease-in-out infinite;
+        }
+        .matrix-analysis-window {
+          left: 18%;
+          top: 43%;
+          width: 118px;
+          height: 118px;
+          box-shadow:
+            0 0 35px rgba(var(--emerald), .18),
+            inset 0 0 28px rgba(var(--emerald), .08);
+          background:
+            radial-gradient(circle, rgba(var(--emerald), .08), transparent 62%),
+            conic-gradient(from 90deg, transparent, rgba(var(--emerald), .45), transparent 34%, rgba(var(--gold), .35), transparent 70%);
+          animation: matrixAnalyzeRing 5.5s ease-in-out infinite;
+          mix-blend-mode: screen;
+        }
+        .matrix-analysis-window-two {
+          left: 62%;
+          top: 44%;
+          width: 134px;
+          height: 134px;
+          animation-delay: -2.1s;
+        }
+        .matrix-dna-readout {
+          background: repeating-linear-gradient(90deg, rgba(var(--emerald), .9) 0 8px, transparent 8px 16px, rgba(var(--gold), .72) 16px 22px, transparent 22px 34px);
+          filter: drop-shadow(0 0 11px rgba(var(--emerald), .72));
+          transform-origin: left center;
+          animation: matrixReadout 4.8s ease-in-out infinite;
+          opacity: .74;
         }
         .matrix-card {
           animation: matrixFloat 6s ease-in-out infinite;
@@ -316,12 +386,22 @@ export default function CannabisAICommandMatrix() {
           50% { transform: scale(1.18); opacity: .8; }
         }
         @keyframes matrixScanY {
-          0%, 100% { transform: translate3d(0, 72px, 0); opacity: .22; }
-          50% { transform: translate3d(0, 365px, 0); opacity: 1; }
+          0%, 100% { transform: translate3d(0, 28px, 0); opacity: .16; }
+          50% { transform: translate3d(0, 390px, 0); opacity: 1; }
         }
         @keyframes matrixScanX {
-          0%, 100% { transform: translate3d(-120px, 0, 0); opacity: .18; }
-          50% { transform: translate3d(130px, 0, 0); opacity: .72; }
+          0%, 100% { transform: translate3d(-210px, 0, 0); opacity: .14; }
+          50% { transform: translate3d(155px, 0, 0); opacity: .8; }
+        }
+        @keyframes matrixAnalyzeRing {
+          0%, 100% { transform: scale(.82) rotate(0deg); opacity: .12; }
+          45% { transform: scale(1.08) rotate(145deg); opacity: .78; }
+          70% { transform: scale(.98) rotate(220deg); opacity: .32; }
+        }
+        @keyframes matrixReadout {
+          0%, 100% { transform: scaleX(.2); opacity: .08; }
+          45% { transform: scaleX(1); opacity: .78; }
+          72% { transform: scaleX(.72); opacity: .28; }
         }
         @keyframes matrixFloat {
           0%, 100% { transform: translate3d(0, 0, 0); }

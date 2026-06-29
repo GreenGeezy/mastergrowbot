@@ -420,49 +420,6 @@ function AuthorityVideoSection() {
   );
 }
 
-function AwardCredibilityCard() {
-  return (
-    <div className="relative overflow-hidden rounded-lg border border-gold/24 bg-[linear-gradient(145deg,rgba(255,215,0,0.12),rgba(29,185,84,0.06),rgba(255,255,255,0.025))] p-5 shadow-2xl shadow-black/35">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,215,0,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(29,185,84,0.06)_1px,transparent_1px)] bg-[size:28px_28px] opacity-35" />
-      <div className="relative z-10">
-        <div className="flex items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-gold/35 bg-gold/12 text-2xl text-gold shadow-[0_0_28px_rgba(255,215,0,0.15)]">
-            <Sparkles className="h-7 w-7" aria-hidden="true" />
-          </div>
-          <div>
-            <p className="text-xs font-bold uppercase text-gold">Award Credibility</p>
-            <h3 className="mt-1 text-xl font-bold text-white font-sans">Award-Winning Cannabis Technology</h3>
-          </div>
-        </div>
-        <p className="mt-5 text-sm leading-relaxed text-white/66">
-          Grownetics won University of Colorado New Venture Challenge Information Technology recognition and earned
-          early cannabis technology credibility.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {["CU Boulder", "New Venture Challenge", "Cannabist Awards", "Cannabis AI Pioneer"].map((chip) => (
-            <span
-              key={chip}
-              className="rounded-full border border-white/10 bg-black/36 px-3 py-1 text-xs font-bold uppercase text-white/58"
-            >
-              {chip}
-            </span>
-          ))}
-        </div>
-        <div className="mt-5 overflow-hidden rounded-md border border-white/[0.08] bg-black/40">
-          <img
-            src={`${assetBase}/best-technology-awards.png`}
-            alt="Award recognition source image for Grownetics and early cannabis technology credibility."
-            className="h-28 w-full object-cover opacity-55 mix-blend-screen"
-            loading="lazy"
-            width={1171}
-            height={675}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function FounderAuthoritySection() {
   return (
     <section className="relative z-10 border-y border-white/[0.06] bg-[#030806] px-4 py-16 sm:px-6 sm:py-24">
@@ -486,9 +443,6 @@ function FounderAuthoritySection() {
                     Founder, operator, speaker, and cannabis technology builder.
                   </p>
                 </div>
-              </div>
-              <div className="mt-5">
-                <AwardCredibilityCard />
               </div>
             </div>
           </Reveal>
@@ -573,7 +527,7 @@ function TestimonialsCarousel() {
         <Reveal delay={0.06}>
           <figure className="mb-10 overflow-hidden rounded-lg border border-landing-green/18 bg-black/50 p-2 shadow-2xl shadow-black/35">
             <img
-              src={`${assetBase}/AIStrategyTestimonialsImage.png`}
+              src={`${assetBase}/NEWAITestimonialImage.png`}
               alt="MasterGrowbot AI cannabis technology credibility collage with award recognition and industry testimonials."
               className="aspect-[16/9] w-full rounded-md object-cover"
               loading="lazy"
