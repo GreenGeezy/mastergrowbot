@@ -320,3 +320,10 @@ h1, h2, h3, .tech-font {
   filter: drop-shadow(0 0 4px rgba(0,0,0,0.4));
   margin-bottom: 12px;
 }
+
+/* Keep native checkout country dropdown options readable on white browser menus. */
+.whop-embedded-checkout-host option,
+.whop-embedded-checkout-host optgroup,
+.whop-embedded-checkout-host [role="listbox"] [role="option"] {
+  color: #050806 !important;
+}

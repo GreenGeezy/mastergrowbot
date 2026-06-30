@@ -132,7 +132,7 @@ export default function EmbeddedGrowTechCheckout({
           <div className="border-b border-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/46">
             Secure checkout status: {checkoutState}
           </div>
-          <div className="min-h-[760px]">
+          <div className="whop-embedded-checkout-host min-h-[760px]">
             <WhopCheckoutEmbed
               planId={planId}
               returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you"
