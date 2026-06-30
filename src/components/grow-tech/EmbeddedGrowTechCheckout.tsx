@@ -36,6 +36,7 @@ export default function EmbeddedGrowTechCheckout({
 }: EmbeddedGrowTechCheckoutProps) {
   const [isComplete, setIsComplete] = useState(false);
   const [completedReceiptId, setCompletedReceiptId] = useState<string | undefined>();
+  const [checkoutState, setCheckoutState] = useState<string>("loading");
 
   useEffect(() => {
     if (planId) {
@@ -96,7 +97,11 @@ export default function EmbeddedGrowTechCheckout({
           )}
         </div>
       ) : planId ? (
-        <div className="overflow-hidden rounded-xl border border-white/[0.08] bg-[#0b0b12]">
+        <div className="rounded-xl border border-white/[0.08] bg-[#0b0b12]">
+          <div className="border-b border-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/46">
+            Secure checkout status: {checkoutState}
+          </div>
+          <div className="min-h-[760px]">
           <WhopCheckoutEmbed
             planId={planId}
             returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you"
@@ -123,9 +128,12 @@ export default function EmbeddedGrowTechCheckout({
               trackGrowTechPurchase(product, receiptId, completedPlanId || planId, ctaLocation);
             }}
             onStateChange={(state: WhopCheckoutState) => {
-              trackGrowTechCheckoutState(product, String(state), ctaLocation, planId);
+              const nextState = String(state);
+              setCheckoutState(nextState);
+              trackGrowTechCheckoutState(product, nextState, ctaLocation, planId);
             }}
           />
+          </div>
         </div>
       ) : (
         <div className="rounded-xl border border-amber-300/20 bg-amber-300/8 p-5">

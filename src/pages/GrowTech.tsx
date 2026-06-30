@@ -488,7 +488,7 @@ function CheckoutButton({
           </div>
         )}
       </div>
-      <DialogContent className="max-h-[92vh] max-w-4xl overflow-y-auto border-landing-green/20 bg-black/95 p-0 text-white shadow-2xl shadow-landing-green/10">
+      <DialogContent className="max-h-[94vh] w-[calc(100vw-24px)] max-w-[920px] overflow-y-auto border-landing-green/20 bg-black/95 p-0 text-white shadow-2xl shadow-landing-green/10">
         <div className="p-5 sm:p-6">
           <DialogHeader className="pr-8">
             <DialogTitle className="text-2xl font-bold tracking-tight text-white font-sans">

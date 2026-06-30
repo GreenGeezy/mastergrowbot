@@ -16,6 +16,7 @@ const VPDCalculator = lazy(() => import("@/pages/VPDCalculator"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const GrowTech = lazy(() => import("@/pages/GrowTech"));
 const GrowTechThankYou = lazy(() => import("@/pages/GrowTechThankYou"));
+const WhopEmbedTest = lazy(() => import("@/pages/WhopEmbedTest"));
 const AIStrategy = lazy(() => import("@/pages/AIStrategy"));
 const AIStrategyBook = lazy(() => import("@/pages/AIStrategyBook"));
 
@@ -94,6 +95,14 @@ const App = () => {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <GrowTechThankYou />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/whop-embed-test"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <WhopEmbedTest />
               </Suspense>
             }
           />
