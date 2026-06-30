@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Mail, PackageCheck, Truck } from "lucide-react";
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import ParticleBackground from "@/components/landing/ParticleBackground";
 import SEOHead from "@/components/SEOHead";
 import { appStoreUrl } from "@/components/landing/ctaLinks";
+import { trackEvent } from "@/lib/analytics";
 
 const nextSteps = [
   {
@@ -25,6 +27,17 @@ const nextSteps = [
 ];
 
 export default function GrowTechThankYou() {
+  const [searchParams] = useSearchParams();
+  const status = searchParams.get("status") || "success";
+  const isError = status === "error";
+
+  useEffect(() => {
+    trackEvent("growtech_thank_you_view", {
+      status,
+      checkout_source_page: "/grow-tech",
+    });
+  }, [status]);
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-black text-white">
       <SEOHead
@@ -43,19 +56,40 @@ export default function GrowTechThankYou() {
               <CheckCircle2 className="h-7 w-7" aria-hidden="true" />
             </div>
             <h1 className="mx-auto max-w-3xl text-4xl font-bold leading-tight tracking-tight text-white font-sans sm:text-5xl">
-              Thank you for your MasterGrowbot AI Grow Tech order
+              {isError
+                ? "Payment was not completed"
+                : "Thank you for your MasterGrowbot AI Grow Tech order"}
             </h1>
-            <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
-              Your order is confirmed through Whop. Please check the email address you used at checkout for your
-              receipt, order details, and delivery updates.
-            </p>
-            <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-white/[0.08] bg-black/35 p-5 text-left text-sm leading-relaxed text-white/58">
-              <p>
-                We are preparing your MasterGrowbot AI Grow Tech order for fulfillment. Once your product ships,
-                tracking details and estimated delivery information will be sent to the email address used during
-                checkout.
+            {isError ? (
+              <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
+                Payment was not completed. Please return to Grow Tech and try again or contact{" "}
+                <a href="mailto:support@mastergrowbot.com" className="font-semibold text-landing-green hover:underline">
+                  support@mastergrowbot.com
+                </a>
+                .
               </p>
-              <p className="mt-4">Check your inbox and spam folder so you do not miss your tracking update.</p>
+            ) : (
+              <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
+                Your order is confirmed through Whop. Please check the email address you used at checkout for your
+                receipt, order details, and delivery updates.
+              </p>
+            )}
+            <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-white/[0.08] bg-black/35 p-5 text-left text-sm leading-relaxed text-white/58">
+              {isError ? (
+                <p>
+                  If you were charged or believe this message is incorrect, email support@mastergrowbot.com with the
+                  email address used at checkout so our team can help review the order status.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    We are preparing your MasterGrowbot AI Grow Tech order for fulfillment. Once your product ships,
+                    tracking details and estimated delivery information will be sent to the email address used during
+                    checkout.
+                  </p>
+                  <p className="mt-4">Check your inbox and spam folder so you do not miss your tracking update.</p>
+                </>
+              )}
             </div>
           </div>
         </section>

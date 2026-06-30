@@ -17,7 +17,21 @@ import {
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import ParticleBackground from "@/components/landing/ParticleBackground";
+import EmbeddedGrowTechCheckout from "@/components/grow-tech/EmbeddedGrowTechCheckout";
 import SEOHead from "@/components/SEOHead";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  trackGrowTechBeginCheckout,
+  trackGrowTechCheckoutOpened,
+  trackGrowTechSelectItem,
+} from "@/lib/analytics";
 
 type CheckoutKey =
   | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL"
@@ -25,11 +39,19 @@ type CheckoutKey =
   | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL";
 
+type PlanKey =
+  | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID";
+
 type GrowTechProduct = {
   name: string;
   displayName?: string;
+  productId: string;
   badge: string;
   price: string;
+  numericPrice: number;
   description: string;
   whyBuy: string;
   bestFor: string[];
@@ -42,6 +64,7 @@ type GrowTechProduct = {
   buttonLabel: string;
   image: string;
   alt: string;
+  planKey: PlanKey;
   checkoutKey: CheckoutKey;
 };
 
@@ -54,11 +77,20 @@ const checkoutUrls: Record<CheckoutKey, string | undefined> = {
   NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL,
 };
 
+const planIds: Record<PlanKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID,
+  NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID,
+  NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID,
+  NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID,
+};
+
 const products: GrowTechProduct[] = [
   {
     name: "MasterGrowbot AI Scout Camera 10-20X",
+    productId: "growtech_scout_camera_10_20x",
     badge: "Premium",
     price: "$149",
+    numericPrice: 149,
     description:
       "Capture sharper close-up photos of leaves, buds, pests, trichomes, and plant symptoms for better inspection, documentation, and grow journal records.",
     whyBuy: "Sharper plant photos for better grow records.",
@@ -73,12 +105,15 @@ const products: GrowTechProduct[] = [
     buttonLabel: "Buy Now",
     image: "/images/grow-tech/ai-scout-camera-10-20x.png",
     alt: "MasterGrowbot AI Scout Camera 10-20X clipped onto a smartphone for cannabis plant close-up scans.",
+    planKey: "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID",
     checkoutKey: "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL",
   },
   {
     name: "MasterGrowbot AI Environment Monitor",
+    productId: "growtech_environment_monitor",
     badge: "Environment Data",
     price: "$89",
+    numericPrice: 89,
     description:
       "Track grow-room temperature, humidity, CO2, and air-quality context so you can document conditions and spot environment changes faster.",
     whyBuy: "Better grow-room context for better decisions.",
@@ -93,13 +128,16 @@ const products: GrowTechProduct[] = [
     buttonLabel: "Buy Now",
     image: "/images/grow-tech/climate-sensor.png",
     alt: "MasterGrowbot AI Environment Monitor tracking air quality, temperature, humidity, and CO2 in an indoor cannabis grow tent.",
+    planKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID",
     checkoutKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL",
   },
   {
     name: "MasterGrowbot AI Soil Health Meter 6-in-1",
     displayName: "MasterGrowbot AI Soil Health Meter 6-in-1",
+    productId: "growtech_soil_health_meter_6_in_1",
     badge: "Soil Data",
     price: "$59",
+    numericPrice: 59,
     description:
       "Check soil moisture, pH, temperature, fertility, light, and humidity context so you can document root-zone and grow conditions more clearly.",
     whyBuy: "Quick soil and light context for grow notes.",
@@ -114,14 +152,17 @@ const products: GrowTechProduct[] = [
     buttonLabel: "Buy Now",
     image: "/images/grow-tech/root-zone-meter.png",
     alt: "MasterGrowbot AI Soil Health Meter 6-in-1 checking soil moisture and plant context in a cannabis fabric pot.",
+    planKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID",
     checkoutKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL",
   },
 ];
 
 const bundle: GrowTechProduct = {
   name: "MasterGrowbot AI Grow Tech Kit",
+  productId: "growtech_kit",
   badge: "Save $50",
   price: "$247",
+  numericPrice: 247,
   description:
     "Get the full MasterGrowbot AI Grow Tech setup with the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want sharper plant photos, better environment records, and clearer soil and light context in one kit.",
   whyBuy: "The complete grow documentation setup with $50 bundle savings.",
@@ -142,6 +183,7 @@ const bundle: GrowTechProduct = {
   buttonLabel: "Buy the Kit and Save $50",
   image: "/images/grow-tech/grow-tech-kit.png",
   alt: "MasterGrowbot AI Grow Tech Kit with camera lens, environment monitor, and soil health meter.",
+  planKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID",
   checkoutKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL",
 };
 
@@ -387,15 +429,25 @@ function CheckoutButton({
   className = "",
   compact = false,
   showTrust = true,
+  ctaLocation = `growtech_page:${product.checkoutKey}`,
 }: {
   product: GrowTechProduct;
   className?: string;
   compact?: boolean;
   showTrust?: boolean;
+  ctaLocation?: string;
 }) {
   const checkoutUrl = checkoutUrls[product.checkoutKey];
+  const planId = planIds[product.planKey];
+  const canOpenCheckout = Boolean(planId || checkoutUrl);
 
-  if (!checkoutUrl) {
+  const handleOpenCheckout = () => {
+    trackGrowTechSelectItem(product, ctaLocation, planId);
+    trackGrowTechBeginCheckout(product, ctaLocation, planId);
+    trackGrowTechCheckoutOpened(product, ctaLocation, planId);
+  };
+
+  if (!canOpenCheckout) {
     return (
       <div className={className}>
         <button
@@ -411,27 +463,52 @@ function CheckoutButton({
   }
 
   return (
-    <div className={className}>
-      <a
-        href={checkoutUrl}
-        data-cta-location={`growtech_page:${product.checkoutKey}`}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
-      >
-        {compact ? "Buy the Kit" : product.buttonLabel}
-        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-      </a>
-      {showTrust && (
-        <div className="mt-3 rounded-lg border border-white/[0.08] bg-black/30 p-3">
-          <p className="flex items-center gap-2 text-sm font-semibold text-white/78">
-            <ShieldCheck className="h-4 w-4 text-landing-green" aria-hidden="true" />
-            Secure checkout powered by Whop
-          </p>
-          <p className="mt-1 text-sm leading-relaxed text-white/58">
-            Shipping address collected at checkout. Tracking sent after dispatch.
-          </p>
+    <Dialog>
+      <div className={className}>
+        <DialogTrigger asChild>
+          <button
+            type="button"
+            data-cta-location={ctaLocation}
+            onClick={handleOpenCheckout}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
+          >
+            {compact ? "Buy the Kit" : product.buttonLabel}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </DialogTrigger>
+        {showTrust && (
+          <div className="mt-3 rounded-lg border border-white/[0.08] bg-black/30 p-3">
+            <p className="flex items-center gap-2 text-sm font-semibold text-white/78">
+              <ShieldCheck className="h-4 w-4 text-landing-green" aria-hidden="true" />
+              Secure checkout powered by Whop
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-white/58">
+              Shipping address collected at checkout. Tracking sent after dispatch.
+            </p>
+          </div>
+        )}
+      </div>
+      <DialogContent className="max-h-[92vh] max-w-4xl overflow-y-auto border-landing-green/20 bg-black/95 p-0 text-white shadow-2xl shadow-landing-green/10">
+        <div className="p-5 sm:p-6">
+          <DialogHeader className="pr-8">
+            <DialogTitle className="text-2xl font-bold tracking-tight text-white font-sans">
+              Complete Secure Checkout
+            </DialogTitle>
+            <DialogDescription className="text-sm leading-relaxed text-white/58">
+              Whop collects payment and delivery details securely before your order is fulfilled.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-5">
+            <EmbeddedGrowTechCheckout
+              product={product}
+              planId={planId}
+              fallbackCheckoutUrl={checkoutUrl}
+              ctaLocation={ctaLocation}
+            />
+          </div>
         </div>
-      )}
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -490,7 +567,11 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
           </ul>
         </div>
 
-        <CheckoutButton product={product} className="mt-auto pt-6" />
+        <CheckoutButton
+          product={product}
+          className="mt-auto pt-6"
+          ctaLocation={`growtech_product_card:${product.productId}`}
+        />
         <PaymentBadges />
       </div>
     </article>
@@ -749,7 +830,13 @@ function MidPageKitCta() {
             Get the Scout Camera, Environment Monitor, and Soil Health Meter 6-in-1 together and save $50.
           </p>
         </div>
-        <CheckoutButton product={bundle} compact showTrust={false} className="sm:w-44" />
+        <CheckoutButton
+          product={bundle}
+          compact
+          showTrust={false}
+          ctaLocation="growtech_midpage_kit:bundle"
+          className="sm:w-44"
+        />
       </div>
     </section>
   );
@@ -818,7 +905,7 @@ function BundleSection() {
               </li>
             ))}
           </ul>
-          <CheckoutButton product={bundle} className="mt-7 sm:w-fit" />
+          <CheckoutButton product={bundle} ctaLocation="growtech_bundle_section:bundle" className="mt-7 sm:w-fit" />
           <TrustBadges />
           <PaymentBadges />
         </div>
@@ -918,28 +1005,17 @@ function FaqSection() {
 }
 
 function StickyMobileCta() {
-  const checkoutUrl = checkoutUrls.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL;
-
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/88 px-4 py-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:hidden">
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
         <p className="text-sm font-semibold text-white">Grow Tech Kit saves $50</p>
-        {checkoutUrl ? (
-          <a
-            href={checkoutUrl}
-            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-landing-green px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-landing-green/90 focus:outline-none focus:ring-2 focus:ring-landing-green"
-          >
-            Buy the Kit
-          </a>
-        ) : (
-          <button
-            type="button"
-            disabled
-            className="inline-flex shrink-0 cursor-not-allowed items-center justify-center rounded-lg bg-white/10 px-4 py-2.5 text-sm font-semibold text-white/45"
-          >
-            Buy the Kit
-          </button>
-        )}
+        <CheckoutButton
+          product={bundle}
+          compact
+          showTrust={false}
+          ctaLocation="growtech_mobile_sticky:kit"
+          className="shrink-0 [&_button]:px-4 [&_button]:py-2.5"
+        />
       </div>
     </div>
   );
