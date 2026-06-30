@@ -3,7 +3,8 @@ import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import SEOHead from "@/components/SEOHead";
 
-export const BOOKING_URL = "PASTE_HIDDEN_BOOKING_LINK_HERE";
+const BOOKING_URL =
+  import.meta.env.NEXT_PUBLIC_AI_STRATEGY_BOOKING_URL?.trim() || "https://calendar.app.google/Ez6qmV9douCc4xhr6";
 
 export default function AIStrategyBook() {
   return (

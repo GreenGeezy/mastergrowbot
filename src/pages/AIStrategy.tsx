@@ -22,15 +22,46 @@ import {
   Store,
   Users,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import EmbeddedAIStrategyCheckout, {
+  type AIStrategyCheckoutProduct,
+} from "@/components/ai-strategy/EmbeddedAIStrategyCheckout";
 import CannabisAICommandMatrix from "@/components/landing/CannabisAICommandMatrix";
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import SEOHead from "@/components/SEOHead";
+import { trackAIStrategyCheckoutEvent } from "@/lib/analytics";
 
-export const WHOP_AI_OPPORTUNITY_MAP_URL = "PASTE_WHOP_899_CHECKOUT_LINK_HERE";
-export const WHOP_AGENT_BUILDOUT_URL = "PASTE_WHOP_AGENT_BUILDOUT_APPLICATION_OR_CHECKOUT_LINK_HERE";
+type StrategyPlanKey =
+  | "NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_PLAN_ID";
 
-const bookingRedirectPath = "/ai-strategy/book";
+type StrategyCheckoutKey =
+  | "NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_CHECKOUT_URL";
+
+const strategyPlanIds: Record<StrategyPlanKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_PLAN_ID:
+    import.meta.env.NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_PLAN_ID,
+  NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_PLAN_ID:
+    import.meta.env.NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_PLAN_ID,
+};
+
+const strategyCheckoutUrls: Record<StrategyCheckoutKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_CHECKOUT_URL:
+    import.meta.env.NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_CHECKOUT_URL,
+  NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_CHECKOUT_URL:
+    import.meta.env.NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_CHECKOUT_URL,
+};
+
+const bookingRedirectPath = "/ai-strategy/intake";
 const assetBase = "/images/ai-strategy";
 
 const heroProof = [
@@ -98,7 +129,7 @@ const problemCards = [
 const offers = [
   {
     eyebrow: "Founder Launch Rate",
-    title: "Cannabis AI Opportunity Map",
+    title: "AI Opportunity Map",
     price: "$899",
     originalPrice: "$999",
     capacity: "Limited advisory slots",
@@ -115,12 +146,22 @@ const offers = [
       "Report delivered within 7 business days",
     ],
     cta: "Book AI Opportunity Map",
-    href: WHOP_AI_OPPORTUNITY_MAP_URL,
+    paymentCopy: "Pay $449 today. $450 balance due after your custom report is delivered.",
+    planKey: "NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_PLAN_ID" as StrategyPlanKey,
+    checkoutKey: "NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_CHECKOUT_URL" as StrategyCheckoutKey,
+    checkoutProduct: {
+      productId: "ai_opportunity_map_deposit",
+      name: "AI Opportunity Map Deposit",
+      price: "$449 deposit today",
+      numericPrice: 449,
+      balanceCopy: "$450 balance due after your custom report is delivered.",
+      category: "AI Strategy",
+    } satisfies AIStrategyCheckoutProduct,
     featured: true,
   },
   {
     eyebrow: "Implementation Buildout",
-    title: "Custom Cannabis AI Agent Buildout",
+    title: "Custom AI Agent Buildout",
     price: "Starting at $4,499",
     originalPrice: "$4,999",
     capacity: "Limited buildout capacity",
@@ -135,11 +176,23 @@ const offers = [
       "Agent operating guide",
       "Two revision rounds",
     ],
-    cta: "Apply for Agent Buildout",
-    href: WHOP_AGENT_BUILDOUT_URL,
+    cta: "Start AI Agent Buildout",
+    paymentCopy: "Pay $2,499 today. $2,000 balance due 45 days after project start.",
+    planKey: "NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_PLAN_ID" as StrategyPlanKey,
+    checkoutKey: "NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_CHECKOUT_URL" as StrategyCheckoutKey,
+    checkoutProduct: {
+      productId: "ai_agent_buildout_deposit",
+      name: "Custom AI Agent Buildout Deposit",
+      price: "$2,499 deposit today",
+      numericPrice: 2499,
+      balanceCopy: "$2,000 balance due 45 days after project start unless otherwise agreed in writing.",
+      category: "AI Buildout",
+    } satisfies AIStrategyCheckoutProduct,
     featured: false,
   },
 ];
+
+type StrategyOffer = (typeof offers)[number];
 
 const reportSlides = [
   {
@@ -298,30 +351,10 @@ function Reveal({
   );
 }
 
-function CtaButton({
-  href,
-  children,
-  variant = "primary",
-}: {
-  href: string;
-  children: React.ReactNode;
-  variant?: "primary" | "secondary";
-}) {
-  const classes =
-    variant === "primary"
-      ? "bg-landing-green text-black shadow-[0_0_30px_rgba(29,185,84,0.22)] hover:bg-landing-green/90 hover:shadow-[0_0_42px_rgba(29,185,84,0.34)]"
-      : "border border-white/14 bg-white/[0.035] text-white/82 hover:border-landing-green/45 hover:text-landing-green";
-
-  return (
-    <a
-      href={href}
-      className={`group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg px-6 py-4 text-base font-semibold transition focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black sm:w-auto ${classes}`}
-    >
-      <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/18 to-transparent opacity-0 transition duration-700 group-hover:translate-x-full group-hover:opacity-100" />
-      <span className="relative">{children}</span>
-      <ArrowRight className="relative h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden="true" />
-    </a>
-  );
+function ctaButtonClasses(variant: "primary" | "secondary" = "primary") {
+  return variant === "primary"
+    ? "bg-landing-green text-black shadow-[0_0_30px_rgba(29,185,84,0.22)] hover:bg-landing-green/90 hover:shadow-[0_0_42px_rgba(29,185,84,0.34)]"
+    : "border border-white/14 bg-white/[0.035] text-white/82 hover:border-landing-green/45 hover:text-landing-green";
 }
 
 function PremiumStars({ label = "Premium AI advisory" }: { label?: string }) {
@@ -334,6 +367,69 @@ function PremiumStars({ label = "Premium AI advisory" }: { label?: string }) {
       </div>
       <span className="text-xs font-bold uppercase tracking-[0.14em] text-white/58">{label}</span>
     </div>
+  );
+}
+
+function StrategyCheckoutButton({
+  offer,
+  variant = "primary",
+  className = "",
+  ctaLocation,
+  children,
+  compact = false,
+}: {
+  offer: StrategyOffer;
+  variant?: "primary" | "secondary";
+  className?: string;
+  ctaLocation: string;
+  children?: React.ReactNode;
+  compact?: boolean;
+}) {
+  const planId = strategyPlanIds[offer.planKey]?.trim();
+  const checkoutUrl = strategyCheckoutUrls[offer.checkoutKey]?.trim();
+  const buttonText = children ?? offer.cta;
+
+  const handleOpenCheckout = () => {
+    trackAIStrategyCheckoutEvent("select_item", offer.checkoutProduct, ctaLocation, planId);
+    trackAIStrategyCheckoutEvent("begin_checkout", offer.checkoutProduct, ctaLocation, planId);
+    trackAIStrategyCheckoutEvent("whop_checkout_opened", offer.checkoutProduct, ctaLocation, planId);
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          data-cta-location={ctaLocation}
+          onClick={handleOpenCheckout}
+          className={`group relative inline-flex ${compact ? "" : "w-full"} items-center justify-center gap-2 overflow-hidden rounded-lg px-6 py-4 text-base font-semibold transition focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black sm:w-auto ${ctaButtonClasses(variant)} ${className}`}
+        >
+          <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/18 to-transparent opacity-0 transition duration-700 group-hover:translate-x-full group-hover:opacity-100" />
+          <span className="relative">{buttonText}</span>
+          <ArrowRight className="relative h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden="true" />
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-h-[94vh] w-[calc(100vw-24px)] max-w-[920px] overflow-y-auto border-landing-green/20 bg-black/95 p-0 text-white shadow-2xl shadow-landing-green/10">
+        <div className="p-5 sm:p-6">
+          <DialogHeader className="pr-8">
+            <DialogTitle className="text-2xl font-bold tracking-tight text-white font-sans">
+              Complete Secure Checkout
+            </DialogTitle>
+            <DialogDescription className="text-sm leading-relaxed text-white/58">
+              Whop collects payment details securely before your session or buildout is prepared.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-5">
+            <EmbeddedAIStrategyCheckout
+              product={offer.checkoutProduct}
+              planId={planId}
+              fallbackCheckoutUrl={checkoutUrl}
+              ctaLocation={ctaLocation}
+            />
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -366,10 +462,8 @@ function HeroSection() {
               remove bottlenecks, and help their teams move faster before the market leaves slower operators behind.
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
-              <CtaButton href={WHOP_AGENT_BUILDOUT_URL} variant="secondary">
-                Apply for Agent Buildout
-              </CtaButton>
+              <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_hero:opportunity" />
+              <StrategyCheckoutButton offer={offers[1]} ctaLocation="ai_strategy_hero:agent" variant="secondary" />
             </div>
             <p className="mt-3 text-sm font-medium text-white/48">
               Paid strategy call. Custom 10-page report delivered within 7 business days.
@@ -493,10 +587,8 @@ function FounderAuthoritySection() {
               ))}
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
-              <CtaButton href={WHOP_AGENT_BUILDOUT_URL} variant="secondary">
-                Apply for Agent Buildout
-              </CtaButton>
+              <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_founder:opportunity" />
+              <StrategyCheckoutButton offer={offers[1]} ctaLocation="ai_strategy_founder:agent" variant="secondary" />
             </div>
           </Reveal>
         </div>
@@ -609,7 +701,7 @@ function TestimonialsCarousel() {
           Testimonials shown from public/past industry recognition.
         </p>
         <div className="mt-7 flex justify-center">
-          <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
+          <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_testimonials:opportunity" />
         </div>
       </div>
     </section>
@@ -707,10 +799,13 @@ function OffersSection() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8">
-                  <CtaButton href={offer.href} variant={offer.featured ? "primary" : "secondary"}>
-                    {offer.cta}
-                  </CtaButton>
+                <div className="mt-8 rounded-lg border border-landing-green/18 bg-black/30 p-4">
+                  <p className="mb-4 text-sm font-semibold leading-relaxed text-white/72">{offer.paymentCopy}</p>
+                  <StrategyCheckoutButton
+                    offer={offer}
+                    variant={offer.featured ? "primary" : "secondary"}
+                    ctaLocation={`ai_strategy_offer:${offer.checkoutProduct.productId}`}
+                  />
                 </div>
               </article>
             </Reveal>
@@ -887,7 +982,7 @@ function ReportPreviewCarousel() {
               Sample preview only. Final report is customized after your paid strategy session.
             </p>
             <div className="mt-7">
-              <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
+              <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_report_preview:opportunity" />
             </div>
           </Reveal>
 
@@ -1037,10 +1132,12 @@ function FinalCtaSection() {
             Ready to see where AI can actually create value in your cannabis business?
           </h2>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
-            <CtaButton href={WHOP_AGENT_BUILDOUT_URL} variant="secondary">
-              Apply for Agent Buildout
-            </CtaButton>
+            <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_final:opportunity" />
+            <StrategyCheckoutButton
+              offer={offers[1]}
+              ctaLocation="ai_strategy_final:agent"
+              variant="secondary"
+            />
           </div>
           <p className="mx-auto mt-6 max-w-3xl text-sm leading-relaxed text-white/52">
             For legal cannabis businesses, licensed operators, brands, consultants, and investors. AI systems should be
@@ -1073,13 +1170,14 @@ function MobileStickyCta() {
           <p className="text-sm font-semibold text-white">Book AI Opportunity Map</p>
           <p className="text-xs text-landing-green">$899 founder launch rate</p>
         </div>
-        <a
-          href={WHOP_AI_OPPORTUNITY_MAP_URL}
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-2.5 text-sm font-semibold text-black focus:outline-none focus:ring-2 focus:ring-landing-green"
+        <StrategyCheckoutButton
+          offer={offers[0]}
+          ctaLocation="ai_strategy_mobile_sticky:opportunity"
+          className="shrink-0 px-4 py-2.5 text-sm"
+          compact
         >
           Book
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </a>
+        </StrategyCheckoutButton>
       </div>
     </div>
   );

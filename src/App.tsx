@@ -19,6 +19,7 @@ const GrowTechThankYou = lazy(() => import("@/pages/GrowTechThankYou"));
 const WhopEmbedTest = lazy(() => import("@/pages/WhopEmbedTest"));
 const AIStrategy = lazy(() => import("@/pages/AIStrategy"));
 const AIStrategyBook = lazy(() => import("@/pages/AIStrategyBook"));
+const AIStrategyIntake = lazy(() => import("@/pages/AIStrategyIntake"));
 
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -119,6 +120,14 @@ const App = () => {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <AIStrategyBook />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/ai-strategy/intake"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AIStrategyIntake />
               </Suspense>
             }
           />

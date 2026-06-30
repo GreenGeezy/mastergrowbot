@@ -4,6 +4,13 @@ export type GrowTechAnalyticsProduct = {
   numericPrice: number;
 };
 
+export type AIStrategyAnalyticsProduct = {
+  productId: string;
+  name: string;
+  numericPrice: number;
+  category: "AI Strategy" | "AI Buildout";
+};
+
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
@@ -29,6 +36,29 @@ function ecommercePayload(
         item_id: product.productId,
         item_name: product.name,
         item_category: "GrowTech",
+        price: product.numericPrice,
+        quantity: 1,
+      },
+    ],
+  };
+}
+
+function aiStrategyPayload(
+  product: AIStrategyAnalyticsProduct,
+  ctaLocation: string,
+  planId?: string,
+): AnalyticsParams {
+  return {
+    currency: "USD",
+    value: product.numericPrice,
+    checkout_source_page: "/ai-strategy",
+    cta_location: ctaLocation,
+    plan_id: planId,
+    items: [
+      {
+        item_id: product.productId,
+        item_name: product.name,
+        item_category: product.category,
         price: product.numericPrice,
         quantity: 1,
       },
@@ -119,4 +149,17 @@ export function trackGrowTechFallbackClick(
 
 export function trackGrowTechMissingPlanId(product: GrowTechAnalyticsProduct, ctaLocation: string) {
   trackEvent("checkout_missing_plan_id", ecommercePayload(product, ctaLocation));
+}
+
+export function trackAIStrategyCheckoutEvent(
+  eventName: string,
+  product: AIStrategyAnalyticsProduct,
+  ctaLocation: string,
+  planId?: string,
+  extra: AnalyticsParams = {},
+) {
+  trackEvent(eventName, {
+    ...aiStrategyPayload(product, ctaLocation, planId),
+    ...extra,
+  });
 }
