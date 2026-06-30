@@ -88,12 +88,12 @@ export default function CannabisAICommandMatrix() {
         Genetics & Breeders
       </div>
 
-      <div className="absolute left-1/2 top-5 z-20 hidden -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/50 px-3 py-1.5 text-[9px] font-bold uppercase text-white/58 backdrop-blur sm:flex">
+      <div className="absolute left-1/2 top-5 z-20 hidden -translate-x-1/2 items-center gap-3 rounded-full border border-purple-400/45 bg-purple-950/38 px-5 py-2.5 text-[18px] font-black uppercase text-purple-100 shadow-[0_0_24px_rgba(168,85,247,0.48)] backdrop-blur sm:flex">
         <span>Cultivation</span>
-        <span className="h-1 w-1 rounded-full bg-landing-green/70" />
-        <span>Harvest</span>
-        <span className="h-1 w-1 rounded-full bg-gold/70" />
+        <span className="text-purple-300 drop-shadow-[0_0_8px_rgba(216,180,254,0.9)]">*</span>
         <span>Extraction</span>
+        <span className="text-purple-300 drop-shadow-[0_0_8px_rgba(216,180,254,0.9)]">*</span>
+        <span>Harvest</span>
       </div>
 
       <div className="absolute right-5 top-5 z-20 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-[10px] font-bold uppercase text-gold backdrop-blur">

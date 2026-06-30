@@ -30,12 +30,12 @@ const trustItems = [
 
 const checkoutBadges = [
   {
-    src: "/images/WhopVerifiedBadge.jpg",
+    src: "/images/WhopVerifiedCheckoutBadge.png",
     alt: "Whop verified checkout badge",
     className: "object-cover object-center",
   },
   {
-    src: "/images/GuaranteedSafeCheckoutBadge.jpg",
+    src: "/images/GuaranteedSafeCheckoutBadgePremium.png",
     alt: "Guaranteed safe checkout badge",
     className: "object-cover object-center",
   },
@@ -96,16 +96,16 @@ export default function EmbeddedGrowTechCheckout({
           ))}
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           {checkoutBadges.map((badge) => (
             <div
               key={badge.src}
-              className="overflow-hidden rounded-lg border border-white/[0.1] bg-black/35 shadow-[0_0_22px_rgba(34,197,94,0.12)]"
+              className="overflow-hidden rounded-lg border border-landing-green/20 bg-[#020604] shadow-[0_0_22px_rgba(34,197,94,0.16)]"
             >
               <img
                 src={badge.src}
                 alt={badge.alt}
-                className={`h-16 w-full ${badge.className}`}
+                className={`h-14 w-full sm:h-16 ${badge.className}`}
                 loading="lazy"
                 width={320}
                 height={128}
@@ -136,10 +136,10 @@ export default function EmbeddedGrowTechCheckout({
             <WhopCheckoutEmbed
               planId={planId}
               returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you"
-              theme="light"
+              theme="dark"
               themeOptions={{
-                backgroundColor: "#f8fafc",
-                accentColor: "#16a34a",
+                backgroundColor: "#0b0b12",
+                accentColor: "#22c55e",
                 borderRadius: 14,
               }}
               styles={{
