@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { WhopCheckoutEmbed, type WhopCheckoutState } from "@whop/checkout/react";
 import { Headphones, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 import {
@@ -34,6 +34,9 @@ export default function EmbeddedGrowTechCheckout({
   fallbackCheckoutUrl,
   ctaLocation,
 }: EmbeddedGrowTechCheckoutProps) {
+  const [isComplete, setIsComplete] = useState(false);
+  const [completedReceiptId, setCompletedReceiptId] = useState<string | undefined>();
+
   useEffect(() => {
     if (planId) {
       trackGrowTechEmbedRendered(product, ctaLocation, planId);
@@ -80,7 +83,19 @@ export default function EmbeddedGrowTechCheckout({
         </div>
       </div>
 
-      {planId ? (
+      {isComplete ? (
+        <div className="rounded-xl border border-landing-green/25 bg-landing-green/10 p-6 text-center">
+          <p className="text-lg font-semibold text-white">Your Whop checkout is complete.</p>
+          <p className="mt-2 text-sm leading-relaxed text-white/62">
+            Please check the email used at checkout for your receipt, order details, and delivery updates.
+          </p>
+          {completedReceiptId && (
+            <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">
+              Receipt: {completedReceiptId}
+            </p>
+          )}
+        </div>
+      ) : planId ? (
         <div className="overflow-hidden rounded-xl border border-white/[0.08] bg-[#0b0b12]">
           <WhopCheckoutEmbed
             planId={planId}
@@ -103,6 +118,8 @@ export default function EmbeddedGrowTechCheckout({
               </div>
             }
             onComplete={(completedPlanId: string, receiptId?: string) => {
+              setIsComplete(true);
+              setCompletedReceiptId(receiptId);
               trackGrowTechPurchase(product, receiptId, completedPlanId || planId, ctaLocation);
             }}
             onStateChange={(state: WhopCheckoutState) => {
