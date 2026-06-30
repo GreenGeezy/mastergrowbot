@@ -18,6 +18,7 @@ import {
   Quote,
   Sparkles,
   Sprout,
+  Star,
   Store,
   Users,
 } from "lucide-react";
@@ -111,7 +112,7 @@ const offers = [
       "Custom AI agent concepts",
       "Data, SOP, and team readiness score",
       "Tool/platform recommendations",
-      "Report delivered within 5 business days",
+      "Report delivered within 7 business days",
     ],
     cta: "Book AI Opportunity Map",
     href: WHOP_AI_OPPORTUNITY_MAP_URL,
@@ -216,7 +217,7 @@ const steps = [
   "Complete short checkout intake",
   "Book your 60-minute strategy call",
   "Meet with Eli and map your highest-value AI opportunities",
-  "Receive your custom 10-page AI Opportunity Map within 5 business days",
+  "Receive your custom 10-page AI Opportunity Map within 7 business days",
 ];
 
 const faqs = [
@@ -248,7 +249,7 @@ const faqs = [
   {
     question: "What happens after I pay?",
     answer:
-      "You will be redirected to a private booking page where you can schedule your 60-minute strategy session. After the call, you will receive your custom report within 5 business days.",
+      "You will be redirected to a private booking page where you can schedule your 60-minute strategy session. After the call, you will receive your custom report within 7 business days.",
   },
 ];
 
@@ -323,6 +324,19 @@ function CtaButton({
   );
 }
 
+function PremiumStars({ label = "Premium AI advisory" }: { label?: string }) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="flex items-center gap-0.5" aria-hidden="true">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Star key={index} className="h-4 w-4 fill-gold text-gold drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]" />
+        ))}
+      </div>
+      <span className="text-xs font-bold uppercase tracking-[0.14em] text-white/58">{label}</span>
+    </div>
+  );
+}
+
 function HeroSection() {
   return (
     <section className="relative z-10 overflow-hidden px-4 py-16 sm:px-6 sm:py-24 lg:py-28">
@@ -337,16 +351,19 @@ function HeroSection() {
               <BrainCircuit className="h-3.5 w-3.5" aria-hidden="true" />
               Cannabis AI Advisory
             </div>
+            <div className="mb-5">
+              <PremiumStars label="Trusted cannabis AI strategy for operators ready to win" />
+            </div>
             <h1 className="max-w-5xl text-4xl font-bold leading-[1.05] text-white font-sans sm:text-5xl lg:text-7xl">
-              Cannabis AI Strategy & Custom Agents
+              Turn Cannabis AI Into Profit, Speed, and Market Advantage
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/72 sm:text-xl">
-              A private AI strategy sprint for cannabis companies ready to save time, train teams faster, improve
-              workflows, and identify the highest-value AI opportunities before wasting money on random tools.
+              A practical AI strategy sprint for cannabis companies ready to automate high-value work, train teams
+              faster, improve margins, and build simple systems that are easy to implement and use.
             </p>
             <div className="mt-6 rounded-lg border border-gold/20 bg-gold/8 p-4 text-sm font-semibold leading-relaxed text-white/72">
-              Tomorrow's cannabis winners will not be the companies using the most AI tools. They will be the companies
-              that know exactly which workflows to automate first.
+              The next cannabis winners will not just use AI. They will know exactly where AI can increase revenue,
+              remove bottlenecks, and help their teams move faster before the market leaves slower operators behind.
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <CtaButton href={WHOP_AI_OPPORTUNITY_MAP_URL}>Book AI Opportunity Map</CtaButton>
@@ -355,7 +372,7 @@ function HeroSection() {
               </CtaButton>
             </div>
             <p className="mt-3 text-sm font-medium text-white/48">
-              Paid strategy call. Custom 10-page report delivered within 5 business days.
+              Paid strategy call. Custom 10-page report delivered within 7 business days.
             </p>
           </div>
         </Reveal>
@@ -669,6 +686,9 @@ function OffersSection() {
                     <h3 className="text-2xl font-bold leading-tight text-white font-sans sm:text-3xl">
                       {offer.title}
                     </h3>
+                    <div className="mt-3">
+                      <PremiumStars label="Premium cannabis AI offer" />
+                    </div>
                     <p className="mt-3 max-w-xl text-base leading-relaxed text-white/64">{offer.subtitle}</p>
                   </div>
                   <div className="rounded-lg border border-white/[0.08] bg-black/40 p-4 text-left sm:min-w-52 sm:text-right">

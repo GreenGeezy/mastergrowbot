@@ -55,10 +55,10 @@ export default function WhopEmbedTest() {
             <WhopCheckoutEmbed
               planId={planId}
               returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you"
-              theme="dark"
+              theme="light"
               themeOptions={{
-                backgroundColor: "#0b0b12",
-                accentColor: "#22c55e",
+                backgroundColor: "#f8fafc",
+                accentColor: "#16a34a",
                 borderRadius: 14,
               }}
               styles={{

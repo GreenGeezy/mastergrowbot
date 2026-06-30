@@ -18,8 +18,8 @@ const nodes: DataNode[] = [
 ];
 
 const cards = [
-  { title: "AI Opportunity Map", value: "Top 5", className: "left-4 top-16" },
-  { title: "Agent Readiness", value: "82%", className: "right-4 top-24" },
+  { title: "Tasks Automated", value: "308", className: "left-4 top-16" },
+  { title: "Revenue Increase", value: "+ 11%", className: "right-4 top-24" },
   { title: "SOP Intelligence", value: "Live", className: "left-5 top-52" },
   { title: "Workflow ROI", value: "High", className: "right-5 bottom-36" },
   { title: "Human Review Layer", value: "On", className: "left-8 bottom-24" },
@@ -85,11 +85,19 @@ export default function CannabisAICommandMatrix() {
 
       <div className="absolute left-5 top-5 z-20 flex items-center gap-2 rounded-full border border-landing-green/30 bg-black/60 px-3 py-1.5 text-[10px] font-bold uppercase text-landing-green backdrop-blur">
         <span className="h-2 w-2 rounded-full bg-landing-green shadow-[0_0_14px_rgba(29,185,84,0.9)]" />
-        Live Cannabis AI Scan
+        Genetics & Breeders
+      </div>
+
+      <div className="absolute left-1/2 top-5 z-20 hidden -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/50 px-3 py-1.5 text-[9px] font-bold uppercase text-white/58 backdrop-blur sm:flex">
+        <span>Cultivation</span>
+        <span className="h-1 w-1 rounded-full bg-landing-green/70" />
+        <span>Harvest</span>
+        <span className="h-1 w-1 rounded-full bg-gold/70" />
+        <span>Extraction</span>
       </div>
 
       <div className="absolute right-5 top-5 z-20 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-[10px] font-bold uppercase text-gold backdrop-blur">
-        Founder Sprint
+        POS & Dispensary
       </div>
 
       <svg className="absolute inset-0 z-10 h-full w-full opacity-80" viewBox="0 0 100 100" role="presentation">
@@ -198,7 +206,16 @@ export default function CannabisAICommandMatrix() {
           className={`matrix-card absolute z-30 ${card.className} max-w-[155px] rounded-lg border border-white/10 bg-black/58 p-3 shadow-xl shadow-black/30 backdrop-blur-md`}
         >
           <p className="text-[9px] font-bold uppercase text-white/38">{card.title}</p>
-          <p className="mt-1 text-sm font-bold text-white">{card.value}</p>
+          {card.title === "Revenue Increase" ? (
+            <p className="mt-1 flex items-center gap-1 text-sm font-bold text-landing-green drop-shadow-[0_0_10px_rgba(29,185,84,0.65)]">
+              {card.value}
+              <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4 11.5 11.5 4M6 4h5.5v5.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </p>
+          ) : (
+            <p className="mt-1 text-sm font-bold text-white">{card.value}</p>
+          )}
         </div>
       ))}
 

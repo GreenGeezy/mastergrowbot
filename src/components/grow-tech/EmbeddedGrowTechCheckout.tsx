@@ -28,6 +28,19 @@ const trustItems = [
   { text: "Order support included", icon: Headphones },
 ];
 
+const checkoutBadges = [
+  {
+    src: "/images/WhopVerifiedBadge.jpg",
+    alt: "Whop verified checkout badge",
+    className: "object-cover object-center",
+  },
+  {
+    src: "/images/GuaranteedSafeCheckoutBadge.jpg",
+    alt: "Guaranteed safe checkout badge",
+    className: "object-cover object-center",
+  },
+];
+
 export default function EmbeddedGrowTechCheckout({
   product,
   planId,
@@ -82,6 +95,24 @@ export default function EmbeddedGrowTechCheckout({
             </div>
           ))}
         </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          {checkoutBadges.map((badge) => (
+            <div
+              key={badge.src}
+              className="overflow-hidden rounded-lg border border-white/[0.1] bg-black/35 shadow-[0_0_22px_rgba(34,197,94,0.12)]"
+            >
+              <img
+                src={badge.src}
+                alt={badge.alt}
+                className={`h-16 w-full ${badge.className}`}
+                loading="lazy"
+                width={320}
+                height={128}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
       {isComplete ? (
@@ -102,37 +133,37 @@ export default function EmbeddedGrowTechCheckout({
             Secure checkout status: {checkoutState}
           </div>
           <div className="min-h-[760px]">
-          <WhopCheckoutEmbed
-            planId={planId}
-            returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you"
-            theme="dark"
-            themeOptions={{
-              backgroundColor: "#0b0b12",
-              accentColor: "#22c55e",
-              borderRadius: 14,
-            }}
-            styles={{
-              container: {
-                paddingX: 20,
-                paddingY: 28,
-              },
-            }}
-            fallback={
-              <div className="flex min-h-[360px] items-center justify-center p-8 text-sm font-semibold text-white/60">
-                Loading secure checkout...
-              </div>
-            }
-            onComplete={(completedPlanId: string, receiptId?: string) => {
-              setIsComplete(true);
-              setCompletedReceiptId(receiptId);
-              trackGrowTechPurchase(product, receiptId, completedPlanId || planId, ctaLocation);
-            }}
-            onStateChange={(state: WhopCheckoutState) => {
-              const nextState = String(state);
-              setCheckoutState(nextState);
-              trackGrowTechCheckoutState(product, nextState, ctaLocation, planId);
-            }}
-          />
+            <WhopCheckoutEmbed
+              planId={planId}
+              returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you"
+              theme="light"
+              themeOptions={{
+                backgroundColor: "#f8fafc",
+                accentColor: "#16a34a",
+                borderRadius: 14,
+              }}
+              styles={{
+                container: {
+                  paddingX: 20,
+                  paddingY: 28,
+                },
+              }}
+              fallback={
+                <div className="flex min-h-[360px] items-center justify-center p-8 text-sm font-semibold text-white/60">
+                  Loading secure checkout...
+                </div>
+              }
+              onComplete={(completedPlanId: string, receiptId?: string) => {
+                setIsComplete(true);
+                setCompletedReceiptId(receiptId);
+                trackGrowTechPurchase(product, receiptId, completedPlanId || planId, ctaLocation);
+              }}
+              onStateChange={(state: WhopCheckoutState) => {
+                const nextState = String(state);
+                setCheckoutState(nextState);
+                trackGrowTechCheckoutState(product, nextState, ctaLocation, planId);
+              }}
+            />
           </div>
         </div>
       ) : (
