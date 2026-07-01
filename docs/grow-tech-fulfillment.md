@@ -58,6 +58,48 @@ Orders are prepared through our supplier network. Shipping speed, packaging, and
 Support email:
 [support@mastergrowbot.com](mailto:support@mastergrowbot.com)
 
+## July Promo Code
+
+Promo code:
+
+```text
+AIGROWTECH
+```
+
+Discount:
+
+```text
+20% off all GrowTech products
+```
+
+Whop setup:
+
+- Percentage discount.
+- Eligible users: Everyone.
+- Only one use per user: On.
+- Apply to specific products: On.
+
+Products:
+
+- Scout Camera
+- Environment Monitor
+- Soil Health Meter 6-in-1
+- Grow Tech Kit
+
+Expiration:
+
+```text
+July 31
+```
+
+Testing checklist:
+
+1. Open each Whop checkout.
+2. Click Add promo code.
+3. Enter AIGROWTECH.
+4. Confirm total reduces by 20%.
+5. Stop before payment.
+
 ## Customer FAQ
 
 ### When do I get tracking?

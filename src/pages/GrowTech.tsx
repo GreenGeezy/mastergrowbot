@@ -6,6 +6,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleHelp,
+  Copy,
   CreditCard,
   Headphones,
   Leaf,
@@ -52,6 +53,7 @@ type GrowTechProduct = {
   badge: string;
   price: string;
   numericPrice: number;
+  salePrice: string;
   description: string;
   whyBuy: string;
   bestFor: string[];
@@ -84,6 +86,12 @@ const planIds: Record<PlanKey, string | undefined> = {
   NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID,
 };
 
+const JULY_PROMO_CODE = "AIGROWTECH";
+const JULY_PROMO_COPY = "Valid through July 31";
+const INDIVIDUAL_FULL_TOTAL = "$297";
+const KIT_SALE_PRICE = "$197.60";
+const KIT_FULL_PRICE_SAVINGS = "$99.40";
+
 const products: GrowTechProduct[] = [
   {
     name: "MasterGrowbot AI Scout Camera 10-20X",
@@ -91,6 +99,7 @@ const products: GrowTechProduct[] = [
     badge: "Premium",
     price: "$149",
     numericPrice: 149,
+    salePrice: "$119.20",
     description:
       "Capture sharper close-up photos of leaves, buds, pests, trichomes, and plant symptoms for better inspection, documentation, and grow journal records.",
     whyBuy: "Sharper plant photos for better grow records.",
@@ -114,6 +123,7 @@ const products: GrowTechProduct[] = [
     badge: "Environment Data",
     price: "$89",
     numericPrice: 89,
+    salePrice: "$71.20",
     description:
       "Track grow-room temperature, humidity, CO2, and air-quality context so you can document conditions and spot environment changes faster.",
     whyBuy: "Better grow-room context for better decisions.",
@@ -138,6 +148,7 @@ const products: GrowTechProduct[] = [
     badge: "Soil Data",
     price: "$59",
     numericPrice: 59,
+    salePrice: "$47.20",
     description:
       "Check soil moisture, pH, temperature, fertility, light, and humidity context so you can document root-zone and grow conditions more clearly.",
     whyBuy: "Quick soil and light context for grow notes.",
@@ -163,6 +174,7 @@ const bundle: GrowTechProduct = {
   badge: "Save $50",
   price: "$247",
   numericPrice: 247,
+  salePrice: KIT_SALE_PRICE,
   description:
     "Get the full MasterGrowbot AI Grow Tech setup with the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want sharper plant photos, better environment records, and clearer soil and light context in one kit.",
   whyBuy: "The complete grow documentation setup with $50 bundle savings.",
@@ -180,7 +192,7 @@ const bundle: GrowTechProduct = {
     "A cannabis grow hardware kit with a plant inspection camera, environment monitor, and soil health meter for better grow documentation.",
   sku: "MGB-AI-GROW-TECH-KIT",
   category: "Cannabis grow tech kit",
-  buttonLabel: "Buy the Kit and Save $50",
+  buttonLabel: "Buy the Kit and Save 20%",
   image: "/images/grow-tech/grow-tech-kit.png",
   alt: "MasterGrowbot AI Grow Tech Kit with camera lens, environment monitor, and soil health meter.",
   planKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID",
@@ -263,6 +275,15 @@ const educationCards = [
 ];
 
 const faqs = [
+  {
+    question: "How do I use the July sale code?",
+    answer:
+      "Click Buy Now, choose your GrowTech product, and enter AIGROWTECH in the promo code field at Whop checkout to save 20%. The July sale is valid through July 31.",
+  },
+  {
+    question: "Is the 20% discount automatic?",
+    answer: "No. Enter AIGROWTECH in the promo code field at checkout to apply the July sale discount.",
+  },
   {
     question: "Where do I enter my shipping address?",
     answer: "Shipping address and delivery details are collected during Whop checkout before payment.",
@@ -347,6 +368,64 @@ function RatingLine() {
         ))}
       </div>
       <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/42">Premium grow-tech pick</p>
+    </div>
+  );
+}
+
+function GrowTechPromoCode({
+  compact = false,
+  showCopyButton = false,
+  className = "",
+}: {
+  compact?: boolean;
+  showCopyButton?: boolean;
+  className?: string;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (!navigator.clipboard) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(JULY_PROMO_CODE);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  };
+
+  return (
+    <div
+      className={`inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-amber-300/35 bg-amber-300/10 px-3 py-1.5 text-amber-100 shadow-[0_0_24px_rgba(251,191,36,0.08)] ${className}`}
+    >
+      {!compact && <span className="text-[11px] font-semibold uppercase tracking-[0.18em]">Code</span>}
+      <span className="rounded-full border border-amber-200/40 bg-black/55 px-3 py-1 text-xs font-black tracking-[0.18em] text-amber-200">
+        {JULY_PROMO_CODE}
+      </span>
+      {showCopyButton && (
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-xs font-semibold text-white/76 transition hover:border-amber-200/45 hover:text-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-200/60"
+        >
+          {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
+          {copied ? "Copied" : "Copy code"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function JulySaleBanner() {
+  return (
+    <div className="max-w-xl rounded-xl border border-landing-green/25 bg-gradient-to-br from-landing-green/14 via-emerald-950/25 to-amber-300/10 p-4 shadow-2xl shadow-landing-green/10 backdrop-blur-xl lg:mx-0">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-200">July GrowTech Sale</p>
+          <p className="mt-1 text-lg font-bold text-white font-sans">Save 20% with code {JULY_PROMO_CODE}</p>
+          <p className="mt-1 text-sm text-white/58">Use code at Whop checkout. {JULY_PROMO_COPY}.</p>
+        </div>
+        <GrowTechPromoCode showCopyButton className="shrink-0" />
+      </div>
     </div>
   );
 }
@@ -465,6 +544,11 @@ function CheckoutButton({
   return (
     <Dialog>
       <div className={className}>
+        {!compact && (
+          <p className="mb-2 text-center text-xs font-semibold text-amber-100/85 sm:text-left">
+            Enter {JULY_PROMO_CODE} at checkout to save 20%.
+          </p>
+        )}
         <DialogTrigger asChild>
           <button
             type="button"
@@ -543,9 +627,14 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
             <ProductTitle product={product} />
           </h2>
           <RatingLine />
-          <div className="space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Launch price</p>
-            <p className="text-4xl font-semibold tracking-tight text-white">{product.price}</p>
+          <div className="rounded-lg border border-white/[0.08] bg-black/28 p-3.5">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/42">Regular</p>
+            <p className="mt-1 text-2xl font-semibold tracking-tight text-white/42 line-through">{product.price}</p>
+            <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">
+              With code {JULY_PROMO_CODE}
+            </p>
+            <p className="mt-1 text-4xl font-semibold tracking-tight text-white">{product.salePrice}</p>
+            <GrowTechPromoCode compact className="mt-3" />
           </div>
           <p className="min-h-[3.75rem] text-[15px] leading-7 text-white/66">{product.description}</p>
         </div>
@@ -827,15 +916,14 @@ function MidPageKitCta() {
             Want the complete grow documentation setup?
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/62">
-            Get the Scout Camera, Environment Monitor, and Soil Health Meter 6-in-1 together and save $50.
+            Save 20% on the full kit this month with code {JULY_PROMO_CODE}.
           </p>
         </div>
         <CheckoutButton
           product={bundle}
-          compact
           showTrust={false}
           ctaLocation="growtech_midpage_kit:bundle"
-          className="sm:w-44"
+          className="sm:w-64"
         />
       </div>
     </section>
@@ -866,6 +954,9 @@ function BundleSection() {
         </div>
         <div className="flex flex-col justify-center">
           <div className="mb-3 flex flex-wrap gap-2">
+            <span className="inline-flex w-fit rounded-full border border-amber-300/40 bg-amber-300/12 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-200">
+              Best July Deal
+            </span>
             <span className="inline-flex w-fit rounded-full border border-landing-green/35 bg-black/35 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-landing-green">
               {bundle.badge}
             </span>
@@ -878,18 +969,30 @@ function BundleSection() {
           <div className="mt-3">
             <RatingLine />
           </div>
-          <div className="mt-5 grid gap-3 rounded-xl border border-white/[0.08] bg-black/30 p-4 sm:grid-cols-3">
+          <div className="mt-5 grid gap-3 rounded-xl border border-white/[0.08] bg-black/30 p-4 sm:grid-cols-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/38">Individual total</p>
-              <p className="mt-1 text-2xl font-semibold text-white/60">$297</p>
+              <p className="mt-1 text-2xl font-semibold text-white/60">{INDIVIDUAL_FULL_TOTAL}</p>
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Kit price</p>
               <p className="mt-1 text-3xl font-semibold text-white">{bundle.price}</p>
             </div>
             <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">With code</p>
+              <p className="mt-1 text-4xl font-black text-amber-100">{bundle.salePrice}</p>
+            </div>
+            <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">You save</p>
-              <p className="mt-1 text-3xl font-semibold text-landing-green">$50</p>
+              <p className="mt-1 text-3xl font-semibold text-landing-green">{KIT_FULL_PRICE_SAVINGS}</p>
+            </div>
+          </div>
+          <div className="mt-4 rounded-lg border border-amber-300/20 bg-amber-300/8 p-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm font-semibold text-white/76">
+                You save {KIT_FULL_PRICE_SAVINGS} vs buying separately at full price.
+              </p>
+              <GrowTechPromoCode compact />
             </div>
           </div>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/62">{bundle.description}</p>
@@ -906,6 +1009,9 @@ function BundleSection() {
             ))}
           </ul>
           <CheckoutButton product={bundle} ctaLocation="growtech_bundle_section:bundle" className="mt-7 sm:w-fit" />
+          <p className="mt-3 text-sm font-semibold text-amber-100/85">
+            Enter {JULY_PROMO_CODE} at Whop checkout to get the July sale price.
+          </p>
           <TrustBadges />
           <PaymentBadges />
         </div>
@@ -1008,7 +1114,7 @@ function StickyMobileCta() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/88 px-4 py-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:hidden">
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-white">Grow Tech Kit saves $50</p>
+        <p className="text-sm font-semibold text-white">Save 20% with {JULY_PROMO_CODE}</p>
         <CheckoutButton
           product={bundle}
           compact
@@ -1123,6 +1229,7 @@ export default function GrowTech() {
               <p className="mx-auto max-w-xl text-sm font-medium text-white/45 lg:mx-0">
                 100% free shipping on every MasterGrowbot AI Grow Tech product.
               </p>
+              <JulySaleBanner />
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
                 <a
                   href="#products"
@@ -1139,6 +1246,9 @@ export default function GrowTech() {
                   Compare the Kit
                 </a>
               </div>
+              <p className="mx-auto max-w-xl text-sm font-semibold text-amber-100/85 lg:mx-0">
+                Save 20% this month with code {JULY_PROMO_CODE}.
+              </p>
               <HeroTrustStrip />
             </div>
 
