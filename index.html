@@ -7,7 +7,11 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-NT1046S3EN');
+      gtag('config', 'G-NT1046S3EN', {
+        linker: {
+          domains: ['mastergrowbot.com', 'www.mastergrowbot.com', 'whop.com']
+        }
+      });
 
       // Track CTA clicks
       document.addEventListener('click', function(e) {
@@ -125,6 +129,9 @@
         https://*.cloudflare.com
         https://*.google-analytics.com
         https://*.analytics.google.com
+        https://*.vercel-insights.com
+        https://whop.com
+        https://*.whop.com
         https://formspree.io
         https://*.formspree.io;
       frame-src 'self' https://accounts.google.com https://*.supabase.co https://docs.google.com https://whop.com https://*.whop.com https://cdn.plaid.com;
@@ -138,7 +145,6 @@
     " />
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
   </head>

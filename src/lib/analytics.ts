@@ -18,9 +18,33 @@ declare global {
   }
 }
 
-type AnalyticsParams = Record<string, unknown>;
+export type AnalyticsParams = Record<string, unknown>;
 
-function ecommercePayload(
+const ecommerceEventNames = new Set([
+  "select_item",
+  "begin_checkout",
+  "purchase",
+  "whop_checkout_opened",
+  "whop_checkout_embed_rendered",
+  "whop_checkout_iframe_loaded",
+  "whop_checkout_load_timeout",
+  "checkout_fallback_click",
+]);
+
+function shouldAttachEcommerce(eventName: string, params: AnalyticsParams) {
+  return ecommerceEventNames.has(eventName) || eventName.startsWith("whop_checkout_") || Array.isArray(params.items);
+}
+
+function dataLayerEcommerce(params: AnalyticsParams) {
+  return {
+    transaction_id: params.transaction_id,
+    value: params.value,
+    currency: params.currency,
+    items: params.items,
+  };
+}
+
+export function growTechEcommercePayload(
   product: GrowTechAnalyticsProduct,
   ctaLocation?: string,
   planId?: string,
@@ -43,7 +67,7 @@ function ecommercePayload(
   };
 }
 
-function aiStrategyPayload(
+export function aiStrategyEcommercePayload(
   product: AIStrategyAnalyticsProduct,
   ctaLocation: string,
   planId?: string,
@@ -72,9 +96,18 @@ export function trackEvent(eventName: string, params: AnalyticsParams = {}) {
   }
 
   if (Array.isArray(window.dataLayer)) {
+    if (shouldAttachEcommerce(eventName, params)) {
+      window.dataLayer.push({ ecommerce: null });
+    }
+
     window.dataLayer.push({
       event: eventName,
       ...params,
+      ...(shouldAttachEcommerce(eventName, params)
+        ? {
+            ecommerce: dataLayerEcommerce(params),
+          }
+        : {}),
     });
   }
 
@@ -88,7 +121,7 @@ export function trackGrowTechSelectItem(
   ctaLocation: string,
   planId?: string,
 ) {
-  trackEvent("select_item", ecommercePayload(product, ctaLocation, planId));
+  trackEvent("select_item", growTechEcommercePayload(product, ctaLocation, planId));
 }
 
 export function trackGrowTechBeginCheckout(
@@ -96,7 +129,7 @@ export function trackGrowTechBeginCheckout(
   ctaLocation: string,
   planId?: string,
 ) {
-  trackEvent("begin_checkout", ecommercePayload(product, ctaLocation, planId));
+  trackEvent("begin_checkout", growTechEcommercePayload(product, ctaLocation, planId));
 }
 
 export function trackGrowTechCheckoutOpened(
@@ -104,7 +137,7 @@ export function trackGrowTechCheckoutOpened(
   ctaLocation: string,
   planId?: string,
 ) {
-  trackEvent("whop_checkout_opened", ecommercePayload(product, ctaLocation, planId));
+  trackEvent("whop_checkout_opened", growTechEcommercePayload(product, ctaLocation, planId));
 }
 
 export function trackGrowTechEmbedRendered(
@@ -112,7 +145,7 @@ export function trackGrowTechEmbedRendered(
   ctaLocation: string,
   planId?: string,
 ) {
-  trackEvent("whop_checkout_embed_rendered", ecommercePayload(product, ctaLocation, planId));
+  trackEvent("whop_checkout_embed_rendered", growTechEcommercePayload(product, ctaLocation, planId));
 }
 
 export function trackGrowTechCheckoutState(
@@ -122,7 +155,7 @@ export function trackGrowTechCheckoutState(
   planId?: string,
 ) {
   trackEvent(`whop_checkout_${state}`, {
-    ...ecommercePayload(product, ctaLocation, planId),
+    ...growTechEcommercePayload(product, ctaLocation, planId),
     checkout_state: state,
   });
 }
@@ -132,10 +165,12 @@ export function trackGrowTechPurchase(
   receiptId: string | undefined,
   planId: string,
   ctaLocation = "unknown",
+  extra: AnalyticsParams = {},
 ) {
   trackEvent("purchase", {
-    ...ecommercePayload(product, ctaLocation, planId),
+    ...growTechEcommercePayload(product, ctaLocation, planId),
     transaction_id: receiptId,
+    ...extra,
   });
 }
 
@@ -144,11 +179,11 @@ export function trackGrowTechFallbackClick(
   ctaLocation: string,
   planId?: string,
 ) {
-  trackEvent("checkout_fallback_click", ecommercePayload(product, ctaLocation, planId));
+  trackEvent("checkout_fallback_click", growTechEcommercePayload(product, ctaLocation, planId));
 }
 
 export function trackGrowTechMissingPlanId(product: GrowTechAnalyticsProduct, ctaLocation: string) {
-  trackEvent("checkout_missing_plan_id", ecommercePayload(product, ctaLocation));
+  trackEvent("checkout_missing_plan_id", growTechEcommercePayload(product, ctaLocation));
 }
 
 export function trackAIStrategyCheckoutEvent(
@@ -159,7 +194,7 @@ export function trackAIStrategyCheckoutEvent(
   extra: AnalyticsParams = {},
 ) {
   trackEvent(eventName, {
-    ...aiStrategyPayload(product, ctaLocation, planId),
+    ...aiStrategyEcommercePayload(product, ctaLocation, planId),
     ...extra,
   });
 }

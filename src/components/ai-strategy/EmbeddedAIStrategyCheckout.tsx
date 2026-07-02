@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { WhopCheckoutEmbed, type WhopCheckoutState } from "@whop/checkout/react";
 import { FileText, Headphones, LockKeyhole, ShieldCheck } from "lucide-react";
-import { trackAIStrategyCheckoutEvent } from "@/lib/analytics";
+import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
+import { aiStrategyEcommercePayload, trackAIStrategyCheckoutEvent } from "@/lib/analytics";
 
 export type AIStrategyCheckoutProduct = {
   productId: string;
@@ -47,7 +48,34 @@ export default function EmbeddedAIStrategyCheckout({
 }: EmbeddedAIStrategyCheckoutProps) {
   const [isComplete, setIsComplete] = useState(false);
   const [completedReceiptId, setCompletedReceiptId] = useState<string | undefined>();
-  const [checkoutState, setCheckoutState] = useState<string>("loading");
+
+  const checkoutPayload = useMemo(
+    () => aiStrategyEcommercePayload(product, ctaLocation, planId),
+    [ctaLocation, planId, product],
+  );
+
+  const handleTrackedComplete = useCallback(
+    (completedPlanId: string, receiptId: string | undefined, signalSource: string) => {
+      setIsComplete(true);
+      setCompletedReceiptId(receiptId);
+      trackAIStrategyCheckoutEvent("purchase", product, ctaLocation, completedPlanId || planId, {
+        transaction_id: receiptId,
+        whop_signal_source: signalSource,
+      });
+    },
+    [ctaLocation, planId, product],
+  );
+
+  const {
+    checkoutState,
+    handleComplete: handleWhopComplete,
+    handleStateChange: handleWhopStateChange,
+    hostRef,
+  } = useWhopCheckoutTracking({
+    planId,
+    payload: checkoutPayload,
+    onComplete: handleTrackedComplete,
+  });
 
   useEffect(() => {
     if (planId) {
@@ -134,11 +162,18 @@ export default function EmbeddedAIStrategyCheckout({
           <div className="border-b border-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/46">
             Secure checkout status: {checkoutState}
           </div>
-          <div className="whop-embedded-checkout-host min-h-[760px]">
+          <div ref={hostRef} className="whop-embedded-checkout-host min-h-[760px]">
             <WhopCheckoutEmbed
               planId={planId}
               returnUrl={returnUrl}
+              skipRedirect
               theme="dark"
+              utm={{
+                utm_source: "mastergrowbot",
+                utm_medium: "embedded_checkout",
+                utm_campaign: "ai_strategy_checkout",
+                utm_content: ctaLocation,
+              }}
               themeOptions={{
                 backgroundColor: "#0b0b12",
                 accentColor: "#22c55e",
@@ -156,18 +191,10 @@ export default function EmbeddedAIStrategyCheckout({
                 </div>
               }
               onComplete={(completedPlanId: string, receiptId?: string) => {
-                setIsComplete(true);
-                setCompletedReceiptId(receiptId);
-                trackAIStrategyCheckoutEvent("purchase", product, ctaLocation, completedPlanId || planId, {
-                  transaction_id: receiptId,
-                });
+                handleWhopComplete(completedPlanId, receiptId, "react_on_complete");
               }}
               onStateChange={(state: WhopCheckoutState) => {
-                const nextState = String(state);
-                setCheckoutState(nextState);
-                trackAIStrategyCheckoutEvent(`whop_checkout_${nextState}`, product, ctaLocation, planId, {
-                  checkout_state: nextState,
-                });
+                handleWhopStateChange(String(state), "react_on_state_change");
               }}
             />
           </div>
