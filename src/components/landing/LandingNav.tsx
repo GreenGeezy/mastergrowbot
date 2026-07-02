@@ -29,13 +29,13 @@ export default function LandingNav() {
         <Link
           to="/ai-strategy"
           className="group inline-flex items-center gap-1.5 text-sm font-semibold text-landing-green transition duration-200 font-sans drop-shadow-[0_0_10px_rgba(29,185,84,0.28)] hover:text-landing-green-glow hover:drop-shadow-[0_0_16px_rgba(29,185,84,0.5)] sm:pt-[11px]"
-          aria-label="AI Strategy sale page"
+          aria-label="AI Strategy launch offer page"
         >
           <span className="bg-gradient-to-r from-landing-green via-landing-green-glow to-gold bg-clip-text text-transparent">
             AI Strategy
           </span>
           <span className="motion-safe:animate-pulse rounded-full border border-gold/40 bg-gradient-to-r from-gold to-amber-300 px-1.5 py-0.5 text-[9px] font-black leading-none text-black shadow-[0_0_12px_rgba(255,215,0,0.24)]">
-            SALE
+            LAUNCH
           </span>
         </Link>
         <Link

@@ -6,14 +6,11 @@ import {
   ArrowLeft,
   ArrowRight,
   BrainCircuit,
-  Building2,
   Check,
   ChevronDown,
   FileText,
-  FlaskConical,
   Landmark,
   Layers3,
-  Microscope,
   Network,
   Quote,
   Sparkles,
@@ -65,18 +62,18 @@ const bookingRedirectPath = "/ai-strategy/intake";
 const assetBase = "/images/ai-strategy";
 
 const heroProof = [
-  "Created Growbot, the first cannabis growing app on the Apple App Store",
-  "Former CEO of Grownetics",
-  "Founder of MasterGrowbot AI, rated 5.0 on the App Store",
-  "A decade building cannabis technology and AI companies",
+  "First workflow worth automating",
+  "Minimum useful agent blueprint",
+  "Human-review requirements mapped",
+  "30-day pilot plan delivered",
 ];
 
 const credibilityChips = [
   "First cannabis growing app on the Apple App Store",
-  "Co-founder and former CEO of Grownetics",
+  "Former CEO of Grownetics",
   "Award-winning cannabis technology founder",
   "MasterGrowbot AI rated 5.0 on the App Store",
-  "Cannabis AI advisor for operators, brands, and investors",
+  "Cannabis AI strategy for operators, brands, and investors",
 ];
 
 const testimonials = [
@@ -128,24 +125,25 @@ const problemCards = [
 
 const offers = [
   {
-    eyebrow: "Founder Launch Rate",
+    eyebrow: "Best first step",
     title: "AI Opportunity Map",
-    price: "$899",
+    price: "$899 Founder Launch Rate",
     originalPrice: "$999",
     capacity: "Limited advisory slots",
     subtitle:
-      "A private 60-minute cannabis AI strategy session plus a custom 10-page roadmap showing exactly where AI can create value in your business.",
+      "A paid workflow teardown that identifies the first cannabis workflow worth turning into an AI agent.",
     includes: [
       "Private 60-minute AI strategy call",
       "Custom 10-page AI Opportunity Map",
-      "Top workflows ranked by impact and difficulty",
-      "Quick-win automations for the next 7 to 30 days",
-      "Custom AI agent concepts",
-      "Data, SOP, and team readiness score",
-      "Tool/platform recommendations",
-      "Report delivered within 7 business days",
+      "First workflow worth automating",
+      "Old Way vs. Agent Way breakdown",
+      "Minimum useful agent spec",
+      "Data, SOP, and human-review requirements",
+      "Tool/platform recommendation",
+      "30-day pilot plan",
+      "Delivered within 5 business days",
     ],
-    cta: "Book AI Opportunity Map",
+    cta: "Find My First Agent Opportunity",
     paymentCopy: "Pay $449 today. $450 balance due after your custom report is delivered.",
     planKey: "NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_PLAN_ID" as StrategyPlanKey,
     checkoutKey: "NEXT_PUBLIC_WHOP_AI_OPPORTUNITY_DEPOSIT_CHECKOUT_URL" as StrategyCheckoutKey,
@@ -160,12 +158,13 @@ const offers = [
     featured: true,
   },
   {
-    eyebrow: "Implementation Buildout",
+    eyebrow: "Build from the roadmap",
     title: "Custom AI Agent Buildout",
     price: "Starting at $4,499",
     originalPrice: "$4,999",
     capacity: "Limited buildout capacity",
-    subtitle: "For cannabis companies ready to turn the AI roadmap into a working agent, workflow, or internal copilot.",
+    subtitle:
+      "For cannabis companies ready to turn the best workflow from the Opportunity Map into a working internal AI agent, copilot, or workflow assistant.",
     includes: [
       "Agent design workshop",
       "Custom agent architecture",
@@ -176,7 +175,7 @@ const offers = [
       "Agent operating guide",
       "Two revision rounds",
     ],
-    cta: "Start AI Agent Buildout",
+    cta: "Start Agent Buildout",
     paymentCopy: "Pay $2,499 today. $2,000 balance due 45 days after project start.",
     planKey: "NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_PLAN_ID" as StrategyPlanKey,
     checkoutKey: "NEXT_PUBLIC_WHOP_AI_AGENT_BUILDOUT_DEPOSIT_CHECKOUT_URL" as StrategyCheckoutKey,
@@ -200,35 +199,35 @@ const reportSlides = [
     subtitle: "Custom 10-page AI strategy report",
     label: "Slide 01",
     type: "cover",
-    metrics: ["Executive summary", "Workflow snapshot", "Build roadmap"],
+    metrics: ["Workflow-to-agent diagram", "10-page strategy report", "30-day pilot plan"],
+  },
+  {
+    title: "First Agent Opportunity",
+    subtitle: "The workflow worth automating first",
+    label: "Slide 02",
+    type: "first-agent",
+    metrics: ["Input", "AI Draft", "Human Review", "Output"],
   },
   {
     title: "AI Opportunity Heatmap",
-    subtitle: "Impact vs. difficulty matrix",
-    label: "Slide 02",
-    type: "heatmap",
-    metrics: ["Quick wins", "High-ROI automation", "Workflow risk"],
-  },
-  {
-    title: "Custom AI Agent Concepts",
-    subtitle: "Agent ideas mapped to real workflows",
+    subtitle: "Impact vs. difficulty",
     label: "Slide 03",
-    type: "agents",
-    metrics: ["Cultivation SOP Agent", "Sales Follow-Up Agent", "Training Copilot"],
+    type: "heatmap",
+    metrics: ["SOP Assistant", "Scouting Triage", "Sales Follow-up", "Training Copilot", "Market Intelligence"],
   },
   {
-    title: "Data & SOP Readiness Score",
-    subtitle: "Documents, team, tools, and controls",
+    title: "Minimum Useful Agent Spec",
+    subtitle: "Inputs, outputs, review layer, and pilot plan",
     label: "Slide 04",
-    type: "score",
-    metrics: ["Documents", "Workflows", "Human review"],
+    type: "spec",
+    metrics: ["Context", "Prompt Logic", "Tools", "Approval Step"],
   },
   {
-    title: "30/60/90-Day Build Plan",
-    subtitle: "Phased implementation roadmap",
+    title: "30-Day Build Roadmap",
+    subtitle: "From strategy call to working agent",
     label: "Slide 05",
     type: "roadmap",
-    metrics: ["Quick wins", "Prototype", "Rollout"],
+    metrics: ["Week 1: Teardown", "Week 2: Prototype", "Week 3: Review", "Week 4: Rollout"],
   },
 ];
 
@@ -236,32 +235,65 @@ const operatorCards = [
   {
     title: "Cultivation",
     icon: Sprout,
-    workflows: ["AI scouting assistant", "Grower SOP assistant", "Room-check workflow", "IPM decision support"],
-  },
-  {
-    title: "Extraction",
-    icon: FlaskConical,
-    workflows: ["Batch documentation assistant", "Extraction SOP lookup", "QA checklist generator", "Yield variance review agent"],
+    agents: [
+      {
+        name: "Cultivation SOP & Task Agent",
+        description:
+          "Answers SOP questions, creates daily task lists, and helps growers follow the right room, IPM, sanitation, or crop workflow.",
+      },
+      {
+        name: "IPM Scouting & Issue Triage Agent",
+        description:
+          "Turns scouting notes, plant photos, pest counts, and environment context into structured issue summaries and escalation checklists.",
+      },
+      {
+        name: "Multi-Facility Performance Agent",
+        description:
+          "Summarizes weekly room and facility performance, flags anomalies, and gives owners a clear operator briefing.",
+      },
+    ],
   },
   {
     title: "Dispensary",
     icon: Store,
-    workflows: ["Budtender training assistant", "Customer FAQ agent", "Menu content generator", "Review response workflow"],
+    agents: [
+      {
+        name: "Budtender Training & Product Knowledge Agent",
+        description:
+          "Trains staff on menu items, cannabinoids, terpenes, product differences, and customer education using store-approved knowledge.",
+      },
+      {
+        name: "Menu, SEO & Review Response Agent",
+        description:
+          "Drafts product descriptions, local SEO content, Google Business Profile posts, review responses, and promo copy for approval.",
+      },
+      {
+        name: "Store Manager Daily Briefing Agent",
+        description:
+          "Summarizes inventory notes, promos, staffing issues, reviews, and action items before each shift.",
+      },
+    ],
   },
   {
-    title: "Cloning & Breeding",
-    icon: Microscope,
-    workflows: ["Phenotype comparison agent", "Mother plant tracking", "Clone quarantine workflow", "Propagation SOP assistant"],
-  },
-  {
-    title: "Brand & Wholesale",
-    icon: Building2,
-    workflows: ["Wholesale sales follow-up agent", "Buyer qualification workflow", "CRM note summarizer", "Trade-show lead follow-up"],
-  },
-  {
-    title: "Investor / Consultant",
+    title: "Cannabis VC / Investor",
     icon: Landmark,
-    workflows: ["AI opportunity due diligence", "Portfolio company workflow review", "Automation roadmap", "Internal knowledge assistant"],
+    agents: [
+      {
+        name: "Deal Intake & Triage Agent",
+        description:
+          "Reviews pitch decks, founder emails, websites, and traction claims to create a first-pass investment memo.",
+      },
+      {
+        name: "Portfolio AI Opportunity Agent",
+        description:
+          "Audits portfolio companies and identifies the highest-value AI workflow or agent opportunity for each company.",
+      },
+      {
+        name: "Cannabis Market Intelligence Agent",
+        description:
+          "Creates weekly market briefs from news, company activity, regulatory changes, and portfolio watchlists.",
+      },
+    ],
   },
 ];
 
@@ -270,7 +302,7 @@ const steps = [
   "Complete short checkout intake",
   "Book your 60-minute strategy call",
   "Meet with Eli and map your highest-value AI opportunities",
-  "Receive your custom 10-page AI Opportunity Map within 7 business days",
+  "Receive your custom 10-page AI Opportunity Map within 5 business days",
 ];
 
 const faqs = [
@@ -302,7 +334,7 @@ const faqs = [
   {
     question: "What happens after I pay?",
     answer:
-      "You will be redirected to a private booking page where you can schedule your 60-minute strategy session. After the call, you will receive your custom report within 7 business days.",
+      "You will be redirected to a private booking page where you can schedule your 60-minute strategy session. After the call, you will receive your custom report within 5 business days.",
   },
 ];
 
@@ -453,21 +485,29 @@ function HeroSection() {
             <h1 className="max-w-5xl text-4xl font-bold leading-[1.05] text-white font-sans sm:text-5xl lg:text-7xl">
               Turn Cannabis AI Into Profit, Speed, and Market Advantage
             </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/72 sm:text-xl">
-              A practical AI strategy sprint for cannabis companies ready to automate high-value work, train teams
-              faster, improve margins, and build simple systems that are easy to implement and use.
+            <p className="mt-5 max-w-3xl text-2xl font-bold leading-tight text-white font-sans sm:text-3xl">
+              Find the first cannabis workflow worth turning into an AI agent.
+            </p>
+            <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/72 sm:text-xl">
+              A practical AI strategy sprint for cannabis companies ready to identify the highest-value workflow to
+              automate first, then turn that opportunity into a clear AI agent blueprint.
             </p>
             <div className="mt-6 rounded-lg border border-gold/20 bg-gold/8 p-4 text-sm font-semibold leading-relaxed text-white/72">
-              The next cannabis winners will not just use AI. They will know exactly where AI can increase revenue,
-              remove bottlenecks, and help their teams move faster before the market leaves slower operators behind.
+              Tomorrow's cannabis winners will not be the companies using the most AI tools. They will be the companies
+              that know exactly which workflows to automate first.
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_hero:opportunity" />
-              <StrategyCheckoutButton offer={offers[1]} ctaLocation="ai_strategy_hero:agent" variant="secondary" />
+              <StrategyCheckoutButton offer={offers[1]} ctaLocation="ai_strategy_hero:agent" variant="secondary">
+                Start AI Agent Buildout
+              </StrategyCheckoutButton>
             </div>
             <p className="mt-3 text-sm font-medium text-white/48">
-              Paid strategy call. Custom 10-page report delivered within 7 business days.
+              Paid strategy call. Custom 10-page AI Opportunity Map delivered within 5 business days.
             </p>
+            <div className="mt-5">
+              <PremiumStars label="Trusted cannabis AI strategy for operators ready to move first" />
+            </div>
           </div>
         </Reveal>
 
@@ -487,6 +527,85 @@ function HeroSection() {
           </div>
         ))}
       </Reveal>
+    </section>
+  );
+}
+
+function AgentWorkflowSection() {
+  const oldWay = [
+    "SOPs scattered across docs and staff memory",
+    "Managers rewriting the same updates every week",
+    "Dispensary teams repeating the same training questions",
+    "Investors manually reviewing decks, notes, and websites",
+    "Operators testing random AI tools with no clear ROI",
+  ];
+
+  const agentWay = [
+    "One workflow mapped from input to output",
+    "Company context, SOPs, menus, notes, or data connected",
+    "AI drafts the work",
+    "Human reviews before anything goes live",
+    "The best workflow becomes the first agent buildout",
+  ];
+
+  return (
+    <section className="relative z-10 border-y border-white/[0.06] bg-[#020706] px-4 py-16 sm:px-6 sm:py-24">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_28%,rgba(29,185,84,0.12),transparent_34%),radial-gradient(circle_at_25%_85%,rgba(255,215,0,0.08),transparent_30%)]" />
+      <div className="mx-auto max-w-7xl">
+        <Reveal className="mx-auto max-w-4xl text-center">
+          <SectionLabel>Workflow To Agent</SectionLabel>
+          <h2 className="mt-3 text-3xl font-bold leading-tight text-white font-sans sm:text-5xl">
+            Pick the Workflow. Build the Agent.
+          </h2>
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-white/64 sm:text-lg">
+            Most cannabis companies do not need more random AI tools. They need one repeated, high-value workflow
+            turned into a reliable AI worker.
+          </p>
+        </Reveal>
+
+        <div className="mt-10 grid gap-5 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
+          <Reveal>
+            <article className="h-full rounded-lg border border-gold/22 bg-[linear-gradient(145deg,rgba(255,215,0,0.08),rgba(255,255,255,0.025))] p-6 shadow-2xl shadow-black/20 sm:p-8">
+              <p className="text-sm font-bold uppercase text-gold">The old way</p>
+              <ul className="mt-6 space-y-4">
+                {oldWay.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm leading-relaxed text-white/66">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </Reveal>
+
+          <div className="hidden items-center justify-center lg:flex" aria-hidden="true">
+            <div className="relative h-full w-20">
+              <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-landing-green/40 to-transparent" />
+              <div className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-landing-green/35 bg-black shadow-[0_0_32px_rgba(29,185,84,0.2)]">
+                <ArrowRight className="h-5 w-5 text-landing-green" />
+              </div>
+            </div>
+          </div>
+
+          <Reveal delay={0.08}>
+            <article className="h-full rounded-lg border border-landing-green/35 bg-[linear-gradient(145deg,rgba(29,185,84,0.16),rgba(255,255,255,0.035))] p-6 shadow-2xl shadow-landing-green/10 sm:p-8">
+              <p className="text-sm font-bold uppercase text-landing-green">The agent way</p>
+              <ul className="mt-6 space-y-4">
+                {agentWay.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm leading-relaxed text-white/76">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-landing-green" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </Reveal>
+        </div>
+
+        <Reveal className="mt-9 flex justify-center">
+          <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_workflow_agent:opportunity" />
+        </Reveal>
+      </div>
     </section>
   );
 }
@@ -565,15 +684,15 @@ function FounderAuthoritySection() {
             </h2>
             <div className="mt-6 space-y-5 text-base leading-relaxed text-white/66">
               <p>
-                For more than a decade, Eli Duffy has been building at the intersection of cannabis, cultivation
-                technology, automation, and artificial intelligence. He created Growbot, the first cannabis growing app
-                on the Apple App Store, then co-founded and led Grownetics, one of the earliest cannabis AI cultivation
+                For more than a decade, Eli Duffy has built at the intersection of cannabis, cultivation technology,
+                automation, and artificial intelligence. He created Growbot, the first cannabis growing app on the Apple
+                App Store, and later co-founded and led Grownetics, one of the earliest cannabis AI cultivation
                 technology companies.
               </p>
               <p>
-                Today, Eli brings that experience into MasterGrowbot AI and private cannabis AI strategy work, helping
-                cultivations, extraction labs, dispensaries, brands, cloning and breeding companies, consultants, and
-                investors identify the highest-value AI workflows before wasting money on random tools.
+                Today, through MasterGrowbot AI, Eli helps cultivations, extraction labs, dispensaries, cannabis brands,
+                cloning and breeding companies, consultants, and investors identify the highest-value AI workflows
+                before wasting money on random tools.
               </p>
             </div>
             <div className="mt-7 flex flex-wrap gap-2">
@@ -587,7 +706,9 @@ function FounderAuthoritySection() {
               ))}
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_founder:opportunity" />
+              <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_founder:opportunity">
+                Work With Eli
+              </StrategyCheckoutButton>
               <StrategyCheckoutButton offer={offers[1]} ctaLocation="ai_strategy_founder:agent" variant="secondary" />
             </div>
           </Reveal>
@@ -634,7 +755,7 @@ function TestimonialsCarousel() {
         </Reveal>
 
         <Reveal delay={0.06}>
-          <figure className="mb-10 overflow-hidden rounded-lg border border-landing-green/18 bg-black/50 p-2 shadow-2xl shadow-black/35">
+          <figure className="mx-auto mb-8 max-w-5xl overflow-hidden rounded-lg border border-landing-green/18 bg-black/50 p-2 shadow-2xl shadow-black/35">
             <img
               src={`${assetBase}/NEWAITestimonialImage.png`}
               alt="MasterGrowbot AI cannabis technology credibility collage with award recognition and industry testimonials."
@@ -753,6 +874,9 @@ function OffersSection() {
           <h2 className="mt-3 text-3xl font-bold leading-tight text-white font-sans sm:text-4xl">
             Start with strategy. Build only what is worth building.
           </h2>
+          <p className="mt-4 text-base leading-relaxed text-white/64">
+            The Opportunity Map is the blueprint. The Agent Buildout turns the best workflow into a working AI agent.
+          </p>
         </Reveal>
         <div className="grid gap-6 lg:grid-cols-2">
           {offers.map((offer, index) => (
@@ -855,9 +979,39 @@ function ReportSlideVisual({ slide }: { slide: (typeof reportSlides)[number] }) 
           </div>
         )}
 
+        {slide.type === "first-agent" && (
+          <div className="mt-10">
+            <div className="grid gap-3 md:grid-cols-4">
+              {slide.metrics.map((item, index) => (
+                <div key={item} className="relative rounded-lg border border-white/[0.08] bg-black/42 p-4">
+                  <p className="text-[10px] font-bold uppercase text-gold">Step {index + 1}</p>
+                  <p className="mt-3 text-base font-bold text-white font-sans">{item}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-white/48">
+                    {index === 0
+                      ? "SOPs, menus, notes, data, or intake."
+                      : index === 1
+                        ? "Agent drafts the repeated work."
+                        : index === 2
+                          ? "Manager approves before use."
+                          : "Clean task, memo, response, or briefing."}
+                  </p>
+                  {index < slide.metrics.length - 1 && (
+                    <ArrowRight className="absolute -right-3 top-1/2 hidden h-5 w-5 -translate-y-1/2 text-landing-green md:block" />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 rounded-lg border border-landing-green/22 bg-landing-green/10 p-4">
+              <p className="text-sm font-semibold leading-relaxed text-white/72">
+                The report names the first workflow worth automating and turns it into a build-ready agent blueprint.
+              </p>
+            </div>
+          </div>
+        )}
+
         {slide.type === "heatmap" && (
           <div className="mt-10 grid grid-cols-3 gap-3">
-            {["SOP Agent", "Sales Follow-up", "Training Copilot", "Data Cleanup", "Menu Content", "Risk Review", "Room Notes", "QA Checklist", "CRM Summary"].map(
+            {["SOP Assistant", "Scouting Triage", "Sales Follow-up", "Training Copilot", "Market Intel", "Menu SEO", "Risk Controls", "Data Cleanup", "CRM Summary"].map(
               (item, index) => (
                 <div
                   key={item}
@@ -876,8 +1030,8 @@ function ReportSlideVisual({ slide }: { slide: (typeof reportSlides)[number] }) 
           </div>
         )}
 
-        {slide.type === "agents" && (
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
+        {slide.type === "spec" && (
+          <div className="mt-10 grid gap-4 md:grid-cols-4">
             {slide.metrics.map((item, index) => (
               <div key={item} className="rounded-lg border border-white/[0.08] bg-black/42 p-5">
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-landing-green/10 text-landing-green">
@@ -885,40 +1039,33 @@ function ReportSlideVisual({ slide }: { slide: (typeof reportSlides)[number] }) 
                 </div>
                 <p className="text-sm font-bold text-white">{item}</p>
                 <p className="mt-3 text-xs leading-relaxed text-white/48">
-                  {index === 0 ? "SOP lookup, room notes, and grower guidance." : index === 1 ? "Buyer follow-up and CRM context." : "Team onboarding and answer retrieval."}
+                  {index === 0
+                    ? "What the agent is allowed to know."
+                    : index === 1
+                      ? "How the agent reasons and drafts."
+                      : index === 2
+                        ? "Where the agent works."
+                        : "Who approves the output."}
                 </p>
               </div>
             ))}
           </div>
         )}
 
-        {slide.type === "score" && (
-          <div className="mt-10 grid gap-4">
-            {slide.metrics.map((item, index) => (
-              <div key={item} className="rounded-lg border border-white/[0.08] bg-black/42 p-4">
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-sm font-bold text-white">{item}</p>
-                  <p className="text-xs font-bold uppercase text-gold">{index === 2 ? "Controlled" : "Ready"}</p>
-                </div>
-                <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-landing-green to-gold"
-                    style={{ width: `${index === 0 ? 76 : index === 1 ? 68 : 84}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
         {slide.type === "roadmap" && (
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {["30 Days", "60 Days", "90 Days"].map((phase, index) => (
+          <div className="mt-10 grid gap-4 md:grid-cols-4">
+            {slide.metrics.map((phase, index) => (
               <div key={phase} className="rounded-lg border border-white/[0.08] bg-black/42 p-5">
-                <p className="text-xs font-bold uppercase text-gold">{phase}</p>
-                <p className="mt-3 text-lg font-bold text-white font-sans">{slide.metrics[index]}</p>
+                <p className="text-xs font-bold uppercase text-gold">Phase {index + 1}</p>
+                <p className="mt-3 text-lg font-bold text-white font-sans">{phase}</p>
                 <p className="mt-3 text-xs leading-relaxed text-white/48">
-                  {index === 0 ? "Automate obvious repetitive workflows first." : index === 1 ? "Prototype the highest-value agent workflow." : "Train the team and operationalize review controls."}
+                  {index === 0
+                    ? "Map the repeated task and gather context."
+                    : index === 1
+                      ? "Build the minimum useful agent."
+                      : index === 2
+                        ? "Test output quality and review controls."
+                        : "Roll into daily team usage."}
                 </p>
               </div>
             ))}
@@ -957,8 +1104,8 @@ function ReportPreviewCarousel() {
               See Exactly What You Get After the Strategy Call
             </h2>
             <p className="mt-5 text-base leading-relaxed text-white/64">
-              Every paid strategy session includes a custom AI Opportunity Map designed around your business type,
-              workflows, team, tools, and goals.
+              Every paid strategy session includes a custom AI Opportunity Map that identifies the first workflow worth
+              automating, the agent to build, and the 30-day pilot plan.
             </p>
             <div className="mt-7 flex gap-2">
               <button
@@ -982,7 +1129,9 @@ function ReportPreviewCarousel() {
               Sample preview only. Final report is customized after your paid strategy session.
             </p>
             <div className="mt-7">
-              <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_report_preview:opportunity" />
+              <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_report_preview:opportunity">
+                Get My Custom AI Opportunity Map
+              </StrategyCheckoutButton>
             </div>
           </Reveal>
 
@@ -1038,35 +1187,47 @@ function OperatorSection() {
   return (
     <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-7xl">
-        <Reveal className="mb-10 max-w-3xl">
-          <SectionLabel>Operator Fit</SectionLabel>
+        <Reveal className="mx-auto mb-10 max-w-4xl text-center">
+          <SectionLabel>First Agent Examples</SectionLabel>
           <h2 className="mt-3 text-3xl font-bold leading-tight text-white font-sans sm:text-4xl">
-            Built for Every Cannabis Operator
+            Your First AI Agent Depends on Your Cannabis Business
           </h2>
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-white/64">
+            The Opportunity Map identifies the highest-value first agent for your operation. Here are examples of what
+            that can look like.
+          </p>
         </Reveal>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-3">
           {operatorCards.map((card, index) => {
             const Icon = card.icon;
             return (
               <Reveal key={card.title} delay={index * 0.04}>
-                <article className="h-full rounded-lg border border-white/[0.08] bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-landing-green/28">
+                <article className="h-full rounded-lg border border-white/[0.08] bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-landing-green/28 hover:bg-landing-green/[0.045]">
                   <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg border border-landing-green/20 bg-landing-green/10 text-landing-green">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
                   <h3 className="text-xl font-semibold text-white font-sans">{card.title}</h3>
-                  <ul className="mt-4 space-y-2.5">
-                    {card.workflows.map((workflow) => (
-                      <li key={workflow} className="flex gap-2 text-sm leading-relaxed text-white/62">
-                        <Network className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" aria-hidden="true" />
-                        <span>{workflow}</span>
-                      </li>
+                  <div className="mt-5 space-y-4">
+                    {card.agents.map((agent) => (
+                      <div key={agent.name} className="rounded-lg border border-white/[0.07] bg-black/28 p-4">
+                        <div className="flex gap-2">
+                          <Network className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden="true" />
+                          <p className="text-sm font-bold leading-snug text-white">{agent.name}</p>
+                        </div>
+                        <p className="mt-2 text-sm leading-relaxed text-white/56">{agent.description}</p>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </article>
               </Reveal>
             );
           })}
         </div>
+        <Reveal className="mt-9 flex justify-center">
+          <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_operator_examples:opportunity">
+            Show Me My Best First Agent
+          </StrategyCheckoutButton>
+        </Reveal>
       </div>
     </section>
   );
@@ -1122,6 +1283,23 @@ function FaqSection() {
   );
 }
 
+function SeoAudienceSection() {
+  return (
+    <section className="relative z-10 px-4 py-10 sm:px-6">
+      <Reveal>
+        <div className="mx-auto max-w-5xl rounded-lg border border-white/[0.08] bg-white/[0.03] p-5 sm:p-6">
+          <p className="text-sm leading-relaxed text-white/56">
+            MasterGrowbot AI strategy sessions are built for legal cannabis businesses including indoor cultivations,
+            greenhouse operators, extraction labs, dispensaries, cannabis brands, cloning and breeding companies,
+            consultants, and cannabis investors looking to use AI agents, workflow automation, SOP intelligence, and
+            internal copilots responsibly.
+          </p>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 function FinalCtaSection() {
   return (
     <section className="relative z-10 px-4 pb-20 sm:px-6 sm:pb-28">
@@ -1129,8 +1307,12 @@ function FinalCtaSection() {
         <div className="mx-auto max-w-5xl rounded-lg border border-landing-green/24 bg-[linear-gradient(145deg,rgba(29,185,84,0.12),rgba(255,215,0,0.05),rgba(255,255,255,0.025))] p-6 text-center shadow-2xl shadow-black/30 sm:p-10">
           <SectionLabel>Next Step</SectionLabel>
           <h2 className="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-tight text-white font-sans sm:text-4xl">
-            Ready to see where AI can actually create value in your cannabis business?
+            Ready to find the first cannabis workflow worth turning into an AI agent?
           </h2>
+          <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-white/64">
+            Book the AI Opportunity Map and get a custom 10-page roadmap showing what to automate first, what agent to
+            build, and how to launch the first pilot.
+          </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <StrategyCheckoutButton offer={offers[0]} ctaLocation="ai_strategy_final:opportunity" />
             <StrategyCheckoutButton
@@ -1139,6 +1321,9 @@ function FinalCtaSection() {
               variant="secondary"
             />
           </div>
+          <p className="mt-4 text-sm font-medium text-white/48">
+            Paid strategy call. Report delivered within 5 business days.
+          </p>
           <p className="mx-auto mt-6 max-w-3xl text-sm leading-relaxed text-white/52">
             For legal cannabis businesses, licensed operators, brands, consultants, and investors. AI systems should be
             used with human review and in accordance with applicable laws and regulations.
@@ -1167,7 +1352,7 @@ function MobileStickyCta() {
     >
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold text-white">Book AI Opportunity Map</p>
+          <p className="text-sm font-semibold text-white">Find My First Agent Opportunity</p>
           <p className="text-xs text-landing-green">$899 founder launch rate</p>
         </div>
         <StrategyCheckoutButton
@@ -1176,7 +1361,7 @@ function MobileStickyCta() {
           className="shrink-0 px-4 py-2.5 text-sm"
           compact
         >
-          Book
+          Find It
         </StrategyCheckoutButton>
       </div>
     </div>
@@ -1204,6 +1389,7 @@ export default function AIStrategy() {
       <LandingNav />
       <main>
         <HeroSection />
+        <AgentWorkflowSection />
         <AuthorityVideoSection />
         <FounderAuthoritySection />
         <TestimonialsCarousel />
@@ -1212,6 +1398,7 @@ export default function AIStrategy() {
         <ReportPreviewCarousel />
         <OperatorSection />
         <HowItWorksSection />
+        <SeoAudienceSection />
         <FaqSection />
         <FinalCtaSection />
       </main>

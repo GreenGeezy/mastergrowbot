@@ -18,11 +18,11 @@ const nodes: DataNode[] = [
 ];
 
 const cards = [
-  { title: "Tasks Automated", value: "308", className: "left-4 top-16" },
-  { title: "Revenue Increase", value: "+ 11%", className: "right-4 top-24" },
+  { title: "Workflow Found", value: "High Fit", className: "left-4 top-16" },
+  { title: "Agent Blueprint", value: "Ready", className: "right-4 top-24" },
   { title: "SOP Intelligence", value: "Live", className: "left-5 top-52" },
-  { title: "Workflow ROI", value: "High", className: "right-5 bottom-36" },
-  { title: "Human Review Layer", value: "On", className: "left-8 bottom-24" },
+  { title: "Build Ready", value: "30 Days", className: "right-5 bottom-36" },
+  { title: "Human Review", value: "On", className: "left-8 bottom-24" },
 ];
 
 const connections = [
@@ -85,15 +85,15 @@ export default function CannabisAICommandMatrix() {
 
       <div className="absolute left-5 top-5 z-20 flex items-center gap-2 rounded-full border border-landing-green/30 bg-black/60 px-3 py-1.5 text-[10px] font-bold uppercase text-landing-green backdrop-blur">
         <span className="h-2 w-2 rounded-full bg-landing-green shadow-[0_0_14px_rgba(29,185,84,0.9)]" />
-        Genetics & Breeders
+        Live Cannabis AI Scan
       </div>
 
       <div className="absolute left-1/2 top-5 z-20 hidden -translate-x-1/2 items-center gap-3 rounded-full border border-purple-400/45 bg-purple-950/38 px-5 py-2.5 text-[18px] font-black uppercase text-purple-100 shadow-[0_0_24px_rgba(168,85,247,0.48)] backdrop-blur sm:flex">
-        <span>Cultivation</span>
-        <span className="text-purple-300 drop-shadow-[0_0_8px_rgba(216,180,254,0.9)]">*</span>
-        <span>Extraction</span>
-        <span className="text-purple-300 drop-shadow-[0_0_8px_rgba(216,180,254,0.9)]">*</span>
-        <span>Harvest</span>
+        <span>Workflow</span>
+        <span className="text-purple-300 drop-shadow-[0_0_8px_rgba(216,180,254,0.9)]">→</span>
+        <span>Agent</span>
+        <span className="text-purple-300 drop-shadow-[0_0_8px_rgba(216,180,254,0.9)]">→</span>
+        <span>ROI</span>
       </div>
 
       <div className="absolute right-5 top-5 z-20 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-[10px] font-bold uppercase text-gold backdrop-blur">
@@ -206,7 +206,7 @@ export default function CannabisAICommandMatrix() {
           className={`matrix-card absolute z-30 ${card.className} max-w-[155px] rounded-lg border border-white/10 bg-black/58 p-3 shadow-xl shadow-black/30 backdrop-blur-md`}
         >
           <p className="text-[9px] font-bold uppercase text-white/38">{card.title}</p>
-          {card.title === "Revenue Increase" ? (
+          {card.title === "Build Ready" ? (
             <p className="mt-1 flex items-center gap-1 text-sm font-bold text-landing-green drop-shadow-[0_0_10px_rgba(29,185,84,0.65)]">
               {card.value}
               <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
