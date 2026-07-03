@@ -8,7 +8,7 @@
   </url>
   <url>
     <loc>https://www.mastergrowbot.com/grow-guides</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -321,6 +321,12 @@
   <url>
     <loc>https://www.mastergrowbot.com/grow-guides/higrade-vs-mastergrowbot-ai</loc>
     <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mastergrowbot.com/grow-guides/hydro-vs-soil-cannabis</loc>
+    <lastmod>2026-07-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
