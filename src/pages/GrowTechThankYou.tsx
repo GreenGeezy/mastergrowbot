@@ -28,15 +28,23 @@ const nextSteps = [
 
 export default function GrowTechThankYou() {
   const [searchParams] = useSearchParams();
-  const status = searchParams.get("status") || "success";
+  const status = searchParams.get("status");
+  const isSuccess = status === "success";
   const isError = status === "error";
 
   useEffect(() => {
     trackEvent("growtech_thank_you_view", {
-      status,
+      status: status || "missing",
       checkout_source_page: "/grow-tech",
     });
-  }, [status]);
+
+    if (isSuccess) {
+      trackEvent("checkout_return_success", {
+        checkout_area: "grow-tech",
+        status: "success",
+      });
+    }
+  }, [isSuccess, status]);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-black text-white">
@@ -57,16 +65,22 @@ export default function GrowTechThankYou() {
             </div>
             <h1 className="mx-auto max-w-3xl text-4xl font-bold leading-tight tracking-tight text-white font-sans sm:text-5xl">
               {isError
-                ? "Payment was not completed"
-                : "Thank you for your MasterGrowbot AI Grow Tech order"}
+                ? "Checkout was not completed"
+                : isSuccess
+                  ? "Order received"
+                  : "Thank you for your MasterGrowbot AI Grow Tech order"}
             </h1>
             {isError ? (
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
-                Payment was not completed. Please return to Grow Tech and try again or contact{" "}
+                Checkout was not completed. Please return to GrowTech and try again or email{" "}
                 <a href="mailto:support@mastergrowbot.com" className="font-semibold text-landing-green hover:underline">
                   support@mastergrowbot.com
                 </a>
                 .
+              </p>
+            ) : isSuccess ? (
+              <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
+                Order received. Please check your email for your Whop receipt and tracking updates.
               </p>
             ) : (
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">

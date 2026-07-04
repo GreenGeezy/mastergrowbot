@@ -217,14 +217,14 @@ const useCases = [
 const trustStripItems = [
   { text: "Secure checkout powered by Whop", icon: ShieldCheck },
   { text: "100% free shipping", icon: Truck },
-  { text: "Cards, Apple Pay, and local payment methods supported", icon: CreditCard },
+  { text: "Cards and local payment methods supported", icon: CreditCard },
   { text: "Tracking sent after supplier dispatch", icon: PackageCheck },
 ];
 
 const trustCards = [
   {
     title: "Secure Whop Checkout",
-    text: "Complete your one-time purchase through Whop's hosted checkout with supported card, Apple Pay, and local payment options.",
+    text: "Complete your one-time purchase through Whop's hosted checkout with supported card and local payment options.",
     icon: ShieldCheck,
   },
   {
@@ -431,7 +431,7 @@ function JulySaleBanner() {
 }
 
 function PaymentBadges() {
-  const badges = ["VISA", "Mastercard", "AMEX", "Apple Pay", "Local Payments"];
+  const badges = ["VISA", "Mastercard", "AMEX", "Local Payments"];
 
   return (
     <div className="mt-3 flex flex-wrap gap-2" aria-label="Supported payment methods">

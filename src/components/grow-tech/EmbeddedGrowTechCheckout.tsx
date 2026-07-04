@@ -162,8 +162,7 @@ export default function EmbeddedGrowTechCheckout({
           <div ref={hostRef} className="whop-embedded-checkout-host min-h-[760px]">
             <WhopCheckoutEmbed
               planId={planId}
-              returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you"
-              skipRedirect
+              returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you?status=success"
               theme="dark"
               utm={{
                 utm_source: "mastergrowbot",

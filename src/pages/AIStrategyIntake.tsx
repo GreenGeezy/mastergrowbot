@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { AlertCircle, ArrowRight, CalendarDays, CheckCircle, Copy, Send, ShieldCheck } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import SEOHead from "@/components/SEOHead";
@@ -128,17 +129,29 @@ function SectionCard({
 }
 
 export default function AIStrategyIntake() {
+  const [searchParams] = useSearchParams();
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
   const formEndpoint = useMemo(resolveFormEndpoint, []);
   const bookingUrl =
     import.meta.env.NEXT_PUBLIC_AI_STRATEGY_BOOKING_URL?.trim() || fallbackBookingUrl;
+  const status = searchParams.get("status");
+  const isSuccess = status === "success";
+  const isError = status === "error";
 
   useEffect(() => {
     trackEvent("ai_strategy_intake_view", {
       source_page: "ai_strategy_intake",
+      status: status || "missing",
     });
-  }, []);
+
+    if (isSuccess) {
+      trackEvent("checkout_return_success", {
+        checkout_area: "ai-strategy",
+        status: "success",
+      });
+    }
+  }, [isSuccess, status]);
 
   const handleCopy = async () => {
     trackEvent("answer_later_click", {
@@ -221,13 +234,23 @@ export default function AIStrategyIntake() {
               AI Strategy Intake
             </h1>
             <div className="mt-6 rounded-xl border border-gold/30 bg-gold/10 p-4 text-sm font-semibold leading-relaxed text-white/82">
-              Don’t have time to answer the questions now or want to answer later? Don’t worry. All the questions will
+              Don't have time to answer the questions now or want to answer later? Don't worry. All the questions will
               be sent to you after you book your call along with any other details or instructions to ensure we maximize
               our time together. Thank you!
             </div>
+            {isSuccess ? (
+              <div className="mt-5 rounded-xl border border-landing-green/30 bg-landing-green/10 p-4 text-sm font-semibold leading-relaxed text-white/82">
+                Checkout received. Please complete the intake form below or schedule your call now.
+              </div>
+            ) : null}
+            {isError ? (
+              <div className="mt-5 rounded-xl border border-gold/30 bg-gold/10 p-4 text-sm font-semibold leading-relaxed text-white/82">
+                Checkout was not completed. Please return to AI Strategy and try again or email support@mastergrowbot.com.
+              </div>
+            ) : null}
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/68">
-              Thank you for your payment. Use this page to share the details we need before your strategy session or
-              buildout kickoff, or schedule your call and answer the questions later from your calendar invite.
+              Use this page to share the details we need before your strategy session or buildout kickoff, or schedule
+              your call and answer the questions later from your calendar invite.
             </p>
           </div>
         </section>

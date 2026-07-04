@@ -20,7 +20,7 @@ type EmbeddedAIStrategyCheckoutProps = {
   ctaLocation: string;
 };
 
-const returnUrl = "https://www.mastergrowbot.com/ai-strategy/intake";
+const returnUrl = "https://www.mastergrowbot.com/ai-strategy/intake?status=success";
 
 const trustItems = [
   { text: "Secure checkout powered by Whop", icon: ShieldCheck },
@@ -166,7 +166,6 @@ export default function EmbeddedAIStrategyCheckout({
             <WhopCheckoutEmbed
               planId={planId}
               returnUrl={returnUrl}
-              skipRedirect
               theme="dark"
               utm={{
                 utm_source: "mastergrowbot",

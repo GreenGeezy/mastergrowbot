@@ -17,6 +17,7 @@ const Contact = lazy(() => import("@/pages/Contact"));
 const GrowTech = lazy(() => import("@/pages/GrowTech"));
 const GrowTechThankYou = lazy(() => import("@/pages/GrowTechThankYou"));
 const WhopEmbedTest = lazy(() => import("@/pages/WhopEmbedTest"));
+const CheckoutDiagnostics = lazy(() => import("@/pages/CheckoutDiagnostics"));
 const AIStrategy = lazy(() => import("@/pages/AIStrategy"));
 const AIStrategyBook = lazy(() => import("@/pages/AIStrategyBook"));
 const AIStrategyIntake = lazy(() => import("@/pages/AIStrategyIntake"));
@@ -104,6 +105,14 @@ const App = () => {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <WhopEmbedTest />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/checkout-diagnostics"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <CheckoutDiagnostics />
               </Suspense>
             }
           />
