@@ -42,6 +42,15 @@ const checkoutBadges = [
   },
 ];
 
+const defaultUnitedStatesAddressPrefill = {
+  address: {
+    country: "US",
+  },
+  shippingAddress: {
+    country: "US",
+  },
+};
+
 export default function EmbeddedGrowTechCheckout({
   product,
   planId,
@@ -164,6 +173,8 @@ export default function EmbeddedGrowTechCheckout({
               planId={planId}
               returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you?status=success"
               theme="dark"
+              collectShipping
+              prefill={defaultUnitedStatesAddressPrefill}
               utm={{
                 utm_source: "mastergrowbot",
                 utm_medium: "embedded_checkout",

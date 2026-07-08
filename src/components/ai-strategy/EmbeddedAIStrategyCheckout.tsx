@@ -40,6 +40,12 @@ const checkoutBadges = [
   },
 ];
 
+const defaultUnitedStatesAddressPrefill = {
+  address: {
+    country: "US",
+  },
+};
+
 export default function EmbeddedAIStrategyCheckout({
   product,
   planId,
@@ -167,6 +173,7 @@ export default function EmbeddedAIStrategyCheckout({
               planId={planId}
               returnUrl={returnUrl}
               theme="dark"
+              prefill={defaultUnitedStatesAddressPrefill}
               utm={{
                 utm_source: "mastergrowbot",
                 utm_medium: "embedded_checkout",
