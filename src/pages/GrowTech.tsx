@@ -240,7 +240,7 @@ const trustStripItems = [
 const growTechTestimonials: Record<GrowTechTestimonialKey, GrowTechTestimonialGroup> = {
   scoutCamera: {
     productName: "MasterGrowbot AI Scout Camera 10-20X",
-    reviewSummaryLabel: "5.0 from 4 customer reviews",
+    reviewSummaryLabel: "5.0 from 4 confirmed rated reviews",
     featuredReview: {
       name: "Jessica S.",
       country: "USA",
@@ -276,7 +276,7 @@ const growTechTestimonials: Record<GrowTechTestimonialKey, GrowTechTestimonialGr
   },
   environmentMonitor: {
     productName: "MasterGrowbot AI Environment Monitor",
-    reviewSummaryLabel: "4.5 from 2 customer reviews",
+    reviewSummaryLabel: "4.5 from 2 confirmed rated reviews",
     featuredReview: {
       name: "Jake L.",
       country: "USA",
@@ -474,14 +474,10 @@ const hasMerchantReturnPolicy = {
   returnFees: "https://schema.org/ReturnShippingFees",
 };
 
-function RatingLine() {
+function RatingLine({ rating = 5 }: { rating?: number }) {
   return (
     <div className="space-y-1.5">
-      <div className="flex items-center gap-1" aria-label="Five star product pick">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <Star key={index} className="h-3.5 w-3.5 fill-gold text-gold" aria-hidden="true" />
-        ))}
-      </div>
+      <StarRating rating={rating} compact />
       <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/42">Premium grow-tech pick</p>
     </div>
   );
@@ -789,10 +785,11 @@ function CheckoutButton({
             type="button"
             data-cta-location={ctaLocation}
             onClick={handleOpenCheckout}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
+            className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-landing-green via-emerald-300 to-lime-300 px-5 py-6 text-base font-black text-black shadow-[0_0_30px_rgba(34,197,94,0.42)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_46px_rgba(34,197,94,0.68)] focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-black"
           >
-            {compact ? "Buy the Kit" : product.buttonLabel}
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-0 transition duration-700 group-hover:translate-x-full group-hover:opacity-100" />
+            <span className="relative">{compact ? "Buy the Kit" : product.buttonLabel}</span>
+            <ArrowRight className="relative h-4 w-4" aria-hidden="true" />
           </button>
         </DialogTrigger>
         {showTrust && (
@@ -863,7 +860,7 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
           >
             <ProductTitle product={product} />
           </h2>
-          <RatingLine />
+          <RatingLine rating={testimonialKey ? getSummaryRating(growTechTestimonials[testimonialKey]) : 5} />
           {testimonialKey ? <ReviewSummaryBadge testimonialKey={testimonialKey} /> : null}
           <div className="rounded-lg border border-white/[0.08] bg-black/28 p-3.5">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/42">Regular</p>
@@ -1533,10 +1530,11 @@ export default function GrowTech() {
                 <a
                   href="#products"
                   data-cta-location="growtech_page:products"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-landing-green px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black sm:w-auto"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-landing-green via-emerald-300 to-lime-300 px-6 py-7 text-base font-black text-black shadow-[0_0_30px_rgba(34,197,94,0.42)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_46px_rgba(34,197,94,0.68)] focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-black sm:w-auto"
                 >
-                  Shop Grow Tech
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-0 transition duration-700 group-hover:translate-x-full group-hover:opacity-100" />
+                  <span className="relative">Shop Grow Tech</span>
+                  <ArrowRight className="relative h-4 w-4" aria-hidden="true" />
                 </a>
                 <a
                   href="#bundle"
