@@ -20,6 +20,9 @@ const breadcrumbSchema = {
   ],
 };
 
+const newestFirst = [...growGuides].sort(
+  (a, b) => new Date(b.modifiedDate).getTime() - new Date(a.modifiedDate).getTime()
+);
 
 export default function GrowGuidesHub() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,10 +30,10 @@ export default function GrowGuidesHub() {
 
   const filteredGuides = useMemo(() => {
     if (!normalizedQuery) {
-      return growGuides;
+      return newestFirst;
     }
 
-    return growGuides.filter((guide) => {
+    return newestFirst.filter((guide) => {
       const searchableText = [
         guide.title,
         guide.h1,
