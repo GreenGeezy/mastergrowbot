@@ -43,6 +43,11 @@ const checkoutBadges = [
 const defaultUnitedStatesAddressPrefill = {
   address: {
     country: "US",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    postalCode: "",
   },
 };
 
