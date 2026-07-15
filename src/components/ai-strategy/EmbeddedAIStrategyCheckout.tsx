@@ -84,9 +84,11 @@ export default function EmbeddedAIStrategyCheckout({
     }
   }, [ctaLocation, planId, product]);
 
-  const fallbackLink = fallbackCheckoutUrl ? (
+  const resolvedFallbackCheckoutUrl = planId ? `https://whop.com/checkout/${planId}` : fallbackCheckoutUrl;
+
+  const fallbackLink = resolvedFallbackCheckoutUrl ? (
     <a
-      href={fallbackCheckoutUrl}
+      href={resolvedFallbackCheckoutUrl}
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => trackAIStrategyCheckoutEvent("checkout_fallback_click", product, ctaLocation, planId)}
