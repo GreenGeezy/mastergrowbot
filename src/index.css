@@ -321,6 +321,30 @@ h1, h2, h3, .tech-font {
   margin-bottom: 12px;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(0, 255, 102, 0.92);
+  color: #010302;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Keep native checkout country dropdown options readable on white browser menus. */
 .whop-embedded-checkout-host option,
 .whop-embedded-checkout-host optgroup,

@@ -6,6 +6,7 @@ import IPMPlaybookSection from './IPMPlaybookSection';
 import LandingFooter from './LandingFooter';
 import LandingNav from './LandingNav';
 import ParticleBackground from './ParticleBackground';
+import TrustRail from './TrustRail';
 
 export default function LandingPage() {
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function LandingPage() {
       <ParticleBackground />
       <LandingNav />
       <HeroSection />
+      <TrustRail />
       <FeatureSection />
       <IPMPlaybookSection />
       <ConversionBanner />

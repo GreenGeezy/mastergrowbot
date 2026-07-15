@@ -5,9 +5,14 @@ import GrowTechCTA from './GrowTechCTA';
 interface StoreBadgesProps {
   className?: string;
   growTechLocation?: string;
+  showGrowTech?: boolean;
 }
 
-export default function StoreBadges({ className = '', growTechLocation = 'hero:growtech' }: StoreBadgesProps) {
+export default function StoreBadges({
+  className = '',
+  growTechLocation = 'hero:growtech',
+  showGrowTech = true,
+}: StoreBadgesProps) {
   // Convert justify-* to items-* for flex-col alignment, pass other classes through
   const alignItems = className
     .split(' ')
@@ -60,7 +65,9 @@ export default function StoreBadges({ className = '', growTechLocation = 'hero:g
           </p>
         </div>
 
-        <GrowTechCTA variant="hero" showSubtext ctaLocation={growTechLocation} className="sm:pt-1" />
+        {showGrowTech ? (
+          <GrowTechCTA variant="hero" showSubtext ctaLocation={growTechLocation} className="sm:pt-1" />
+        ) : null}
       </div>
     </div>
   );

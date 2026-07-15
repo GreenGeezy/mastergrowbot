@@ -1506,64 +1506,69 @@ export default function GrowTech() {
       <LandingNav />
 
       <main>
-        <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24 lg:py-28">
+        <section className="relative z-10 isolate overflow-hidden border-b border-white/[0.06] px-4 py-14 sm:px-6 sm:py-20 lg:min-h-[760px] lg:py-24">
+          <img
+            src="/images/cultivation-command-center-v2.webp"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 -z-30 h-full w-full object-cover object-[70%_center] opacity-30"
+            width={1792}
+            height={1024}
+          />
+          <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,#010302_0%,rgba(1,3,2,0.96)_43%,rgba(1,3,2,0.58)_78%,#010302_100%)]" />
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_76%_42%,rgba(29,185,84,0.18),transparent_34%),linear-gradient(180deg,transparent_60%,#000_100%)]" />
+
           <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-[1.02fr_0.98fr]">
-            <div className="space-y-7 text-center lg:text-left">
+            <div className="space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full border border-landing-green/25 bg-landing-green/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
                 <Leaf className="h-3.5 w-3.5" aria-hidden="true" />
-                Live grow hardware
+                The complete GrowTech stack
               </div>
               <div className="space-y-5">
-                <h1 className="text-4xl font-bold leading-[1.06] tracking-tight text-white font-sans sm:text-5xl lg:text-7xl">
-                  Grow Tech for Better Plant Data
+                <h1 className="text-balance text-[2.65rem] font-bold leading-[0.98] tracking-[-0.045em] text-white font-sans sm:text-6xl lg:text-[4.65rem]">
+                  Better inputs. Fewer blind spots. <span className="text-landing-green">One smarter grow.</span>
                 </h1>
-                <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/62 sm:text-xl lg:mx-0">
-                  Upgrade your grow with sharper plant photos, grow-room environment readings, and soil context tools
-                  built for cannabis growers who want cleaner records and better decisions.
+                <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl lg:mx-0">
+                  See the details your phone and memory miss. Capture sharper plant photos, monitor room conditions,
+                  and check the root zone with a three-tool kit built for faster, more confident grow decisions.
                 </p>
               </div>
-              <p className="mx-auto max-w-xl text-sm font-medium text-white/45 lg:mx-0">
-                100% free shipping on every MasterGrowbot AI Grow Tech product.
-              </p>
               <JulySaleBanner />
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+                <CheckoutButton product={bundle} ctaLocation="growtech_hero:bundle" className="sm:w-auto" />
                 <a
                   href="#products"
-                  data-cta-location="growtech_page:products"
-                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-landing-green via-emerald-300 to-lime-300 px-6 py-7 text-base font-black text-black shadow-[0_0_30px_rgba(34,197,94,0.42)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_46px_rgba(34,197,94,0.68)] focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-black sm:w-auto"
-                >
-                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-0 transition duration-700 group-hover:translate-x-full group-hover:opacity-100" />
-                  <span className="relative">Shop Grow Tech</span>
-                  <ArrowRight className="relative h-4 w-4" aria-hidden="true" />
-                </a>
-                <a
-                  href="#bundle"
                   className="inline-flex w-full items-center justify-center rounded-lg border border-white/10 px-5 py-3.5 text-sm font-semibold text-white/75 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green sm:w-auto"
                 >
-                  Compare the Kit
+                  Shop Individual Tools
                 </a>
               </div>
-              <p className="mx-auto max-w-xl text-sm font-semibold text-amber-100/85 lg:mx-0">
-                Save 20% this month with code {JULY_PROMO_CODE}.
-              </p>
               <HeroTrustStrip />
             </div>
 
             <div className="relative mx-auto w-full max-w-xl">
-              <div className="absolute -inset-6 rounded-full bg-landing-green/10 blur-3xl" aria-hidden="true" />
-              <div className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035] shadow-2xl shadow-black/40 backdrop-blur-xl">
+              <div className="absolute -inset-10 rounded-full bg-landing-green/15 blur-3xl" aria-hidden="true" />
+              <div className="relative overflow-hidden rounded-[1.75rem] border border-white/[0.12] bg-black/45 p-3 shadow-[0_32px_100px_rgba(0,0,0,0.64)] backdrop-blur-xl sm:p-4">
+                <div className="mb-3 flex items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-left">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-landing-green">3-tool launch kit</p>
+                    <p className="mt-1 text-sm font-semibold text-white">Camera + climate + root-zone data</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-white/45 line-through">{bundle.price}</p>
+                    <p className="text-xl font-black text-white">{bundle.salePrice}</p>
+                  </div>
+                </div>
                 <img
                   src={bundle.image}
                   alt={bundle.alt}
-                  className="aspect-[4/3] w-full object-cover"
+                  className="aspect-[4/3] w-full rounded-xl object-cover"
                   loading="eager"
                   width={1000}
                   height={750}
                 />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/75 to-transparent p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
-                    Launch kit pricing
-                  </p>
+                <div className="absolute inset-x-4 bottom-4 rounded-b-xl bg-gradient-to-t from-black via-black/90 to-transparent p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-landing-green">Everything works standalone or with the app</p>
                   <p className="mt-1 text-lg font-semibold text-white">{bundle.name}</p>
                 </div>
               </div>
