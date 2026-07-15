@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WhopCheckoutEmbed, type WhopCheckoutState } from "@whop/checkout/react";
-import { FileText, Headphones, LockKeyhole, ShieldCheck } from "lucide-react";
-import CheckoutAddressForm, { type CheckoutAddress } from "@/components/checkout/CheckoutAddressForm";
+import { ArrowUpRight, FileText, Headphones, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
 import { aiStrategyEcommercePayload, trackAIStrategyCheckoutEvent } from "@/lib/analytics";
 
@@ -41,17 +40,6 @@ const checkoutBadges = [
   },
 ];
 
-const defaultUnitedStatesAddressPrefill = {
-  address: {
-    country: "US",
-    line1: "",
-    line2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-  },
-};
-
 export default function EmbeddedAIStrategyCheckout({
   product,
   planId,
@@ -60,21 +48,9 @@ export default function EmbeddedAIStrategyCheckout({
 }: EmbeddedAIStrategyCheckoutProps) {
   const [isComplete, setIsComplete] = useState(false);
   const [completedReceiptId, setCompletedReceiptId] = useState<string | undefined>();
-  const [checkoutAddress, setCheckoutAddress] = useState<CheckoutAddress | null>(null);
-
   const checkoutPayload = useMemo(
     () => aiStrategyEcommercePayload(product, ctaLocation, planId),
     [ctaLocation, planId, product],
-  );
-
-  const checkoutPrefill = useMemo(
-    () =>
-      checkoutAddress
-        ? {
-            address: checkoutAddress,
-          }
-        : defaultUnitedStatesAddressPrefill,
-    [checkoutAddress],
   );
 
   const handleTrackedComplete = useCallback(
@@ -90,7 +66,6 @@ export default function EmbeddedAIStrategyCheckout({
   );
 
   const {
-    checkoutState,
     handleComplete: handleWhopComplete,
     handleStateChange: handleWhopStateChange,
     hostRef,
@@ -112,10 +87,13 @@ export default function EmbeddedAIStrategyCheckout({
   const fallbackLink = fallbackCheckoutUrl ? (
     <a
       href={fallbackCheckoutUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       onClick={() => trackAIStrategyCheckoutEvent("checkout_fallback_click", product, ctaLocation, planId)}
-      className="mt-4 inline-flex text-sm font-semibold text-landing-green hover:underline focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
+      className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/14 bg-white/[0.06] px-4 py-2.5 text-sm font-bold text-white transition hover:border-landing-green/40 hover:bg-landing-green/10 focus:outline-none focus:ring-2 focus:ring-landing-green"
     >
-      {planId ? "Having trouble? Open secure Whop checkout instead." : "Open secure Whop checkout instead."}
+      Open full-page Whop checkout
+      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
     </a>
   ) : null;
 
@@ -134,16 +112,16 @@ export default function EmbeddedAIStrategyCheckout({
           </div>
         </div>
 
-        <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div className="mt-4 grid grid-cols-2 gap-2">
           {trustItems.map(({ text, icon: Icon }) => (
-            <div key={text} className="flex items-center gap-2 rounded-lg border border-white/[0.08] bg-black/25 p-2.5">
+            <div key={text} className="flex items-center gap-2 rounded-lg border border-white/[0.08] bg-black/25 p-2 sm:p-2.5">
               <Icon className="h-4 w-4 shrink-0 text-landing-green" aria-hidden="true" />
               <span className="text-xs font-semibold leading-snug text-white/66">{text}</span>
             </div>
           ))}
         </div>
 
-        <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+        <div className="mt-4 hidden grid-cols-2 gap-2.5 sm:grid">
           {checkoutBadges.map((badge) => (
             <div
               key={badge.src}
@@ -182,81 +160,51 @@ export default function EmbeddedAIStrategyCheckout({
         </div>
       ) : planId ? (
         <div className="rounded-xl border border-white/[0.08] bg-[#0b0b12]">
-          <div className="border-b border-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/46">
-            Secure checkout status: {checkoutState}
+          <div className="border-b border-white/[0.08] p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-landing-green">
+              One secure checkout — no duplicate forms
+            </p>
+            <p className="mt-1 text-sm text-white/62">
+              Enter your email, billing address, and payment once in Whop below.
+            </p>
           </div>
-          {!checkoutAddress ? (
-            <div className="p-4">
-              <CheckoutAddressForm
-                title="Billing details"
-                description="Enter your billing address, including Address Line 2, State, and ZIP Code, before opening secure Whop payment."
-                submitLabel="Continue to Secure Payment"
-                onSubmit={setCheckoutAddress}
+          <div className="p-2 sm:p-4">
+            <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px]">
+              <WhopCheckoutEmbed
+                planId={planId}
+                returnUrl={returnUrl}
+                theme="dark"
+                utm={{
+                  utm_source: "mastergrowbot",
+                  utm_medium: "embedded_checkout",
+                  utm_campaign: "ai_strategy_checkout",
+                  utm_content: ctaLocation,
+                }}
+                themeOptions={{
+                  backgroundColor: "#0b0b12",
+                  accentColor: "#22c55e",
+                  borderRadius: 14,
+                }}
+                styles={{
+                  container: {
+                    paddingX: 20,
+                    paddingY: 28,
+                  },
+                }}
+                fallback={
+                  <div className="flex min-h-[360px] items-center justify-center p-8 text-sm font-semibold text-white/60">
+                    Loading secure checkout...
+                  </div>
+                }
+                onComplete={(completedPlanId: string, receiptId?: string) => {
+                  handleWhopComplete(completedPlanId, receiptId, "react_on_complete");
+                }}
+                onStateChange={(state: WhopCheckoutState) => {
+                  handleWhopStateChange(String(state), "react_on_state_change");
+                }}
               />
             </div>
-          ) : (
-            <div className="p-4">
-              <div className="mb-4 rounded-xl border border-landing-green/20 bg-landing-green/8 p-3">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-landing-green">
-                      Billing address added
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-white">
-                      {checkoutAddress.line1}
-                      {checkoutAddress.line2 ? `, ${checkoutAddress.line2}` : ""}, {checkoutAddress.city},{" "}
-                      {checkoutAddress.state} {checkoutAddress.postalCode}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setCheckoutAddress(null)}
-                    className="text-sm font-semibold text-landing-green hover:underline focus:outline-none focus:ring-2 focus:ring-landing-green"
-                  >
-                    Edit address
-                  </button>
-                </div>
-              </div>
-
-              <div ref={hostRef} className="whop-embedded-checkout-host min-h-[760px]">
-                <WhopCheckoutEmbed
-                  planId={planId}
-                  returnUrl={returnUrl}
-                  theme="dark"
-                  hideAddressForm
-                  prefill={checkoutPrefill}
-                  utm={{
-                    utm_source: "mastergrowbot",
-                    utm_medium: "embedded_checkout",
-                    utm_campaign: "ai_strategy_checkout",
-                    utm_content: ctaLocation,
-                  }}
-                  themeOptions={{
-                    backgroundColor: "#0b0b12",
-                    accentColor: "#22c55e",
-                    borderRadius: 14,
-                  }}
-                  styles={{
-                    container: {
-                      paddingX: 20,
-                      paddingY: 28,
-                    },
-                  }}
-                  fallback={
-                    <div className="flex min-h-[360px] items-center justify-center p-8 text-sm font-semibold text-white/60">
-                      Loading secure checkout...
-                    </div>
-                  }
-                  onComplete={(completedPlanId: string, receiptId?: string) => {
-                    handleWhopComplete(completedPlanId, receiptId, "react_on_complete");
-                  }}
-                  onStateChange={(state: WhopCheckoutState) => {
-                    handleWhopStateChange(String(state), "react_on_state_change");
-                  }}
-                />
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       ) : (
         <div className="rounded-xl border border-amber-300/20 bg-amber-300/8 p-5">
@@ -267,7 +215,12 @@ export default function EmbeddedAIStrategyCheckout({
         </div>
       )}
 
-      {fallbackLink}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs leading-relaxed text-white/48">
+          Secure payment is processed by Whop. Billing details are collected once during checkout.
+        </p>
+        {fallbackLink}
+      </div>
     </div>
   );
 }
