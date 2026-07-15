@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WhopCheckoutEmbed, type WhopCheckoutState } from "@whop/checkout/react";
-import { Headphones, PackageCheck, ShieldCheck, Truck } from "lucide-react";
-import CheckoutAddressForm, { type CheckoutAddress } from "@/components/checkout/CheckoutAddressForm";
+import { ArrowUpRight, Copy, Headphones, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
 import {
   type GrowTechAnalyticsProduct,
@@ -15,6 +14,7 @@ import {
 type EmbeddedGrowTechCheckoutProps = {
   product: GrowTechAnalyticsProduct & {
     price: string;
+    salePrice?: string;
     image: string;
     alt: string;
   };
@@ -43,24 +43,7 @@ const checkoutBadges = [
   },
 ];
 
-const defaultUnitedStatesAddressPrefill = {
-  address: {
-    country: "US",
-    line1: "",
-    line2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-  },
-  shippingAddress: {
-    country: "US",
-    line1: "",
-    line2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-  },
-};
+const PROMO_CODE = "AIGROWTECH";
 
 export default function EmbeddedGrowTechCheckout({
   product,
@@ -70,22 +53,11 @@ export default function EmbeddedGrowTechCheckout({
 }: EmbeddedGrowTechCheckoutProps) {
   const [isComplete, setIsComplete] = useState(false);
   const [completedReceiptId, setCompletedReceiptId] = useState<string | undefined>();
-  const [checkoutAddress, setCheckoutAddress] = useState<CheckoutAddress | null>(null);
+  const [promoCopied, setPromoCopied] = useState(false);
 
   const checkoutPayload = useMemo(
     () => growTechEcommercePayload(product, ctaLocation, planId),
     [ctaLocation, planId, product],
-  );
-
-  const checkoutPrefill = useMemo(
-    () =>
-      checkoutAddress
-        ? {
-            address: checkoutAddress,
-            shippingAddress: checkoutAddress,
-          }
-        : defaultUnitedStatesAddressPrefill,
-    [checkoutAddress],
   );
 
   const handleTrackedComplete = useCallback(
@@ -118,13 +90,22 @@ export default function EmbeddedGrowTechCheckout({
     }
   }, [ctaLocation, planId, product]);
 
+  const copyPromoCode = async () => {
+    await navigator.clipboard.writeText(PROMO_CODE);
+    setPromoCopied(true);
+    window.setTimeout(() => setPromoCopied(false), 2500);
+  };
+
   const fallbackLink = fallbackCheckoutUrl ? (
     <a
       href={fallbackCheckoutUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       onClick={() => trackGrowTechFallbackClick(product, ctaLocation, planId)}
-      className="mt-4 inline-flex text-sm font-semibold text-landing-green hover:underline focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
+      className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/14 bg-white/[0.06] px-4 py-2.5 text-sm font-bold text-white transition hover:border-landing-green/40 hover:bg-landing-green/10 focus:outline-none focus:ring-2 focus:ring-landing-green"
     >
-      {planId ? "Having trouble? Open secure Whop checkout instead." : "Open secure Whop checkout instead."}
+      Open full-page Whop checkout
+      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
     </a>
   ) : null;
 
@@ -142,7 +123,15 @@ export default function EmbeddedGrowTechCheckout({
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">GrowTech checkout</p>
             <h3 className="mt-1 text-lg font-semibold leading-snug text-white font-sans">{product.name}</h3>
-            <p className="mt-1 text-2xl font-semibold text-white">{product.price}</p>
+            {product.salePrice ? (
+              <div className="mt-1 flex flex-wrap items-baseline gap-2">
+                <p className="text-2xl font-semibold text-white">{product.salePrice}</p>
+                <p className="text-sm font-semibold text-white/42 line-through">{product.price}</p>
+                <span className="text-xs font-bold uppercase tracking-wide text-amber-200">with code</span>
+              </div>
+            ) : (
+              <p className="mt-1 text-2xl font-semibold text-white">{product.price}</p>
+            )}
           </div>
         </div>
 
@@ -188,50 +177,31 @@ export default function EmbeddedGrowTechCheckout({
         </div>
       ) : planId ? (
         <div className="rounded-xl border border-white/[0.08] bg-[#0b0b12]">
-          <div className="border-b border-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/46">
-            Secure checkout status: {checkoutState}
-          </div>
-          {!checkoutAddress ? (
-            <div className="p-4">
-              <CheckoutAddressForm
-                title="Delivery details"
-                description="Enter your full shipping address, including Address Line 2, State, and ZIP Code, before opening secure Whop payment."
-                submitLabel="Continue to Secure Payment"
-                onSubmit={setCheckoutAddress}
-              />
+          <div className="flex flex-col gap-3 border-b border-white/[0.08] p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-landing-green">
+                One secure checkout — no duplicate forms
+              </p>
+              <p className="mt-1 text-sm text-white/62">
+                Enter your email, delivery address, and payment once in Whop below.
+              </p>
             </div>
-          ) : (
-            <div className="p-4">
-              <div className="mb-4 rounded-xl border border-landing-green/20 bg-landing-green/8 p-3">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-landing-green">
-                      Delivery address added
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-white">
-                      {checkoutAddress.line1}
-                      {checkoutAddress.line2 ? `, ${checkoutAddress.line2}` : ""}, {checkoutAddress.city},{" "}
-                      {checkoutAddress.state} {checkoutAddress.postalCode}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setCheckoutAddress(null)}
-                    className="text-sm font-semibold text-landing-green hover:underline focus:outline-none focus:ring-2 focus:ring-landing-green"
-                  >
-                    Edit address
-                  </button>
-                </div>
-              </div>
-
-              <div ref={hostRef} className="whop-embedded-checkout-host min-h-[760px]">
+            <button
+              type="button"
+              onClick={copyPromoCode}
+              className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm font-bold text-amber-100 transition hover:bg-amber-300/15 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            >
+              <Copy className="h-4 w-4" aria-hidden="true" />
+              {promoCopied ? "Code copied" : `Copy ${PROMO_CODE}`}
+            </button>
+          </div>
+          <div className="p-2 sm:p-4">
+              <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px]">
                 <WhopCheckoutEmbed
                   planId={planId}
                   returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you?status=success"
                   theme="dark"
                   collectShipping
-                  hideAddressForm
-                  prefill={checkoutPrefill}
                   utm={{
                     utm_source: "mastergrowbot",
                     utm_medium: "embedded_checkout",
@@ -262,8 +232,7 @@ export default function EmbeddedGrowTechCheckout({
                   }}
                 />
               </div>
-            </div>
-          )}
+          </div>
         </div>
       ) : (
         <div className="rounded-xl border border-amber-300/20 bg-amber-300/8 p-5">
@@ -274,7 +243,12 @@ export default function EmbeddedGrowTechCheckout({
         </div>
       )}
 
-      {fallbackLink}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs leading-relaxed text-white/48">
+          Secure payment is processed by Whop. Your delivery details are collected once during checkout.
+        </p>
+        {fallbackLink}
+      </div>
     </div>
   );
 }
