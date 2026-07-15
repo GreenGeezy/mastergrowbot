@@ -96,9 +96,11 @@ export default function EmbeddedGrowTechCheckout({
     window.setTimeout(() => setPromoCopied(false), 2500);
   };
 
-  const fallbackLink = fallbackCheckoutUrl ? (
+  const resolvedFallbackCheckoutUrl = planId ? `https://whop.com/checkout/${planId}` : fallbackCheckoutUrl;
+
+  const fallbackLink = resolvedFallbackCheckoutUrl ? (
     <a
-      href={fallbackCheckoutUrl}
+      href={resolvedFallbackCheckoutUrl}
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => trackGrowTechFallbackClick(product, ctaLocation, planId)}
