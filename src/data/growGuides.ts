@@ -7407,6 +7407,136 @@ Extra gadgets also create maintenance. Batteries, calibration, placement, cleani
       "cannabis-vpd-guide",
     ],
   },
+  {
+    slug: "how-to-take-better-cannabis-plant-diagnosis-photos",
+    title: "How to Take Better Cannabis Plant Diagnosis Photos",
+    h1: "How to Take Better Cannabis Plant Diagnosis Photos",
+    shortDescription:
+      "Learn how to take sharper cannabis diagnosis photos for leaf problems, pests, trichomes, room context, root-zone clues, and MasterGrowbot AI plant scans.",
+    metaTitle: "How to Take Better Cannabis Plant Diagnosis Photos | MasterGrowbot AI",
+    metaDescription:
+      "Take better cannabis plant diagnosis photos with practical tips for lighting, focus, distance, leaf angles, pest checks, trichomes, and MasterGrowbot AI scans.",
+    publishedDate: "2026-07-16T00:00:00Z",
+    modifiedDate: "2026-07-16T00:00:00Z",
+    intro: `Better cannabis plant diagnosis photos help you spot problems earlier and avoid wrong corrections. A blurry yellow leaf photo can look like nitrogen deficiency, magnesium deficiency, light stress, overwatering, or pH lockout. A sharp photo with the right angle, lighting, and grow context gives you better evidence before you change nutrients, water, sprays, or climate settings.
+
+The goal is not to take pretty plant photos. The goal is to capture useful plant evidence: where the symptom started, how the leaf surface looks, whether pests are present, what the canopy is doing, and what room or root-zone readings might explain the stress.
+
+This guide shows cannabis growers how to take better diagnosis photos with a phone, close-up plant camera, the MasterGrowbot AI Scout Camera, Grow Tech hardware, the free VPD calculator, the iOS app, the Android app, and the Master Cannabis IPM Playbook when pest or disease prevention needs more structure.`,
+    sections: [
+      {
+        heading: "Direct Answer: Best Way to Photograph Cannabis Plant Problems",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">To take a better cannabis plant diagnosis photo, use bright indirect light, steady the camera, fill the frame with the affected leaf or bud, tap to focus on the symptom, avoid blur, and take at least three photo types: a close-up symptom photo, a whole-plant context photo, and a canopy or room context photo.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If symptoms are small, use a close-up lens or the <a href="/grow-tech" class="text-landing-green hover:underline">MasterGrowbot AI Scout Camera</a>. Then scan the clearest photo in MasterGrowbot AI on <a href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=how-to-take-better-cannabis-plant-diagnosis-photos" class="text-landing-green hover:underline">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=how-to-take-better-cannabis-plant-diagnosis-photos" class="text-landing-green hover:underline">Android</a> and save the result with notes, room readings, and follow-up tasks.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Photo</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">What It Shows</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Why It Helps</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Close-up symptom</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Spots, edges, veins, pests, webbing, mildew, trichomes</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Improves diagnosis detail</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Whole plant</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Where symptoms appear on the plant</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Separates mobile and immobile nutrient clues</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Room or canopy</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Light position, airflow, crowding, heat zones</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Explains environment stress</td></tr>
+</tbody></table></div>`,
+      },
+      {
+        heading: "Why Photo Quality Changes the Diagnosis",
+        body: `Cannabis diagnosis depends on details. The edge of a leaf, the color between veins, the shape of brown spots, the underside of a leaf, and the pattern across the plant all matter. When the photo is dark, blurry, too far away, or tinted by grow lights, those details disappear.
+
+Poor photos also make lookalike problems harder to separate. Powdery mildew can look like residue. Early spider mite damage can look like pale speckling from stress. Calcium spots can look like pest damage. Light stress can mimic nutrient burn. A better photo does not replace grower judgment, but it gives MasterGrowbot AI and the grower a cleaner starting point.
+
+The best diagnosis workflow combines photos with context. Take the image, then record growth stage, watering history, feed changes, pH, recent sprays, temperature, humidity, and VPD. If you need the environment check first, use the free calculator at /vpd-calculator before changing nutrients.`,
+      },
+      {
+        heading: "Use the Right Lighting",
+        body: `Turn off purple, heavily tinted, or mixed grow lights before taking diagnosis photos when possible. Use white light, daylight, or a neutral flashlight. Color matters because yellowing, pale new growth, brown spotting, and interveinal chlorosis are all diagnosis clues.
+
+Avoid harsh glare. Shiny leaves under a direct flashlight can hide texture and spots. If the leaf reflects too much light, move the light to the side, step back slightly, or shade the leaf with your hand while keeping the symptom bright.
+
+Take one photo under neutral light and one photo in the grow room if room context matters. The neutral-light photo helps with symptom detail. The room photo helps explain whether light distance, airflow, crowding, or hot canopy zones may be part of the problem.`,
+      },
+      {
+        heading: "Focus, Distance, and Framing",
+        body: `A useful cannabis diagnosis photo should be close enough to show the symptom but not so close that the camera cannot focus. Tap the affected spot on your phone screen, wait for focus to lock, then take the photo without moving.
+
+If the symptom is small, use a close-up lens or the MasterGrowbot AI Scout Camera 10-20X. Close-up detail is especially useful for spider mites, thrips, powdery mildew texture, leaf spots, trichomes, and bud inspection.
+
+Keep the leaf flat when possible. If the leaf curls or shakes, hold the stem gently outside the damaged area or place a dark, plain background behind it. Do not crop so tightly that the leaf shape and symptom location disappear. The photo should show both the detail and enough surrounding leaf to understand the pattern.`,
+      },
+      {
+        heading: "Take a Three-Photo Diagnosis Set",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">One photo rarely tells the full story. Use this three-photo set whenever a plant looks wrong.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Step</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Photo To Take</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">What To Include</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">1</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Close-up symptom photo</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Sharp detail of spots, yellowing, edges, pests, mold, or trichomes</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">2</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Whole plant photo</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Top, middle, bottom, old leaves, new growth, and plant posture</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">3</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Grow context photo</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Light height, canopy density, fan placement, pot surface, or room layout</td></tr>
+</tbody></table></div>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Upload the clearest symptom photo first in MasterGrowbot AI, then use the other photos and notes to verify the likely cause. This is especially helpful when a leaf symptom may be coming from pH drift, overwatering, VPD stress, or pest pressure.</p>`,
+      },
+      {
+        heading: "Photograph Leaves, Pests, Buds, and Trichomes Differently",
+        body: `Leaf diagnosis photos should show the top surface, underside, edges, veins, and where on the plant the leaf came from. Older lower leaves point to different issues than pale new growth, so location matters.
+
+Pest photos should focus on the underside of leaves, stems near nodes, and damaged areas. Look for stippling, eggs, webbing, trails, black specks, or moving insects. Take multiple angles because early pests can hide along veins and leaf folds.
+
+Bud and trichome photos need more magnification and steadier hands. For harvest timing, a close-up camera or macro lens is more useful than a distant phone photo. For disease concerns, include both close-up bud detail and a wider photo showing airflow, canopy density, and nearby leaves.`,
+      },
+      {
+        heading: "Add Sensor and Root-Zone Context",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Photos show symptoms. Sensors help explain why those symptoms might be happening. A curled leaf photo is more useful when paired with temperature, humidity, VPD, and watering notes. A yellowing leaf photo is more useful when paired with soil moisture, pH, fertility, and root-zone temperature readings.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">MasterGrowbot Grow Tech hardware can be used on its own without the MasterGrowbot AI app to improve grow visibility, decision-making, plant health, yield potential, potency potential, and flower quality potential. The hardware is useful for cannabis growers across different garden sizes, budgets, experience levels, and grow styles because it turns hidden room and root-zone conditions into practical evidence.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Pairing the hardware with MasterGrowbot AI can enhance results because photos, sensor readings, root-zone data, notes, diagnosis, and tasks stay connected in one workflow. Compare the Scout Camera, Environment Monitor, Soil Health Meter, and full kit on the <a href="/grow-tech" class="text-landing-green hover:underline">Grow Tech hardware page</a>.</p>`,
+      },
+      {
+        heading: "Common Photo Mistakes to Avoid",
+        body: `Do not photograph under tinted grow lights and expect accurate color. Do not submit only one distant canopy photo for a small leaf problem. Do not use digital zoom if it makes the image grainy. Move closer or use a close-up lens instead.
+
+Do not photograph only the worst damaged leaf. Fully dead tissue often hides the original pattern. Include a newer affected leaf where the problem is active but not destroyed. Also include healthy nearby growth for comparison.
+
+Do not wipe away mildew, pests, residue, or leaf texture before taking the first photo. Document the problem first, then clean or treat after you have a record. If you spray, log what you used and when, because spray residue can change how later photos look.`,
+      },
+      {
+        heading: "Use Photos With MasterGrowbot AI",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">A good photo becomes more valuable when it is saved with the decision that followed. Use MasterGrowbot AI to keep diagnosis photos, grow notes, watering records, room readings, root-zone readings, and task follow-through connected to the same plant timeline.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Download MasterGrowbot AI on <a href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=how-to-take-better-cannabis-plant-diagnosis-photos" class="text-landing-green hover:underline">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=how-to-take-better-cannabis-plant-diagnosis-photos" class="text-landing-green hover:underline">Android</a>, compare camera and sensor options on <a href="/grow-tech" class="text-landing-green hover:underline">Grow Tech</a>, use the <a href="/vpd-calculator" class="text-landing-green hover:underline">free cannabis VPD calculator</a>, and browse more cultivation workflows in the <a href="/grow-guides" class="text-landing-green hover:underline">MasterGrowbot grow guides</a>.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">For pest and disease routines, pair your photo scouting with the <a href="${AMAZON_BOOK_URL}" target="_blank" rel="noopener noreferrer" aria-label="Master Cannabis IPM Playbook on Amazon, opens in new tab" class="text-landing-green hover:underline">Master Cannabis IPM Playbook on Amazon</a>. It helps turn inspection photos into repeatable prevention habits.</p>`,
+      },
+    ],
+    faqs: [
+      {
+        question: "What photos should I take for cannabis plant diagnosis?",
+        answer:
+          "Take a close-up symptom photo, a whole-plant photo, and a grow context photo. Include the affected leaf or bud, nearby healthy growth, plant location, and room or root-zone context when possible.",
+      },
+      {
+        question: "Should I turn off grow lights for plant diagnosis photos?",
+        answer:
+          "Yes, when possible. Use white or neutral light because tinted grow lights can hide yellowing, spotting, mildew, pests, and leaf color changes that matter for diagnosis.",
+      },
+      {
+        question: "Is a phone camera good enough for cannabis diagnosis photos?",
+        answer:
+          "A phone camera can work if the photo is sharp, well lit, and close enough. A close-up lens or Scout Camera helps when you need clearer pest, trichome, leaf spot, or bud detail.",
+      },
+      {
+        question: "What makes a cannabis plant scan more accurate?",
+        answer:
+          "A sharp photo, neutral lighting, symptom close-up, whole-plant context, stage notes, watering history, pH, temperature, humidity, and VPD context all make the scan more useful.",
+      },
+      {
+        question: "Should I photograph the underside of cannabis leaves?",
+        answer:
+          "Yes. The underside of leaves is important for spider mites, thrips, eggs, mildew clues, and early pest pressure that may not be obvious from the top surface.",
+      },
+      {
+        question: "How does MasterGrowbot AI use diagnosis photos?",
+        answer:
+          "MasterGrowbot AI helps growers scan cannabis plant photos and keep diagnosis results connected to notes, sensor readings, root-zone data, watering history, and follow-up tasks.",
+      },
+    ],
+    relatedSlugs: [
+      "best-ai-plant-cameras-cannabis-growers-2026",
+      "best-ai-plant-diagnosis-apps-cannabis",
+      "ai-plant-scan-tools-cannabis",
+      "best-cannabis-grow-tech-home-growers",
+      "cannabis-vpd-guide",
+    ],
+  },
 ];
 
 export function getGuideBySlug(slug: string): GrowGuide | undefined {
