@@ -23,6 +23,7 @@ export type AnalyticsParams = Record<string, unknown>;
 const ecommerceEventNames = new Set([
   "select_item",
   "begin_checkout",
+  "add_payment_info",
   "purchase",
   "whop_checkout_opened",
   "whop_checkout_embed_rendered",
@@ -30,6 +31,106 @@ const ecommerceEventNames = new Set([
   "whop_checkout_load_timeout",
   "checkout_fallback_click",
 ]);
+
+const pendingCheckoutStorageKey = "mastergrowbot.pending_checkout.v1";
+const completedTransactionStoragePrefix = "mastergrowbot.completed_transaction.v1:";
+const pendingCheckoutTtlMs = 24 * 60 * 60 * 1000;
+
+type PendingCheckout = {
+  checkoutId: string;
+  createdAt: number;
+  payload: AnalyticsParams;
+};
+
+function createCheckoutId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `checkout_${crypto.randomUUID()}`;
+  }
+
+  return `checkout_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+}
+
+function readPendingCheckouts(): Record<string, PendingCheckout> {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(pendingCheckoutStorageKey) || "{}") as Record<
+      string,
+      PendingCheckout
+    >;
+    const now = Date.now();
+
+    return Object.fromEntries(
+      Object.entries(parsed).filter(([, checkout]) => now - checkout.createdAt < pendingCheckoutTtlMs),
+    );
+  } catch {
+    return {};
+  }
+}
+
+function persistPendingCheckout(payload: AnalyticsParams) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const sourcePage = String(payload.checkout_source_page || "unknown");
+  const checkouts = readPendingCheckouts();
+  checkouts[sourcePage] = {
+    checkoutId: createCheckoutId(),
+    createdAt: Date.now(),
+    payload,
+  };
+
+  try {
+    window.localStorage.setItem(pendingCheckoutStorageKey, JSON.stringify(checkouts));
+  } catch {
+    // Analytics storage must never interrupt checkout.
+  }
+}
+
+function pendingCheckoutFor(sourcePage: string) {
+  return readPendingCheckouts()[sourcePage];
+}
+
+function clearPendingCheckout(sourcePage: string) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    const checkouts = readPendingCheckouts();
+    delete checkouts[sourcePage];
+    window.localStorage.setItem(pendingCheckoutStorageKey, JSON.stringify(checkouts));
+  } catch {
+    // Analytics storage must never interrupt checkout.
+  }
+}
+
+function isCompletedTransaction(transactionId: string) {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  try {
+    return window.localStorage.getItem(`${completedTransactionStoragePrefix}${transactionId}`) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markCompletedTransaction(transactionId: string) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(`${completedTransactionStoragePrefix}${transactionId}`, "1");
+  } catch {
+    // Event delivery still succeeds when storage is unavailable.
+  }
+}
 
 function shouldAttachEcommerce(eventName: string, params: AnalyticsParams) {
   return ecommerceEventNames.has(eventName) || eventName.startsWith("whop_checkout_") || Array.isArray(params.items);
@@ -129,7 +230,9 @@ export function trackGrowTechBeginCheckout(
   ctaLocation: string,
   planId?: string,
 ) {
-  trackEvent("begin_checkout", growTechEcommercePayload(product, ctaLocation, planId));
+  const payload = growTechEcommercePayload(product, ctaLocation, planId);
+  persistPendingCheckout(payload);
+  trackEvent("begin_checkout", payload);
 }
 
 export function trackGrowTechCheckoutOpened(
@@ -167,11 +270,7 @@ export function trackGrowTechPurchase(
   ctaLocation = "unknown",
   extra: AnalyticsParams = {},
 ) {
-  trackEvent("purchase", {
-    ...growTechEcommercePayload(product, ctaLocation, planId),
-    transaction_id: receiptId,
-    ...extra,
-  });
+  trackCheckoutSuccess(growTechEcommercePayload(product, ctaLocation, planId), receiptId, extra);
 }
 
 export function trackGrowTechFallbackClick(
@@ -193,8 +292,70 @@ export function trackAIStrategyCheckoutEvent(
   planId?: string,
   extra: AnalyticsParams = {},
 ) {
-  trackEvent(eventName, {
+  const payload = {
     ...aiStrategyEcommercePayload(product, ctaLocation, planId),
+    ...extra,
+  };
+
+  if (eventName === "begin_checkout") {
+    persistPendingCheckout(payload);
+  }
+
+  trackEvent(eventName, payload);
+}
+
+/**
+ * Whop exposes a verified completion callback, but not a separate public
+ * "payment details submitted" callback. A successful completion proves the
+ * payment details were accepted, so emit add_payment_info immediately before
+ * purchase and deduplicate both signals with the transaction ID.
+ */
+export function trackCheckoutSuccess(
+  payload: AnalyticsParams,
+  receiptId?: string,
+  extra: AnalyticsParams = {},
+) {
+  const sourcePage = String(payload.checkout_source_page || "unknown");
+  const pendingCheckout = pendingCheckoutFor(sourcePage);
+  const transactionId = receiptId?.trim() || pendingCheckout?.checkoutId || createCheckoutId();
+
+  if (isCompletedTransaction(transactionId)) {
+    clearPendingCheckout(sourcePage);
+    return false;
+  }
+
+  const completedPayload = {
+    ...(pendingCheckout?.payload || payload),
+    ...payload,
+    ...extra,
+  };
+
+  trackEvent("add_payment_info", {
+    ...completedPayload,
+    payment_type: "Whop",
+  });
+  trackEvent("purchase", {
+    ...completedPayload,
+    transaction_id: transactionId,
+  });
+
+  markCompletedTransaction(transactionId);
+  clearPendingCheckout(sourcePage);
+  return true;
+}
+
+export function trackPendingCheckoutSuccess(
+  sourcePage: "/grow-tech" | "/ai-strategy",
+  receiptId?: string,
+  extra: AnalyticsParams = {},
+) {
+  const pendingCheckout = pendingCheckoutFor(sourcePage);
+  if (!pendingCheckout) {
+    return false;
+  }
+
+  return trackCheckoutSuccess(pendingCheckout.payload, receiptId, {
+    checkout_completion_source: "return_url",
     ...extra,
   });
 }

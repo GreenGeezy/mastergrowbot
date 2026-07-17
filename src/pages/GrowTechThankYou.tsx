@@ -6,7 +6,7 @@ import LandingNav from "@/components/landing/LandingNav";
 import ParticleBackground from "@/components/landing/ParticleBackground";
 import SEOHead from "@/components/SEOHead";
 import { appStoreUrl } from "@/components/landing/ctaLinks";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, trackPendingCheckoutSuccess } from "@/lib/analytics";
 
 const nextSteps = [
   {
@@ -29,6 +29,7 @@ const nextSteps = [
 export default function GrowTechThankYou() {
   const [searchParams] = useSearchParams();
   const status = searchParams.get("status");
+  const receiptId = searchParams.get("receipt_id") || searchParams.get("receiptId") || undefined;
   const isSuccess = status === "success";
   const isError = status === "error";
 
@@ -39,12 +40,13 @@ export default function GrowTechThankYou() {
     });
 
     if (isSuccess) {
+      trackPendingCheckoutSuccess("/grow-tech", receiptId);
       trackEvent("checkout_return_success", {
         checkout_area: "grow-tech",
         status: "success",
       });
     }
-  }, [isSuccess, status]);
+  }, [isSuccess, receiptId, status]);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-black text-white">
