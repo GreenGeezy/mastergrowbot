@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WhopCheckoutEmbed, type WhopCheckoutState } from "@whop/checkout/react";
-import { ArrowUpRight, FileText, Headphones, LockKeyhole, ShieldCheck } from "lucide-react";
+import { AlertCircle, ArrowUpRight, CheckCircle2, FileText, Headphones, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
-import { aiStrategyEcommercePayload, trackAIStrategyCheckoutEvent } from "@/lib/analytics";
+import { aiStrategyEcommercePayload, trackAIStrategyCheckoutEvent, trackCheckoutSuccess } from "@/lib/analytics";
 
 export type AIStrategyCheckoutProduct = {
   productId: string;
@@ -21,6 +21,7 @@ type EmbeddedAIStrategyCheckoutProps = {
 };
 
 const returnUrl = "https://www.mastergrowbot.com/ai-strategy/intake?status=success";
+const checkoutSteps = ["Details", "Payment", "Confirmation"] as const;
 
 const trustItems = [
   { text: "Secure checkout powered by Whop", icon: ShieldCheck },
@@ -57,8 +58,7 @@ export default function EmbeddedAIStrategyCheckout({
     (completedPlanId: string, receiptId: string | undefined, signalSource: string) => {
       setIsComplete(true);
       setCompletedReceiptId(receiptId);
-      trackAIStrategyCheckoutEvent("purchase", product, ctaLocation, completedPlanId || planId, {
-        transaction_id: receiptId,
+      trackCheckoutSuccess(aiStrategyEcommercePayload(product, ctaLocation, completedPlanId || planId), receiptId, {
         whop_signal_source: signalSource,
       });
     },
@@ -66,6 +66,7 @@ export default function EmbeddedAIStrategyCheckout({
   );
 
   const {
+    checkoutState,
     handleComplete: handleWhopComplete,
     handleStateChange: handleWhopStateChange,
     hostRef,
@@ -74,6 +75,8 @@ export default function EmbeddedAIStrategyCheckout({
     payload: checkoutPayload,
     onComplete: handleTrackedComplete,
   });
+
+  const checkoutUnavailable = checkoutState === "timeout" || checkoutState === "disabled";
 
   useEffect(() => {
     if (planId) {
@@ -162,6 +165,22 @@ export default function EmbeddedAIStrategyCheckout({
         </div>
       ) : planId ? (
         <div className="rounded-xl border border-white/[0.08] bg-[#0b0b12]">
+          <ol aria-label="Checkout progress" className="grid grid-cols-3 border-b border-white/[0.08] px-4 py-3">
+            {checkoutSteps.map((step, index) => (
+              <li key={step} className="flex items-center gap-2 text-xs font-semibold text-white/55">
+                <span
+                  className={`inline-flex h-6 w-6 items-center justify-center rounded-full border ${
+                    index === 0 || (index === 1 && checkoutState === "ready")
+                      ? "border-landing-green/50 bg-landing-green/15 text-landing-green"
+                      : "border-white/15 text-white/45"
+                  }`}
+                >
+                  {index + 1}
+                </span>
+                <span className="hidden sm:inline">{step}</span>
+              </li>
+            ))}
+          </ol>
           <div className="border-b border-white/[0.08] p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-landing-green">
               One secure checkout — no duplicate forms
@@ -169,6 +188,21 @@ export default function EmbeddedAIStrategyCheckout({
             <p className="mt-1 text-sm text-white/62">
               Enter your email, billing address, and payment once in Whop below.
             </p>
+          </div>
+          <div aria-live="polite" className="px-4 pt-4">
+            {checkoutUnavailable ? (
+              <div role="alert" className="flex gap-3 rounded-lg border border-amber-300/25 bg-amber-300/10 p-3 text-sm text-amber-100">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                <p>The embedded form is taking too long to respond. Your selection is saved. Use the full-page checkout option below to continue securely.</p>
+              </div>
+            ) : checkoutState === "ready" ? (
+              <p className="flex items-center gap-2 text-xs font-semibold text-landing-green">
+                <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                Secure payment form ready. Your service selection will remain active through confirmation.
+              </p>
+            ) : (
+              <p className="text-xs font-semibold text-white/50">Connecting to secure payment...</p>
+            )}
           </div>
           <div className="p-2 sm:p-4">
             <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px]">
@@ -219,7 +253,7 @@ export default function EmbeddedAIStrategyCheckout({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs leading-relaxed text-white/48">
-          Secure payment is processed by Whop. Billing details are collected once during checkout.
+          Secure payment is processed by Whop. No payment data is stored by MasterGrowbot. Billing details are collected once.
         </p>
         {fallbackLink}
       </div>

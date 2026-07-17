@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WhopCheckoutEmbed, type WhopCheckoutState } from "@whop/checkout/react";
-import { ArrowUpRight, Copy, Headphones, PackageCheck, ShieldCheck, Truck } from "lucide-react";
+import { AlertCircle, ArrowUpRight, CheckCircle2, Copy, Headphones, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
 import {
   type GrowTechAnalyticsProduct,
@@ -44,6 +44,7 @@ const checkoutBadges = [
 ];
 
 const PROMO_CODE = "AIGROWTECH";
+const checkoutSteps = ["Details", "Payment", "Confirmation"] as const;
 
 export default function EmbeddedGrowTechCheckout({
   product,
@@ -91,10 +92,16 @@ export default function EmbeddedGrowTechCheckout({
   }, [ctaLocation, planId, product]);
 
   const copyPromoCode = async () => {
-    await navigator.clipboard.writeText(PROMO_CODE);
-    setPromoCopied(true);
-    window.setTimeout(() => setPromoCopied(false), 2500);
+    try {
+      await navigator.clipboard.writeText(PROMO_CODE);
+      setPromoCopied(true);
+      window.setTimeout(() => setPromoCopied(false), 2500);
+    } catch {
+      setPromoCopied(false);
+    }
   };
+
+  const checkoutUnavailable = checkoutState === "timeout" || checkoutState === "disabled";
 
   const resolvedFallbackCheckoutUrl = planId ? `https://whop.com/checkout/${planId}` : fallbackCheckoutUrl;
 
@@ -179,6 +186,22 @@ export default function EmbeddedGrowTechCheckout({
         </div>
       ) : planId ? (
         <div className="rounded-xl border border-white/[0.08] bg-[#0b0b12]">
+          <ol aria-label="Checkout progress" className="grid grid-cols-3 border-b border-white/[0.08] px-4 py-3">
+            {checkoutSteps.map((step, index) => (
+              <li key={step} className="flex items-center gap-2 text-xs font-semibold text-white/55">
+                <span
+                  className={`inline-flex h-6 w-6 items-center justify-center rounded-full border ${
+                    index === 0 || (index === 1 && checkoutState === "ready")
+                      ? "border-landing-green/50 bg-landing-green/15 text-landing-green"
+                      : "border-white/15 text-white/45"
+                  }`}
+                >
+                  {index + 1}
+                </span>
+                <span className="hidden sm:inline">{step}</span>
+              </li>
+            ))}
+          </ol>
           <div className="flex flex-col gap-3 border-b border-white/[0.08] p-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-landing-green">
@@ -196,6 +219,21 @@ export default function EmbeddedGrowTechCheckout({
               <Copy className="h-4 w-4" aria-hidden="true" />
               {promoCopied ? "Code copied" : `Copy ${PROMO_CODE}`}
             </button>
+          </div>
+          <div aria-live="polite" className="px-4 pt-4">
+            {checkoutUnavailable ? (
+              <div role="alert" className="flex gap-3 rounded-lg border border-amber-300/25 bg-amber-300/10 p-3 text-sm text-amber-100">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                <p>The embedded form is taking too long to respond. Your selection is saved. Use the full-page checkout option below to continue securely.</p>
+              </div>
+            ) : checkoutState === "ready" ? (
+              <p className="flex items-center gap-2 text-xs font-semibold text-landing-green">
+                <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                Secure payment form ready. Your selection will remain active through confirmation.
+              </p>
+            ) : (
+              <p className="text-xs font-semibold text-white/50">Connecting to secure payment...</p>
+            )}
           </div>
           <div className="p-2 sm:p-4">
               <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px]">
@@ -247,7 +285,7 @@ export default function EmbeddedGrowTechCheckout({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs leading-relaxed text-white/48">
-          Secure payment is processed by Whop. Your delivery details are collected once during checkout.
+          Secure payment is processed by Whop. No payment data is stored by MasterGrowbot. Your delivery details are collected once.
         </p>
         {fallbackLink}
       </div>

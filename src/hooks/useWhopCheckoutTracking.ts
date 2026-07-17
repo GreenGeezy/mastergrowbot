@@ -113,6 +113,7 @@ export function useWhopCheckoutTracking({
         return;
       }
 
+      setCheckoutState("timeout");
       trackEvent("whop_checkout_load_timeout", {
         ...currentPayloadRef.current,
         elapsed_ms: Math.round(performance.now() - startedAt),
