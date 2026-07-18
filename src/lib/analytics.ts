@@ -271,6 +271,11 @@ export function trackGrowTechPurchase(
   extra: AnalyticsParams = {},
 ) {
   trackCheckoutSuccess(growTechEcommercePayload(product, ctaLocation, planId), receiptId, extra);
+  trackEvent("growtech_purchase_complete", {
+    ...growTechEcommercePayload(product, ctaLocation, planId),
+    receipt_id: receiptId,
+    ...extra,
+  });
 }
 
 export function trackGrowTechFallbackClick(

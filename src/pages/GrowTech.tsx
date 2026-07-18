@@ -1,10 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   ArrowRight,
   Check,
-  ChevronLeft,
-  ChevronRight,
   CircleHelp,
   Copy,
   CreditCard,
@@ -32,6 +30,7 @@ import {
   trackGrowTechBeginCheckout,
   trackGrowTechCheckoutOpened,
   trackGrowTechSelectItem,
+  trackEvent,
 } from "@/lib/analytics";
 
 type CheckoutKey =
@@ -65,6 +64,10 @@ type GrowTechProduct = {
   category: string;
   buttonLabel: string;
   image: string;
+  imageWebp?: string;
+  imagePng?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   alt: string;
   planKey: PlanKey;
   checkoutKey: CheckoutKey;
@@ -103,10 +106,18 @@ const planIds: Record<PlanKey, string | undefined> = {
 };
 
 const JULY_PROMO_CODE = "AIGROWTECH";
-const JULY_PROMO_COPY = "Valid through July 31";
+const JULY_PROMO_END_MS = Date.UTC(2026, 7, 1);
+const IS_JULY_PROMO_ACTIVE = Date.now() < JULY_PROMO_END_MS;
+const JULY_PROMO_COPY = "Valid through July 31, 2026";
 const INDIVIDUAL_FULL_TOTAL = "$297";
 const KIT_SALE_PRICE = "$197.60";
 const KIT_FULL_PRICE_SAVINGS = "$99.40";
+const INDIVIDUAL_SALE_TOTAL = "$237.60";
+const KIT_SALE_SAVINGS = "$40";
+
+function currentPrice(product: GrowTechProduct) {
+  return IS_JULY_PROMO_ACTIVE ? product.salePrice : product.price;
+}
 
 const products: GrowTechProduct[] = [
   {
@@ -153,6 +164,10 @@ const products: GrowTechProduct[] = [
     category: "Grow room environment monitor",
     buttonLabel: "Get the Environment Monitor",
     image: "/images/grow-tech/climate-sensor.png",
+    imageWebp: "/images/grow-tech/generated-review/environment-monitor-grow-tent.webp",
+    imagePng: "/images/grow-tech/generated-review/environment-monitor-grow-tent.png",
+    imageWidth: 1536,
+    imageHeight: 1024,
     alt: "MasterGrowbot AI Environment Monitor tracking air quality, temperature, humidity, and CO2 in an indoor cannabis grow tent.",
     planKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID",
     checkoutKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL",
@@ -178,6 +193,10 @@ const products: GrowTechProduct[] = [
     category: "Soil health meter for cannabis",
     buttonLabel: "Get the Soil Meter",
     image: "/images/grow-tech/root-zone-meter.png",
+    imageWebp: "/images/grow-tech/generated-review/soil-health-meter-root-zone.webp",
+    imagePng: "/images/grow-tech/generated-review/soil-health-meter-root-zone.png",
+    imageWidth: 1448,
+    imageHeight: 1086,
     alt: "MasterGrowbot AI Soil Health Meter 6-in-1 checking soil moisture and plant context in a cannabis fabric pot.",
     planKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID",
     checkoutKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL",
@@ -208,7 +227,9 @@ const bundle: GrowTechProduct = {
     "A cannabis grow hardware kit with a plant inspection camera, environment monitor, and soil health meter for better grow documentation.",
   sku: "MGB-AI-GROW-TECH-KIT",
   category: "Cannabis grow tech kit",
-  buttonLabel: "Buy the Kit and Save 20%",
+  buttonLabel: IS_JULY_PROMO_ACTIVE
+    ? `Get the Complete Kit - ${KIT_SALE_PRICE} with code`
+    : "Get the Complete Kit",
   image: "/images/grow-tech/grow-tech-kit.png",
   alt: "MasterGrowbot AI Grow Tech Kit with camera lens, environment monitor, and soil health meter.",
   planKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID",
@@ -217,15 +238,15 @@ const bundle: GrowTechProduct = {
 
 const useCases = [
   {
-    title: "Better plant inspection photos",
+    title: "Sharper inspection photos",
     text: "Capture clearer leaf, bud, pest, and trichome photos for grow records, troubleshooting, and journal updates.",
   },
   {
-    title: "Cleaner grow-room records",
+    title: "Grow-room condition tracking",
     text: "Track temperature, humidity, CO2, and air-quality context so environment changes are easier to document.",
   },
   {
-    title: "More useful soil notes",
+    title: "Root-zone spot checks",
     text: "Check soil, light, and root-zone context before watering decisions, grow updates, or plant health reviews.",
   },
 ];
@@ -242,10 +263,10 @@ const growTechTestimonials: Record<GrowTechTestimonialKey, GrowTechTestimonialGr
     productName: "MasterGrowbot AI Scout Camera 10-20X",
     reviewSummaryLabel: "5.0 from 4 confirmed rated reviews",
     featuredReview: {
-      name: "Jessica S.",
+      name: "Mike P.",
       country: "USA",
       rating: 5,
-      text: "I love the lens, it doesn't distort.",
+      text: "Quality far superior to its price! The lens is quite heavy, which shows that it is of good quality, and the light works wonderfully to capture all the macro details.",
     },
     reviews: [
       {
@@ -278,10 +299,10 @@ const growTechTestimonials: Record<GrowTechTestimonialKey, GrowTechTestimonialGr
     productName: "MasterGrowbot AI Environment Monitor",
     reviewSummaryLabel: "4.5 from 2 confirmed rated reviews",
     featuredReview: {
-      name: "Jake L.",
+      name: "Rachel L.",
       country: "USA",
       rating: 5,
-      text: "Excellent analyzer. Convenient and functional.",
+      text: "Works straight out of the box, one touch button to turn it on and your away, clear screen with good range of data available to check your air quality, if your unsure of any readings just google it and you can find out what range you should be in.",
     },
     reviews: [
       {
@@ -434,6 +455,8 @@ const faqs = [
   },
 ];
 
+const visibleFaqs = IS_JULY_PROMO_ACTIVE ? faqs : faqs.slice(2);
+
 const supplierDisclosure =
   "Orders are prepared through our supplier network. Shipping speed, packaging, and carrier updates may vary by destination, and tracking details are sent after dispatch.";
 
@@ -447,21 +470,6 @@ const shippingDetails = {
   shippingDestination: {
     "@type": "DefinedRegion",
     addressCountry: "US",
-  },
-  deliveryTime: {
-    "@type": "ShippingDeliveryTime",
-    handlingTime: {
-      "@type": "QuantitativeValue",
-      minValue: 1,
-      maxValue: 5,
-      unitCode: "DAY",
-    },
-    transitTime: {
-      "@type": "QuantitativeValue",
-      minValue: 7,
-      maxValue: 21,
-      unitCode: "DAY",
-    },
   },
 };
 
@@ -647,16 +655,32 @@ function GrowTechPromoCode({
 }
 
 function JulySaleBanner() {
+  if (!IS_JULY_PROMO_ACTIVE) {
+    return (
+      <div className="max-w-xl rounded-xl border border-landing-green/25 bg-landing-green/10 p-4 text-left">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">Complete 3-Tool Kit</p>
+        <p className="mt-1 text-lg font-bold text-white font-sans">One kit. Three practical cultivation tools.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-xl rounded-xl border border-landing-green/25 bg-gradient-to-br from-landing-green/14 via-emerald-950/25 to-amber-300/10 p-4 shadow-2xl shadow-landing-green/10 backdrop-blur-xl lg:mx-0">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="max-w-xl rounded-xl border border-landing-green/25 bg-gradient-to-br from-landing-green/14 via-emerald-950/25 to-amber-300/10 p-5 text-left shadow-2xl shadow-landing-green/10 backdrop-blur-xl lg:mx-0">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-200">July GrowTech Sale</p>
-          <p className="mt-1 text-lg font-bold text-white font-sans">Save 20% with code {JULY_PROMO_CODE}</p>
-          <p className="mt-1 text-sm text-white/58">Use code at Whop checkout. {JULY_PROMO_COPY}.</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-200">Complete 3-Tool Kit</p>
+          <p className="mt-2 text-sm text-white/52">Regular individual total <span className="font-semibold line-through">{INDIVIDUAL_FULL_TOTAL}</span></p>
+          <p className="mt-1 text-3xl font-black text-white">{KIT_SALE_PRICE}</p>
+          <p className="mt-1 text-sm font-semibold text-landing-green">You save {KIT_FULL_PRICE_SAVINGS}</p>
+          <p className="mt-2 text-xs leading-5 text-white/54">July price requires code {JULY_PROMO_CODE}. {JULY_PROMO_COPY}.</p>
         </div>
         <GrowTechPromoCode showCopyButton className="shrink-0" />
       </div>
+      <ul className="mt-4 grid gap-2 border-t border-white/[0.08] pt-4 text-sm text-white/68 sm:grid-cols-3">
+        <li className="flex items-center gap-2"><Check className="h-4 w-4 text-landing-green" aria-hidden="true" />Scout Camera</li>
+        <li className="flex items-center gap-2"><Check className="h-4 w-4 text-landing-green" aria-hidden="true" />Environment Monitor</li>
+        <li className="flex items-center gap-2"><Check className="h-4 w-4 text-landing-green" aria-hidden="true" />Soil Health Meter</li>
+      </ul>
     </div>
   );
 }
@@ -755,6 +779,18 @@ function CheckoutButton({
     trackGrowTechSelectItem(product, ctaLocation, planId);
     trackGrowTechBeginCheckout(product, ctaLocation, planId);
     trackGrowTechCheckoutOpened(product, ctaLocation, planId);
+    trackEvent("growtech_checkout_open", {
+      product_id: product.productId,
+      cta_location: ctaLocation,
+    });
+    trackEvent(
+      ctaLocation.startsWith("growtech_hero")
+        ? "growtech_hero_cta_click"
+        : ctaLocation.includes("product_card")
+          ? "growtech_product_cta_click"
+          : "growtech_kit_cta_click",
+      { product_id: product.productId, cta_location: ctaLocation },
+    );
   };
 
   if (!canOpenCheckout) {
@@ -765,7 +801,7 @@ function CheckoutButton({
           disabled
           className="inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-white/10 px-4 py-3 text-sm font-semibold text-white/45"
         >
-          {compact ? "Buy the Kit" : product.buttonLabel}
+          {compact ? "Get the Kit" : product.buttonLabel}
         </button>
         <p className="mt-2 text-xs font-medium text-amber-200/80">Checkout link coming soon.</p>
       </div>
@@ -773,9 +809,19 @@ function CheckoutButton({
   }
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(open) => {
+        window.dispatchEvent(new CustomEvent("growtech-checkout-state", { detail: { open } }));
+        if (!open) {
+          trackEvent("growtech_checkout_close", {
+            product_id: product.productId,
+            cta_location: ctaLocation,
+          });
+        }
+      }}
+    >
       <div className={className}>
-        {!compact && (
+        {!compact && IS_JULY_PROMO_ACTIVE && (
           <p className="mb-2 text-center text-xs font-semibold text-amber-100/85 sm:text-left">
             Enter {JULY_PROMO_CODE} at checkout to save 20%.
           </p>
@@ -788,7 +834,7 @@ function CheckoutButton({
             className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-landing-green via-emerald-300 to-lime-300 px-5 py-6 text-base font-black text-black shadow-[0_0_30px_rgba(34,197,94,0.42)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_46px_rgba(34,197,94,0.68)] focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-black"
           >
             <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-0 transition duration-700 group-hover:translate-x-full group-hover:opacity-100" />
-            <span className="relative">{compact ? "Buy the Kit" : product.buttonLabel}</span>
+            <span className="relative">{compact ? "Get the Kit" : product.buttonLabel}</span>
             <ArrowRight className="relative h-4 w-4" aria-hidden="true" />
           </button>
         </DialogTrigger>
@@ -820,6 +866,7 @@ function CheckoutButton({
               planId={planId}
               fallbackCheckoutUrl={checkoutUrl}
               ctaLocation={ctaLocation}
+              promoActive={IS_JULY_PROMO_ACTIVE}
             />
           </div>
         </div>
@@ -834,14 +881,17 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035] shadow-2xl shadow-black/30 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-landing-green/35 hover:bg-white/[0.055] hover:shadow-landing-green/10">
       <div className="relative aspect-[4/3] min-h-[230px] overflow-hidden bg-gradient-to-br from-emerald-950/40 via-black to-black">
-        <img
-          src={product.image}
-          alt={product.alt}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          loading="lazy"
-          width={900}
-          height={675}
-        />
+        <picture>
+          {product.imageWebp ? <source srcSet={product.imageWebp} type="image/webp" /> : null}
+          <img
+            src={product.imagePng || product.image}
+            alt={product.alt}
+            className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
+            loading="lazy"
+            width={product.imageWidth || 900}
+            height={product.imageHeight || 675}
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
         <span className="absolute left-4 top-4 rounded-full border border-landing-green/35 bg-black/55 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-landing-green backdrop-blur">
           {product.badge}
@@ -860,16 +910,20 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
           >
             <ProductTitle product={product} />
           </h2>
-          <RatingLine rating={testimonialKey ? getSummaryRating(growTechTestimonials[testimonialKey]) : 5} />
-          {testimonialKey ? <ReviewSummaryBadge testimonialKey={testimonialKey} /> : null}
           <div className="rounded-lg border border-white/[0.08] bg-black/28 p-3.5">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/42">Regular</p>
-            <p className="mt-1 text-2xl font-semibold tracking-tight text-white/42 line-through">{product.price}</p>
-            <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">
-              With code {JULY_PROMO_CODE}
+            <p className={`mt-1 text-2xl font-semibold tracking-tight ${IS_JULY_PROMO_ACTIVE ? "text-white/42 line-through" : "text-white"}`}>
+              {product.price}
             </p>
-            <p className="mt-1 text-4xl font-semibold tracking-tight text-white">{product.salePrice}</p>
-            <GrowTechPromoCode compact className="mt-3" />
+            {IS_JULY_PROMO_ACTIVE ? (
+              <>
+                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">
+                  July price with code {JULY_PROMO_CODE}
+                </p>
+                <p className="mt-1 text-4xl font-semibold tracking-tight text-white">{currentPrice(product)}</p>
+                <GrowTechPromoCode compact className="mt-3" />
+              </>
+            ) : null}
           </div>
           <p className="min-h-[3.75rem] text-[15px] leading-7 text-white/66">{product.description}</p>
         </div>
@@ -879,12 +933,14 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
           <p className="mt-1 text-sm font-medium leading-6 text-white/72">{product.whyBuy}</p>
         </div>
 
-        {testimonialKey ? <FeaturedProductReview testimonialKey={testimonialKey} /> : null}
+        {testimonialKey && testimonialKey !== "soilHealthMeter" ? (
+          <FeaturedProductReview testimonialKey={testimonialKey} />
+        ) : null}
 
         <div className="mt-5 space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35">Best for</p>
           <ul className="space-y-2.5">
-            {product.bestFor.map((item) => (
+            {product.bestFor.slice(0, 3).map((item) => (
               <li key={item} className="flex gap-2 text-sm leading-6 text-white/64">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-landing-green" aria-hidden="true" />
                 <span>{item}</span>
@@ -892,6 +948,17 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
             ))}
           </ul>
         </div>
+
+        <details className="mt-5 rounded-lg border border-white/[0.08] bg-black/25 p-4 text-sm text-white/62 open:border-landing-green/20">
+          <summary className="cursor-pointer font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-landing-green">
+            Specifications and compatibility
+          </summary>
+          <div className="mt-3 space-y-2 leading-6">
+            <p><span className="font-semibold text-white/78">Primary output:</span> {product.dataCollected}</p>
+            <p>Works independently. MasterGrowbot AI is optional for AI-assisted grow guidance.</p>
+            <p>Shipping address is collected in Whop checkout. Tracking is sent after dispatch.</p>
+          </div>
+        </details>
 
         <CheckoutButton
           product={product}
@@ -904,8 +971,31 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
   );
 }
 
+function ProductGridSection() {
+  return (
+    <section id="products" className="relative z-10 scroll-mt-24 px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mx-auto mb-10 max-w-3xl text-center">
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">Individual tools</span>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
+            Choose the Tool Your Grow Needs
+          </h2>
+          <p className="mt-3 text-base leading-7 text-white/64">
+            Each tool works independently. Choose one for a specific job, or get all three in the complete kit.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {products.map((product) => (
+            <ProductCard key={product.name} product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProductTestimonialsSection() {
-  const testimonialEntries = Object.entries(growTechTestimonials) as [GrowTechTestimonialKey, GrowTechTestimonialGroup][];
+  const testimonialEntries: GrowTechTestimonialKey[] = ["scoutCamera", "environmentMonitor"];
 
   return (
     <section
@@ -922,41 +1012,39 @@ function ProductTestimonialsSection() {
             id="growtech-testimonials-title"
             className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl"
           >
-            GrowTech Customers Are Already Seeing Better Inputs
+            Real Feedback on the Tools
           </h2>
           <p className="mt-3 text-base leading-relaxed text-white/58">
-            Real product-specific feedback from growers using the Scout Camera, Environment Monitor, and Soil Health
-            Meter.
+            Product-specific reviews shown without invented aggregate ratings or review counts.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {testimonialEntries.map(([testimonialKey, testimonial]) => (
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {testimonialEntries.map((testimonialKey) => {
+            const testimonial = growTechTestimonials[testimonialKey];
+            const review = testimonial.featuredReview;
+            return (
             <article
               key={testimonialKey}
-              className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-5 shadow-2xl shadow-black/25 backdrop-blur-xl"
+              className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-2xl shadow-black/25 backdrop-blur-xl"
               data-section="growtech-testimonials"
               data-product={getProductSlug(testimonialKey)}
+              data-reviewer={review.name}
             >
-              <div className="sticky top-20 z-10 -mx-5 -mt-5 border-b border-white/[0.08] bg-[#050806]/95 px-5 py-4 backdrop-blur lg:static lg:-mx-0 lg:-mt-0 lg:border-b-0 lg:bg-transparent lg:px-0 lg:py-0">
-                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">
-                  GrowTech Customer
-                </p>
+              <div>
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Customer review</p>
+                  <StarRating rating={5} compact />
+                </div>
                 <h3 className="mt-2 text-lg font-semibold leading-snug text-white font-sans">
                   {testimonial.productName}
                 </h3>
-                <div className="mt-3">
-                  <ReviewSummaryBadge testimonialKey={testimonialKey} />
-                </div>
               </div>
-
-              <div className="mt-5 grid gap-3">
-                {testimonial.reviews.map((review) => (
-                  <ReviewCard key={`${testimonialKey}-${review.name}-${review.text}`} testimonialKey={testimonialKey} review={review} />
-                ))}
-              </div>
+              <blockquote className="mt-5 text-base leading-7 text-white/74">"{review.text}"</blockquote>
+              <p className="mt-4 text-sm font-semibold text-white/46">{review.name} - {review.country}</p>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1062,7 +1150,7 @@ function ComparisonTable() {
   const rows = [...products, bundle];
 
   return (
-    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+    <section id="comparison" className="relative z-10 scroll-mt-24 px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 max-w-3xl">
           <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
@@ -1076,7 +1164,7 @@ function ComparisonTable() {
           <table className="w-full border-collapse text-left">
             <thead className="bg-white/[0.04]">
               <tr>
-                {["Tool", "Best for", "Data collected", "How growers use it", "Price"].map((header) => (
+                {["Tool", "Best for", "Primary output", "Current price"].map((header) => (
                   <th key={header} className="px-5 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white/44">
                     {header}
                   </th>
@@ -1085,14 +1173,16 @@ function ComparisonTable() {
             </thead>
             <tbody>
               {rows.map((product) => (
-                <tr key={product.name} className="border-t border-white/[0.06]">
+                <tr key={product.name} className={`border-t border-white/[0.06] ${product === bundle ? "bg-landing-green/[0.08]" : ""}`}>
                   <td className="px-5 py-5 text-sm font-semibold leading-6 text-white">
                     <ProductTitle product={product} />
                   </td>
                   <td className="px-5 py-5 text-sm leading-6 text-white/64">{product.comparisonBestFor}</td>
                   <td className="px-5 py-5 text-sm leading-6 text-white/64">{product.dataCollected}</td>
-                  <td className="px-5 py-5 text-sm leading-6 text-white/64">{product.aiHelp}</td>
-                  <td className="px-5 py-5 text-xl font-semibold text-white">{product.price}</td>
+                  <td className="px-5 py-5 text-xl font-semibold text-white">
+                    {currentPrice(product)}
+                    {IS_JULY_PROMO_ACTIVE ? <span className="mt-1 block text-xs font-medium text-amber-200">with {JULY_PROMO_CODE}</span> : null}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -1108,7 +1198,7 @@ function ComparisonTable() {
                 <h3 className="text-lg font-semibold leading-6 text-white font-sans">
                   <ProductTitle product={product} />
                 </h3>
-                <p className="shrink-0 text-xl font-semibold text-white">{product.price}</p>
+                <p className="shrink-0 text-xl font-semibold text-white">{currentPrice(product)}</p>
               </div>
               <dl className="mt-4 space-y-3">
                 <div>
@@ -1119,13 +1209,8 @@ function ComparisonTable() {
                   <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-white/36">Data collected</dt>
                   <dd className="mt-1 text-sm leading-6 text-white/64">{product.dataCollected}</dd>
                 </div>
-                <div>
-                  <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-white/36">
-                    How growers use it
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-white/64">{product.aiHelp}</dd>
-                </div>
               </dl>
+              {IS_JULY_PROMO_ACTIVE ? <p className="mt-3 text-xs font-semibold text-amber-200">Price shown with {JULY_PROMO_CODE}</p> : null}
             </article>
           ))}
         </div>
@@ -1134,69 +1219,22 @@ function ComparisonTable() {
   );
 }
 
-function UseCaseCarousel() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const active = useCases[activeIndex];
-
-  const move = (direction: number) => {
-    setActiveIndex((current) => (current + direction + useCases.length) % useCases.length);
-  };
-
+function UseCaseCards() {
   return (
     <section id="use-cases" className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
-              Grow workflows
-            </span>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-              What Growers Use It For
-            </h2>
-          </div>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => move(-1)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-white/70 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green"
-              aria-label="Previous use case"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => move(1)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-white/70 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green"
-              aria-label="Next use case"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </div>
+        <div className="mb-8">
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">Grow workflows</span>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">What Growers Use It For</h2>
         </div>
-
-        <div className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-8">
-          <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
-            <div className="max-w-2xl">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/35">
-                Use case {activeIndex + 1} of {useCases.length}
-              </p>
-              <h3 className="text-2xl font-semibold text-white font-sans">{active.title}</h3>
-              <p className="mt-3 text-base leading-relaxed text-white/60">{active.text}</p>
-            </div>
-            <div className="flex gap-2">
-              {useCases.map((item, index) => (
-                <button
-                  key={item.title}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  className={`h-2.5 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-landing-green ${
-                    index === activeIndex ? "w-9 bg-landing-green" : "w-2.5 bg-white/20 hover:bg-white/35"
-                  }`}
-                  aria-label={`Show ${item.title}`}
-                />
-              ))}
-            </div>
-          </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {useCases.map((item, index) => (
+            <article key={item.title} className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-xl shadow-black/20">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-landing-green">Use case {index + 1}</p>
+              <h3 className="mt-3 text-xl font-semibold text-white font-sans">{item.title}</h3>
+              <p className="mt-3 text-sm leading-7 text-white/64">{item.text}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -1384,7 +1422,7 @@ function FaqSection() {
           Grow Tech Order FAQ
         </h2>
         <div className="mt-8 space-y-4">
-          {faqs.map((faq) => (
+          {visibleFaqs.map((faq) => (
             <article
               key={faq.question}
               className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-5 shadow-xl shadow-black/20 backdrop-blur-xl"
@@ -1407,10 +1445,37 @@ function FaqSection() {
 }
 
 function StickyMobileCta() {
+  const [heroCtaVisible, setHeroCtaVisible] = useState(true);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+
+  useEffect(() => {
+    const heroCta = document.getElementById("growtech-hero-cta");
+    if (!heroCta) return;
+
+    const observer = new IntersectionObserver(([entry]) => setHeroCtaVisible(entry.isIntersecting), { threshold: 0.2 });
+    observer.observe(heroCta);
+
+    const handleCheckoutState = (event: Event) => {
+      const detail = (event as CustomEvent<{ open?: boolean }>).detail;
+      setCheckoutOpen(Boolean(detail?.open));
+    };
+    window.addEventListener("growtech-checkout-state", handleCheckoutState);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("growtech-checkout-state", handleCheckoutState);
+    };
+  }, []);
+
+  if (heroCtaVisible || checkoutOpen) return null;
+
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/88 px-4 py-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/92 px-4 pt-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:hidden" style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }} role="region" aria-label="Complete kit purchase">
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-white">Save 20% with {JULY_PROMO_CODE}</p>
+        <div>
+          <p className="text-sm font-semibold text-white">Complete Kit</p>
+          <p className="text-xs font-bold text-landing-green">{currentPrice(bundle)}{IS_JULY_PROMO_ACTIVE ? " with code" : ""}</p>
+        </div>
         <CheckoutButton
           product={bundle}
           compact
@@ -1423,7 +1488,85 @@ function StickyMobileCta() {
   );
 }
 
+function WhatIsIncludedSection() {
+  return (
+    <section className="relative z-10 px-4 py-14 sm:px-6 sm:py-20" aria-labelledby="included-title">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 max-w-3xl">
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">Complete kit</span>
+          <h2 id="included-title" className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">What is included</h2>
+          <p className="mt-3 text-base leading-7 text-white/64">All three tools work independently. MasterGrowbot AI remains optional when you want AI-assisted cultivation guidance.</p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {products.map((product, index) => (
+            <article key={product.productId} className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-5">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-landing-green/12 text-sm font-black text-landing-green">{index + 1}</span>
+              <h3 className="mt-4 text-lg font-semibold text-white"><ProductTitle product={product} /></h3>
+              <p className="mt-2 text-sm leading-6 text-white/62">{product.whyBuy}</p>
+            </article>
+          ))}
+        </div>
+        {IS_JULY_PROMO_ACTIVE ? (
+          <p className="mt-5 rounded-xl border border-landing-green/20 bg-landing-green/[0.07] p-4 text-sm leading-6 text-white/66">
+            With {JULY_PROMO_CODE}, the complete kit is {KIT_SALE_SAVINGS} below the combined current individual
+            prices of {INDIVIDUAL_SALE_TOTAL}.
+          </p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function ProductUseImagerySection() {
+  const imagery = [
+    {
+      name: "Scout Camera",
+      src: "/images/grow-tech/ai-scout-camera-10-20x.png",
+      alt: "Scout Camera clipped to a smartphone for close cultivation photography",
+      width: 1254,
+      height: 1254,
+    },
+    {
+      name: "Environment Monitor",
+      src: "/images/grow-tech/generated-review/environment-monitor-canopy-detail.webp",
+      alt: "Environment Monitor positioned at cannabis canopy level in a grow tent",
+      width: 1254,
+      height: 1254,
+    },
+    {
+      name: "Soil Health Meter",
+      src: "/images/grow-tech/generated-review/soil-meter-probe-detail.webp",
+      alt: "Soil Health Meter with two probes inserted into a fabric pot root zone",
+      width: 1254,
+      height: 1254,
+    },
+  ];
+
+  return (
+    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24" aria-labelledby="product-use-title">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 max-w-3xl">
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">Real-world placement</span>
+          <h2 id="product-use-title" className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">See how each tool fits the grow</h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {imagery.map((item) => (
+            <figure key={item.name} className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035]">
+              <img src={item.src} alt={item.alt} loading="lazy" width={item.width} height={item.height} className="aspect-square w-full object-cover" />
+              <figcaption className="p-4 text-sm font-semibold text-white/74">{item.name}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function GrowTech() {
+  useEffect(() => {
+    trackEvent("growtech_page_view", { page_path: "/grow-tech" });
+  }, []);
+
   const structuredData = useMemo(
     () => ({
       "@context": "https://schema.org",
@@ -1432,7 +1575,7 @@ export default function GrowTech() {
           "@type": "Product",
           name: product.name,
           description: product.schemaDescription,
-          image: `https://www.mastergrowbot.com${product.image}`,
+          image: `https://www.mastergrowbot.com${product.imageWebp || product.image}`,
           sku: product.sku,
           category: product.category,
           brand: {
@@ -1452,7 +1595,7 @@ export default function GrowTech() {
         })),
         {
           "@type": "FAQPage",
-          mainEntity: faqs.map((faq) => ({
+          mainEntity: visibleFaqs.map((faq) => ({
             "@type": "Question",
             name: faq.question,
             acceptedAnswer: {
@@ -1529,20 +1672,24 @@ export default function GrowTech() {
                   Better inputs. Fewer blind spots. <span className="text-landing-green">One smarter grow.</span>
                 </h1>
                 <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl lg:mx-0">
-                  See the details your phone and memory miss. Capture sharper plant photos, monitor room conditions,
-                  and check the root zone with a three-tool kit built for faster, more confident grow decisions.
+                  Capture sharper cultivation photos, monitor grow-room conditions, and perform quick root-zone spot
+                  checks with three practical tools that work independently or alongside the MasterGrowbot AI app.
                 </p>
               </div>
               <JulySaleBanner />
-              <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+              <div id="growtech-hero-cta" className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
                 <CheckoutButton product={bundle} ctaLocation="growtech_hero:bundle" className="sm:w-auto" />
                 <a
-                  href="#products"
+                  href="#comparison"
+                  onClick={() => trackEvent("growtech_compare_click", { cta_location: "growtech_hero" })}
                   className="inline-flex w-full items-center justify-center rounded-lg border border-white/10 px-5 py-3.5 text-sm font-semibold text-white/75 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green sm:w-auto"
                 >
-                  Shop Individual Tools
+                  Compare Individual Tools
                 </a>
               </div>
+              <p className="max-w-xl rounded-lg border border-white/[0.08] bg-black/30 px-4 py-3 text-sm leading-6 text-white/62">
+                <span className="font-semibold text-gold">5-star Scout Camera review:</span> "Quality far superior to its price!" - Mike P., USA
+              </p>
               <HeroTrustStrip />
             </div>
 
@@ -1555,7 +1702,7 @@ export default function GrowTech() {
                     <p className="mt-1 text-sm font-semibold text-white">Camera + climate + root-zone data</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-white/45 line-through">{bundle.price}</p>
+                    <p className="text-xs text-white/45 line-through">{INDIVIDUAL_FULL_TOTAL}</p>
                     <p className="text-xl font-black text-white">{bundle.salePrice}</p>
                   </div>
                 </div>
@@ -1564,6 +1711,7 @@ export default function GrowTech() {
                   alt={bundle.alt}
                   className="aspect-[4/3] w-full rounded-xl object-cover"
                   loading="eager"
+                  {...{ fetchpriority: "high" }}
                   width={1000}
                   height={750}
                 />
@@ -1576,77 +1724,17 @@ export default function GrowTech() {
           </div>
         </section>
 
-        <section id="products" className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
-          <div className="mx-auto max-w-7xl">
-            <div className="mx-auto mb-10 max-w-3xl text-center">
-              <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
-                Cannabis grow hardware
-              </span>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-                Tools for Better Grow Documentation
-              </h2>
-              <p className="mt-3 text-base leading-relaxed text-white/58">
-                Capture clearer plant photos, track environment context, and check soil data for stronger grow records,
-                troubleshooting, and cultivation decisions.
-              </p>
-            </div>
-            <div className="mx-auto mb-7 flex max-w-3xl flex-wrap items-center justify-center gap-2 rounded-full border border-landing-green/18 bg-landing-green/7 px-4 py-2 text-xs font-semibold text-white/60 shadow-xl shadow-black/15">
-              <span>Real customer feedback</span>
-              <span className="text-landing-green/70" aria-hidden="true">•</span>
-              <span>Free shipping</span>
-              <span className="text-landing-green/70" aria-hidden="true">•</span>
-              <span>Secure checkout</span>
-            </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {products.map((product) => (
-                <ProductCard key={product.name} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <ProductTestimonialsSection />
-        <TrustSection />
-        <AnswerSection />
+        <WhatIsIncludedSection />
         <ComparisonTable />
-        <UseCaseCarousel />
-        <MidPageKitCta />
-        <BundleSection />
+        <ProductTestimonialsSection />
+        <UseCaseCards />
+        <ProductUseImagerySection />
+        <ProductGridSection />
+        <TrustSection />
         <ShippingSection />
         <OrderSupportSection />
-
-        <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-10 max-w-3xl">
-              <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
-                Better inputs
-              </span>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">
-                Why Grow Tech Helps Growers
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-              {educationCards.map((card) => (
-                <article
-                  key={card.title}
-                  className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-xl shadow-black/20 backdrop-blur-xl"
-                >
-                  <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-landing-green/12 text-landing-green">
-                    <Leaf className="h-5 w-5" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white font-sans">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">{card.text}</p>
-                </article>
-              ))}
-            </div>
-            <p className="mt-6 max-w-3xl rounded-xl border border-landing-green/15 bg-landing-green/7 p-5 text-sm leading-relaxed text-white/62">
-              MasterGrowbot AI users can also upload GrowTech photos and readings into the app for AI-assisted plant
-              health guidance.
-            </p>
-          </div>
-        </section>
-
         <FaqSection />
+        <BundleSection />
 
         <section className="relative z-10 px-4 pb-20 sm:px-6 sm:pb-28">
           <div className="mx-auto max-w-4xl space-y-5 rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 text-sm leading-relaxed text-white/58 backdrop-blur-xl sm:p-8">

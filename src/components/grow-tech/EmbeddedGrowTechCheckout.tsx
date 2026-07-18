@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { WhopCheckoutEmbed, type WhopCheckoutState } from "@whop/checkout/react";
+import { WhopCheckoutEmbed } from "@whop/checkout/react";
 import { AlertCircle, ArrowUpRight, CheckCircle2, Copy, Headphones, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
 import {
@@ -9,6 +9,7 @@ import {
   trackGrowTechFallbackClick,
   trackGrowTechMissingPlanId,
   trackGrowTechPurchase,
+  trackEvent,
 } from "@/lib/analytics";
 
 type EmbeddedGrowTechCheckoutProps = {
@@ -16,11 +17,13 @@ type EmbeddedGrowTechCheckoutProps = {
     price: string;
     salePrice?: string;
     image: string;
+    imageWebp?: string;
     alt: string;
   };
   planId?: string;
   fallbackCheckoutUrl?: string;
   ctaLocation: string;
+  promoActive?: boolean;
 };
 
 const trustItems = [
@@ -28,19 +31,6 @@ const trustItems = [
   { text: "100% free shipping", icon: Truck },
   { text: "Tracking sent after dispatch", icon: PackageCheck },
   { text: "Order support included", icon: Headphones },
-];
-
-const checkoutBadges = [
-  {
-    src: "/images/WhopVerifiedCheckoutBadge.png",
-    alt: "Whop verified checkout badge",
-    className: "object-cover object-center",
-  },
-  {
-    src: "/images/GuaranteedSafeCheckoutBadgePremium.png",
-    alt: "Guaranteed safe checkout badge",
-    className: "object-cover object-center",
-  },
 ];
 
 const PROMO_CODE = "AIGROWTECH";
@@ -51,6 +41,7 @@ export default function EmbeddedGrowTechCheckout({
   planId,
   fallbackCheckoutUrl,
   ctaLocation,
+  promoActive = false,
 }: EmbeddedGrowTechCheckoutProps) {
   const [isComplete, setIsComplete] = useState(false);
   const [completedReceiptId, setCompletedReceiptId] = useState<string | undefined>();
@@ -103,6 +94,16 @@ export default function EmbeddedGrowTechCheckout({
 
   const checkoutUnavailable = checkoutState === "timeout" || checkoutState === "disabled";
 
+  useEffect(() => {
+    if (checkoutUnavailable) {
+      trackEvent("growtech_checkout_error", {
+        product_id: product.productId,
+        cta_location: ctaLocation,
+        checkout_state: checkoutState,
+      });
+    }
+  }, [checkoutState, checkoutUnavailable, ctaLocation, product.productId]);
+
   const resolvedFallbackCheckoutUrl = planId ? `https://whop.com/checkout/${planId}` : fallbackCheckoutUrl;
 
   const fallbackLink = resolvedFallbackCheckoutUrl ? (
@@ -123,7 +124,7 @@ export default function EmbeddedGrowTechCheckout({
       <div className="rounded-xl border border-landing-green/20 bg-white/[0.035] p-4 shadow-xl shadow-black/20">
         <div className="flex gap-4">
           <img
-            src={product.image}
+            src={product.imageWebp || product.image}
             alt={product.alt}
             className="h-20 w-20 shrink-0 rounded-lg border border-white/10 object-cover"
             width={80}
@@ -132,7 +133,7 @@ export default function EmbeddedGrowTechCheckout({
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">GrowTech checkout</p>
             <h3 className="mt-1 text-lg font-semibold leading-snug text-white font-sans">{product.name}</h3>
-            {product.salePrice ? (
+            {promoActive && product.salePrice ? (
               <div className="mt-1 flex flex-wrap items-baseline gap-2">
                 <p className="text-2xl font-semibold text-white">{product.salePrice}</p>
                 <p className="text-sm font-semibold text-white/42 line-through">{product.price}</p>
@@ -153,23 +154,9 @@ export default function EmbeddedGrowTechCheckout({
           ))}
         </div>
 
-        <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-          {checkoutBadges.map((badge) => (
-            <div
-              key={badge.src}
-              className="overflow-hidden rounded-lg border border-landing-green/20 bg-[#020604] shadow-[0_0_22px_rgba(34,197,94,0.16)]"
-            >
-              <img
-                src={badge.src}
-                alt={badge.alt}
-                className={`h-14 w-full sm:h-16 ${badge.className}`}
-                loading="lazy"
-                width={320}
-                height={128}
-              />
-            </div>
-          ))}
-        </div>
+        <p className="mt-4 rounded-lg border border-white/[0.08] bg-black/25 p-3 text-sm text-white/62">
+          Secure payment processing by Whop. Sold and supported by MasterGrowbot.
+        </p>
       </div>
 
       {isComplete ? (
@@ -211,14 +198,14 @@ export default function EmbeddedGrowTechCheckout({
                 Enter your email, delivery address, and payment once in Whop below.
               </p>
             </div>
-            <button
+            {promoActive ? <button
               type="button"
               onClick={copyPromoCode}
               className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm font-bold text-amber-100 transition hover:bg-amber-300/15 focus:outline-none focus:ring-2 focus:ring-amber-200"
             >
               <Copy className="h-4 w-4" aria-hidden="true" />
               {promoCopied ? "Code copied" : `Copy ${PROMO_CODE}`}
-            </button>
+            </button> : null}
           </div>
           <div aria-live="polite" className="px-4 pt-4">
             {checkoutUnavailable ? (
@@ -267,7 +254,7 @@ export default function EmbeddedGrowTechCheckout({
                   onComplete={(completedPlanId: string, receiptId?: string) => {
                     handleWhopComplete(completedPlanId, receiptId, "react_on_complete");
                   }}
-                  onStateChange={(state: WhopCheckoutState) => {
+                  onStateChange={(state) => {
                     handleWhopStateChange(String(state), "react_on_state_change");
                   }}
                 />
