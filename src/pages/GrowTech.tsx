@@ -1467,10 +1467,18 @@ function StickyMobileCta() {
     };
   }, []);
 
-  if (heroCtaVisible || checkoutOpen) return null;
+  if (heroCtaVisible && !checkoutOpen) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/92 px-4 pt-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:hidden" style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }} role="region" aria-label="Complete kit purchase">
+    <div
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/92 px-4 pt-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl transition-opacity sm:hidden ${
+        checkoutOpen ? "invisible pointer-events-none opacity-0" : "visible opacity-100"
+      }`}
+      style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
+      role="region"
+      aria-label="Complete kit purchase"
+      aria-hidden={checkoutOpen}
+    >
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-white">Complete Kit</p>
