@@ -19,6 +19,15 @@ import ParticleBackground from "@/components/landing/ParticleBackground";
 import EmbeddedGrowTechCheckout from "@/components/grow-tech/EmbeddedGrowTechCheckout";
 import SEOHead from "@/components/SEOHead";
 import {
+  GROWTECH_PRODUCT_IDS,
+  getFeaturedGrowTechReview,
+  getGrowTechReviewSchema,
+  getGrowTechReviews,
+  growTechReviewProductOrder,
+  type GrowTechProductId,
+  type GrowTechTestimonial,
+} from "@/data/growTechTestimonials";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -71,22 +80,6 @@ type GrowTechProduct = {
   alt: string;
   planKey: PlanKey;
   checkoutKey: CheckoutKey;
-};
-
-type GrowTechTestimonialKey = "scoutCamera" | "environmentMonitor" | "soilHealthMeter";
-
-type GrowTechReview = {
-  name: string;
-  country: string;
-  rating: number | null;
-  text: string;
-};
-
-type GrowTechTestimonialGroup = {
-  productName: string;
-  reviewSummaryLabel: string;
-  featuredReview: GrowTechReview;
-  reviews: GrowTechReview[];
 };
 
 const checkoutUrls: Record<CheckoutKey, string | undefined> = {
@@ -258,105 +251,6 @@ const trustStripItems = [
   { text: "Tracking sent after supplier dispatch", icon: PackageCheck },
 ];
 
-const growTechTestimonials: Record<GrowTechTestimonialKey, GrowTechTestimonialGroup> = {
-  scoutCamera: {
-    productName: "MasterGrowbot AI Scout Camera 10-20X",
-    reviewSummaryLabel: "5.0 from 4 confirmed rated reviews",
-    featuredReview: {
-      name: "Mike P.",
-      country: "USA",
-      rating: 5,
-      text: "Quality far superior to its price! The lens is quite heavy, which shows that it is of good quality, and the light works wonderfully to capture all the macro details.",
-    },
-    reviews: [
-      {
-        name: "Jessica S.",
-        country: "USA",
-        rating: 5,
-        text: "I love the lens, it doesn't distort.",
-      },
-      {
-        name: "Chris M.",
-        country: "USA",
-        rating: 5,
-        text: "Amazing! Really good lenses. Fast shipping and free delivery. I always wanted to try macro-photography with my iPhone 14 Pro Max. Really recommend!",
-      },
-      {
-        name: "Dave A.",
-        country: "USA",
-        rating: 5,
-        text: "Excellent results with the equipment.",
-      },
-      {
-        name: "Alex R.",
-        country: "USA",
-        rating: 5,
-        text: "Very good quality. You just need to get used to it and learn how to use it with a Pixel 10, but the first impression is very good.",
-      },
-    ],
-  },
-  environmentMonitor: {
-    productName: "MasterGrowbot AI Environment Monitor",
-    reviewSummaryLabel: "4.5 from 2 confirmed rated reviews",
-    featuredReview: {
-      name: "Rachel L.",
-      country: "USA",
-      rating: 5,
-      text: "Works straight out of the box, one touch button to turn it on and your away, clear screen with good range of data available to check your air quality, if your unsure of any readings just google it and you can find out what range you should be in.",
-    },
-    reviews: [
-      {
-        name: "Jake L.",
-        country: "USA",
-        rating: 5,
-        text: "Excellent analyzer. Convenient and functional.",
-      },
-      {
-        name: "Karen T.",
-        country: "Canada",
-        rating: 4,
-        text: "Item arrived in sealed box, well padded, and in good condition. Comes with charging cable and manual. Unit looks well made and display is bright. Works as expected.",
-      },
-    ],
-  },
-  soilHealthMeter: {
-    productName: "MasterGrowbot AI Soil Health Meter 6-in-1",
-    reviewSummaryLabel: "5.0 from 3 confirmed rated reviews",
-    featuredReview: {
-      name: "Richard D.",
-      country: "USA",
-      rating: 5,
-      text: "It works perfectly!",
-    },
-    reviews: [
-      {
-        name: "Matt M.",
-        country: "USA",
-        rating: null,
-        text: "Very valuable tool to have around for the serious grower. I use mine a lot. Very accurate. Uses 2 AAA batteries.",
-      },
-      {
-        name: "Richard D.",
-        country: "USA",
-        rating: 5,
-        text: "It works perfectly!",
-      },
-      {
-        name: "Christopher B.",
-        country: "USA",
-        rating: 5,
-        text: "Excellent multipurpose garden meter. Construction is robust. Just remember to never leave the probes in soil. The meter measures by using dissimilar metal in the probes to create a current in the soil. Clean probes every time after use or they will corrode; this is not a fault of the meter, but a function of physics.",
-      },
-      {
-        name: "Derek G.",
-        country: "USA",
-        rating: 5,
-        text: "I bought this soil analyzer recently. It does exactly what it promises, which is great for those who don't know much about gardening. As a layperson, I still need to study a bit more about the other measurements. But at least I've managed to understand the pH of my soil, which was the most important thing for me. I think now my plants will have a better home!",
-      },
-    ],
-  },
-};
-
 const trustCards = [
   {
     title: "Secure Whop Checkout",
@@ -491,30 +385,10 @@ function RatingLine({ rating = 5 }: { rating?: number }) {
   );
 }
 
-function getTestimonialKey(product: GrowTechProduct): GrowTechTestimonialKey | null {
-  if (product.productId === "growtech_scout_camera_10_20x") {
-    return "scoutCamera";
-  }
-
-  if (product.productId === "growtech_environment_monitor") {
-    return "environmentMonitor";
-  }
-
-  if (product.productId === "growtech_soil_health_meter_6_in_1") {
-    return "soilHealthMeter";
-  }
-
-  return null;
-}
-
-function getProductSlug(testimonialKey: GrowTechTestimonialKey) {
-  const slugs: Record<GrowTechTestimonialKey, string> = {
-    scoutCamera: "scout-camera",
-    environmentMonitor: "environment-monitor",
-    soilHealthMeter: "soil-health-meter",
-  };
-
-  return slugs[testimonialKey];
+function getReviewProductId(product: GrowTechProduct): GrowTechProductId | null {
+  return Object.values(GROWTECH_PRODUCT_IDS).includes(product.productId as GrowTechProductId)
+    ? (product.productId as GrowTechProductId)
+    : null;
 }
 
 function StarRating({ rating, compact = false }: { rating: number; compact?: boolean }) {
@@ -542,70 +416,53 @@ function StarRating({ rating, compact = false }: { rating: number; compact?: boo
   );
 }
 
-function getSummaryRating(testimonial: GrowTechTestimonialGroup) {
-  return Number.parseFloat(testimonial.reviewSummaryLabel) || 5;
-}
-
-function ReviewSummaryBadge({ testimonialKey }: { testimonialKey: GrowTechTestimonialKey }) {
-  const testimonial = growTechTestimonials[testimonialKey];
-
-  return (
-    <div
-      className="inline-flex w-full flex-wrap items-center gap-2 rounded-lg border border-gold/20 bg-gold/[0.08] px-3 py-2"
-      data-section="growtech-testimonials"
-      data-product={getProductSlug(testimonialKey)}
-    >
-      <StarRating rating={getSummaryRating(testimonial)} compact />
-      <span className="text-xs font-semibold leading-snug text-white/68">{testimonial.reviewSummaryLabel}</span>
-    </div>
-  );
-}
-
-function FeaturedProductReview({ testimonialKey }: { testimonialKey: GrowTechTestimonialKey }) {
-  const testimonial = growTechTestimonials[testimonialKey];
-  const review = testimonial.featuredReview;
+function FeaturedProductReview({ productId }: { productId: GrowTechProductId }) {
+  const review = getFeaturedGrowTechReview(productId);
+  if (!review) return null;
 
   return (
     <aside
       className="mt-5 rounded-lg border border-landing-green/18 bg-black/32 p-3.5 shadow-inner shadow-landing-green/[0.03]"
       data-section="growtech-testimonials"
-      data-product={getProductSlug(testimonialKey)}
-      data-reviewer={review.name}
-      aria-label={`${testimonial.productName} featured customer review`}
+      data-product-id={productId}
+      data-review-id={review.id}
+      data-reviewer={review.reviewer}
+      aria-label={`${review.productName} featured customer review`}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Customer Review</p>
         {review.rating ? <StarRating rating={review.rating} compact /> : null}
       </div>
-      <blockquote className="mt-3 text-sm font-medium leading-6 text-white/76">"{review.text}"</blockquote>
-      <p className="mt-3 text-xs font-semibold text-white/42">
-        {review.name} · {review.country}
+      <blockquote className="mt-3 text-sm font-medium leading-6 text-white/78">"{review.quote}"</blockquote>
+      <p className="mt-3 text-sm font-semibold text-white/58">
+        {review.reviewer} · {review.location}
       </p>
+      <a
+        href={`#reviews-${productId}`}
+        className="mt-3 inline-flex text-sm font-semibold text-landing-green underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-landing-green"
+      >
+        Read all {review.productName.replace("MasterGrowbot AI ", "")} reviews
+      </a>
     </aside>
   );
 }
 
-function ReviewCard({
-  testimonialKey,
-  review,
-}: {
-  testimonialKey: GrowTechTestimonialKey;
-  review: GrowTechReview;
-}) {
+function ReviewCard({ review }: { review: GrowTechTestimonial }) {
   return (
     <article
       className="rounded-lg border border-white/[0.08] bg-black/32 p-4 shadow-xl shadow-black/10"
       data-section="growtech-testimonials"
-      data-product={getProductSlug(testimonialKey)}
-      data-reviewer={review.name}
+      data-product-id={review.productId}
+      data-review-id={review.id}
+      data-reviewer={review.reviewer}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Customer Review</p>
         {review.rating ? <StarRating rating={review.rating} compact /> : null}
       </div>
-      <blockquote className="mt-3 text-sm leading-6 text-white/70">"{review.text}"</blockquote>
-      <p className="mt-4 text-xs font-semibold text-white/42">
-        {review.name} · {review.country}
+      <blockquote className="mt-3 text-[15px] leading-7 text-white/74">"{review.quote}"</blockquote>
+      <p className="mt-4 text-sm font-semibold text-white/58">
+        {review.reviewer} · {review.location}
       </p>
     </article>
   );
@@ -876,7 +733,7 @@ function CheckoutButton({
 }
 
 function ProductCard({ product }: { product: GrowTechProduct }) {
-  const testimonialKey = getTestimonialKey(product);
+  const reviewProductId = getReviewProductId(product);
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035] shadow-2xl shadow-black/30 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-landing-green/35 hover:bg-white/[0.055] hover:shadow-landing-green/10">
@@ -933,9 +790,7 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
           <p className="mt-1 text-sm font-medium leading-6 text-white/72">{product.whyBuy}</p>
         </div>
 
-        {testimonialKey && testimonialKey !== "soilHealthMeter" ? (
-          <FeaturedProductReview testimonialKey={testimonialKey} />
-        ) : null}
+        {reviewProductId ? <FeaturedProductReview productId={reviewProductId} /> : null}
 
         <div className="mt-5 space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35">Best for</p>
@@ -995,8 +850,6 @@ function ProductGridSection() {
 }
 
 function ProductTestimonialsSection() {
-  const testimonialEntries: GrowTechTestimonialKey[] = ["scoutCamera", "environmentMonitor"];
-
   return (
     <section
       className="relative z-10 px-4 pb-16 sm:px-6 sm:pb-24"
@@ -1012,37 +865,40 @@ function ProductTestimonialsSection() {
             id="growtech-testimonials-title"
             className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl"
           >
-            Real Feedback on the Tools
+            GrowTech Customers Are Already Seeing Better
           </h2>
           <p className="mt-3 text-base leading-relaxed text-white/58">
-            Product-specific reviews shown without invented aggregate ratings or review counts.
+            Real feedback from growers using the Scout Camera, Environment Monitor, and Soil Health Meter.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {testimonialEntries.map((testimonialKey) => {
-            const testimonial = growTechTestimonials[testimonialKey];
-            const review = testimonial.featuredReview;
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
+          {growTechReviewProductOrder.map((productId) => {
+            const reviews = getGrowTechReviews(productId);
+            const productName = reviews[0]?.productName;
             return (
-            <article
-              key={testimonialKey}
-              className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 shadow-2xl shadow-black/25 backdrop-blur-xl"
-              data-section="growtech-testimonials"
-              data-product={getProductSlug(testimonialKey)}
-              data-reviewer={review.name}
-            >
-              <div>
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Customer review</p>
-                  <StarRating rating={5} compact />
+              <section
+                id={`reviews-${productId}`}
+                key={productId}
+                className="scroll-mt-24 rounded-xl border border-white/[0.08] bg-white/[0.035] p-5 shadow-2xl shadow-black/25 backdrop-blur-xl"
+                data-review-group={productId}
+                aria-labelledby={`reviews-title-${productId}`}
+              >
+                <div className="border-b border-white/[0.08] pb-4">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">GrowTech customers</p>
+                  <h3 id={`reviews-title-${productId}`} className="mt-2 text-lg font-semibold leading-snug text-white font-sans">
+                    {productName}
+                  </h3>
+                  <p className="mt-2 text-sm font-semibold text-gold">
+                    {reviews.length} customer {reviews.length === 1 ? "review" : "reviews"}
+                  </p>
                 </div>
-                <h3 className="mt-2 text-lg font-semibold leading-snug text-white font-sans">
-                  {testimonial.productName}
-                </h3>
-              </div>
-              <blockquote className="mt-5 text-base leading-7 text-white/74">"{review.text}"</blockquote>
-              <p className="mt-4 text-sm font-semibold text-white/46">{review.name} - {review.country}</p>
-            </article>
+                <div className="mt-4 grid gap-3">
+                  {reviews.map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                </div>
+              </section>
             );
           })}
         </div>
@@ -1590,6 +1446,9 @@ export default function GrowTech() {
             "@type": "Brand",
             name: "MasterGrowbot AI",
           },
+          ...(getReviewProductId(product)
+            ? { review: getGrowTechReviewSchema(getReviewProductId(product) as GrowTechProductId) }
+            : {}),
           offers: {
             "@type": "Offer",
             url: "https://www.mastergrowbot.com/grow-tech",
@@ -1633,8 +1492,6 @@ export default function GrowTech() {
     }),
     [],
   );
-
-  // TODO: Only add aggregateRating and Review structured data after real customer reviews are collected and displayed visibly on the page.
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-black pb-24 text-white sm:pb-0">
@@ -1696,7 +1553,10 @@ export default function GrowTech() {
                 </a>
               </div>
               <p className="max-w-xl rounded-lg border border-white/[0.08] bg-black/30 px-4 py-3 text-sm leading-6 text-white/62">
-                <span className="font-semibold text-gold">5-star Scout Camera review:</span> "Quality far superior to its price!" - Mike P., USA
+                <span className="font-semibold text-gold">5-star Scout Camera feedback from Mike P.</span>{" "}
+                <a href={`#reviews-${GROWTECH_PRODUCT_IDS.scoutCamera}`} className="font-semibold text-landing-green underline-offset-4 hover:underline">
+                  Read customer reviews
+                </a>
               </p>
               <HeroTrustStrip />
             </div>

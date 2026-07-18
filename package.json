@@ -9,6 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "test:e2e": "playwright test",
+    "test:testimonials": "playwright test tests/grow-tech-testimonials.spec.ts",
     "test:checkout": "playwright test tests/whop-checkout.spec.ts --headed --trace on",
     "test:checkout:list": "playwright test tests/whop-checkout.spec.ts --list",
     "preview": "vite preview"
