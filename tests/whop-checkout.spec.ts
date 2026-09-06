@@ -32,7 +32,7 @@ const growTechTargets: CheckoutTarget[] = [
     label: "Grow Tech Kit",
     pagePath: "/grow-tech",
     selector: 'button[data-cta-location="growtech_bundle_section:bundle"]',
-    accessibleName: "Get the Complete Kit - $197.60 with code",
+    accessibleName: "Get the Complete Kit",
   },
 ];
 
