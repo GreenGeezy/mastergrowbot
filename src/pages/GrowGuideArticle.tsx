@@ -2,11 +2,12 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { ArrowRight, ChevronRight, BookOpen } from 'lucide-react';
+import GuideContent from '@/components/GuideContent';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import { AmazonBookButton } from '@/components/landing/AmazonBookButton';
-import { AppPlatformButtons, RatingStars } from '@/components/landing/cta';
+import { AppPlatformButtons } from '@/components/landing/cta';
 import { appStoreUrl as buildAppStoreUrl, playStoreUrl as buildPlayStoreUrl } from '@/components/landing/ctaLinks';
 import { growGuides, getGuideBySlug } from '@/data/growGuides';
 
@@ -56,7 +57,7 @@ export default function GrowGuideArticle() {
     : 'Skip the guesswork';
   const appCtaBody = isIpmIntent
     ? 'Take a photo and get instant AI grow help when pest or disease symptoms show up.'
-    : 'Sick plant? Scan it before the problem gets worse.';
+    : 'Keep your plant photos, notes, and daily tasks in one app.';
   const bookCtaHeading = isIpmIntent
     ? 'Protect Your Grow with the IPM Playbook'
     : 'Save Your Grow from Pests & Diseases';
@@ -74,7 +75,7 @@ export default function GrowGuideArticle() {
     publisher: {
       '@type': 'Organization',
       name: 'MasterGrowbot AI',
-      logo: { '@type': 'ImageObject', url: 'https://www.mastergrowbot.com/logo.png' },
+      logo: { '@type': 'ImageObject', url: 'https://www.mastergrowbot.com/images/app-icon.png' },
     },
     datePublished: guide.publishedDate,
     dateModified: guide.modifiedDate,
@@ -178,11 +179,7 @@ export default function GrowGuideArticle() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
             >
-              {guide.intro.split('\n\n').map((para, i) => (
-                <p key={i} className="text-base sm:text-lg text-white/70 leading-relaxed font-sans mb-4">
-                  {para}
-                </p>
-              ))}
+              <GuideContent>{guide.intro}</GuideContent>
             </motion.div>
 
             {/* Inline CTA (within first 300 words) */}
@@ -210,33 +207,19 @@ export default function GrowGuideArticle() {
                 <h2 className="text-xl sm:text-2xl font-bold text-white font-sans mb-4 leading-snug">
                   {section.heading}
                 </h2>
-                {section.bodyHtml ? (
-                  <div
-                    dangerouslySetInnerHTML={{ __html: section.bodyHtml }}
-                    className="text-base text-white/65 leading-relaxed font-sans overflow-x-auto"
-                  />
-                ) : (
-                  (section.body ?? '').split('\n\n').map((para, j) => (
-                    <p key={j} className="text-base text-white/65 leading-relaxed font-sans mb-3">
-                      {para}
-                    </p>
-                  ))
-                )}
+                <GuideContent>{section.bodyHtml ?? section.body ?? ''}</GuideContent>
               </motion.section>
             ))}
 
 
             {/* Closing CTA */}
             <div className="mb-12 rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent p-8 text-center space-y-4">
-              <div className="flex items-center justify-center gap-2 text-sm text-white/65 font-sans">
-                <RatingStars iconClassName="w-3.5 h-3.5" />
-                <span>Rated 5 Stars by Growers Just Like You</span>
-              </div>
+
               <h2 className="text-2xl sm:text-3xl font-bold text-landing-green font-sans">
                 Download MasterGrowbot AI: Free 3-Day Trial
               </h2>
               <p className="text-white/60 font-sans text-sm sm:text-base max-w-lg mx-auto">
-                Snap a photo. Save your plant. Try MasterGrowbot AI free: AI plant diagnosis, grow journal, strain database, and daily tasks in one app.
+                Explore MasterGrowbot AI for plant photos, journal notes, and daily tasks. Check your app store for current trial eligibility and subscription terms.
               </p>
               {isIpmIntent && (
                 <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">
@@ -299,12 +282,9 @@ export default function GrowGuideArticle() {
                 <p className="text-sm font-semibold text-white font-sans leading-snug">
                   Download MasterGrowbot AI
                 </p>
-                <div className="flex items-center gap-1 text-[11px] text-white/50 font-sans">
-                  <RatingStars iconClassName="w-3 h-3" />
-                  <span>Rated 5 Stars by Growers Just Like You</span>
-                </div>
+
                 <p className="text-xs text-white/50 font-sans leading-relaxed">
-                  Your AI master grower, in your pocket. Snap a photo and get an instant diagnosis and treatment plan.
+                  Explore photo analysis and a digital plant journal. AI responses are informational and can be mistaken.
                 </p>
                 <a
                   href={appStoreUrl}

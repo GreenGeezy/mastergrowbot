@@ -18,11 +18,15 @@
         var el = e.target.closest('a[href]');
         if (!el) return;
         var href = el.getAttribute('href');
-        var location = el.getAttribute('data-cta-location') || window.location.pathname;
-        if (href && href.indexOf('apps.apple.com') !== -1) {
-          gtag('event', 'ios_app_click', {'link_url': href, 'location': location});
-        } else if (href && href.indexOf('play.google.com') !== -1) {
-          gtag('event', 'android_app_click', {'link_url': href, 'location': location});
+        var location = el.getAttribute('data-cta-location') || 'navigation-or-footer';
+        var params = {link_url: href, location: location, cta_location: location, page_path: window.location.pathname,
+          article_slug: window.location.pathname.indexOf('/grow-guides/') === 0 ? window.location.pathname.split('/')[2] : undefined};
+        var linkHost;
+        try { linkHost = new URL(href, window.location.origin).hostname; } catch (_) { return; }
+        if (linkHost === 'apps.apple.com') {
+          gtag('event', 'ios_app_click', params);
+        } else if (linkHost === 'play.google.com') {
+          gtag('event', 'android_app_click', params);
         } else if (href && href.indexOf('a.co/d/07dQFaw0') !== -1) {
           if (el.getAttribute('data-analytics-manual') !== 'true') {
             gtag('event', 'amazon_book_click', {'link_url': href, 'location': location});
@@ -60,8 +64,6 @@
     <meta property="twitter:title" content="MasterGrowbot AI: Cannabis Growing App | AI Plant Diagnosis | iOS & Android" />
     <meta property="twitter:description" content="Grow bigger, healthier cannabis with MasterGrowbot AI. Photo-based plant diagnosis, strain tips, grow journal, and daily tasks. Try free for 3 days. iOS & Android." />
     <meta property="twitter:image" content="https://www.mastergrowbot.com/lovable-uploads/cdeebe66-3489-4cb2-a2e7-0a4763d845ce.png" />
-
-    <link rel="canonical" href="https://www.mastergrowbot.com/" />
     <link rel="preload" href="/lovable-uploads/cdeebe66-3489-4cb2-a2e7-0a4763d845ce.png" as="image" />
 
     <!-- JSON-LD Schema: MobileApplication -->
@@ -70,27 +72,15 @@
       "@context": "https://schema.org",
       "@type": "MobileApplication",
       "name": "MasterGrowbot AI",
-      "description": "The world's most advanced AI cannabis cultivation assistant. Diagnose plant problems, track grows, and maximize yields.",
+      "description": "MasterGrowbot AI is a mobile app with photo analysis, a plant journal, and task tracking.",
       "applicationCategory": "LifestyleApplication",
-      "operatingSystem": "iOS 15.0+, Android 8.0+",
-      "offers": [
-        {"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "3-Day Free Trial"},
-        {"@type": "Offer", "price": "7.99", "priceCurrency": "USD", "description": "Weekly"},
-        {"@type": "Offer", "price": "29.99", "priceCurrency": "USD", "description": "Monthly"},
-        {"@type": "Offer", "price": "199.99", "priceCurrency": "USD", "description": "Annual Pro"}
-      ],
+      "operatingSystem": "iOS, Android",
+
       "downloadUrl": [
         "https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060",
         "https://play.google.com/store/apps/details?id=com.mastergrowbot.app"
       ],
-      "featureList": "AI Plant Diagnosis, Strain Database, Grow Journal, Daily Tasks, Harvest Window Detection, VPD Tracking",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": "50",
-        "bestRating": "5",
-        "worstRating": "1"
-      }
+      "featureList": "AI Plant Diagnosis, Strain Database, Grow Journal, Daily Tasks, Harvest Window Detection, VPD Tracking"
     }
     </script>
 

@@ -376,10 +376,9 @@ const hasMerchantReturnPolicy = {
   returnFees: "https://schema.org/ReturnShippingFees",
 };
 
-function RatingLine({ rating = 5 }: { rating?: number }) {
+function RatingLine() {
   return (
     <div className="space-y-1.5">
-      <StarRating rating={rating} compact />
       <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/42">Premium grow-tech pick</p>
     </div>
   );

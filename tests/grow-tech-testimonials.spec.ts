@@ -43,12 +43,12 @@ test.describe("GrowTech testimonial data integrity", () => {
     expect(mike[0]).toMatchObject({
       reviewer: "Mike P.",
       productId: GROWTECH_PRODUCT_IDS.scoutCamera,
-      rating: 5,
+      rating: null,
     });
     expect(rachel[0]).toMatchObject({
       reviewer: "Rachel L.",
       productId: GROWTECH_PRODUCT_IDS.environmentMonitor,
-      rating: 5,
+      rating: null,
     });
   });
 

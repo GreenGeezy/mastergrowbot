@@ -28,7 +28,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
     quote: "I love the lens, it doesn't distort.",
     reviewer: "Jessica S.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
   {
@@ -39,7 +39,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
       "Amazing! Really good lenses. Fast shipping and free delivery. I always wanted to try macro-photography with my iPhone 14 Pro Max. Really recommend!",
     reviewer: "Chris M.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
   {
@@ -49,7 +49,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
     quote: "Excellent results with the equipment.",
     reviewer: "Dave A.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
   {
@@ -60,7 +60,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
       "Very good quality. You just need to get used to it and learn how to use it with a Pixel 10, but the first impression is very good.",
     reviewer: "Alex R.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
   {
@@ -71,7 +71,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
       "Quality far superior to its price! The lens is quite heavy, which shows that it is of good quality, and the light works wonderfully to capture all the macro details.",
     reviewer: "Mike P.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: USER_SUPPLIED_SOURCE,
   },
   {
@@ -81,7 +81,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
     quote: "Excellent analyzer. Convenient and functional.",
     reviewer: "Jake L.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
   {
@@ -92,7 +92,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
       "Item arrived in sealed box, well padded, and in good condition. Comes with charging cable and manual. Unit looks well made and display is bright. Works as expected.",
     reviewer: "Karen T.",
     location: "Canada",
-    rating: 4,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
   {
@@ -103,7 +103,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
       "Works straight out of the box, one touch button to turn it on and your away, clear screen with good range of data available to check your air quality, if your unsure of any readings just google it and you can find out what range you should be in.",
     reviewer: "Rachel L.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: USER_SUPPLIED_SOURCE,
   },
   {
@@ -124,7 +124,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
     quote: "It works perfectly!",
     reviewer: "Richard D.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
   {
@@ -135,7 +135,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
       "Excellent multipurpose garden meter. Construction is robust. Just remember to never leave the probes in soil. The meter measures by using dissimilar metal in the probes to create a current in the soil. Clean probes every time after use or they will corrode; this is not a fault of the meter, but a function of physics.",
     reviewer: "Christopher B.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
   {
@@ -146,7 +146,7 @@ export const growTechTestimonials: GrowTechTestimonial[] = [
       "I bought this soil analyzer recently. It does exactly what it promises, which is great for those who don't know much about gardening. As a layperson, I still need to study a bit more about the other measurements. But at least I've managed to understand the pH of my soil, which was the most important thing for me. I think now my plants will have a better home!",
     reviewer: "Derek G.",
     location: "USA",
-    rating: 5,
+    rating: null,
     source: PRE_REGRESSION_SOURCE,
   },
 ];
