@@ -7,26 +7,58 @@ Disallow: /quiz
 
 User-agent: Googlebot
 Allow: /
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz
 
 User-agent: GPTBot
 Allow: /
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz
 
 User-agent: Applebot
 Allow: /
+Disallow: /api/
+Disallow: /chat
+Disallow: /plant-health
+Disallow: /quiz
 
 Sitemap: https://www.mastergrowbot.com/sitemap.xml
