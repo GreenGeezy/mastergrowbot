@@ -80,6 +80,7 @@ type GrowTechProduct = {
   alt: string;
   planKey: PlanKey;
   checkoutKey: CheckoutKey;
+  anchorId: string;
 };
 
 const checkoutUrls: Record<CheckoutKey, string | undefined> = {
@@ -136,6 +137,7 @@ const products: GrowTechProduct[] = [
     alt: "MasterGrowbot AI Scout Camera 10-20X clipped onto a smartphone for cannabis plant close-up scans.",
     planKey: "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID",
     checkoutKey: "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL",
+    anchorId: "scout-camera",
   },
   {
     name: "MasterGrowbot AI Environment Monitor",
@@ -164,6 +166,7 @@ const products: GrowTechProduct[] = [
     alt: "MasterGrowbot AI Environment Monitor tracking air quality, temperature, humidity, and CO2 in an indoor cannabis grow tent.",
     planKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID",
     checkoutKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL",
+    anchorId: "environment-monitor",
   },
   {
     name: "MasterGrowbot AI Soil Health Meter 6-in-1",
@@ -193,6 +196,7 @@ const products: GrowTechProduct[] = [
     alt: "MasterGrowbot AI Soil Health Meter 6-in-1 checking soil moisture and plant context in a cannabis fabric pot.",
     planKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID",
     checkoutKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL",
+    anchorId: "soil-health-meter",
   },
 ];
 
@@ -227,6 +231,7 @@ const bundle: GrowTechProduct = {
   alt: "MasterGrowbot AI Grow Tech Kit with camera lens, environment monitor, and soil health meter.",
   planKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID",
   checkoutKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL",
+  anchorId: "grow-tech-kit",
 };
 
 const useCases = [
@@ -315,6 +320,21 @@ const faqs = [
     answer: "No. Enter AIGROWTECH in the promo code field at checkout to apply the July sale discount.",
   },
   {
+    question: "Which cannabis grow tech tool should I buy first?",
+    answer:
+      "Choose the Scout Camera for clearer close-up plant and trichome photos, the Environment Monitor for grow-room temperature, humidity, CO2, and air-quality context, or the Soil Health Meter for moisture, pH, fertility, temperature, light, and humidity checks. Choose the Grow Tech Kit when you want all three tools.",
+  },
+  {
+    question: "What is included in the MasterGrowbot AI Grow Tech Kit?",
+    answer:
+      "The Grow Tech Kit includes the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Each tool works independently; the MasterGrowbot AI app is optional.",
+  },
+  {
+    question: "How much do the Grow Tech products cost?",
+    answer:
+      "Current prices are $149 for the Scout Camera, $89 for the Environment Monitor, $59 for the Soil Health Meter, and $247 for the complete Grow Tech Kit. The kit saves $50 compared with the $297 individual total.",
+  },
+  {
     question: "Where do I enter my shipping address?",
     answer: "Shipping address and delivery details are collected during Whop checkout before payment.",
   },
@@ -373,7 +393,7 @@ const hasMerchantReturnPolicy = {
   returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
   merchantReturnDays: 30,
   returnMethod: "https://schema.org/ReturnByMail",
-  returnFees: "https://schema.org/ReturnShippingFees",
+  returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
 };
 
 function RatingLine() {
@@ -735,7 +755,7 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
   const reviewProductId = getReviewProductId(product);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035] shadow-2xl shadow-black/30 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-landing-green/35 hover:bg-white/[0.055] hover:shadow-landing-green/10">
+    <article id={product.anchorId} className="group flex h-full scroll-mt-24 flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.035] shadow-2xl shadow-black/30 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-landing-green/35 hover:bg-white/[0.055] hover:shadow-landing-green/10">
       <div className="relative aspect-[4/3] min-h-[230px] overflow-hidden bg-gradient-to-br from-emerald-950/40 via-black to-black">
         <picture>
           {product.imageWebp ? <source srcSet={product.imageWebp} type="image/webp" /> : null}
@@ -1105,7 +1125,7 @@ function MidPageKitCta() {
             Want the complete grow documentation setup?
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/62">
-            Save 20% on the full kit this month with code {JULY_PROMO_CODE}.
+            Save $50 with the $247 kit compared with the $297 individual total.
           </p>
         </div>
         <CheckoutButton
@@ -1121,7 +1141,7 @@ function MidPageKitCta() {
 
 function BundleSection() {
   return (
-    <section id="bundle" className="relative z-10 px-4 py-16 sm:px-6 sm:py-24">
+    <section id="grow-tech-kit" className="relative z-10 scroll-mt-24 px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto mb-8 max-w-7xl">
         <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
           Best Value Setup
@@ -1144,7 +1164,7 @@ function BundleSection() {
         <div className="flex flex-col justify-center">
           <div className="mb-3 flex flex-wrap gap-2">
             <span className="inline-flex w-fit rounded-full border border-amber-300/40 bg-amber-300/12 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-200">
-              Best July Deal
+              Complete 3-Tool Kit
             </span>
             <span className="inline-flex w-fit rounded-full border border-landing-green/35 bg-black/35 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-landing-green">
               {bundle.badge}
@@ -1158,7 +1178,7 @@ function BundleSection() {
           <div className="mt-3">
             <RatingLine />
           </div>
-          <div className="mt-5 grid gap-3 rounded-xl border border-white/[0.08] bg-black/30 p-4 sm:grid-cols-4">
+          <div className="mt-5 grid gap-3 rounded-xl border border-white/[0.08] bg-black/30 p-4 sm:grid-cols-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/38">Individual total</p>
               <p className="mt-1 text-2xl font-semibold text-white/60">{INDIVIDUAL_FULL_TOTAL}</p>
@@ -1168,22 +1188,13 @@ function BundleSection() {
               <p className="mt-1 text-3xl font-semibold text-white">{bundle.price}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">With code</p>
-              <p className="mt-1 text-4xl font-black text-amber-100">{bundle.salePrice}</p>
-            </div>
-            <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">You save</p>
-              <p className="mt-1 text-3xl font-semibold text-landing-green">{KIT_FULL_PRICE_SAVINGS}</p>
+              <p className="mt-1 text-3xl font-semibold text-landing-green">$50</p>
             </div>
           </div>
-          <div className="mt-4 rounded-lg border border-amber-300/20 bg-amber-300/8 p-3">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm font-semibold text-white/76">
-                You save {KIT_FULL_PRICE_SAVINGS} vs buying separately at full price.
-              </p>
-              <GrowTechPromoCode compact />
-            </div>
-          </div>
+          <p className="mt-4 rounded-lg border border-landing-green/20 bg-landing-green/8 p-3 text-sm font-semibold text-white/76">
+            You save $50 versus buying all three tools separately.
+          </p>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/62">{bundle.description}</p>
           <div className="mt-5 rounded-lg border border-landing-green/15 bg-landing-green/5 p-3">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">Why growers buy it</p>
@@ -1198,9 +1209,6 @@ function BundleSection() {
             ))}
           </ul>
           <CheckoutButton product={bundle} ctaLocation="growtech_bundle_section:bundle" className="mt-7 sm:w-fit" />
-          <p className="mt-3 text-sm font-semibold text-amber-100/85">
-            Enter {JULY_PROMO_CODE} at Whop checkout to get the July sale price.
-          </p>
           <TrustBadges />
           <PaymentBadges />
         </div>
@@ -1436,6 +1444,7 @@ export default function GrowTech() {
       "@graph": [
         ...[...products, bundle].map((product) => ({
           "@type": "Product",
+          "@id": `https://www.mastergrowbot.com/grow-tech#${product.anchorId}`,
           name: product.name,
           description: product.schemaDescription,
           image: `https://www.mastergrowbot.com${product.imageWebp || product.image}`,
@@ -1450,7 +1459,8 @@ export default function GrowTech() {
             : {}),
           offers: {
             "@type": "Offer",
-            url: "https://www.mastergrowbot.com/grow-tech",
+            "@id": `https://www.mastergrowbot.com/grow-tech#${product.anchorId}-offer`,
+            url: `https://www.mastergrowbot.com/grow-tech#${product.anchorId}`,
             priceCurrency: "USD",
             price: product.price.replace("$", ""),
             availability: "https://schema.org/InStock",
@@ -1459,6 +1469,23 @@ export default function GrowTech() {
             hasMerchantReturnPolicy,
           },
         })),
+        {
+          "@type": "CollectionPage",
+          "@id": "https://www.mastergrowbot.com/grow-tech#webpage",
+          url: "https://www.mastergrowbot.com/grow-tech",
+          name: "Cannabis Grow Tech Kit, Plant Camera, Room Monitor and Soil Meter",
+          description:
+            "Compare and buy a cannabis grow tech kit, 10-20X plant camera, grow-room environment monitor, and 6-in-1 soil health meter.",
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: 4,
+            itemListElement: [...products, bundle].map((product, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              item: { "@id": `https://www.mastergrowbot.com/grow-tech#${product.anchorId}` },
+            })),
+          },
+        },
         {
           "@type": "FAQPage",
           mainEntity: visibleFaqs.map((faq) => ({
@@ -1495,13 +1522,13 @@ export default function GrowTech() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-black pb-24 text-white sm:pb-0">
       <SEOHead
-        title="MasterGrowbot AI Grow Tech | Cannabis Grow Hardware and Plant Tools"
-        description="Shop MasterGrowbot AI Grow Tech for cannabis grow hardware, plant inspection cameras, environment monitors, soil health meters, and grow documentation tools with secure checkout and free shipping."
+        title="Cannabis Grow Tech Kit, Plant Camera & Soil Meter | MasterGrowbot AI"
+        description="Shop a cannabis grow tech kit, 10-20X plant camera, grow-room environment monitor, or 6-in-1 soil meter. Free US shipping and secure Whop checkout."
         canonicalUrl="https://www.mastergrowbot.com/grow-tech"
         ogImage="https://www.mastergrowbot.com/images/grow-tech/grow-tech-kit.png"
       />
       <Helmet>
-        <meta property="og:title" content="MasterGrowbot AI Grow Tech | Cannabis Grow Hardware" />
+        <meta property="og:title" content="Cannabis Grow Tech Kit, Plant Camera & Soil Meter | MasterGrowbot AI" />
         <meta
           property="og:description"
           content="Upgrade your grow records with plant inspection cameras, grow-room environment monitors, soil health meters, and AI-compatible grow tools for cannabis cultivators."
@@ -1533,7 +1560,7 @@ export default function GrowTech() {
               </div>
               <div className="space-y-5">
                 <h1 className="text-balance text-[2.65rem] font-bold leading-[0.98] tracking-[-0.045em] text-white font-sans sm:text-6xl lg:text-[4.65rem]">
-                  Better inputs. Fewer blind spots. <span className="text-landing-green">One smarter grow.</span>
+                  Cannabis Grow Tech Kit: <span className="text-landing-green">Camera, Room Monitor & Soil Meter</span>
                 </h1>
                 <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl lg:mx-0">
                   Capture sharper cultivation photos, monitor grow-room conditions, and perform quick root-zone spot
@@ -1570,7 +1597,7 @@ export default function GrowTech() {
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-white/45 line-through">{INDIVIDUAL_FULL_TOTAL}</p>
-                    <p className="text-xl font-black text-white">{bundle.salePrice}</p>
+                    <p className="text-xl font-black text-white">{bundle.price}</p>
                   </div>
                 </div>
                 <img

@@ -10,6 +10,7 @@ import { AmazonBookButton } from '@/components/landing/AmazonBookButton';
 import { AppPlatformButtons } from '@/components/landing/cta';
 import { appStoreUrl as buildAppStoreUrl, playStoreUrl as buildPlayStoreUrl } from '@/components/landing/ctaLinks';
 import { growGuides, getGuideBySlug } from '@/data/growGuides';
+import { trackEvent } from '@/lib/analytics';
 
 function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -52,6 +53,26 @@ export default function GrowGuideArticle() {
     'quarantine',
     'scouting',
   ]);
+  const isGrowTechIntent = hasAnyKeyword(intentText, [
+    'camera',
+    'sensor',
+    'monitor',
+    'soil meter',
+    'soil moisture',
+    'root zone',
+    'root-zone',
+    'grow tech',
+    'grow-tech',
+    'grow hardware',
+    'trichome',
+  ]);
+  const growTechRecommendation = hasAnyKeyword(intentText, ['soil meter', 'soil moisture', 'root zone', 'root-zone'])
+    ? { name: 'Soil Health Meter 6-in-1', anchor: 'soil-health-meter', detail: 'Compare moisture, pH, fertility, temperature, light, and humidity checks.' }
+    : hasAnyKeyword(intentText, ['sensor', 'monitor', 'co2', 'air quality', 'humidity'])
+      ? { name: 'Environment Monitor', anchor: 'environment-monitor', detail: 'Compare grow-room temperature, humidity, CO2, and air-quality context.' }
+      : hasAnyKeyword(intentText, ['camera', 'photo', 'trichome'])
+        ? { name: 'Scout Camera 10-20X', anchor: 'scout-camera', detail: 'Compare a phone-mounted close-up camera for plant, pest, and trichome photos.' }
+        : { name: 'Grow Tech Kit', anchor: 'grow-tech-kit', detail: 'Compare the complete camera, room-monitor, and soil-meter kit.' };
   const appCtaIntro = isIpmIntent
     ? 'Scan Your Plant with MasterGrowbot AI'
     : 'Skip the guesswork';
@@ -183,15 +204,38 @@ export default function GrowGuideArticle() {
             </motion.div>
 
             {/* Inline CTA (within first 300 words) */}
-            <div className="mb-10 rounded-2xl border border-landing-green/20 bg-landing-green/5 p-6 flex flex-col gap-4">
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-landing-green font-sans mb-1">{appCtaIntro}</p>
-                <p className="text-sm text-white/60 font-sans">
-                  {appCtaBody}
-                </p>
+            {isGrowTechIntent ? (
+              <div className="mb-10 rounded-2xl border border-landing-green/25 bg-landing-green/[0.07] p-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-landing-green font-sans mb-1">Shop the tool in this guide</p>
+                  <p className="text-base font-semibold text-white font-sans">{growTechRecommendation.name}</p>
+                  <p className="mt-1 text-sm text-white/60 font-sans">{growTechRecommendation.detail} Free US shipping; secure checkout powered by Whop.</p>
+                </div>
+                <Link
+                  to={`/grow-tech#${growTechRecommendation.anchor}`}
+                  data-cta-location="article-inline:grow-tech"
+                  onClick={() => trackEvent('growtech_guide_cta_click', {
+                    article_slug: guide.slug,
+                    product_recommendation: growTechRecommendation.anchor,
+                    cta_location: 'article-inline:grow-tech',
+                  })}
+                  className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-landing-green px-5 py-3 text-sm font-bold text-black transition hover:bg-landing-green/90 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
+                >
+                  Compare price & details
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
               </div>
-              <AppPlatformButtons campaign={guide.slug} location="article-inline" className="sm:justify-start" />
-            </div>
+            ) : (
+              <div className="mb-10 rounded-2xl border border-landing-green/20 bg-landing-green/5 p-6 flex flex-col gap-4">
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-landing-green font-sans mb-1">{appCtaIntro}</p>
+                  <p className="text-sm text-white/60 font-sans">
+                    {appCtaBody}
+                  </p>
+                </div>
+                <AppPlatformButtons campaign={guide.slug} location="article-inline" className="sm:justify-start" />
+              </div>
+            )}
 
             {/* Article Sections */}
             {guide.sections.map((section, i) => (

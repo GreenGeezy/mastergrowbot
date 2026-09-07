@@ -196,7 +196,7 @@ test.describe("Whop checkout validation without paid transactions", () => {
   test("/grow-tech loads", async ({ page }) => {
     await page.goto("/grow-tech", { waitUntil: "domcontentloaded" });
 
-    await expect(page.getByRole("heading", { name: /Better inputs\. Fewer blind spots\. One smarter grow\./i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Cannabis Grow Tech Kit: Camera, Room Monitor & Soil Meter/i })).toBeVisible();
   });
 
   test("GrowTech product checkout buttons exist", async ({ page }) => {

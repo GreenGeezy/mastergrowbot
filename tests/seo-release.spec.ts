@@ -18,6 +18,35 @@ test('shared shell has no canonical or unverified aggregate rating', () => {
   expect(shell).not.toMatch(/rel="canonical"|aggregateRating|ratingCount/);
 });
 
+test('Grow Tech is discoverable, commercially described and free of expired promotion copy', async ({ page }) => {
+  const sitemap = readFileSync('public/sitemap.xml', 'utf8');
+  expect(sitemap).toContain('<loc>https://www.mastergrowbot.com/grow-tech</loc>');
+
+  await page.goto('/grow-tech');
+  await expect(page.locator('meta[name="description"]')).toHaveCount(1);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /cannabis grow tech kit/i);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Cannabis Grow Tech Kit');
+  await expect(page.locator('body')).not.toContainText(/Best July Deal|AIGROWTECH|July sale price/);
+  await expect(page.locator('#grow-tech-kit')).toContainText('$247');
+
+  const schemaScripts = await page.locator('script[type="application/ld+json"]').allTextContents();
+  const graph = schemaScripts.map((script) => JSON.parse(script)).find((schema) => Array.isArray(schema['@graph']))['@graph'];
+  const products = graph.filter((entry: { '@type'?: string }) => entry['@type'] === 'Product');
+  expect(products).toHaveLength(4);
+  expect(products.every((product: { '@id'?: string }) => product['@id']?.startsWith('https://www.mastergrowbot.com/grow-tech#'))).toBe(true);
+  expect(products.every((product: { offers?: { hasMerchantReturnPolicy?: { returnFees?: string } } }) =>
+    product.offers?.hasMerchantReturnPolicy?.returnFees === 'https://schema.org/ReturnFeesCustomerResponsibility'
+  )).toBe(true);
+  expect(graph.some((entry: { '@type'?: string }) => entry['@type'] === 'CollectionPage')).toBe(true);
+});
+
+test('hardware-intent guides recommend the matching Grow Tech product', async ({ page }) => {
+  await page.goto('/grow-guides/best-cannabis-grow-room-sensors-mold-heat-stress');
+  const cta = page.locator('[data-cta-location="article-inline:grow-tech"]');
+  await expect(cta).toHaveAttribute('href', '/grow-tech#environment-monitor');
+  await expect(cta).toContainText('Compare price & details');
+});
+
 test('shared shell contains one exact Whop Pixel with narrowly scoped CSP access', () => {
   const shell = readFileSync('index.html', 'utf8');
   const snippet = '<script>!function(w,d,s,u,n,a,b){if(w[n])return;a=w[n]={q:[],t:+new Date,s:[],o:u,track:function(){a.q.push([+new Date].concat([].slice.call(arguments)))},setScope:function(){a.s=[].slice.call(arguments).filter(function(x){return typeof x==="string"});a.q.push([+new Date,"setScope"].concat(a.s))},scope:function(){var c=[].slice.call(arguments);return{track:function(){a.q.push([+new Date].concat([].slice.call(arguments)).concat([{__scope:c}]))}}}};b=d.createElement(s);b.async=1;b.src=u+"/s.js";d.getElementsByTagName(s)[0].parentNode.insertBefore(b,d.getElementsByTagName(s)[0])}(window,document,"script","https://t.whop.tw","whop");whop.setScope("biz_8m5fp7bUlZOdVX");whop.track("page");</script>';
