@@ -13,6 +13,9 @@ export default function StoreBadges({
   growTechLocation = 'hero:growtech',
   showGrowTech = true,
 }: StoreBadgesProps) {
+  const iosUrl = appStoreUrl('homepage');
+  const androidUrl = playStoreUrl('homepage');
+
   // Convert justify-* to items-* for flex-col alignment, pass other classes through
   const alignItems = className
     .split(' ')
@@ -31,7 +34,7 @@ export default function StoreBadges({
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-3 lg:gap-4">
             <motion.a
-              href={appStoreUrl('homepage')}
+              href={iosUrl}
               data-cta-location="homepage-store-badges:ios"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
@@ -46,7 +49,7 @@ export default function StoreBadges({
             </motion.a>
 
             <motion.a
-              href={playStoreUrl('homepage')}
+              href={androidUrl}
               data-cta-location="homepage-store-badges:android"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}

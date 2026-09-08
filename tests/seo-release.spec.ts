@@ -102,3 +102,25 @@ test('store events fire once with article and CTA context', async ({ page }) => 
   expect(events[0]).toEqual(['event', 'ios_app_click', expect.objectContaining({ article_slug: slug, page_path: target, cta_location: 'article-inline:ios' })]);
   expect(events[1]).toEqual(['event', 'android_app_click', expect.objectContaining({ article_slug: slug, cta_location: 'article-inline:android' })]);
 });
+
+test('cultivation software guide has updated checklist, schema date and body CTA tracking', async ({ page }) => {
+  const cultivationTarget = '/grow-guides/best-cannabis-cultivation-software-home-growers';
+  await page.goto(cultivationTarget);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Best Cannabis Cultivation Software');
+  await expect(page.getByRole('heading', { name: 'Software Selection Checklist Before You Subscribe' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Source Notes and Current Product Pages' })).toBeVisible();
+  const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(s => JSON.parse(s));
+  expect(schemas.find(s => s['@type'] === 'Article')?.dateModified).toContain('2026-09-08');
+
+  await page.evaluate(() => {
+    (window as unknown as { captured: unknown[][] }).captured = [];
+    window.gtag = (...args: unknown[]) => (window as unknown as { captured: unknown[][] }).captured.push(args);
+    document.addEventListener('click', e => e.preventDefault(), true);
+  });
+  await page.locator('[data-cta-location="article-body:ios"]').first().click();
+  await page.locator('[data-cta-location="article-body:android"]').first().click();
+  const events = await page.evaluate(() => (window as unknown as { captured: unknown[][] }).captured);
+  expect(events).toHaveLength(2);
+  expect(events[0]).toEqual(['event', 'ios_app_click', expect.objectContaining({ article_slug: 'best-cannabis-cultivation-software-home-growers', page_path: cultivationTarget, cta_location: 'article-body:ios', link_url: expect.stringContaining('apps.apple.com') })]);
+  expect(events[1]).toEqual(['event', 'android_app_click', expect.objectContaining({ article_slug: 'best-cannabis-cultivation-software-home-growers', cta_location: 'article-body:android', link_url: expect.stringContaining('play.google.com') })]);
+});

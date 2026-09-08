@@ -13,6 +13,8 @@ const navLinks = [
 
 export default function LandingNav() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navAppStoreUrl = appStoreUrl('nav');
+  const mobileNavAppStoreUrl = appStoreUrl('mobile-nav');
 
   return (
     <nav className="sticky top-0 z-50 border-b border-white/[0.07] bg-black/72 px-4 backdrop-blur-2xl sm:px-6">
@@ -33,7 +35,7 @@ export default function LandingNav() {
 
         <div className="hidden items-center gap-3 sm:flex">
           <Link to="/grow-tech" className="rounded-full border border-white/12 px-4 py-2.5 text-sm font-semibold text-white/76 transition hover:border-landing-green/35 hover:text-landing-green">Shop GrowTech</Link>
-          <a href={appStoreUrl('nav')} className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black shadow-[0_0_28px_rgba(29,185,84,0.24)] transition hover:-translate-y-0.5 hover:bg-landing-green-glow">
+          <a href={navAppStoreUrl} data-cta-location="navigation:ios" className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black shadow-[0_0_28px_rgba(29,185,84,0.24)] transition hover:-translate-y-0.5 hover:bg-landing-green-glow">
             Try Free <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
           </a>
         </div>
@@ -56,7 +58,7 @@ export default function LandingNav() {
               </Link>
             ))}
           </div>
-          <a href={appStoreUrl('mobile-nav')} className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Start 3-Day Free Trial <ArrowRight className="h-4 w-4" /></a>
+          <a href={mobileNavAppStoreUrl} data-cta-location="mobile-navigation:ios" className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Start 3-Day Free Trial <ArrowRight className="h-4 w-4" /></a>
         </div>
       ) : null}
     </nav>

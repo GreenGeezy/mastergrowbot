@@ -23,10 +23,13 @@ interface AppPlatformButtonsProps {
 }
 
 export function AppPlatformButtons({ campaign, location, className = '' }: AppPlatformButtonsProps) {
+  const iosUrl = appStoreUrl(campaign);
+  const androidUrl = playStoreUrl(campaign);
+
   return (
     <div className={`flex flex-col sm:flex-row items-center justify-center gap-3 ${className}`}>
       <a
-        href={appStoreUrl(campaign)}
+        href={iosUrl}
         data-cta-location={`${location}:ios`}
         className="flex items-center justify-center gap-2 rounded-xl bg-landing-green px-5 py-3 text-sm font-semibold text-black transition-colors duration-200 hover:bg-landing-green/90 font-sans"
       >
@@ -34,7 +37,7 @@ export function AppPlatformButtons({ campaign, location, className = '' }: AppPl
         <ArrowRight className="h-4 w-4" />
       </a>
       <a
-        href={playStoreUrl(campaign)}
+        href={androidUrl}
         data-cta-location={`${location}:android`}
         className="flex items-center justify-center gap-2 rounded-xl border border-landing-green/30 bg-black/40 px-5 py-3 text-sm font-semibold text-white/80 transition-colors duration-200 hover:border-landing-green/60 hover:text-white font-sans"
       >
