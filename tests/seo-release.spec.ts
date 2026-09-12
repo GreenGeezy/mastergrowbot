@@ -68,6 +68,36 @@ test('home, hub and target have one correct canonical, including client navigati
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.mastergrowbot.com/grow-guides');
 });
 
+test('VPD calculator targets high-volume search intent and tracks app CTAs', async ({ page, request }) => {
+  await page.goto('/vpd-calculator');
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.mastergrowbot.com/vpd-calculator');
+  expect(await page.title()).toMatch(/VPD Calculator: Free Leaf VPD Chart/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /free VPD calculator/i);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('VPD Calculator: Free Leaf VPD and Chart for Cannabis');
+  await expect(page.getByRole('heading', { name: 'Calculate VPD from temperature and humidity, then compare it to your stage target.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'VPD guide' })).toHaveAttribute('href', '/grow-guides/cannabis-vpd-guide');
+  await expect(page.getByRole('link', { name: 'Leaf VPD explainer' })).toHaveAttribute('href', '/grow-guides/leaf-vpd-calculator-cannabis');
+  await expect(page.getByRole('link', { name: 'VPD calculator apps' })).toHaveAttribute('href', '/grow-guides/best-vpd-calculator-apps-cannabis');
+  await expect(page.getByRole('link', { name: 'Environment monitor kit' })).toHaveAttribute('href', '/grow-tech#environment-monitor');
+
+  for (const href of ['/grow-guides/cannabis-vpd-guide', '/grow-guides/leaf-vpd-calculator-cannabis', '/grow-guides/best-vpd-calculator-apps-cannabis', '/grow-tech']) {
+    expect((await request.get(href)).status(), href).toBe(200);
+  }
+
+  await page.evaluate(() => {
+    (window as unknown as { captured: unknown[][] }).captured = [];
+    window.gtag = (...args: unknown[]) => (window as unknown as { captured: unknown[][] }).captured.push(args);
+    document.addEventListener('click', e => e.preventDefault(), true);
+  });
+  await page.locator('[data-cta-location="vpd-calculator-results:ios"]').click();
+  await page.locator('[data-cta-location="vpd-calculator-results:android"]').click();
+  const events = await page.evaluate(() => (window as unknown as { captured: unknown[][] }).captured);
+  expect(events).toHaveLength(2);
+  expect(events[0]).toEqual(['event', 'ios_app_click', expect.objectContaining({ page_path: '/vpd-calculator', cta_location: 'vpd-calculator-results:ios', link_url: expect.stringContaining('apps.apple.com') })]);
+  expect(events[1]).toEqual(['event', 'android_app_click', expect.objectContaining({ page_path: '/vpd-calculator', cta_location: 'vpd-calculator-results:android', link_url: expect.stringContaining('play.google.com') })]);
+});
+
 test('target has correct content, links, schema and mobile layout', async ({ page, request }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const response = await page.goto(target);

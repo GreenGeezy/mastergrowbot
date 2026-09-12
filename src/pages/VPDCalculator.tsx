@@ -126,8 +126,8 @@ const breadcrumbSchema = {
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
-  name: 'Free VPD Calculator for Cannabis',
-  description: 'Calculate vapor pressure deficit for cannabis growing with actionable recommendations by growth stage.',
+  name: 'VPD Calculator: Free Leaf VPD Chart for Cannabis',
+  description: 'Calculate air VPD and leaf VPD from temperature, humidity, growth stage, and lighting type.',
   url: 'https://www.mastergrowbot.com/vpd-calculator',
   applicationCategory: 'UtilityApplication',
   operatingSystem: 'Any',
@@ -237,8 +237,8 @@ export default function VPDCalculator() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <SEOHead
-        title="Free Cannabis VPD Calculator 2026 | MasterGrowbot AI"
-        description="Enter your grow room temp and humidity. Get instant VPD diagnosis for your plant's growth stage with actionable fixes. Free, no signup required."
+        title="VPD Calculator: Free Leaf VPD Chart | MasterGrowbot AI"
+        description="Use a free VPD calculator for cannabis. Enter temperature, humidity and lighting type to see air VPD, leaf VPD, target range and app tracking links."
         canonicalUrl="https://www.mastergrowbot.com/vpd-calculator"
       />
       <Helmet>
@@ -261,19 +261,41 @@ export default function VPDCalculator() {
         {/* ── HERO ──────────────────────────────────────────────────────── */}
         <header className="mb-10 space-y-4">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
-            Free VPD Calculator for Cannabis
+            VPD Calculator: Free Leaf VPD and Chart for Cannabis
           </h1>
           <p className="text-base sm:text-lg text-white/60 font-sans max-w-2xl leading-relaxed">
-            Enter your temperature and humidity. Get instant VPD diagnosis with actionable recommendations for your growth stage.
+            Use this free VPD calculator to convert temperature, humidity, lighting type, and growth stage into air VPD, leaf VPD, target range, and a clear status.
           </p>
           <p className="text-sm text-white/40 font-sans">
             Track VPD over time in your grow journal with{' '}
             <a href={APP_STORE_URL} data-cta-location="vpd-hero-text:ios" className="text-landing-green hover:underline">
-              MasterGrowbot AI
+              MasterGrowbot AI for iOS
+            </a>{' '}
+            or{' '}
+            <a href={PLAY_STORE_URL} data-cta-location="vpd-hero-text:android" className="text-landing-green hover:underline">
+              Android
             </a>{' '}
             - free 3-day trial, no signup required.
           </p>
         </header>
+
+        <section aria-labelledby="vpd-quick-answer" className="mb-10 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-5 sm:p-6">
+          <p className="text-xs font-semibold uppercase tracking-wider text-landing-green font-sans mb-3">
+            Quick answer
+          </p>
+          <h2 id="vpd-quick-answer" className="text-lg sm:text-xl font-bold text-white font-sans mb-3">
+            Calculate VPD from temperature and humidity, then compare it to your stage target.
+          </h2>
+          <p className="text-sm sm:text-base text-white/65 leading-relaxed font-sans">
+            Enter canopy temperature and relative humidity, choose LED, HPS, or a custom leaf-temperature offset, and the calculator shows both air VPD and leaf VPD in kPa. Leaf VPD is usually the more useful number because transpiration happens at the leaf surface.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm font-sans">
+            <Link to="/grow-guides/cannabis-vpd-guide" className="text-landing-green hover:underline">VPD guide</Link>
+            <Link to="/grow-guides/leaf-vpd-calculator-cannabis" className="text-landing-green hover:underline">Leaf VPD explainer</Link>
+            <Link to="/grow-guides/best-vpd-calculator-apps-cannabis" className="text-landing-green hover:underline">VPD calculator apps</Link>
+            <Link to="/grow-tech#environment-monitor" className="text-landing-green hover:underline">Environment monitor kit</Link>
+          </div>
+        </section>
 
         {/* ── CALCULATOR CARD ───────────────────────────────────────────── */}
         <div className="rounded-2xl border border-landing-green/20 bg-gradient-to-b from-landing-green/[0.06] to-transparent p-5 sm:p-8 mb-14 shadow-[0_0_60px_-15px_rgba(74,222,128,0.15)]">
@@ -514,6 +536,16 @@ export default function VPDCalculator() {
             </div>
           </div>
         </div>
+
+        <section className="mb-14 rounded-2xl border border-landing-green/20 bg-landing-green/[0.04] p-5 sm:p-6 text-center">
+          <h2 className="text-xl sm:text-2xl font-bold text-white font-sans">
+            Save VPD readings with your plant photos
+          </h2>
+          <p className="mx-auto mt-2 max-w-2xl text-sm sm:text-base text-white/60 font-sans leading-relaxed">
+            MasterGrowbot AI keeps VPD readings, grow notes, tasks, and AI plant diagnosis in one journal so each calculator check can become a useful record.
+          </p>
+          <AppPlatformButtons campaign="vpd-calculator" location="vpd-calculator-results" className="pt-5" />
+        </section>
 
         {/* ── VPD REFERENCE TABLE ───────────────────────────────────────── */}
         <section className="mb-16">
