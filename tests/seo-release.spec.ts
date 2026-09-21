@@ -42,9 +42,17 @@ test('Grow Tech is discoverable, commercially described and free of expired prom
 
 test('hardware-intent guides recommend the matching Grow Tech product', async ({ page }) => {
   await page.goto('/grow-guides/best-cannabis-grow-room-sensors-mold-heat-stress');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Grow Room Sensors for Cannabis: Environment Monitor Guide');
+  expect(await page.title()).toMatch(/Grow Room Sensors for Cannabis/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /environment monitor/i);
+  await expect(page.getByRole('heading', { name: 'Direct Answer: Best Grow Room Sensor Setup' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'free cannabis VPD calculator' }).first()).toHaveAttribute('href', '/vpd-calculator');
   const cta = page.locator('[data-cta-location="article-inline:grow-tech"]');
   await expect(cta).toHaveAttribute('href', '/grow-tech#environment-monitor');
   await expect(cta).toContainText('Compare price & details');
+  const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(s => JSON.parse(s));
+  expect(schemas.find(s => s['@type'] === 'Article')?.dateModified).toContain('2026-09-21');
+  await expect(page.locator('article')).not.toContainText(/yield, potency/);
 });
 
 test('shared shell contains one exact Whop Pixel with narrowly scoped CSP access', () => {
