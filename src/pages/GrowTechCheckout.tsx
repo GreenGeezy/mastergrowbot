@@ -37,19 +37,19 @@ export default function GrowTechCheckout() {
       />
       <Helmet><meta name="robots" content="noindex,follow" /></Helmet>
       <LandingNav growTechMode />
-      <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
+      <main className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         <Link to="/grow-tech" className="inline-flex items-center gap-2 text-sm font-semibold text-white/65 hover:text-white">
           <ArrowLeft className="h-4 w-4" /> Back to all GrowTech products
         </Link>
-        <div className="mt-6 rounded-2xl border border-landing-green/25 bg-landing-green/10 p-5 sm:p-7">
+        <div className="mt-4 rounded-2xl border border-landing-green/25 bg-landing-green/10 p-4 sm:p-5">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-landing-green">Secure one-time checkout</p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Complete your {product.name} order</h1>
-          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/75">
+          <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Complete your order</h1>
+          <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-white/75">
             <span className="inline-flex items-center gap-2"><Truck className="h-4 w-4 text-landing-green" /> Free US & Canada shipping</span>
             <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-landing-green" /> Payment secured by Whop</span>
           </div>
         </div>
-        <div className="mt-5">
+        <div className="mt-3">
           <EmbeddedGrowTechCheckout
             product={product}
             planId={planId}
