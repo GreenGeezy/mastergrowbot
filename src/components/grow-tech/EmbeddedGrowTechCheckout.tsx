@@ -28,7 +28,7 @@ type EmbeddedGrowTechCheckoutProps = {
 
 const trustItems = [
   { text: "Secure checkout powered by Whop", icon: ShieldCheck },
-  { text: "100% free shipping", icon: Truck },
+  { text: "Free US & Canada shipping", icon: Truck },
   { text: "Tracking sent after dispatch", icon: PackageCheck },
   { text: "Order support included", icon: Headphones },
 ];
@@ -104,7 +104,9 @@ export default function EmbeddedGrowTechCheckout({
     }
   }, [checkoutState, checkoutUnavailable, ctaLocation, product.productId]);
 
-  const resolvedFallbackCheckoutUrl = planId ? `https://whop.com/checkout/${planId}` : fallbackCheckoutUrl;
+  // A plan ID identifies the embed, but is not necessarily a valid hosted purchase URL.
+  // Use the exact checkout link configured by the merchant.
+  const resolvedFallbackCheckoutUrl = fallbackCheckoutUrl;
 
   const fallbackLink = resolvedFallbackCheckoutUrl ? (
     <a

@@ -15,6 +15,7 @@ const GrowGuideArticle = lazy(() => import("@/pages/GrowGuideArticle"));
 const VPDCalculator = lazy(() => import("@/pages/VPDCalculator"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const GrowTech = lazy(() => import("@/pages/GrowTech"));
+const GrowTechCheckout = lazy(() => import("@/pages/GrowTechCheckout"));
 const GrowTechThankYou = lazy(() => import("@/pages/GrowTechThankYou"));
 const WhopEmbedTest = lazy(() => import("@/pages/WhopEmbedTest"));
 const CheckoutDiagnostics = lazy(() => import("@/pages/CheckoutDiagnostics"));
@@ -97,6 +98,14 @@ const App = () => {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <GrowTechThankYou />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/grow-tech/checkout/:productSlug"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <GrowTechCheckout />
               </Suspense>
             }
           />

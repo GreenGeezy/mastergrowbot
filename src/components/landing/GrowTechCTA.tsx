@@ -24,10 +24,10 @@ const variantStyles: Record<GrowTechCTAVariant, string> = {
 };
 
 const subtextByVariant: Record<GrowTechCTAVariant, string> = {
-  hero: 'AI Intelligent GrowTech for growers of all types and experience levels',
-  nav: 'AI Intelligent GrowTech for every grower',
-  compact: 'AI Intelligent GrowTech for growers of all types and experience levels',
-  inline: 'AI Intelligent GrowTech for every grower',
+  hero: 'Plant camera, room monitor & soil meter · Complete kit $247 · Free US & Canada shipping',
+  nav: 'Three practical grow tools, with a $247 complete kit',
+  compact: 'Complete three-tool kit $247',
+  inline: 'Plant camera, room monitor & soil meter',
 };
 
 export default function GrowTechCTA({

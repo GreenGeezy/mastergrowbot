@@ -11,7 +11,7 @@ const navLinks = [
   { label: 'Contact', to: '/contact' },
 ];
 
-export default function LandingNav() {
+export default function LandingNav({ growTechMode = false }: { growTechMode?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navAppStoreUrl = appStoreUrl('nav');
   const mobileNavAppStoreUrl = appStoreUrl('mobile-nav');
@@ -34,10 +34,18 @@ export default function LandingNav() {
         </div>
 
         <div className="hidden items-center gap-3 sm:flex">
-          <Link to="/grow-tech" className="rounded-full border border-white/12 px-4 py-2.5 text-sm font-semibold text-white/76 transition hover:border-landing-green/35 hover:text-landing-green">Shop GrowTech</Link>
-          <a href={navAppStoreUrl} data-cta-location="navigation:ios" className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black shadow-[0_0_28px_rgba(29,185,84,0.24)] transition hover:-translate-y-0.5 hover:bg-landing-green-glow">
-            Try Free <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-          </a>
+          {growTechMode ? (
+            <a href="/grow-tech/checkout/grow-tech-kit" className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black hover:bg-landing-green-glow">
+              Get the $247 Kit <ArrowRight className="h-4 w-4" />
+            </a>
+          ) : (
+            <>
+              <Link to="/grow-tech" className="rounded-full border border-white/12 px-4 py-2.5 text-sm font-semibold text-white/76 transition hover:border-landing-green/35 hover:text-landing-green">Shop GrowTech</Link>
+              <a href={navAppStoreUrl} data-cta-location="navigation:ios" className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black shadow-[0_0_28px_rgba(29,185,84,0.24)] transition hover:-translate-y-0.5 hover:bg-landing-green-glow">
+                Try Free <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+              </a>
+            </>
+          )}
         </div>
 
         <button type="button" onClick={() => setMenuOpen(true)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white sm:hidden" aria-label="Open navigation menu" aria-expanded={menuOpen}>
@@ -58,7 +66,11 @@ export default function LandingNav() {
               </Link>
             ))}
           </div>
-          <a href={mobileNavAppStoreUrl} data-cta-location="mobile-navigation:ios" className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Start 3-Day Free Trial <ArrowRight className="h-4 w-4" /></a>
+          {growTechMode ? (
+            <Link to="/grow-tech/checkout/grow-tech-kit" onClick={() => setMenuOpen(false)} className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Get the $247 Kit <ArrowRight className="h-4 w-4" /></Link>
+          ) : (
+            <a href={mobileNavAppStoreUrl} data-cta-location="mobile-navigation:ios" className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Start 3-Day Free Trial <ArrowRight className="h-4 w-4" /></a>
+          )}
         </div>
       ) : null}
     </nav>

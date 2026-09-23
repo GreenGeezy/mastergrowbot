@@ -61,7 +61,7 @@ export default function HeroSection() {
             <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-landing-green" />3-day free trial</span>
             <span>No credit card to start</span>
             <Link to="/grow-tech" className="group inline-flex items-center gap-1 text-white/72 transition hover:text-landing-green">
-              Shop GrowTech <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+              Explore the $247 GrowTech kit <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
             </Link>
           </div>
         </motion.div>

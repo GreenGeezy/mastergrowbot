@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   ArrowRight,
@@ -16,7 +17,6 @@ import {
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import ParticleBackground from "@/components/landing/ParticleBackground";
-import EmbeddedGrowTechCheckout from "@/components/grow-tech/EmbeddedGrowTechCheckout";
 import SEOHead from "@/components/SEOHead";
 import {
   GROWTECH_PRODUCT_IDS,
@@ -28,211 +28,28 @@ import {
   type GrowTechTestimonial,
 } from "@/data/growTechTestimonials";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   trackGrowTechBeginCheckout,
   trackGrowTechCheckoutOpened,
   trackGrowTechSelectItem,
   trackEvent,
 } from "@/lib/analytics";
 
-type CheckoutKey =
-  | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL"
-  | "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL"
-  | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL"
-  | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL";
-
-type PlanKey =
-  | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID"
-  | "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID"
-  | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID"
-  | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID";
-
-type GrowTechProduct = {
-  name: string;
-  displayName?: string;
-  productId: string;
-  badge: string;
-  price: string;
-  numericPrice: number;
-  salePrice: string;
-  description: string;
-  whyBuy: string;
-  bestFor: string[];
-  dataCollected: string;
-  comparisonBestFor: string;
-  aiHelp: string;
-  schemaDescription: string;
-  sku: string;
-  category: string;
-  buttonLabel: string;
-  image: string;
-  imageWebp?: string;
-  imagePng?: string;
-  imageWidth?: number;
-  imageHeight?: number;
-  alt: string;
-  planKey: PlanKey;
-  checkoutKey: CheckoutKey;
-  anchorId: string;
-};
-
-const checkoutUrls: Record<CheckoutKey, string | undefined> = {
-  NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL,
-  NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL:
-    import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL,
-  NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL:
-    import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL,
-  NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL,
-};
-
-const planIds: Record<PlanKey, string | undefined> = {
-  NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID,
-  NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID,
-  NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID,
-  NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID,
-};
-
-const JULY_PROMO_CODE = "AIGROWTECH";
-const JULY_PROMO_END_MS = Date.UTC(2026, 7, 1);
-const IS_JULY_PROMO_ACTIVE = Date.now() < JULY_PROMO_END_MS;
-const JULY_PROMO_COPY = "Valid through July 31, 2026";
-const INDIVIDUAL_FULL_TOTAL = "$297";
-const KIT_SALE_PRICE = "$197.60";
-const KIT_FULL_PRICE_SAVINGS = "$99.40";
-const INDIVIDUAL_SALE_TOTAL = "$237.60";
-const KIT_SALE_SAVINGS = "$40";
-
-function currentPrice(product: GrowTechProduct) {
-  return IS_JULY_PROMO_ACTIVE ? product.salePrice : product.price;
-}
-
-const products: GrowTechProduct[] = [
-  {
-    name: "MasterGrowbot AI Scout Camera 10-20X",
-    productId: "growtech_scout_camera_10_20x",
-    badge: "Premium",
-    price: "$149",
-    numericPrice: 149,
-    salePrice: "$119.20",
-    description:
-      "Capture sharper close-up photos of leaves, buds, pests, trichomes, and plant symptoms for better inspection, documentation, and grow journal records.",
-    whyBuy: "Sharper plant photos for better grow records.",
-    bestFor: ["Plant inspection photos", "Leaf and bud closeups", "Pest and disease photos", "Grow journal documentation"],
-    dataCollected: "Leaf, bud, pest, and trichome images",
-    comparisonBestFor: "Clearer close-up plant photos",
-    aiHelp: "Captures clearer close-up photos for inspection, documentation, grow journals, and optional AI-assisted review.",
-    schemaDescription:
-      "A 10-20X phone camera lens for clearer plant inspection photos, pest documentation, trichome closeups, and grow journal records.",
-    sku: "MGB-AI-SCOUT-10-20X",
-    category: "Plant health scan camera",
-    buttonLabel: "Get the Scout Camera",
-    image: "/images/grow-tech/ai-scout-camera-10-20x.png",
-    alt: "MasterGrowbot AI Scout Camera 10-20X clipped onto a smartphone for cannabis plant close-up scans.",
-    planKey: "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID",
-    checkoutKey: "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL",
-    anchorId: "scout-camera",
-  },
-  {
-    name: "MasterGrowbot AI Environment Monitor",
-    productId: "growtech_environment_monitor",
-    badge: "Environment Data",
-    price: "$89",
-    numericPrice: 89,
-    salePrice: "$71.20",
-    description:
-      "Track grow-room temperature, humidity, CO2, and air-quality context so you can document conditions and spot environment changes faster.",
-    whyBuy: "Better grow-room context for better decisions.",
-    bestFor: ["Temperature monitoring", "Humidity monitoring", "CO2 context", "Air quality checks", "Grow-room records"],
-    dataCollected: "Temperature, humidity, CO2, air quality, particulates, VOC context",
-    comparisonBestFor: "Grow-room environment context",
-    aiHelp: "Adds temperature, humidity, CO2, and air-quality context to grow-room records and troubleshooting notes.",
-    schemaDescription:
-      "A grow-room environment monitor for tracking temperature, humidity, CO2, and air-quality context for cultivation records.",
-    sku: "MGB-AI-ENV-MONITOR",
-    category: "Grow room environment monitor",
-    buttonLabel: "Get the Environment Monitor",
-    image: "/images/grow-tech/climate-sensor.png",
-    imageWebp: "/images/grow-tech/generated-review/environment-monitor-grow-tent.webp",
-    imagePng: "/images/grow-tech/generated-review/environment-monitor-grow-tent.png",
-    imageWidth: 1536,
-    imageHeight: 1024,
-    alt: "MasterGrowbot AI Environment Monitor tracking air quality, temperature, humidity, and CO2 in an indoor cannabis grow tent.",
-    planKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID",
-    checkoutKey: "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL",
-    anchorId: "environment-monitor",
-  },
-  {
-    name: "MasterGrowbot AI Soil Health Meter 6-in-1",
-    displayName: "MasterGrowbot AI Soil Health Meter 6-in-1",
-    productId: "growtech_soil_health_meter_6_in_1",
-    badge: "Soil Data",
-    price: "$59",
-    numericPrice: 59,
-    salePrice: "$47.20",
-    description:
-      "Check soil moisture, pH, temperature, fertility, light, and humidity context so you can document root-zone and grow conditions more clearly.",
-    whyBuy: "Quick soil and light context for grow notes.",
-    bestFor: ["Soil moisture checks", "pH context", "Temperature readings", "Light and humidity notes", "Root-zone documentation"],
-    dataCollected: "Soil moisture, pH, temperature, fertility, light, air humidity",
-    comparisonBestFor: "Soil, light, and root-zone context",
-    aiHelp: "Adds soil, light, and root-zone readings to grow notes and watering decisions.",
-    schemaDescription:
-      "A 6-in-1 soil health meter for checking soil moisture, pH, temperature, fertility, light, and humidity context.",
-    sku: "MGB-AI-SOIL-6IN1",
-    category: "Soil health meter for cannabis",
-    buttonLabel: "Get the Soil Meter",
-    image: "/images/grow-tech/root-zone-meter.png",
-    imageWebp: "/images/grow-tech/generated-review/soil-health-meter-root-zone.webp",
-    imagePng: "/images/grow-tech/generated-review/soil-health-meter-root-zone.png",
-    imageWidth: 1448,
-    imageHeight: 1086,
-    alt: "MasterGrowbot AI Soil Health Meter 6-in-1 checking soil moisture and plant context in a cannabis fabric pot.",
-    planKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID",
-    checkoutKey: "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL",
-    anchorId: "soil-health-meter",
-  },
-];
-
-const bundle: GrowTechProduct = {
-  name: "MasterGrowbot AI Grow Tech Kit",
-  productId: "growtech_kit",
-  badge: "Save $50",
-  price: "$247",
-  numericPrice: 247,
-  salePrice: KIT_SALE_PRICE,
-  description:
-    "Get the full MasterGrowbot AI Grow Tech setup with the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Built for growers who want sharper plant photos, better environment records, and clearer soil and light context in one kit.",
-  whyBuy: "The complete grow documentation setup with $50 bundle savings.",
-  bestFor: [
-    "Complete grow documentation setup",
-    "Sharper plant photos",
-    "Environment data",
-    "Soil and light context",
-    "Premium grow records",
-  ],
-  dataCollected: "Photos, environment data, soil and light context",
-  comparisonBestFor: "Complete grow documentation setup",
-  aiHelp: "Combines plant photos, environment readings, and soil context into one grow documentation setup.",
-  schemaDescription:
-    "A cannabis grow hardware kit with a plant inspection camera, environment monitor, and soil health meter for better grow documentation.",
-  sku: "MGB-AI-GROW-TECH-KIT",
-  category: "Cannabis grow tech kit",
-  buttonLabel: IS_JULY_PROMO_ACTIVE
-    ? `Get the Complete Kit - ${KIT_SALE_PRICE} with code`
-    : "Get the Complete Kit",
-  image: "/images/grow-tech/grow-tech-kit.png",
-  alt: "MasterGrowbot AI Grow Tech Kit with camera lens, environment monitor, and soil health meter.",
-  planKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID",
-  checkoutKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL",
-  anchorId: "grow-tech-kit",
-};
+import {
+  bundle,
+  checkoutUrls,
+  currentPrice,
+  INDIVIDUAL_FULL_TOTAL,
+  INDIVIDUAL_SALE_TOTAL,
+  IS_JULY_PROMO_ACTIVE,
+  JULY_PROMO_CODE,
+  JULY_PROMO_COPY,
+  KIT_FULL_PRICE_SAVINGS,
+  KIT_SALE_PRICE,
+  KIT_SALE_SAVINGS,
+  planIds,
+  products,
+  type GrowTechProduct,
+} from "@/data/growTechProducts";
 
 const useCases = [
   {
@@ -251,7 +68,7 @@ const useCases = [
 
 const trustStripItems = [
   { text: "Secure checkout powered by Whop", icon: ShieldCheck },
-  { text: "100% free shipping", icon: Truck },
+  { text: "Free US & Canada shipping", icon: Truck },
   { text: "Cards and local payment methods supported", icon: CreditCard },
   { text: "Tracking sent after supplier dispatch", icon: PackageCheck },
 ];
@@ -263,8 +80,8 @@ const trustCards = [
     icon: ShieldCheck,
   },
   {
-    title: "100% Free Shipping",
-    text: "Every MasterGrowbot AI Grow Tech product includes free shipping, with no surprise shipping charge added on the product page.",
+    title: "Free US & Canada Shipping",
+    text: "The listed prices include shipping to the United States and Canada. Prices are shown in USD.",
     icon: Truck,
   },
   {
@@ -339,6 +156,10 @@ const faqs = [
     answer: "Shipping address and delivery details are collected during Whop checkout before payment.",
   },
   {
+    question: "Do you ship to Canada?",
+    answer: "Yes. Shipping is free to the United States and Canada. Prices are shown in USD, and your payment provider may convert the amount to your local currency.",
+  },
+  {
     question: "When do I get tracking?",
     answer:
       "Tracking is sent by email or Whop support message after supplier dispatch. Tracking can take 24 to 72 hours to update after the carrier receives the package.",
@@ -381,10 +202,10 @@ const shippingDetails = {
     value: 0,
     currency: "USD",
   },
-  shippingDestination: {
+  shippingDestination: ["US", "CA"].map((addressCountry) => ({
     "@type": "DefinedRegion",
-    addressCountry: "US",
-  },
+    addressCountry,
+  })),
 };
 
 const hasMerchantReturnPolicy = {
@@ -535,7 +356,8 @@ function JulySaleBanner() {
     return (
       <div className="max-w-xl rounded-xl border border-landing-green/25 bg-landing-green/10 p-4 text-left">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">Complete 3-Tool Kit</p>
-        <p className="mt-1 text-lg font-bold text-white font-sans">One kit. Three practical cultivation tools.</p>
+        <p className="mt-1 text-3xl font-black text-white font-sans">$247 <span className="text-base font-medium text-white/55">for all three tools</span></p>
+        <p className="mt-1 text-sm text-white/70">Save $50 versus buying separately · Free shipping to the US and Canada</p>
       </div>
     );
   }
@@ -585,7 +407,7 @@ function PaymentBadges() {
 }
 
 function TrustBadges() {
-  const chips = ["Secure Whop Checkout", "100% Free Shipping", "Tracking After Dispatch", "Order Support Included"];
+  const chips = ["Secure Whop Checkout", "Free US & Canada Shipping", "Tracking After Dispatch", "Order Support Included"];
 
   return (
     <div className="mt-3 flex flex-wrap gap-2">
@@ -685,26 +507,14 @@ function CheckoutButton({
   }
 
   return (
-    <Dialog
-      onOpenChange={(open) => {
-        window.dispatchEvent(new CustomEvent("growtech-checkout-state", { detail: { open } }));
-        if (!open) {
-          trackEvent("growtech_checkout_close", {
-            product_id: product.productId,
-            cta_location: ctaLocation,
-          });
-        }
-      }}
-    >
       <div className={className}>
         {!compact && IS_JULY_PROMO_ACTIVE && (
           <p className="mb-2 text-center text-xs font-semibold text-amber-100/85 sm:text-left">
             Enter {JULY_PROMO_CODE} at checkout to save 20%.
           </p>
         )}
-        <DialogTrigger asChild>
-          <button
-            type="button"
+          <Link
+            to={`/grow-tech/checkout/${product.anchorId}`}
             data-cta-location={ctaLocation}
             onClick={handleOpenCheckout}
             className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-landing-green via-emerald-300 to-lime-300 px-5 py-6 text-base font-black text-black shadow-[0_0_30px_rgba(34,197,94,0.42)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_46px_rgba(34,197,94,0.68)] focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-black"
@@ -712,8 +522,7 @@ function CheckoutButton({
             <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-0 transition duration-700 group-hover:translate-x-full group-hover:opacity-100" />
             <span className="relative">{compact ? "Get the Kit" : product.buttonLabel}</span>
             <ArrowRight className="relative h-4 w-4" aria-hidden="true" />
-          </button>
-        </DialogTrigger>
+          </Link>
         {showTrust && (
           <div className="mt-3 rounded-lg border border-white/[0.08] bg-black/30 p-3">
             <p className="flex items-center gap-2 text-sm font-semibold text-white/78">
@@ -726,28 +535,6 @@ function CheckoutButton({
           </div>
         )}
       </div>
-      <DialogContent className="max-h-[94vh] w-[calc(100vw-24px)] max-w-[920px] overflow-y-auto border-landing-green/20 bg-black/95 p-0 text-white shadow-2xl shadow-landing-green/10">
-        <div className="p-5 sm:p-6">
-          <DialogHeader className="pr-8">
-            <DialogTitle className="text-2xl font-bold tracking-tight text-white font-sans">
-              Complete Secure Checkout
-            </DialogTitle>
-            <DialogDescription className="text-sm leading-relaxed text-white/58">
-              Whop collects payment and delivery details securely before your order is fulfilled.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="mt-5">
-            <EmbeddedGrowTechCheckout
-              product={product}
-              planId={planId}
-              fallbackCheckoutUrl={checkoutUrl}
-              ctaLocation={ctaLocation}
-              promoActive={IS_JULY_PROMO_ACTIVE}
-            />
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
   );
 }
 
@@ -774,7 +561,7 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
         </span>
         <span className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full border border-landing-green/30 bg-black/65 px-3 py-1 text-xs font-semibold text-white/80 backdrop-blur">
           <Truck className="h-3.5 w-3.5 text-landing-green" aria-hidden="true" />
-          100% Free Shipping
+          Free US & Canada Shipping
         </span>
       </div>
 
@@ -1171,7 +958,7 @@ function BundleSection() {
             </span>
             <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-landing-green/25 bg-black/35 px-3 py-1 text-xs font-semibold text-white/75">
               <Truck className="h-3.5 w-3.5 text-landing-green" aria-hidden="true" />
-              100% Free Shipping
+              Free US & Canada Shipping
             </span>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">{bundle.name}</h2>
@@ -1309,7 +1096,6 @@ function FaqSection() {
 
 function StickyMobileCta() {
   const [heroCtaVisible, setHeroCtaVisible] = useState(true);
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   useEffect(() => {
     const heroCta = document.getElementById("growtech-hero-cta");
@@ -1318,29 +1104,19 @@ function StickyMobileCta() {
     const observer = new IntersectionObserver(([entry]) => setHeroCtaVisible(entry.isIntersecting), { threshold: 0.2 });
     observer.observe(heroCta);
 
-    const handleCheckoutState = (event: Event) => {
-      const detail = (event as CustomEvent<{ open?: boolean }>).detail;
-      setCheckoutOpen(Boolean(detail?.open));
-    };
-    window.addEventListener("growtech-checkout-state", handleCheckoutState);
-
     return () => {
       observer.disconnect();
-      window.removeEventListener("growtech-checkout-state", handleCheckoutState);
     };
   }, []);
 
-  if (heroCtaVisible && !checkoutOpen) return null;
+  if (heroCtaVisible) return null;
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/92 px-4 pt-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl transition-opacity sm:hidden ${
-        checkoutOpen ? "invisible pointer-events-none opacity-0" : "visible opacity-100"
-      }`}
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-landing-green/20 bg-black/92 px-4 pt-3 shadow-2xl shadow-landing-green/10 backdrop-blur-xl sm:hidden"
       style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
       role="region"
       aria-label="Complete kit purchase"
-      aria-hidden={checkoutOpen}
     >
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
         <div>
@@ -1523,7 +1299,7 @@ export default function GrowTech() {
     <div className="min-h-screen overflow-x-hidden bg-black pb-24 text-white sm:pb-0">
       <SEOHead
         title="Cannabis Grow Tech Kit, Plant Camera & Soil Meter | MasterGrowbot AI"
-        description="Shop a cannabis grow tech kit, 10-20X plant camera, grow-room environment monitor, or 6-in-1 soil meter. Free US shipping and secure Whop checkout."
+        description="Shop a cannabis grow tech kit, 10-20X plant camera, grow-room environment monitor, or 6-in-1 soil meter. Free US and Canada shipping and secure Whop checkout."
         canonicalUrl="https://www.mastergrowbot.com/grow-tech"
         ogImage="https://www.mastergrowbot.com/images/grow-tech/grow-tech-kit.png"
       />
@@ -1537,7 +1313,7 @@ export default function GrowTech() {
       </Helmet>
 
       <ParticleBackground />
-      <LandingNav />
+      <LandingNav growTechMode />
 
       <main>
         <section className="relative z-10 isolate overflow-hidden border-b border-white/[0.06] px-4 py-14 sm:px-6 sm:py-20 lg:min-h-[760px] lg:py-24">
@@ -1560,18 +1336,18 @@ export default function GrowTech() {
               </div>
               <div className="space-y-5">
                 <h1 className="text-balance text-[2.65rem] font-bold leading-[0.98] tracking-[-0.045em] text-white font-sans sm:text-6xl lg:text-[4.65rem]">
-                  Cannabis Grow Tech Kit: <span className="text-landing-green">Camera, Room Monitor & Soil Meter</span>
+                  See more than your plants show. <span className="text-landing-green">Measure the grow around them.</span>
                 </h1>
                 <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl lg:mx-0">
-                  Capture sharper cultivation photos, monitor grow-room conditions, and perform quick root-zone spot
-                  checks with three practical tools that work independently or alongside the MasterGrowbot AI app.
+                  For home growers and small cultivation teams: inspect leaves and trichomes up close, check room
+                  conditions, and spot-check the root zone. Get all three tools in the $247 kit, or choose only what your grow needs.
                 </p>
               </div>
               <JulySaleBanner />
               <div id="growtech-hero-cta" className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
                 <CheckoutButton product={bundle} ctaLocation="growtech_hero:bundle" className="sm:w-auto" />
                 <a
-                  href="#comparison"
+                  href="#products"
                   onClick={() => trackEvent("growtech_compare_click", { cta_location: "growtech_hero" })}
                   className="inline-flex w-full items-center justify-center rounded-lg border border-white/10 px-5 py-3.5 text-sm font-semibold text-white/75 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green sm:w-auto"
                 >
@@ -1579,7 +1355,7 @@ export default function GrowTech() {
                 </a>
               </div>
               <p className="max-w-xl rounded-lg border border-white/[0.08] bg-black/30 px-4 py-3 text-sm leading-6 text-white/62">
-                <span className="font-semibold text-gold">5-star Scout Camera feedback from Mike P.</span>{" "}
+                <span className="font-semibold text-gold">Read Scout Camera feedback.</span>{" "}
                 <a href={`#reviews-${GROWTECH_PRODUCT_IDS.scoutCamera}`} className="font-semibold text-landing-green underline-offset-4 hover:underline">
                   Read customer reviews
                 </a>
@@ -1619,16 +1395,16 @@ export default function GrowTech() {
         </section>
 
         <WhatIsIncludedSection />
-        <ComparisonTable />
-        <ProductTestimonialsSection />
-        <UseCaseCards />
-        <ProductUseImagerySection />
+        <BundleSection />
         <ProductGridSection />
+        <ProductTestimonialsSection />
+        <ProductUseImagerySection />
+        <ComparisonTable />
+        <UseCaseCards />
         <TrustSection />
         <ShippingSection />
         <OrderSupportSection />
         <FaqSection />
-        <BundleSection />
 
         <section className="relative z-10 px-4 pb-20 sm:px-6 sm:pb-28">
           <div className="mx-auto max-w-4xl space-y-5 rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 text-sm leading-relaxed text-white/58 backdrop-blur-xl sm:p-8">
