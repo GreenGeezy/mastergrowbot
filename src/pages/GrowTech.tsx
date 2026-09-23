@@ -251,7 +251,7 @@ const useCases = [
 
 const trustStripItems = [
   { text: "Secure checkout powered by Whop", icon: ShieldCheck },
-  { text: "100% free shipping", icon: Truck },
+  { text: "Free US shipping", icon: Truck },
   { text: "Cards and local payment methods supported", icon: CreditCard },
   { text: "Tracking sent after supplier dispatch", icon: PackageCheck },
 ];
@@ -263,8 +263,8 @@ const trustCards = [
     icon: ShieldCheck,
   },
   {
-    title: "100% Free Shipping",
-    text: "Every MasterGrowbot AI Grow Tech product includes free shipping, with no surprise shipping charge added on the product page.",
+    title: "Free US Shipping",
+    text: "The listed prices include shipping within the United States. Contact support before checkout for a Canadian delivery quote.",
     icon: Truck,
   },
   {
@@ -337,6 +337,10 @@ const faqs = [
   {
     question: "Where do I enter my shipping address?",
     answer: "Shipping address and delivery details are collected during Whop checkout before payment.",
+  },
+  {
+    question: "Do you ship to Canada?",
+    answer: "The current offer includes free shipping within the United States. For a Canadian delivery, email support@mastergrowbot.com before checkout so we can confirm availability and the delivered price.",
   },
   {
     question: "When do I get tracking?",
@@ -585,7 +589,7 @@ function PaymentBadges() {
 }
 
 function TrustBadges() {
-  const chips = ["Secure Whop Checkout", "100% Free Shipping", "Tracking After Dispatch", "Order Support Included"];
+  const chips = ["Secure Whop Checkout", "Free US Shipping", "Tracking After Dispatch", "Order Support Included"];
 
   return (
     <div className="mt-3 flex flex-wrap gap-2">
@@ -684,6 +688,25 @@ function CheckoutButton({
     );
   }
 
+  if (!planId && checkoutUrl) {
+    return (
+      <div className={className}>
+        <a
+          href={checkoutUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cta-location={ctaLocation}
+          onClick={handleOpenCheckout}
+          className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-landing-green via-emerald-300 to-lime-300 px-5 py-6 text-base font-black text-black shadow-[0_0_30px_rgba(34,197,94,0.42)] transition hover:shadow-[0_0_46px_rgba(34,197,94,0.68)] focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-black"
+        >
+          {compact ? "Get the Kit" : product.buttonLabel}
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </a>
+        {showTrust && <p className="mt-3 text-sm text-white/65">Secure checkout powered by Whop. Delivery details are collected there.</p>}
+      </div>
+    );
+  }
+
   return (
     <Dialog
       onOpenChange={(open) => {
@@ -774,7 +797,7 @@ function ProductCard({ product }: { product: GrowTechProduct }) {
         </span>
         <span className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full border border-landing-green/30 bg-black/65 px-3 py-1 text-xs font-semibold text-white/80 backdrop-blur">
           <Truck className="h-3.5 w-3.5 text-landing-green" aria-hidden="true" />
-          100% Free Shipping
+          Free US Shipping
         </span>
       </div>
 
@@ -1171,7 +1194,7 @@ function BundleSection() {
             </span>
             <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-landing-green/25 bg-black/35 px-3 py-1 text-xs font-semibold text-white/75">
               <Truck className="h-3.5 w-3.5 text-landing-green" aria-hidden="true" />
-              100% Free Shipping
+              Free US Shipping
             </span>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl">{bundle.name}</h2>
@@ -1560,11 +1583,11 @@ export default function GrowTech() {
               </div>
               <div className="space-y-5">
                 <h1 className="text-balance text-[2.65rem] font-bold leading-[0.98] tracking-[-0.045em] text-white font-sans sm:text-6xl lg:text-[4.65rem]">
-                  Cannabis Grow Tech Kit: <span className="text-landing-green">Camera, Room Monitor & Soil Meter</span>
+                  See more than your plants show. <span className="text-landing-green">Measure the grow around them.</span>
                 </h1>
                 <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl lg:mx-0">
-                  Capture sharper cultivation photos, monitor grow-room conditions, and perform quick root-zone spot
-                  checks with three practical tools that work independently or alongside the MasterGrowbot AI app.
+                  For home growers and small cultivation teams: inspect leaves and trichomes up close, check room
+                  conditions, and spot-check the root zone. Get all three tools in the $247 kit, or choose only what your grow needs.
                 </p>
               </div>
               <JulySaleBanner />
@@ -1579,7 +1602,7 @@ export default function GrowTech() {
                 </a>
               </div>
               <p className="max-w-xl rounded-lg border border-white/[0.08] bg-black/30 px-4 py-3 text-sm leading-6 text-white/62">
-                <span className="font-semibold text-gold">5-star Scout Camera feedback from Mike P.</span>{" "}
+                <span className="font-semibold text-gold">Read Scout Camera feedback.</span>{" "}
                 <a href={`#reviews-${GROWTECH_PRODUCT_IDS.scoutCamera}`} className="font-semibold text-landing-green underline-offset-4 hover:underline">
                   Read customer reviews
                 </a>
