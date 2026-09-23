@@ -70,7 +70,7 @@ export default function GrowTechThankYou() {
                 ? "Checkout was not completed"
                 : isSuccess
                   ? "Order received"
-                  : "Thank you for your MasterGrowbot AI Grow Tech order"}
+                  : "Check your order status"}
             </h1>
             {isError ? (
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
@@ -86,12 +86,12 @@ export default function GrowTechThankYou() {
               </p>
             ) : (
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
-                Your order is confirmed through Whop. Please check the email address you used at checkout for your
-                receipt, order details, and delivery updates.
+                We cannot confirm a purchase from this page alone. Check for a Whop receipt in the email address you
+                used at checkout. If you do not see one, contact support before trying again.
               </p>
             )}
             <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-white/[0.08] bg-black/35 p-5 text-left text-sm leading-relaxed text-white/58">
-              {isError ? (
+              {isError || !isSuccess ? (
                 <p>
                   If you were charged or believe this message is incorrect, email support@mastergrowbot.com with the
                   email address used at checkout so our team can help review the order status.
@@ -110,7 +110,7 @@ export default function GrowTechThankYou() {
           </div>
         </section>
 
-        <section className="mx-auto mt-16 max-w-6xl">
+        {isSuccess && <section className="mx-auto mt-16 max-w-6xl">
           <div className="mb-8 text-center">
             <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
               What happens next
@@ -133,7 +133,7 @@ export default function GrowTechThankYou() {
               </article>
             ))}
           </div>
-        </section>
+        </section>}
 
         <section className="mx-auto mt-14 max-w-4xl text-center">
           <p className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 text-sm leading-relaxed text-white/60 backdrop-blur-xl">
