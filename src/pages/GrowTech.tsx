@@ -660,8 +660,8 @@ function GrowerFitSection() {
     <section className="relative z-10 px-4 py-10 sm:px-6 sm:py-16" aria-labelledby="grower-fit-title">
       <div className="mx-auto grid max-w-7xl overflow-hidden rounded-2xl border border-white/[0.12] bg-[#0b110d] lg:grid-cols-2">
         <img
-          src="/images/grow-tech/existing-grow-context.webp"
-          alt="Grower inspecting a leaf in an indoor tent with a phone"
+          src="/images/grow-tech/existing-grow-context-v2.webp"
+          alt="Indoor grow tent with a healthy plant, LED light, and ventilation"
           loading="lazy"
           width={1536}
           height={1024}
