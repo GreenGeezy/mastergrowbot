@@ -270,7 +270,7 @@ function FeaturedProductReview({ productId }: { productId: GrowTechProductId }) 
       aria-label={`${review.productName} featured customer review`}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Customer Review</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Grower feedback</p>
         {review.rating ? <StarRating rating={review.rating} compact /> : null}
       </div>
       <blockquote className="mt-3 text-sm font-medium leading-6 text-white/78">"{review.quote}"</blockquote>
@@ -281,7 +281,7 @@ function FeaturedProductReview({ productId }: { productId: GrowTechProductId }) 
         href={`#reviews-${productId}`}
         className="mt-3 inline-flex text-sm font-semibold text-landing-green underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-landing-green"
       >
-        Read all {review.productName.replace("MasterGrowbot AI ", "")} reviews
+        Read all {review.productName.replace("MasterGrowbot AI ", "")} feedback
       </a>
     </aside>
   );
@@ -297,7 +297,7 @@ function ReviewCard({ review }: { review: GrowTechTestimonial }) {
       data-reviewer={review.reviewer}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Customer Review</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Grower feedback</p>
         {review.rating ? <StarRating rating={review.rating} compact /> : null}
       </div>
       <blockquote className="mt-3 text-[15px] leading-7 text-white/74">"{review.quote}"</blockquote>
@@ -698,10 +698,10 @@ function ProductTestimonialsSection() {
             id="growtech-testimonials-title"
             className="mt-3 text-3xl font-bold tracking-tight text-white font-sans sm:text-4xl"
           >
-            GrowTech Customers Are Already Seeing Better
+            What growers say about the tools
           </h2>
           <p className="mt-3 text-base leading-relaxed text-white/58">
-            Real feedback from growers using the Scout Camera, Environment Monitor, and Soil Health Meter.
+            Feedback provided for the camera lens, environment monitor, and soil meter. Every quote remains here for you to read.
           </p>
         </div>
 
@@ -718,12 +718,12 @@ function ProductTestimonialsSection() {
                 aria-labelledby={`reviews-title-${productId}`}
               >
                 <div className="border-b border-white/[0.08] pb-4">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">GrowTech customers</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-landing-green">Grower feedback</p>
                   <h3 id={`reviews-title-${productId}`} className="mt-2 text-lg font-semibold leading-snug text-white font-sans">
                     {productName}
                   </h3>
                   <p className="mt-2 text-sm font-semibold text-gold">
-                    {reviews.length} customer {reviews.length === 1 ? "review" : "reviews"}
+                    {reviews.length} {reviews.length === 1 ? "review" : "reviews"}
                   </p>
                 </div>
                 <div className="mt-4 grid gap-3">
@@ -1343,94 +1343,73 @@ export default function GrowTech() {
       <LandingNav growTechMode />
 
       <main>
-        <section className="relative z-10 isolate overflow-hidden border-b border-white/[0.06] px-4 py-14 sm:px-6 sm:py-20 lg:min-h-[760px] lg:py-24">
+        <section className="relative z-10 isolate overflow-hidden border-b border-white/10 px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-20">
           <img
-            src="/images/cultivation-command-center-v2.webp"
+            src="/images/grow-tech/hero-real-grow-room-v3.webp"
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 -z-30 h-full w-full object-cover object-[70%_center] opacity-30"
-            width={1792}
-            height={1024}
+            className="absolute inset-0 -z-30 h-full w-full object-cover object-[center_center] opacity-55"
+            width={1916}
+            height={821}
           />
-          <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,#010302_0%,rgba(1,3,2,0.96)_43%,rgba(1,3,2,0.58)_78%,#010302_100%)]" />
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_76%_42%,rgba(29,185,84,0.18),transparent_34%),linear-gradient(180deg,transparent_60%,#000_100%)]" />
+          <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,#030a07_0%,rgba(3,10,7,0.96)_38%,rgba(3,10,7,0.62)_78%,rgba(3,10,7,0.40)_100%)]" />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,transparent_60%,#030a07_100%)]" />
 
-          <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-[1.02fr_0.98fr]">
-            <div className="space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-landing-green/25 bg-landing-green/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
-                <Leaf className="h-3.5 w-3.5" aria-hidden="true" />
-                Three-tool grow inspection kit
-              </div>
-              <div className="space-y-5">
-                <h1 className="text-balance text-[2.65rem] font-bold leading-[0.98] tracking-[-0.045em] text-white font-sans sm:text-6xl lg:text-[4.65rem]">
-                  Upgrade your grow with <span className="text-landing-green">sharper photos and useful readings.</span>
-                </h1>
-                <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl lg:mx-0">
-                  For home growers and small cultivation teams: inspect leaves and trichomes up close, check room
-                  conditions, and spot-check the root zone. Get all three tools in the $247 kit, or choose only what your grow needs.
-                </p>
-                <p className="mx-auto max-w-2xl text-sm font-medium text-white/58 lg:mx-0">For existing tents and grow rooms. Tent, light, fan, and automated controls are not part of this kit.</p>
-              </div>
-              <JulySaleBanner />
-              <div id="growtech-hero-cta" className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
-                <CheckoutButton product={bundle} ctaLocation="growtech_hero:bundle" className="sm:w-auto" />
-                <a
-                  href="#products"
-                  onClick={() => trackEvent("growtech_compare_click", { cta_location: "growtech_hero" })}
-                  className="inline-flex w-full items-center justify-center rounded-lg border border-white/10 px-5 py-3.5 text-sm font-semibold text-white/75 transition hover:border-landing-green/40 hover:text-landing-green focus:outline-none focus:ring-2 focus:ring-landing-green sm:w-auto"
-                >
-                  Compare Individual Tools
-                </a>
-              </div>
-              <p className="max-w-xl rounded-lg border border-white/[0.08] bg-black/30 px-4 py-3 text-sm leading-6 text-white/62">
-                <span className="font-semibold text-gold">Read Scout Camera feedback.</span>{" "}
-                <a href={`#reviews-${GROWTECH_PRODUCT_IDS.scoutCamera}`} className="font-semibold text-landing-green underline-offset-4 hover:underline">
-                  Read customer reviews
-                </a>
+          <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+            <div className="max-w-2xl">
+              <p className="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-950/80 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-emerald-200">
+                <Leaf className="h-4 w-4" aria-hidden="true" /> For growers with a tent or grow room
               </p>
-              <HeroTrustStrip />
+              <h1 className="mt-6 text-balance text-[2.7rem] font-bold leading-[1.03] tracking-[-0.05em] text-white sm:text-6xl lg:text-[4.55rem]">
+                See what your grow is <span className="text-emerald-300">telling you.</span>
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-8 text-white/82 sm:text-xl">
+                Put three useful checks in your hands: close-up plant photos, room conditions, and soil readings. Choose the $247 kit or start with one tool.
+              </p>
+              <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-white/85">
+                <span><Check className="mr-1 inline h-4 w-4 text-emerald-300" />3 tools included</span>
+                <span><Check className="mr-1 inline h-4 w-4 text-emerald-300" />Save $50 in the kit</span>
+                <span><Check className="mr-1 inline h-4 w-4 text-emerald-300" />Free US & Canada shipping</span>
+              </div>
+              <div id="growtech-hero-cta" className="mt-8 flex max-w-lg flex-col gap-3 sm:flex-row">
+                <CheckoutButton product={bundle} showTrust={false} ctaLocation="growtech_hero:bundle" className="sm:flex-1" />
+                <a href="#shop-tools" onClick={() => trackEvent("growtech_compare_click", { cta_location: "growtech_hero" })} className="inline-flex min-h-14 items-center justify-center rounded-lg border border-white/35 bg-black/40 px-5 text-sm font-bold text-white hover:border-emerald-300">Shop individual tools</a>
+              </div>
+              <p className="mt-4 text-sm text-white/65">One-time purchase in USD · Secure Whop checkout · <a className="text-emerald-300 underline underline-offset-4" href="#growtech-testimonials-title">Read grower feedback</a></p>
             </div>
 
-            <div className="relative mx-auto w-full max-w-xl">
-              <div className="absolute -inset-10 rounded-full bg-landing-green/15 blur-3xl" aria-hidden="true" />
-              <div className="relative overflow-hidden rounded-[1.75rem] border border-white/[0.12] bg-black/45 p-3 shadow-[0_32px_100px_rgba(0,0,0,0.64)] backdrop-blur-xl sm:p-4">
-                <div className="mb-3 flex items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-left">
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-landing-green">3-tool launch kit</p>
-                    <p className="mt-1 text-sm font-semibold text-white">Camera + climate + root-zone data</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-white/45 line-through">{INDIVIDUAL_FULL_TOTAL}</p>
-                    <p className="text-xl font-black text-white">{bundle.price}</p>
-                  </div>
-                </div>
-                <img
-                  src={bundle.image}
-                  alt={bundle.alt}
-                  className="aspect-[4/3] w-full rounded-xl object-cover"
-                  loading="eager"
-                  {...{ fetchpriority: "high" }}
-                  width={1000}
-                  height={750}
-                />
-                <div className="absolute inset-x-4 bottom-4 rounded-b-xl bg-gradient-to-t from-black via-black/90 to-transparent p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-landing-green">Everything works standalone or with the app</p>
-                  <p className="mt-1 text-lg font-semibold text-white">{bundle.name}</p>
-                </div>
+            <div className="rounded-2xl border border-white/20 bg-[#08130e]/95 p-5 shadow-[0_24px_90px_rgba(0,0,0,0.65)] sm:p-7">
+              <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
+                <div><p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">The three-tool upgrade kit</p><h2 className="mt-2 text-2xl font-bold text-white">One setup. Three clearer signals.</h2></div>
+                <div className="shrink-0 text-right"><p className="text-sm text-white/45 line-through">$297</p><p className="text-3xl font-black text-white">$247</p></div>
               </div>
+              <ol className="divide-y divide-white/10">
+                {[
+                  ["01", "Scout Camera 10–20X", "Look closer at leaves, pests, and trichomes."],
+                  ["02", "Environment Monitor", "Keep temperature, humidity, and air readings in view."],
+                  ["03", "Soil Health Meter 6-in-1", "Spot-check moisture, pH, and soil context."],
+                ].map(([number, title, detail]) => <li key={number} className="flex gap-4 py-4"><span className="font-mono text-sm text-emerald-300">{number}</span><div><p className="font-bold text-white">{title}</p><p className="mt-1 text-sm leading-6 text-white/60">{detail}</p></div></li>)}
+              </ol>
+              <p className="border-t border-white/10 pt-4 text-xs leading-6 text-white/55">For an existing setup. Tent, light, fan, automated control, and direct device-to-app syncing are not included. The grow-room photo shows context, not kit contents.</p>
+              <a href="#grow-tech-kit" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-emerald-300 hover:underline">See the kit details <ArrowRight className="h-4 w-4" /></a>
+              </div>
+          </div>
+        </section>
+
+        <section id="shop-tools" className="relative z-10 scroll-mt-20 border-b border-white/10 bg-[#07110c] px-4 py-9 sm:px-6">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">Choose your path</p><h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">All three, or exactly what you need.</h2></div><p className="text-sm text-white/60">Every tool works independently. App use is optional.</p></div>
+            <div className="grid gap-3 md:grid-cols-4">
+              <a href="#grow-tech-kit" className="rounded-xl border border-emerald-300/45 bg-emerald-400/10 p-5 transition hover:bg-emerald-400/20"><span className="text-xs font-bold uppercase tracking-wide text-emerald-300">Best bundle value</span><p className="mt-2 text-lg font-bold text-white">Three-tool kit</p><p className="mt-2 text-2xl font-black text-white">$247 <span className="text-xs font-medium text-white/55">save $50</span></p><span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-300">View kit <ArrowRight className="h-4 w-4" /></span></a>
+              {products.map((product) => <a key={product.productId} href={`#${product.anchorId}`} className="rounded-xl border border-white/15 bg-white/[0.04] p-5 transition hover:border-emerald-300/50"><span className="text-xs font-bold uppercase tracking-wide text-white/50">Single tool</span><p className="mt-2 text-lg font-bold text-white">{product.displayName || product.name.replace("MasterGrowbot AI ", "")}</p><p className="mt-2 text-2xl font-black text-white">{product.price}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-300">View details <ArrowRight className="h-4 w-4" /></span></a>)}
             </div>
           </div>
         </section>
 
-        <WhatIsIncludedSection />
         <BundleSection />
         <ProductGridSection />
-        <GrowerFitSection />
         <ProductTestimonialsSection />
-        <ProductUseImagerySection />
-        <ComparisonTable />
-        <UseCaseCards />
-        <TrustSection />
+        <GrowerFitSection />
         <ShippingSection />
         <OrderSupportSection />
         <FaqSection />
