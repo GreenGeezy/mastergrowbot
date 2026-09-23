@@ -144,7 +144,7 @@ const faqs = [
   {
     question: "What is included in the MasterGrowbot AI Grow Tech Kit?",
     answer:
-      "The Grow Tech Kit includes the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. Each tool works independently; the MasterGrowbot AI app is optional.",
+      "The Grow Tech Kit includes the Scout Camera 10-20X, Environment Monitor, and Soil Health Meter 6-in-1. It is an upgrade for an existing grow setup; it does not include a tent, light, fan, or automated controller. Each tool works independently; the MasterGrowbot AI app is optional.",
   },
   {
     question: "How much do the Grow Tech products cost?",
@@ -649,6 +649,33 @@ function ProductGridSection() {
           {products.map((product) => (
             <ProductCard key={product.name} product={product} />
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function GrowerFitSection() {
+  return (
+    <section className="relative z-10 px-4 py-10 sm:px-6 sm:py-16" aria-labelledby="grower-fit-title">
+      <div className="mx-auto grid max-w-7xl overflow-hidden rounded-2xl border border-white/[0.12] bg-[#0b110d] lg:grid-cols-2">
+        <img
+          src="/images/grow-tech/existing-grow-context.webp"
+          alt="Grower inspecting a leaf in an indoor tent with a phone"
+          loading="lazy"
+          width={1536}
+          height={1024}
+          className="h-64 w-full object-cover sm:h-80 lg:h-full"
+        />
+        <div className="flex flex-col justify-center p-6 sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-landing-green">Built for an existing setup</p>
+          <h2 id="grower-fit-title" className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">Already have the tent? See more of the grow.</h2>
+          <p className="mt-4 text-base leading-7 text-white/70">Add close-up inspection, room readings, and root-zone spot checks to the equipment you already own. Start with the one tool you need today, or save $50 with all three.</p>
+          <p className="mt-4 text-sm leading-6 text-white/55">This is a three-tool inspection kit. Tent, grow light, fan, automated control, and direct device-to-app syncing are not included.</p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <CheckoutButton product={bundle} ctaLocation="growtech_fit:bundle" />
+            <a href="#products" className="inline-flex items-center justify-center rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white hover:border-landing-green/50">Choose one tool</a>
+          </div>
         </div>
       </div>
     </section>
@@ -1332,16 +1359,17 @@ export default function GrowTech() {
             <div className="space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full border border-landing-green/25 bg-landing-green/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
                 <Leaf className="h-3.5 w-3.5" aria-hidden="true" />
-                The complete GrowTech stack
+                Three-tool grow inspection kit
               </div>
               <div className="space-y-5">
                 <h1 className="text-balance text-[2.65rem] font-bold leading-[0.98] tracking-[-0.045em] text-white font-sans sm:text-6xl lg:text-[4.65rem]">
-                  See more than your plants show. <span className="text-landing-green">Measure the grow around them.</span>
+                  Upgrade your grow with <span className="text-landing-green">sharper photos and useful readings.</span>
                 </h1>
                 <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl lg:mx-0">
                   For home growers and small cultivation teams: inspect leaves and trichomes up close, check room
                   conditions, and spot-check the root zone. Get all three tools in the $247 kit, or choose only what your grow needs.
                 </p>
+                <p className="mx-auto max-w-2xl text-sm font-medium text-white/58 lg:mx-0">For existing tents and grow rooms. Tent, light, fan, and automated controls are not part of this kit.</p>
               </div>
               <JulySaleBanner />
               <div id="growtech-hero-cta" className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
@@ -1397,6 +1425,7 @@ export default function GrowTech() {
         <WhatIsIncludedSection />
         <BundleSection />
         <ProductGridSection />
+        <GrowerFitSection />
         <ProductTestimonialsSection />
         <ProductUseImagerySection />
         <ComparisonTable />
