@@ -25,7 +25,7 @@ test('Grow Tech is discoverable, commercially described and free of expired prom
   await page.goto('/grow-tech');
   await expect(page.locator('meta[name="description"]')).toHaveCount(1);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /cannabis grow tech kit/i);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Cannabis Grow Tech Kit');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('See what your grow is telling you');
   await expect(page.locator('body')).not.toContainText(/Best July Deal|AIGROWTECH|July sale price/);
   await expect(page.locator('#grow-tech-kit')).toContainText('$247');
 
@@ -161,4 +161,40 @@ test('cultivation software guide has updated checklist, schema date and body CTA
   expect(events).toHaveLength(2);
   expect(events[0]).toEqual(['event', 'ios_app_click', expect.objectContaining({ article_slug: 'best-cannabis-cultivation-software-home-growers', page_path: cultivationTarget, cta_location: 'article-body:ios', link_url: expect.stringContaining('apps.apple.com') })]);
   expect(events[1]).toEqual(['event', 'android_app_click', expect.objectContaining({ article_slug: 'best-cannabis-cultivation-software-home-growers', cta_location: 'article-body:android', link_url: expect.stringContaining('play.google.com') })]);
+});
+
+test('AI plant diagnosis guide targets rising diagnosis-app intent', async ({ page, request }) => {
+  const diagnosisTarget = '/grow-guides/best-ai-plant-diagnosis-apps-cannabis';
+  await page.goto(diagnosisTarget);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.mastergrowbot.com${diagnosisTarget}`);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Best AI Plant Diagnosis Apps for Cannabis Growers');
+  expect(await page.title()).toMatch(/Best AI Plant Diagnosis Apps/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /AI plant diagnosis apps for cannabis growers/i);
+  await expect(page.getByRole('heading', { name: 'Direct Answer: Best AI Plant Diagnosis App for Cannabis' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How to Choose an AI Plant Diagnosis App' })).toBeVisible();
+  await expect(page.locator('article')).toContainText('guidance, not certainty');
+
+  const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(s => JSON.parse(s));
+  expect(schemas.find(s => s['@type'] === 'Article')?.dateModified).toContain('2026-09-23');
+  for (const href of [
+    '/grow-tech',
+    '/grow-guides/cannabis-plant-identifier-apps-2026',
+    '/grow-guides/best-ai-cannabis-growing-apps-2026',
+    '/grow-guides/best-cannabis-cultivation-software-home-growers',
+    '/vpd-calculator',
+  ]) {
+    expect((await request.get(href)).status(), href).toBe(200);
+  }
+
+  await page.evaluate(() => {
+    (window as unknown as { captured: unknown[][] }).captured = [];
+    window.gtag = (...args: unknown[]) => (window as unknown as { captured: unknown[][] }).captured.push(args);
+    document.addEventListener('click', e => e.preventDefault(), true);
+  });
+  await page.locator('[data-cta-location="article-inline:ios"]').click();
+  await page.locator('[data-cta-location="article-inline:android"]').click();
+  const events = await page.evaluate(() => (window as unknown as { captured: unknown[][] }).captured);
+  expect(events).toHaveLength(2);
+  expect(events[0]).toEqual(['event', 'ios_app_click', expect.objectContaining({ article_slug: 'best-ai-plant-diagnosis-apps-cannabis', page_path: diagnosisTarget, cta_location: 'article-inline:ios', link_url: expect.stringContaining('apps.apple.com') })]);
+  expect(events[1]).toEqual(['event', 'android_app_click', expect.objectContaining({ article_slug: 'best-ai-plant-diagnosis-apps-cannabis', cta_location: 'article-inline:android', link_url: expect.stringContaining('play.google.com') })]);
 });

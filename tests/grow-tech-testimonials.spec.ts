@@ -90,13 +90,13 @@ test.describe("GrowTech testimonial data integrity", () => {
   });
 
   test("keeps all four existing checkout environment keys unchanged", () => {
-    const pageSource = readFileSync("src/pages/GrowTech.tsx", "utf8");
+    const productSource = readFileSync("src/data/growTechProducts.ts", "utf8");
     [
       "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID",
       "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID",
       "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID",
       "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID",
-    ].forEach((planKey) => expect(pageSource).toContain(planKey));
+    ].forEach((planKey) => expect(productSource).toContain(planKey));
   });
 });
 
@@ -107,7 +107,7 @@ test.describe("GrowTech testimonial rendering", () => {
     for (const [productId, expectedCount] of Object.entries(expectedCounts)) {
       const group = page.locator(`[data-review-group="${productId}"]`);
       await expect(group).toBeVisible();
-      await expect(group.getByText(`${expectedCount} customer reviews`, { exact: true })).toBeVisible();
+      await expect(group.getByText(`${expectedCount} reviews`, { exact: true })).toBeVisible();
       await expect(group.locator("[data-review-id]")).toHaveCount(expectedCount);
 
       const featuredId = featuredGrowTechReviewIds[productId as keyof typeof featuredGrowTechReviewIds];
