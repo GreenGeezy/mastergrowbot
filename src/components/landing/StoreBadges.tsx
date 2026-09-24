@@ -64,7 +64,7 @@ export default function StoreBadges({
             </motion.a>
           </div>
           <p className="text-center text-xs font-medium text-white/55 sm:text-sm">
-            Download and try MasterGrowbot AI free.
+            Explore MasterGrowbot AI on your app store.
           </p>
         </div>
 

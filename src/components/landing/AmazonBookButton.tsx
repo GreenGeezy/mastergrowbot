@@ -1,6 +1,5 @@
 import { AMAZON_BOOK_URL } from './ctaLinks';
 
-const AMAZON_BUTTON_IMAGE_URL = 'https://www.niftybuttons.com/amazon/amazon-button9.png';
 
 interface AmazonBookButtonProps {
   className?: string;
@@ -11,7 +10,6 @@ interface AmazonBookButtonProps {
 export function AmazonBookButton({
   className = '',
   location = 'unknown',
-  imageClassName = '',
 }: AmazonBookButtonProps) {
   const handleClick = () => {
     if (typeof gtag !== 'undefined') {
@@ -33,13 +31,7 @@ export function AmazonBookButton({
       onClick={handleClick}
       className={`group inline-flex items-center justify-center ${className}`}
     >
-      <img
-        src={AMAZON_BUTTON_IMAGE_URL}
-        alt="Buy The Master Cannabis IPM Playbook on Amazon"
-        className={`w-auto rounded-lg transition-transform duration-200 group-hover:scale-[1.03] ${
-          imageClassName || 'h-[58px] max-w-[220px] sm:h-[65px]'
-        }`}
-      />
+      <span className="inline-flex min-h-12 items-center justify-center gap-3 rounded-lg border border-amber-200/40 bg-amber-100 px-6 py-3 text-sm font-bold text-black transition hover:bg-white">View the book on Amazon <span aria-hidden="true">↗</span></span>
     </a>
   );
 }

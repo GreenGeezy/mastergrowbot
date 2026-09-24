@@ -2,51 +2,15 @@ import { Helmet } from 'react-helmet-async';
 import LandingPage from '@/components/landing/LandingPage';
 import SEOHead from '@/components/SEOHead';
 
+import { appFaqs } from '@/data/appFaqs';
+
 const homepageFaqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'What does MasterGrowbot AI do?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'MasterGrowbot AI is the most advanced cannabis growing app. It uses AI-powered photo analysis to diagnose pests, diseases, and nutrient deficiencies, plus features a strain database, grow journal, and personalized daily tasks.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How does the AI plant scan work?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Take a photo of your cannabis plant and MasterGrowbot AI instantly analyzes it to identify issues like spider mites, powdery mildew, nitrogen deficiency, and more - with treatment recommendations.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is there a free trial?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, MasterGrowbot AI offers a free 3-day trial on both iOS and Android. No credit card required to start.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What platforms is MasterGrowbot available on?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'MasterGrowbot AI is available for iPhone (iOS) and Android devices.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can MasterGrowbot identify cannabis pests and diseases?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes. MasterGrowbot AI can identify common cannabis pests like spider mites and aphids, diseases like powdery mildew and botrytis, and nutrient deficiencies including nitrogen, calcium, and magnesium issues.',
-      },
-    },
-  ],
+  mainEntity: appFaqs.map(({ question, answer }) => ({
+    '@type': 'Question', name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer },
+  })),
 };
 
 export default function Index() {

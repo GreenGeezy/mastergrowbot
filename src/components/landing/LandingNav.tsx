@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
-import { appStoreUrl } from './ctaLinks';
 
 const navLinks = [
   { label: 'GrowTech', to: '/grow-tech' },
@@ -13,8 +12,8 @@ const navLinks = [
 
 export default function LandingNav({ growTechMode = false }: { growTechMode?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navAppStoreUrl = appStoreUrl('nav');
-  const mobileNavAppStoreUrl = appStoreUrl('mobile-nav');
+  const navAppStoreUrl = '/#download';
+  const mobileNavAppStoreUrl = '/#download';
 
   return (
     <nav className="sticky top-0 z-50 border-b border-white/[0.07] bg-black/72 px-4 backdrop-blur-2xl sm:px-6">
@@ -41,20 +40,20 @@ export default function LandingNav({ growTechMode = false }: { growTechMode?: bo
           ) : (
             <>
               <Link to="/grow-tech" className="rounded-full border border-white/12 px-4 py-2.5 text-sm font-semibold text-white/76 transition hover:border-landing-green/35 hover:text-landing-green">Shop GrowTech</Link>
-              <a href={navAppStoreUrl} data-cta-location="navigation:ios" className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black shadow-[0_0_28px_rgba(29,185,84,0.24)] transition hover:-translate-y-0.5 hover:bg-landing-green-glow">
-                Try Free <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+              <a href={navAppStoreUrl} data-cta-location="navigation:stores" className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black shadow-[0_0_28px_rgba(29,185,84,0.24)] transition hover:-translate-y-0.5 hover:bg-landing-green-glow">
+                Get the App <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
               </a>
             </>
           )}
         </div>
 
-        <button type="button" onClick={() => setMenuOpen(true)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white sm:hidden" aria-label="Open navigation menu" aria-expanded={menuOpen}>
+        <button type="button" onClick={() => setMenuOpen(true)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white lg:hidden" aria-label="Open navigation menu" aria-expanded={menuOpen}>
           <Menu className="h-5 w-5" />
         </button>
       </div>
 
       {menuOpen ? (
-        <div className="fixed inset-0 z-[100] min-h-svh bg-[#010302]/98 px-5 py-5 backdrop-blur-2xl sm:hidden">
+        <div className="fixed inset-0 z-[100] min-h-svh bg-[#010302]/98 px-5 py-5 backdrop-blur-2xl lg:hidden">
           <div className="flex items-center justify-between">
             <span className="text-sm font-bold text-white">MasterGrowbot <span className="text-landing-green">AI</span></span>
             <button type="button" onClick={() => setMenuOpen(false)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white" aria-label="Close navigation menu"><X className="h-5 w-5" /></button>
@@ -69,7 +68,7 @@ export default function LandingNav({ growTechMode = false }: { growTechMode?: bo
           {growTechMode ? (
             <Link to="/grow-tech/checkout/grow-tech-kit" onClick={() => setMenuOpen(false)} className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Get the $247 Kit <ArrowRight className="h-4 w-4" /></Link>
           ) : (
-            <a href={mobileNavAppStoreUrl} data-cta-location="mobile-navigation:ios" className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Start 3-Day Free Trial <ArrowRight className="h-4 w-4" /></a>
+            <a href={mobileNavAppStoreUrl} onClick={() => setMenuOpen(false)} data-cta-location="mobile-navigation:stores" className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Choose your app store <ArrowRight className="h-4 w-4" /></a>
           )}
         </div>
       ) : null}
