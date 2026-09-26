@@ -62,8 +62,8 @@ export default function HeroSection() {
               <Check size={15} /> Strain intelligence
             </span>
           </div>
-          <a href="#grow-goal-title" className="premium-text-link">
-            Find your next step <ArrowDown size={16} />
+          <a href="#grow-walkthrough" className="premium-text-link">
+            See how it works <ArrowDown size={16} />
           </a>
         </div>
         <div className="premium-phone-stage">

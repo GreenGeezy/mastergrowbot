@@ -5,7 +5,7 @@ import LandingFooter from "./LandingFooter";
 import LandingNav from "./LandingNav";
 import "./premium.css";
 import TrustRail from "./TrustRail";
-import GrowGoalPicker from "./GrowGoalPicker";
+import GrowWalkthrough from "./GrowWalkthrough";
 
 export default function LandingPage() {
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function LandingPage() {
       <main>
         <HeroSection />
         <TrustRail />
-        <GrowGoalPicker />
+        <GrowWalkthrough />
         <FeatureSection />
       </main>
       <LandingFooter />

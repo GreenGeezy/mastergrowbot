@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, Camera, NotebookPen, ScanLine, Video } from "lucide-react";
+import { ArrowRight, Video } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppActions } from "./HeroSection";
 import { appStoreUrl, playStoreUrl } from "./ctaLinks";
@@ -104,40 +104,6 @@ export default function FeatureSection() {
               height="1516"
               loading="lazy"
             />
-          </div>
-        </div>
-      </section>
-      <section className="premium-section premium-light">
-        <div className="premium-wrap">
-          <p className="premium-eyebrow">A SIMPLE ROUTINE. A BETTER RECORD.</p>
-          <h2>Your grow, all in one place.</h2>
-          <div className="premium-steps">
-            {[
-              {
-                icon: Camera,
-                title: "Capture the moment",
-                text: "Take a plant photo when something catches your eye.",
-              },
-              {
-                icon: ScanLine,
-                title: "Get another perspective",
-                text: "Review AI insights and a shareable plant health report.",
-              },
-              {
-                icon: NotebookPen,
-                title: "Keep the story",
-                text: "Record notes and photos in your grow journal over time.",
-              },
-            ].map(({ icon: Icon, title, text }, index) => (
-              <article key={title}>
-                <div>
-                  <Icon size={25} />
-                  <span>0{index + 1}</span>
-                </div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </article>
-            ))}
           </div>
         </div>
       </section>
