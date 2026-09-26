@@ -1,5 +1,7 @@
 # Search discovery after a release
 
+Automatic Vercel Git deployments are enabled only for `main` (`git.deploymentEnabled` defaults to false for other branches). This prevents routine `codex/` branches from consuming preview builds. Confirm the GitHub deployment environment is Production; a successful Preview status for the same commit does not verify the public domain.
+
 Google: inspect important changed URLs in the authenticated Search Console browser for `sc-domain:mastergrowbot.com` (agcomsol@gmail.com). Request indexing only after verifying publication and indexability. GSC Wizard is no longer used; its trial ended. Do not use Google's Indexing API for ordinary pages.
 
 IndexNow: the public ownership token is intentionally served at `/indexnow-key.txt`; it is not an account credential. After production verification, notify participating engines once for the explicitly changed public sitemap URLs:
