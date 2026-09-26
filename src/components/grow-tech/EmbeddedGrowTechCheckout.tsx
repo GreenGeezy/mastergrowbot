@@ -175,11 +175,11 @@ export default function EmbeddedGrowTechCheckout({
             )}
           </div>}
           <div className="p-0 sm:p-1">
-              <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px]">
+              <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px] rounded-xl bg-white [color-scheme:light]">
                 <WhopCheckoutEmbed
                   planId={planId}
                   returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you?status=success"
-                  theme="dark"
+                  theme="light"
                   collectShipping
                   utm={{
                     utm_source: "mastergrowbot",
@@ -188,8 +188,8 @@ export default function EmbeddedGrowTechCheckout({
                     utm_content: ctaLocation,
                   }}
                   themeOptions={{
-                    backgroundColor: "#0b0b12",
-                    accentColor: "#22c55e",
+                    backgroundColor: "#ffffff",
+                    accentColor: "#15803d",
                     borderRadius: 14,
                   }}
                   styles={{

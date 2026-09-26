@@ -1,3 +1,5 @@
+import OrderQuestions from "@/components/grow-tech/OrderQuestions";
+import "@/components/landing/premium.css";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
@@ -29,7 +31,7 @@ export default function GrowTechCheckout() {
   const checkoutUrl = checkoutUrls[product.checkoutKey];
 
   return (
-    <div className="min-h-screen bg-[#050a07] text-white">
+    <div className="premium-site min-h-screen bg-[#050a07] text-white">
       <SEOHead
         title={`Secure checkout: ${product.name} | MasterGrowbot AI`}
         description={`Complete your ${product.name} order with secure Whop checkout. Free shipping to the United States and Canada.`}
@@ -58,6 +60,7 @@ export default function GrowTechCheckout() {
             promoActive={IS_JULY_PROMO_ACTIVE}
           />
         </div>
+        <div className="mt-8"><OrderQuestions checkoutUrl={checkoutUrl} /></div>
         <p className="mt-8 text-center text-xs leading-5 text-white/50">
           Prices are in USD. Need order help? <a href="mailto:support@mastergrowbot.com" className="text-landing-green underline">support@mastergrowbot.com</a>
         </p>

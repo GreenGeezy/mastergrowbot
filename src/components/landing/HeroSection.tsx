@@ -36,16 +36,15 @@ export default function HeroSection() {
       <div className="premium-wrap premium-hero-grid">
         <div className="premium-hero-copy">
           <p className="premium-eyebrow">
-            <span className="status-dot" /> YOUR GROW. A CLEARER PICTURE.
+            <span className="status-dot" /> AI PLANT ANALYSIS · BUILT FOR CANNABIS GROWERS
           </p>
           <h1 id="hero-title">
-            Less guessing.
+            Something look off?
             <br />
-            More <em>confidence.</em>
+            Get a <em>second set of eyes.</em>
           </h1>
           <p className="premium-lead">
-            Meet your grow’s second set of eyes. Turn a plant photo into
-            AI-powered insights and practical next steps, right on your phone.
+            Take a plant photo. Get an AI plant health report with practical next steps, then track what changes in your grow journal.
           </p>
           <AppActions />
           <p className="premium-fine">
@@ -63,8 +62,8 @@ export default function HeroSection() {
               <Check size={15} /> Strain intelligence
             </span>
           </div>
-          <a href="#app-experience" className="premium-text-link">
-            Explore the app <ArrowDown size={16} />
+          <a href="#grow-goal-title" className="premium-text-link">
+            Find your next step <ArrowDown size={16} />
           </a>
         </div>
         <div className="premium-phone-stage">

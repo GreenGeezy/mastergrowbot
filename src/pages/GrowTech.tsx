@@ -1,3 +1,5 @@
+import GearFinder from "@/components/grow-tech/GearFinder";
+import OrderQuestions from "@/components/grow-tech/OrderQuestions";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -1354,7 +1356,7 @@ export default function GrowTech() {
                 Know your grow.<br /><span className="text-emerald-300">Inside and out.</span>
               </h1>
               <p className="mt-5 max-w-xl text-base leading-8 text-white/82 sm:text-xl">
-                A closer look at your plants. A clearer picture of your environment. Three practical tools for the setup you already love.
+                Inspect plant details, check room conditions, or spot-check your soil. Fill one gap in your existing setup, or get all three tools for $247 and save $50.
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-white/85">
                 <span><Check className="mr-1 inline h-4 w-4 text-emerald-300" />3 tools included</span>
@@ -1363,7 +1365,7 @@ export default function GrowTech() {
               </div>
               <div id="growtech-hero-cta" className="mt-8 flex max-w-lg flex-col gap-3 sm:flex-row">
                 <CheckoutButton product={bundle} showTrust={false} ctaLocation="growtech_hero:bundle" className="sm:flex-1" />
-                <a href="#shop-tools" onClick={() => trackEvent("growtech_compare_click", { cta_location: "growtech_hero" })} className="inline-flex min-h-14 items-center justify-center rounded-lg border border-white/35 bg-black/40 px-5 text-sm font-bold text-white hover:border-emerald-300">Shop individual tools</a>
+                <a href="#shop-tools" onClick={() => trackEvent("growtech_compare_click", { cta_location: "growtech_hero" })} className="inline-flex min-h-14 items-center justify-center rounded-lg border border-white/35 bg-black/40 px-5 text-sm font-bold text-white hover:border-emerald-300">Find my tool</a>
               </div>
               <p className="mt-4 text-sm text-white/65">One-time purchase in USD · Secure Whop checkout · <a className="text-emerald-300 underline underline-offset-4" href="#growtech-testimonials-title">Read grower feedback</a></p>
             </div>
@@ -1372,15 +1374,8 @@ export default function GrowTech() {
           </div>
         </section>
 
-        <section id="shop-tools" className="relative z-10 scroll-mt-20 border-b border-white/10 bg-[#07110c] px-4 py-9 sm:px-6">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">Choose your path</p><h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">All three, or exactly what you need.</h2></div><p className="text-sm text-white/60">Every tool works independently. App use is optional.</p></div>
-            <div className="grid gap-3 md:grid-cols-4">
-              <a href="#grow-tech-kit" className="rounded-xl border border-emerald-300/45 bg-emerald-400/10 p-5 transition hover:bg-emerald-400/20"><span className="text-xs font-bold uppercase tracking-wide text-emerald-300">Best bundle value</span><p className="mt-2 text-lg font-bold text-white">Three-tool kit</p><p className="mt-2 text-2xl font-black text-white">$247 <span className="text-xs font-medium text-white/55">save $50</span></p><span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-300">View kit <ArrowRight className="h-4 w-4" /></span></a>
-              {products.map((product) => <a key={product.productId} href={`#${product.anchorId}`} className="rounded-xl border border-white/15 bg-white/[0.04] p-5 transition hover:border-emerald-300/50"><span className="text-xs font-bold uppercase tracking-wide text-white/50">Single tool</span><p className="mt-2 text-lg font-bold text-white">{product.displayName || product.name.replace("MasterGrowbot AI ", "")}</p><p className="mt-2 text-2xl font-black text-white">{product.price}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-300">View details <ArrowRight className="h-4 w-4" /></span></a>)}
-            </div>
-          </div>
-        </section>
+        <GearFinder />
+        <div className="premium-wrap"><OrderQuestions /></div>
 
         <BundleSection />
         <ProductGridSection />

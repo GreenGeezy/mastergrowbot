@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ArrowRight, Camera, NotebookPen, ScanLine, Video } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppActions } from "./HeroSection";
-import { appStoreUrl } from "./ctaLinks";
+import { appStoreUrl, playStoreUrl } from "./ctaLinks";
 import IPMPlaybookSection from "./IPMPlaybookSection";
 import NewsletterSignup from "./NewsletterSignup";
 import { appFaqs } from "@/data/appFaqs";
@@ -18,7 +18,7 @@ const experiences = [
   {
     label: "Strain library",
     title: "Get to know the genetics in your garden.",
-    text: "Explore 300 strain profiles on iOS, or add your own genetics. Keep the information that matters to your grow close at hand.",
+    text: "Explore the strain library or add your own genetics. Premium on iOS expands your library with more strains and breeder information.",
     image: 3,
   },
   {
@@ -89,6 +89,7 @@ export default function FeatureSection() {
             >
               Explore on the App Store <ArrowRight size={18} />
             </a>
+            <a className="premium-text-link" href={playStoreUrl("feature-explorer")} data-cta-location="feature-explorer:android">Explore on Google Play <ArrowRight size={18} /></a>
             <p className="premium-fine">
               App previews shown. AI analysis can be imperfect; use it alongside
               your own observations.
@@ -194,6 +195,7 @@ export default function FeatureSection() {
               <li>Everything included in Pro</li>
               <li>Record or upload short plant videos</li>
               <li>More visual context for AI analysis</li>
+              <li>Expanded strain library and breeder information on iOS</li>
             </ul>
             <a
               className="premium-button secondary"
@@ -208,6 +210,7 @@ export default function FeatureSection() {
             </p>
           </article>
         </div>
+        <a href={playStoreUrl("plans-android")} className="premium-text-link" data-cta-location="plans:android">Using Android? View plans on Google Play <ArrowRight size={18}/></a>
         <p className="premium-fine">
           Prices and availability may vary by region and platform. Confirm
           current pricing and terms in your app store. Manage or cancel through
