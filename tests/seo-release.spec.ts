@@ -13,6 +13,24 @@ test('all guide strings render links without executable HTML', async ({ page }) 
   expect(safe).not.toMatch(/<script|onerror=|href="javascript:/i);
 });
 
+test('leading AI app guide removes unsupported comparisons and retains conversion paths', async ({ page }) => {
+  const path = '/grow-guides/best-ai-cannabis-growing-apps-2026';
+  await page.goto(path);
+  await expect(page.getByRole('heading', {level: 1})).toHaveText('Best AI Cannabis Growing Apps: What to Compare in 2026');
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.mastergrowbot.com${path}`);
+  await expect(page.locator('article')).not.toContainText(/tested dozens|85-90|3,000|15-20%|most advanced|\$9\.99/);
+  await expect(page.getByRole('heading', {name: 'Quick answer: choose by the job, not the AI label'})).toBeVisible();
+  const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(s => JSON.parse(s));
+  expect(schemas.find(s => s['@type'] === 'Article')?.dateModified).toContain('2026-09-28');
+  expect(schemas.some(s => s['@type'] === 'BreadcrumbList')).toBe(true);
+  await expect(page.locator('article a[href^="https://apps.apple.com"]').first()).toBeAttached();
+  await expect(page.locator('article a[href^="https://play.google.com"]').first()).toBeAttached();
+  expect(await page.locator('article a[href^="/grow-guides/"]').count()).toBeGreaterThanOrEqual(3);
+  await page.setViewportSize({width:390,height:844});
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test('shared shell has no canonical or unverified aggregate rating', () => {
   const shell = readFileSync('index.html', 'utf8');
   expect(shell).not.toMatch(/rel="canonical"|aggregateRating|ratingCount/);
