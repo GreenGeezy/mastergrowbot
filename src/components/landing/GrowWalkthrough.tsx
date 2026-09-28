@@ -14,7 +14,7 @@ export default function GrowWalkthrough() {
   const step = steps[active];
   function select(index: number) { setActive(index); trackEvent("app_walkthrough_step", {step: steps[index].label}); }
   return <section id="grow-walkthrough" className="premium-wrap premium-section grow-walkthrough" aria-labelledby="walkthrough-title">
-    <div className="premium-section-heading"><div><p className="premium-eyebrow">A MOMENT IN YOUR GROW</p><h2 id="walkthrough-title">From “what’s this?”<br/><em>to a clearer next step.</em></h2></div><p>See how photo analysis and grow records fit into a routine you already have. Tap through the example.</p></div>
+    <div className="premium-section-heading"><div><p className="premium-eyebrow">A MOMENT IN YOUR GROW</p><h2 id="walkthrough-title">From “what’s this?”<br/><em>to a clearer next step.</em></h2></div><p>See how the app turns a plant photo into a health report you can save and revisit. Explore the walkthrough.</p></div>
     <div className="walkthrough-nav" role="group" aria-label="Explore the photo to grow record walkthrough">{steps.map(({label,icon:Icon},i)=><button key={label} type="button" aria-pressed={active===i} aria-controls="walkthrough-panel" onClick={()=>select(i)}><span>0{i+1}</span><Icon size={19}/>{label}</button>)}</div>
     <div id="walkthrough-panel" className={`walkthrough-panel ${active===1?'is-report':''}`}>
       {active===1 ? <ExampleHealthReport/> : <figure className="walkthrough-visual"><img src={`/images/premium/${step.image}.webp`} alt={step.alt} width={1536} height={1024} loading="lazy"/><figcaption>{step.caption}</figcaption></figure>}
