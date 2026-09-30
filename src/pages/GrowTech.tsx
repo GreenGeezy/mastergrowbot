@@ -24,7 +24,6 @@ import SEOHead from "@/components/SEOHead";
 import {
   GROWTECH_PRODUCT_IDS,
   getFeaturedGrowTechReview,
-  getGrowTechReviewSchema,
   getGrowTechReviews,
   growTechReviewProductOrder,
   type GrowTechProductId,
@@ -1250,9 +1249,6 @@ export default function GrowTech() {
             "@type": "Brand",
             name: "MasterGrowbot AI",
           },
-          ...(getReviewProductId(product)
-            ? { review: getGrowTechReviewSchema(getReviewProductId(product) as GrowTechProductId) }
-            : {}),
           offers: {
             "@type": "Offer",
             "@id": `https://www.mastergrowbot.com/grow-tech#${product.anchorId}-offer`,

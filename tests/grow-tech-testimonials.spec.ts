@@ -101,7 +101,7 @@ test.describe("GrowTech testimonial data integrity", () => {
 });
 
 test.describe("GrowTech testimonial rendering", () => {
-  test("renders every product group, authoritative count, featured card review, and schema association", async ({ page }) => {
+  test("preserves visible testimonials without publishing unrated review rich results", async ({ page }) => {
     await page.goto("/grow-tech");
 
     for (const [productId, expectedCount] of Object.entries(expectedCounts)) {
@@ -127,10 +127,10 @@ test.describe("GrowTech testimonial rendering", () => {
     for (const productId of Object.values(GROWTECH_PRODUCT_IDS)) {
       const productName = getGrowTechReviews(productId)[0].productName;
       const productSchema = graph.find((entry: { "@type"?: string; name?: string }) => entry["@type"] === "Product" && entry.name === productName);
-      expect(productSchema.review).toHaveLength(expectedCounts[productId]);
-      expect(productSchema.review.map((review: { reviewBody: string }) => review.reviewBody)).toEqual(
-        getGrowTechReviews(productId).map((review) => review.quote),
-      );
+      expect(productSchema).toBeTruthy();
+      expect(productSchema).not.toHaveProperty("review");
+      expect(productSchema).not.toHaveProperty("aggregateRating");
+      expect(productSchema.offers).toMatchObject({ "@type": "Offer", priceCurrency: "USD" });
     }
   });
 });
