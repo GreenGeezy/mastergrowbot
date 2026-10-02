@@ -2,13 +2,17 @@ type CheckoutKey =
   | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL"
-  | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL";
+  | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_CHECKOUT_URL";
 
 type PlanKey =
   | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID"
-  | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID";
+  | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_PLAN_ID";
 
 export type GrowTechProduct = {
   name: string;
@@ -37,22 +41,27 @@ export type GrowTechProduct = {
   planKey: PlanKey;
   checkoutKey: CheckoutKey;
   anchorId: string;
+  deliveryKind?: "digital" | "hardware-and-digital";
 };
 
 export const checkoutUrls: Record<CheckoutKey, string | undefined> = {
-  NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL,
+  NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL || "https://whop.com/checkout/plan_ft9q9KbJXeXj6",
   NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL:
-    import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL,
+    import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL || "https://whop.com/checkout/plan_Yl4OQwlyNfGBo",
   NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL:
-    import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL,
-  NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL,
+    import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL || "https://whop.com/checkout/plan_Ob3f8dS6X0TfA",
+  NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL || "https://whop.com/checkout/plan_jWq4J44VEStQ7",
+  NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_CHECKOUT_URL || "https://whop.com/checkout/ch_dyvbzcXI9sKPmT8/",
+  NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_CHECKOUT_URL || "https://whop.com/checkout/ch_13gOqb4vFDvfXzQ/",
 };
 
 export const planIds: Record<PlanKey, string | undefined> = {
-  NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID,
-  NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID,
-  NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID,
-  NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID,
+  NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID || "plan_ft9q9KbJXeXj6",
+  NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID || "plan_Yl4OQwlyNfGBo",
+  NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID || "plan_Ob3f8dS6X0TfA",
+  NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID || "plan_jWq4J44VEStQ7",
+  NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_PLAN_ID || "plan_0z6oCIxZurR6K",
+  NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_PLAN_ID || "plan_AfveSW6CMa60i",
 };
 
 export const JULY_PROMO_CODE = "AIGROWTECH";
@@ -189,4 +198,54 @@ export const bundle: GrowTechProduct = {
   checkoutKey: "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL",
   anchorId: "grow-tech-kit",
 };
+
+
+// Public checkout identifiers verified in Smart Ag AI on October 2, 2026.
+// Paid files remain inside the dedicated Whop experience, outside the public website.
+export const QUICKSTART_FILES_URL = "https://whop.com/smart-ag-ai/exp_v1pD0nPocHfsir/app/";
+export const QUICKSTART_CONTENT_URL = "https://whop.com/smart-ag-ai/exp_5jVDuXepzVkXb7/app/";
+
+export const quickstartGuide: GrowTechProduct = {
+  ...products[0],
+  name: "GrowTech Equipment Quickstart Guide",
+  productId: "growtech_equipment_quickstart",
+  badge: "Digital download",
+  price: "$19",
+  numericPrice: 19,
+  salePrice: "$19",
+  description: "A nine-page equipment and observation guide, printable worksheets and a CSV log. Take more consistent plant photos, understand reading limitations and keep useful records.",
+  whyBuy: "A clear workflow for the tools you already own.",
+  bestFor: ["Consistent plant photos", "Equipment handling", "Observation templates"],
+  schemaDescription: "Digital equipment quickstart PDF with plant photography, measurement limitations, troubleshooting and observation templates. No hardware or app subscription included.",
+  sku: "MGB-EQUIPMENT-QUICKSTART-V1",
+  category: "Digital equipment guide",
+  buttonLabel: "Get the Guide — $19",
+  image: "/images/grow-tech/quickstart-cover.webp",
+  alt: "Illustration of a magnifying lens, green leaf and notebook for the equipment observation guide",
+  planKey: "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_PLAN_ID",
+  checkoutKey: "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_CHECKOUT_URL",
+  anchorId: "quickstart-guide",
+  deliveryKind: "digital",
+};
+
+export const scoutGuideBundle: GrowTechProduct = {
+  ...products[0],
+  name: "Scout Camera + Equipment Quickstart Guide",
+  productId: "growtech_scout_guide_bundle",
+  badge: "Camera + guide",
+  price: "$159",
+  numericPrice: 159,
+  salePrice: "$159",
+  description: "The $149 Scout Camera phone lens plus the $19 equipment guide and templates in one purchase. Save $9 compared with buying them separately.",
+  whyBuy: "Put your phone lens to work with a repeatable observation workflow.",
+  schemaDescription: "Scout Camera 10-20X phone lens with the digital equipment quickstart PDF and observation templates. $159 one time. No app subscription included.",
+  sku: "MGB-SCOUT-QUICKSTART-BUNDLE",
+  buttonLabel: "Get Camera + Guide — $159",
+  planKey: "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_PLAN_ID",
+  checkoutKey: "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_CHECKOUT_URL",
+  anchorId: "scout-guide-bundle",
+  deliveryKind: "hardware-and-digital",
+};
+
+export const allGrowTechOffers = [...products, bundle, quickstartGuide, scoutGuideBundle];
 

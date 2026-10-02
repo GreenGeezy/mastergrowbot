@@ -7,6 +7,7 @@ import ParticleBackground from "@/components/landing/ParticleBackground";
 import SEOHead from "@/components/SEOHead";
 import { appStoreUrl } from "@/components/landing/ctaLinks";
 import { trackEvent, trackPendingCheckoutSuccess } from "@/lib/analytics";
+import { QUICKSTART_CONTENT_URL, QUICKSTART_FILES_URL } from "@/data/growTechProducts";
 
 const nextSteps = [
   {
@@ -32,6 +33,9 @@ export default function GrowTechThankYou() {
   const receiptId = searchParams.get("receipt_id") || searchParams.get("receiptId") || undefined;
   const isSuccess = status === "success";
   const isError = status === "error";
+  const purchasedSlug = searchParams.get("product");
+  const hasGuide = purchasedSlug === "quickstart-guide" || purchasedSlug === "scout-guide-bundle";
+  const isDigitalOnly = purchasedSlug === "quickstart-guide";
 
   useEffect(() => {
     trackEvent("growtech_thank_you_view", {
@@ -82,12 +86,11 @@ export default function GrowTechThankYou() {
               </p>
             ) : isSuccess ? (
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
-                Order received. Please check your email for your Whop receipt and tracking updates.
+                {isDigitalOnly ? "Check your Whop receipt, then sign in with the same email to open your guide files." : "Please check your email for your Whop receipt and tracking updates."}
               </p>
             ) : (
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
-                Your order is confirmed through Whop. Please check the email address you used at checkout for your
-                receipt, order details, and delivery updates.
+                Check your Whop receipt to confirm your purchase. If checkout was not completed, return to GrowTech or contact support.
               </p>
             )}
             <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-white/[0.08] bg-black/35 p-5 text-left text-sm leading-relaxed text-white/58">
@@ -96,6 +99,8 @@ export default function GrowTechThankYou() {
                   If you were charged or believe this message is incorrect, email support@mastergrowbot.com with the
                   email address used at checkout so our team can help review the order status.
                 </p>
+              ) : isDigitalOnly ? (
+                <p>Your guide is delivered through Whop. Sign in with the email associated with your purchase. No physical shipment is included with the digital-only guide.</p>
               ) : (
                 <>
                   <p>
@@ -108,9 +113,10 @@ export default function GrowTechThankYou() {
               )}
             </div>
           </div>
+          {hasGuide && !isError ? <div className="mt-6 rounded-xl border border-emerald-300/25 bg-emerald-950/40 p-6"><h2 className="text-xl font-bold">Open your Equipment Quickstart</h2><p className="mt-2 text-sm leading-6 text-white/70">Your purchase account provides access to the nine-page guide, printable worksheets and CSV log.</p><div className="mt-4 flex flex-wrap gap-4"><a href={QUICKSTART_CONTENT_URL} className="rounded-lg bg-emerald-300 px-5 py-3 font-bold text-emerald-950">Start Here</a><a href={QUICKSTART_FILES_URL} className="rounded-lg border border-emerald-300/40 px-5 py-3 font-bold text-emerald-300">Open guide files</a></div></div> : null}
         </section>
 
-        <section className="mx-auto mt-16 max-w-6xl">
+        {!isDigitalOnly ? <section className="mx-auto mt-16 max-w-6xl">
           <div className="mb-8 text-center">
             <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
               What happens next
@@ -133,7 +139,7 @@ export default function GrowTechThankYou() {
               </article>
             ))}
           </div>
-        </section>
+        </section> : null}
 
         <section className="mx-auto mt-14 max-w-4xl text-center">
           <p className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-6 text-sm leading-relaxed text-white/60 backdrop-blur-xl">

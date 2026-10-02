@@ -1,5 +1,6 @@
 import GearFinder from "@/components/grow-tech/GearFinder";
 import OrderQuestions from "@/components/grow-tech/OrderQuestions";
+import QuickstartOffers from "@/components/grow-tech/QuickstartOffers";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -37,6 +38,7 @@ import {
 } from "@/lib/analytics";
 
 import {
+  allGrowTechOffers,
   bundle,
   checkoutUrls,
   currentPrice,
@@ -1237,7 +1239,7 @@ export default function GrowTech() {
     () => ({
       "@context": "https://schema.org",
       "@graph": [
-        ...[...products, bundle].map((product) => ({
+        ...allGrowTechOffers.map((product) => ({
           "@type": "Product",
           "@id": `https://www.mastergrowbot.com/grow-tech#${product.anchorId}`,
           name: product.name,
@@ -1257,8 +1259,7 @@ export default function GrowTech() {
             price: product.price.replace("$", ""),
             availability: "https://schema.org/InStock",
             itemCondition: "https://schema.org/NewCondition",
-            shippingDetails,
-            hasMerchantReturnPolicy,
+            ...(product.deliveryKind === "digital" ? {} : { shippingDetails, hasMerchantReturnPolicy }),
           },
         })),
         {
@@ -1270,8 +1271,8 @@ export default function GrowTech() {
             "Compare and buy a cannabis grow tech kit, 10-20X plant camera, grow-room environment monitor, and 6-in-1 soil health meter.",
           mainEntity: {
             "@type": "ItemList",
-            numberOfItems: 4,
-            itemListElement: [...products, bundle].map((product, index) => ({
+            numberOfItems: allGrowTechOffers.length,
+            itemListElement: allGrowTechOffers.map((product, index) => ({
               "@type": "ListItem",
               position: index + 1,
               item: { "@id": `https://www.mastergrowbot.com/grow-tech#${product.anchorId}` },
@@ -1375,6 +1376,7 @@ export default function GrowTech() {
 
         <BundleSection />
         <ProductGridSection />
+        <QuickstartOffers />
         <ProductTestimonialsSection />
         <GrowerFitSection />
         <ShippingSection />

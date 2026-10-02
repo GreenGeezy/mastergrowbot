@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { WhopCheckoutEmbed } from "@whop/checkout/react";
 import { AlertCircle, ArrowUpRight, Copy } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
+import { QUICKSTART_FILES_URL, QUICKSTART_CONTENT_URL } from "@/data/growTechProducts";
 import {
   type GrowTechAnalyticsProduct,
   growTechEcommercePayload,
@@ -19,6 +20,8 @@ type EmbeddedGrowTechCheckoutProps = {
     image: string;
     imageWebp?: string;
     alt: string;
+    anchorId?: string;
+    deliveryKind?: "digital" | "hardware-and-digital";
   };
   planId?: string;
   fallbackCheckoutUrl?: string;
@@ -144,8 +147,9 @@ export default function EmbeddedGrowTechCheckout({
         <div className="rounded-xl border border-landing-green/25 bg-landing-green/10 p-6 text-center">
           <p className="text-lg font-semibold text-white">Your Whop checkout is complete.</p>
           <p className="mt-2 text-sm leading-relaxed text-white/62">
-            Please check the email used at checkout for your receipt, order details, and delivery updates.
+            {product.deliveryKind === "digital" ? "Check the email used at checkout for your receipt and sign in to Whop to access your files." : "Check the email used at checkout for your receipt, order details, and delivery updates."}
           </p>
+          {product.deliveryKind ? <div className="mt-4 flex flex-wrap justify-center gap-4"><a href={QUICKSTART_CONTENT_URL} className="font-semibold text-emerald-300 underline">Open Start Here</a><a href={QUICKSTART_FILES_URL} className="font-semibold text-emerald-300 underline">Open your guide files</a></div> : null}
           {completedReceiptId && (
             <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">
               Receipt: {completedReceiptId}
@@ -178,9 +182,9 @@ export default function EmbeddedGrowTechCheckout({
               <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px] rounded-xl bg-white [color-scheme:light]">
                 <WhopCheckoutEmbed
                   planId={planId}
-                  returnUrl="https://www.mastergrowbot.com/grow-tech/thank-you?status=success"
+                  returnUrl={`https://www.mastergrowbot.com/grow-tech/thank-you?status=success&product=${encodeURIComponent(product.anchorId || "")}`}
                   theme="light"
-                  collectShipping
+                  collectShipping={product.deliveryKind !== "digital"}
                   utm={{
                     utm_source: "mastergrowbot",
                     utm_medium: "embedded_checkout",
@@ -224,7 +228,7 @@ export default function EmbeddedGrowTechCheckout({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs leading-relaxed text-white/48">
-          Secure payment is processed by Whop. No payment data is stored by MasterGrowbot. Your delivery details are collected once.
+          Secure payment is processed by Whop. {product.deliveryKind === "digital" ? "Digital access is linked to your Whop purchase account." : "Your delivery details are collected at checkout."}
         </p>
         {fallbackLink}
       </div>

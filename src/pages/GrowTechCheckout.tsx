@@ -3,16 +3,16 @@ import "@/components/landing/premium.css";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, Truck } from "lucide-react";
+import { ArrowLeft, Download, ShieldCheck, Truck } from "lucide-react";
 import EmbeddedGrowTechCheckout from "@/components/grow-tech/EmbeddedGrowTechCheckout";
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import SEOHead from "@/components/SEOHead";
-import { bundle, checkoutUrls, IS_JULY_PROMO_ACTIVE, planIds, products } from "@/data/growTechProducts";
+import { allGrowTechOffers, checkoutUrls, IS_JULY_PROMO_ACTIVE, planIds } from "@/data/growTechProducts";
 
 export default function GrowTechCheckout() {
   const { productSlug } = useParams<{ productSlug: string }>();
-  const product = [...products, bundle].find((item) => item.anchorId === productSlug);
+  const product = allGrowTechOffers.find((item) => item.anchorId === productSlug);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,12 +29,13 @@ export default function GrowTechCheckout() {
 
   const planId = planIds[product.planKey];
   const checkoutUrl = checkoutUrls[product.checkoutKey];
+  const isDigital = product.deliveryKind === "digital";
 
   return (
     <div className="premium-site min-h-screen bg-[#050a07] text-white">
       <SEOHead
         title={`Secure checkout: ${product.name} | MasterGrowbot AI`}
-        description={`Complete your ${product.name} order with secure Whop checkout. Free shipping to the United States and Canada.`}
+        description={`Complete your ${product.name} order with secure Whop checkout. ${isDigital ? "Digital access through Whop after purchase." : "Free shipping to the United States and Canada."}`}
         canonicalUrl={`https://www.mastergrowbot.com/grow-tech/checkout/${product.anchorId}`}
       />
       <Helmet><meta name="robots" content="noindex,follow" /></Helmet>
@@ -47,7 +48,7 @@ export default function GrowTechCheckout() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-landing-green">Secure one-time checkout</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Complete your order</h1>
           <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-white/75">
-            <span className="inline-flex items-center gap-2"><Truck className="h-4 w-4 text-landing-green" /> Free US & Canada shipping</span>
+            <span className="inline-flex items-center gap-2">{isDigital ? <Download className="h-4 w-4 text-landing-green" /> : <Truck className="h-4 w-4 text-landing-green" />} {isDigital ? "Digital access after purchase" : "Free US & Canada shipping"}</span>
             <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-landing-green" /> Payment secured by Whop</span>
           </div>
         </div>
@@ -57,10 +58,10 @@ export default function GrowTechCheckout() {
             planId={planId}
             fallbackCheckoutUrl={checkoutUrl}
             ctaLocation={`growtech_checkout_page:${product.anchorId}`}
-            promoActive={IS_JULY_PROMO_ACTIVE}
+            promoActive={!product.deliveryKind && IS_JULY_PROMO_ACTIVE}
           />
         </div>
-        <div className="mt-8"><OrderQuestions checkoutUrl={checkoutUrl} /></div>
+        {isDigital ? <div className="mt-8 rounded-xl border border-white/10 p-5 text-sm leading-7 text-white/70"><h2 className="font-bold text-white">What happens after payment?</h2><p>Sign in to Whop with the email on your receipt to open the Equipment Quickstart Files and Start Here content. Your purchase includes the nine-page PDF, worksheets and CSV log. It includes no physical equipment or app subscription.</p><p>For access or purchase issues, email support@mastergrowbot.com with your receipt identifier.</p></div> : <div className="mt-8"><OrderQuestions checkoutUrl={checkoutUrl} /></div>}
         <p className="mt-8 text-center text-xs leading-5 text-white/50">
           Prices are in USD. Need order help? <a href="mailto:support@mastergrowbot.com" className="text-landing-green underline">support@mastergrowbot.com</a>
         </p>
