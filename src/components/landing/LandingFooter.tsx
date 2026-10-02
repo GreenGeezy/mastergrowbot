@@ -10,6 +10,8 @@ export default function LandingFooter() {
           <Link to={GROW_TECH_URL} data-cta-location="footer:growtech" className="hover:text-landing-green transition-colors">
             Shop GrowTech
           </Link>
+          <Link to="/playbooks" className="hover:text-landing-green transition-colors">Playbooks</Link>
+          <Link to="/about" className="hover:text-white/60 transition-colors">About</Link>
           <Link to="/grow-guides" className="hover:text-white/60 transition-colors">
             Grow Guides
           </Link>
@@ -24,7 +26,7 @@ export default function LandingFooter() {
             data-cta-location="footer:amazon-book"
             className="hover:text-white/60 transition-colors"
           >
-            IPM Playbook
+            IPM book on Amazon
           </a>
           <Link to="/contact" className="hover:text-white/60 transition-colors">
             Contact

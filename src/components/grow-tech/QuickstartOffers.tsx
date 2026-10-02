@@ -59,5 +59,5 @@ export default function QuickstartOffers() {
         </div>
       </div>
     </div>
-  </section>;
+  <p className="mt-7 text-sm leading-6 text-white/65">Want the full AI observation workflow? <Link to="/playbooks" className="font-semibold text-emerald-300 underline underline-offset-4">Explore the Playbook, including this Quickstart Guide.</Link></p></section>;
 }

@@ -4,7 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Lazy load all page components
 const Index = lazy(() => import("@/pages/Index"));
@@ -19,8 +19,10 @@ const GrowTechCheckout = lazy(() => import("@/pages/GrowTechCheckout"));
 const GrowTechThankYou = lazy(() => import("@/pages/GrowTechThankYou"));
 const WhopEmbedTest = lazy(() => import("@/pages/WhopEmbedTest"));
 const CheckoutDiagnostics = lazy(() => import("@/pages/CheckoutDiagnostics"));
-const AIStrategy = lazy(() => import("@/pages/AIStrategy"));
-const AIStrategyBook = lazy(() => import("@/pages/AIStrategyBook"));
+const About = lazy(() => import("@/pages/About"));
+const Playbook = lazy(() => import("@/pages/Playbook"));
+const PlaybookCheckout = lazy(() => import("@/pages/PlaybookCheckout"));
+const PlaybookThankYou = lazy(() => import("@/pages/PlaybookThankYou"));
 const AIStrategyIntake = lazy(() => import("@/pages/AIStrategyIntake"));
 
 const LoadingSpinner = () => (
@@ -125,11 +127,15 @@ const App = () => {
               </Suspense>
             }
           />
+          <Route path="/about" element={<Suspense fallback={<LoadingSpinner />}><About /></Suspense>} />
+          <Route path="/playbooks" element={<Suspense fallback={<LoadingSpinner />}><Playbook /></Suspense>} />
+          <Route path="/playbooks/checkout" element={<Suspense fallback={<LoadingSpinner />}><PlaybookCheckout /></Suspense>} />
+          <Route path="/playbooks/thank-you" element={<Suspense fallback={<LoadingSpinner />}><PlaybookThankYou /></Suspense>} />
           <Route
             path="/ai-strategy"
             element={
               <Suspense fallback={<LoadingSpinner />}>
-                <AIStrategy />
+                <Navigate to="/about" replace />
               </Suspense>
             }
           />
@@ -137,7 +143,7 @@ const App = () => {
             path="/ai-strategy/book"
             element={
               <Suspense fallback={<LoadingSpinner />}>
-                <AIStrategyBook />
+                <Navigate to="/about" replace />
               </Suspense>
             }
           />
@@ -149,6 +155,9 @@ const App = () => {
               </Suspense>
             }
           />
+          <Route path="/playbook" element={<Navigate to="/playbooks" replace />} />
+          <Route path="/playbook/checkout" element={<Navigate to="/playbooks/checkout" replace />} />
+          <Route path="/playbook/thank-you" element={<Navigate to="/playbooks/thank-you" replace />} />
         </Routes>
       </BrowserRouter>
       <Analytics />

@@ -5,8 +5,8 @@ import { ArrowRight, Menu, X } from 'lucide-react';
 const navLinks = [
   { label: 'GrowTech', to: '/grow-tech' },
   { label: 'Grow Guides', to: '/grow-guides' },
-  { label: 'AI Strategy', to: '/ai-strategy', badge: 'NEW' },
-  { label: 'VPD Calculator', to: '/vpd-calculator' },
+  { label: 'Playbooks', to: '/playbooks', badge: 'NEW' },
+  { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
 ];
 

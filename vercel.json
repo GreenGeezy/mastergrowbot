@@ -1,4 +1,3 @@
-
 {
   "git": {
     "deploymentEnabled": {
@@ -62,6 +61,31 @@
       ],
       "destination": "/:path*",
       "permanent": false
+    },
+    {
+      "source": "/ai-strategy",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/ai-strategy/book",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/playbook",
+      "destination": "/playbooks",
+      "permanent": true
+    },
+    {
+      "source": "/playbook/checkout",
+      "destination": "/playbooks/checkout",
+      "permanent": true
+    },
+    {
+      "source": "/playbook/thank-you",
+      "destination": "/playbooks/thank-you",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -69,10 +93,25 @@
       "source": "/.well-known/apple-developer-merchantid-domain-association",
       "destination": "https://whop.com/.well-known/apple-platform-integrator/apple-developer-merchantid-domain-association"
     },
-    { "source": "/auth/callback(.*)", "destination": "/index.html" },
-    { "source": "/auth/(.*)", "destination": "/index.html" },
-    { "source": "/privacy-policy", "destination": "/index.html" },
-    { "source": "/terms-of-service", "destination": "/index.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/auth/callback(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/terms-of-service",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
