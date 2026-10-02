@@ -50,9 +50,16 @@ test('Grow Tech is discoverable, commercially described and free of expired prom
   const schemaScripts = await page.locator('script[type="application/ld+json"]').allTextContents();
   const graph = schemaScripts.map((script) => JSON.parse(script)).find((schema) => Array.isArray(schema['@graph']))['@graph'];
   const products = graph.filter((entry: { '@type'?: string }) => entry['@type'] === 'Product');
-  expect(products).toHaveLength(4);
+  expect(products).toHaveLength(6);
   expect(products.every((product: { '@id'?: string }) => product['@id']?.startsWith('https://www.mastergrowbot.com/grow-tech#'))).toBe(true);
-  expect(products.every((product: { offers?: { hasMerchantReturnPolicy?: { returnFees?: string } } }) =>
+  const digitalGuide = products.find((product: { '@id'?: string }) => product['@id'] === 'https://www.mastergrowbot.com/grow-tech#quickstart-guide');
+  expect(digitalGuide).toBeDefined();
+  expect(digitalGuide.offers.shippingDetails).toBeUndefined();
+  expect(digitalGuide.offers.hasMerchantReturnPolicy).toBeUndefined();
+  const physicalProducts = products.filter((product: { '@id'?: string }) => product['@id'] !== digitalGuide['@id']);
+  expect(physicalProducts).toHaveLength(5);
+  expect(products.some((product: { '@id'?: string }) => product['@id'] === 'https://www.mastergrowbot.com/grow-tech#scout-guide-bundle')).toBe(true);
+  expect(physicalProducts.every((product: { offers?: { hasMerchantReturnPolicy?: { returnFees?: string } } }) =>
     product.offers?.hasMerchantReturnPolicy?.returnFees === 'https://schema.org/ReturnFeesCustomerResponsibility'
   )).toBe(true);
   expect(graph.some((entry: { '@type'?: string }) => entry['@type'] === 'CollectionPage')).toBe(true);
