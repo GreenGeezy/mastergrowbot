@@ -85,8 +85,11 @@ export function useWhopCheckoutTracking({
 
   const trackComplete = useCallback(
     (completedPlanId: string | undefined, receiptId: string | undefined, signalSource: string) => {
+      // The SDK callback merges setup_intent_id and receipt_id. Only the
+      // source-checked iframe message distinguishes a payment receipt.
+      if (signalSource !== "post_message" || !receiptId?.trim()) return;
       const resolvedPlanId = completedPlanId || planId;
-      if (!resolvedPlanId) {
+      if (!resolvedPlanId || (planId && resolvedPlanId !== planId)) {
         return;
       }
 
@@ -132,13 +135,15 @@ export function useWhopCheckoutTracking({
       if (!isWhopOrigin(event.origin) || !isWhopCheckoutMessage(event.data)) {
         return;
       }
+      const frames = hostRef.current?.querySelectorAll('iframe');
+      if (!frames || !Array.from(frames).some(frame => frame.contentWindow === event.source)) return;
 
       if (event.data.event === "state" && event.data.state) {
         trackState(String(event.data.state), "post_message");
       }
 
       if (event.data.event === "complete") {
-        trackComplete(event.data.plan_id, event.data.receipt_id || event.data.setup_intent_id, "post_message");
+        trackComplete(event.data.plan_id, event.data.receipt_id, "post_message");
       }
     };
 

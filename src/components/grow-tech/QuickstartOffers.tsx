@@ -30,7 +30,7 @@ export default function QuickstartOffers() {
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">Digital download · $19 once</p>
               <h3 className="mt-3 text-2xl font-bold">Equipment Quickstart Guide</h3>
               <ul className="mt-4 space-y-2 text-sm leading-6 text-white/75">
-                {['Nine-page PDF: handling, photos, reading limitations and troubleshooting', 'Two printable observation worksheets', 'CSV log for your own records'].map(text => <li key={text} className="flex gap-2"><Check size={16} className="mt-1 shrink-0 text-emerald-300" aria-hidden="true" />{text}</li>)}
+                {['12-page PDF: handling, photos, reading limitations and troubleshooting', 'Two printable observation worksheets', 'CSV log for your own records'].map(text => <li key={text} className="flex gap-2"><Check size={16} className="mt-1 shrink-0 text-emerald-300" aria-hidden="true" />{text}</li>)}
               </ul>
               <div className="mt-6"><OfferLink product={quickstartGuide} /></div>
               <a href="/downloads/grow-tech/quickstart-sample.pdf" target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('growtech_guide_sample_open', { cta_location: 'quickstart_offer' })} className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-emerald-300 underline underline-offset-4"><BookOpen size={16} />Read the free two-page sample</a>

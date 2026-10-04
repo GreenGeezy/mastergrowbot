@@ -213,7 +213,7 @@ export const quickstartGuide: GrowTechProduct = {
   price: "$19",
   numericPrice: 19,
   salePrice: "$19",
-  description: "A nine-page equipment and observation guide, printable worksheets and a CSV log. Take more consistent plant photos, understand reading limitations and keep useful records.",
+  description: "A 12-page equipment and observation guide, printable worksheets and a CSV log. Take more consistent plant photos, understand reading limitations and keep useful records.",
   whyBuy: "A clear workflow for the tools you already own.",
   bestFor: ["Consistent plant photos", "Equipment handling", "Observation templates"],
   schemaDescription: "Digital equipment quickstart PDF with plant photography, measurement limitations, troubleshooting and observation templates. No hardware or app subscription included.",

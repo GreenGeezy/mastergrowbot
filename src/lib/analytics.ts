@@ -34,6 +34,7 @@ const ecommerceEventNames = new Set([
 
 const pendingCheckoutStorageKey = "mastergrowbot.pending_checkout.v1";
 const completedTransactionStoragePrefix = "mastergrowbot.completed_transaction.v1:";
+const completedTransactions = new Set<string>();
 const pendingCheckoutTtlMs = 24 * 60 * 60 * 1000;
 
 type PendingCheckout = {
@@ -109,6 +110,7 @@ function clearPendingCheckout(sourcePage: string) {
 }
 
 function isCompletedTransaction(transactionId: string) {
+  if (completedTransactions.has(transactionId)) return true;
   if (typeof window === "undefined") {
     return false;
   }
@@ -121,6 +123,7 @@ function isCompletedTransaction(transactionId: string) {
 }
 
 function markCompletedTransaction(transactionId: string) {
+  completedTransactions.add(transactionId);
   if (typeof window === "undefined") {
     return;
   }
@@ -270,7 +273,7 @@ export function trackGrowTechPurchase(
   ctaLocation = "unknown",
   extra: AnalyticsParams = {},
 ) {
-  trackCheckoutSuccess(growTechEcommercePayload(product, ctaLocation, planId), receiptId, extra);
+  if (!trackCheckoutSuccess(growTechEcommercePayload(product, ctaLocation, planId), receiptId, extra)) return;
   trackEvent("growtech_purchase_complete", {
     ...growTechEcommercePayload(product, ctaLocation, planId),
     receipt_id: receiptId,
@@ -320,9 +323,11 @@ export function trackCheckoutSuccess(
   receiptId?: string,
   extra: AnalyticsParams = {},
 ) {
+  // A return page or a setup intent alone is not a paid receipt.
+  if (!receiptId?.trim()) return false;
   const sourcePage = String(payload.checkout_source_page || "unknown");
   const pendingCheckout = pendingCheckoutFor(sourcePage);
-  const transactionId = receiptId?.trim() || pendingCheckout?.checkoutId || createCheckoutId();
+  const transactionId = receiptId.trim();
 
   if (isCompletedTransaction(transactionId)) {
     clearPendingCheckout(sourcePage);
