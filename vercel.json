@@ -41,6 +41,11 @@
   ],
   "redirects": [
     {
+      "source": "/grow-guides/:slug(cannabis-nutrient-schedule-calculator|cannabis-light-schedule-calculator|best-outdoor-cannabis-growing-apps-2026|ai-plant-diagnosis-apps-compared-2026|cannabis-yield-calculator-guide)",
+      "destination": "/grow-guides",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
