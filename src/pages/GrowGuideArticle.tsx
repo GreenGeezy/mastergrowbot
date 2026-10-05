@@ -176,6 +176,20 @@ export default function GrowGuideArticle() {
               </p>
             </motion.header>
 
+            {guide.slug === 'best-ai-cannabis-growing-apps-2026' && (
+              <aside className="mb-8 rounded-2xl border border-landing-green/40 bg-landing-green/10 p-5">
+                <p className="text-xs font-semibold uppercase tracking-wider text-landing-green">Meet MasterGrowbot AI · Publisher of this guide</p>
+                <h2 className="mt-2 text-xl font-bold text-white">Turn plant photos into a grow record you can use.</h2>
+                <p className="mt-2 text-sm leading-relaxed text-white/75">Review AI observations, save reports to your journal, and keep your next check-in in context. See the app before choosing a subscription.</p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <a href="#app-preview" className="inline-flex min-h-11 items-center rounded-xl bg-landing-green px-5 py-3 text-sm font-bold text-black">See the app & compare plans ↓</a>
+                  <a href={appStoreUrl} data-cta-location="article-top:ios" className="inline-flex min-h-11 items-center rounded-xl border border-white/25 px-4 py-3 text-sm font-semibold text-white">iPhone App Store</a>
+                  <a href={playStoreUrl} data-cta-location="article-top:android" className="inline-flex min-h-11 items-center rounded-xl border border-white/25 px-4 py-3 text-sm font-semibold text-white">Google Play</a>
+                </div>
+                <p className="mt-3 text-xs text-white/60">Free download; paid features require a subscription. Eligible new Pro subscribers can receive a three-day trial. Check your store for availability and terms.</p>
+              </aside>
+            )}
+
             {/* Table of Contents */}
             <motion.nav
               aria-label="Table of contents"

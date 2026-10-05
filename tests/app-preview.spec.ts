@@ -18,8 +18,8 @@ test('product preview preserves campaign labels and emits one existing event per
       document.addEventListener('click', e => e.preventDefault(), { once: true });
     });
     await link.click();
-    const events = await page.evaluate(() => (window.dataLayer || []).map((x: any) => Array.from(x)));
-    const matches = events.filter((x: any) => x[1] === `${platform === 'ios' ? 'ios' : 'android'}_app_click`);
+    const events = await page.evaluate(() => (window.dataLayer || []).map((x: ArrayLike<unknown>) => Array.from(x)));
+    const matches = events.filter((x: unknown[]) => x[1] === `${platform === 'ios' ? 'ios' : 'android'}_app_click`);
     expect(matches).toHaveLength(1);
     expect(matches[0][2]).toMatchObject({ article_slug: route.split('/').pop(), cta_location: `article-product-preview:${platform}` });
   }

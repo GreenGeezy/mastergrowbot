@@ -22,7 +22,7 @@ test('leading AI app guide removes unsupported comparisons and retains conversio
   await expect(page.locator('article')).not.toContainText(/tested dozens|85-90|3,000|15-20%|most advanced|\$9\.99/);
   await expect(page.getByRole('heading', {name: 'Quick answer: choose by the job, not the AI label'})).toBeVisible();
   const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(s => JSON.parse(s));
-  expect(schemas.find(s => s['@type'] === 'Article')?.dateModified).toContain('2026-09-28');
+  expect(schemas.find(s => s['@type'] === 'Article')?.dateModified).toContain('2026-10-05');
   expect(schemas.some(s => s['@type'] === 'BreadcrumbList')).toBe(true);
   await expect(page.locator('article a[href^="https://apps.apple.com"]').first()).toBeAttached();
   await expect(page.locator('article a[href^="https://play.google.com"]').first()).toBeAttached();
