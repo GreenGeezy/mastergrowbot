@@ -85,7 +85,7 @@ const trustCards = [
   },
   {
     title: "Free US & Canada Shipping",
-    text: "The listed prices include shipping to the United States and Canada. Prices are shown in USD.",
+    text: "The listed prices include shipping to the United States and Canada. Estimated delivery: around 2 weeks. Prices are shown in USD.",
     icon: Truck,
   },
   {
@@ -197,7 +197,7 @@ const faqs = [
 const visibleFaqs = IS_JULY_PROMO_ACTIVE ? faqs : faqs.slice(2);
 
 const supplierDisclosure =
-  "Orders are prepared through our supplier network. Shipping speed, packaging, and carrier updates may vary by destination, and tracking details are sent after dispatch.";
+  "Estimated delivery: around 2 weeks. Delivery times may vary by destination, and tracking details are sent after dispatch.";
 
 const shippingDetails = {
   "@type": "OfferShippingDetails",
@@ -210,6 +210,16 @@ const shippingDetails = {
     "@type": "DefinedRegion",
     addressCountry,
   })),
+  deliveryTime: {
+    "@type": "ShippingDeliveryTime",
+    description: "Estimated delivery: around 2 weeks. Delivery times may vary by destination.",
+    transitTime: {
+      "@type": "QuantitativeValue",
+      minValue: 14,
+      maxValue: 14,
+      unitCode: "DAY",
+    },
+  },
 };
 
 const hasMerchantReturnPolicy = {

@@ -58,6 +58,10 @@ test('Grow Tech is discoverable, commercially described and free of expired prom
   expect(digitalGuide.offers.hasMerchantReturnPolicy).toBeUndefined();
   const physicalProducts = products.filter((product: { '@id'?: string }) => product['@id'] !== digitalGuide['@id']);
   expect(physicalProducts).toHaveLength(5);
+  expect(physicalProducts.every((product: { offers: { shippingDetails: { deliveryTime: { transitTime: { maxValue: number } } } } }) =>
+    product.offers.shippingDetails.deliveryTime.transitTime.maxValue === 14
+  )).toBe(true);
+  await expect(page.locator('body')).toContainText('Estimated delivery: around 2 weeks.');
   expect(products.some((product: { '@id'?: string }) => product['@id'] === 'https://www.mastergrowbot.com/grow-tech#scout-guide-bundle')).toBe(true);
   expect(physicalProducts.every((product: { offers?: { hasMerchantReturnPolicy?: { returnFees?: string } } }) =>
     product.offers?.hasMerchantReturnPolicy?.returnFees === 'https://schema.org/ReturnFeesCustomerResponsibility'
