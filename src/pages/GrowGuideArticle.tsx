@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { ArrowRight, ChevronRight, BookOpen } from 'lucide-react';
 import GuideContent from '@/components/GuideContent';
+import GuideAppPreview from '@/components/GuideAppPreview';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
@@ -210,7 +211,7 @@ export default function GrowGuideArticle() {
             </motion.div>
 
             {/* Inline CTA (within first 300 words) */}
-            {isGrowTechIntent ? (
+            {guide.slug === 'best-ai-cannabis-growing-apps-2026' ? <GuideAppPreview /> : isGrowTechIntent ? (
               <div className="mb-10 rounded-2xl border border-landing-green/25 bg-landing-green/[0.07] p-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-landing-green font-sans mb-1">Shop the tool in this guide</p>
@@ -266,7 +267,7 @@ export default function GrowGuideArticle() {
             <div className="mb-12 rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent p-8 text-center space-y-4">
 
               <h2 className="text-2xl sm:text-3xl font-bold text-landing-green font-sans">
-                Download MasterGrowbot AI: Free 3-Day Trial
+                {guide.slug === 'best-ai-cannabis-growing-apps-2026' ? 'Choose your MasterGrowbot AI plan' : 'Download MasterGrowbot AI: Free 3-Day Trial'}
               </h2>
               <p className="text-white/60 font-sans text-sm sm:text-base max-w-lg mx-auto">
                 Explore MasterGrowbot AI for plant photos, journal notes, and daily tasks. Check your app store for current trial eligibility and subscription terms.
