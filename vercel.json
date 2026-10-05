@@ -90,6 +90,22 @@
   ],
   "rewrites": [
     {
+      "source": "/grow-guides/:slug",
+      "destination": "/seo/grow-guides/:slug.html"
+    },
+    {
+      "source": "/grow-guides",
+      "destination": "/seo/grow-guides.html"
+    },
+    {
+      "source": "/grow-tech",
+      "destination": "/seo/grow-tech.html"
+    },
+    {
+      "source": "/vpd-calculator",
+      "destination": "/seo/vpd-calculator.html"
+    },
+    {
       "source": "/.well-known/apple-developer-merchantid-domain-association",
       "destination": "https://whop.com/.well-known/apple-platform-integrator/apple-developer-merchantid-domain-association"
     },
