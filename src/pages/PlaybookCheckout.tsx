@@ -35,7 +35,6 @@ export default function PlaybookCheckout() {
         <Link to="/playbooks" className="text-sm text-emerald-300 underline">Back to Playbooks</Link>
         <h1 className="mt-6 text-3xl font-bold">AI Plant Observation Playbook</h1>
         <p className="mt-5 text-3xl font-bold text-emerald-300">${offer.price} <span className="text-sm font-normal text-white/65">USD · one-time</span></p>
-        {offer.isLaunch && <p className="mt-3 text-sm leading-6 text-white/65">Launch code is applied below. Ends October 16, 2026 at 11:59 p.m. Mexico City time. Regular price $89 after launch.</p>}
         <ul className="mt-7 space-y-4 text-sm leading-6 text-white/80">
           <li>32-page Playbook with eight worked AI prompt walkthroughs</li><li>Eight-page printable and fillable field workbook</li>
           <li>12-page Equipment Quickstart + two worksheets</li><li>CSV log + copy-ready prompt text file</li><li>Six files through your Whop account after payment</li>
@@ -46,7 +45,7 @@ export default function PlaybookCheckout() {
       <section className="min-w-0 rounded-2xl bg-white p-3 text-black sm:p-6" aria-label="Secure Whop checkout">
         {completed ? <div className="py-8"><h2 className="text-2xl font-bold">Your checkout is complete.</h2><p className="mt-4 leading-7">Check your Whop receipt, then sign in with the account used to purchase.</p><div className="mt-6 flex flex-wrap gap-4"><a href={PLAYBOOK_CONTENT_URL} className="font-bold text-emerald-800 underline">Open Start Here</a><a href={PLAYBOOK_FILES_URL} className="font-bold text-emerald-800 underline">Open your files</a></div></div> : <>
           {checkoutState === 'timeout' || checkoutState === 'disabled' ? <p role="status" className="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">The embedded form is taking longer to load. Use full-page Whop checkout below to continue.</p> : null}
-          <div ref={hostRef}><WhopCheckoutEmbed key={offer.isLaunch ? 'launch' : 'regular'} planId={PLAYBOOK_PLAN_ID} promoCode={offer.promoCode} returnUrl="https://www.mastergrowbot.com/playbooks/thank-you" collectShippingAddress={false} theme="light" onComplete={(id, receipt) => handleComplete(id, receipt, 'react_on_complete')} onStateChange={state => handleStateChange(String(state), 'react_on_state_change')} /></div>
+          <div ref={hostRef}><WhopCheckoutEmbed planId={PLAYBOOK_PLAN_ID} returnUrl="https://www.mastergrowbot.com/playbooks/thank-you" collectShippingAddress={false} theme="light" onComplete={(id, receipt) => handleComplete(id, receipt, 'react_on_complete')} onStateChange={state => handleStateChange(String(state), 'react_on_state_change')} /></div>
           <a href={offer.hostedUrl} onClick={() => trackEvent('checkout_fallback_click', payload)} className="mt-6 block min-h-12 rounded-xl border border-gray-300 px-4 py-3 text-center text-sm font-semibold underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800">Open secure full-page Whop checkout</a>
         </>}
       </section>
