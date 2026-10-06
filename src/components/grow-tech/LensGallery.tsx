@@ -15,10 +15,10 @@ export default function LensGallery({ kind = "lens" }: { kind?: GalleryKind }) {
     {file:"grower-one",label:"In a grow routine",alt:`AI illustration of an adult male cannabis grower using the ${kind === "tent" ? "unbranded tent" : "six-function soil tester"}`},
     {file:"grower-two",label:"A closer look",alt:`AI illustration of an adult male cannabis grower checking plants with the ${kind === "tent" ? "unbranded tent" : "six-function soil tester"}`},
   ];
-  const directory = kind === "lens" ? "lens-launch" : `${kind}-launch`;
+  const directory = kind === "lens" ? "lens-launch" : kind === "tent" ? "tent-express-v2" : "soil-launch";
   const scene = images[selected];
   return <figure className="lens-gallery">
-    <img className="lens-gallery-main" src={`/images/grow-tech/${directory}/${scene.file}.webp`} alt={scene.alt} width={1448} height={1086} loading={kind === "lens" ? "eager" : "lazy"} />
+    <img className="lens-gallery-main" style={kind === "tent" ? {aspectRatio:"5 / 6",objectFit:"contain"} : undefined} src={`/images/grow-tech/${directory}/${scene.file}.webp`} alt={scene.alt} width={kind === "tent" ? 1145 : 1448} height={kind === "tent" ? 1374 : 1086} loading={kind === "lens" ? "eager" : "lazy"} />
     <div className="lens-thumbnails" aria-label="Product image gallery">
       {images.map((item, index) => <button key={item.file} type="button" aria-label={`View ${kind === "lens" ? "" : `${kind}: `}${item.label}`} aria-pressed={selected === index} onClick={() => setSelected(index)}>
         <img src={`/images/grow-tech/${directory}/${item.file}.webp`} alt="" width={160} height={120} loading="lazy" /><span>{item.label}</span>

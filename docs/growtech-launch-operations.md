@@ -2,21 +2,23 @@
 
 Launch offer: APEXEL ZM100 adjustable 10–20X lens with LED light + existing 12-page MasterGrowbot Equipment Quickstart, two worksheets and CSV log. $119 one time. $99 promotional floor; no initial coupons. Supplier purchases begin only after a verified, paid Whop transaction. Never purchase inventory in advance.
 
+See [fast fulfillment routes and conservative margin caps](growtech-fast-fulfillment.md) for the current sourcing decision and owner delivery commitment.
+
 ## Launch configuration
 
 | Package | Price (USD, once) | Paid plan | Destinations | Delivery estimate |
 | --- | --- | --- | --- | --- |
-| APEXEL ZM100 + FL26 light + Quickstart | $119 | plan_AfveSW6CMa60i | US, Canada | 4–6 weeks |
-| White six-function soil meter + Quickstart | $99 | plan_Ob3f8dS6X0TfA | US, Canada | 4–6 weeks |
-| Unbranded 24 × 24 × 48 inch tent + Quickstart | $199 preorder | plan_BkFyLfxmpwIeY | US only | 8–10 weeks |
+| APEXEL ZM100 + FL26 light + Quickstart | $119 | plan_AfveSW6CMa60i | US, Canada | 2–4 weeks |
+| White six-function soil meter + Quickstart | $99 | plan_Ob3f8dS6X0TfA | US, Canada | 2–4 weeks |
+| Unbranded all-black 60 × 60 × 140 cm tent + Quickstart | $289 | plan_BkFyLfxmpwIeY | US, Canada | 3–4 weeks |
 
 Whop plans are visible and paid, with shipping collection and Start Here + Equipment Quickstart Files entitlements. Each hardware plan initially accepts one new order: this is fulfillment capacity, not physical inventory. Replenish the allocation after the owner verifies actual first-order economics and can support additional orders. Old camera, monitor and multi-tool kit purchase plans remain hidden with zero stock; existing buyer access is preserved. No real payment or supplier purchase was made during implementation.
 
-Public copy focuses on product value, contents, fit and short delivery estimates. Supplier and payout details belong in this internal register, not the sales page. The owner orders only after Whop money reaches the bank: average preparation target five business days, allow up to ten business days before supplier ordering. Delivery estimates include that preparation plus transit. No five-day delivery promise is made.
+Public copy focuses on product value, contents, fit and short delivery estimates. Supplier and payout details belong in this internal register, not the sales page. The owner orders only after Whop money reaches the bank: maximum five business days from buyer payment before supplier ordering, once funds reach the bank. Delivery estimates include that preparation plus transit. No five-day delivery promise is made.
 
-Approved sourcing is Alibaba, AliExpress or Temu only. Exact accessible AliExpress selections and destination checks are recorded in growtech-north-america-sourcing.md. Lens: 3256808490427483, ZM100 with FL26 light; soil: 3256811741664874, white six-function model; tent: 3256810542421093, unbranded compact black/green model. Canada is enabled for lens and soil; tent Canada remains unavailable because its sourcing check could not be completed. Promotional supplier prices are not dependable repeat-order costs: recheck the exact variant, shipping, tax, stock and dispatch promise before each owner purchase.
+Approved sourcing is Alibaba, AliExpress or Temu only. Exact accessible AliExpress selections and destination checks are recorded in growtech-north-america-sourcing.md. Lens: 3256808490427483, ZM100 with FL26 light; soil: 3256811741664874, white six-function model; tent: 3256807937514531 / 1005008123829283, unbranded all-black 60×60×140 cm model using the qualified express/standard paid delivery route. US and Canada are enabled for all three products; the older slow tent route is retired. Promotional supplier prices are not dependable repeat-order costs: recheck the exact variant, shipping, tax, stock and dispatch promise before each owner purchase.
 
-Contribution = revenue minus supplier price, shipping, business-paid taxes/import costs, actual Whop/payment/affiliate fees and a $5 reserve. Minimum $40/order. At $119, costs before reserve must be <=$74; at $99, <=$54; at $199, <=$154. If actual costs fail this rule, pause sales and resolve or refund the order before buying hardware. Lens/tent affiliate rate was explicitly set to zero; soil affiliate switch remains off. Verify actual fees and affiliate charges in the first receipt. Artificial sale pricing is removed. GROW10 was permanently expired with the owner's explicit approval; separate digital-only promotions remain intact. No launch coupon is advertised.
+Contribution = revenue minus supplier price, shipping, business-paid taxes/import costs, actual Whop/payment/affiliate fees and a $5 reserve. Minimum $40/order. At $119, costs before reserve must be <=$74; at $99, <=$54; at $289, <=$244 (actual merchant fees included). If actual costs fail this rule, pause sales and resolve or refund the order before buying hardware. Lens/tent affiliate rate was explicitly set to zero; soil affiliate switch remains off. Verify actual fees and affiliate charges in the first receipt. Artificial sale pricing is removed. GROW10 was permanently expired with the owner's explicit approval; separate digital-only promotions remain intact. No launch coupon is advertised.
 
 Match all prices and contents across the main website, public Whop checkout and separate storefront. Shipping is included in supported destinations; prices are USD, tax is shown at checkout and Canadian import charges may apply. Return policy: unused/unopened hardware within 30 days of delivery, contact support first; buyer pays return shipping except for damaged/incorrect goods. The guides include 12 pages, two worksheets and a CSV observation log. Hardware is sourced to order. Generated images are labeled illustrations, not actual customers or product-performance evidence.
 
