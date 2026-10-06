@@ -220,7 +220,7 @@ export const quickstartGuide: GrowTechProduct = {
   sku: "MGB-EQUIPMENT-QUICKSTART-V1",
   category: "Digital equipment guide",
   buttonLabel: "Get the Guide — $19",
-  image: "/images/grow-tech/quickstart-cover.webp",
+  image: "/images/playbook/quickstart-cover-v4.webp",
   alt: "Illustration of a magnifying lens, green leaf and notebook for the equipment observation guide",
   planKey: "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_PLAN_ID",
   checkoutKey: "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_CHECKOUT_URL",
