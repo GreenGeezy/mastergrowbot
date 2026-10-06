@@ -2,3 +2,4 @@
 
 .lens-product-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.25rem; color: #a7f3d0; font-weight: 600; }
 .lens-product-links a { text-decoration: underline; text-underline-offset: .25rem; }
+.lens-reviews blockquote{font-size:21px;line-height:1.5;color:#f1faf4;margin-bottom:22px}.lens-reviews .lens-review-author{font-weight:650;color:#d6eadc}.lens-reviews article{display:flex;flex-direction:column}.lens-reviews .lens-secondary{margin-top:auto;padding-top:16px}
