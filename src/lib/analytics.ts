@@ -313,10 +313,8 @@ export function trackAIStrategyCheckoutEvent(
 }
 
 /**
- * Whop exposes a verified completion callback, but not a separate public
- * "payment details submitted" callback. A successful completion proves the
- * payment details were accepted, so emit add_payment_info immediately before
- * purchase and deduplicate both signals with the transaction ID.
+ * Receipt-bearing completion is a purchase signal, not a distinct
+ * payment-information funnel stage. Revenue reconciliation uses Whop payments.
  */
 export function trackCheckoutSuccess(
   payload: AnalyticsParams,
@@ -340,10 +338,6 @@ export function trackCheckoutSuccess(
     ...extra,
   };
 
-  trackEvent("add_payment_info", {
-    ...completedPayload,
-    payment_type: "Whop",
-  });
   trackEvent("purchase", {
     ...completedPayload,
     transaction_id: transactionId,

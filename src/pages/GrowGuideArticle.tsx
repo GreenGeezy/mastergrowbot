@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { ArrowRight, ChevronRight, BookOpen } from 'lucide-react';
 import GuideContent from '@/components/GuideContent';
+import LensOfferLink from '@/components/grow-tech/LensOfferLink';
 import GuideAppPreview from '@/components/GuideAppPreview';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
@@ -54,32 +55,7 @@ export default function GrowGuideArticle() {
     'quarantine',
     'scouting',
   ]);
-  const isGrowTechIntent = hasAnyKeyword(intentText, [
-    'camera',
-    'sensor',
-    'monitor',
-    'soil meter',
-    'soil moisture',
-    'root zone',
-    'root-zone',
-    'grow room sensor',
-    'grow-room sensor',
-    'grow room sensors',
-    'grow-room sensors',
-    'environment monitor',
-    'heat stress',
-    'grow tech',
-    'grow-tech',
-    'grow hardware',
-    'trichome',
-  ]);
-  const growTechRecommendation = hasAnyKeyword(intentText, ['soil meter', 'soil moisture', 'root zone', 'root-zone'])
-    ? { name: 'Soil Health Meter 6-in-1', anchor: 'soil-health-meter', detail: 'Compare moisture, pH, fertility, temperature, light, and humidity checks.' }
-    : hasAnyKeyword(intentText, ['sensor', 'monitor', 'co2', 'air quality', 'humidity'])
-      ? { name: 'Environment Monitor', anchor: 'environment-monitor', detail: 'Compare grow-room temperature, humidity, CO2, and air-quality context.' }
-      : hasAnyKeyword(intentText, ['camera', 'photo', 'trichome'])
-        ? { name: 'Scout Camera 10-20X', anchor: 'scout-camera', detail: 'Compare a phone-mounted close-up camera for plant, pest, and trichome photos.' }
-        : { name: 'Grow Tech Kit', anchor: 'grow-tech-kit', detail: 'Compare the complete camera, room-monitor, and soil-meter kit.' };
+  const isLensIntent = hasAnyKeyword(intentText, ['camera', 'lens', 'photo', 'trichome']);
   const appCtaIntro = isIpmIntent
     ? 'Scan Your Plant with MasterGrowbot AI'
     : 'Skip the guesswork';
@@ -225,27 +201,8 @@ export default function GrowGuideArticle() {
             </motion.div>
 
             {/* Inline CTA (within first 300 words) */}
-            {guide.slug === 'best-ai-cannabis-growing-apps-2026' ? <GuideAppPreview /> : isGrowTechIntent ? (
-              <div className="mb-10 rounded-2xl border border-landing-green/25 bg-landing-green/[0.07] p-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-landing-green font-sans mb-1">Shop the tool in this guide</p>
-                  <p className="text-base font-semibold text-white font-sans">{growTechRecommendation.name}</p>
-                  <p className="mt-1 text-sm text-white/60 font-sans">{growTechRecommendation.detail} Free US shipping; secure checkout powered by Whop.</p>
-                </div>
-                <Link
-                  to={`/grow-tech#${growTechRecommendation.anchor}`}
-                  data-cta-location="article-inline:grow-tech"
-                  onClick={() => trackEvent('growtech_guide_cta_click', {
-                    article_slug: guide.slug,
-                    product_recommendation: growTechRecommendation.anchor,
-                    cta_location: 'article-inline:grow-tech',
-                  })}
-                  className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-landing-green px-5 py-3 text-sm font-bold text-black transition hover:bg-landing-green/90 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black"
-                >
-                  Compare price & details
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </div>
+            {guide.slug === 'best-ai-cannabis-growing-apps-2026' ? <GuideAppPreview /> : isLensIntent ? (
+              <LensOfferLink location={`${guide.slug}:intro`} />
             ) : (
               <div className="mb-10 rounded-2xl border border-landing-green/20 bg-landing-green/5 p-6 flex flex-col gap-4">
                 <div className="flex-1">
@@ -273,6 +230,7 @@ export default function GrowGuideArticle() {
                   {section.heading}
                 </h2>
                 <GuideContent>{section.bodyHtml ?? section.body ?? ''}</GuideContent>
+                {isLensIntent && /compar|options/i.test(section.heading) && <LensOfferLink location={`${guide.slug}:comparison`} />}
               </motion.section>
             ))}
 

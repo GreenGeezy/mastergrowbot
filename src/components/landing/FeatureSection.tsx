@@ -7,6 +7,7 @@ import IPMPlaybookSection from "./IPMPlaybookSection";
 import NewsletterSignup from "./NewsletterSignup";
 import { appFaqs } from "@/data/appFaqs";
 import { trackEvent } from "@/lib/analytics";
+import { growTechOfferUrl } from "@/lib/growTechAttribution";
 
 const experiences = [
   {
@@ -185,8 +186,8 @@ export default function FeatureSection() {
       </section>
       <section className="premium-wrap premium-hardware">
         <img
-          src="/images/premium/grow-tech-kit.webp"
-          alt="GrowTech camera, environment monitor and soil meter product illustration"
+          src="/images/grow-tech/lens-launch/product.webp"
+          alt="AI product illustration of the APEXEL macro lens and LED light"
           width="1000"
           height="1000"
           loading="lazy"
@@ -199,19 +200,17 @@ export default function FeatureSection() {
             <em>A closer look.</em>
           </h2>
           <p>
-            Round out your existing setup with a close-up camera, environment
-            monitor, and soil meter. Each works independently, with no app
-            subscription required.
+            Get closer plant photos with the APEXEL 10–20X macro lens and LED light, plus MasterGrowbot’s equipment guide, worksheets and observation log.
           </p>
           <Link
             className="premium-button"
-            to="/grow-tech"
+            to={growTechOfferUrl("homepage")}
             data-cta-location="homepage:hardware"
           >
-            Explore the $247 kit <ArrowRight size={18} />
+            Explore the $119 lens + guide <ArrowRight size={18} />
           </Link>
           <p className="premium-fine">
-            Save $50 versus individual tools. Free US & Canada shipping.
+            One-time package. Check compatibility and ordering availability.
           </p>
         </div>
       </section>

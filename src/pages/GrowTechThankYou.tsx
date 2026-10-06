@@ -6,7 +6,7 @@ import LandingNav from "@/components/landing/LandingNav";
 import ParticleBackground from "@/components/landing/ParticleBackground";
 import SEOHead from "@/components/SEOHead";
 import { appStoreUrl } from "@/components/landing/ctaLinks";
-import { trackEvent, trackPendingCheckoutSuccess } from "@/lib/analytics";
+import { trackEvent } from "@/lib/analytics";
 import { QUICKSTART_CONTENT_URL, QUICKSTART_FILES_URL } from "@/data/growTechProducts";
 
 const nextSteps = [
@@ -17,7 +17,7 @@ const nextSteps = [
   },
   {
     title: "2. Shipment Prepared",
-    text: "Your order is prepared through our supplier network using the delivery details entered at checkout.",
+    text: "Your hardware is sourced to order. The delivery estimate shown before payment includes preparation time.",
     icon: PackageCheck,
   },
   {
@@ -32,9 +32,9 @@ export default function GrowTechThankYou() {
   const status = searchParams.get("status");
   const receiptId = searchParams.get("receipt_id") || searchParams.get("receiptId") || undefined;
   const isSuccess = status === "success";
-  const isError = status === "error";
+  const isError = ["error", "failed", "canceled", "cancelled"].includes(status || "");
   const purchasedSlug = searchParams.get("product");
-  const hasGuide = purchasedSlug === "quickstart-guide" || purchasedSlug === "scout-guide-bundle";
+  const hasGuide = ["quickstart-guide", "scout-guide-bundle", "soil-health-meter", "grow-tent"].includes(purchasedSlug || "");
   const isDigitalOnly = purchasedSlug === "quickstart-guide";
 
   useEffect(() => {
@@ -44,7 +44,6 @@ export default function GrowTechThankYou() {
     });
 
     if (isSuccess) {
-      trackPendingCheckoutSuccess("/grow-tech", receiptId);
       trackEvent("checkout_return_success", {
         checkout_area: "grow-tech",
         status: "success",
@@ -73,8 +72,8 @@ export default function GrowTechThankYou() {
               {isError
                 ? "Checkout was not completed"
                 : isSuccess
-                  ? "Order received"
-                  : "Thank you for your MasterGrowbot AI Grow Tech order"}
+                  ? "Check your Whop receipt"
+                  : "Confirm your purchase in Whop"}
             </h1>
             {isError ? (
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-white/64">
@@ -113,7 +112,7 @@ export default function GrowTechThankYou() {
               )}
             </div>
           </div>
-          {hasGuide && !isError ? <div className="mt-6 rounded-xl border border-emerald-300/25 bg-emerald-950/40 p-6"><h2 className="text-xl font-bold">Open your Equipment Quickstart</h2><p className="mt-2 text-sm leading-6 text-white/70">Your purchase account provides access to the nine-page guide, printable worksheets and CSV log.</p><div className="mt-4 flex flex-wrap gap-4"><a href={QUICKSTART_CONTENT_URL} className="rounded-lg bg-emerald-300 px-5 py-3 font-bold text-emerald-950">Start Here</a><a href={QUICKSTART_FILES_URL} className="rounded-lg border border-emerald-300/40 px-5 py-3 font-bold text-emerald-300">Open guide files</a></div></div> : null}
+          {hasGuide && !isError ? <div className="mt-6 rounded-xl border border-emerald-300/25 bg-emerald-950/40 p-6"><h2 className="text-xl font-bold">Open your Equipment Quickstart</h2><p className="mt-2 text-sm leading-6 text-white/70">Your purchase account provides access to the 12-page guide, printable worksheets and CSV log.</p><div className="mt-4 flex flex-wrap gap-4"><a href={QUICKSTART_CONTENT_URL} className="rounded-lg bg-emerald-300 px-5 py-3 font-bold text-emerald-950">Start Here</a><a href={QUICKSTART_FILES_URL} className="rounded-lg border border-emerald-300/40 px-5 py-3 font-bold text-emerald-300">Open guide files</a></div></div> : null}
         </section>
 
         {!isDigitalOnly ? <section className="mx-auto mt-16 max-w-6xl">

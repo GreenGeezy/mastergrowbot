@@ -4,7 +4,8 @@ type CheckoutKey =
   | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_CHECKOUT_URL"
-  | "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_CHECKOUT_URL";
+  | "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL";
 
 type PlanKey =
   | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID"
@@ -12,7 +13,8 @@ type PlanKey =
   | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_PLAN_ID"
-  | "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_PLAN_ID";
+  | "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID";
 
 export type GrowTechProduct = {
   name: string;
@@ -42,9 +44,13 @@ export type GrowTechProduct = {
   checkoutKey: CheckoutKey;
   anchorId: string;
   deliveryKind?: "digital" | "hardware-and-digital";
+  availability?: "ready" | "paused";
+  fulfillmentNote?: string;
+  deliveryCountries?: ("US" | "CA")[];
 };
 
 export const checkoutUrls: Record<CheckoutKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL || "https://whop.com/checkout/plan_BkFyLfxmpwIeY",
   NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL || "https://whop.com/checkout/plan_ft9q9KbJXeXj6",
   NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL:
     import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL || "https://whop.com/checkout/plan_Yl4OQwlyNfGBo",
@@ -56,6 +62,7 @@ export const checkoutUrls: Record<CheckoutKey, string | undefined> = {
 };
 
 export const planIds: Record<PlanKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID || "plan_BkFyLfxmpwIeY",
   NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID || "plan_ft9q9KbJXeXj6",
   NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID || "plan_Yl4OQwlyNfGBo",
   NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID || "plan_Ob3f8dS6X0TfA",
@@ -226,26 +233,91 @@ export const quickstartGuide: GrowTechProduct = {
   checkoutKey: "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_CHECKOUT_URL",
   anchorId: "quickstart-guide",
   deliveryKind: "digital",
+  availability: "ready",
 };
 
 export const scoutGuideBundle: GrowTechProduct = {
   ...products[0],
-  name: "Scout Camera + Equipment Quickstart Guide",
+  name: "APEXEL 10–20X Lens + MasterGrowbot Quickstart",
   productId: "growtech_scout_guide_bundle",
-  badge: "Camera + guide",
-  price: "$159",
-  numericPrice: 159,
-  salePrice: "$159",
-  description: "The $149 Scout Camera phone lens plus the $19 equipment guide and templates in one purchase. Save $9 compared with buying them separately.",
+  badge: "Lens + light + guide",
+  price: "$119",
+  numericPrice: 119,
+  salePrice: "$119",
+  description: "APEXEL 10–20X ZoomMacro phone lens with LED ring light, plus MasterGrowbot’s 12-page equipment guide, two worksheets and observation log. Phone not included.",
   whyBuy: "Put your phone lens to work with a repeatable observation workflow.",
-  schemaDescription: "Scout Camera 10-20X phone lens with the digital equipment quickstart PDF and observation templates. $159 one time. No app subscription included.",
+  schemaDescription: "APEXEL 10–20X ZoomMacro lens and LED ring light with the MasterGrowbot equipment guide, worksheets and CSV observation log. $119 one time. Phone and app subscription not included.",
   sku: "MGB-SCOUT-QUICKSTART-BUNDLE",
-  buttonLabel: "Get Camera + Guide — $159",
+  buttonLabel: "Get the lens + guide — $119",
+  image: "/images/grow-tech/lens-launch/product.webp",
+  imageWebp: "/images/grow-tech/lens-launch/product.webp",
+  alt: "AI product illustration of the APEXEL ZoomMacro lens, LED ring light and phone mounting clip",
   planKey: "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_PLAN_ID",
   checkoutKey: "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_CHECKOUT_URL",
   anchorId: "scout-guide-bundle",
   deliveryKind: "hardware-and-digital",
+  availability: "ready",
+  fulfillmentNote: "US & Canada: estimated delivery 4–6 weeks. Shipping included. Tracking after dispatch.",
+  deliveryCountries: ["US", "CA"],
 };
 
-export const allGrowTechOffers = [...products, bundle, quickstartGuide, scoutGuideBundle];
+export const soilGuideOffer: GrowTechProduct = {
+  ...products[2],
+  name: "Six-function Soil Meter + MasterGrowbot Quickstart",
+  productId: "growtech_soil_meter",
+  badge: "Meter + guide",
+  price: "$99",
+  numericPrice: 99,
+  salePrice: "$99",
+  description: "A standalone six-function soil meter with a white housing and two probes, plus the MasterGrowbot equipment guide and observation templates. No automatic app syncing.",
+  whyBuy: "Keep manual measurements and their context in one observation log.",
+  aiHelp: "Record readings manually; the meter has no automatic connection to MasterGrowbot.",
+  schemaDescription: "Standalone six-function soil meter with MasterGrowbot equipment guide and observation templates. No app subscription or automatic syncing.",
+  sku: "MGB-SOIL-QUICKSTART-V1",
+  buttonLabel: "Get the meter + guide — $99",
+  image: "/images/grow-tech/soil-launch/product.webp",
+  imageWebp: "/images/grow-tech/soil-launch/product.webp",
+  alt: "AI illustration of the white six-function soil meter with two probes",
+  availability: "ready",
+  deliveryKind: "hardware-and-digital",
+  fulfillmentNote: "US & Canada: estimated delivery 4–6 weeks. Shipping included. Tracking after dispatch.",
+  deliveryCountries: ["US", "CA"],
+};
+
+export const growTentOffer: GrowTechProduct = {
+  ...scoutGuideBundle,
+  name: "Unbranded 2×2 Grow Tent + MasterGrowbot Quickstart",
+  productId: "growtech_grow_tent",
+  badge: "Compact tent + guide",
+  price: "$199",
+  numericPrice: 199,
+  salePrice: "$199",
+  description: "A compact, unbranded 24 × 24 × 48 inch tent with reflective lining and floor tray, plus the MasterGrowbot Equipment Quickstart and observation templates. Lights, ventilation and plants are not included.",
+  whyBuy: "A dedicated space for a small grow, with a simple observation workflow.",
+  bestFor: ["Small indoor spaces", "Seedlings and compact plants", "Keeping an observation routine"],
+  dataCollected: "No sensors or automatic measurements",
+  aiHelp: "No automatic app connection; use the guide and log independently.",
+  schemaDescription: "Unbranded 24 × 24 × 48 inch grow tent with MasterGrowbot guide and templates. Tent only: lighting and ventilation are sold separately. US preorder, $199 one time.",
+  sku: "MGB-TENT-QUICKSTART-V1",
+  category: "Indoor grow tent",
+  buttonLabel: "Preorder the tent + guide — $199",
+  image: "/images/grow-tech/tent-launch/product.webp",
+  imageWebp: "/images/grow-tech/tent-launch/product.webp",
+  alt: "AI illustration of the unbranded compact black grow tent with green piping and reflective interior",
+  planKey: "NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID",
+  checkoutKey: "NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL",
+  anchorId: "grow-tent",
+  availability: "ready",
+  fulfillmentNote: "US preorder: estimated delivery 8–10 weeks. Shipping included. Canadian tent delivery is not available yet.",
+  deliveryCountries: ["US"],
+};
+
+export const allGrowTechOffers: GrowTechProduct[] = [
+  ...products.map((product, index) => index === 2 ? soilGuideOffer : ({ ...product, availability: "paused" as const })),
+  { ...bundle, availability: "paused" }, quickstartGuide, scoutGuideBundle, growTentOffer,
+];
+
+export function canPurchaseGrowTech(product: GrowTechProduct) {
+  return product.availability === "ready" && Boolean(planIds[product.planKey]) && Boolean(checkoutUrls[product.checkoutKey]);
+}
 

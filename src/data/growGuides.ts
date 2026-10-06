@@ -6662,15 +6662,15 @@ Soil is also easier to recommend when the grower is still learning how all the v
     modifiedDate: "2026-07-06T00:00:00Z",
     intro: `A good cannabis plant camera can turn a vague grow-room photo into useful plant data. Clear close-up images help growers document leaf symptoms, pest damage, bud development, trichomes, and environmental stress before small problems become expensive losses. That is why AI plant cameras and close-up grow tools are becoming a serious part of the cannabis grow-tech stack.
 
-The best AI plant camera for cannabis is not always a permanent grow-room camera. For most home growers, the highest-value option is a sharp phone-mounted close-up lens that captures leaves, pests, bud sites, and trichomes clearly enough for inspection, grow journals, and AI-assisted review. The MasterGrowbot AI Scout Camera 10-20X was built for exactly that use case.
+The best AI plant camera for cannabis is not always a permanent grow-room camera. For most home growers, the highest-value option is a sharp phone-mounted close-up lens that captures leaves, pests, bud sites, and trichomes clearly enough for inspection, grow journals, and AI-assisted review. The APEXEL 10–20X macro lens is an optical phone accessory made by APEXEL. It does not diagnose plant problems or automatically sync with an app. Check phone fit and whether its magnification suits your task.
 
 This guide compares the best camera types for cannabis growers, explains what to buy first, and shows how to connect plant photos with MasterGrowbot AI, the Grow Tech page, the free VPD calculator, and the Master Cannabis IPM Playbook so your photos turn into better decisions.`,
     sections: [
       {
         heading: "Direct Answer: Best AI Plant Camera for Cannabis",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">For most cannabis growers, the best AI plant camera setup is a phone-mounted close-up lens paired with a plant diagnosis and grow journal app. The lens captures clearer plant photos, while the app helps organize photos, symptoms, notes, and treatment decisions.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The best starting point in the MasterGrowbot system is the <a href="/grow-tech" class="text-landing-green hover:underline">MasterGrowbot AI Scout Camera 10-20X</a>. It is designed for close-up cannabis plant inspection photos, pest documentation, trichome checks, leaf symptoms, and grow journal records.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Growers who also want environmental context should pair camera photos with the MasterGrowbot AI Environment Monitor and Soil Health Meter. That combination connects what the plant looks like with temperature, humidity, CO2 context, soil moisture, pH, and root-zone notes.</p>`,
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The best starting point in the MasterGrowbot system is the <a href="/grow-tech" class="text-landing-green hover:underline">APEXEL 10–20X macro lens</a>. It is designed for close-up cannabis plant inspection photos, pest documentation, trichome checks, leaf symptoms, and grow journal records.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Record temperature, humidity and root-zone readings manually with appropriately verified equipment. MasterGrowbot’s monitor, soil-meter and multi-tool offers are outside this lens launch while sourcing is verified.</p>`,
       },
       {
         heading: "Why Cannabis Growers Need Better Plant Photos",
@@ -6701,10 +6701,8 @@ The third requirement is grow-room usability. A tool that is annoying to use und
 The fourth requirement is context. A plant photo becomes more valuable when it is connected to grow stage, strain, date, watering, feeding, VPD, humidity, and soil readings. That is why pairing camera photos with MasterGrowbot AI and Grow Tech hardware creates a stronger system than a camera alone.`,
       },
       {
-        heading: "Best Overall: MasterGrowbot AI Scout Camera 10-20X",
-        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The MasterGrowbot AI Scout Camera 10-20X is the best fit for cannabis growers who want clearer close-up photos without building a complicated camera system. It clips onto a phone and is designed for plant inspection, pest documentation, leaf symptoms, bud development, trichome checks, and grow journal records.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">It is especially useful for growers who already use MasterGrowbot AI because the camera improves the quality of the photos you save and review. Better photos make it easier to compare symptoms, monitor treatment progress, and keep a visual record from veg through harvest.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">See the Scout Camera, Environment Monitor, Soil Health Meter, and full Grow Tech Kit on the <a href="/grow-tech" class="text-landing-green hover:underline">MasterGrowbot AI Grow Tech page</a>.</p>`,
+        heading: "The GrowTech Lens + Guide Package",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The $119 package combines an APEXEL 10–20X ZoomMacro lens and LED light with MasterGrowbot’s 12-page equipment guide, two worksheets and observation log. The hardware is made by APEXEL; the included workflow materials are from MasterGrowbot. Inspect compatibility, the guide sample and ordering availability on the <a href="/grow-tech" class="text-landing-green hover:underline">GrowTech page</a>. Photos and notes are saved or uploaded manually. Higher-magnification inspection may require a different tool.</p>`,
       },
       {
         heading: "When a Grow-Room Camera Makes Sense",
@@ -6717,7 +6715,7 @@ The strongest setup is both: a fixed camera for room-level monitoring and a clos
       {
         heading: "Pair Camera Photos With Grow Room Data",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">A plant photo tells you what happened. Environment and root-zone data help explain why it happened. If leaves are curling, the cause might be high VPD, low humidity, root-zone dryness, heat stress, or light intensity. A camera alone shows the symptom. Data narrows the cause.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Use the <a href="/vpd-calculator" class="text-landing-green hover:underline">free MasterGrowbot VPD calculator</a> when a photo shows leaf curl, dry edges, slow growth, or flower-room humidity risk. Use the Grow Tech Environment Monitor for temperature, humidity, CO2 context, and air-quality records. Use the Soil Health Meter for moisture, pH, temperature, fertility, light, and humidity context.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Use the <a href="/vpd-calculator" class="text-landing-green hover:underline">free MasterGrowbot VPD calculator</a> when a photo shows leaf curl, dry edges, slow growth, or flower-room humidity risk. Use verified instruments for room and soil readings; those hardware offers are currently paused.</p>
 <p class="text-base text-white/65 leading-relaxed font-sans mb-3">This is why camera, sensor, monitor, and soil meter workflows matter for serious home growers. The right hardware path gives you clearer evidence, better records, and a stronger reason to use the app with each grow-room check.</p>`,
       },
       {
@@ -6731,12 +6729,12 @@ Take follow-up photos from the same angle every few days. A single photo can ide
       {
         heading: "Best Buying Path for Home Growers",
         bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Grower Need</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Best First Tool</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Why</th></tr></thead><tbody>
-<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Better diagnosis photos</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Scout Camera 10-20X</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Improves leaf, pest, bud, and trichome detail</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Better diagnosis photos</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">APEXEL 10–20X macro lens</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Improves leaf, pest, bud, and trichome detail</td></tr>
 <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Mold and heat prevention</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Environment Monitor</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Adds temperature, humidity, CO2 context, and air-quality records</td></tr>
 <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Watering and root-zone context</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Soil Health Meter 6-in-1</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Adds soil moisture, pH, fertility, temperature, light, and humidity context</td></tr>
 <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Complete grow documentation</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Grow Tech Kit</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Combines plant photos, environment readings, and soil context</td></tr>
 </tbody></table></div>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If you are buying one tool, start with the Scout Camera. If you want a complete documentation setup, the Grow Tech Kit is the better value because it connects camera, environment, and soil context.</p>`,
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Choose the tool for the observation you need. The lens package is the current launch focus; the monitor, soil meter and multi-tool kit are paused. Compare the $119 package, phone compatibility and guide sample on GrowTech before ordering.</p>`,
       },
       {
         heading: "Use MasterGrowbot AI With Your Plant Camera",
@@ -6749,7 +6747,7 @@ Take follow-up photos from the same angle every few days. A single photo can ide
       {
         question: "What is the best AI plant camera for cannabis growers?",
         answer:
-          "For most cannabis growers, the best starting option is a phone-mounted close-up lens such as the MasterGrowbot AI Scout Camera 10-20X because it captures sharper leaf, pest, bud, and trichome photos for diagnosis and grow records.",
+          "For most cannabis growers, the best starting option is a phone-mounted close-up lens such as the APEXEL 10–20X macro lens because it captures sharper leaf, pest, bud, and trichome photos for diagnosis and grow records.",
       },
       {
         question: "Do I need a permanent grow-room camera?",

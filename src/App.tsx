@@ -1,10 +1,17 @@
 
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { captureGrowTechAttribution } from "@/lib/growTechAttribution";
+
+function CampaignCapture() {
+  const location = useLocation();
+  useEffect(() => { captureGrowTechAttribution(); }, [location.search]);
+  return null;
+}
 
 // Lazy load all page components
 const Index = lazy(() => import("@/pages/Index"));
@@ -37,6 +44,7 @@ const App = () => {
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <CampaignCapture />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route

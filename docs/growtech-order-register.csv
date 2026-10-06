@@ -1,0 +1,1 @@
+payment_id,paid_at_utc,item_revenue,shipping_collected,tax_collected,refund_total,actual_platform_fees,supplier_item_cost,supplier_shipping,business_tax_import_cost,support_reserve,contribution,supplier_order_id,dispatch_deadline,tracking_number,delivered_at,refund_status

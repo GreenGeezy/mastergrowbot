@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { WhopCheckoutEmbed } from "@whop/checkout/react";
 import { AlertCircle, ArrowUpRight, Copy } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
+import { growTechCheckoutCampaign, attributedGrowTechCheckoutUrl } from "@/lib/growTechAttribution";
 import { QUICKSTART_FILES_URL, QUICKSTART_CONTENT_URL } from "@/data/growTechProducts";
 import {
   type GrowTechAnalyticsProduct,
@@ -101,7 +102,7 @@ export default function EmbeddedGrowTechCheckout({
 
   // A plan ID identifies the embed, but is not necessarily a valid hosted purchase URL.
   // Use the exact checkout link configured by the merchant.
-  const resolvedFallbackCheckoutUrl = fallbackCheckoutUrl;
+  const resolvedFallbackCheckoutUrl = attributedGrowTechCheckoutUrl(fallbackCheckoutUrl, ctaLocation);
 
   const fallbackLink = resolvedFallbackCheckoutUrl ? (
     <a
@@ -185,12 +186,7 @@ export default function EmbeddedGrowTechCheckout({
                   returnUrl={`https://www.mastergrowbot.com/grow-tech/thank-you?status=success&product=${encodeURIComponent(product.anchorId || "")}`}
                   theme="light"
                   collectShipping={product.deliveryKind !== "digital"}
-                  utm={{
-                    utm_source: "mastergrowbot",
-                    utm_medium: "embedded_checkout",
-                    utm_campaign: "growtech_checkout",
-                    utm_content: ctaLocation,
-                  }}
+                  utm={growTechCheckoutCampaign(ctaLocation)}
                   themeOptions={{
                     backgroundColor: "#ffffff",
                     accentColor: "#15803d",
