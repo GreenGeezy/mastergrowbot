@@ -47,3 +47,13 @@ Built-in imagegen generated three replacement tent illustrations, saved in `publ
 3. Owner orders one unit using the qualified shipping method. Agent has no purchase authorization.
 4. Send tracking after dispatch; resolve delays and record actual delivered date and contribution.
 5. Only expand one-order capacity after actual costs and delivery support it.
+
+## Completed alignment — October 7, 2026
+
+- Production deployment of commit `3cd4d85` confirmed READY on Vercel. Live GrowTech shows $119 / $99 / $289 and the new delivery estimates.
+- Whop merchant product descriptions and standalone checkout descriptions now agree: lens/meter US and Canada 2–4 weeks from payment; tent US and Canada 3–4 weeks. Tent checkout description also uses the replacement dimensions and $289 price.
+- Whop tent product gallery saved with exactly three matching all-black illustrations. The obsolete green-trim images were unlinked after verifying each removal button's associated image in the DOM; original assets remain in the repo.
+- Whop storefront published successfully after its typecheck/build passed. Live price, shipping, Canadian tent FAQ, both grower-gallery selections and external checkout routes verified. Mobile 390px check found no horizontal overflow.
+- Canadian selection on the live main-site tent checkout enabled the Whop shipping/payment form and displayed $289. No card details entered and no payment submitted. Whop iframe emits sessionKey, accelerometer and Apple Pay manifest diagnostics in the automated browser; actual card/wallet payment success is not proven by this form-readiness check. Hosted fallback remains available.
+- Review screenshots saved under ignored `output/playwright/`: `growtech-faster-tent-live.png` and `whop-faster-tent-live.png`.
+- No supplier purchases made. The first genuine paid order, exact destination quote, actual fees, owner dispatch and delivery reconciliation remain required before expanding capacity.
