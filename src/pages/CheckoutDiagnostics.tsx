@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-const growTechSuccessUrl = "https://www.mastergrowbot.com/grow-tech/thank-you?status=success";
-const aiStrategySuccessUrl = "https://www.mastergrowbot.com/ai-strategy/intake?status=success";
+const growTechSuccessUrl = "https://www.mastergrowbot.com/grow-tech/thank-you";
+const aiStrategySuccessUrl = "https://www.mastergrowbot.com/ai-strategy/intake";
 
 const publicCheckoutConfig = [
   {
