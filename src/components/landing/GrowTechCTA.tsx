@@ -24,10 +24,10 @@ const variantStyles: Record<GrowTechCTAVariant, string> = {
 };
 
 const subtextByVariant: Record<GrowTechCTAVariant, string> = {
-  hero: 'Plant camera, room monitor & soil meter · Complete kit $247 · Free US & Canada shipping',
-  nav: 'Three practical grow tools, with a $247 complete kit',
-  compact: 'Complete three-tool kit $247',
-  inline: 'Plant camera, room monitor & soil meter',
+  hero: 'Phone lens, soil meter and compact tent packages · US & Canada shipping included',
+  nav: 'Phone lens, soil meter and compact tent packages',
+  compact: 'Explore current hardware and guide packages',
+  inline: 'Phone lens, soil meter and compact tent',
 };
 
 export default function GrowTechCTA({

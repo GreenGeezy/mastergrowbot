@@ -199,6 +199,7 @@ export function trackEvent(eventName: string, params: AnalyticsParams = {}) {
     return;
   }
 
+  params = { page_path: window.location.pathname, source_page: window.location.pathname, ...params };
   if (Array.isArray(window.dataLayer)) {
     if (shouldAttachEcommerce(eventName, params)) {
       window.dataLayer.push({ ecommerce: null });

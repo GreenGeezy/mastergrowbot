@@ -4,7 +4,8 @@ import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { publicPageLoaders, type InitialPage } from '@/lib/publicRoutes';
 import { captureGrowTechAttribution } from "@/lib/growTechAttribution";
 
 function CampaignCapture() {
@@ -14,20 +15,20 @@ function CampaignCapture() {
 }
 
 // Lazy load all page components
-const Index = lazy(() => import("@/pages/Index"));
+const LazyIndex = lazy(publicPageLoaders.Index);
 const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("@/pages/TermsOfService"));
-const GrowGuidesHub = lazy(() => import("@/pages/GrowGuidesHub"));
-const GrowGuideArticle = lazy(() => import("@/pages/GrowGuideArticle"));
-const VPDCalculator = lazy(() => import("@/pages/VPDCalculator"));
+const LazyGrowGuidesHub = lazy(publicPageLoaders.GrowGuidesHub);
+const LazyGrowGuideArticle = lazy(publicPageLoaders.GrowGuideArticle);
+const LazyVPDCalculator = lazy(publicPageLoaders.VPDCalculator);
 const Contact = lazy(() => import("@/pages/Contact"));
-const GrowTech = lazy(() => import("@/pages/GrowTech"));
+const LazyGrowTech = lazy(publicPageLoaders.GrowTech);
 const GrowTechCheckout = lazy(() => import("@/pages/GrowTechCheckout"));
 const GrowTechThankYou = lazy(() => import("@/pages/GrowTechThankYou"));
 const WhopEmbedTest = lazy(() => import("@/pages/WhopEmbedTest"));
 const CheckoutDiagnostics = lazy(() => import("@/pages/CheckoutDiagnostics"));
-const About = lazy(() => import("@/pages/About"));
-const Playbook = lazy(() => import("@/pages/Playbook"));
+const LazyAbout = lazy(publicPageLoaders.About);
+const LazyPlaybook = lazy(publicPageLoaders.Playbook);
 const PlaybookCheckout = lazy(() => import("@/pages/PlaybookCheckout"));
 const PlaybookThankYou = lazy(() => import("@/pages/PlaybookThankYou"));
 const AIStrategyIntake = lazy(() => import("@/pages/AIStrategyIntake"));
@@ -38,15 +39,25 @@ const LoadingSpinner = () => (
   </div>
 );
 
-const App = () => {
+const LazyLensKit = lazy(publicPageLoaders.LensKit);
+const App = ({ initialPage }: { initialPage?: InitialPage }) => {
+  const Index = initialPage?.key === 'Index' ? initialPage.component : LazyIndex;
+  const GrowGuidesHub = initialPage?.key === 'GrowGuidesHub' ? initialPage.component : LazyGrowGuidesHub;
+  const GrowGuideArticle = initialPage?.key === 'GrowGuideArticle' ? initialPage.component : LazyGrowGuideArticle;
+  const GrowTech = initialPage?.key === 'GrowTech' ? initialPage.component : LazyGrowTech;
+  const VPDCalculator = initialPage?.key === 'VPDCalculator' ? initialPage.component : LazyVPDCalculator;
+  const About = initialPage?.key === 'About' ? initialPage.component : LazyAbout;
+  const Playbook = initialPage?.key === 'Playbook' ? initialPage.component : LazyPlaybook;
+  const LensKit = initialPage?.key === 'LensKit' ? initialPage.component : LazyLensKit;
   return (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <>
         <CampaignCapture />
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Suspense fallback={<LoadingSpinner />}><Index /></Suspense>} />
+          <Route path="/grow-tech/apexel-macro-lens-kit" element={<Suspense fallback={<LoadingSpinner />}><LensKit /></Suspense>} />
           <Route
             path="/privacy-policy"
             element={
@@ -166,8 +177,9 @@ const App = () => {
           <Route path="/playbook" element={<Navigate to="/playbooks" replace />} />
           <Route path="/playbook/checkout" element={<Navigate to="/playbooks/checkout" replace />} />
           <Route path="/playbook/thank-you" element={<Navigate to="/playbooks/thank-you" replace />} />
+          <Route path="*" element={<main className="min-h-screen bg-black p-12 text-white"><h1>Page not found</h1><a href="/">Return to MasterGrowbot</a></main>} />
         </Routes>
-      </BrowserRouter>
+      </>
       <Analytics />
     </TooltipProvider>
   );

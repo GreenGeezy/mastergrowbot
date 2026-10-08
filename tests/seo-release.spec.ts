@@ -36,52 +36,24 @@ test('shared shell has no canonical or unverified aggregate rating', () => {
   expect(shell).not.toMatch(/rel="canonical"|aggregateRating|ratingCount/);
 });
 
-test('Grow Tech is discoverable, commercially described and free of expired promotion copy', async ({ page }) => {
-  const sitemap = readFileSync('public/sitemap.xml', 'utf8');
-  expect(sitemap).toContain('<loc>https://www.mastergrowbot.com/grow-tech</loc>');
-
+test('GrowTech hub describes current offers and links to the single-product page', async ({ page }) => {
   await page.goto('/grow-tech');
   await expect(page.locator('meta[name="description"]')).toHaveCount(1);
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /cannabis grow tech kit/i);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText(/Know your grow\.\s*Inside and out\./);
+  await expect(page.locator('#lens-offer')).toContainText('$119');
+  await expect(page.locator('#soil-meter')).toContainText('$99');
+  await expect(page.locator('#grow-tent')).toContainText('$289');
   await expect(page.locator('body')).not.toContainText(/Best July Deal|AIGROWTECH|July sale price/);
-  await expect(page.locator('#grow-tech-kit')).toContainText('$247');
-
-  const schemaScripts = await page.locator('script[type="application/ld+json"]').allTextContents();
-  const graph = schemaScripts.map((script) => JSON.parse(script)).find((schema) => Array.isArray(schema['@graph']))['@graph'];
-  const products = graph.filter((entry: { '@type'?: string }) => entry['@type'] === 'Product');
-  expect(products).toHaveLength(6);
-  expect(products.every((product: { '@id'?: string }) => product['@id']?.startsWith('https://www.mastergrowbot.com/grow-tech#'))).toBe(true);
-  const digitalGuide = products.find((product: { '@id'?: string }) => product['@id'] === 'https://www.mastergrowbot.com/grow-tech#quickstart-guide');
-  expect(digitalGuide).toBeDefined();
-  expect(digitalGuide.offers.shippingDetails).toBeUndefined();
-  expect(digitalGuide.offers.hasMerchantReturnPolicy).toBeUndefined();
-  const physicalProducts = products.filter((product: { '@id'?: string }) => product['@id'] !== digitalGuide['@id']);
-  expect(physicalProducts).toHaveLength(5);
-  expect(physicalProducts.every((product: { offers: { shippingDetails: { deliveryTime: { transitTime: { maxValue: number } } } } }) =>
-    product.offers.shippingDetails.deliveryTime.transitTime.maxValue === 14
-  )).toBe(true);
-  await expect(page.locator('body')).toContainText('Estimated delivery: around 2 weeks.');
-  expect(products.some((product: { '@id'?: string }) => product['@id'] === 'https://www.mastergrowbot.com/grow-tech#scout-guide-bundle')).toBe(true);
-  expect(physicalProducts.every((product: { offers?: { hasMerchantReturnPolicy?: { returnFees?: string } } }) =>
-    product.offers?.hasMerchantReturnPolicy?.returnFees === 'https://schema.org/ReturnFeesCustomerResponsibility'
-  )).toBe(true);
-  expect(graph.some((entry: { '@type'?: string }) => entry['@type'] === 'CollectionPage')).toBe(true);
+  await expect(page.locator('a[href="/grow-tech/apexel-macro-lens-kit"]').first()).toBeVisible();
+  const schemas=(await page.locator('script[type="application/ld+json"]').allTextContents()).map(s=>JSON.parse(s));
+  expect(schemas.some(s=>s['@type']==='CollectionPage')).toBe(true);
+  expect(schemas.some(s=>s['@type']==='Product')).toBe(false);
 });
 
-test('hardware-intent guides recommend the matching Grow Tech product', async ({ page }) => {
-  await page.goto('/grow-guides/best-cannabis-grow-room-sensors-mold-heat-stress');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Grow Room Sensors for Cannabis: Environment Monitor Guide');
-  expect(await page.title()).toMatch(/Grow Room Sensors for Cannabis/);
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /environment monitor/i);
-  await expect(page.getByRole('heading', { name: 'Direct Answer: Best Grow Room Sensor Setup' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'free cannabis VPD calculator' }).first()).toHaveAttribute('href', '/vpd-calculator');
-  const cta = page.locator('[data-cta-location="article-inline:grow-tech"]');
-  await expect(cta).toHaveAttribute('href', '/grow-tech#environment-monitor');
-  await expect(cta).toContainText('Compare price & details');
-  const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(s => JSON.parse(s));
-  expect(schemas.find(s => s['@type'] === 'Article')?.dateModified).toContain('2026-09-21');
-  await expect(page.locator('article')).not.toContainText(/yield, potency/);
+test('camera guide links to current lens offer without replacing app navigation', async ({ page }) => {
+  await page.goto('/grow-guides/best-cannabis-trichome-camera-lens-options-harvest-timing');
+  await expect(page.locator('article a[href="/grow-tech/apexel-macro-lens-kit"]').first()).toBeVisible();
+  await expect(page.locator('a[href*="apps.apple.com"]').first()).toBeAttached();
+  await expect(page.locator('a[href*="play.google.com"]').first()).toBeAttached();
 });
 
 test('shared shell contains one Whop Pixel bootstrap with narrowly scoped CSP access', () => {

@@ -76,7 +76,7 @@ export default function GrowGuidesHub() {
           </nav>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
@@ -95,7 +95,7 @@ export default function GrowGuidesHub() {
           {/* CTA */}
           <motion.div
             className="flex flex-col items-center justify-center gap-3 pt-2"
-            initial={{ opacity: 0, y: 16 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
@@ -171,7 +171,7 @@ export default function GrowGuidesHub() {
               {filteredGuides.map((guide, i) => (
                 <motion.div
                   key={guide.slug}
-                  initial={{ opacity: 0, y: 24 }}
+                  initial={false}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.6, delay: Math.min(i, 8) * 0.07, ease: [0.22, 1, 0.36, 1] }}

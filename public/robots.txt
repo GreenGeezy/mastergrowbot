@@ -4,6 +4,12 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 User-agent: Googlebot
 Allow: /
@@ -11,6 +17,12 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 User-agent: OAI-SearchBot
 Allow: /
@@ -18,6 +30,12 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 User-agent: ChatGPT-User
 Allow: /
@@ -25,6 +43,12 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 User-agent: GPTBot
 Allow: /
@@ -32,6 +56,12 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 User-agent: ClaudeBot
 Allow: /
@@ -39,6 +69,12 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 User-agent: PerplexityBot
 Allow: /
@@ -46,6 +82,12 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 User-agent: Google-Extended
 Allow: /
@@ -53,6 +95,12 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 User-agent: Applebot
 Allow: /
@@ -60,5 +108,11 @@ Disallow: /api/
 Disallow: /chat
 Disallow: /plant-health
 Disallow: /quiz
+Disallow: /auth/
+Disallow: /shared/
+Disallow: /grow-tech/checkout/
+Disallow: /grow-tech/thank-you
+Disallow: /playbooks/checkout
+Disallow: /playbooks/thank-you
 
 Sitemap: https://www.mastergrowbot.com/sitemap.xml

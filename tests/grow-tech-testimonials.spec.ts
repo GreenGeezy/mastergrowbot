@@ -101,36 +101,18 @@ test.describe("GrowTech testimonial data integrity", () => {
 });
 
 test.describe("GrowTech testimonial rendering", () => {
-  test("preserves visible testimonials without publishing unrated review rich results", async ({ page }) => {
-    await page.goto("/grow-tech");
-
-    for (const [productId, expectedCount] of Object.entries(expectedCounts)) {
-      const group = page.locator(`[data-review-group="${productId}"]`);
-      await expect(group).toBeVisible();
-      await expect(group.getByText(`${expectedCount} reviews`, { exact: true })).toBeVisible();
-      await expect(group.locator("[data-review-id]")).toHaveCount(expectedCount);
-
-      const featuredId = featuredGrowTechReviewIds[productId as keyof typeof featuredGrowTechReviewIds];
-      await expect(page.locator(`[data-review-id="${featuredId}"]`).first()).toBeVisible();
-    }
-
-    for (const review of growTechTestimonials) {
-      await expect(page.locator(`[data-review-group="${review.productId}"] [data-review-id="${review.id}"]`)).toHaveCount(1);
-    }
-
-    const jsonLdScripts = await page.locator('script[type="application/ld+json"]').allTextContents();
-    const graph = jsonLdScripts
-      .map((text) => JSON.parse(text))
-      .find((value) => Array.isArray(value?.["@graph"]))?.["@graph"];
-    expect(graph).toBeTruthy();
-
-    for (const productId of Object.values(GROWTECH_PRODUCT_IDS)) {
-      const productName = getGrowTechReviews(productId)[0].productName;
-      const productSchema = graph.find((entry: { "@type"?: string; name?: string }) => entry["@type"] === "Product" && entry.name === productName);
-      expect(productSchema).toBeTruthy();
-      expect(productSchema).not.toHaveProperty("review");
-      expect(productSchema).not.toHaveProperty("aggregateRating");
-      expect(productSchema.offers).toMatchObject({ "@type": "Offer", priceCurrency: "USD" });
+  test("preserves attributed APEXEL excerpts without invented review rich results", async ({ page }) => {
+    for (const route of ['/grow-tech','/grow-tech/apexel-macro-lens-kit']) {
+      await page.goto(route);
+      const section=page.locator('[data-section="growtech-testimonials"]');
+      await expect(section.locator('blockquote')).toHaveCount(3);
+      for(const name of ['Bonnie O.','Stacie H.','Johannes W.']) await expect(section).toContainText(name);
+      await expect(section).toContainText('not purchases of the MasterGrowbot package');
+      const schemas=(await page.locator('script[type="application/ld+json"]').allTextContents()).map(s=>JSON.parse(s));
+      for(const schema of schemas) {
+        expect(schema.aggregateRating).toBeUndefined();
+        expect(schema.review).toBeUndefined();
+      }
     }
   });
 });

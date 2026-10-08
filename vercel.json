@@ -37,6 +37,15 @@
           "value": "strict-origin-when-cross-origin"
         }
       ]
+    },
+    {
+      "source": "/(grow-tech/checkout|grow-tech/thank-you|playbooks/checkout|playbooks/thank-you|auth|shared|checkout-diagnostics|whop-embed-test)(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -95,8 +104,8 @@
   ],
   "rewrites": [
     {
-      "source": "/grow-guides/:slug",
-      "destination": "/seo/grow-guides/:slug.html"
+      "source": "/",
+      "destination": "/index.html"
     },
     {
       "source": "/grow-guides",
@@ -107,32 +116,328 @@
       "destination": "/seo/grow-tech.html"
     },
     {
+      "source": "/grow-tech/apexel-macro-lens-kit",
+      "destination": "/seo/grow-tech/apexel-macro-lens-kit.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/seo/about.html"
+    },
+    {
+      "source": "/playbooks",
+      "destination": "/seo/playbooks.html"
+    },
+    {
       "source": "/vpd-calculator",
       "destination": "/seo/vpd-calculator.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-nutrient-deficiency-guide",
+      "destination": "/seo/grow-guides/cannabis-nutrient-deficiency-guide.html"
+    },
+    {
+      "source": "/grow-guides/spider-mites-cannabis-treatment",
+      "destination": "/seo/grow-guides/spider-mites-cannabis-treatment.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-harvest-timing-trichomes",
+      "destination": "/seo/grow-guides/cannabis-harvest-timing-trichomes.html"
+    },
+    {
+      "source": "/grow-guides/how-to-grow-cannabis-indoors-beginners",
+      "destination": "/seo/grow-guides/how-to-grow-cannabis-indoors-beginners.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-growing-apps-2026",
+      "destination": "/seo/grow-guides/best-cannabis-growing-apps-2026.html"
+    },
+    {
+      "source": "/grow-guides/powdery-mildew-cannabis-treatment",
+      "destination": "/seo/grow-guides/powdery-mildew-cannabis-treatment.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-ph-guide",
+      "destination": "/seo/grow-guides/cannabis-ph-guide.html"
+    },
+    {
+      "source": "/grow-guides/how-to-cure-cannabis",
+      "destination": "/seo/grow-guides/how-to-cure-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/autoflowering-cannabis-growing-guide",
+      "destination": "/seo/grow-guides/autoflowering-cannabis-growing-guide.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-training-techniques",
+      "destination": "/seo/grow-guides/cannabis-training-techniques.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-nutrient-lockout",
+      "destination": "/seo/grow-guides/cannabis-nutrient-lockout.html"
+    },
+    {
+      "source": "/grow-guides/cal-mag-deficiency-cannabis",
+      "destination": "/seo/grow-guides/cal-mag-deficiency-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-light-schedules",
+      "destination": "/seo/grow-guides/cannabis-light-schedules.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-root-problems",
+      "destination": "/seo/grow-guides/cannabis-root-problems.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-botrytis-bud-rot",
+      "destination": "/seo/grow-guides/cannabis-botrytis-bud-rot.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-flushing-guide",
+      "destination": "/seo/grow-guides/cannabis-flushing-guide.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-grow-journal",
+      "destination": "/seo/grow-guides/cannabis-grow-journal.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-vpd-guide",
+      "destination": "/seo/grow-guides/cannabis-vpd-guide.html"
+    },
+    {
+      "source": "/grow-guides/weed-growing-tips-beginners",
+      "destination": "/seo/grow-guides/weed-growing-tips-beginners.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-yield-optimization",
+      "destination": "/seo/grow-guides/cannabis-yield-optimization.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-defoliation-guide",
+      "destination": "/seo/grow-guides/cannabis-defoliation-guide.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-humidity-guide",
+      "destination": "/seo/grow-guides/cannabis-humidity-guide.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-led-grow-lights",
+      "destination": "/seo/grow-guides/cannabis-led-grow-lights.html"
+    },
+    {
+      "source": "/grow-guides/best-ai-cannabis-growing-apps-2026",
+      "destination": "/seo/grow-guides/best-ai-cannabis-growing-apps-2026.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-grow-journal-apps-2026",
+      "destination": "/seo/grow-guides/best-cannabis-grow-journal-apps-2026.html"
+    },
+    {
+      "source": "/grow-guides/best-vpd-calculator-apps-cannabis",
+      "destination": "/seo/grow-guides/best-vpd-calculator-apps-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/outdoor-cannabis-growing-guide-beginners",
+      "destination": "/seo/grow-guides/outdoor-cannabis-growing-guide-beginners.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-plant-identifier-apps-2026",
+      "destination": "/seo/grow-guides/cannabis-plant-identifier-apps-2026.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-trichome-stages-harvest-guide",
+      "destination": "/seo/grow-guides/cannabis-trichome-stages-harvest-guide.html"
+    },
+    {
+      "source": "/grow-guides/grow-with-jane-vs-mastergrowbot",
+      "destination": "/seo/grow-guides/grow-with-jane-vs-mastergrowbot.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-watering-schedule-guide",
+      "destination": "/seo/grow-guides/cannabis-watering-schedule-guide.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-flowering-stage-week-by-week",
+      "destination": "/seo/grow-guides/cannabis-flowering-stage-week-by-week.html"
+    },
+    {
+      "source": "/grow-guides/how-to-increase-thc-cannabis",
+      "destination": "/seo/grow-guides/how-to-increase-thc-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-nutrient-calculators-2026",
+      "destination": "/seo/grow-guides/best-cannabis-nutrient-calculators-2026.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-seed-germination-methods",
+      "destination": "/seo/grow-guides/cannabis-seed-germination-methods.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-vpd-chart-by-growth-stage",
+      "destination": "/seo/grow-guides/cannabis-vpd-chart-by-growth-stage.html"
+    },
+    {
+      "source": "/grow-guides/how-to-calculate-vpd-for-cannabis",
+      "destination": "/seo/grow-guides/how-to-calculate-vpd-for-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/leaf-vpd-calculator-cannabis",
+      "destination": "/seo/grow-guides/leaf-vpd-calculator-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-vpd-with-co2",
+      "destination": "/seo/grow-guides/cannabis-vpd-with-co2.html"
+    },
+    {
+      "source": "/grow-guides/vpd-for-clones-and-seedlings",
+      "destination": "/seo/grow-guides/vpd-for-clones-and-seedlings.html"
+    },
+    {
+      "source": "/grow-guides/flowering-humidity-chart-cannabis",
+      "destination": "/seo/grow-guides/flowering-humidity-chart-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/bud-vs-mastergrowbot-ai",
+      "destination": "/seo/grow-guides/bud-vs-mastergrowbot-ai.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-grow-tracking-apps-2026",
+      "destination": "/seo/grow-guides/best-cannabis-grow-tracking-apps-2026.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-cultivation-software-home-growers",
+      "destination": "/seo/grow-guides/best-cannabis-cultivation-software-home-growers.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-grow-ai",
+      "destination": "/seo/grow-guides/cannabis-grow-ai.html"
+    },
+    {
+      "source": "/grow-guides/best-ai-plant-diagnosis-apps-cannabis",
+      "destination": "/seo/grow-guides/best-ai-plant-diagnosis-apps-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/higrade-vs-mastergrowbot-ai",
+      "destination": "/seo/grow-guides/higrade-vs-mastergrowbot-ai.html"
+    },
+    {
+      "source": "/grow-guides/hydro-vs-soil-cannabis",
+      "destination": "/seo/grow-guides/hydro-vs-soil-cannabis.html"
+    },
+    {
+      "source": "/grow-guides/best-ai-plant-cameras-cannabis-growers-2026",
+      "destination": "/seo/grow-guides/best-ai-plant-cameras-cannabis-growers-2026.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-grow-tech-home-growers",
+      "destination": "/seo/grow-guides/best-cannabis-grow-tech-home-growers.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-grow-room-monitor-guide",
+      "destination": "/seo/grow-guides/cannabis-grow-room-monitor-guide.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-soil-moisture-ph-meters",
+      "destination": "/seo/grow-guides/best-cannabis-soil-moisture-ph-meters.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-grow-tech-kit-hardware-home-growers",
+      "destination": "/seo/grow-guides/cannabis-grow-tech-kit-hardware-home-growers.html"
+    },
+    {
+      "source": "/grow-guides/how-to-take-better-cannabis-plant-diagnosis-photos",
+      "destination": "/seo/grow-guides/how-to-take-better-cannabis-plant-diagnosis-photos.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-grow-room-sensors-mold-heat-stress",
+      "destination": "/seo/grow-guides/best-cannabis-grow-room-sensors-mold-heat-stress.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-environment-monitor-vs-vpd-calculator",
+      "destination": "/seo/grow-guides/cannabis-environment-monitor-vs-vpd-calculator.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-plant-camera-vs-phone-camera",
+      "destination": "/seo/grow-guides/cannabis-plant-camera-vs-phone-camera.html"
+    },
+    {
+      "source": "/grow-guides/ai-cannabis-grow-hardware-cameras-sensors-data-tools",
+      "destination": "/seo/grow-guides/ai-cannabis-grow-hardware-cameras-sensors-data-tools.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-grow-room-automation-beginners-sensors-before-controllers",
+      "destination": "/seo/grow-guides/cannabis-grow-room-automation-beginners-sensors-before-controllers.html"
+    },
+    {
+      "source": "/grow-guides/best-grow-room-tools-cannabis-beginners-2026",
+      "destination": "/seo/grow-guides/best-grow-room-tools-cannabis-beginners-2026.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-co2-monitor-guide",
+      "destination": "/seo/grow-guides/cannabis-co2-monitor-guide.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-air-quality-monitor-guide",
+      "destination": "/seo/grow-guides/cannabis-air-quality-monitor-guide.html"
+    },
+    {
+      "source": "/grow-guides/best-cannabis-trichome-camera-lens-options-harvest-timing",
+      "destination": "/seo/grow-guides/best-cannabis-trichome-camera-lens-options-harvest-timing.html"
+    },
+    {
+      "source": "/grow-guides/cannabis-root-zone-monitoring-soil-moisture-ph-temperature-fertility",
+      "destination": "/seo/grow-guides/cannabis-root-zone-monitoring-soil-moisture-ph-temperature-fertility.html"
+    },
+    {
+      "source": "/grow-guides/grow-tech-small-cannabis-grow-tents-tools-under-250",
+      "destination": "/seo/grow-guides/grow-tech-small-cannabis-grow-tents-tools-under-250.html"
     },
     {
       "source": "/.well-known/apple-developer-merchantid-domain-association",
       "destination": "https://whop.com/.well-known/apple-platform-integrator/apple-developer-merchantid-domain-association"
     },
     {
-      "source": "/auth/callback(.*)",
-      "destination": "/index.html"
+      "source": "/grow-tech/checkout/:productSlug",
+      "destination": "/client.html"
     },
     {
-      "source": "/auth/(.*)",
-      "destination": "/index.html"
+      "source": "/grow-tech/thank-you",
+      "destination": "/client.html"
+    },
+    {
+      "source": "/playbooks/checkout",
+      "destination": "/client.html"
+    },
+    {
+      "source": "/playbooks/thank-you",
+      "destination": "/client.html"
     },
     {
       "source": "/privacy-policy",
-      "destination": "/index.html"
+      "destination": "/client.html"
     },
     {
       "source": "/terms-of-service",
-      "destination": "/index.html"
+      "destination": "/client.html"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/contact",
+      "destination": "/client.html"
+    },
+    {
+      "source": "/whop-embed-test",
+      "destination": "/client.html"
+    },
+    {
+      "source": "/checkout-diagnostics",
+      "destination": "/client.html"
+    },
+    {
+      "source": "/ai-strategy/intake",
+      "destination": "/client.html"
+    },
+    {
+      "source": "/auth/:path*",
+      "destination": "/client.html"
     }
   ]
 }

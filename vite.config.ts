@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode, isSsrBuild }) => ({
   envPrefix: ['VITE_', 'NEXT_PUBLIC_'],
   server: {
     host: "::",
@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === 'development',
     rollupOptions: {
       output: {
-        manualChunks: {
+        manualChunks: isSsrBuild ? undefined : {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'ui-vendor': [
             '@radix-ui/react-dialog',

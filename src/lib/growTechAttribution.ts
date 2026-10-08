@@ -5,6 +5,7 @@ const ttl = 30 * 24 * 60 * 60 * 1000;
 
 export function captureGrowTechAttribution(): Campaign {
   const incoming: Campaign = {};
+  if (typeof window === "undefined") return incoming;
   const query = new URLSearchParams(window.location.search);
   for (const field of fields) {
     const value = query.get(field)?.trim().slice(0, 150);
@@ -26,12 +27,12 @@ export function captureGrowTechAttribution(): Campaign {
 }
 
 export function growTechCheckoutCampaign(location: string): Campaign {
-  return { utm_source: "mastergrowbot", utm_medium: "website", utm_campaign: "lens_launch", utm_content: location, ...captureGrowTechAttribution() };
+  return { utm_content: location, ...captureGrowTechAttribution() };
 }
 
 export function growTechOfferUrl(location: string): string {
-  const query = new URLSearchParams(growTechCheckoutCampaign(location));
-  return `/grow-tech?${query.toString()}#lens-offer`;
+  void location;
+  return '/grow-tech/apexel-macro-lens-kit';
 }
 
 export function attributedGrowTechCheckoutUrl(url: string | undefined, location: string) {

@@ -12,7 +12,9 @@ Compare organic landing-page sessions and store-click events over matching windo
 
 Run build, lint, and `npx playwright test tests/seo-release.spec.ts tests/grow-tech-testimonials.spec.ts`. The SEO suite renders every guide string through the sanitizer, checks for visible Markdown links, rejects executable HTML, and verifies target metadata, links, mobile layout and event payloads.
 
-The shared shell has no canonical. React Helmet owns one canonical per route. Full static rendering is a future enhancement: it needs a deployment-compatible generation step and route tests. It is not required for today's reliable client-rendered route. Never restore a homepage canonical in the shared shell.
+The shared client shell has no canonical. Public pages now render route-specific content and one canonical during the build, then hydrate the same React components. See crawlable-revenue-release.md. Never restore a homepage canonical in the shared shell.
+
+Internal links carry no campaign UTMs. Genuine external campaign labels remain in session attribution and are passed to external checkout destinations. Events carry page_path/source_page and cta_location; select_item and begin_checkout are intent, not sales. Historical checkout_source_page remains the funnel key. Purchase events require verified transaction evidence and deduplication; no website-to-app revenue attribution is inferred from store clicks.
 
 ## Claim review: 2026-09-06
 

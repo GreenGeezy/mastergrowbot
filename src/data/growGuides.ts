@@ -6659,13 +6659,17 @@ Soil is also easier to recommend when the grower is still learning how all the v
     metaDescription:
       "Best AI plant cameras for cannabis growers in 2026. Compare close-up lenses, grow-room cameras, trichome tools, and MasterGrowbot AI Grow Tech.",
     publishedDate: "2026-07-06T00:00:00Z",
-    modifiedDate: "2026-07-06T00:00:00Z",
+    modifiedDate: "2026-10-08T00:00:00Z",
     intro: `A good cannabis plant camera can turn a vague grow-room photo into useful plant data. Clear close-up images help growers document leaf symptoms, pest damage, bud development, trichomes, and environmental stress before small problems become expensive losses. That is why AI plant cameras and close-up grow tools are becoming a serious part of the cannabis grow-tech stack.
 
 The best AI plant camera for cannabis is not always a permanent grow-room camera. For most home growers, the highest-value option is a sharp phone-mounted close-up lens that captures leaves, pests, bud sites, and trichomes clearly enough for inspection, grow journals, and AI-assisted review. The APEXEL 10–20X macro lens is an optical phone accessory made by APEXEL. It does not diagnose plant problems or automatically sync with an app. Check phone fit and whether its magnification suits your task.
 
 This guide compares the best camera types for cannabis growers, explains what to buy first, and shows how to connect plant photos with MasterGrowbot AI, the Grow Tech page, the free VPD calculator, and the Master Cannabis IPM Playbook so your photos turn into better decisions.`,
     sections: [
+      {
+        heading: "Explore the current phone lens package",
+        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light, digital guide and templates for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
+      },
       {
         heading: "Direct Answer: Best AI Plant Camera for Cannabis",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">For most cannabis growers, the best AI plant camera setup is a phone-mounted close-up lens paired with a plant diagnosis and grow journal app. The lens captures clearer plant photos, while the app helps organize photos, symptoms, notes, and treatment decisions.</p>
@@ -7292,13 +7296,17 @@ Extra gadgets also create maintenance. Batteries, calibration, placement, cleani
     metaDescription:
       "Take better cannabis plant diagnosis photos with practical tips for lighting, focus, distance, leaf angles, pest checks, trichomes, and MasterGrowbot AI scans.",
     publishedDate: "2026-07-16T00:00:00Z",
-    modifiedDate: "2026-07-16T00:00:00Z",
+    modifiedDate: "2026-10-08T00:00:00Z",
     intro: `Better cannabis plant diagnosis photos help you spot problems earlier and avoid wrong corrections. A blurry yellow leaf photo can look like nitrogen deficiency, magnesium deficiency, light stress, overwatering, or pH lockout. A sharp photo with the right angle, lighting, and grow context gives you better evidence before you change nutrients, water, sprays, or climate settings.
 
 The goal is not to take pretty plant photos. The goal is to capture useful plant evidence: where the symptom started, how the leaf surface looks, whether pests are present, what the canopy is doing, and what room or root-zone readings might explain the stress.
 
 This guide shows cannabis growers how to take better diagnosis photos with a phone, close-up plant camera, the MasterGrowbot AI Scout Camera, Grow Tech hardware, the free VPD calculator, the iOS app, the Android app, and the Master Cannabis IPM Playbook when pest or disease prevention needs more structure.`,
     sections: [
+      {
+        heading: "Explore the current phone lens package",
+        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light, digital guide and templates for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
+      },
       {
         heading: "Direct Answer: Best Way to Photograph Cannabis Plant Problems",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">To take a better cannabis plant diagnosis photo, use bright indirect light, steady the camera, fill the frame with the affected leaf or bud, tap to focus on the symptom, avoid blur, and take at least three photo types: a close-up symptom photo, a whole-plant context photo, and a canopy or room context photo.</p>
@@ -8507,13 +8515,17 @@ Finally, make one change at a time. Clean the room, change a filter, improve int
     metaDescription:
       "Best cannabis trichome camera and lens options for harvest timing. Compare loupes, clip-on lenses, microscopes, phone photos, and MasterGrowbot AI workflows.",
     publishedDate: "2026-09-02T00:00:00Z",
-    modifiedDate: "2026-09-02T00:00:00Z",
+    modifiedDate: "2026-10-08T00:00:00Z",
     intro: `A cannabis trichome camera helps growers decide when flower is actually ready instead of relying only on breeder timelines, pistil color, or guesswork. The right camera or lens makes clear, milky, and amber trichomes easier to compare across several days, which supports clearer harvest timing records and stronger comparison notes.
 
 Most home growers do not need lab equipment. They need a stable view of the calyxes, enough magnification to separate clear from cloudy heads, neutral lighting, and a repeatable way to save photos beside plant notes. A jeweler's loupe can work. A phone with a clip-on macro lens can work. A pocket microscope can work. The best choice depends on how steady your hands are, how many plants you inspect, and whether you want photos for MasterGrowbot AI and your grow journal.
 
 This guide compares the most practical cannabis trichome camera and lens options, explains what to buy first, and shows how to connect trichome photos with MasterGrowbot Grow Tech, the free cannabis VPD calculator, and MasterGrowbot AI on iOS or Android.`,
     sections: [
+      {
+        heading: "Explore the current phone lens package",
+        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light, digital guide and templates for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
+      },
       {
         heading: "Direct Answer: What Is the Best Camera for Cannabis Trichomes?",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The best cannabis trichome camera for most home growers is a stable close-up camera or macro lens that can clearly show trichome heads on calyxes at roughly 30-120x practical magnification. The goal is not the highest number on the box. The goal is repeatable, well-lit photos that show whether trichomes are mostly clear, mostly milky, or starting to turn amber.</p>
@@ -8559,7 +8571,7 @@ For a broader photo workflow, read How to Take Better Cannabis Plant Diagnosis P
         heading: "Standalone Hardware vs MasterGrowbot AI Workflow",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">MasterGrowbot Grow Tech hardware is useful for cannabis growers of all types, garden sizes, budgets, and experience levels. The hardware can be used on its own without the MasterGrowbot AI app to improve grow visibility, decision-making, photo consistency, and record quality.</p>
 <p class="text-base text-white/65 leading-relaxed font-sans mb-3">For trichome timing, standalone hardware gives you clearer evidence: sharper close-up photos, more consistent inspection, and a better record of how fast maturity is changing. That can support better timing, fewer avoidable harvest mistakes, and stronger consistency without promising guaranteed outcomes.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Pairing the hardware with MasterGrowbot AI can enhance results because photos, sensor readings, root-zone data, notes, diagnosis, and tasks stay connected in one workflow. Download MasterGrowbot AI on <a href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=best-cannabis-trichome-camera-lens-options-harvest-timing" class="text-landing-green hover:underline">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=best-cannabis-trichome-camera-lens-options-harvest-timing" class="text-landing-green hover:underline">Android</a> when you want trichome photos saved beside plant notes, room readings, and follow-up tasks.</p>`,
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">MasterGrowbot AI can keep manually uploaded photos beside journal notes and tasks. This lens has no automatic app connection, and its magnification does not guarantee microscope-level detail. Download MasterGrowbot AI on <a href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=best-cannabis-trichome-camera-lens-options-harvest-timing" class="text-landing-green hover:underline">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=best-cannabis-trichome-camera-lens-options-harvest-timing" class="text-landing-green hover:underline">Android</a> when you want trichome photos saved beside plant notes, room readings, and follow-up tasks.</p>`,
       },
       {
         heading: "Harvest Timing Workflow With Camera Evidence",

@@ -55,7 +55,8 @@ export default function GrowGuideArticle() {
     'quarantine',
     'scouting',
   ]);
-  const isLensIntent = hasAnyKeyword(intentText, ['camera', 'lens', 'photo', 'trichome']);
+  // Journal/software pages mention photos too; that alone is not hardware intent.
+  const isLensIntent = hasAnyKeyword(intentText, ['camera', 'lens', 'trichome']);
   const appCtaIntro = isIpmIntent
     ? 'Scan Your Plant with MasterGrowbot AI'
     : 'Skip the guesswork';
@@ -134,7 +135,7 @@ export default function GrowGuideArticle() {
             {/* Article Header */}
             <motion.header
               className="mb-10 space-y-4"
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
@@ -145,9 +146,9 @@ export default function GrowGuideArticle() {
                 {guide.h1}
               </h1>
               <p className="text-sm text-white/40 font-sans">
-                Published {new Date(guide.publishedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                Published {new Date(guide.publishedDate).toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' })}
                 {guide.modifiedDate !== guide.publishedDate && (
-                  <> · Updated {new Date(guide.modifiedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</>
+                  <> · Updated {new Date(guide.modifiedDate).toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' })}</>
                 )}
               </p>
             </motion.header>
@@ -170,7 +171,7 @@ export default function GrowGuideArticle() {
             <motion.nav
               aria-label="Table of contents"
               className="mb-10 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-5 space-y-2"
-              initial={{ opacity: 0 }}
+              initial={false}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
@@ -193,7 +194,7 @@ export default function GrowGuideArticle() {
             {/* Intro */}
             <motion.div
               className="mb-10"
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
             >
@@ -221,7 +222,7 @@ export default function GrowGuideArticle() {
                 key={section.heading}
                 id={slugify(section.heading)}
                 className="mb-12 scroll-mt-6"
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.6, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
@@ -375,7 +376,7 @@ export default function GrowGuideArticle() {
               {relatedGuides.map((related, i) => (
                 <motion.div
                   key={related.slug}
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={false}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.07 }}

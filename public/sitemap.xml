@@ -14,13 +14,13 @@
   </url>
   <url>
     <loc>https://www.mastergrowbot.com/about</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.mastergrowbot.com/grow-tech</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -338,7 +338,7 @@
   </url>
   <url>
     <loc>https://www.mastergrowbot.com/grow-guides/best-ai-plant-cameras-cannabis-growers-2026</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -368,7 +368,7 @@
   </url>
   <url>
     <loc>https://www.mastergrowbot.com/grow-guides/how-to-take-better-cannabis-plant-diagnosis-photos</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -422,7 +422,7 @@
   </url>
   <url>
     <loc>https://www.mastergrowbot.com/grow-guides/best-cannabis-trichome-camera-lens-options-harvest-timing</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -438,5 +438,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url><loc>https://www.mastergrowbot.com/playbooks</loc><lastmod>2026-10-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.mastergrowbot.com/playbooks</loc><lastmod>2026-10-08</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.mastergrowbot.com/grow-tech/apexel-macro-lens-kit</loc><lastmod>2026-10-08</lastmod></url>
 </urlset>
