@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import LandingFooter from "@/components/landing/LandingFooter";
 import LandingNav from "@/components/landing/LandingNav";
 import SEOHead from "@/components/SEOHead";
-import { trackEvent, trackPendingCheckoutSuccess } from "@/lib/analytics";
+import { trackEvent } from "@/lib/analytics";
 
 const intakePageUrl = "https://www.mastergrowbot.com/ai-strategy/intake";
 const fallbackBookingUrl = "https://calendar.app.google/Ez6qmV9douCc4xhr6";
@@ -136,9 +136,9 @@ export default function AIStrategyIntake() {
   const bookingUrl =
     import.meta.env.NEXT_PUBLIC_AI_STRATEGY_BOOKING_URL?.trim() || fallbackBookingUrl;
   const status = searchParams.get("status");
-  const receiptId = searchParams.get("receipt_id") || searchParams.get("receiptId") || undefined;
-  const isSuccess = status === "success";
-  const isError = status === "error";
+  const receiptId = searchParams.get("payment") || searchParams.get("receipt_id") || searchParams.get("receiptId") || undefined;
+  const isSuccess = status === "succeeded" && /^pay_[A-Za-z0-9]+$/.test(receiptId || "");
+  const isError = ["error", "failed", "canceled", "cancelled"].includes(status || "");
 
   useEffect(() => {
     trackEvent("ai_strategy_intake_view", {
@@ -147,7 +147,6 @@ export default function AIStrategyIntake() {
     });
 
     if (isSuccess) {
-      trackPendingCheckoutSuccess("/ai-strategy", receiptId);
       trackEvent("checkout_return_success", {
         checkout_area: "ai-strategy",
         status: "success",

@@ -105,41 +105,20 @@
     }
     </script>
 
-    <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self' https://*.mastergrowbot.com https://*.lovable.app https://*.supabase.co https://*.cloudflare.com;
-      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.gpteng.co https://*.supabase.co https://*.mastergrowbot.com https://*.lovable.app https://www.googletagmanager.com https://va.vercel-scripts.com https://cdn.plaid.com https://t.whop.tw;
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-      font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: blob: https: https://*.supabase.co https://*.mastergrowbot.com https://*.lovable.app;
-      connect-src 'self'
-        https://*.supabase.co
-        wss://*.supabase.co
-        https://api.openai.com
-        https://*.lovable.app
-        wss://*.lovable.app
-        https://mastergrowbot.com
-        https://www.mastergrowbot.com
-        https://*.mastergrowbot.com
-        wss://*.mastergrowbot.com
-        https://*.cloudflare.com
-        https://www.google.com
-        https://*.google-analytics.com
-        https://*.analytics.google.com
-        https://*.vercel-insights.com
-        https://t.whop.tw
-        https://whop.com
-        https://*.whop.com
-        https://formspree.io
-        https://*.formspree.io;
-      frame-src 'self' https://accounts.google.com https://*.supabase.co https://docs.google.com https://whop.com https://*.whop.com https://cdn.plaid.com;
-      worker-src 'self' blob:;
-      media-src 'self' blob:;
-      form-action 'self' https://docs.google.com;
-      base-uri 'self';
-      object-src 'none';
-      upgrade-insecure-requests;
-      block-all-mixed-content;
-    " />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.mastergrowbot.com https://*.lovable.app https://*.supabase.co https://*.cloudflare.com;
+       script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.gpteng.co https://*.supabase.co https://*.mastergrowbot.com https://*.lovable.app https://www.googletagmanager.com https://va.vercel-scripts.com https://cdn.plaid.com https://t.whop.tw https://cdn.whop.com https://pay.google.com https://applepay.cdn-apple.com https://js.braintreegateway.com https://www.paypal.com https://c.paypal.com;
+       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+       font-src 'self' https://fonts.gstatic.com https://applepay.cdn-apple.com;
+       img-src 'self' data: blob: https: https://*.supabase.co https://*.mastergrowbot.com https://*.lovable.app https://www.paypalobjects.com;
+       connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://*.lovable.app wss://*.lovable.app https://mastergrowbot.com https://www.mastergrowbot.com https://*.mastergrowbot.com wss://*.mastergrowbot.com https://*.cloudflare.com https://www.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.vercel-insights.com https://t.whop.tw https://whop.com https://*.whop.com https://formspree.io https://*.formspree.io https://api.whop.com https://pay.google.com https://google.com https://account.google.com https://api.basistheory.com https://payments.braintree-api.com https://api.braintreegateway.com https://api-m.paypal.com https://www.paypal.com;
+       frame-src 'self' https://accounts.google.com https://*.supabase.co https://docs.google.com https://whop.com https://*.whop.com https://cdn.plaid.com https://cdn.whop.com https://checkout.paypal.com https://assets.braintreegateway.com https://www.paypal.com;
+       worker-src 'self' blob:;
+       media-src 'self' blob:;
+       form-action 'self' https://docs.google.com;
+       base-uri 'self';
+       object-src 'none';
+       upgrade-insecure-requests;
+       block-all-mixed-content" />
     <script>if (["mastergrowbot.com", "www.mastergrowbot.com"].includes(window.location.hostname)) { !function(w,d,s,u,n,a,b){if(w[n])return;a=w[n]={q:[],t:+new Date,s:[],o:u,track:function(){a.q.push([+new Date].concat([].slice.call(arguments)))},setScope:function(){a.s=[].slice.call(arguments).filter(function(x){return typeof x==="string"});a.q.push([+new Date,"setScope"].concat(a.s))},scope:function(){var c=[].slice.call(arguments);return{track:function(){a.q.push([+new Date].concat([].slice.call(arguments)).concat([{__scope:c}]))}}}};b=d.createElement(s);b.async=1;b.src=u+"/s.js";d.getElementsByTagName(s)[0].parentNode.insertBefore(b,d.getElementsByTagName(s)[0])}(window,document,"script","https://t.whop.tw","whop");whop.setScope("biz_8m5fp7bUlZOdVX");whop.track("page"); }</script>
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />

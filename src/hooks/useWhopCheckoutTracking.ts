@@ -1,16 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type AnalyticsParams, trackEvent } from "@/lib/analytics";
 
-type WhopCheckoutMessage = {
-  __scope?: string;
-  event?: string;
-  state?: string;
-  plan_id?: string;
-  receipt_id?: string;
-  setup_intent_id?: string;
-  [key: string]: unknown;
-};
-
 type UseWhopCheckoutTrackingArgs = {
   planId?: string;
   payload: AnalyticsParams;
@@ -18,24 +8,6 @@ type UseWhopCheckoutTrackingArgs = {
   onStateChange?: (state: string, signalSource: string) => void;
   loadTimeoutMs?: number;
 };
-
-function isWhopOrigin(origin: string) {
-  try {
-    const { hostname } = new URL(origin);
-    return hostname === "whop.com" || hostname.endsWith(".whop.com");
-  } catch {
-    return false;
-  }
-}
-
-function isWhopCheckoutMessage(data: unknown): data is WhopCheckoutMessage {
-  return (
-    typeof data === "object" &&
-    data !== null &&
-    "__scope" in data &&
-    (data as WhopCheckoutMessage).__scope === "whop-embedded-checkout"
-  );
-}
 
 export function useWhopCheckoutTracking({
   planId,
@@ -85,9 +57,9 @@ export function useWhopCheckoutTracking({
 
   const trackComplete = useCallback(
     (completedPlanId: string | undefined, receiptId: string | undefined, signalSource: string) => {
-      // The SDK callback merges setup_intent_id and receipt_id. Only the
-      // source-checked iframe message distinguishes a payment receipt.
-      if (signalSource !== "post_message" || !receiptId?.trim()) return;
+      // Elements' typed payment callback supplies the actual payment ID.
+      // Return URLs, waitlists, setup intents and legacy messages are not sales.
+      if (signalSource !== "elements_on_complete" || !receiptId || !/^pay_[A-Za-z0-9]+$/.test(receiptId)) return;
       const resolvedPlanId = completedPlanId || planId;
       if (!resolvedPlanId || (planId && resolvedPlanId !== planId)) {
         return;
@@ -125,31 +97,6 @@ export function useWhopCheckoutTracking({
 
     return () => window.clearTimeout(timeoutId);
   }, [loadTimeoutMs, payloadKey, planId]);
-
-  useEffect(() => {
-    if (!planId) {
-      return;
-    }
-
-    const handleMessage = (event: MessageEvent) => {
-      if (!isWhopOrigin(event.origin) || !isWhopCheckoutMessage(event.data)) {
-        return;
-      }
-      const frames = hostRef.current?.querySelectorAll('iframe');
-      if (!frames || !Array.from(frames).some(frame => frame.contentWindow === event.source)) return;
-
-      if (event.data.event === "state" && event.data.state) {
-        trackState(String(event.data.state), "post_message");
-      }
-
-      if (event.data.event === "complete") {
-        trackComplete(event.data.plan_id, event.data.receipt_id, "post_message");
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, [planId, trackComplete, trackState]);
 
   useEffect(() => {
     const host = hostRef.current;

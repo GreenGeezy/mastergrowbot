@@ -20,7 +20,7 @@ const ipmImages = [
   },
 ];
 
-export default function IPMPlaybookSection() {
+export default function IPMPlaybookSection({ location = "homepage-ipm-playbook" }: { location?: string }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeImage = ipmImages[activeIndex];
 
@@ -43,7 +43,7 @@ export default function IPMPlaybookSection() {
             better grow documentation.
           </p>
           <div className="mt-6">
-            <AmazonBookButton location="homepage-ipm-playbook" />
+            <AmazonBookButton location={location} />
             <p className="mt-2 text-sm font-medium text-white/52 font-sans">
               The Master Cannabis IPM Playbook for legal growers
             </p>

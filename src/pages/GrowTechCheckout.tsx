@@ -67,6 +67,7 @@ export default function GrowTechCheckout() {
           <EmbeddedGrowTechCheckout
             product={product}
             planId={planId}
+              deliveryCountry={deliveryCountry}
             fallbackCheckoutUrl={checkoutUrl}
             ctaLocation={`growtech_checkout_page:${product.anchorId}`}
             promoActive={!product.deliveryKind && IS_JULY_PROMO_ACTIVE}

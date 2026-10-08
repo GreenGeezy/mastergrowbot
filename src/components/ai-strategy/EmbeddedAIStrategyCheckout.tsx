@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { WhopCheckoutEmbed, type WhopCheckoutState } from "@whop/checkout/react";
+import { WhopElementsCheckout, type WhopCheckoutState } from "@/components/checkout/WhopElementsCheckout";
 import { AlertCircle, ArrowUpRight, CheckCircle2, FileText, Headphones, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
 import { aiStrategyEcommercePayload, trackAIStrategyCheckoutEvent, trackCheckoutSuccess } from "@/lib/analytics";
@@ -20,7 +20,7 @@ type EmbeddedAIStrategyCheckoutProps = {
   ctaLocation: string;
 };
 
-const returnUrl = "https://www.mastergrowbot.com/ai-strategy/intake?status=success";
+const returnUrl = "https://www.mastergrowbot.com/ai-strategy/intake";
 const checkoutSteps = ["Details", "Payment", "Confirmation"] as const;
 
 const trustItems = [
@@ -206,7 +206,7 @@ export default function EmbeddedAIStrategyCheckout({
           </div>
           <div className="p-2 sm:p-4">
             <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px]">
-              <WhopCheckoutEmbed
+              <WhopElementsCheckout
                 planId={planId}
                 returnUrl={returnUrl}
                 theme="dark"
@@ -233,10 +233,10 @@ export default function EmbeddedAIStrategyCheckout({
                   </div>
                 }
                 onComplete={(completedPlanId: string, receiptId?: string) => {
-                  handleWhopComplete(completedPlanId, receiptId, "react_on_complete");
+                  handleWhopComplete(completedPlanId, receiptId, "elements_on_complete");
                 }}
                 onStateChange={(state: WhopCheckoutState) => {
-                  handleWhopStateChange(String(state), "react_on_state_change");
+                  handleWhopStateChange(String(state), "elements_on_state_change");
                 }}
               />
             </div>

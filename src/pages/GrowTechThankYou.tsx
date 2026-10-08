@@ -30,8 +30,8 @@ const nextSteps = [
 export default function GrowTechThankYou() {
   const [searchParams] = useSearchParams();
   const status = searchParams.get("status");
-  const receiptId = searchParams.get("receipt_id") || searchParams.get("receiptId") || undefined;
-  const isSuccess = status === "success";
+  const receiptId = searchParams.get("payment") || searchParams.get("receipt_id") || searchParams.get("receiptId") || undefined;
+  const isSuccess = status === "succeeded" && /^pay_[A-Za-z0-9]+$/.test(receiptId || "");
   const isError = ["error", "failed", "canceled", "cancelled"].includes(status || "");
   const purchasedSlug = searchParams.get("product");
   const hasGuide = ["quickstart-guide", "scout-guide-bundle", "soil-health-meter", "grow-tent"].includes(purchasedSlug || "");
@@ -103,9 +103,7 @@ export default function GrowTechThankYou() {
               ) : (
                 <>
                   <p>
-                    We are preparing your MasterGrowbot AI Grow Tech order for fulfillment. Once your product ships,
-                    tracking details and estimated delivery information will be sent to the email address used during
-                    checkout.
+                    After Whop confirms your payment, we prepare your order and send tracking to your checkout email when it ships.
                   </p>
                   <p className="mt-4">Check your inbox and spam folder so you do not miss your tracking update.</p>
                 </>
@@ -115,7 +113,7 @@ export default function GrowTechThankYou() {
           {hasGuide && !isError ? <div className="mt-6 rounded-xl border border-emerald-300/25 bg-emerald-950/40 p-6"><h2 className="text-xl font-bold">Open your Equipment Quickstart</h2><p className="mt-2 text-sm leading-6 text-white/70">Your purchase account provides access to the 12-page guide, printable worksheets and CSV log.</p><div className="mt-4 flex flex-wrap gap-4"><a href={QUICKSTART_CONTENT_URL} className="rounded-lg bg-emerald-300 px-5 py-3 font-bold text-emerald-950">Start Here</a><a href={QUICKSTART_FILES_URL} className="rounded-lg border border-emerald-300/40 px-5 py-3 font-bold text-emerald-300">Open guide files</a></div></div> : null}
         </section>
 
-        {!isDigitalOnly ? <section className="mx-auto mt-16 max-w-6xl">
+        {!isDigitalOnly && isSuccess ? <section className="mx-auto mt-16 max-w-6xl">
           <div className="mb-8 text-center">
             <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green">
               What happens next

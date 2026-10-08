@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { WhopCheckoutEmbed } from "@whop/checkout/react";
+import { WhopElementsCheckout } from "@/components/checkout/WhopElementsCheckout";
 import { AlertCircle, ArrowUpRight, Copy } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
 import { growTechCheckoutCampaign, attributedGrowTechCheckoutUrl } from "@/lib/growTechAttribution";
@@ -25,6 +25,7 @@ type EmbeddedGrowTechCheckoutProps = {
     deliveryKind?: "digital" | "hardware-and-digital";
   };
   planId?: string;
+  deliveryCountry?: string;
   fallbackCheckoutUrl?: string;
   ctaLocation: string;
   promoActive?: boolean;
@@ -35,6 +36,7 @@ const PROMO_CODE = "AIGROWTECH";
 export default function EmbeddedGrowTechCheckout({
   product,
   planId,
+  deliveryCountry,
   fallbackCheckoutUrl,
   ctaLocation,
   promoActive = false,
@@ -181,9 +183,10 @@ export default function EmbeddedGrowTechCheckout({
           </div>}
           <div className="p-0 sm:p-1">
               <div ref={hostRef} className="whop-embedded-checkout-host min-h-[720px] rounded-xl bg-white [color-scheme:light]">
-                <WhopCheckoutEmbed
+                <WhopElementsCheckout
                   planId={planId}
-                  returnUrl={`https://www.mastergrowbot.com/grow-tech/thank-you?status=success&product=${encodeURIComponent(product.anchorId || "")}`}
+                  deliveryCountry={deliveryCountry}
+                  returnUrl={`https://www.mastergrowbot.com/grow-tech/thank-you?product=${encodeURIComponent(product.anchorId || "")}`}
                   theme="light"
                   collectShipping={product.deliveryKind !== "digital"}
                   utm={growTechCheckoutCampaign(ctaLocation)}
@@ -204,10 +207,10 @@ export default function EmbeddedGrowTechCheckout({
                     </div>
                   }
                   onComplete={(completedPlanId: string, receiptId?: string) => {
-                    handleWhopComplete(completedPlanId, receiptId, "react_on_complete");
+                    handleWhopComplete(completedPlanId, receiptId, "elements_on_complete");
                   }}
                   onStateChange={(state) => {
-                    handleWhopStateChange(String(state), "react_on_state_change");
+                    handleWhopStateChange(String(state), "elements_on_state_change");
                   }}
                 />
               </div>
