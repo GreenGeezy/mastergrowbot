@@ -11,18 +11,21 @@ const steps = [
 ];
 export default function GrowWalkthrough() {
   const [active, setActive] = useState(0);
+  const compactVideo = typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
   const step = steps[active];
   function select(index: number) { setActive(index); trackEvent("app_walkthrough_step", {step: steps[index].label}); }
   return <section id="grow-walkthrough" className="premium-wrap premium-section grow-walkthrough" aria-labelledby="walkthrough-title">
     <div className="premium-section-heading"><div><p className="premium-eyebrow">A MOMENT IN YOUR GROW</p><h2 id="walkthrough-title">From “what’s this?”<br/><em>to a clearer next step.</em></h2></div><p>See how the app turns a plant photo into a health report you can save and revisit. Explore the walkthrough.</p></div>
     <details style={{marginBottom:24}}>
       <summary style={{cursor:'pointer',padding:'16px 0',fontWeight:700}}>Watch the 30-second report walkthrough</summary>
-      <video controls playsInline preload="none" poster="/images/premium/report-video-cover.png" aria-label="MasterGrowbot AI real report walkthrough" style={{display:'block',width:'100%',maxWidth:480,margin:'16px auto',borderRadius:20}} onPlay={() => trackEvent('app_report_video_play', {placement:'homepage_walkthrough'})}>
-        <source src="/videos/mastergrowbot-report-30s.mp4" type="video/mp4" />
-        <track default kind="captions" src="/videos/mastergrowbot-report-30s.vtt" srcLang="en" label="English" />
+      <video controls playsInline preload="none" poster={compactVideo ? "/images/premium/report-video-cover-v3.png" : "/images/premium/report-video-wide-cover-v3.png"} aria-label="MasterGrowbot AI real report walkthrough" style={{display:'block',width:'100%',maxWidth:1080,margin:'16px auto',borderRadius:20}} onPlay={() => trackEvent('app_report_video_play', {placement:'homepage_walkthrough',creative:'report_v3'})}>
+        <source media="(max-width: 640px)" src="/videos/mastergrowbot-report-social-30s-v3.mp4" type="video/mp4" />
+        <source src="/videos/mastergrowbot-report-wide-30s-v3.mp4" type="video/mp4" />
+        <track kind="captions" src="/videos/mastergrowbot-report-30s-v3.vtt" srcLang="en" label="English" />
         Your browser does not support video. Explore the report tabs below.
       </video>
-      <p className="premium-fine">Actual app screenshots and example output, with an App Store review excerpt. AI insights support grower judgment. Free download; Pro requires a subscription.</p>
+      <p className="premium-fine">App interface preview and actual report screenshots, with example output and an App Store review excerpt. AI insights support grower judgment. Free download; Pro requires a subscription.</p>
+      <a href="/videos/mastergrowbot-report-social-30s-v3.mp4" download="MasterGrowbot-AI-report-demo.mp4" className="premium-text-link">Download the video</a>
     </details>
     <div className="walkthrough-nav" role="group" aria-label="Explore the photo to grow record walkthrough">{steps.map(({label,icon:Icon},i)=><button key={label} type="button" aria-pressed={active===i} aria-controls="walkthrough-panel" onClick={()=>select(i)}><span>0{i+1}</span><Icon size={19}/>{label}</button>)}</div>
     <div id="walkthrough-panel" className={`walkthrough-panel ${active===1?'is-report':''}`}>
