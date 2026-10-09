@@ -1,3 +1,4 @@
+import AppTestimonials from "./AppTestimonials";
 import { useEffect } from "react";
 import HeroSection from "./HeroSection";
 import FeatureSection from "./FeatureSection";
@@ -25,6 +26,7 @@ export default function LandingPage() {
       <main>
         <HeroSection />
         <TrustRail />
+        <AppTestimonials />
         <GrowWalkthrough />
         <FeatureSection />
         <section className="mx-auto grid max-w-6xl items-center gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[1.2fr_.8fr]" aria-labelledby="home-playbooks-title">
