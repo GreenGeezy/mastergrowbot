@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
 
 const navLinks = [
-  { label: 'GrowTech', to: '/grow-tech' },
-  { label: 'Grow Guides', to: '/grow-guides' },
-  { label: 'Playbooks', to: '/playbooks', badge: 'NEW' },
-  { label: 'About', to: '/about' },
-  { label: 'Contact', to: '/contact' },
+  { label: 'App', to: '/' },
+  { label: 'Shop', to: '/grow-tech' },
+  { label: 'Free Tools', to: '/vpd-calculator' },
+  { label: 'Guides', to: '/grow-guides' },
 ];
 
 export default function LandingNav({ growTechMode = false }: { growTechMode?: boolean }) {
@@ -27,7 +26,6 @@ export default function LandingNav({ growTechMode = false }: { growTechMode?: bo
           {navLinks.map((link) => (
             <Link key={link.to} to={link.to} className="group inline-flex items-center gap-1.5 text-sm font-medium text-white/62 transition hover:text-white">
               {link.label}
-              {link.badge ? <span className="rounded-full bg-gold px-1.5 py-0.5 text-[8px] font-black text-black">{link.badge}</span> : null}
             </Link>
           ))}
         </div>

@@ -238,15 +238,15 @@ export const quickstartGuide: GrowTechProduct = {
 
 export const scoutGuideBundle: GrowTechProduct = {
   ...products[0],
-  name: "APEXEL 10–20X Lens + MasterGrowbot Quickstart",
+  name: "APEXEL 10–20X Lens + Complete MasterGrowbot Digital Kit",
   productId: "growtech_scout_guide_bundle",
   badge: "Lens + light + guide",
   price: "$119",
   numericPrice: 119,
   salePrice: "$119",
-  description: "APEXEL 10–20X ZoomMacro phone lens with LED ring light, plus MasterGrowbot’s 12-page equipment guide, two worksheets and observation log. Phone not included.",
+  description: "APEXEL 10–20X ZoomMacro phone lens with LED ring light, plus the complete $29 Playbook kit: 32-page Playbook, 8 prompts, 8-page workbook, 12-page Quickstart, two worksheets and CSV log. Phone and app subscription separate.",
   whyBuy: "Put your phone lens to work with a repeatable observation workflow.",
-  schemaDescription: "APEXEL 10–20X ZoomMacro lens and LED ring light with the MasterGrowbot equipment guide, worksheets and CSV observation log. $119 one time. Phone and app subscription not included.",
+  schemaDescription: "APEXEL 10–20X ZoomMacro lens and LED ring light with the complete MasterGrowbot digital Playbook kit, including Equipment Quickstart, workbook, prompts, worksheets and CSV log. $119 one time. Phone and app subscription not included.",
   sku: "MGB-SCOUT-QUICKSTART-BUNDLE",
   buttonLabel: "Get the lens + guide — $119",
   image: "/images/grow-tech/lens-launch/product.webp",

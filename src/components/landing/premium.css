@@ -801,3 +801,32 @@
 .real-report-scroll {display:flex;align-items:center;gap:5px;margin-top:20px;font-size:11px;color:#a5e5b6;font-weight:650}
 @media(max-width:1050px) {.walkthrough-panel.is-report {grid-template-columns:1fr}.real-report-view {min-height:0}.real-report-phone {height:510px}.real-report-caption {max-width:240px}}
 @media(max-width:650px) {.real-report {padding:20px 12px 24px}.real-report-header {padding:0 6px}.real-report-tabs button {font-size:10px;flex-direction:column;gap:3px;min-height:56px}.real-report-view {flex-direction:column;gap:18px}.real-report-phone {width:min(100%,380px);height:510px}.real-report-caption {max-width:380px;align-self:stretch;padding:0 8px}.real-report-caption h3 {font-size:18px;margin:6px 0}.real-report-scroll {margin-top:10px}.walkthrough-panel.is-report .walkthrough-copy {padding:26px}}
+
+/* October revenue sprint: compact store choice and authentic product preview. */
+.revenue-hero .premium-hero-grid{min-height:620px;padding-block:42px;gap:44px}
+.revenue-hero .premium-lead{line-height:1.6}
+.revenue-hero-proof{margin:0;width:min(100%,420px);justify-self:center;background:#10271d;border:1px solid #a6edc73b;border-radius:24px;overflow:hidden;box-shadow:0 25px 70px #0007}
+.revenue-report-crop{height:390px;overflow:hidden;background:#08150e}
+.revenue-report-crop img{width:100%;height:auto;transform:translateY(-115px)}
+.revenue-hero-proof figcaption{padding:20px 24px}
+.revenue-hero-proof strong,.revenue-hero-proof span{display:block}
+.revenue-hero-proof strong{font-size:18px;color:#e4f9ec}
+.revenue-hero-proof span{font-size:12px;line-height:1.6;margin-top:7px;color:#b2c9bb}
+@media(max-width:767px){
+ .revenue-hero .premium-wrap{width:calc(100% - 36px)}
+ .revenue-hero .premium-hero-grid{min-height:0;padding-block:25px 30px;gap:20px;display:flex;flex-direction:column;align-items:stretch}
+ .premium-site .revenue-hero h1{font-size:clamp(32px,8.7vw,44px);margin:16px 0;line-height:1.08}
+ .revenue-hero .premium-eyebrow{font-size:9px;letter-spacing:.12em}
+ .revenue-hero .premium-lead{font-size:15px;line-height:1.6}
+ .revenue-hero .premium-actions{margin-top:20px;gap:8px}
+ .revenue-hero .premium-button{min-height:48px;padding:12px;font-size:14px}
+ .revenue-hero .premium-fine{font-size:11px;line-height:1.55;margin-top:12px}
+ .revenue-hero .premium-hero-benefits{margin:16px 0;gap:12px;font-size:11px}
+ .revenue-hero .premium-text-link{font-size:12px}
+ .revenue-hero-proof{display:grid;grid-template-columns:110px 1fr;border-radius:16px;width:100%}
+ .revenue-report-crop{height:135px}
+ .revenue-report-crop img{width:190px;max-width:none;transform:translate(-40px,-96px)}
+ .revenue-hero-proof figcaption{padding:16px}
+ .revenue-hero-proof strong{font-size:14px}
+ .revenue-hero-proof span{font-size:11px}
+}

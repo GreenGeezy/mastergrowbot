@@ -18,7 +18,7 @@ export default function Index() {
     <>
       <SEOHead
         title="MasterGrowbot AI: Cannabis Growing App | AI Plant Diagnosis | iOS & Android"
-        description="Grow bigger, healthier cannabis with MasterGrowbot AI. Photo-based plant diagnosis, strain tips, grow journal, and daily tasks. Try free for 3 days. iOS & Android."
+        description="Keep plant photos, AI observations and your grow journal together with MasterGrowbot AI on iOS and Android. Eligible new Pro subscribers can try 3 days free."
         canonicalUrl="https://www.mastergrowbot.com/"
       />
       <Helmet>

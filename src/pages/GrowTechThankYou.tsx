@@ -8,6 +8,7 @@ import SEOHead from "@/components/SEOHead";
 import { appStoreUrl } from "@/components/landing/ctaLinks";
 import { trackEvent } from "@/lib/analytics";
 import { QUICKSTART_CONTENT_URL, QUICKSTART_FILES_URL } from "@/data/growTechProducts";
+import { PLAYBOOK_CONTENT_URL, PLAYBOOK_FILES_URL } from "@/data/playbook";
 
 const nextSteps = [
   {
@@ -36,6 +37,7 @@ export default function GrowTechThankYou() {
   const purchasedSlug = searchParams.get("product");
   const hasGuide = ["quickstart-guide", "scout-guide-bundle", "soil-health-meter", "grow-tent"].includes(purchasedSlug || "");
   const isDigitalOnly = purchasedSlug === "quickstart-guide";
+  const includesFullKit = purchasedSlug === "scout-guide-bundle";
 
   useEffect(() => {
     trackEvent("growtech_thank_you_view", {
@@ -110,7 +112,7 @@ export default function GrowTechThankYou() {
               )}
             </div>
           </div>
-          {hasGuide && !isError ? <div className="mt-6 rounded-xl border border-emerald-300/25 bg-emerald-950/40 p-6"><h2 className="text-xl font-bold">Open your Equipment Quickstart</h2><p className="mt-2 text-sm leading-6 text-white/70">Your purchase account provides access to the 12-page guide, printable worksheets and CSV log.</p><div className="mt-4 flex flex-wrap gap-4"><a href={QUICKSTART_CONTENT_URL} className="rounded-lg bg-emerald-300 px-5 py-3 font-bold text-emerald-950">Start Here</a><a href={QUICKSTART_FILES_URL} className="rounded-lg border border-emerald-300/40 px-5 py-3 font-bold text-emerald-300">Open guide files</a></div></div> : null}
+          {hasGuide && !isError ? <div className="mt-6 rounded-xl border border-emerald-300/25 bg-emerald-950/40 p-6"><h2 className="text-xl font-bold">{includesFullKit ? "Open your complete digital kit" : "Open your Equipment Quickstart"}</h2><p className="mt-2 text-sm leading-6 text-white/70">{includesFullKit ? "Sign in with your purchase email to access all six digital files, including the playbook and Equipment Quickstart." : "Your purchase account provides access to the 12-page guide, printable worksheets and CSV log."}</p><div className="mt-4 flex flex-wrap gap-4"><a href={includesFullKit ? PLAYBOOK_CONTENT_URL : QUICKSTART_CONTENT_URL} className="rounded-lg bg-emerald-300 px-5 py-3 font-bold text-emerald-950">Start Here</a><a href={includesFullKit ? PLAYBOOK_FILES_URL : QUICKSTART_FILES_URL} className="rounded-lg border border-emerald-300/40 px-5 py-3 font-bold text-emerald-300">Open guide files</a></div></div> : null}
         </section>
 
         {!isDigitalOnly && isSuccess ? <section className="mx-auto mt-16 max-w-6xl">

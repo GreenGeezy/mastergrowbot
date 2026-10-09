@@ -200,7 +200,7 @@ export default function FeatureSection() {
             <em>A closer look.</em>
           </h2>
           <p>
-            Get closer plant photos with the APEXEL 10–20X macro lens and LED light, plus MasterGrowbot’s equipment guide, worksheets and observation log.
+            Get closer plant photos with the APEXEL 10–20X macro lens and LED light, plus the complete six-file MasterGrowbot digital kit.
           </p>
           <Link
             className="premium-button"
