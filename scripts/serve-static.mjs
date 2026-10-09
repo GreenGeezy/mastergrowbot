@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 const config = JSON.parse(await readFile('vercel.json', 'utf8'));
 const privateRoutes = /^\/(grow-tech\/(checkout\/[^/]+|thank-you)|playbooks\/(checkout|thank-you)|contact|privacy-policy|terms-of-service|auth\/.*|checkout-diagnostics|whop-embed-test|ai-strategy\/intake)$/;
-const types = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json', '.xml': 'application/xml', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.pdf': 'application/pdf' };
+const types = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json', '.xml': 'application/xml', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt' };
 createServer(async (req, res) => {
   const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
   const redirect = config.redirects.find(r => r.source === pathname);
