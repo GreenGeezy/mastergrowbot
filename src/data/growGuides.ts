@@ -6674,7 +6674,7 @@ This guide compares the best camera types for cannabis growers, explains what to
         heading: "Direct Answer: Best AI Plant Camera for Cannabis",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">For most cannabis growers, the best AI plant camera setup is a phone-mounted close-up lens paired with a plant diagnosis and grow journal app. The lens captures clearer plant photos, while the app helps organize photos, symptoms, notes, and treatment decisions.</p>
 <p class="text-base text-white/65 leading-relaxed font-sans mb-3">The best starting point in the MasterGrowbot system is the <a href="/grow-tech" class="text-landing-green hover:underline">APEXEL 10–20X macro lens</a>. It is designed for close-up cannabis plant inspection photos, pest documentation, trichome checks, leaf symptoms, and grow journal records.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Record temperature, humidity and root-zone readings manually with appropriately verified equipment. MasterGrowbot’s monitor, soil-meter and multi-tool offers are outside this lens launch while sourcing is verified.</p>`,
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Record temperature, humidity and root-zone readings manually with appropriately verified equipment. MasterGrowbot’s environment monitor and multi-tool kit remain paused. The $99 soil meter + Quickstart is available separately on GrowTech for US and Canadian delivery; readings are recorded manually with no automatic app syncing.</p>`,
       },
       {
         heading: "Why Cannabis Growers Need Better Plant Photos",
