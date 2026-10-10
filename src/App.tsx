@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { publicPageLoaders, type InitialPage } from '@/lib/publicRoutes';
+import RouteLoadBoundary from './components/RouteLoadBoundary';
 import { captureGrowTechAttribution } from "@/lib/growTechAttribution";
 
 function CampaignCapture() {
@@ -41,6 +42,7 @@ const LoadingSpinner = () => (
 
 const LazyLensKit = lazy(publicPageLoaders.LensKit);
 const App = ({ initialPage }: { initialPage?: InitialPage }) => {
+  const location = useLocation();
   const Index = initialPage?.key === 'Index' ? initialPage.component : LazyIndex;
   const GrowGuidesHub = initialPage?.key === 'GrowGuidesHub' ? initialPage.component : LazyGrowGuidesHub;
   const GrowGuideArticle = initialPage?.key === 'GrowGuideArticle' ? initialPage.component : LazyGrowGuideArticle;
@@ -55,6 +57,7 @@ const App = ({ initialPage }: { initialPage?: InitialPage }) => {
       <Sonner />
       <>
         <CampaignCapture />
+        <RouteLoadBoundary key={location.pathname} pathname={location.pathname}>
         <Routes>
           <Route path="/" element={<Suspense fallback={<LoadingSpinner />}><Index /></Suspense>} />
           <Route path="/grow-tech/apexel-macro-lens-kit" element={<Suspense fallback={<LoadingSpinner />}><LensKit /></Suspense>} />
@@ -179,6 +182,7 @@ const App = ({ initialPage }: { initialPage?: InitialPage }) => {
           <Route path="/playbook/thank-you" element={<Navigate to="/playbooks/thank-you" replace />} />
           <Route path="*" element={<main className="min-h-screen bg-black p-12 text-white"><h1>Page not found</h1><a href="/">Return to MasterGrowbot</a></main>} />
         </Routes>
+        </RouteLoadBoundary>
       </>
       <Analytics />
     </TooltipProvider>

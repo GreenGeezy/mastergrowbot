@@ -6668,7 +6668,7 @@ This guide compares the best camera types for cannabis growers, explains what to
     sections: [
       {
         heading: "Explore the current phone lens package",
-        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light, digital guide and templates for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
+        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light and the complete $29 digital Playbook kit for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
       },
       {
         heading: "Direct Answer: Best AI Plant Camera for Cannabis",
@@ -6706,7 +6706,7 @@ The fourth requirement is context. A plant photo becomes more valuable when it i
       },
       {
         heading: "The GrowTech Lens + Guide Package",
-        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The $119 package combines an APEXEL 10–20X ZoomMacro lens and LED light with MasterGrowbot’s 12-page equipment guide, two worksheets and observation log. The hardware is made by APEXEL; the included workflow materials are from MasterGrowbot. Inspect compatibility, the guide sample and ordering availability on the <a href="/grow-tech" class="text-landing-green hover:underline">GrowTech page</a>. Photos and notes are saved or uploaded manually. Higher-magnification inspection may require a different tool.</p>`,
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The $119 USD package combines an APEXEL 10–20X ZoomMacro lens and LED light with the complete $29 MasterGrowbot digital Playbook kit: the 32-page Playbook, 8 copy-ready prompts, 8-page fillable workbook, 12-page Equipment Quickstart, two worksheets and CSV observation log. The hardware is made by APEXEL; the included workflow materials are from MasterGrowbot. Inspect phone compatibility, the guide sample and delivery terms on the <a href="/grow-tech/apexel-macro-lens-kit" class="text-landing-green hover:underline">$119 lens bundle page</a>. The app subscription is separate. Photos and notes are saved or uploaded manually. Higher-magnification inspection may require a different tool.</p>`,
       },
       {
         heading: "When a Grow-Room Camera Makes Sense",
@@ -7305,7 +7305,7 @@ This guide shows cannabis growers how to take better diagnosis photos with a pho
     sections: [
       {
         heading: "Explore the current phone lens package",
-        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light, digital guide and templates for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
+        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light and the complete $29 digital Playbook kit for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
       },
       {
         heading: "Direct Answer: Best Way to Photograph Cannabis Plant Problems",
@@ -8524,7 +8524,7 @@ This guide compares the most practical cannabis trichome camera and lens options
     sections: [
       {
         heading: "Explore the current phone lens package",
-        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light, digital guide and templates for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
+        bodyHtml: `<p>For a phone macro accessory with an observation kit, see the <a href="/grow-tech/apexel-macro-lens-kit">APEXEL 10–20X lens and MasterGrowbot guide package</a>. It includes a lens, LED light and the complete $29 digital Playbook kit for $119 USD. Check phone compatibility and optical limits first: a 10–20X macro lens does not promise microscope-level detail, diagnosis or harvest decisions. Photos and notes are uploaded manually; there is no automatic sensor syncing. The app subscription is separate.</p>`,
       },
       {
         heading: "Direct Answer: What Is the Best Camera for Cannabis Trichomes?",
