@@ -38,6 +38,13 @@
           article_slug: window.location.pathname.indexOf('/grow-guides/') === 0 ? window.location.pathname.split('/')[2] : undefined};
         var linkHost;
         try { linkHost = new URL(href, window.location.origin).hostname; } catch (_) { return; }
+        var heroVersion = el.getAttribute('data-hero-version');
+        if (heroVersion) {
+          params.hero_version = heroVersion;
+          params.placement = 'homepage_hero';
+          params.platform = linkHost === 'apps.apple.com' ? 'ios' : 'android';
+          params.device_category = window.innerWidth < 600 ? 'mobile' : window.innerWidth < 900 ? 'tablet' : 'desktop';
+        }
         if (linkHost === 'apps.apple.com') {
           gtag('event', 'ios_app_click', params);
         } else if (linkHost === 'play.google.com') {
