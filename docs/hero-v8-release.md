@@ -1,6 +1,6 @@
 # MasterGrowbot premium grow lab hero
 
-The v9 homepage hero presents MasterGrowbot as a premium cannabis grow intelligence app. The headline and the existing v7 video, narration, and captions are preserved. Both platform buttons receive the same visual treatment and retain their existing destinations and campaign parameters.
+The v10 homepage hero presents MasterGrowbot as a premium cannabis grow intelligence app. The headline and the existing v7 video, narration, and captions are preserved. Both platform buttons receive the same visual treatment and retain their existing destinations and campaign parameters.
 
 The default preview is an explicitly illustrative, beginner-friendly report for **yellow lower leaves in a soil-grown plant**. It gives conditional watering and drainage checks, prompts a feed-label check, and encourages recording changes. It does not assert a diagnosis or invent an AI confidence score. Photo uses the existing AI-generated grower scene; Journal shows a supplied app screen. These are separate feature examples, not a claim that all three depict the same plant.
 
@@ -8,11 +8,13 @@ This editorial example was informed by [University of Maryland Extension's overw
 
 The report follows the supplied app screenshot’s white surface, prominent green action card, and rounded 2×2 summary tiles. Amber marks a symptom to check, with an explicit warning icon and label; green identifies the recommended action, not a claim that the plant is healthy. Findings and supporting details use dark neutral text. The example badge stays visible, and no severity, confidence, recovery result, or health score is invented. Text/background contrast is 6.07:1 for the amber notice, 6.10:1 for white action text, 11.65:1 for the finding, and 4.90:1 for supporting labels. Icons and explicit labels convey meaning alongside color.
 
-## Interactive photo demo
+## Automatic photo-to-plan story
 
-The default report remains visible immediately. “Try photo → AI tips” opens a camera-style scene using the existing `walkthrough-capture.webp` (166,646 bytes), loaded only when Photo is selected. “Take example photo” starts a 2.4-second illustrative analysis sequence and returns to the report. It requests no camera access and performs no live analysis. Manual step changes, opening the original video, or unmounting cancel the pending transition. Keyboard focus moves to Report on completion; reduced motion disables the progress animation.
+With normal motion preferences, the preview plays once when at least 25% of it is visible: Photo (3.2s), illustrative AI analysis (2.4s), Report (5.2s), Recovery plan (5.2s), and Journal (4.5s). It finishes on the report. The plan gives conditional soil/watering, feed-label, and follow-up checks; it does not promise recovery or invent a result. Pause freezes the current state; Replay starts the short story again. Manual workflow selections and opening the existing video stop the story. Timers stop offscreen, in hidden tabs, and on unmount. Reduced-motion users receive the static report and can explore manually.
 
-`hero_photo_demo_capture` and `hero_photo_demo_complete` distinguish starting and completing the sequence. Hero events carry `hero_version=grow_lab_v9` to separate this interaction from v8. Completion is an interaction metric, not an installation or conversion. The existing video, headline, download URLs, and Pro trial terms remain unchanged.
+The original interactive camera example still works: Take example photo starts a 2.4-second illustrative analysis and returns to Report. It requests no camera access and performs no live analysis. Keyboard focus moves to Report only on completion of this user-started example; automatic transitions never move focus and do not announce slide changes through the live region.
+
+The existing grower scene is reused, with no new image generation. Story events include `hero_story_replay` and `hero_story_complete`; manual capture events stay separate. All hero events use `hero_version=grow_lab_v10`. These interactions are not installs or paid conversions. Headline, platform destinations, qualified Pro trial terms, and the original narrated video remain unchanged.
 
 ## Preview and verification
 
@@ -29,7 +31,7 @@ Performance conditions: production build served by Vite preview, 390Ã—844 mob
 
 ## Analytics and conversion review
 
-The existing delegated click handler in `index.html` remains the single source of store-button click events. It emits `ios_app_click` or `android_app_click` and now adds `hero_version=grow_lab_v9`, `placement=homepage_hero`, `platform`, and `device_category` for hero links. Existing `location`, `cta_location`, campaign URLs, and page-path fields are retained. The React button component does not emit a second click event.
+The existing delegated click handler in `index.html` remains the single source of store-button click events. It emits `ios_app_click` or `android_app_click` and now adds `hero_version=grow_lab_v10`, `placement=homepage_hero`, `platform`, and `device_category` for hero links. Existing `location`, `cta_location`, campaign URLs, and page-path fields are retained. The React button component does not emit a second click event.
 
 `hero_exposure` fires once when the hero enters the viewport on each homepage mount. Device categories are mobile below 600px, tablet below 900px, and desktop otherwise. Preview-step events carry the same hero version. Video events preserve `creative=hero_v7` to identify the unchanged media and separately include the new hero version. QA opt-out suppresses all these events.
 
@@ -40,7 +42,7 @@ Before production release, export the last **14 complete days** of homepage traf
 - Review store-reported downloads and attributed trial/paid conversions only if the store or subscription reporting supports the same campaign/cohort. Website clicks alone are not installations or subscriptions.
 - Compare source mix and mobile/desktop mix before interpreting changes. This rollout is a before/after comparison, not a causal A/B experiment or a guaranteed conversion lift.
 
-No production analytics export or deployment was performed in this implementation. The tested local preview is ready for review. Production release and the post-release comparison remain future steps.
+No production analytics export was performed. The user authorized publication after local checks. The post-release conversion comparison remains a future step.
 
 ## ImageGen assets and exact prompts
 

@@ -75,7 +75,7 @@ function trackingEntries(page, name) {
         await page.keyboard.press('Enter');
         let events = await trackingEntries(page, `${platform}_app_click`);
         assert.equal(events.length, 1, 'One click event per keyboard activation');
-        assert.equal(events[0].hero_version, 'grow_lab_v9');
+        assert.equal(events[0].hero_version, 'grow_lab_v10');
         assert.equal(events[0].platform, platform);
         assert.equal(events[0].placement, 'homepage_hero');
         await link.locator('svg').first().click();
@@ -92,7 +92,7 @@ function trackingEntries(page, name) {
           await page.waitForFunction(() => { const image = document.querySelector('.hero-photo-experience>img, .hero-demo-screen img'); return image?.complete && image.naturalWidth > 0; });
         }
       }
-      await hero.getByRole('button', { name: /Try photo/ }).click();
+      await hero.getByRole('button', { name: 'Photo', exact: true }).click();
       const capture = hero.getByRole('button', { name: /Take example photo/ });
       assert((await capture.boundingBox()).height >= 44);
       await capture.focus();
@@ -102,6 +102,11 @@ function trackingEntries(page, name) {
       assert.equal(await hero.getByRole('button', { name: 'Report', exact: true }).getAttribute('aria-pressed'), 'true');
       assert.equal(await trackingEntries(page, 'hero_photo_demo_capture').then(events => events.length), 1);
       assert.equal(await trackingEntries(page, 'hero_photo_demo_complete').then(events => events.length), 1);
+      await hero.getByRole('button', { name: 'Explore recovery steps', exact: true }).click();
+      await hero.locator('.hero-recovery-plan').waitFor();
+      assert(await hero.locator('.hero-recovery-plan').evaluate(el => el.scrollHeight <= el.clientHeight), `Recovery plan fits at ${width}`);
+      if ([390,1440].includes(width)) await hero.screenshot({ path: path.join(output, `hero-plan-${width}.png`) });
+      await hero.getByRole('button', { name: 'View health report', exact: true }).click();
       if ([390,1440].includes(width)) {
         await hero.getByRole('button', { name: 'Photo', exact: true }).click();
         await hero.screenshot({ path: path.join(output, `hero-photo-${width}.png`) });
@@ -158,6 +163,22 @@ function trackingEntries(page, name) {
     assert(await failed.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await failed.screenshot({ path: path.join(output, 'hero-image-fallback.png'), fullPage: false });
     results.push({ failedImages: 'Readable native report, gradient backdrop and photo fallback', qaSuppression: true });
+
+    const story = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'no-preference' });
+    await story.goto(base + '/?mgb_analytics=on');
+    await story.getByRole('button', { name: 'Pause preview', exact: true }).waitFor();
+    await story.getByRole('button', { name: 'Pause preview', exact: true }).click();
+    await story.waitForTimeout(3500);
+    assert.equal(await story.getByRole('button', { name: 'Photo', exact: true }).getAttribute('aria-pressed'), 'true', 'Pause stops automatic transitions');
+    await story.getByRole('button', { name: 'Replay preview', exact: true }).click();
+    await story.getByRole('status').waitFor();
+    await story.locator('.hero-example-report').waitFor();
+    await story.locator('.hero-recovery-plan').waitFor();
+    await story.waitForFunction(() => document.querySelector('.hero-demo-steps button:last-child')?.getAttribute('aria-pressed') === 'true');
+    await story.getByRole('button', { name: 'Replay preview', exact: true }).waitFor();
+    assert.equal(await story.getByRole('button', { name: 'Report', exact: true }).getAttribute('aria-pressed'), 'true', 'Story ends on the benefit, without looping');
+    assert.equal(await trackingEntries(story, 'hero_story_complete').then(events => events.length), 1);
+    await story.close();
 
     const motion = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'no-preference' });
     await motion.goto(base + '/?mgb_analytics=off');
