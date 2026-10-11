@@ -17,6 +17,7 @@ export default function HeroSection() {
         <h1 id="hero-title">Something look off?<br />Get a <em>second set of eyes.</em></h1>
         <p className="premium-lead">Take a plant photo. Get an AI plant health report with practical next steps, then track what changes in your grow journal.</p>
         <AppActions trial />
+        <figure className="hero-customer-quote"><blockquote>“As a first-time grower I was totally lost. MasterGrowbot walked me through everything.”</blockquote><figcaption>Sarah K. · MasterGrowbot customer</figcaption><a href="#customer-experiences">Read customer experiences <ArrowDown size={14} aria-hidden="true" /></a></figure>
         <p className="premium-fine">Free download. Photo analysis and journal tools require Pro. Eligible new Pro subscribers can try 3 days free; subscriptions renew unless canceled. Check your store for terms.</p>
         <div className="premium-hero-benefits"><span><Check size={15} /> Photo analysis</span><span><Check size={15} /> Grow journal</span><span><Check size={15} /> Strain intelligence</span></div>
         <a href="#grow-walkthrough" className="premium-text-link">See the photo-to-journal workflow <ArrowDown size={16} /></a>
