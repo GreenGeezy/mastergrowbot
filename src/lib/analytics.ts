@@ -15,6 +15,7 @@ declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
     dataLayer?: unknown[];
+    mgbAnalyticsSuppressed?: boolean;
   }
 }
 
@@ -195,7 +196,7 @@ export function aiStrategyEcommercePayload(
 }
 
 export function trackEvent(eventName: string, params: AnalyticsParams = {}) {
-  if (typeof window === "undefined") {
+  if (typeof window === "undefined" || window.mgbAnalyticsSuppressed) {
     return;
   }
 

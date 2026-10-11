@@ -4,8 +4,18 @@
     <!-- Google tag (gtag.js) -->
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      if (["mastergrowbot.com", "www.mastergrowbot.com"].includes(window.location.hostname)) {
+      // Explicit, tab-scoped QA opt-out. Ordinary visitors keep normal tracking.
+      var analyticsChoice = new URLSearchParams(window.location.search).get('mgb_analytics');
+      var analyticsSuppressed = analyticsChoice === 'off';
+      try {
+        if (analyticsChoice === 'off') sessionStorage.setItem('mgb_analytics_off', '1');
+        if (analyticsChoice === 'on') sessionStorage.removeItem('mgb_analytics_off');
+        analyticsSuppressed = sessionStorage.getItem('mgb_analytics_off') === '1';
+      } catch (_) { /* The explicit URL option still works when storage is unavailable. */ }
+      window.mgbAnalyticsSuppressed = analyticsSuppressed;
+      window['ga-disable-G-NT1046S3EN'] = analyticsSuppressed;
+      function gtag(){if (!window.mgbAnalyticsSuppressed) dataLayer.push(arguments);}
+      if (!analyticsSuppressed && ["mastergrowbot.com", "www.mastergrowbot.com"].includes(window.location.hostname)) {
         var analyticsScript = document.createElement('script');
         analyticsScript.async = true;
         analyticsScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-NT1046S3EN';
@@ -119,7 +129,7 @@
        object-src 'none';
        upgrade-insecure-requests;
        block-all-mixed-content" />
-    <script>if (["mastergrowbot.com", "www.mastergrowbot.com"].includes(window.location.hostname)) { !function(w,d,s,u,n,a,b){if(w[n])return;a=w[n]={q:[],t:+new Date,s:[],o:u,track:function(){a.q.push([+new Date].concat([].slice.call(arguments)))},setScope:function(){a.s=[].slice.call(arguments).filter(function(x){return typeof x==="string"});a.q.push([+new Date,"setScope"].concat(a.s))},scope:function(){var c=[].slice.call(arguments);return{track:function(){a.q.push([+new Date].concat([].slice.call(arguments)).concat([{__scope:c}]))}}}};b=d.createElement(s);b.async=1;b.src=u+"/s.js";d.getElementsByTagName(s)[0].parentNode.insertBefore(b,d.getElementsByTagName(s)[0])}(window,document,"script","https://t.whop.tw","whop");whop.setScope("biz_8m5fp7bUlZOdVX");whop.track("page"); }</script>
+    <script>if (!analyticsSuppressed && ["mastergrowbot.com", "www.mastergrowbot.com"].includes(window.location.hostname)) { !function(w,d,s,u,n,a,b){if(w[n])return;a=w[n]={q:[],t:+new Date,s:[],o:u,track:function(){a.q.push([+new Date].concat([].slice.call(arguments)))},setScope:function(){a.s=[].slice.call(arguments).filter(function(x){return typeof x==="string"});a.q.push([+new Date,"setScope"].concat(a.s))},scope:function(){var c=[].slice.call(arguments);return{track:function(){a.q.push([+new Date].concat([].slice.call(arguments)).concat([{__scope:c}]))}}}};b=d.createElement(s);b.async=1;b.src=u+"/s.js";d.getElementsByTagName(s)[0].parentNode.insertBefore(b,d.getElementsByTagName(s)[0])}(window,document,"script","https://t.whop.tw","whop");whop.setScope("biz_8m5fp7bUlZOdVX");whop.track("page"); }</script>
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />

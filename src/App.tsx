@@ -184,7 +184,7 @@ const App = ({ initialPage }: { initialPage?: InitialPage }) => {
         </Routes>
         </RouteLoadBoundary>
       </>
-      <Analytics />
+      <Analytics beforeSend={(event) => window.mgbAnalyticsSuppressed ? null : event} />
     </TooltipProvider>
   );
 };
