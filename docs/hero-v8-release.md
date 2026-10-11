@@ -1,12 +1,18 @@
 # MasterGrowbot premium grow lab hero
 
-The v8 homepage hero presents MasterGrowbot as a premium cannabis grow intelligence app. The headline and the existing v7 video, narration, and captions are preserved. Both platform buttons receive the same visual treatment and retain their existing destinations and campaign parameters.
+The v9 homepage hero presents MasterGrowbot as a premium cannabis grow intelligence app. The headline and the existing v7 video, narration, and captions are preserved. Both platform buttons receive the same visual treatment and retain their existing destinations and campaign parameters.
 
-The default preview is an explicitly illustrative, beginner-friendly report for **yellow lower leaves in a soil-grown plant**. It gives conditional watering and drainage checks, prompts a feed-label check, and encourages recording changes. It does not assert a diagnosis or invent an AI confidence score. Photo and Journal show supplied app screens. These are separate feature examples, not a claim that all three depict the same plant.
+The default preview is an explicitly illustrative, beginner-friendly report for **yellow lower leaves in a soil-grown plant**. It gives conditional watering and drainage checks, prompts a feed-label check, and encourages recording changes. It does not assert a diagnosis or invent an AI confidence score. Photo uses the existing AI-generated grower scene; Journal shows a supplied app screen. These are separate feature examples, not a claim that all three depict the same plant.
 
 This editorial example was informed by [University of Maryland Extension's overwatering guidance](https://www.extension.umd.edu/resource/overwatered-indoor-plants) and [Utah State University's hemp nutrient-deficiency guide](https://extension.usu.edu/planthealth/ipm/notes_ag/hemp-nutrient-deficiencies). Yellow lower leaves can have several causes, so the preview offers useful first checks without equating a symptom with a confirmed deficiency.
 
-The report follows the supplied app screenshot�s white surface, prominent green action card, and rounded 2�2 summary tiles. Amber marks a symptom to check, with an explicit warning icon and label; green identifies the recommended action, not a claim that the plant is healthy. Findings and supporting details use dark neutral text. The example badge stays visible, and no severity, confidence, recovery result, or health score is invented. Text/background contrast is 6.07:1 for the amber notice, 6.10:1 for white action text, 11.65:1 for the finding, and 4.90:1 for supporting labels. Icons and explicit labels convey meaning alongside color.
+The report follows the supplied app screenshot’s white surface, prominent green action card, and rounded 2×2 summary tiles. Amber marks a symptom to check, with an explicit warning icon and label; green identifies the recommended action, not a claim that the plant is healthy. Findings and supporting details use dark neutral text. The example badge stays visible, and no severity, confidence, recovery result, or health score is invented. Text/background contrast is 6.07:1 for the amber notice, 6.10:1 for white action text, 11.65:1 for the finding, and 4.90:1 for supporting labels. Icons and explicit labels convey meaning alongside color.
+
+## Interactive photo demo
+
+The default report remains visible immediately. “Try photo → AI tips” opens a camera-style scene using the existing `walkthrough-capture.webp` (166,646 bytes), loaded only when Photo is selected. “Take example photo” starts a 2.4-second illustrative analysis sequence and returns to the report. It requests no camera access and performs no live analysis. Manual step changes, opening the original video, or unmounting cancel the pending transition. Keyboard focus moves to Report on completion; reduced motion disables the progress animation.
+
+`hero_photo_demo_capture` and `hero_photo_demo_complete` distinguish starting and completing the sequence. Hero events carry `hero_version=grow_lab_v9` to separate this interaction from v8. Completion is an interaction metric, not an installation or conversion. The existing video, headline, download URLs, and Pro trial terms remain unchanged.
 
 ## Preview and verification
 
@@ -19,11 +25,11 @@ The report follows the supplied app screenshot�s white surface, prominent green 
 
 The browser check covers 320, 360, 390, 430, 768, 899, 900, 1024, 1280, and 1440px widths. It verifies the headline, button destinations and size parity, one click event per activation including icon clicks, one exposure per page view, complete report visibility, card placement, keyboard activation, focus outlines, reduced motion, image failure, manual preview states, video/captions, video milestone deduplication, and the QA analytics opt-out. Store navigation is intercepted locally for these checks; no store clicks are sent to production analytics.
 
-Performance conditions: production build served by Vite preview, 390×844 mobile viewport, device scale factor 2, CPU slowed 4×, 1.64 Mbps download / 0.77 Mbps upload with 150ms latency, disabled cache, fresh browser context for each run. Final local runs measured LCP 2,732 / 2,884 / 2,140ms (median 2,732ms) and CLS 0.0005 / 0.0005 / 0.0004. CLS and the image-payload targets pass; the 2.5-second LCP target is not consistently met under these throttled conditions. Responsive hero artwork is preloaded from the homepage head and has high fetch priority. Local synthetic results are not field Core Web Vitals. See `output/playwright/hero-v8/performance.json` for the measured runs and median.
+Performance conditions: production build served by Vite preview, 390Ã—844 mobile viewport, device scale factor 2, CPU slowed 4Ã—, 1.64 Mbps download / 0.77 Mbps upload with 150ms latency, disabled cache, fresh browser context for each run. The previous v8 local runs measured LCP 2,732 / 2,884 / 2,140ms (median 2,732ms) and CLS 0.0005 / 0.0005 / 0.0004. CLS and the image-payload targets pass; the 2.5-second LCP target is not consistently met under these throttled conditions. Responsive hero artwork is preloaded from the homepage head and has high fetch priority. Local synthetic results are not field Core Web Vitals. See `output/playwright/hero-v8/performance.json` for the measured runs and median.
 
 ## Analytics and conversion review
 
-The existing delegated click handler in `index.html` remains the single source of store-button click events. It emits `ios_app_click` or `android_app_click` and now adds `hero_version=grow_lab_v8`, `placement=homepage_hero`, `platform`, and `device_category` for hero links. Existing `location`, `cta_location`, campaign URLs, and page-path fields are retained. The React button component does not emit a second click event.
+The existing delegated click handler in `index.html` remains the single source of store-button click events. It emits `ios_app_click` or `android_app_click` and now adds `hero_version=grow_lab_v9`, `placement=homepage_hero`, `platform`, and `device_category` for hero links. Existing `location`, `cta_location`, campaign URLs, and page-path fields are retained. The React button component does not emit a second click event.
 
 `hero_exposure` fires once when the hero enters the viewport on each homepage mount. Device categories are mobile below 600px, tablet below 900px, and desktop otherwise. Preview-step events carry the same hero version. Video events preserve `creative=hero_v7` to identify the unchanged media and separately include the new hero version. QA opt-out suppresses all these events.
 
@@ -42,9 +48,9 @@ Generated with the **built-in ImageGen tool**, then resized and encoded to WebP 
 
 Final project assets (relative to this repository):
 
-- `public/images/premium/hero-grow-lab-v8.webp` — 1200×800, 85,098 bytes.
-- `public/images/premium/hero-grow-lab-mobile-v8.webp` — 660×880 crop, 22,036 bytes.
-- `public/images/premium/hero-leaf-accent-v8.webp` — 480×320 with transparency, 42,216 bytes.
+- `public/images/premium/hero-grow-lab-v8.webp` â€” 1200Ã—800, 85,098 bytes.
+- `public/images/premium/hero-grow-lab-mobile-v8.webp` â€” 660Ã—880 crop, 22,036 bytes.
+- `public/images/premium/hero-leaf-accent-v8.webp` â€” 480Ã—320 with transparency, 42,216 bytes.
 
 Backdrop prompt:
 

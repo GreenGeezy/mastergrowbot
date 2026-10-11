@@ -1,11 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Camera, FileText, NotebookPen, Play, ArrowLeft, ScanLine, Sparkles } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { HERO_DEMO_SECONDS, HERO_VERSION } from "@/lib/heroDemoMetadata";
 import HeroExampleReport from "./HeroExampleReport";
 
 const steps = [
-  { label: "Photo", icon: Camera, title: "Start with your plant", detail: "Capture the symptoms you want to understand.", image: "/images/premium/ios-photo-entry-v3.png", alt: "MasterGrowbot app photo entry screen with Take Photo and Analyze Image actions", width: 1170, height: 2250 },
+  { label: "Photo", icon: Camera, title: "Start with your plant", detail: "Try an example photo. See how a plant concern becomes a practical next step.", image: "/images/premium/walkthrough-capture.webp", alt: "Illustrative home grower photographing a cannabis plant inside a grow tent", width: 1536, height: 1024 },
   { label: "Report", icon: FileText, title: "Know what to check next", detail: "Yellow lower leaves? Start with simple watering and feeding checks.", image: "", alt: "", width: 945, height: 2048 },
   { label: "Journal", icon: NotebookPen, title: "See what changes", detail: "Keep photos and notes together as your grow progresses.", image: "/images/premium/real-report-journal.webp", alt: "Supplied MasterGrowbot app report showing journal actions", width: 945, height: 2048 },
 ];
@@ -14,8 +14,24 @@ export default function HeroProductDemo() {
   const [active, setActive] = useState(1);
   const [videoOpen, setVideoOpen] = useState(false);
   const [failedScreen, setFailedScreen] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const reportButton = useRef<HTMLButtonElement>(null);
   const milestones = useRef(new Set<number>());
   const step = steps[active];
+  useEffect(() => {
+    if (!analyzing) return;
+    const timer = window.setTimeout(() => {
+      setAnalyzing(false);
+      setActive(1);
+      reportButton.current?.focus({ preventScroll: true });
+      trackEvent("hero_photo_demo_complete", { placement: "homepage_hero", hero_version: HERO_VERSION });
+    }, 2400);
+    return () => window.clearTimeout(timer);
+  }, [analyzing]);
+  function captureExample() {
+    setAnalyzing(true);
+    trackEvent("hero_photo_demo_capture", { placement: "homepage_hero", hero_version: HERO_VERSION });
+  }
   function recordProgress(video: HTMLVideoElement) {
     if (!Number.isFinite(video.duration) || !video.duration) return;
     for (const milestone of [25, 50, 75, 100]) {
@@ -26,12 +42,14 @@ export default function HeroProductDemo() {
     }
   }
   function select(index: number) {
+    setAnalyzing(false);
     setActive(index);
     setFailedScreen(false);
     setVideoOpen(false);
     trackEvent("hero_demo_step", { step: steps[index].label, placement: "homepage_hero", hero_version: HERO_VERSION });
   }
   function toggleVideo() {
+    setAnalyzing(false);
     if (!videoOpen) {
       milestones.current.clear();
       trackEvent("hero_video_open", { placement: "homepage_hero", creative: "hero_v7", hero_version: HERO_VERSION });
@@ -54,6 +72,13 @@ export default function HeroProductDemo() {
           <track kind="captions" src="/videos/mastergrowbot-hero-narrated-v7.vtt" srcLang="en" label="English" default />
           Your browser does not support video. Explore the app preview below.
         </video>
+      </div> : active === 0 ? <div className={`hero-photo-experience${analyzing ? " is-analyzing" : ""}`}>
+        {failedScreen ? <div className="hero-screen-fallback"><Camera size={32} aria-hidden="true" /><strong>Start with your plant</strong><p>Photograph the symptoms you want to understand.</p></div> : <img src={step.image} alt={step.alt} width={step.width} height={step.height} onError={() => setFailedScreen(true)} />}
+        <div className="hero-camera-frame" aria-hidden="true"><span /><span /><span /><span /></div>
+        <span className="hero-camera-label"><Camera size={14} aria-hidden="true" /> {analyzing ? "EXAMPLE PHOTO CAPTURED" : "YOUR PLANT → YOUR INSIGHTS"}</span>
+        <div className="hero-camera-action">
+          {analyzing ? <div className="hero-analysis-status" role="status"><ScanLine size={23} aria-hidden="true" /><strong>From photo to next steps</strong><p>Previewing AI insights and practical grow tips…</p><div className="hero-analysis-progress" aria-hidden="true"><span /></div><small>Illustrative sequence · No live analysis</small></div> : <><strong>A clearer grow starts with a photo.</strong><p>Photograph what looks different. MasterGrowbot helps you understand what to check next.</p><button type="button" onClick={captureExample}><Camera size={18} aria-hidden="true" /> Take example photo <ArrowLeft className="hero-camera-arrow" size={16} aria-hidden="true" /></button><small>Interactive example · No camera access needed</small></>}
+        </div>
       </div> : <div className="hero-demo-stage">
         <picture className="hero-lab-art" aria-hidden="true">
           <source media="(max-width: 599px)" srcSet="/images/premium/hero-grow-lab-mobile-v8.webp" />
@@ -73,8 +98,8 @@ export default function HeroProductDemo() {
         <img className="hero-botanical-accent" src="/images/premium/hero-leaf-accent-v8.webp" alt="" aria-hidden="true" width="480" height="480" onError={event => { event.currentTarget.style.visibility = "hidden"; }} />
       </div>}
     </div>
-    <div className="hero-demo-note" aria-live="polite" aria-atomic="true"><span><Sparkles size={14} aria-hidden="true" /> 0{active + 1} / 03 · {step.label.toUpperCase()}</span><strong>{step.title}</strong><p>{step.detail}</p></div>
-    <div className="hero-demo-steps" role="group" aria-label="Explore the app workflow">{steps.map(({ label, icon: Icon }, index) => <button key={label} type="button" aria-pressed={active === index && !videoOpen} aria-controls="hero-demo-panel" onClick={() => select(index)}><Icon size={17} aria-hidden="true" /><span>{label}</span></button>)}</div>
-    <p className="hero-demo-disclosure">Illustrative report, not a diagnosis · Photo & Journal: supplied app screens · AI-generated botanical artwork.</p>
+    <div className="hero-demo-note" aria-live="polite" aria-atomic="true"><span><Sparkles size={14} aria-hidden="true" /> 0{active + 1} / 03 · {step.label.toUpperCase()}</span><strong>{step.title}</strong><p>{step.detail}</p>{active !== 0 && !videoOpen && <button className="hero-photo-start" type="button" onClick={() => select(0)}><Camera size={15} aria-hidden="true" /> Try photo → AI tips</button>}</div>
+    <div className="hero-demo-steps" role="group" aria-label="Explore the app workflow">{steps.map(({ label, icon: Icon }, index) => <button ref={index === 1 ? reportButton : undefined} key={label} type="button" aria-pressed={active === index && !videoOpen} aria-controls="hero-demo-panel" onClick={() => select(index)}><Icon size={17} aria-hidden="true" /><span>{label}</span></button>)}</div>
+    <p className="hero-demo-disclosure">Photo sequence & report are illustrative, not live analysis or a diagnosis · Journal: supplied app screen · AI-generated grower and botanical artwork.</p>
   </div>;
 }

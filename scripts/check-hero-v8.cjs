@@ -75,7 +75,7 @@ function trackingEntries(page, name) {
         await page.keyboard.press('Enter');
         let events = await trackingEntries(page, `${platform}_app_click`);
         assert.equal(events.length, 1, 'One click event per keyboard activation');
-        assert.equal(events[0].hero_version, 'grow_lab_v8');
+        assert.equal(events[0].hero_version, 'grow_lab_v9');
         assert.equal(events[0].platform, platform);
         assert.equal(events[0].placement, 'homepage_hero');
         await link.locator('svg').first().click();
@@ -89,8 +89,28 @@ function trackingEntries(page, name) {
         await page.keyboard.press('Enter');
         assert.equal(await tab.getAttribute('aria-pressed'), 'true');
         if (label !== 'Report') {
-          await page.waitForFunction(() => { const image = document.querySelector('.hero-demo-screen img'); return image?.complete && image.naturalWidth > 0; });
+          await page.waitForFunction(() => { const image = document.querySelector('.hero-photo-experience>img, .hero-demo-screen img'); return image?.complete && image.naturalWidth > 0; });
         }
+      }
+      await hero.getByRole('button', { name: /Try photo/ }).click();
+      const capture = hero.getByRole('button', { name: /Take example photo/ });
+      assert((await capture.boundingBox()).height >= 44);
+      await capture.focus();
+      await page.keyboard.press('Enter');
+      await hero.getByRole('status').waitFor();
+      await hero.locator('.hero-example-report').waitFor();
+      assert.equal(await hero.getByRole('button', { name: 'Report', exact: true }).getAttribute('aria-pressed'), 'true');
+      assert.equal(await trackingEntries(page, 'hero_photo_demo_capture').then(events => events.length), 1);
+      assert.equal(await trackingEntries(page, 'hero_photo_demo_complete').then(events => events.length), 1);
+      if ([390,1440].includes(width)) {
+        await hero.getByRole('button', { name: 'Photo', exact: true }).click();
+        await hero.screenshot({ path: path.join(output, `hero-photo-${width}.png`) });
+        await hero.getByRole('button', { name: /Take example photo/ }).click();
+        await hero.getByRole('button', { name: 'Journal', exact: true }).click();
+        await page.waitForTimeout(2600);
+        assert.equal(await hero.getByRole('button', { name: 'Journal', exact: true }).getAttribute('aria-pressed'), 'true', 'Changing steps cancels the pending example');
+        assert.equal(await trackingEntries(page, 'hero_photo_demo_complete').then(events => events.length), 1);
+        await hero.getByRole('button', { name: 'Report', exact: true }).click();
       }
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.mouse.move(0, 0);
@@ -127,7 +147,7 @@ function trackingEntries(page, name) {
 
     const failed = await browser.newPage({ viewport: { width: 390, height: 1000 } });
     await failed.route('**/images/premium/hero-*v8.webp', route => route.abort());
-    await failed.route('**/images/premium/ios-photo-entry-v3.png', route => route.abort());
+    await failed.route('**/images/premium/walkthrough-capture.webp', route => route.abort());
     await failed.goto(base + '/?mgb_analytics=off');
     await failed.locator('.hero-example-report').waitFor();
     await failed.getByRole('button', { name: 'Photo', exact: true }).click();
