@@ -63,7 +63,7 @@ test('shared shell contains one Whop Pixel bootstrap with narrowly scoped CSP ac
   // The production-host guard added on main may surround the unchanged bootstrap.
   expect(shell.split(snippet.slice('<script>'.length, -'</script>'.length))).toHaveLength(2);
   expect(shell.match(/https:\/\/t\.whop\.tw\/s\.js/g)).toBeNull();
-  expect(shell).toMatch(/script-src[^;]*https:\/\/t\.whop\.tw;/);
+  expect(shell).toMatch(/script-src[^;]*https:\/\/t\.whop\.tw(?=[\s;])/);
   expect(shell).toMatch(/connect-src[^;]*https:\/\/t\.whop\.tw[^;]*;/s);
 });
 

@@ -36,6 +36,13 @@ if (previous?.fingerprint === fingerprint) {
       for(const target of outgoing) if(!slugs.has(target)) issues.push({slug:g.slug,type:'missing-guide-link',target});
       return {slug:g.slug,title:g.metaTitle,modifiedDate:g.modifiedDate,outgoing};
     });
+    // Count distinct guide sources, excluding self-links and invalid targets.
+    // The guide index, navigation and non-guide pages are outside this source graph.
+    for (const page of pages) {
+      page.inboundSlugs = pages.filter(other => other.slug !== page.slug && other.outgoing.includes(page.slug)).map(other => other.slug);
+      page.inboundCount = page.inboundSlugs.length;
+      if (page.inboundCount === 0) issues.push({slug:page.slug,type:'no-inbound-guide-links'});
+    }
     const summary={guides:pages.length,issues:issues.length,issueCounts:Object.fromEntries([...new Set(issues.map(i=>i.type))].map(type=>[type,issues.filter(i=>i.type===type).length]))};
     await mkdir(state,{recursive:true});
     await writeFile(output,JSON.stringify({createdAt:new Date().toISOString(),fingerprint,summary,issues,pages,limits:'Source-only catalogue checks. Not a live crawl, ranking report, security audit, or proof of rendered indexability.'},null,2)+'\n');
