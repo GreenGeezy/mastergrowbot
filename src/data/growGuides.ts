@@ -7356,7 +7356,7 @@ Do not wipe away mildew, pests, residue, or leaf texture before taking the first
     relatedSlugs: [
       "best-ai-plant-cameras-cannabis-growers-2026",
       "best-ai-plant-diagnosis-apps-cannabis",
-      "ai-plant-scan-tools-cannabis",
+      "best-ai-cannabis-growing-apps-2026",
       "best-cannabis-grow-tech-home-growers",
       "cannabis-vpd-guide",
     ],
