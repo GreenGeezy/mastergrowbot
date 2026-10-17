@@ -47,6 +47,22 @@ test('client navigation preserves canonical and campaign labels without internal
   expect(stored.campaign.utm_campaign).toBe('real_source');
 });
 
+test('guide content has no trailing-slash internal links that 404', async ({ request }) => {
+  // Deployed static rewrites match exact paths without a trailing slash, so an
+  // internal link like href="/grow-guides/cannabis-ph-guide/" returns 404.
+  for (const route of [
+    '/grow-guides/cannabis-vpd-guide',
+    '/grow-guides/cannabis-nutrient-lockout',
+    '/grow-guides',
+  ]) {
+    const response = await request.get(route);
+    expect(response.status(), route).toBe(200);
+    const html = await response.text();
+    const hrefs = [...html.matchAll(/href="(\/[^"#?]*\/)"/g)].map(match => match[1]);
+    expect(hrefs, `${route} trailing-slash links: ${hrefs.join(', ')}`).toEqual([]);
+  }
+});
+
 test('primary AI app guide keeps mobile store CTAs and one attributed event per click', async ({ page }) => {
   const route = '/grow-guides/best-ai-cannabis-growing-apps-2026';
   const errors: string[] = [];
