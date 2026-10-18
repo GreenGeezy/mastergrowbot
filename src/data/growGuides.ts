@@ -6432,6 +6432,7 @@ This is also where pest and disease prevention matters. If scans keep pointing t
       },
     ],
     relatedSlugs: [
+      "growdoc-vs-mastergrowbot-ai",
       "cannabis-plant-identifier-apps-2026",
       "cannabis-grow-ai",
       "best-ai-cannabis-growing-apps-2026",
