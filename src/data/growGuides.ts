@@ -88,6 +88,76 @@ export const growGuides: GrowGuide[] = [
     "best-ai-cannabis-growing-apps-2026"
   ]
 },
+{
+  "slug": "growdoc-vs-mastergrowbot-ai",
+  "title": "GrowDoc vs MasterGrowbot AI: Cannabis Plant Diagnosis Apps Compared",
+  "h1": "GrowDoc vs MasterGrowbot AI: Cannabis Plant Diagnosis Apps Compared",
+  "shortDescription": "Compare GrowDoc and MasterGrowbot AI for cannabis photo diagnosis: problem catalogues, recordkeeping, platform availability, store freshness and subscription checks.",
+  "metaTitle": "GrowDoc vs MasterGrowbot AI: Cannabis Diagnosis Apps",
+  "metaDescription": "Compare GrowDoc vs MasterGrowbot AI for cannabis plant photo diagnosis, problem reference tools, journals, platform availability and subscription checks before you choose.",
+  "publishedDate": "2026-10-18T00:00:00Z",
+  "modifiedDate": "2026-10-18T00:00:00Z",
+  "intro": "GrowDoc and MasterGrowbot AI both start from a photo of a cannabis plant, but they are built around different jobs. GrowDoc describes itself as a cannabis plant doctor that diagnoses a sick plant from one photo and supports that diagnosis with a problem reference library. MasterGrowbot AI describes photo-based plant-health reports together with a journal, saved reports and task tracking, with short-video analysis listed under iOS Premium. Choose by the workflow you actually want, then check each live store listing.\n\nMasterGrowbot publishes this comparison and develops MasterGrowbot AI, so treat the framing accordingly. We reviewed public store descriptions on October 18, 2026. This is not a hands-on accuracy test, and it does not claim that either app diagnoses more accurately or produces better growing results.",
+  "sections": [
+    {
+      "heading": "Quick comparison: GrowDoc or MasterGrowbot AI?",
+      "bodyHtml": "<div class=\"overflow-x-auto\"><table><thead><tr><th>Question</th><th>GrowDoc</th><th>MasterGrowbot AI</th></tr></thead><tbody><tr><td>Main software focus</td><td>Cannabis plant doctor: diagnose a sick plant from a photo</td><td>Photo-based plant-health reports plus a journal and tasks</td></tr><tr><td>Photo-based diagnosis</td><td>Core focus of the listing</td><td>Listed as photo analysis with saved reports</td></tr><tr><td>Problem reference library</td><td>Lists pests, deficiencies and toxicities, pH imbalances, nutrient lock, over- and under-watering, pathogens and light or spray burn, with infographics and videos</td><td>Not described as a standalone problem encyclopedia in the listing reviewed</td></tr><tr><td>Male and female plant scanner</td><td>Listed</td><td>Not described in the listing reviewed</td></tr><tr><td>Grow journal with stage tracking</td><td>Not described in the listing reviewed</td><td>Listed, with notes, photos and saved reports</td></tr><tr><td>Short-video analysis</td><td>Not established by the listing reviewed</td><td>Listed under iOS Premium</td></tr><tr><td>Platform availability</td><td>iOS and Android</td><td>iOS and Android</td></tr><tr><td>Store pricing model</td><td>Free with in-app purchases</td><td>Free download with paid in-app subscriptions</td></tr><tr><td>Region note</td><td>Listing states it is registered in Canada and intended for legal cannabis markets only</td><td>Check the live listing for your region</td></tr></tbody></table></div>"
+    },
+    {
+      "heading": "When GrowDoc is the closer fit",
+      "body": "GrowDoc is a cannabis-specific plant doctor, not a general plant identifier. Its US App Store description centers on photographing an unhealthy cannabis plant and getting a diagnosis, backed by a problem reference library. The problems it lists include pests, nutrient deficiencies and toxicities, pH imbalances, nutrient lock, over- and under-watering, pathogens and viruses, and light or spray burn. It also describes a male and female plant scanner, infographics and videos, and a Growers Blog.\n\nThat focus is the app's main strength. If your only question is what is wrong with this plant right now, a diagnosis-first tool with a structured problem catalogue is a coherent choice. The limitations are worth reading too. The iOS listing we reviewed (version 2.0.4) and the Google Play listing were last updated in 2023, so confirm the app still runs on your device and that the store offer is current. The listing also states GrowDoc is registered in Canada and intended for legal cannabis markets only. Its description does not cover a full grow journal with stage tracking or a day-to-day task system."
+    },
+    {
+      "heading": "When MasterGrowbot AI is the closer fit",
+      "body": "MasterGrowbot AI is built around a broader loop than a single diagnosis. Its iOS listing describes photo-based plant-health reports, a journal with notes and photos, and saved reports you can revisit, with short-video analysis listed separately under Premium. The listing also states that eligible new Pro subscribers may receive a three-day trial and that Premium subscriptions do not include that trial. These are developer product descriptions, not evidence of diagnostic accuracy.\n\nIf you want your plant photos, notes and follow-up tasks to live in one place, that workflow is the reason to look closely at MasterGrowbot AI. Review it on [MasterGrowbot AI on the App Store](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=growdoc-vs-mastergrowbot-ai) to evaluate the photo-to-report-and-journal flow. If you also use Android, check the [MasterGrowbot AI Google Play listing](https://play.google.com/store/apps/details?id=com.mastergrowbot.app&utm_source=website&utm_medium=organic&utm_campaign=growdoc-vs-mastergrowbot-ai) instead of assuming feature parity."
+    },
+    {
+      "heading": "Compare the recordkeeping, not just the scan",
+      "body": "Most buyers compare the scan and stop there. The more useful question is what happens to the result. Diagnosis tools are most valuable when an entry stays retrievable: can you find an older photo, understand what you saw that day, and see whether the plant improved after you acted?\n\nGrowDoc's listing emphasizes the diagnosis and the reference library. MasterGrowbot AI's listing emphasizes saved reports and a journal. Neither description proves accuracy, so test the retention you need before paying: add a sample record, close the app, reopen it and confirm you can still find it. Our [journal-app checklist](/grow-guides/best-cannabis-grow-journal-apps-2026) covers the export, deletion and privacy questions that decide whether an app can serve as your only archive."
+    },
+    {
+      "heading": "Free download, subscriptions and privacy",
+      "body": "A free download does not mean every feature is free. Compare the checkout shown on your own device, and record the renewal interval, the features included and any trial conditions before confirming a subscription. A price in an older article may differ from the offer in your region.\n\nBecause both apps work from plant photographs, privacy deserves a deliberate check. Read each developer's privacy policy before uploading images or notes, and decide whether a record is private or shared. GrowDoc's listing states it is intended for the legal cannabis markets where it is registered; availability and terms can differ by country."
+    },
+    {
+      "heading": "How this comparison fits other cannabis app options",
+      "body": "GrowDoc is one option in a wider set of cannabis growing apps. If you are still choosing a category rather than one product, start with the [best AI plant diagnosis apps for cannabis](/grow-guides/best-ai-plant-diagnosis-apps-cannabis) overview and the [best cannabis growing apps](/grow-guides/best-cannabis-growing-apps-2026) guide. For other head-to-head decisions, see [HiGrade vs MasterGrowbot AI](/grow-guides/higrade-vs-mastergrowbot-ai) for the testing-tool question, [bud vs MasterGrowbot AI](/grow-guides/bud-vs-mastergrowbot-ai) for the social-journal question and [Grow with Jane vs MasterGrowbot AI](/grow-guides/grow-with-jane-vs-mastergrowbot) for the growlog question.\n\nThose are different products, not interchangeable names. Pick the workflow first, then the app."
+    },
+    {
+      "heading": "Sources and review method",
+      "body": "Sources checked October 18, 2026: [GrowDoc on the US App Store](https://apps.apple.com/us/app/growdoc/id1494454306), [GrowDoc on Google Play](https://play.google.com/store/apps/details?id=com.growdoc.growdocnew), [MasterGrowbot AI on the US App Store](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) and [MasterGrowbot AI on Google Play](https://play.google.com/store/apps/details?id=com.mastergrowbot.app). Store descriptions are developer-supplied. We have not independently tested comparative accuracy or outcomes.\n\nThis page compares software features and buying considerations. It provides no cultivation, nutrient or yield instructions. Store listings change, so check the live pages again before choosing a plan."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Is GrowDoc a general plant identifier?",
+      "answer": "No. The GrowDoc listing is cannabis-specific. Its description centers on diagnosing cannabis plant problems from a photo and on a cannabis problem reference library, not on generic plant identification."
+    },
+    {
+      "question": "Does GrowDoc include a grow journal?",
+      "answer": "The listing we reviewed describes photo diagnosis, a problem catalogue, infographics and videos, a male and female scanner and a Growers Blog. It does not describe a full grow journal with stage tracking, so check the app directly if recordkeeping is your priority."
+    },
+    {
+      "question": "Has GrowDoc been updated recently?",
+      "answer": "The US App Store listing we reviewed (version 2.0.4) and its Google Play listing were last updated in 2023. Confirm current device compatibility and the store offer before relying on it."
+    },
+    {
+      "question": "Does MasterGrowbot AI Premium include the Pro trial?",
+      "answer": "The iOS listing says eligible new Pro subscribers may receive a three-day trial and that Premium subscriptions do not include that trial. Check the offer shown to your own account."
+    },
+    {
+      "question": "Which app is more accurate?",
+      "answer": "We cannot say. Both describe AI-assisted diagnosis, but store descriptions are developer-supplied and we did not run a comparative accuracy test. Do not choose either app on an accuracy claim that has not been independently verified."
+    }
+  ],
+  "relatedSlugs": [
+    "best-ai-plant-diagnosis-apps-cannabis",
+    "best-cannabis-growing-apps-2026",
+    "higrade-vs-mastergrowbot-ai",
+    "bud-vs-mastergrowbot-ai",
+    "best-cannabis-grow-journal-apps-2026"
+  ]
+},
   // ─────────────────────────────────────────────────────────────
   // ARTICLE 1: Cannabis Nutrient Deficiency Guide
   // ─────────────────────────────────────────────────────────────

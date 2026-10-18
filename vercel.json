@@ -104,6 +104,10 @@
   ],
   "rewrites": [
     {
+      "source": "/grow-guides/growdoc-vs-mastergrowbot-ai",
+      "destination": "/seo/grow-guides/growdoc-vs-mastergrowbot-ai.html"
+    },
+    {
       "source": "/grow-guides/budlabs-vs-mastergrowbot-ai",
       "destination": "/seo/grow-guides/budlabs-vs-mastergrowbot-ai.html"
     },

@@ -266,3 +266,33 @@ test('BudLabs comparison is crawlable, disclosed and tracks mobile store clicks 
     expect(events[index]).toEqual(['event', `${platform}_app_click`, expect.objectContaining({ page_path: path, article_slug: 'budlabs-vs-mastergrowbot-ai', cta_location: `article-body:${platform}` })]);
   }
 });
+
+test('GrowDoc comparison is crawlable, disclosed and tracks mobile store clicks once', async ({ page, request }) => {
+  const path = '/grow-guides/growdoc-vs-mastergrowbot-ai';
+  const response = await request.get(path);
+  expect(response.status()).toBe(200);
+  const html = await response.text();
+  expect(html).toContain('GrowDoc vs MasterGrowbot AI');
+  expect(html.match(/rel="canonical"/g)).toHaveLength(1);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(path);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.mastergrowbot.com${path}`);
+  await expect(page.locator('article')).toContainText('MasterGrowbot publishes this comparison');
+  await expect(page.locator('article table')).toContainText('Cannabis plant doctor');
+  const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(s => JSON.parse(s));
+  expect(schemas.find(s => s['@type'] === 'Article')?.dateModified).toContain('2026-10-18');
+  expect(schemas.some(s => s['@type'] === 'BreadcrumbList')).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.evaluate(() => {
+    (window as unknown as { captured: unknown[][] }).captured = [];
+    window.gtag = (...args: unknown[]) => (window as unknown as { captured: unknown[][] }).captured.push(args);
+    document.addEventListener('click', e => e.preventDefault(), true);
+  });
+  await page.locator('[data-cta-location="article-body:ios"]').first().click();
+  await page.locator('[data-cta-location="article-body:android"]').first().click();
+  const events = await page.evaluate(() => (window as unknown as { captured: unknown[][] }).captured);
+  expect(events).toHaveLength(2);
+  for (const [index, platform] of ['ios', 'android'].entries()) {
+    expect(events[index]).toEqual(['event', `${platform}_app_click`, expect.objectContaining({ page_path: path, article_slug: 'growdoc-vs-mastergrowbot-ai', cta_location: `article-body:${platform}` })]);
+  }
+});
