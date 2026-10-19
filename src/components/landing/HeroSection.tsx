@@ -40,10 +40,11 @@ export default function HeroSection() {
       <div className="premium-hero-copy">
         <p className="premium-eyebrow"><span className="status-dot" /> MASTERGROWBOT AI · CANNABIS GROW INTELLIGENCE</p>
         <h1 id="hero-title">Something look off?<br />Get a <em>second set of eyes.</em></h1>
-        <p className="premium-lead">Turn a plant photo into a clearer next step. Get AI insights into visible symptoms, practical checks to guide your next move, and a grow journal to track what changes.</p>
+        <p className="premium-lead">Stop guessing what your plant needs. Turn a photo into AI insights, practical checks, and a clearer next step. Keep your observations together as your grow changes.</p>
         <AppActions trial />
         <p className="premium-fine">Free download. Photo analysis and journal tools require Pro. Eligible new Pro subscribers can try 3 days free; subscriptions renew unless canceled. Check your store for terms.</p>
         <div className="premium-hero-benefits"><span><Check size={15} aria-hidden="true" /> Understand symptoms</span><span><Check size={15} aria-hidden="true" /> Know what to check</span><span><Check size={15} aria-hidden="true" /> Track your grow</span></div>
+        <a href="#video-analysis" className="premium-text-link hero-video-discovery">Want a fuller view? Explore AI video analysis on iPhone <ArrowDown size={16} aria-hidden="true" /></a>
       </div>
       <div className="hero-showcase"><HeroProductDemo /><a href="#grow-walkthrough" className="premium-text-link hero-workflow-link">See the photo-to-journal workflow <ArrowDown size={16} aria-hidden="true" /></a></div>
       <figure className="hero-customer-quote"><blockquote>“As a first-time grower I was totally lost. MasterGrowbot walked me through everything.”</blockquote><figcaption>Sarah K. · MasterGrowbot customer</figcaption><a href="#customer-experiences">Read customer experiences <ArrowDown size={14} aria-hidden="true" /></a></figure>

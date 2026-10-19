@@ -12,7 +12,11 @@ export const appFaqs = [
   {
     question: "What is the difference between Pro and Premium?",
     answer:
-      "Pro includes photo analysis and everyday grow tools on iOS and Android. Premium is available on iOS and adds short plant video analysis and an expanded strain library. The pricing above is for the US iOS App Store; prices can vary by platform and region.",
+      "Pro includes photo analysis and everyday grow tools on iOS and Android. Premium is available on iOS and adds short plant video analysis and an expanded strain library. Choose your platform in the pricing section to compare plans; prices can vary by region.",
+  },
+  {
+    question: "How much does MasterGrowbot cost on Android?",
+    answer: "Android Pro is $6.99 weekly or $59.99 yearly in USD. The annual plan is billed as one yearly payment. Eligible new Pro subscribers can try 3 days free. Subscriptions renew unless canceled. Confirm your local price and trial eligibility on Google Play before subscribing.",
   },
   {
     question: "Is MasterGrowbot available on iPhone and Android?",

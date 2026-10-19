@@ -37,6 +37,9 @@ const experiences = [
 ];
 export default function FeatureSection() {
   const [active, setActive] = useState(0);
+  const [platform, setPlatform] = useState<"ios" | "android">(() =>
+    typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent) ? "android" : "ios",
+  );
   const item = experiences[active];
   return (
     <>
@@ -111,36 +114,41 @@ export default function FeatureSection() {
       <section id="app-plans" className="premium-section premium-wrap">
         <div className="premium-section-heading">
           <div>
-            <p className="premium-eyebrow">CHOOSE YOUR PERSPECTIVE</p>
+            <p className="premium-eyebrow">YOUR NEXT STEP STARTS HERE</p>
             <h2>
-              Start with Pro.
+              Less guesswork.
               <br />
-              <em>See more with Premium.</em>
+              <em>A plan for your grow.</em>
             </h2>
           </div>
           <p>
-            Choose your subscription inside the app.
+            Download free. Choose your plan in the app.
             <br />
-            US iOS pricing shown below.
+            Start with a 3-day Pro trial if eligible.
           </p>
         </div>
-        <div className="premium-plans">
+        <div className="premium-tabs plan-platforms" role="group" aria-label="Choose pricing platform">
+          {(["ios", "android"] as const).map((value) => <button key={value} aria-pressed={platform === value} onClick={() => { setPlatform(value); trackEvent("app_pricing_platform_select", { platform: value }); }}>{value === "ios" ? "iPhone plans" : "Android plans"}</button>)}
+        </div>
+        <p className="premium-fine">US pricing in USD · {platform === "ios" ? "Apple App Store" : "Google Play"}</p>
+        <div aria-live="polite" className={`premium-plans${platform === "android" ? " android-plans" : ""}`}>
           <article>
             <p className="premium-eyebrow">MASTERGROWBOT PRO</p>
-            <h3>Your everyday grow companion.</h3>
+            <h3>Turn plant questions into next steps.</h3>
             <p className="premium-price">
-              $99.99 <span>/ year</span>
+              {platform === "ios" ? "$99.99" : "$59.99"} <span>/ year</span>
             </p>
-            <p>Or $7.99 weekly / $29.99 monthly</p>
+            <p>{platform === "ios" ? "Or $7.99 weekly / $29.99 monthly" : "Or $6.99 weekly"}</p>
+            <p className="plan-value">{platform === "ios" ? "About $8.33/month. Billed as $99.99 once a year." : "About $5/month. Billed as $59.99 once a year."}</p>
             <ul>
-              <li>Photo-based plant analysis</li>
-              <li>Grow journal and plant records</li>
-              <li>Strain intelligence and personalized tasks</li>
+              <li>Understand visible symptoms with AI photo analysis</li>
+              <li>Keep observations together in your grow journal</li>
+              <li>Plan your next steps with strain insights and tasks</li>
             </ul>
             <a
               className="premium-button"
-              href={appStoreUrl("pro-plan")}
-              data-cta-location="pro-plan:ios"
+              href={platform === "ios" ? appStoreUrl("pro-plan") : playStoreUrl("pro-plan")}
+              data-cta-location={`pro-plan:${platform}`}
             >
               Try Pro free for 3 days <ArrowRight size={18} />
             </a>
@@ -149,11 +157,11 @@ export default function FeatureSection() {
               unless canceled.
             </p>
           </article>
-          <article className="premium-plan-featured">
+          {platform === "ios" && <article className="premium-plan-featured">
             <p className="premium-eyebrow">
               <Video size={17} /> MASTERGROWBOT PREMIUM
             </p>
-            <h3>A wider view of your plants.</h3>
+            <h3>Give your AI the bigger picture.</h3>
             <p className="premium-price">
               $199 <span>/ year</span>
             </p>
@@ -175,9 +183,8 @@ export default function FeatureSection() {
               Premium has no introductory free trial. Subscription renews unless
               canceled.
             </p>
-          </article>
+          </article>}
         </div>
-        <a href={playStoreUrl("plans-android")} className="premium-text-link" data-cta-location="plans:android">Using Android? View plans on Google Play <ArrowRight size={18}/></a>
         <p className="premium-fine">
           Prices and availability may vary by region and platform. Confirm
           current pricing and terms in your app store. Manage or cancel through
@@ -233,11 +240,12 @@ export default function FeatureSection() {
       >
         <p className="premium-eyebrow">YOUR NEXT GROW STARTS HERE</p>
         <h2>
-          Meet your new
+          Your next plant check.
           <br />
-          <em>growing companion.</em>
+          <em>A clearer next step.</em>
         </h2>
-        <AppActions location="final-download" />
+        <p className="premium-lead">Put AI photo insights and your grow journal in your pocket. Download MasterGrowbot and explore Pro with a 3-day trial if eligible.</p>
+        <AppActions location="final-download" trial />
         <p className="premium-fine">
           Pro trial for eligible new subscribers. Paid subscription after trial
           unless canceled.
