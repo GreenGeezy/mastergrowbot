@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, Video } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppActions } from "./HeroSection";
 import { appStoreUrl, playStoreUrl } from "./ctaLinks";
@@ -37,9 +37,6 @@ const experiences = [
 ];
 export default function FeatureSection() {
   const [active, setActive] = useState(0);
-  const [platform, setPlatform] = useState<"ios" | "android">(() =>
-    typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent) ? "android" : "ios",
-  );
   const item = experiences[active];
   return (
     <>
@@ -127,63 +124,23 @@ export default function FeatureSection() {
             Start with a 3-day Pro trial if eligible.
           </p>
         </div>
-        <div className="premium-tabs plan-platforms" role="group" aria-label="Choose pricing platform">
-          {(["ios", "android"] as const).map((value) => <button key={value} aria-pressed={platform === value} onClick={() => { setPlatform(value); trackEvent("app_pricing_platform_select", { platform: value }); }}>{value === "ios" ? "iPhone plans" : "Android plans"}</button>)}
-        </div>
-        <p className="premium-fine">US pricing in USD · {platform === "ios" ? "Apple App Store" : "Google Play"}</p>
-        <div aria-live="polite" className={`premium-plans${platform === "android" ? " android-plans" : ""}`}>
-          <article>
-            <p className="premium-eyebrow">MASTERGROWBOT PRO</p>
-            <h3>Turn plant questions into next steps.</h3>
-            <p className="premium-price">
-              {platform === "ios" ? "$99.99" : "$59.99"} <span>/ year</span>
-            </p>
-            <p>{platform === "ios" ? "Or $7.99 weekly / $29.99 monthly" : "Or $6.99 weekly"}</p>
-            <p className="plan-value">{platform === "ios" ? "About $8.33/month. Billed as $99.99 once a year." : "About $5/month. Billed as $59.99 once a year."}</p>
-            <ul>
-              <li>Understand visible symptoms with AI photo analysis</li>
-              <li>Keep observations together in your grow journal</li>
-              <li>Plan your next steps with strain insights and tasks</li>
-            </ul>
-            <a
-              className="premium-button"
-              href={platform === "ios" ? appStoreUrl("pro-plan") : playStoreUrl("pro-plan")}
-              data-cta-location={`pro-plan:${platform}`}
-            >
-              Try Pro free for 3 days <ArrowRight size={18} />
-            </a>
-            <p className="premium-fine">
-              Eligible new subscribers only. Renews at your selected plan price
-              unless canceled.
-            </p>
-          </article>
-          {platform === "ios" && <article className="premium-plan-featured">
-            <p className="premium-eyebrow">
-              <Video size={17} /> MASTERGROWBOT PREMIUM
-            </p>
-            <h3>Give your AI the bigger picture.</h3>
-            <p className="premium-price">
-              $199 <span>/ year</span>
-            </p>
-            <p>Or $12.99 weekly / $49.99 monthly</p>
-            <ul>
-              <li>Everything included in Pro</li>
-              <li>Record or upload short plant videos</li>
-              <li>More visual context for AI analysis</li>
-              <li>Expanded strain library and breeder information on iOS</li>
-            </ul>
-            <a
-              className="premium-button secondary"
-              href={appStoreUrl("premium-plan")}
-              data-cta-location="premium-plan:ios"
-            >
-              Explore Premium on iPhone <ArrowRight size={18} />
-            </a>
-            <p className="premium-fine">
-              Premium has no introductory free trial. Subscription renews unless
-              canceled.
-            </p>
-          </article>}
+        <p className="premium-fine">US pricing in USD. Choose your platform and the perspective you need.</p>
+        <div className="premium-plans all-plans">
+          {[
+            { name: "Android Pro", platform: "ANDROID", price: "$59.99", alternatives: "$6.99 weekly", monthly: "About $5/month, billed $59.99 yearly.", title: "Your daily grow advantage.", features: ["Understand visible symptoms with AI photo analysis", "Keep your plant observations in one grow journal", "Find your next steps with strain insights and tasks"], href: playStoreUrl("android-pro-plan"), location: "android-pro-plan:android", cta: "Try Android Pro free", premium: false },
+            { name: "iPhone Pro", platform: "iPHONE", price: "$99.99", alternatives: "$7.99 weekly / $29.99 monthly", monthly: "About $8.33/month, billed $99.99 yearly.", title: "Less second-guessing. More direction.", features: ["Turn plant photos into practical AI insights", "Track changes in your grow journal", "Get strain intelligence and personalized tasks"], href: appStoreUrl("pro-plan"), location: "pro-plan:ios", cta: "Try iPhone Pro free", premium: false },
+            { name: "iPhone Premium", platform: "iPHONE · VIDEO ANALYSIS", price: "$199", alternatives: "$12.99 weekly / $49.99 monthly", monthly: "About $16.58/month, billed $199 yearly.", title: "More angles. A fuller understanding.", features: ["Everything in iPhone Pro", "Record or upload short videos for AI analysis", "Expanded strain library and breeder information"], href: appStoreUrl("premium-plan"), location: "premium-plan:ios", cta: "Get iPhone Premium", premium: true },
+          ].map(plan => <article key={plan.name} className={plan.premium ? "premium-plan-featured" : ""}>
+            <p className="plan-platform-label">{plan.platform}</p>
+            <h3>{plan.name}</h3>
+            <p className="plan-promise">{plan.title}</p>
+            <p className="premium-price">{plan.price}<span> / year</span></p>
+            <p className="plan-alternatives">Or {plan.alternatives}</p>
+            <p className="plan-value">{plan.monthly}</p>
+            <ul>{plan.features.map(feature => <li key={feature}>{feature}</li>)}</ul>
+            <a className="premium-button" href={plan.href} data-cta-location={plan.location}>{plan.cta}<ArrowRight size={17} aria-hidden="true" /></a>
+            <p className="premium-fine">{plan.premium ? "Premium has no introductory free trial. Renews unless canceled." : "3 days free for eligible new subscribers. Renews at your selected plan price unless canceled."}</p>
+          </article>)}
         </div>
         <p className="premium-fine">
           Prices and availability may vary by region and platform. Confirm

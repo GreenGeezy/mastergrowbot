@@ -1,3 +1,4 @@
+import AppRating from "./AppRating";
 import { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { ArrowDown, ArrowRight, Check } from "lucide-react";
@@ -41,6 +42,7 @@ export default function HeroSection() {
         <p className="premium-eyebrow"><span className="status-dot" /> MASTERGROWBOT AI · CANNABIS GROW INTELLIGENCE</p>
         <h1 id="hero-title">Something look off?<br />Get a <em>second set of eyes.</em></h1>
         <p className="premium-lead">Stop guessing what your plant needs. Turn a photo into AI insights, practical checks, and a clearer next step. Keep your observations together as your grow changes.</p>
+        <AppRating compact />
         <AppActions trial />
         <p className="premium-fine">Free download. Photo analysis and journal tools require Pro. Eligible new Pro subscribers can try 3 days free; subscriptions renew unless canceled. Check your store for terms.</p>
         <div className="premium-hero-benefits"><span><Check size={15} aria-hidden="true" /> Understand symptoms</span><span><Check size={15} aria-hidden="true" /> Know what to check</span><span><Check size={15} aria-hidden="true" /> Track your grow</span></div>
@@ -51,4 +53,3 @@ export default function HeroSection() {
     </div>
   </section></>;
 }
-

@@ -12,7 +12,7 @@ export const appFaqs = [
   {
     question: "What is the difference between Pro and Premium?",
     answer:
-      "Pro includes photo analysis and everyday grow tools on iOS and Android. Premium is available on iOS and adds short plant video analysis and an expanded strain library. Choose your platform in the pricing section to compare plans; prices can vary by region.",
+      "Pro includes photo analysis and everyday grow tools on iOS and Android. Premium is available on iOS and adds short plant video analysis and an expanded strain library. Compare all three plans in the pricing section; prices can vary by region.",
   },
   {
     question: "How much does MasterGrowbot cost on Android?",

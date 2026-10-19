@@ -27,9 +27,9 @@ export default function LandingPage() {
       <LandingNav />
       <main>
         <HeroSection />
+        <AppTestimonials />
         <RecognitionSection />
         <TrustRail />
-        <AppTestimonials />
         <GrowWalkthrough />
         <VideoAnalysisSection />
         <FeatureSection />
