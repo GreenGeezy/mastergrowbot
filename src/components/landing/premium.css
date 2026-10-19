@@ -918,3 +918,29 @@
 .app-feedback-grid blockquote { font-size: clamp(19px,2vw,24px); line-height: 1.6; letter-spacing: -.02em; }
 @media(max-width:600px){ .feedback-heading { flex-direction: column; align-items: stretch; }.app-rating:not(.compact) { width: 100%; }.app-feedback-grid figure { padding: 25px; }.app-customer-feedback { padding-block: 48px; }.recognition-art { aspect-ratio: .75; } }
 .recognition-art { background-size: 400% auto; aspect-ratio: 1.6; max-height: none; }
+/* Emerald light, violet depth, and restrained motion keep the actions in focus. */
+.premium-site { --mint: #98f4c0; background: #050e0c; }
+.revenue-hero { background: radial-gradient(ellipse at 82% 24%,#704ab51b,transparent 48%),radial-gradient(ellipse at 12% 38%,#19b97c17,transparent 55%),#050e0c; }
+.premium-site .premium-button:not(.secondary) { background: linear-gradient(115deg,#b6ffd4,#72e8b4); color:#062117; box-shadow:0 4px 24px #38da9a16; border-color:#b5ffd6; }
+.premium-site .premium-button { transition:transform .25s ease,box-shadow .25s ease,background .25s ease; }
+.premium-site .premium-button:hover { transform:translateY(-3px); box-shadow:0 10px 32px #38da9a30; }
+.premium-site .premium-button:focus-visible { outline:3px solid #d9c4ff; outline-offset:4px; }
+.recognition-refined { overflow:hidden; position:relative; background:radial-gradient(ellipse at 50% 70%,#19c38b13,transparent 65%); }
+.recognition-orbit { overflow:hidden; margin:28px 0 10px; mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent); }
+.recognition-track { display:flex; width:max-content; animation:recognition-drift 34s linear infinite; }
+.recognition-group { display:flex; flex-shrink:0; }
+.recognition-group .recognition-art { width:clamp(210px,23vw,295px); aspect-ratio:1.6; flex-shrink:0; }
+.recognition-motion-toggle { display:inline-flex; align-items:center; gap:7px; min-height:44px; padding:8px 14px; border:1px solid #9ce9c02c; border-radius:30px; background:#10261b; color:#bcd4c5; font:inherit; font-size:11px; cursor:pointer; }
+.recognition-motion-toggle:hover { background:#1a3929; }.recognition-motion-toggle:focus-visible { outline:3px solid #d9c4ff; outline-offset:4px; }
+.recognition-orbit:hover .recognition-track,.recognition-refined:focus-within .recognition-track,.motion-paused .recognition-track { animation-play-state:paused; }
+@keyframes recognition-drift { to { transform:translateX(-50%); } }
+.video-analysis-visual { position:relative; isolation:isolate; }
+.video-analysis-visual:before { content:""; position:absolute; inset:8% -3%; border-radius:40%; z-index:-1; background:linear-gradient(135deg,#29df9630,#9162ed2b); filter:blur(30px); animation:botanical-aura 4.5s ease-in-out 1; pointer-events:none; }
+@keyframes botanical-aura { 0%,100% {opacity:.5;transform:scale(.97)} 50% {opacity:1;transform:scale(1.03)} }
+.app-feedback-grid figure,.premium-plans.all-plans article { transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease; }
+.app-feedback-grid figure:hover,.premium-plans.all-plans article:hover { transform:translateY(-5px); border-color:#9af3c478; box-shadow:0 16px 50px #0004; }
+.premium-plans.all-plans .premium-plan-featured { border-color:#baa0f58c; background:radial-gradient(ellipse at top right,#8660c435,transparent 60%),linear-gradient(150deg,#173629,#0a1711); }
+.rating-stars { color:#f2d58b; filter:drop-shadow(0 0 10px #e5c05a25); }
+@media(prefers-reduced-motion:no-preference) { .recognition-refined h2,.feedback-heading h2,.video-analysis h2 { animation:premium-arrive .8s ease-out both; } @supports(animation-timeline:view()) { .recognition-refined h2,.feedback-heading h2,.video-analysis h2 { animation-timeline:view(); animation-range:entry 0% entry 85%; } } }
+@keyframes premium-arrive { from {opacity:.55;transform:translateY(18px)} to {opacity:1;transform:none} }
+@media(prefers-reduced-motion:reduce) { .recognition-track { animation:none; width:100%; }.recognition-group { width:100%; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }.recognition-group[aria-hidden="true"] {display:none}.recognition-group .recognition-art {width:100%}.recognition-motion-toggle {display:none}.recognition-orbit {mask-image:none}.video-analysis-visual:before {animation:none}.premium-site .premium-button,.app-feedback-grid figure,.premium-plans.all-plans article {transition:none}.premium-site .premium-button:hover,.app-feedback-grid figure:hover,.premium-plans.all-plans article:hover {transform:none} }
