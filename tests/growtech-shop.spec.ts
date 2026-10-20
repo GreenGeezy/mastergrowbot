@@ -1,18 +1,25 @@
 import {test,expect} from 'playwright/test';
-test('shop keeps actual bundles distinct from retailer recommendations',async({page})=>{
+test('shop prioritizes Whop offers and never sells an unqualified light',async({page})=>{
   await page.goto('/grow-tech');
   await expect(page.getByRole('heading',{level:1})).toHaveCount(1);
   await page.screenshot({path:'output/sales-recovery/premium-shop-desktop.png',fullPage:true});
   await expect(page.locator('#soil-meter')).toContainText('$59');
-  await expect(page.locator('#grow-light')).toContainText('Sold separately by Spider Farmer');
-  await expect(page.locator('#more-essentials article')).toHaveCount(3);
-  await expect(page.locator('#grow-light a.gt-button')).toHaveAttribute('href','https://www.spider-farmer.com/products/sf-1000-led-grow-light/');
+  await expect(page.locator('#grow-light')).toContainText('Not available to order');
+  await expect(page.locator('#grow-light')).not.toContainText(/Spider Farmer|4\.98|69\.99/);
+  await expect(page.locator('a[href*="spider-farmer"],a[href*="govee.com"],a[href*="canadiantire"],a[href*="boveda"]')).toHaveCount(0);
+  await expect(page.locator('#digital-guides article').first()).toContainText('Equipment Quickstart');
+  expect(await page.locator('#digital-guides').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('#shop-bundles')) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
   await page.getByRole('button',{name:'The same grower',exact:true}).click();
   await expect(page.locator('.gt-light-gallery>img')).toHaveAttribute('src',/grower-one.webp$/);
   await expect(page.getByRole('button',{name:'The same grower',exact:true})).toHaveAttribute('aria-pressed','true');
   await page.setViewportSize({width:390,height:844});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.screenshot({path:'output/sales-recovery/premium-shop-mobile.png',fullPage:true});
+  await page.locator('#digital-guides').getByRole('link',{name:'Get the Quickstart',exact:true}).click();
+  await expect(page).toHaveURL(/\/grow-tech\/checkout\/quickstart-guide$/);
+  await expect(page.locator('main')).toContainText('$9');
+  await expect(page.locator('#delivery-country')).toHaveCount(0);
+  await page.goBack();
   await page.locator('#soil-meter').getByRole('link',{name:'Choose delivery & checkout'}).click();
   await expect(page).toHaveURL(/\/grow-tech\/checkout\/soil-health-meter$/);
   await expect(page.locator('#delivery-country')).toBeVisible();
