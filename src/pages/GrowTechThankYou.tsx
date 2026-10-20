@@ -23,7 +23,7 @@ const nextSteps = [
   },
   {
     title: "3. Tracking Sent",
-    text: "Tracking details and estimated delivery information are emailed after supplier dispatch.",
+    text: "Tracking details and estimated delivery information are emailed after dispatch.",
     icon: Truck,
   },
 ];
@@ -35,9 +35,9 @@ export default function GrowTechThankYou() {
   const isSuccess = status === "succeeded" && /^pay_[A-Za-z0-9]+$/.test(receiptId || "");
   const isError = ["error", "failed", "canceled", "cancelled"].includes(status || "");
   const purchasedSlug = searchParams.get("product");
-  const hasGuide = ["quickstart-guide", "scout-guide-bundle", "soil-health-meter", "grow-tent"].includes(purchasedSlug || "");
+  const hasGuide = ["quickstart-guide", "scout-guide-bundle", "soil-health-meter", "grow-tent", "grow-light"].includes(purchasedSlug || "");
   const isDigitalOnly = purchasedSlug === "quickstart-guide";
-  const includesFullKit = purchasedSlug === "scout-guide-bundle";
+  const includesFullKit = ["scout-guide-bundle", "grow-light"].includes(purchasedSlug || "");
 
   useEffect(() => {
     trackEvent("growtech_thank_you_view", {

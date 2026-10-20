@@ -11,7 +11,7 @@ type GalleryKind = "lens" | "tent" | "soil";
 export default function LensGallery({ kind = "lens" }: { kind?: GalleryKind }) {
   const [selected, setSelected] = useState(0);
   const images = kind === "lens" ? scenes : [
-    {file:"product",label:kind === "tent" ? "The 2×2 tent" : "The soil tester",alt:`AI product illustration based on the ${kind === "tent" ? "unbranded tent" : "six-function soil tester"} supplier reference`},
+    {file:"product",label:kind === "tent" ? "The 2×2 tent" : "The soil tester",alt:`AI product illustration based on the ${kind === "tent" ? "unbranded tent" : "six-function soil tester"} product reference`},
     {file:"grower-one",label:"In a grow routine",alt:`AI illustration of an adult male cannabis grower using the ${kind === "tent" ? "unbranded tent" : "six-function soil tester"}`},
     {file:"grower-two",label:"A closer look",alt:`AI illustration of an adult male cannabis grower checking plants with the ${kind === "tent" ? "unbranded tent" : "six-function soil tester"}`},
   ];

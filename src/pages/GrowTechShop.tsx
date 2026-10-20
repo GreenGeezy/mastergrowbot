@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowDown, ArrowRight, Check, Leaf, ShieldCheck, Truck } from 'lucide-react';
@@ -28,36 +28,43 @@ function CheckoutButton({ product, location }: {product: GrowTechProduct; locati
 function LightGallery() {
   const [selected, setSelected] = useState(0);
   const images = [
-    {"src":"/images/grow-tech/ag1000-enhanced-v1/hero.webp","label":"Light","alt":"AI-enhanced supplier illustration of the ALPHAGROW AG1000 hanging LED panel","supplier":true},
-    {"src":"/images/grow-tech/ag1000-enhanced-v1/dimming.webp","label":"Dimming","alt":"AI-enhanced supplier graphic showing the AG1000 rotary brightness control","supplier":true},
-    {"src":"/images/grow-tech/ag1000-enhanced-v1/specs.webp","label":"Specifications","alt":"Supplier specifications: 100W input, 20–100% dimming, 456 LEDs and 140 cm power cord","supplier":true},
-    {"src":"/images/grow-tech/ag1000-enhanced-v1/supplier-claims.webp","label":"Supplier claims","alt":"Supplier-reported 20% more yield and 30% better cooling; independent testing not verified","supplier":true},
-    {"src":"/images/grow-tech/ag1000-supplier/spectrum.png","label":"Source graphic","alt":"Original AG1000 supplier spectrum graphic supplied by the store owner","supplier":true},
-    {src:'/images/grow-tech/ag1000-lifestyle-v2/hero.webp', label:'Grower illustration', alt:'AI lifestyle illustration of the same adult grower inspecting plants beneath a supplier-reference LED light', supplier:false},
-    {src:'/images/grow-tech/ag1000-lifestyle-v2/dimmer.webp', label:'Adjusting the light', alt:'AI lifestyle illustration of the grower adjusting the silver brightness dial beside the tent', supplier:false},
+    {"src":"/images/grow-tech/ag1000-details-v2/spectrum.webp","label":"Light","alt":"AG1000 hanging LED panel and spectrum graphic","productGraphic":true},
+    {"src":"/images/grow-tech/ag1000-details-v2/dimming.webp","label":"Dimming","alt":"Product graphic showing the AG1000 rotary brightness control","productGraphic":true},
+    {"src":"/images/grow-tech/ag1000-details-v2/specs.webp","label":"Specifications","alt":"Product specifications: 100W input, 20–100% dimming, 456 LEDs and 140 cm power cord","productGraphic":true},
+    {"src":"/images/grow-tech/ag1000-details-v2/diodes.webp","label":"Performance claims","alt":"Product graphic claiming 20% increased yield; independent testing not verified","productGraphic":true},
+    {src:'/images/grow-tech/ag1000-lifestyle-v2/hero.webp', label:'Grower illustration', alt:'AI lifestyle illustration of the same adult grower inspecting plants beneath a reference LED light', productGraphic:false},
+    {src:'/images/grow-tech/ag1000-lifestyle-v2/dimmer.webp', label:'Adjusting the light', alt:'AI lifestyle illustration of the grower adjusting the silver brightness dial beside the tent', productGraphic:false},
   ];
   const current=images[selected];
-  return <figure className="gt-light-gallery"><img src={current.src} alt={current.alt} width={800} height={800} loading="lazy" style={{objectFit:'contain',background:'#06100d'}}/><div className="gt-gallery-tabs" aria-label="AG1000 product gallery">{images.map((image,index)=><button key={image.src} type="button" aria-pressed={index===selected} onClick={()=>setSelected(index)}><img src={image.src} alt="" width={72} height={60} loading="lazy"/><span>{image.label}</span></button>)}</div><figcaption>{current.supplier ? 'AI-enhanced AG1000 supplier graphics. Specifications and performance statements come from the supplier; comparison baseline and independent testing are not verified. Results vary. Original supplied image under Source graphic.' : 'AI lifestyle illustration. Based on supplier product references; not a product photograph, installation guide or performance demonstration. Tent, plants and props are not included.'}</figcaption></figure>;
+  return <figure className="gt-light-gallery"><img src={current.src} alt={current.alt} width={800} height={800} loading="lazy" style={{objectFit:'contain',background:'#06100d'}}/><div className="gt-gallery-tabs" aria-label="AG1000 product gallery">{images.map((image,index)=><button key={image.src} type="button" aria-pressed={index===selected} onClick={()=>setSelected(index)}><img src={image.src} alt="" width={72} height={60} loading="lazy"/><span>{image.label}</span></button>)}</div><figcaption>{current.productGraphic ? 'Product graphics. Comparison baseline and independent testing of performance claims are not verified. Results vary.' : 'AI lifestyle illustration. Based on product references; not a product photograph, installation guide or performance demonstration. Tent, plants and props are not included.'}</figcaption></figure>;
 }
 export default function GrowTechShop() {
+  const heroRef = useRef<HTMLElement>(null);
+  const [heroPassed, setHeroPassed] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setHeroPassed(!entry.isIntersecting && entry.boundingClientRect.bottom <= 72), {rootMargin:'-72px 0px 0px 0px'});
+    if (heroRef.current) observer.observe(heroRef.current);
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => { captureGrowTechAttribution(); trackEvent('growtech_offer_view', { product_id: growLightOffer.productId, value: growLightOffer.numericPrice, currency: 'USD', availability: growLightOffer.availability }); }, []);
   return <div className="premium-site lens-page gt-shop">
-    <SEOHead title="GrowTech | Equipment, Bundles & Guides for Home Growers" description="Shop the ALPHAGROW AG1000 100W light for $199 with free shipping to the US and Canada and secure Whop checkout. Compare soil meters, lens kits, tents and digital guides from $9." canonicalUrl="https://www.mastergrowbot.com/grow-tech" ogImage="https://www.mastergrowbot.com/images/grow-tech/ag1000-enhanced-v1/hero.webp"/>
+    <SEOHead title="GrowTech | Equipment, Bundles & Guides for Home Growers" description="Shop the ALPHAGROW AG1000 100W light for $199 with free shipping to the US and Canada and secure Whop checkout. Playbook digital kit included. Compare soil meters, lens kits, tents and digital guides from $9." canonicalUrl="https://www.mastergrowbot.com/grow-tech" ogImage="https://www.mastergrowbot.com/images/grow-tech/ag1000-details-v2/spectrum.webp"/>
     <Helmet><script type="application/ld+json">{JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:'GrowTech equipment and guides',url:'https://www.mastergrowbot.com/grow-tech',hasPart:[{'@type':'WebPage',name:growLightOffer.name,url:'https://www.mastergrowbot.com/grow-tech#grow-light'},...offers.map(({product,kind})=>({'@type':'WebPage',name:product.name,url:`https://www.mastergrowbot.com/grow-tech#${kind === 'soil' ? 'soil-meter' : kind === 'lens' ? 'lens-offer' : 'grow-tent'}`}))]})}</script><script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Product",name:growLightOffer.name,description:growLightOffer.schemaDescription,sku:growLightOffer.sku,brand:{"@type":"Brand",name:"ALPHAGROW"},offers:{"@type":"Offer",price:"199.00",priceCurrency:"USD",availability:"https://schema.org/InStock",url:"https://www.mastergrowbot.com/grow-tech/checkout/grow-light",shippingDetails:{"@type":"OfferShippingDetails",shippingRate:{"@type":"MonetaryAmount",value:0,currency:"USD"},shippingDestination:{"@type":"DefinedRegion",addressCountry:["US","CA"]}}}})}</script></Helmet>
-    <LandingNav growTechMode/>
+    <LandingNav growTechMode onMenuOpenChange={setMenuOpen}/>
     <main>
-      <header className="gt-hero gt-hero-v2"><div className="gt-container gt-hero-grid">
+      <header ref={heroRef} className="gt-hero gt-hero-v2"><div className="gt-container gt-hero-grid">
         <div className="gt-hero-copy">
           <p className="gt-kicker">GROWTECH / THE AG1000 LIGHT</p>
-          <h1>Your space.<br/><em>Your light.<br/>Your next grow.</em></h1>
-          <p className="gt-hero-lede">Bring your indoor setup into focus with the ALPHAGROW AG1000. Full-spectrum LED lighting. Brightness you control with a turn of the dial.</p>
+          <h1>Adjustable grow lighting<br/><em>for your indoor setup.</em></h1>
+          <p className="gt-hero-lede">The ALPHAGROW AG1000 brings 100W full-spectrum LED lighting and adjustable brightness to your indoor routine. Turn the dial. Find your setting. The complete Playbook digital kit is included.</p>
           <div className="gt-hero-specs"><span><strong>100W</strong> LED input</span><span><strong>20–100%</strong> dimming</span><span><strong>US plug</strong> included</span></div>
-          <div className="gt-hero-purchase"><div className="gt-hero-price"><strong>$199</strong><span>USD · one-time payment<br/><b>Free shipping to the US and Canada</b></span></div>
+          <p className="gt-kit-included">Playbook kit included — sold separately for $19.</p><div className="gt-hero-purchase"><div className="gt-hero-price"><strong>$199</strong><span>USD · one-time payment<br/><b>Free shipping to the US and Canada</b></span></div>
           <Link className="gt-button" to="/grow-tech/checkout/grow-light" onClick={()=>trackGrowTechSelectItem(growLightOffer,'growtech:hero:light',planIds[growLightOffer.planKey])}>Get the AG1000 <ArrowRight size={18}/></Link>
           <p className="gt-hero-delivery">US: 7–12 business days. Canada: contact us for timing. Tax at checkout.</p>
           <div className="gt-hero-trust"><ShieldCheck size={16}/><span>Secure Whop checkout · No subscription</span></div></div>
           <div className="gt-hero-links"><a className="gt-text-link" href="#grow-light">Explore the light & gallery <ArrowDown size={15}/></a><a className="gt-text-link" href="#shop-bundles">Shop all equipment <ArrowRight size={15}/></a></div>
-          <p className="gt-hero-note">Light only. Tent, plants and guides sold separately.</p>
+          <p className="gt-hero-note">Light + Playbook digital kit. Tent, plants and ventilation sold separately.</p>
         </div>
         <div className="gt-hero-visual"><img src="/images/grow-tech/ag1000-lifestyle-v2/hero.webp" srcSet="/images/grow-tech/ag1000-lifestyle-v2/hero-mobile.webp 640w, /images/grow-tech/ag1000-lifestyle-v2/hero.webp 1200w" sizes="(max-width:760px) 100vw, 50vw" alt="AI lifestyle illustration of our grower checking plants beneath the hanging light inside a compact tent" width={1200} height={1500} fetchPriority="high"/><div className="gt-hero-product-tag"><span>ALPHAGROW AG1000</span><strong>A little space.<br/>A daily ritual.</strong></div><span className="gt-image-label">AI lifestyle illustration · props excluded</span></div>
       </div></header>
@@ -68,11 +75,12 @@ export default function GrowTechShop() {
           <p className="gt-light-lede">A hanging full-spectrum LED light for seed starting and compact indoor plant setups. Adjust brightness as your setup changes.</p>
           <div className="gt-price"><strong>$199</strong><span>USD · One-time payment</span></div>
           <CheckoutAssurances hardware/>
-          <ul className="gt-includes"><li><Check size={15}/>AG1000 Full Spectrum 100Watts model</li><li><Check size={15}/>Supplier-rated 100W input · 20–100% dimming</li><li><Check size={15}/>US three-prong plug · manual setup</li></ul>
-          <p className="gt-small"><strong>Supplier-reported: 20% more yield · 30% better cooling.</strong><br/>Comparison baseline and independent testing not verified. Results vary.</p><p className="gt-small"><strong>Free shipping to the US and Canada.</strong> US estimated delivery 7–12 business days from confirmed payment. Contact us for Canadian delivery timing. Tracking after dispatch. Tax shown in Whop checkout.</p>
-          <CheckoutButton product={growLightOffer} location="growtech:featured:light"/>
-          <p className="gt-small">Light only. Tent, ventilation, plants and digital guides are separate. Check mounting clearance and the supplied manual before installation. No automatic app syncing or guaranteed full-cycle coverage or yields.</p>
-          <a className="gt-text-link" href="#light-reviews-title">Read attributed supplier reviews <ArrowRight size={16}/></a>
+          <p className="gt-kit-included">Playbook kit included — sold separately for $19.</p><p className="gt-light-lede">32-page Playbook, 8 prompts, fillable workbook, Equipment Quickstart, worksheets and CSV log. Files through Whop after payment.</p>
+          <ul className="gt-includes"><li><Check size={15}/>AG1000 Full Spectrum 100Watts model</li><li><Check size={15}/>Rated 100W input · 20–100% dimming</li><li><Check size={15}/>US three-prong plug · manual setup</li></ul>
+          <p className="gt-small"><strong>Product performance claims: 20% more yield · 30% better cooling.</strong><br/>Comparison baseline and independent testing not verified. Results vary.</p><p className="gt-small"><strong>Free shipping to the US and Canada.</strong> US estimated delivery 7–12 business days from confirmed payment. Contact us for Canadian delivery timing. Tracking after dispatch. Tax shown in Whop checkout.</p>
+          <CheckoutButton product={growLightOffer} location="growtech:featured:light"/><p className="gt-small">Unused, unopened hardware: contact us within 30 days of delivery. Return shipping is paid by the buyer except for damaged or incorrect goods. <a href="mailto:support@mastergrowbot.com">Ask an order question</a>.</p>
+          <p className="gt-small">Includes the light and complete Playbook digital kit. Tent, ventilation and plants are separate. Check mounting clearance and the supplied manual before installation. No automatic app syncing or guaranteed full-cycle coverage or yields.</p>
+          <a className="gt-text-link" href="#light-reviews-title">Read product reviews <ArrowRight size={16}/></a>
         </div></div>
       </section>
       <LightSupplierReviews/>
@@ -85,6 +93,6 @@ export default function GrowTechShop() {
       <LensTestimonials/>
       <section className="gt-support" id="delivery"><div className="gt-container"><div className="gt-section-heading"><div><p className="gt-kicker">KNOW BEFORE YOU ORDER</p><h2>Clear expectations.<br/><em>Real order support.</em></h2></div><a className="gt-text-link" href="mailto:support@mastergrowbot.com">support@mastergrowbot.com <ArrowRight size={16}/></a></div><div className="gt-support-grid"><details open><summary>What happens after I pay?</summary><p>Open your Whop purchase with the email on your receipt for digital files. Hardware is sourced to order and tracking follows dispatch. Estimated delivery is 7–12 business days for the light in the US (contact us for Canadian timing), 2–4 weeks for lens and soil bundles, and 3–4 weeks for the tent.</p></details><details><summary>What if it isn’t right for me?</summary><p>Contact us before returning unused, unopened hardware within 30 days of delivery. You pay return shipping except for damaged or incorrect goods. For digital access or purchase problems, email us with your receipt identifier.</p></details><details><summary>Do I need the MasterGrowbot app?</summary><p>No. These tools and observation files work without an app subscription. Readings are recorded manually. The lens needs a compatible phone; check the manufacturer’s phone and case guidance before ordering.</p></details><details><summary>Which offer should I start with?</summary><p>Choose the $59 soil bundle for indicative soil observations, the lens bundle for close-up photos, or the $9 Quickstart if you already own the tools. The tent is an enclosure, not a complete lighting or ventilation system.</p></details></div></div></section>
       <section className="gt-container gt-final"><p className="gt-kicker">START WITH SOMETHING USEFUL</p><h2>Your next observation<br/>deserves a better record.</h2><a className="gt-button" href="#shop-bundles">Find your bundle <ArrowRight size={17}/></a><Link className="gt-text-link" to="/vpd-calculator">Try the free VPD calculator first</Link></section>
-    </main><LandingFooter/>
+    </main><LandingFooter/>{heroPassed && !menuOpen && <aside className="gt-mobile-purchase" aria-label="Featured light purchase"><span>AG1000 + digital kit · $199</span><Link className="gt-button" to="/grow-tech/checkout/grow-light" onClick={()=>trackGrowTechSelectItem(growLightOffer,'growtech:mobile-bar:light',planIds[growLightOffer.planKey])}>Choose delivery <ArrowRight size={16}/></Link></aside>}
   </div>;
 }

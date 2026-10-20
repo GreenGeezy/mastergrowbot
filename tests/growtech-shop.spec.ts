@@ -9,8 +9,13 @@ test('featured light has accurate Whop price, attributed reviews and supported d
   await expect(page.locator('#grow-light')).toContainText('ALPHAGROW AG1000');
   await expect(page.locator('#grow-light')).toContainText('199');
   await page.locator('#grow-light').screenshot({path:'output/sales-recovery/featured-light-preview.png'});
-  await expect(page.getByRole('heading',{name:'What supplier customers say.'})).toBeVisible();
-  await expect(page.getByText('These are supplier reviews, not reviews of purchases from MasterGrowbot.',{exact:false})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'AG1000 product reviews.'})).toBeVisible();
+  await expect(page.getByText('Independent product reviews',{exact:true})).toHaveCount(2);
+  await expect(page.locator('.gt-light-reviews figure')).toHaveCount(3);
+  await expect(page.locator('#lens-reviews article')).toHaveCount(3);
+  await expect(page.locator('body')).not.toContainText(/supplier|temu/i);
+  await expect(page.locator('a[href*="temu"],a[href*="shopapexel"]')).toHaveCount(0);
+  await expect(page.locator('#grow-light')).toContainText('Playbook kit included');
   await expect(page.locator('#grow-light')).not.toContainText(/Spider Farmer|4\.98|69\.99/);
   await expect(page.locator('a[href*="spider-farmer"],a[href*="govee.com"],a[href*="canadiantire"],a[href*="boveda"]')).toHaveCount(0);
   await expect(page.locator('#digital-guides article').first()).toContainText('Equipment Quickstart');
@@ -19,6 +24,16 @@ test('featured light has accurate Whop price, attributed reviews and supported d
   await page.getByRole('button',{name:'Grower illustration',exact:true}).click();
   await expect(page.locator('.gt-light-gallery>img')).toHaveAttribute('src',/ag1000-lifestyle-v2\/hero.webp$/);
   await expect(page.getByRole('button',{name:'Grower illustration',exact:true})).toHaveAttribute('aria-pressed','true');
+  await page.setViewportSize({width:320,height:844});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  await page.locator('#shop-bundles').scrollIntoViewIfNeeded();
+  await expect(page.locator('.gt-mobile-purchase')).toBeVisible();
+  await page.getByRole('button',{name:'Open navigation menu',exact:true}).click();
+  await expect(page.locator('.gt-mobile-purchase')).toHaveCount(0);
+  await page.getByRole('button',{name:'Close navigation menu',exact:true}).click();
+  await expect(page.locator('.gt-mobile-purchase')).toBeVisible();
+  await page.locator('.gt-mobile-purchase a').focus();
+  await expect(page.locator('.gt-mobile-purchase a')).toBeFocused();
   await page.setViewportSize({width:390,height:844});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.screenshot({path:'output/sales-recovery/premium-shop-mobile.png',fullPage:true});
@@ -31,6 +46,8 @@ test('featured light has accurate Whop price, attributed reviews and supported d
   await expect(page).toHaveURL(/\/grow-tech\/checkout\/soil-health-meter$/);
   await expect(page.locator('#delivery-country')).toBeVisible();
   await page.goto('/grow-tech/checkout/grow-light');
+  await expect.poll(()=>page.evaluate(()=>window.dataLayer?.filter(item=>item?.event==='growtech_checkout_page_view').length ?? 0)).toBeGreaterThan(0);
+  expect(await page.evaluate(()=>window.dataLayer?.filter(item=>item?.event==='begin_checkout' && item?.items?.[0]?.item_id==='growtech_ag1000_light').length ?? 0)).toBe(0);
   await expect(page.locator('main')).toContainText('199');
   await page.locator('#delivery-country').selectOption('other');
   await expect(page.getByRole('alert')).toContainText('not available for your destination');
@@ -39,5 +56,16 @@ test('featured light has accurate Whop price, attributed reviews and supported d
   await expect(page.locator('.whop-embedded-checkout-host')).toBeVisible();
   await page.locator('#delivery-country').selectOption('US');
   await expect(page.locator('.whop-embedded-checkout-host')).toBeVisible();
+  expect(await page.evaluate(()=>window.dataLayer?.filter(item=>item?.event==='begin_checkout' && item?.items?.[0]?.item_id==='growtech_ag1000_light').length ?? 0)).toBe(1);
+  expect(await page.evaluate(()=>window.dataLayer?.filter(item=>item?.event==='purchase').length ?? 0)).toBe(0);
   await expect(page.getByRole('link',{name:'Open full-page Whop checkout'})).toHaveAttribute('href',/plan_iX2bQNjG0dl3j/);
+});
+
+test('failed and canceled light checkouts do not report purchases or offer file access',async({page})=>{
+  for (const status of ['failed','canceled']) {
+    await page.goto(`/grow-tech/thank-you?product=grow-light&status=${status}`);
+    await expect(page.getByRole('heading',{level:1})).toHaveText('Checkout was not completed');
+    await expect(page.getByRole('link',{name:'Open guide files',exact:true})).toHaveCount(0);
+    expect(await page.evaluate(()=>window.dataLayer?.filter(item=>item?.event==='purchase').length ?? 0)).toBe(0);
+  }
 });

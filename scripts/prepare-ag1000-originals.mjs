@@ -1,0 +1,12 @@
+import fs from 'node:fs/promises';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url);
+const sharp=require('C:/Users/elidu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp');
+const files=[['spectrum','8abf3e33-33e8-4e80-b2a6-3a5ceff8903e'],['dimming','cfd1f4b0-a176-494d-b668-eaf8765bab97'],['specs','141d00db-6c52-4baf-8eb3-43f0f14736cc'],['diodes','ccc7bddd-35f3-4dd6-9cb9-55997c71eb3e']];
+await fs.mkdir('public/images/grow-tech/ag1000-details-v2',{recursive:true});
+for(const [name,id] of files) await sharp(`C:/Users/elidu/AppData/Local/Temp/codex-clipboard-${id}.png`).webp({quality:90}).toFile(`public/images/grow-tech/ag1000-details-v2/${name}.webp`);
+const p='src/pages/GrowTechShop.tsx';let s=await fs.readFile(p,'utf8');
+s=s.replaceAll('/images/grow-tech/ag1000-enhanced-v1/hero.webp','/images/grow-tech/ag1000-details-v2/spectrum.webp').replaceAll('/images/grow-tech/ag1000-enhanced-v1/dimming.webp','/images/grow-tech/ag1000-details-v2/dimming.webp').replaceAll('/images/grow-tech/ag1000-enhanced-v1/specs.webp','/images/grow-tech/ag1000-details-v2/specs.webp').replaceAll('/images/grow-tech/ag1000-enhanced-v1/supplier-claims.webp','/images/grow-tech/ag1000-details-v2/diodes.webp');
+s=s.replace('AI-enhanced product illustration of the ALPHAGROW AG1000 hanging LED panel','AG1000 hanging LED panel and spectrum graphic').replace('AI-enhanced product graphic showing','Product graphic showing').replace('Product performance claims 20% more yield and 30% better cooling; independent testing not verified','Product graphic claiming 20% increased yield; independent testing not verified').replace('AI-enhanced product graphics.','Product graphics.');
+await fs.writeFile(p,s);
+const d='src/data/growTechProducts.ts';s=await fs.readFile(d,'utf8');s=s.replaceAll('/images/grow-tech/ag1000-enhanced-v1/hero.webp','/images/grow-tech/ag1000-details-v2/spectrum.webp').replace('AI-enhanced product illustration of the ALPHAGROW AG1000 hanging LED panel','AG1000 hanging LED panel and spectrum graphic');await fs.writeFile(d,s);

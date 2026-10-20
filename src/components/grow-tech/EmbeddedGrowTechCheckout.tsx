@@ -45,7 +45,7 @@ export default function EmbeddedGrowTechCheckout({
   const [isComplete, setIsComplete] = useState(false);
   const [completedReceiptId, setCompletedReceiptId] = useState<string | undefined>();
   const [promoCopied, setPromoCopied] = useState(false);
-  const includesPlaybook = product.productId === "growtech_scout_guide_bundle";
+  const includesPlaybook = ["growtech_scout_guide_bundle", "growtech_ag1000_light"].includes(product.productId);
 
   const checkoutPayload = useMemo(
     () => growTechEcommercePayload(product, ctaLocation, planId),

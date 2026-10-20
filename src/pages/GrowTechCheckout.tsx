@@ -1,7 +1,7 @@
 import OrderQuestions from "@/components/grow-tech/OrderQuestions";
 import CheckoutAssurances from "@/components/grow-tech/CheckoutAssurances";
 import "@/components/landing/premium.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Download, ShieldCheck, Truck } from "lucide-react";
@@ -9,20 +9,31 @@ import EmbeddedGrowTechCheckout from "@/components/grow-tech/EmbeddedGrowTechChe
 import LandingFooter from "@/components/landing/LandingFooter";
 import SEOHead from "@/components/SEOHead";
 import { allGrowTechOffers, canPurchaseGrowTech, checkoutUrls, IS_JULY_PROMO_ACTIVE, planIds } from "@/data/growTechProducts";
-import { trackGrowTechBeginCheckout } from "@/lib/analytics";
+import { trackGrowTechBeginCheckout, trackEvent } from "@/lib/analytics";
 import { captureGrowTechAttribution } from "@/lib/growTechAttribution";
 
 export default function GrowTechCheckout() {
   const { productSlug } = useParams<{ productSlug: string }>();
   const product = allGrowTechOffers.find((item) => item.anchorId === productSlug);
-  const [deliveryCountry, setDeliveryCountry] = useState("");
+  const begunFor = useRef<string | null>(null);
+  const [destination, setDestination] = useState({ slug: productSlug, country: "" });
+  const deliveryCountry = destination.slug === productSlug ? destination.country : "";
 
   useEffect(() => {
     window.scrollTo(0, 0);
     captureGrowTechAttribution();
-    setDeliveryCountry("");
-    if (product && canPurchaseGrowTech(product)) trackGrowTechBeginCheckout(product, `growtech_checkout_page:${product.anchorId}`, planIds[product.planKey]);
+    begunFor.current = null;
+    if (product) trackEvent("growtech_checkout_page_view", {product_id:product.productId, currency:"USD", value:product.numericPrice});
   }, [productSlug, product]);
+
+  useEffect(() => {
+    if (!product || !canPurchaseGrowTech(product)) return;
+    const ready = product.deliveryKind === 'digital' || product.deliveryCountries?.some(country => country === deliveryCountry);
+    if (ready && begunFor.current !== product.productId) {
+      begunFor.current = product.productId;
+      trackGrowTechBeginCheckout(product, `growtech_checkout_page:${product.anchorId}`, planIds[product.planKey]);
+    }
+  }, [product, deliveryCountry]);
 
   if (!product) {
     return (
@@ -60,13 +71,13 @@ export default function GrowTechCheckout() {
           <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Complete your order</h1>
           <p className="mt-3 font-semibold">{product.name}</p>
           <p className="mt-1 text-xl font-bold">{product.price} <span className="text-sm font-normal">USD · One-time payment</span></p>
-          <CheckoutAssurances hardware={!isDigital}/>
+          <CheckoutAssurances hardware={!isDigital}/>{product.productId === "growtech_ag1000_light" && <p className="mt-3 text-sm text-emerald-200">Playbook kit included — sold separately for $19. Open your files in Whop after confirmed payment.</p>}
           <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-white/75">
             <span className="inline-flex items-center gap-2">{isDigital ? <Download className="h-4 w-4 text-landing-green" /> : <Truck className="h-4 w-4 text-landing-green" />} {isDigital ? "Digital access after purchase" : product.fulfillmentNote}</span>
             <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-landing-green" /> Payment secured by Whop</span>
           </div>
         </div>
-        {!isDigital && <div className="mt-4 rounded-xl border border-white/15 p-4"><label className="block text-sm font-semibold" htmlFor="delivery-country">Delivery country</label><select id="delivery-country" value={deliveryCountry} onChange={event => setDeliveryCountry(event.target.value)} className="mt-2 min-h-11 w-full rounded-lg border border-white/20 bg-[#102016] px-3 text-white"><option value="">Select your delivery country</option><option value="US">United States</option><option value="CA">Canada</option><option value="other">Another country</option></select>{deliveryCountry && !destinationSupported && <p role="alert" className="mt-3 text-sm text-amber-200">This package is not available for your destination yet. No payment form is opened. <Link to="/grow-tech" className="underline">See other GrowTech packages.</Link></p>}<p className="mt-3 text-xs leading-5 text-white/65">Shipping included for supported destinations. Sales tax shown at checkout. Canadian import charges, if assessed, are extra.</p></div>}
+        {!isDigital && <div className="mt-4 rounded-xl border border-white/15 p-4"><label className="block text-sm font-semibold" htmlFor="delivery-country">Delivery country</label><select id="delivery-country" value={deliveryCountry} onChange={event => setDestination({slug:productSlug,country:event.target.value})} className="mt-2 min-h-11 w-full rounded-lg border border-white/20 bg-[#102016] px-3 text-white"><option value="">Select your delivery country</option><option value="US">United States</option><option value="CA">Canada</option><option value="other">Another country</option></select>{deliveryCountry && !destinationSupported && <p role="alert" className="mt-3 text-sm text-amber-200">This package is not available for your destination yet. No payment form is opened. <Link to="/grow-tech" className="underline">See other GrowTech packages.</Link></p>}<p className="mt-3 text-xs leading-5 text-white/65">Shipping included for supported destinations. Sales tax shown at checkout. Canadian import charges, if assessed, are extra.</p></div>}
         <p className="mt-3 text-sm leading-6 text-white/70">Smart Ag AI is the business behind MasterGrowbot. Whop processes your payment. Whop may display a local-currency equivalent; review the final currency, tax and total before paying.</p>
         {destinationSupported && <div className="mt-3" key={product.anchorId}>
           <EmbeddedGrowTechCheckout

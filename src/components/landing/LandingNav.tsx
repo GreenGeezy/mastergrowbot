@@ -9,8 +9,9 @@ const navLinks = [
   { label: 'Guides', to: '/grow-guides' },
 ];
 
-export default function LandingNav({ growTechMode = false }: { growTechMode?: boolean }) {
+export default function LandingNav({ growTechMode = false, onMenuOpenChange }: { growTechMode?: boolean; onMenuOpenChange?: (open: boolean) => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const changeMenu = (open: boolean) => { setMenuOpen(open); onMenuOpenChange?.(open); };
   const navAppStoreUrl = '/#download';
   const mobileNavAppStoreUrl = '/#download';
 
@@ -45,7 +46,7 @@ export default function LandingNav({ growTechMode = false }: { growTechMode?: bo
           )}
         </div>
 
-        <button type="button" onClick={() => setMenuOpen(true)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white lg:hidden" aria-label="Open navigation menu" aria-expanded={menuOpen}>
+        <button type="button" onClick={() => changeMenu(true)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white lg:hidden" aria-label="Open navigation menu" aria-expanded={menuOpen}>
           <Menu className="h-5 w-5" />
         </button>
       </div>
@@ -54,19 +55,19 @@ export default function LandingNav({ growTechMode = false }: { growTechMode?: bo
         <div className="fixed inset-0 z-[100] min-h-svh bg-[#010302]/98 px-5 py-5 backdrop-blur-2xl lg:hidden">
           <div className="flex items-center justify-between">
             <span className="text-sm font-bold text-white">MasterGrowbot <span className="text-landing-green">AI</span></span>
-            <button type="button" onClick={() => setMenuOpen(false)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white" aria-label="Close navigation menu"><X className="h-5 w-5" /></button>
+            <button type="button" onClick={() => changeMenu(false)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white" aria-label="Close navigation menu"><X className="h-5 w-5" /></button>
           </div>
           <div className="mt-12 flex flex-col">
             {navLinks.map((link) => (
-              <Link key={link.to} to={link.to} onClick={() => setMenuOpen(false)} className="flex items-center justify-between border-b border-white/[0.08] py-5 text-2xl font-semibold tracking-tight text-white">
+              <Link key={link.to} to={link.to} onClick={() => changeMenu(false)} className="flex items-center justify-between border-b border-white/[0.08] py-5 text-2xl font-semibold tracking-tight text-white">
                 {link.label}<ArrowRight className="h-5 w-5 text-landing-green" />
               </Link>
             ))}
           </div>
           {growTechMode ? (
-            <Link to="/grow-tech#grow-light" onClick={() => setMenuOpen(false)} className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Featured light · $199 <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/grow-tech#grow-light" onClick={() => changeMenu(false)} className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Featured light · $199 <ArrowRight className="h-4 w-4" /></Link>
           ) : (
-            <a href={mobileNavAppStoreUrl} onClick={() => setMenuOpen(false)} data-cta-location="mobile-navigation:stores" className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Choose your app store <ArrowRight className="h-4 w-4" /></a>
+            <a href={mobileNavAppStoreUrl} onClick={() => changeMenu(false)} data-cta-location="mobile-navigation:stores" className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Choose your app store <ArrowRight className="h-4 w-4" /></a>
           )}
         </div>
       ) : null}
