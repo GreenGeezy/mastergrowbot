@@ -40,7 +40,7 @@ test('GrowTech hub describes current offers and links to the single-product page
   await page.goto('/grow-tech');
   await expect(page.locator('meta[name="description"]')).toHaveCount(1);
   await expect(page.locator('#lens-offer')).toContainText('$119');
-  await expect(page.locator('#soil-meter')).toContainText('$99');
+  await expect(page.locator('#soil-meter')).toContainText('$59');
   await expect(page.locator('#grow-tent')).toContainText('$289');
   await expect(page.locator('body')).not.toContainText(/Best July Deal|AIGROWTECH|July sale price/);
   await expect(page.locator('a[href="/grow-tech/apexel-macro-lens-kit"]').first()).toBeVisible();
