@@ -329,7 +329,7 @@ export const growLightOffer: GrowTechProduct = {
   bestFor: ["Seed starting", "Compact indoor plant spaces"],
   dataCollected: "No sensors or automatic measurements",
   aiHelp: "No automatic app connection.",
-  schemaDescription: "ALPHAGROW AG1000 100W LED grow light, US electrical variant, $199 USD one time with free US shipping. Light only. Estimated delivery 7–12 business days from payment.",
+  schemaDescription: "ALPHAGROW AG1000 100W LED grow light, US electrical variant, $199 USD one time with free shipping to the US and Canada. Light only. Estimated delivery 7–12 business days from payment.",
   sku: "MGB-AG1000-US-V1", category: "Indoor plant grow light",
   buttonLabel: "Get the AG1000 — $199",
   image: "/images/grow-tech/ag1000-enhanced-v1/hero.webp",
@@ -338,8 +338,8 @@ export const growLightOffer: GrowTechProduct = {
   planKey: "NEXT_PUBLIC_WHOP_GROW_LIGHT_PLAN_ID",
   checkoutKey: "NEXT_PUBLIC_WHOP_GROW_LIGHT_CHECKOUT_URL",
   anchorId: "grow-light", availability: "ready", deliveryKind: "hardware",
-  fulfillmentNote: "US only: estimated delivery 7–12 business days from payment. Free shipping. Tracking after dispatch.",
-  deliveryCountries: ["US"],
+  fulfillmentNote: "Free shipping to the US and Canada. US estimated delivery 7–12 business days from payment; contact us for Canadian delivery timing. Tracking after dispatch.",
+  deliveryCountries: ["US", "CA"],
 };
 
 export const allGrowTechOffers: GrowTechProduct[] = [

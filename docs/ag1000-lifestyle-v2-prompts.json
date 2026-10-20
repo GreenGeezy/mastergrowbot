@@ -1,0 +1,14 @@
+{
+  "mode": "Built-in imagegen",
+  "prompts": [
+    [
+      "hero",
+      "Use case: identity-preserve. Create a photorealistic editorial ecommerce lifestyle photograph, no text or logos. Image 1 is identity reference: preserve the exact adult male grower face, short brown hair, trimmed beard, charcoal t-shirt and jeans. Image 2 is product reference: preserve the black rectangular thin LED panel with raised vented black driver housing and silver rotary dimmer, four suspension cables. Show realistic human proportions, natural hands, believable cables and matte metal. Warm natural home light mixed with soft neutral-white LED light, detailed skin and fabric, premium understated photography. This is a conceptual lifestyle illustration, not evidence of results. No huge flowering plants, no harvest or performance promises. Portrait 4:5 composition. The grower kneels at an open compact black reflective grow tent, gently inspecting a small leafy potted plant. The hanging light is clearly visible in the upper third, with generous clearance above the small plants. Three-quarter view of grower face. Show the complete panel inside the tent and natural home studio setting. Product and person equally prominent."
+    ],
+    [
+      "dimmer",
+      "Use case: identity-preserve. Create a photorealistic editorial ecommerce lifestyle photograph, no text or logos. Image 1 is identity reference: preserve the exact adult male grower face, short brown hair, trimmed beard, charcoal t-shirt and jeans. Image 2 is product reference: preserve the black rectangular thin LED panel with raised vented black driver housing and silver rotary dimmer, four suspension cables. Show realistic human proportions, natural hands, believable cables and matte metal. Warm natural home light mixed with soft neutral-white LED light, detailed skin and fabric, premium understated photography. This is a conceptual lifestyle illustration, not evidence of results. No huge flowering plants, no harvest or performance promises. Landscape 4:3 composition. Close three-quarter view of the grower beside the open tent, carefully turning the silver dimmer knob on the side of the suspended light with one hand. Face and hand visible and naturally focused on the knob. Panel is shown at chest level inside the tent; small leafy plants well below it. Strong product detail, subtle background blur."
+    ]
+  ],
+  "note": "Lifestyle illustrations based on grower identity and supplier reference; not product photographs."
+}

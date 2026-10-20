@@ -1,7 +1,9 @@
 import {test,expect} from 'playwright/test';
-test('featured light has accurate Whop price, attributed reviews and US delivery gating',async({page})=>{
+test('featured light has accurate Whop price, attributed reviews and supported delivery gating',async({page})=>{
   await page.goto('/grow-tech');
   await expect(page.getByRole('heading',{level:1})).toHaveCount(1);
+  await expect(page.locator('.gt-hero').getByRole('link',{name:'Get the AG1000'})).toHaveAttribute('href','/grow-tech/checkout/grow-light');
+  await page.locator('.gt-hero').screenshot({path:'output/sales-recovery/hero-v2-desktop.png'});
   await page.screenshot({path:'output/sales-recovery/premium-shop-desktop.png',fullPage:true});
   await expect(page.locator('#soil-meter')).toContainText('$59');
   await expect(page.locator('#grow-light')).toContainText('ALPHAGROW AG1000');
@@ -15,7 +17,7 @@ test('featured light has accurate Whop price, attributed reviews and US delivery
   expect(await page.locator('#grow-light').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('#digital-guides')) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
   expect(await page.locator('#digital-guides').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('#shop-bundles')) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
   await page.getByRole('button',{name:'Grower illustration',exact:true}).click();
-  await expect(page.locator('.gt-light-gallery>img')).toHaveAttribute('src',/grower-one.webp$/);
+  await expect(page.locator('.gt-light-gallery>img')).toHaveAttribute('src',/ag1000-lifestyle-v2\/hero.webp$/);
   await expect(page.getByRole('button',{name:'Grower illustration',exact:true})).toHaveAttribute('aria-pressed','true');
   await page.setViewportSize({width:390,height:844});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
@@ -30,9 +32,11 @@ test('featured light has accurate Whop price, attributed reviews and US delivery
   await expect(page.locator('#delivery-country')).toBeVisible();
   await page.goto('/grow-tech/checkout/grow-light');
   await expect(page.locator('main')).toContainText('199');
-  await page.locator('#delivery-country').selectOption('CA');
+  await page.locator('#delivery-country').selectOption('other');
   await expect(page.getByRole('alert')).toContainText('not available for your destination');
   await expect(page.locator('.whop-embedded-checkout-host')).toHaveCount(0);
+  await page.locator('#delivery-country').selectOption('CA');
+  await expect(page.locator('.whop-embedded-checkout-host')).toBeVisible();
   await page.locator('#delivery-country').selectOption('US');
   await expect(page.locator('.whop-embedded-checkout-host')).toBeVisible();
   await expect(page.getByRole('link',{name:'Open full-page Whop checkout'})).toHaveAttribute('href',/plan_iX2bQNjG0dl3j/);
