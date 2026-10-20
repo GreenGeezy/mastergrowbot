@@ -24,6 +24,7 @@ export type GrowTechProduct = {
   price: string;
   numericPrice: number;
   salePrice: string;
+  regularPrice?: string;
   description: string;
   whyBuy: string;
   bestFor: string[];
@@ -217,16 +218,17 @@ export const quickstartGuide: GrowTechProduct = {
   name: "GrowTech Equipment Quickstart Guide",
   productId: "growtech_equipment_quickstart",
   badge: "Digital download",
-  price: "$19",
-  numericPrice: 19,
-  salePrice: "$19",
+  regularPrice: "$19",
+  price: "$9",
+  numericPrice: 9,
+  salePrice: "$9",
   description: "A 12-page equipment and observation guide, printable worksheets and a CSV log. Take more consistent plant photos, understand reading limitations and keep useful records.",
   whyBuy: "A clear workflow for the tools you already own.",
   bestFor: ["Consistent plant photos", "Equipment handling", "Observation templates"],
   schemaDescription: "Digital equipment quickstart PDF with plant photography, measurement limitations, troubleshooting and observation templates. No hardware or app subscription included.",
   sku: "MGB-EQUIPMENT-QUICKSTART-V1",
   category: "Digital equipment guide",
-  buttonLabel: "Get the Guide — $19",
+  buttonLabel: "Get the Guide — $9",
   image: "/images/playbook/quickstart-cover-v4.webp",
   alt: "Illustration of a magnifying lens, green leaf and notebook for the equipment observation guide",
   planKey: "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_PLAN_ID",
@@ -244,7 +246,7 @@ export const scoutGuideBundle: GrowTechProduct = {
   price: "$119",
   numericPrice: 119,
   salePrice: "$119",
-  description: "APEXEL 10–20X ZoomMacro phone lens with LED ring light, plus the complete $29 Playbook kit: 32-page Playbook, 8 prompts, 8-page workbook, 12-page Quickstart, two worksheets and CSV log. Phone and app subscription separate.",
+  description: "APEXEL 10–20X ZoomMacro phone lens with LED ring light, plus the complete $19 Playbook kit: 32-page Playbook, 8 prompts, 8-page workbook, 12-page Quickstart, two worksheets and CSV log. Phone and app subscription separate.",
   whyBuy: "Put your phone lens to work with a repeatable observation workflow.",
   schemaDescription: "APEXEL 10–20X ZoomMacro lens and LED ring light with the complete MasterGrowbot digital Playbook kit, including Equipment Quickstart, workbook, prompts, worksheets and CSV log. $119 one time. Phone and app subscription not included.",
   sku: "MGB-SCOUT-QUICKSTART-BUNDLE",

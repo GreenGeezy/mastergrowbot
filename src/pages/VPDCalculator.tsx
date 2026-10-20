@@ -545,6 +545,12 @@ export default function VPDCalculator() {
             MasterGrowbot AI keeps VPD readings, grow notes, tasks, and AI plant diagnosis in one journal so each calculator check can become a useful record.
           </p>
           <AppPlatformButtons campaign="vpd-calculator" location="vpd-calculator-results" className="pt-5" />
+          <aside className="mt-6 rounded-xl border border-white/15 p-5 text-sm text-white/75" aria-label="Equipment observation guides">
+            <h3 className="font-bold text-white">Keep the readings behind your VPD result.</h3>
+            <p className="mt-2">Use your own thermometer and humidity meter. The Equipment Quickstart includes a recording routine, worksheets and CSV log.</p>
+            <Link to="/grow-tech/checkout/quickstart-guide?utm_source=vpd-calculator&utm_medium=website&utm_campaign=affordable-growtech" className="mt-3 inline-block font-semibold text-landing-green underline">Equipment Quickstart · $9 sale price</Link>
+            <p className="mt-2 text-xs">Digital download · Hardware separate · Calculator remains free</p>
+          </aside>
         </section>
 
         {/* ── VPD REFERENCE TABLE ───────────────────────────────────────── */}

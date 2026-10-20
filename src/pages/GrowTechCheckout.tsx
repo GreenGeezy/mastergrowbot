@@ -33,7 +33,7 @@ export default function GrowTechCheckout() {
   }
 
   if (!canPurchaseGrowTech(product)) {
-    return <main className="min-h-screen bg-[#060d09] px-5 py-24 text-white"><Helmet><meta name="robots" content="noindex,follow" /></Helmet><div className="mx-auto max-w-xl"><Link to="/grow-tech" className="text-emerald-300 underline">← Back to GrowTech</Link><h1 className="mt-8 text-3xl font-bold">Hardware ordering is paused</h1><p className="mt-4 leading-7 text-white/70">{product.fulfillmentNote || "This hardware offer is unavailable while sourcing and fulfillment are checked. No payment is collected. Existing buyer access remains available through Whop."}</p><Link to="/grow-tech#lens-offer" className="mt-6 inline-block text-emerald-300 underline">Explore the $119 lens + guide package</Link></div></main>;
+    return <main className="min-h-screen bg-[#060d09] px-5 py-24 text-white"><Helmet><meta name="robots" content="noindex,follow" /></Helmet><div className="mx-auto max-w-xl"><Link to="/grow-tech" className="text-emerald-300 underline">← Back to GrowTech</Link><h1 className="mt-8 text-3xl font-bold">Hardware ordering is paused</h1><p className="mt-4 leading-7 text-white/70">This hardware offer is unavailable while sourcing and fulfillment are checked. No payment is collected. Existing buyer access remains available through Whop.</p><Link to="/grow-tech#digital-guides" className="mt-6 inline-block text-emerald-300 underline">Use your existing tools: digital guides from $9</Link></div></main>;
   }
 
   const planId = planIds[product.planKey];

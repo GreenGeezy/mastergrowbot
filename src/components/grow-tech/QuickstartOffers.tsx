@@ -41,7 +41,7 @@ export default function QuickstartOffers() {
         <article id="scout-guide-bundle" className="scroll-mt-24 rounded-2xl border border-white/15 bg-white/[0.035] p-6 sm:p-8">
           <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">Camera + guide · $159 once</p>
           <h3 className="mt-3 text-2xl font-bold">A phone lens. A clear starting point.</h3>
-          <p className="mt-4 leading-7 text-white/75">Get the Scout Camera 10–20X phone lens with the equipment guide, worksheets and log. Save $9 versus the $149 camera and $19 guide purchased separately.</p>
+          <p className="mt-4 leading-7 text-white/75">Get the Scout Camera 10–20X phone lens with the equipment guide, worksheets and log. Includes the complete digital kit; phone and app subscription separate.</p>
           <ul className="mt-5 space-y-2 text-sm leading-6 text-white/75">
             <li>Camera ships free to the US and Canada; tracking follows dispatch.</li>
             <li>Guide access is available through Whop after purchase.</li>

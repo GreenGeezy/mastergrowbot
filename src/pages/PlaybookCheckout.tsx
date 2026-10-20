@@ -39,7 +39,7 @@ export default function PlaybookCheckout() {
           <li>32-page Playbook with eight worked AI prompt walkthroughs</li><li>Eight-page printable and fillable field workbook</li>
           <li>12-page Equipment Quickstart + two worksheets</li><li>CSV log + copy-ready prompt text file</li><li>Six files through your Whop account after payment</li>
         </ul>
-        <p className="mt-6 text-sm font-semibold text-emerald-200">The $19 Quickstart is already included.</p>
+        <p className="mt-6 text-sm font-semibold text-emerald-200">The $9 Quickstart is already included.</p>
         <p className="mt-5 text-xs leading-6 text-white/65">Digital guides. Hardware and app subscriptions are separate. Observation and responsible AI use; no cultivation instructions or guaranteed outcomes. Any applicable tax, final total and purchase terms appear in Whop checkout.</p>
       </section>
       <section className="min-w-0 rounded-2xl bg-white p-3 text-black sm:p-6" aria-label="Secure Whop checkout">

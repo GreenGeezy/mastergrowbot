@@ -1,5 +1,6 @@
 export const PLAYBOOK_PLAN_ID = 'plan_CPtQ7lRK3XyXm';
 export const PLAYBOOK_REGULAR_PRICE = 29;
+export const PLAYBOOK_SALE_PRICE = 19;
 export const PLAYBOOK_CHECKOUT_URL = 'https://whop.com/checkout/ch_r8ysXa4wHaxDQUL/';
 export const PLAYBOOK_FILES_URL = 'https://whop.com/smart-ag-ai/exp_znL1VOOXMbeLcO/app/';
 export const PLAYBOOK_CONTENT_URL = 'https://whop.com/smart-ag-ai/exp_FjIVZ7xazjqlWQ/app/';
@@ -15,5 +16,5 @@ export function playbookEcommercePayload(price: number, location: string) {
   };
 }
 export function playbookOffer() {
-  return { price: PLAYBOOK_REGULAR_PRICE, hostedUrl: PLAYBOOK_CHECKOUT_URL };
+  return { price: PLAYBOOK_SALE_PRICE, regularPrice: PLAYBOOK_REGULAR_PRICE, hostedUrl: PLAYBOOK_CHECKOUT_URL };
 }
