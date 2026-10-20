@@ -58,6 +58,8 @@ export default function GrowTechCheckout() {
         <div className="mt-4 rounded-2xl border border-landing-green/25 bg-landing-green/10 p-4 sm:p-5">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-landing-green">Secure one-time checkout</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Complete your order</h1>
+          <p className="mt-3 font-semibold">{product.name}</p>
+          <p className="mt-1 text-xl font-bold">{product.price} <span className="text-sm font-normal">USD · One-time payment</span></p>
           <CheckoutAssurances hardware={!isDigital}/>
           <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-white/75">
             <span className="inline-flex items-center gap-2">{isDigital ? <Download className="h-4 w-4 text-landing-green" /> : <Truck className="h-4 w-4 text-landing-green" />} {isDigital ? "Digital access after purchase" : product.fulfillmentNote}</span>

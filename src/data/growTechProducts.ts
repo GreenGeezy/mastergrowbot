@@ -1,4 +1,5 @@
 type CheckoutKey =
+  | "NEXT_PUBLIC_WHOP_GROW_LIGHT_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_CHECKOUT_URL"
@@ -8,6 +9,7 @@ type CheckoutKey =
   | "NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL";
 
 type PlanKey =
+  | "NEXT_PUBLIC_WHOP_GROW_LIGHT_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_SOIL_HEALTH_METER_PLAN_ID"
@@ -44,13 +46,14 @@ export type GrowTechProduct = {
   planKey: PlanKey;
   checkoutKey: CheckoutKey;
   anchorId: string;
-  deliveryKind?: "digital" | "hardware-and-digital";
+  deliveryKind?: "digital" | "hardware-and-digital" | "hardware";
   availability?: "ready" | "paused";
   fulfillmentNote?: string;
   deliveryCountries?: ("US" | "CA")[];
 };
 
 export const checkoutUrls: Record<CheckoutKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_GROW_LIGHT_CHECKOUT_URL: "https://whop.com/checkout/plan_iX2bQNjG0dl3j",
   NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL || "https://whop.com/checkout/plan_BkFyLfxmpwIeY",
   NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL || "https://whop.com/checkout/plan_ft9q9KbJXeXj6",
   NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_CHECKOUT_URL:
@@ -63,6 +66,7 @@ export const checkoutUrls: Record<CheckoutKey, string | undefined> = {
 };
 
 export const planIds: Record<PlanKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_GROW_LIGHT_PLAN_ID: "plan_iX2bQNjG0dl3j",
   NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID || "plan_BkFyLfxmpwIeY",
   NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID || "plan_ft9q9KbJXeXj6",
   NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_ENVIRONMENT_MONITOR_PLAN_ID || "plan_Yl4OQwlyNfGBo",
@@ -314,9 +318,33 @@ export const growTentOffer: GrowTechProduct = {
   deliveryCountries: ["US", "CA"],
 };
 
+export const growLightOffer: GrowTechProduct = {
+  ...growTentOffer,
+  name: "ALPHAGROW AG1000 100W LED Grow Light",
+  productId: "growtech_ag1000_light",
+  badge: "Featured light",
+  price: "$199", numericPrice: 199, salePrice: "$199",
+  description: "One ALPHAGROW AG1000 Full Spectrum 100Watts hanging LED grow light, US Type B three-prong plug. Supplier lists 100W input and 20–100% dimming. Light only; tent, plants, ventilation and digital guides are separate.",
+  whyBuy: "Adjustable lighting for seed starting and compact indoor plant setups.",
+  bestFor: ["Seed starting", "Compact indoor plant spaces"],
+  dataCollected: "No sensors or automatic measurements",
+  aiHelp: "No automatic app connection.",
+  schemaDescription: "ALPHAGROW AG1000 100W LED grow light, US electrical variant, $199 USD one time with free US shipping. Light only. Estimated delivery 7–12 business days from payment.",
+  sku: "MGB-AG1000-US-V1", category: "Indoor plant grow light",
+  buttonLabel: "Get the AG1000 — $199",
+  image: "/images/grow-tech/ag1000-enhanced-v1/hero.webp",
+  imageWebp: "/images/grow-tech/ag1000-enhanced-v1/hero.webp",
+  alt: "AI-enhanced supplier illustration of the ALPHAGROW AG1000 hanging LED panel",
+  planKey: "NEXT_PUBLIC_WHOP_GROW_LIGHT_PLAN_ID",
+  checkoutKey: "NEXT_PUBLIC_WHOP_GROW_LIGHT_CHECKOUT_URL",
+  anchorId: "grow-light", availability: "ready", deliveryKind: "hardware",
+  fulfillmentNote: "US only: estimated delivery 7–12 business days from payment. Free shipping. Tracking after dispatch.",
+  deliveryCountries: ["US"],
+};
+
 export const allGrowTechOffers: GrowTechProduct[] = [
   ...products.map((product, index) => index === 2 ? soilGuideOffer : ({ ...product, availability: "paused" as const })),
-  { ...bundle, availability: "paused" }, quickstartGuide, scoutGuideBundle, growTentOffer,
+  { ...bundle, availability: "paused" }, quickstartGuide, scoutGuideBundle, growTentOffer, growLightOffer,
 ];
 
 export function canPurchaseGrowTech(product: GrowTechProduct) {

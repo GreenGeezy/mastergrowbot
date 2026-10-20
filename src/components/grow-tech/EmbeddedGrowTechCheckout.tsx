@@ -23,7 +23,7 @@ type EmbeddedGrowTechCheckoutProps = {
     imageWebp?: string;
     alt: string;
     anchorId?: string;
-    deliveryKind?: "digital" | "hardware-and-digital";
+    deliveryKind?: "digital" | "hardware-and-digital" | "hardware";
   };
   planId?: string;
   deliveryCountry?: string;
@@ -154,7 +154,7 @@ export default function EmbeddedGrowTechCheckout({
           <p className="mt-2 text-sm leading-relaxed text-white/62">
             {product.deliveryKind === "digital" ? "Check the email used at checkout for your receipt and sign in to Whop to access your files." : "Check the email used at checkout for your receipt, order details, and delivery updates."}
           </p>
-          {product.deliveryKind ? <div className="mt-4 flex flex-wrap justify-center gap-4"><a href={includesPlaybook ? PLAYBOOK_CONTENT_URL : QUICKSTART_CONTENT_URL} className="font-semibold text-emerald-300 underline">Open Start Here</a><a href={includesPlaybook ? PLAYBOOK_FILES_URL : QUICKSTART_FILES_URL} className="font-semibold text-emerald-300 underline">Open your guide files</a></div> : null}
+          {product.deliveryKind && product.deliveryKind !== "hardware" ? <div className="mt-4 flex flex-wrap justify-center gap-4"><a href={includesPlaybook ? PLAYBOOK_CONTENT_URL : QUICKSTART_CONTENT_URL} className="font-semibold text-emerald-300 underline">Open Start Here</a><a href={includesPlaybook ? PLAYBOOK_FILES_URL : QUICKSTART_FILES_URL} className="font-semibold text-emerald-300 underline">Open your guide files</a></div> : null}
           {completedReceiptId && (
             <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-landing-green">
               Receipt: {completedReceiptId}
