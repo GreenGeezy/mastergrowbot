@@ -1,4 +1,5 @@
 import OrderQuestions from "@/components/grow-tech/OrderQuestions";
+import CheckoutAssurances from "@/components/grow-tech/CheckoutAssurances";
 import "@/components/landing/premium.css";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -57,13 +58,14 @@ export default function GrowTechCheckout() {
         <div className="mt-4 rounded-2xl border border-landing-green/25 bg-landing-green/10 p-4 sm:p-5">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-landing-green">Secure one-time checkout</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Complete your order</h1>
+          <CheckoutAssurances hardware={!isDigital}/>
           <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-white/75">
             <span className="inline-flex items-center gap-2">{isDigital ? <Download className="h-4 w-4 text-landing-green" /> : <Truck className="h-4 w-4 text-landing-green" />} {isDigital ? "Digital access after purchase" : product.fulfillmentNote}</span>
             <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-landing-green" /> Payment secured by Whop</span>
           </div>
         </div>
         {!isDigital && <div className="mt-4 rounded-xl border border-white/15 p-4"><label className="block text-sm font-semibold" htmlFor="delivery-country">Delivery country</label><select id="delivery-country" value={deliveryCountry} onChange={event => setDeliveryCountry(event.target.value)} className="mt-2 min-h-11 w-full rounded-lg border border-white/20 bg-[#102016] px-3 text-white"><option value="">Select your delivery country</option><option value="US">United States</option><option value="CA">Canada</option><option value="other">Another country</option></select>{deliveryCountry && !destinationSupported && <p role="alert" className="mt-3 text-sm text-amber-200">This package is not available for your destination yet. No payment form is opened. <Link to="/grow-tech" className="underline">See other GrowTech packages.</Link></p>}<p className="mt-3 text-xs leading-5 text-white/65">Shipping included for supported destinations. Sales tax shown at checkout. Canadian import charges, if assessed, are extra.</p></div>}
-        <p className="mt-3 text-sm leading-6 text-white/70">Smart Ag AI is the business behind MasterGrowbot. Whop may display a local-currency equivalent; review the final currency, tax and total before paying.</p>
+        <p className="mt-3 text-sm leading-6 text-white/70">Smart Ag AI is the business behind MasterGrowbot. Whop processes your payment. Whop may display a local-currency equivalent; review the final currency, tax and total before paying.</p>
         {destinationSupported && <div className="mt-3" key={product.anchorId}>
           <EmbeddedGrowTechCheckout
             product={product}
