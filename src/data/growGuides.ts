@@ -1,3 +1,4 @@
+import { ag1000BuyingGuide } from './ag1000BuyingGuide';
 import { AMAZON_BOOK_URL } from '@/components/landing/ctaLinks';
 
 export interface GrowGuideFAQ {
@@ -27,6 +28,7 @@ export interface GrowGuide {
 }
 
 export const growGuides: GrowGuide[] = [
+  ag1000BuyingGuide,
 {
   "slug": "budlabs-vs-mastergrowbot-ai",
   "title": "BudLabs vs MasterGrowbot AI: Which iPhone App Fits Your Workflow?",

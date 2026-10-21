@@ -46,7 +46,7 @@ test('GrowTech hub describes current offers and links to the single-product page
   await expect(page.locator('a[href="/grow-tech/apexel-macro-lens-kit"]').first()).toBeVisible();
   const schemas=(await page.locator('script[type="application/ld+json"]').allTextContents()).map(s=>JSON.parse(s));
   expect(schemas.some(s=>s['@type']==='CollectionPage')).toBe(true);
-  expect(schemas.some(s=>s['@type']==='Product')).toBe(false);
+  expect(schemas.find(s=>s['@type']==='Product')?.offers).toMatchObject({price:'199.00',priceCurrency:'USD',url:'https://www.mastergrowbot.com/grow-tech/checkout/grow-light'});
 });
 
 test('camera guide links to current lens offer without replacing app navigation', async ({ page }) => {

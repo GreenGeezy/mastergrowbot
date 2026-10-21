@@ -104,6 +104,10 @@
   ],
   "rewrites": [
     {
+      "source": "/grow-guides/100w-led-grow-light-buying-checklist",
+      "destination": "/seo/grow-guides/100w-led-grow-light-buying-checklist.html"
+    },
+    {
       "source": "/grow-guides/growdoc-vs-mastergrowbot-ai",
       "destination": "/seo/grow-guides/growdoc-vs-mastergrowbot-ai.html"
     },

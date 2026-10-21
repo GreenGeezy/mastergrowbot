@@ -107,7 +107,7 @@ test.describe("GrowTech testimonial rendering", () => {
       const section=page.locator('[data-section="growtech-testimonials"]');
       await expect(section.locator('blockquote')).toHaveCount(3);
       for(const name of ['Bonnie O.','Stacie H.','Johannes W.']) await expect(section).toContainText(name);
-      await expect(section).toContainText('not purchases of the MasterGrowbot package');
+      await expect(section).toContainText('Independent product reviews');
       const schemas=(await page.locator('script[type="application/ld+json"]').allTextContents()).map(s=>JSON.parse(s));
       for(const schema of schemas) {
         expect(schema.aggregateRating).toBeUndefined();
