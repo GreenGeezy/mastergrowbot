@@ -16,10 +16,17 @@ test('new buying guide is crawlable and leads to the original light and checkout
   const schemas=await page.locator('script[type="application/ld+json"]').allTextContents();expect(schemas.some(s=>JSON.parse(s)['@type']==='Article')).toBe(true);
   await page.locator('article a[href="/grow-tech#grow-light"]').click();await expect(page.locator('#grow-light')).toContainText('$199');
 });
-test('Amazon book sits beside both unchanged digital offers and opens the existing Amazon URL',async({page})=>{
-  await page.goto('/grow-tech');await expect(page.locator('#digital-guides article')).toHaveCount(3);
+test('large digital covers lead to the Amazon gallery below and preserve purchase tracking',async({page})=>{
+  await page.goto('/grow-tech');await expect(page.locator('#digital-guides .shop-digital-grid>article')).toHaveCount(2);
   await expect(page.locator('#digital-guides article').nth(0)).toContainText('Equipment Quickstart');
   await expect(page.locator('#digital-guides article').nth(1)).toContainText('AI Plant Observation Playbook');
+  await page.setViewportSize({width:1440,height:1000});
+  const digitalBox=await page.locator('.shop-digital-grid').boundingBox();
+  const bookBox=await page.locator('[data-offer="amazon-book"]').boundingBox();
+  expect(bookBox!.y).toBeGreaterThan(digitalBox!.y+digitalBox!.height);
+  expect((await page.locator('.shop-digital-grid>article>img').first().boundingBox())!.width).toBeGreaterThan(200);
+  await page.getByRole('button',{name:'Show IPM Playbook image 2',exact:true}).click();
+  await expect(page.locator('[data-offer="amazon-book"] img').first()).toHaveAttribute('src',/KDPImage4/);
   await expect(page.locator('[data-offer="amazon-book"] a')).toHaveAttribute('href','https://a.co/d/07dQFaw0');
   await expect(page.locator('[data-offer="amazon-book"] a')).toHaveAttribute('target','_blank');
   await page.context().route('https://a.co/**',route=>route.fulfill({status:200,contentType:'text/html',body:'<title>Amazon destination fixture</title>'}));

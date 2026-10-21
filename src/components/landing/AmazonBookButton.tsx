@@ -1,4 +1,5 @@
 import { AMAZON_BOOK_URL } from './ctaLinks';
+import { trackEvent } from '@/lib/analytics';
 
 
 interface AmazonBookButtonProps {
@@ -12,12 +13,10 @@ export function AmazonBookButton({
   location = 'unknown',
 }: AmazonBookButtonProps) {
   const handleClick = () => {
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'amazon_book_click', {
+    trackEvent('amazon_book_click', {
         link_url: AMAZON_BOOK_URL,
         location,
       });
-    }
   };
 
   return (

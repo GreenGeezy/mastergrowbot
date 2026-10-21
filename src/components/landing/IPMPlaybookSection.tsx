@@ -20,7 +20,12 @@ const ipmImages = [
   },
 ];
 
-export default function IPMPlaybookSection({ location = "homepage-ipm-playbook" }: { location?: string }) {
+interface IPMPlaybookSectionProps {
+  location?: string;
+  shopOffer?: boolean;
+}
+
+export default function IPMPlaybookSection({ location = "homepage-ipm-playbook", shopOffer = false }: IPMPlaybookSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeImage = ipmImages[activeIndex];
 
@@ -29,23 +34,23 @@ export default function IPMPlaybookSection({ location = "homepage-ipm-playbook" 
   };
 
   return (
-    <section id="ipm-playbook" className="relative z-10 px-4 py-16 sm:px-6 sm:py-20">
+    <section id="ipm-playbook" data-offer={shopOffer ? 'amazon-book' : undefined} className={shopOffer ? 'shop-amazon-book relative z-10 mt-10' : 'relative z-10 px-4 py-16 sm:px-6 sm:py-20'}>
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.045] via-landing-green/[0.045] to-black/20 p-6 shadow-2xl shadow-landing-green/10 backdrop-blur-xl lg:grid-cols-[0.9fr_1.1fr] lg:p-8">
         <div className="flex flex-col justify-center">
           <span className="text-sm font-semibold uppercase tracking-[0.22em] text-landing-green font-sans">
-            IPM PLAYBOOK
+            {shopOffer ? 'AMAZON BOOK' : 'IPM PLAYBOOK'}
           </span>
           <h2 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-white font-sans sm:text-4xl">
-            Stop Pest Outbreaks Before They Cost You Yield
+            {shopOffer ? 'The Master Cannabis IPM Playbook' : 'Stop Pest Outbreaks Before They Cost You Yield'}
           </h2>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-white/62 font-sans">
-            A visual IPM field manual for legal cannabis growers who want cleaner prevention, faster scouting, and
-            better grow documentation.
+            {shopOffer ? 'Explore the book on Amazon alongside the digital Playbook and Equipment Quickstart.' : <>A visual IPM field manual for legal cannabis growers who want cleaner prevention, faster scouting, and
+            better grow documentation.</>}
           </p>
           <div className="mt-6">
             <AmazonBookButton location={location} />
             <p className="mt-2 text-sm font-medium text-white/52 font-sans">
-              The Master Cannabis IPM Playbook for legal growers
+              {shopOffer ? 'Book pricing and available formats are shown on Amazon. Purchased separately from GrowTech hardware and digital kits.' : 'The Master Cannabis IPM Playbook for legal growers'}
             </p>
           </div>
         </div>
