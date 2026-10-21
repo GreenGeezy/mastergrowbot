@@ -22,6 +22,11 @@ test('Amazon book sits beside both unchanged digital offers and opens the existi
   await expect(page.locator('#digital-guides article').nth(1)).toContainText('AI Plant Observation Playbook');
   await expect(page.locator('[data-offer="amazon-book"] a')).toHaveAttribute('href','https://a.co/d/07dQFaw0');
   await expect(page.locator('[data-offer="amazon-book"] a')).toHaveAttribute('target','_blank');
+  await page.context().route('https://a.co/**',route=>route.fulfill({status:200,contentType:'text/html',body:'<title>Amazon destination fixture</title>'}));
+  const popupPromise=page.waitForEvent('popup');
+  await page.locator('[data-offer="amazon-book"] a').click();
+  const popup=await popupPromise;await popup.close();
+  expect(await page.evaluate(()=>window.dataLayer?.filter(e=>(e as {event?:string})?.event==='amazon_book_click').length??0)).toBe(1);
   for(const width of [1440,390,320]){await page.setViewportSize({width,height:1000});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);}
 });
 test('a receipt-bearing return renders the light digital-kit handoff without synthesizing a purchase',async({page})=>{
