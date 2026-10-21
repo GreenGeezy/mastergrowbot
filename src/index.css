@@ -351,3 +351,60 @@ html {
 .whop-embedded-checkout-host [role="listbox"] [role="option"] {
   color: #050806 !important;
 }
+
+/* Scoped decision table for the AG1000 buying guide. Other guide tables are unchanged. */
+.ag1000-compare-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.ag1000-compare-table th,
+.ag1000-compare-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ag1000-compare-table th {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ag1000-compare-table td {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ag1000-compare-table th:first-child,
+.ag1000-compare-table td:first-child {
+  width: 24%;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.ag1000-compare-table td:nth-child(2) {
+  background: rgba(180, 223, 183, 0.06);
+}
+
+@media (max-width: 760px) {
+  .ag1000-compare-table {
+    min-width: 0;
+    width: 100%;
+    font-size: 11px;
+  }
+
+  .ag1000-compare-table th,
+  .ag1000-compare-table td {
+    padding: 8px 7px;
+  }
+
+  .ag1000-compare-table th:first-child,
+  .ag1000-compare-table td:first-child {
+    width: 22%;
+  }
+}
