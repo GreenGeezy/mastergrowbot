@@ -50,6 +50,14 @@ test('GrowTech hub describes current offers and links to the single-product page
   await expect(page.locator('body')).toContainText('sent back and received within 30 days of purchase');
 });
 
+test('Playbook digital offer declares a no-return policy and visible access support', async ({ page }) => {
+  await page.goto('/playbooks');
+  const schemas=(await page.locator('script[type="application/ld+json"]').allTextContents()).map(s=>JSON.parse(s));
+  expect(schemas.find(s=>s['@type']==='Product')?.offers).toMatchObject({price:19,priceCurrency:'USD',url:'https://www.mastergrowbot.com/playbooks',hasMerchantReturnPolicy:{'@type':'MerchantReturnPolicy',returnPolicyCategory:'https://schema.org/MerchantReturnNotPermitted'}});
+  await expect(page.locator('body')).toContainText('Digital purchases are non-refundable');
+  await expect(page.locator('body')).toContainText('If you cannot access your files, contact support and we will help');
+});
+
 test('camera guide links to current lens offer without replacing app navigation', async ({ page }) => {
   await page.goto('/grow-guides/best-cannabis-trichome-camera-lens-options-harvest-timing');
   await expect(page.locator('article a[href="/grow-tech/apexel-macro-lens-kit"]').first()).toBeVisible();
