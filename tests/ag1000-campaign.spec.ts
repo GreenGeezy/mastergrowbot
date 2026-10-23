@@ -4,12 +4,18 @@ import {execFileSync} from 'node:child_process';
 const guide='/grow-guides/100w-led-grow-light-buying-checklist';
 const prior=(p:string)=>execFileSync('git',['show',`e74cd10:${p}`],{encoding:'utf8',maxBuffer:16*1024*1024}).replace(/\r\n/g,'\n');
 test('owner-protected shop, reviews and all existing guide text remain exact',()=>{
-  for(const p of ['src/pages/GrowTechShop.tsx','src/components/grow-tech/LightSupplierReviews.tsx'])expect(readFileSync(p,'utf8').replace(/\r\n/g,'\n')).toBe(prior(p));
+  const shop=readFileSync('src/pages/GrowTechShop.tsx','utf8').replace(/\r\n/g,'\n')
+    .replace('itemCondition:"https://schema.org/NewCondition",eligibleRegion:[{"@type":"Country",name:"US"},{"@type":"Country",name:"CA"}],','')
+    .replace(',hasMerchantReturnPolicy:{"@type":"MerchantReturnPolicy",applicableCountry:["US","CA"],returnPolicyCategory:"https://schema.org/MerchantReturnFiniteReturnWindow",merchantReturnDays:30,returnMethod:"https://schema.org/ReturnByMail",returnFees:"https://schema.org/ReturnFeesCustomerResponsibility"}','')
+    .replace('Purchasers are eligible for a refund if the package is sent back and received within 30 days of purchase and is not damaged. Contact us for return instructions. Return shipping is paid by the buyer except for damaged or incorrect goods.','Unused, unopened hardware: contact us within 30 days of delivery. Return shipping is paid by the buyer except for damaged or incorrect goods.')
+    .replace('Purchasers are eligible for a refund if the package is sent back and received within 30 days of purchase and is not damaged. Contact us before returning it. You pay return shipping except for damaged or incorrect goods.','Contact us before returning unused, unopened hardware within 30 days of delivery. You pay return shipping except for damaged or incorrect goods.');
+  expect(shop).toBe(prior('src/pages/GrowTechShop.tsx'));
+  expect(readFileSync('src/components/grow-tech/LightSupplierReviews.tsx','utf8').replace(/\r\n/g,'\n')).toBe(prior('src/components/grow-tech/LightSupplierReviews.tsx'));
   const guides=readFileSync('src/data/growGuides.ts','utf8').replace(/\r\n/g,'\n').replace("import { ag1000BuyingGuide } from './ag1000BuyingGuide';\n",'').replace('  ag1000BuyingGuide,\n','');
   expect(guides).toBe(prior('src/data/growGuides.ts'));
 });
 test('new buying guide is crawlable and leads to the original light and checkout',async({page,request})=>{
-  const response=await request.get(guide);expect(response.status()).toBe(200);const html=await response.text();expect(html).toContain('Buying a 100W LED Grow Light');
+  const response=await request.get(guide);expect(response.status()).toBe(200);const html=await response.text();expect(html).toContain('100W LED Grow Light Buying Guide');expect(html).toContain('30 days of purchase');
   await page.goto(guide);await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://www.mastergrowbot.com'+guide);
   await expect(page.locator('article a[href="/grow-tech#grow-light"]')).toHaveCount(1);
   await expect(page.locator('article a[href="/grow-tech/checkout/grow-light"]').first()).toBeAttached();

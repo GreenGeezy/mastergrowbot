@@ -128,7 +128,7 @@ Email [support@mastergrowbot.com](mailto:support@mastergrowbot.com) and one of o
 
 ### What is the return policy?
 
-Unused, unopened Grow Tech products may be eligible for return within 30 days of delivery. Customers are responsible for return shipping unless the item arrives damaged or incorrect. Email [support@mastergrowbot.com](mailto:support@mastergrowbot.com) for help.
+Purchasers are eligible for a refund if the package is sent back and received within 30 days of purchase and is not damaged. Customers are responsible for return shipping unless the item arrives damaged or incorrect. Email [support@mastergrowbot.com](mailto:support@mastergrowbot.com) for help.
 
 ## SEO And Structured Data Rules
 
@@ -163,7 +163,7 @@ Only add aggregateRating and Review structured data after real customer reviews 
 1. Open Google's Rich Results Test.
 2. Test `https://www.mastergrowbot.com/grow-tech`.
 3. Confirm Product structured data appears for all 4 Grow Tech products.
-4. Confirm each Product offer includes free shipping details and a 30-day return policy.
+4. Confirm each Product offer includes free shipping details and a 30-day return policy measured from purchase.
 5. Confirm FAQPage structured data matches the visible FAQ.
 6. Confirm BreadcrumbList shows Home > Grow Tech.
 7. Confirm there is no `aggregateRating` or `Review` schema until real customer reviews are live.
