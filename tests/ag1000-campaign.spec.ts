@@ -11,7 +11,11 @@ test('owner-protected shop, reviews and all existing guide text remain exact',()
     .replace('Purchasers are eligible for a refund if the package is sent back and received within 30 days of purchase and is not damaged. Contact us before returning it. You pay return shipping except for damaged or incorrect goods.','Contact us before returning unused, unopened hardware within 30 days of delivery. You pay return shipping except for damaged or incorrect goods.');
   expect(shop).toBe(prior('src/pages/GrowTechShop.tsx'));
   expect(readFileSync('src/components/grow-tech/LightSupplierReviews.tsx','utf8').replace(/\r\n/g,'\n')).toBe(prior('src/components/grow-tech/LightSupplierReviews.tsx'));
-  const guides=readFileSync('src/data/growGuides.ts','utf8').replace(/\r\n/g,'\n').replace("import { ag1000BuyingGuide } from './ag1000BuyingGuide';\n",'').replace('  ag1000BuyingGuide,\n','');
+  const guides=readFileSync('src/data/growGuides.ts','utf8').replace(/\r\n/g,'\n')
+    .replace("import { ag1000BuyingGuide } from './ag1000BuyingGuide';\n",'')
+    .replace('  ag1000BuyingGuide,\n','')
+    .replaceAll(' For the current MasterGrowbot plan split, see [MasterGrowbot Pro vs Premium plans](/grow-guides/mastergrowbot-ai-pro-vs-premium-plans).','')
+    .replace(/\n  \{\n    slug: 'mastergrowbot-ai-pro-vs-premium-plans',[\s\S]*?\n  \},\n\];\n\nexport function getGuideBySlug/, '\n];\n\nexport function getGuideBySlug');
   expect(guides).toBe(prior('src/data/growGuides.ts'));
 });
 test('new buying guide is crawlable and leads to the original light and checkout',async({page,request})=>{

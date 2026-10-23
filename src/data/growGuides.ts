@@ -802,7 +802,7 @@ Growing apps have matured significantly in recent years. The category has evolve
 This comparison covers the five most widely used cannabis growing apps in 2026, evaluated on the features that matter most: AI plant diagnosis capability, strain database quality, grow management tools, cross-platform availability, and value for money.
 
 Download MasterGrowbot AI and start your free 3-day trial before reading any further. Experienced growers consistently point to photo-based AI diagnosis as the feature that delivers the most direct impact on grow outcomes, and it is worth experiencing firsthand rather than reading about.`,
-    sections: [{"heading":"Comparing AI app features","body":"For a focused software checklist covering photo assistance, subscriptions and privacy, read [what to compare in an AI cannabis app](/grow-guides/best-ai-cannabis-growing-apps-2026)."},
+    sections: [{"heading":"Comparing AI app features","body":"For a focused software checklist covering photo assistance, subscriptions and privacy, read [what to compare in an AI cannabis app](/grow-guides/best-ai-cannabis-growing-apps-2026). For the current MasterGrowbot plan split, see [MasterGrowbot Pro vs Premium plans](/grow-guides/mastergrowbot-ai-pro-vs-premium-plans)."},
       {"heading":"Choosing a journal app","body":"For a focused checklist on notes, photos, privacy, and subscription terms, see [how to choose a journal app](/grow-guides/best-cannabis-grow-journal-apps-2026)."},
       {
         heading: 'Why Every Serious Grower Needs a Grow App',
@@ -3495,7 +3495,7 @@ Start your free 7-day trial today and experience data-driven cultivation that ma
     },
     {
       "heading": "Check subscriptions before starting a trial",
-      "body": "Read the plan name, billing period, renewal price and cancellation instructions in your store account. Do not assume that a free download means every feature is free, or that a trial applies to every plan. The [Apple listing](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) distinguishes Pro trial eligibility from Premium plans; terms can differ by platform and account.\n\nThis page does not publish a competitor price table because prices and included features need current verification. Compare what you will actually use, not the largest advertised feature count."
+      "body": "Read the plan name, billing period, renewal price and cancellation instructions in your store account. Do not assume that a free download means every feature is free, or that a trial applies to every plan. The [Apple listing](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) distinguishes Pro trial eligibility from Premium plans; terms can differ by platform and account.\n\nThis page does not publish a competitor price table because prices and included features need current verification. Compare what you will actually use, not the largest advertised feature count. For the current MasterGrowbot plan split, see [MasterGrowbot Pro vs Premium plans](/grow-guides/mastergrowbot-ai-pro-vs-premium-plans)."
     },
     {
       "heading": "Do you need hardware as well as an app?",
@@ -6191,7 +6191,7 @@ For most home growers and small grow rooms, MasterGrowbot AI is the strongest ov
 Most growers do not lose quality because they lacked one more generic article. They lose quality because they identified a problem too late, misread a symptom, forgot what changed three days ago, or adjusted the room without understanding what the plant was actually responding to. That is where AI can be genuinely useful in a cannabis grow.
 
 This guide explains what cannabis grow AI actually does, where it helps the most, where it still needs human verification, and how to use MasterGrowbot AI, the free VPD calculator, and www.mastergrowbot.com as one workflow. If you want diagnosis, notes, tasks, and grow-stage tracking in your pocket, MasterGrowbot AI is available on iOS and Android.`,
-    sections: [{"heading":"Comparing AI app features","body":"For a focused software checklist covering photo assistance, subscriptions and privacy, read [what to compare in an AI cannabis app](/grow-guides/best-ai-cannabis-growing-apps-2026)."},
+    sections: [{"heading":"Comparing AI app features","body":"For a focused software checklist covering photo assistance, subscriptions and privacy, read [what to compare in an AI cannabis app](/grow-guides/best-ai-cannabis-growing-apps-2026). For the current MasterGrowbot plan split, see [MasterGrowbot Pro vs Premium plans](/grow-guides/mastergrowbot-ai-pro-vs-premium-plans)."},
       {
         heading: "Direct Answer: What Cannabis Grow AI Actually Does",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Cannabis grow AI helps growers <strong>diagnose plant problems, organize plant history, prioritize next steps, and interpret recurring patterns</strong> across photos, notes, climate readings, and stage changes. The best tools do not just answer questions. They reduce wrong turns.</p>
@@ -8985,6 +8985,142 @@ Then scan and log the issue in MasterGrowbot AI. The strongest workflow is photo
       "how-to-take-better-cannabis-plant-diagnosis-photos",
       "cannabis-environment-monitor-vs-vpd-calculator",
     ],
+  },
+  {
+    slug: 'mastergrowbot-ai-pro-vs-premium-plans',
+    title: 'MasterGrowbot Pro vs Premium: Plans and Prices Compared',
+    h1: 'MasterGrowbot Pro vs Premium: Which Plan Fits Your Phone?',
+    shortDescription: 'Three plans, two stores, one decision. Compare MasterGrowbot Pro and Premium prices, trial rules and the feature difference before you subscribe.',
+    metaTitle: 'MasterGrowbot Pro vs Premium: Plans and Prices Compared',
+    metaDescription: 'Compare MasterGrowbot Pro vs Premium: iPhone and Android prices, monthly cost, the 3-day Pro trial rule, video analysis and which plan fits your phone.',
+    publishedDate: '2026-10-23T00:00:00Z',
+    modifiedDate: '2026-10-23T00:00:00Z',
+    intro: `MasterGrowbot AI publishes this guide and sells the subscriptions it compares. The prices, trial rules and feature lines below come from the live store listings and the owner pricing section checked on 2026-10-23. This page contains no independent accuracy test and no claim of diagnostic results.
+
+Use the plan name, billing period and price shown on your own purchase sheet. Store prices can differ by region, account and platform.`,
+    sections: [
+      {
+        heading: 'The short answer',
+        body: `Three plans are on sale in the United States. iPhone Pro costs $99.99 per year, $7.99 per week or $29.99 per month. iPhone Premium costs $199 per year, $12.99 per week or $49.99 per month and adds video analysis plus 300 more strain profiles. Android Pro sells annual billing at $59.99 or weekly billing at $6.99.
+
+Pick Premium if you are on iPhone and you want short-video plant analysis or the 600-profile strain library. Pick Pro if photo analysis and the journal cover what you do. Pick Android Pro if you are on Android, because video analysis is sold as an iPhone Premium feature.
+
+The download is free on both stores. The homepage states that photo analysis and journal tools require Pro, so the free download is a trial of the interface, not a free analysis tool.`
+      },
+      {
+        heading: 'Plan and price table',
+        body: `The App Store figures below match the live US listing description and the owner pricing cards on 2026-10-23. The Android annual and weekly prices come from the owner pricing card, because the Google Play page text lists in-app purchases without plan prices. Confirm the charge on the screen your store shows before you confirm a purchase.`,
+        bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Plan</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Store</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Annual</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Monthly</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Weekly</th></tr></thead><tbody><tr><td class="border border-white/20 px-3 py-2">Pro</td><td class="border border-white/20 px-3 py-2">US App Store (iPhone)</td><td class="border border-white/20 px-3 py-2">$99.99</td><td class="border border-white/20 px-3 py-2">$29.99</td><td class="border border-white/20 px-3 py-2">$7.99</td></tr><tr><td class="border border-white/20 px-3 py-2">Premium</td><td class="border border-white/20 px-3 py-2">US App Store (iPhone)</td><td class="border border-white/20 px-3 py-2">$199.00</td><td class="border border-white/20 px-3 py-2">$49.99</td><td class="border border-white/20 px-3 py-2">$12.99</td></tr><tr><td class="border border-white/20 px-3 py-2">Pro</td><td class="border border-white/20 px-3 py-2">Google Play (Android)</td><td class="border border-white/20 px-3 py-2">$59.99</td><td class="border border-white/20 px-3 py-2">Not listed</td><td class="border border-white/20 px-3 py-2">$6.99</td></tr></tbody></table></div>`
+      },
+      {
+        heading: 'What the annual plan saves',
+        body: `This is the part a buyer usually has to compute alone. All figures below are arithmetic on the published prices, and every store bills the plan you select.
+
+Monthly equivalents, using the annual price divided by 12: iPhone Pro runs about $8.33 per month when billed yearly, iPhone Premium about $16.58, and Android Pro about $5.00. Those figures are arithmetic on published prices, not a quoted billing option. Billing happens once, at the annual price.`,
+        bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Plan</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Weekly route</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Annual</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Difference</th></tr></thead><tbody><tr><td class="border border-white/20 px-3 py-2">iPhone Pro</td><td class="border border-white/20 px-3 py-2">$7.99 x 52 = $415.48</td><td class="border border-white/20 px-3 py-2">$99.99</td><td class="border border-white/20 px-3 py-2">$315.49 less</td></tr><tr><td class="border border-white/20 px-3 py-2">iPhone Pro</td><td class="border border-white/20 px-3 py-2">$29.99 x 12 = $359.88</td><td class="border border-white/20 px-3 py-2">$99.99</td><td class="border border-white/20 px-3 py-2">$259.89 less</td></tr><tr><td class="border border-white/20 px-3 py-2">iPhone Premium</td><td class="border border-white/20 px-3 py-2">$12.99 x 52 = $675.48</td><td class="border border-white/20 px-3 py-2">$199.00</td><td class="border border-white/20 px-3 py-2">$476.48 less</td></tr><tr><td class="border border-white/20 px-3 py-2">iPhone Premium</td><td class="border border-white/20 px-3 py-2">$49.99 x 12 = $599.88</td><td class="border border-white/20 px-3 py-2">$199.00</td><td class="border border-white/20 px-3 py-2">$400.88 less</td></tr><tr><td class="border border-white/20 px-3 py-2">Android Pro</td><td class="border border-white/20 px-3 py-2">$6.99 x 52 = $363.48</td><td class="border border-white/20 px-3 py-2">$59.99</td><td class="border border-white/20 px-3 py-2">$303.49 less</td></tr></tbody></table></div>`
+      },
+      {
+        heading: 'The trial rule, stated per plan',
+        body: `The live App Store description says eligible new subscribers can start with a free 3-day Pro trial, and that Premium subscriptions do not include the 3-day Pro introductory free trial. The owner pricing card repeats this: iPhone Pro carries "3 days free for eligible new subscribers" and iPhone Premium carries "Premium has no introductory free trial".
+
+Trial eligibility belongs to your store account, not to this page. Read the sentence your store shows on the purchase sheet before you confirm, because eligibility can differ between new and returning subscribers. A trial that converts into a paid subscription needs a cancellation reminder before the third day. The Apple listing states that subscriptions renew unless canceled at least 24 hours before the end of the current period and that you manage or cancel in your Apple account settings.`
+      },
+      {
+        heading: 'What Premium adds, and what it does not',
+        body: `Premium adds short-video plant analysis and an expanded strain library. The App Store description lists 300 strain profiles with Pro and 600 total with Premium, and the homepage card describes Premium as everything in Pro plus video capture or upload and breeder information.
+
+Video analysis is iPhone only in the current offer. The homepage states that video analysis requires Premium on iOS. An Android buyer cannot buy that feature today at any price.
+
+Premium is not a different diagnosis engine. Both plans run photo-based plant health analysis. The listing describes reports with practical next checks rather than confirmed diagnoses, and no page in this comparison claims a measured accuracy rate.`
+      },
+      {
+        heading: 'Which phone, which plan',
+        body: `The Android and iPhone annual prices differ, $59.99 against $99.99. The listings do not publish a reason for the gap, so treat the store price at purchase as the charge and do not assume the gap is temporary.`,
+        bodyHtml: `<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Your situation</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Sensible plan</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Reason</th></tr></thead><tbody><tr><td class="border border-white/20 px-3 py-2">iPhone, first subscription, unsure about video</td><td class="border border-white/20 px-3 py-2">Pro annual</td><td class="border border-white/20 px-3 py-2">Full photo analysis and journal at the lowest iPhone annual price</td></tr><tr><td class="border border-white/20 px-3 py-2">iPhone, you will record short plant videos</td><td class="border border-white/20 px-3 py-2">Premium annual</td><td class="border border-white/20 px-3 py-2">Video analysis is Premium and iPhone only</td></tr><tr><td class="border border-white/20 px-3 py-2">iPhone, short evaluation before committing</td><td class="border border-white/20 px-3 py-2">Pro weekly or monthly</td><td class="border border-white/20 px-3 py-2">Higher cost per year, cancellable sooner</td></tr><tr><td class="border border-white/20 px-3 py-2">Android, everyday use</td><td class="border border-white/20 px-3 py-2">Android Pro annual</td><td class="border border-white/20 px-3 py-2">Lowest annual price across both stores, photo analysis and journal</td></tr><tr><td class="border border-white/20 px-3 py-2">Android, you want video analysis</td><td class="border border-white/20 px-3 py-2">No plan sells it</td><td class="border border-white/20 px-3 py-2">Premium video analysis is an iPhone feature</td></tr><tr><td class="border border-white/20 px-3 py-2">You want a one-time purchase</td><td class="border border-white/20 px-3 py-2">Skip both</td><td class="border border-white/20 px-3 py-2">Hardware and digital kits are separate one-time products</td></tr></tbody></table></div>`
+      },
+      {
+        heading: 'Who should buy Pro',
+        body: `Buy iPhone Pro if you want photo-based plant health checks, the digital grow journal, task reminders, strain profiles and AI strain guidance on one device, and you do not need short-video analysis. Buy the annual plan if you expect to use the app past a month, because the annual price is $259.89 less than twelve monthly payments on iPhone.
+
+Buy Android Pro if your phone runs Android and you want the same photo and journal workflow. The Android annual plan is the cheapest way into the app at the published prices.`
+      },
+      {
+        heading: 'Who should buy Premium',
+        body: `Buy iPhone Premium if you will use short videos to show leaves, stems and the wider grow, or if the 600-profile strain library matters to your record keeping. The $99.01 annual step up is the whole cost of that decision. If you plan at least one video check-in per week, the step up buys a feature you will use. If most checks are single photos, the feature stays idle.
+
+Skip Premium if your plant checks are single photos and your strain list stays short. Pro covers the photo and journal workflow at half the annual price.`
+      },
+      {
+        heading: 'Who should skip a subscription',
+        body: `Skip the app subscription if you want one-time equipment or digital guides. The GrowTech shop carries the $199 AG1000 100W LED light with the Playbook kit, and the digital offers start at $9 for the Quickstart and $19 for the Playbook kit. Those are separate purchases with no app subscription attached.
+
+Skip it if you only need a vapor pressure deficit reference. The free VPD calculator on this site runs the arithmetic without an account.
+
+Skip it if you expect a guaranteed diagnosis. The store listing describes analysis and next checks, and the app is an informational botanical tool. A subscription buys software access, and the listing does not promise a confirmed diagnosis.`
+      },
+      {
+        heading: 'Pre-purchase checks',
+        body: `1. Read the plan name and billing period on the purchase sheet, not on a comparison page.
+2. Confirm whether the 3-day trial is offered to your account for the plan you selected.
+3. Check the price your store shows for your region. The figures here are US pricing in US dollars, and the listing states that local prices vary.
+4. Confirm the device requirement. The App Store listing states iOS 15.0 or later.
+5. Confirm that video analysis appears in the plan you are buying, and that you are on iPhone.
+6. Set a cancellation reminder if you chose weekly billing or a trial.
+7. Cancel at least 24 hours before the next period in the same account you subscribed with.
+
+Check the live listing on the [App Store](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) or [Google Play](https://play.google.com/store/apps/details?id=com.mastergrowbot.app) before you buy.`
+      },
+      {
+        heading: 'Red flags to check before you pay',
+        body: `Check the plan name and billing period on the purchase sheet. Older comparison pages sometimes describe a free trial with every subscription and list only three price points. The live listing ties the 3-day trial to Pro and prices Premium separately.
+
+Some older third-party pages mix the Pro and Premium annual figures. Check the plan name and billing period on the purchase sheet. The live listing shows $99.99 for Pro annual and $199.00 for Premium annual.
+
+Do not assume the Android listing publishes plan prices. It lists in-app purchases and leaves the numbers to the purchase sheet.
+
+Do not assume a store rating is a sample of many buyers. The US App Store shows 5.0 from 6 ratings on 2026-10-23, which is a small sample and a store figure, not a review score from this site.`
+      },
+      {
+        heading: 'FAQ',
+        body: `**Does Premium have a free trial?** No. The listing gives the 3-day introductory trial to eligible new Pro subscribers and states that Premium does not include it.
+
+**Is Premium worth $99 more per year than Pro?** It is worth it if you will use video analysis or need the 600-profile library. The step up costs about $8.25 per month, while the annual plan itself saves $400.88 against twelve monthly Premium payments.
+
+**Can I use video analysis on Android?** Not in the current offer. Video analysis is described as Premium on iOS, and the Android plan sells photo analysis and journal tools.
+
+**Why does Android Pro cost less per year?** The listings publish different annual prices for each store without a stated reason. Compare the total you will be charged in your own store.
+
+**How many strain profiles do I get?** The App Store description lists 300 with Pro and 600 total with Premium, including breeder information on the Premium card.
+
+**Can I change plans after subscribing?** The listing states that subscription purchases and upgrades are processed through Apple, and that you manage subscriptions in your Apple account settings. Check the change options your store shows before you subscribe.
+
+**What if I only want the journal?** The journal and photo analysis are Pro features, so any paid plan includes the journal. The free VPD calculator covers the arithmetic side without a subscription.`
+      },
+      {
+        heading: 'Sources and dates',
+        body: `- US App Store listing, checked 2026-10-23: Pro $7.99 weekly, $29.99 monthly, $99.99 annual; Premium $12.99 weekly, $49.99 monthly, $199.00 annual; 3-day Pro trial for eligible new subscribers; Premium excludes the trial; 300 strain profiles with Pro, 600 with Premium; video analysis in Premium; version 2.0.3 released 2026-10-19; iOS 15.0 or later; 5.0 from 6 US ratings; 17+.
+- Google Play listing, checked 2026-10-23: 100+ downloads, updated 2026-10-19, Everyone 10+, in-app purchases, no plan prices in the page text, version 2.0 release notes mention reduced weekly and annual Pro prices.
+- Owner pricing section on the homepage, checked 2026-10-23: Android Pro $59.99 annual or $6.99 weekly, iPhone Pro $99.99 annual with a 3-day trial for eligible new subscribers, iPhone Premium $199 annual with no introductory trial, video analysis requires Premium on iOS.
+- Apple subscription terms quoted from the App Store listing description, checked 2026-10-23: auto-renewal, the 24-hour cancellation window and account-settings management.
+
+Prices and plan sets change without notice. Re-check every figure on the purchase sheet before you subscribe.`
+      }
+    ],
+    faqs: [
+      { question: 'Does MasterGrowbot Premium have a free trial?', answer: 'No. The 3-day introductory trial is for eligible new Pro subscribers. Premium does not include the 3-day Pro trial.' },
+      { question: 'How much does MasterGrowbot Pro cost per year?', answer: 'The US App Store lists iPhone Pro at $99.99 per year. Google Play lists Android Pro at $59.99 per year on the owner pricing card.' },
+      { question: 'How much does MasterGrowbot Premium cost?', answer: 'The US App Store lists Premium at $199.00 per year, $49.99 per month or $12.99 per week.' },
+      { question: 'What does Premium add over Pro?', answer: 'Premium adds short-video plant analysis and expands the strain library from 300 to 600 profiles. Video analysis is an iPhone feature in the current offer.' },
+      { question: 'Is video analysis available on Android?', answer: 'Not in the current offer. Video analysis is described as Premium on iOS, and the Android plan sells photo analysis and journal tools.' },
+      { question: 'Why is Android Pro cheaper than iPhone Pro?', answer: 'The listings publish different annual prices for each store without a stated reason. Check the total your own store will charge.' },
+      { question: 'Can I cancel or change my plan?', answer: 'Manage the subscription in the store account you used to buy it. Apple states that subscriptions renew unless canceled at least 24 hours before the current period ends.' }
+    ],
+    relatedSlugs: [
+      'best-cannabis-growing-apps-2026',
+      'best-ai-cannabis-growing-apps-2026',
+      'higrade-vs-mastergrowbot-ai',
+      'cannabis-grow-journal'
+    ]
   },
 ];
 

@@ -58,6 +58,24 @@ test('Playbook digital offer declares a no-return policy and visible access supp
   await expect(page.locator('body')).toContainText('If you cannot access your files, contact support and we will help');
 });
 
+test('plans guide publishes verified prices, trial rule and one canonical', async ({ page }) => {
+  await page.goto('/grow-guides/mastergrowbot-ai-pro-vs-premium-plans');
+  await expect(page.locator('meta[name="description"]')).toHaveCount(1);
+  await expect(page.locator('h1')).toContainText('MasterGrowbot Pro vs Premium');
+  await expect(page.locator('body')).toContainText('$99.99');
+  await expect(page.locator('body')).toContainText('$199.00');
+  await expect(page.locator('body')).toContainText('$59.99');
+  await expect(page.locator('body')).toContainText('3-day Pro trial');
+  await expect(page.locator('body')).toContainText('video analysis');
+  await expect(page.locator('body')).not.toContainText('$199.99');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://www.mastergrowbot.com/grow-guides/mastergrowbot-ai-pro-vs-premium-plans');
+  const schemas=(await page.locator('script[type="application/ld+json"]').allTextContents()).map(s=>JSON.parse(s));
+  expect(schemas.some(s=>s['@type']==='Article')).toBe(true);
+  expect(schemas.some(s=>s['@type']==='BreadcrumbList')).toBe(true);
+  await expect(page.locator('a[href*="apps.apple.com"]').first()).toBeVisible();
+  await expect(page.locator('a[href*="play.google.com"]').first()).toBeVisible();
+});
+
 test('camera guide links to current lens offer without replacing app navigation', async ({ page }) => {
   await page.goto('/grow-guides/best-cannabis-trichome-camera-lens-options-harvest-timing');
   await expect(page.locator('article a[href="/grow-tech/apexel-macro-lens-kit"]').first()).toBeVisible();
