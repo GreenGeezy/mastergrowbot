@@ -10,6 +10,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm ci",
+  "trailingSlash": false,
   "crons": [
     {
       "path": "/api/newsletter/monthly-send",
