@@ -1003,7 +1003,7 @@ For more on the specific problems MasterGrowbot AI helps you solve, read the can
           'MasterGrowbot AI is the only app in this comparison that combines photo-based AI plant diagnosis, a comprehensive cannabis strain database, a harvest window detection feature, a personalized daily task system, and a structured grow journal in a single platform. Competing apps either specialize in one feature (basic tracking, general plant diagnosis, or knowledge reference) or serve a different use case entirely. For growers who want a complete cultivation tool rather than a single-feature app, MasterGrowbot AI is in a different category.',
       },
     ],
-    relatedSlugs: ['cannabis-nutrient-deficiency-guide', 'how-to-grow-cannabis-indoors-beginners', 'budlabs-vs-mastergrowbot-ai'],
+    relatedSlugs: ['cannabis-ph-guide', 'cannabis-nutrient-deficiency-guide', 'how-to-grow-cannabis-indoors-beginners', 'budlabs-vs-mastergrowbot-ai'],
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -3521,8 +3521,10 @@ Start your free 7-day trial today and experience data-driven cultivation that ma
     }
   ],
   "relatedSlugs": [
-    "best-cannabis-grow-journal-apps-2026",
+    "cannabis-nutrient-deficiency-guide",
+    "how-to-grow-cannabis-indoors-beginners",
     "best-ai-plant-diagnosis-apps-cannabis",
+    "best-cannabis-grow-journal-apps-2026",
     "cannabis-plant-identifier-apps-2026"
   ]
 },
@@ -3571,6 +3573,8 @@ Start your free 7-day trial today and experience data-driven cultivation that ma
     ],
     "faqs": [],
     "relatedSlugs": [
+      "cannabis-watering-schedule-guide",
+      "cannabis-humidity-guide",
       "best-cannabis-growing-apps-2026",
       "best-ai-cannabis-growing-apps-2026"
     ]
@@ -3725,7 +3729,7 @@ Download MasterGrowbot AI for [iOS](https://apps.apple.com/us/app/mastergrowbot-
       answer: "Check VPD calculations 2-3 times daily during lights-on periods to understand your environment's fluctuations. MasterGrowbot AI can automate this monitoring and alert you when VPD moves outside optimal ranges for your plants' current growth stage.",
     }
     ],
-    relatedSlugs: ["cannabis-vpd-guide", "best-cannabis-growing-apps-2026"],
+    relatedSlugs: ["how-to-calculate-vpd-for-cannabis", "leaf-vpd-calculator-cannabis", "cannabis-vpd-chart-by-growth-stage", "cannabis-vpd-with-co2", "cannabis-vpd-guide", "best-cannabis-growing-apps-2026"],
   },
   // ─────────────────────────────────────────────────────────────
   // AUTO-PUBLISHED: Outdoor Cannabis Growing Guide for Beginners: Seed to Harvest
@@ -6017,14 +6021,13 @@ This guide compares the best cannabis grow tracking apps in 2026, explains what 
   // ─────────────────────────────────────────────────────────────
   {
     slug: "best-cannabis-cultivation-software-home-growers",
-    title: "Best Cannabis Cultivation Software for Home Growers and Small Grow Rooms",
-    h1: "Best Cannabis Cultivation Software for Home Growers and Small Grow Rooms in 2026",
+    title: "Best Cannabis Cultivation Software: 2026 Comparison",
+    h1: "Best Cannabis Cultivation Software for Home Growers: 2026 Comparison",
     shortDescription:
-      "Compare the best cannabis cultivation software for home growers and small grow rooms, including diagnosis, journaling, climate workflow, reminders, and public grow research.",
-    metaTitle:
-      "Best Cannabis Cultivation Software 2026 Checklist | MasterGrowbot AI",
+      "Compare the best cannabis cultivation software for home growers and small grow rooms: what each app tracks, journal and diagnosis features, pricing, privacy and fit.",
+    metaTitle: "Best Cannabis Cultivation Software: 2026 Comparison",
     metaDescription:
-      "Compare cannabis cultivation software for home growers in 2026. Use a practical checklist for diagnosis, journals, tasks, climate notes, privacy, and app store terms.",
+      "Compare cannabis cultivation software for home growers: what each app tracks, journal and diagnosis features, subscription cost, privacy and which grow room it fits.",
     publishedDate: "2026-06-28T00:00:00Z",
     modifiedDate: "2026-09-08T00:00:00Z",
     intro: `The best cannabis cultivation software for home growers is not the most complicated platform. It is the software that keeps plant photos, journal notes, tasks, and room context close enough that you can review what changed before making the next decision.
@@ -7748,13 +7751,13 @@ Then inspect the plant before making the correction. Leaf posture, dry-back spee
   },
   {
     slug: "cannabis-plant-camera-vs-phone-camera",
-    title: "Plant Camera vs Phone Camera: Which Gives Better Diagnosis Photos?",
-    h1: "Plant Camera vs Phone Camera: Phone, Webcam, or Close-Up Lens?",
+    title: "Cannabis Plant Camera vs Phone Camera: Diagnosis Photo Guide",
+    h1: "Cannabis Plant Camera vs Phone Camera: Phone, Webcam, or Close-Up Lens?",
     shortDescription:
-      "Compare phone cameras, webcams, and close-up plant cameras for diagnosis photos, pest checks, trichomes, grow journals, and MasterGrowbot AI scan workflows.",
-    metaTitle: "Plant Camera vs Phone Camera vs Webcam | MasterGrowbot AI",
+      "Compare phone cameras, webcams, and close-up cannabis plant cameras for diagnosis photos, pest checks, trichomes, grow journals, and MasterGrowbot AI scan workflows.",
+    metaTitle: "Cannabis Plant Camera vs Phone Camera vs Webcam | MasterGrowbot AI",
     metaDescription:
-      "Plant camera vs phone camera vs webcam: learn which gives better diagnosis photos for leaves, pests, trichomes, bud checks, and AI plant scans.",
+      "Cannabis plant camera vs phone camera vs webcam: which gives better diagnosis photos for leaves, pests, trichomes and bud checks, and how AI scans use them.",
     publishedDate: "2026-07-18T00:00:00Z",
     modifiedDate: "2026-09-10T00:00:00Z",
     intro: `A phone camera is enough for many plant diagnosis photos, including cannabis diagnosis photos, but a dedicated close-up plant camera can give better evidence when small details matter. Leaf spots, pest eggs, webbing, mildew texture, trichomes, and bud structure can be difficult to capture clearly with a normal phone lens.

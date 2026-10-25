@@ -109,16 +109,18 @@ test('VPD calculator targets high-volume search intent and tracks app CTAs', asy
   await page.goto('/vpd-calculator');
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.mastergrowbot.com/vpd-calculator');
-  expect(await page.title()).toMatch(/VPD Calculator: Free Leaf VPD Chart/);
+  expect(await page.title()).toMatch(/Free VPD Calculator: Leaf VPD and Stage Chart/);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /free VPD calculator/i);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('VPD Calculator: Free Leaf VPD and Chart for Cannabis');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('VPD Calculator: Leaf VPD and Chart by Growth Stage');
   await expect(page.getByRole('heading', { name: 'Calculate VPD from temperature and humidity, then compare it to your stage target.' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'VPD guide' })).toHaveAttribute('href', '/grow-guides/cannabis-vpd-guide');
   await expect(page.getByRole('link', { name: 'Leaf VPD explainer' })).toHaveAttribute('href', '/grow-guides/leaf-vpd-calculator-cannabis');
   await expect(page.getByRole('link', { name: 'VPD calculator apps' })).toHaveAttribute('href', '/grow-guides/best-vpd-calculator-apps-cannabis');
+  await expect(page.getByRole('link', { name: 'VPD chart by growth stage' })).toHaveAttribute('href', '/grow-guides/cannabis-vpd-chart-by-growth-stage');
+  await expect(page.getByRole('link', { name: 'How to calculate VPD' })).toHaveAttribute('href', '/grow-guides/how-to-calculate-vpd-for-cannabis');
   await expect(page.getByRole('link', { name: 'Environment monitor kit' })).toHaveAttribute('href', '/grow-tech#environment-monitor');
 
-  for (const href of ['/grow-guides/cannabis-vpd-guide', '/grow-guides/leaf-vpd-calculator-cannabis', '/grow-guides/best-vpd-calculator-apps-cannabis', '/grow-tech']) {
+  for (const href of ['/grow-guides/cannabis-vpd-guide', '/grow-guides/leaf-vpd-calculator-cannabis', '/grow-guides/best-vpd-calculator-apps-cannabis', '/grow-guides/cannabis-vpd-chart-by-growth-stage', '/grow-guides/how-to-calculate-vpd-for-cannabis', '/grow-tech']) {
     expect((await request.get(href)).status(), href).toBe(200);
   }
 
@@ -190,6 +192,15 @@ test('cultivation software guide has updated checklist, schema date and body CTA
   expect(events).toHaveLength(2);
   expect(events[0]).toEqual(['event', 'ios_app_click', expect.objectContaining({ article_slug: 'best-cannabis-cultivation-software-home-growers', page_path: cultivationTarget, cta_location: 'article-body:ios', link_url: expect.stringContaining('apps.apple.com') })]);
   expect(events[1]).toEqual(['event', 'android_app_click', expect.objectContaining({ article_slug: 'best-cannabis-cultivation-software-home-growers', cta_location: 'article-body:android', link_url: expect.stringContaining('play.google.com') })]);
+});
+
+test('camera comparison guide names the cannabis audience in title, H1 and description', async ({ page }) => {
+  await page.goto('/grow-guides/cannabis-plant-camera-vs-phone-camera');
+  expect(await page.title()).toMatch(/^Cannabis Plant Camera vs Phone Camera/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cannabis Plant Camera vs Phone Camera: Phone, Webcam, or Close-Up Lens?');
+  const description = await page.locator('meta[name="description"]').getAttribute('content');
+  expect(description).toMatch(/^Cannabis plant camera vs phone camera/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.mastergrowbot.com/grow-guides/cannabis-plant-camera-vs-phone-camera');
 });
 
 test('AI plant diagnosis guide targets rising diagnosis-app intent', async ({ page, request }) => {

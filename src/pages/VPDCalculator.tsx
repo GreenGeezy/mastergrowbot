@@ -126,7 +126,7 @@ const breadcrumbSchema = {
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
-  name: 'VPD Calculator: Free Leaf VPD Chart for Cannabis',
+  name: 'Free VPD Calculator: Leaf VPD and Stage Chart',
   description: 'Calculate air VPD and leaf VPD from temperature, humidity, growth stage, and lighting type.',
   url: 'https://www.mastergrowbot.com/vpd-calculator',
   applicationCategory: 'UtilityApplication',
@@ -237,8 +237,8 @@ export default function VPDCalculator() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <SEOHead
-        title="VPD Calculator: Free Leaf VPD Chart | MasterGrowbot AI"
-        description="Use a free VPD calculator for cannabis. Enter temperature, humidity and lighting type to see air VPD, leaf VPD, target range and app tracking links."
+        title="Free VPD Calculator: Leaf VPD and Stage Chart | MasterGrowbot AI"
+        description="Use this free VPD calculator for cannabis to see leaf VPD, the target range for each growth stage, and a chart by stage. Enter temperature, humidity and lighting type."
         canonicalUrl="https://www.mastergrowbot.com/vpd-calculator"
       />
       <Helmet>
@@ -261,7 +261,7 @@ export default function VPDCalculator() {
         {/* ── HERO ──────────────────────────────────────────────────────── */}
         <header className="mb-10 space-y-4">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
-            VPD Calculator: Free Leaf VPD and Chart for Cannabis
+            VPD Calculator: Leaf VPD and Chart by Growth Stage
           </h1>
           <p className="text-base sm:text-lg text-white/60 font-sans max-w-2xl leading-relaxed">
             Use this free VPD calculator to convert temperature, humidity, lighting type, and growth stage into air VPD, leaf VPD, target range, and a clear status.
@@ -293,6 +293,8 @@ export default function VPDCalculator() {
             <Link to="/grow-guides/cannabis-vpd-guide" className="text-landing-green hover:underline">VPD guide</Link>
             <Link to="/grow-guides/leaf-vpd-calculator-cannabis" className="text-landing-green hover:underline">Leaf VPD explainer</Link>
             <Link to="/grow-guides/best-vpd-calculator-apps-cannabis" className="text-landing-green hover:underline">VPD calculator apps</Link>
+            <Link to="/grow-guides/cannabis-vpd-chart-by-growth-stage" className="text-landing-green hover:underline">VPD chart by growth stage</Link>
+            <Link to="/grow-guides/how-to-calculate-vpd-for-cannabis" className="text-landing-green hover:underline">How to calculate VPD</Link>
             <Link to="/grow-tech#environment-monitor" className="text-landing-green hover:underline">Environment monitor kit</Link>
           </div>
         </section>
