@@ -263,7 +263,7 @@ export const scoutGuideBundle: GrowTechProduct = {
   anchorId: "scout-guide-bundle",
   deliveryKind: "hardware-and-digital",
   availability: "ready",
-  fulfillmentNote: "US & Canada: estimated delivery 2–4 weeks from payment. Shipping included. Tracking after dispatch.",
+  fulfillmentNote: "US & Canada: estimated delivery about two weeks from payment. Shipping included. Global supply-chain and carrier delays may extend delivery times. Tracking after dispatch.",
   deliveryCountries: ["US", "CA"],
 };
 
@@ -286,7 +286,7 @@ export const soilGuideOffer: GrowTechProduct = {
   alt: "AI illustration of the white six-function soil meter with two probes",
   availability: "ready",
   deliveryKind: "hardware-and-digital",
-  fulfillmentNote: "US & Canada: estimated delivery 2–4 weeks from payment. Shipping included. Tracking after dispatch.",
+  fulfillmentNote: "US & Canada: estimated delivery about two weeks from payment. Shipping included. Global supply-chain and carrier delays may extend delivery times. Tracking after dispatch.",
   deliveryCountries: ["US", "CA"],
 };
 
@@ -303,7 +303,7 @@ export const growTentOffer: GrowTechProduct = {
   bestFor: ["Small indoor spaces", "Seedlings and compact plants", "Keeping an observation routine"],
   dataCollected: "No sensors or automatic measurements",
   aiHelp: "No automatic app connection; use the guide and log independently.",
-  schemaDescription: "Unbranded 60 × 60 × 140 cm grow tent with MasterGrowbot guide and templates. Tent only: lighting and ventilation are sold separately. US and Canada, $289 one time; estimated delivery 3–4 weeks from payment.",
+  schemaDescription: "Unbranded 60 × 60 × 140 cm grow tent with MasterGrowbot guide and templates. Tent only: lighting and ventilation are sold separately. US and Canada, $289 one time; estimated delivery about two weeks from payment.",
   sku: "MGB-TENT-QUICKSTART-V2",
   category: "Indoor grow tent",
   buttonLabel: "Get the tent + guide — $289",
@@ -314,7 +314,7 @@ export const growTentOffer: GrowTechProduct = {
   checkoutKey: "NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL",
   anchorId: "grow-tent",
   availability: "ready",
-  fulfillmentNote: "US & Canada: estimated delivery 3–4 weeks from payment. Shipping included. Tracking after dispatch.",
+  fulfillmentNote: "US & Canada: estimated delivery about two weeks from payment. Shipping included. Global supply-chain and carrier delays may extend delivery times. Tracking after dispatch.",
   deliveryCountries: ["US", "CA"],
 };
 
@@ -329,7 +329,7 @@ export const growLightOffer: GrowTechProduct = {
   bestFor: ["Seed starting", "Compact indoor plant spaces"],
   dataCollected: "No sensors or automatic measurements",
   aiHelp: "No automatic app connection.",
-  schemaDescription: "ALPHAGROW AG1000 100W LED grow light, US electrical variant, $199 USD one time with free shipping to the US and Canada. Complete Playbook digital kit included. US estimated delivery 7–12 business days from payment; contact us for Canadian timing.",
+  schemaDescription: "ALPHAGROW AG1000 100W LED grow light, US electrical variant, $199 USD one time with free shipping to the US and Canada. Complete Playbook digital kit included. Estimated delivery about two weeks from confirmed payment. Global supply-chain and carrier delays may extend delivery times.",
   sku: "MGB-AG1000-US-V1", category: "Indoor plant grow light",
   buttonLabel: "Get the AG1000 — $199",
   image: "/images/grow-tech/ag1000-details-v2/spectrum.webp",
@@ -338,7 +338,7 @@ export const growLightOffer: GrowTechProduct = {
   planKey: "NEXT_PUBLIC_WHOP_GROW_LIGHT_PLAN_ID",
   checkoutKey: "NEXT_PUBLIC_WHOP_GROW_LIGHT_CHECKOUT_URL",
   anchorId: "grow-light", availability: "ready", deliveryKind: "hardware-and-digital",
-  fulfillmentNote: "Free shipping to the US and Canada. US estimated delivery 7–12 business days from payment; contact us for Canadian delivery timing. Tracking after dispatch.",
+  fulfillmentNote: "Free shipping to the US and Canada. Estimated delivery about two weeks from confirmed payment. Global supply-chain and carrier delays may extend delivery times. Tracking after dispatch.",
   deliveryCountries: ["US", "CA"],
 };
 

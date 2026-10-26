@@ -20,11 +20,12 @@ test('lens offer matches visible price, honest delivery and product schema', asy
   page.on('console', msg => { if (msg.type() === 'error' && /hydrat|#4(18|23|25)/i.test(msg.text())) errors.push(msg.text()); });
   await page.goto(lens);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('APEXEL 10–20X macro lens kit');
-  await expect(page.locator('main')).toContainText('2–4 weeks from payment');
+  await expect(page.locator('main')).toContainText('about two weeks from payment');
   const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(s => JSON.parse(s));
   const product = schemas.find(s => s['@type'] === 'Product');
   expect(product.offers.price).toBe(119);
-  expect(product.offers.shippingDetails).toBeUndefined();
+  expect(product.offers.shippingDetails.shippingRate.value).toBe(0);
+  expect(product.offers.shippingDetails.deliveryTime).toBeUndefined();
   expect(product.aggregateRating).toBeUndefined();
   expect(schemas.some(s => s['@type'] === 'BreadcrumbList')).toBe(true);
   await expect(page.locator('[data-section="growtech-testimonials"] blockquote')).toHaveCount(3);
