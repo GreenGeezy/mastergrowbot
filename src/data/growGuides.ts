@@ -794,7 +794,7 @@ For more in-depth coverage of specific topics covered in this guide, see the can
     metaDescription:
       'We compared every cannabis growing app in 2026. The #1 ranked app uses AI to prevent crop loss, track grows, and maximize yields. Free 3-day trial included.',
     publishedDate: '2026-03-28T00:00:00Z',
-    modifiedDate: "2026-10-17T00:00:00Z",
+    modifiedDate: "2026-10-26T00:00:00Z",
     intro: `The right growing app can be the difference between a reactive grower who discovers problems too late and a proactive one who prevents them entirely. Cannabis cultivation involves dozens of variables that interact across a grow cycle lasting months: pH, EC, VPD, feeding schedules, training timing, environmental conditions, pest monitoring, and harvest timing. Managing all of these mentally, without a documented system, is how avoidable problems compound into real losses.
 
 Growing apps have matured significantly in recent years. The category has evolved from simple grow diaries and reminder tools into platforms that incorporate AI plant diagnosis, strain databases, environmental tracking, and personalized daily task systems. The gap between the best and the rest is now substantial.
@@ -846,7 +846,7 @@ Grow journal: Structured logging across multiple grows, building a documented hi
 
 VPD (vapor pressure deficit) tracking: For growers managing climate precisely, VPD monitoring helps optimize transpiration and nutrient uptake across the canopy.
 
-Pricing: Free 3-day trial, then $7.99 per week, $29.99 per month, or $199.99 per year. Available on iOS and Android.
+Pricing: The current U.S. App Store description lists Pro at $7.99 per week, $29.99 per month, or $99.99 per year, with a 3-day trial for eligible new Pro subscribers. Premium is $12.99 per week, $49.99 per month, or $199.00 per year and excludes the Pro trial. The app is available on iOS and Android; local and platform prices may differ. Check the store before subscribing.
 
 Best for: All growers who want a single, comprehensive app covering every stage of the grow cycle. Particularly valuable for growers who have struggled with plant problems and want accurate AI diagnosis rather than guesswork.`,
       },

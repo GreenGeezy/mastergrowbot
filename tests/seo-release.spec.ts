@@ -46,6 +46,9 @@ test('GrowTech hub describes current offers and links to the single-product page
   await expect(page.locator('a[href="/grow-tech/apexel-macro-lens-kit"]').first()).toBeVisible();
   const schemas=(await page.locator('script[type="application/ld+json"]').allTextContents()).map(s=>JSON.parse(s));
   expect(schemas.some(s=>s['@type']==='CollectionPage')).toBe(true);
+  const productImage = schemas.find(s=>s['@type']==='Product')?.image;
+  expect(productImage).toBe('https://www.mastergrowbot.com/images/grow-tech/ag1000-details-v2/spectrum.webp');
+  expect((await page.request.get(productImage)).status()).toBe(200);
   expect(schemas.find(s=>s['@type']==='Product')?.offers).toMatchObject({price:'199.00',priceCurrency:'USD',url:'https://www.mastergrowbot.com/grow-tech/checkout/grow-light',hasMerchantReturnPolicy:{'@type':'MerchantReturnPolicy',merchantReturnDays:30,returnPolicyCategory:'https://schema.org/MerchantReturnFiniteReturnWindow',returnMethod:'https://schema.org/ReturnByMail',returnFees:'https://schema.org/ReturnFeesCustomerResponsibility'}});
   await expect(page.locator('body')).toContainText('sent back and received within 30 days of purchase');
 });

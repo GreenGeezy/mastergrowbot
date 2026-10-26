@@ -15,7 +15,7 @@ test('owner-protected shop, reviews and all existing guide text remain exact',()
     .replace("import { ag1000BuyingGuide } from './ag1000BuyingGuide';\n",'')
     .replace('  ag1000BuyingGuide,\n','')
     .replaceAll(' For the current MasterGrowbot plan split, see [MasterGrowbot Pro vs Premium plans](/grow-guides/mastergrowbot-ai-pro-vs-premium-plans).','')
-    .replace(/\n  \{\n    slug: 'mastergrowbot-ai-pro-vs-premium-plans',[\s\S]*?\n  \},\n\];\n\nexport function getGuideBySlug/, '\n];\n\nexport function getGuideBySlug');
+    .replace(/\n {2}\{\n {4}slug: 'mastergrowbot-ai-pro-vs-premium-plans',[\s\S]*?\n {2}\},\n\];\n\nexport function getGuideBySlug/, '\n];\n\nexport function getGuideBySlug');
   expect(guides).toBe(prior('src/data/growGuides.ts'));
 });
 test('new buying guide is crawlable and leads to the original light and checkout',async({page,request})=>{
