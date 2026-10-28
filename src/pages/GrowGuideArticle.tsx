@@ -100,7 +100,7 @@ export default function GrowGuideArticle() {
 
   const relatedGuides = growGuides.filter(
     (g) => g.slug !== guide.slug && (guide.relatedSlugs.includes(g.slug) || guide.relatedSlugs.length === 0)
-  ).slice(0, 3);
+  ).slice(0, 4);
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">

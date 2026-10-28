@@ -291,10 +291,8 @@ export default function VPDCalculator() {
           </p>
           <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm font-sans">
             <Link to="/grow-guides/cannabis-vpd-guide" className="text-landing-green hover:underline">VPD guide</Link>
-            <Link to="/grow-guides/leaf-vpd-calculator-cannabis" className="text-landing-green hover:underline">Leaf VPD explainer</Link>
             <Link to="/grow-guides/best-vpd-calculator-apps-cannabis" className="text-landing-green hover:underline">VPD calculator apps</Link>
             <Link to="/grow-guides/cannabis-vpd-chart-by-growth-stage" className="text-landing-green hover:underline">VPD chart by growth stage</Link>
-            <Link to="/grow-guides/how-to-calculate-vpd-for-cannabis" className="text-landing-green hover:underline">How to calculate VPD</Link>
             <Link to="/grow-tech#soil-meter" className="text-landing-green hover:underline">Soil and humidity meter</Link>
           </div>
         </section>

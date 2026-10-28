@@ -83,6 +83,16 @@
       "permanent": true
     },
     {
+      "source": "/grow-guides/how-to-calculate-vpd-for-cannabis",
+      "destination": "/vpd-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/grow-guides/leaf-vpd-calculator-cannabis",
+      "destination": "/vpd-calculator",
+      "permanent": true
+    },
+    {
       "source": "/grow-guides/:slug(cannabis-nutrient-schedule-calculator|cannabis-light-schedule-calculator|best-outdoor-cannabis-growing-apps-2026|ai-plant-diagnosis-apps-compared-2026|cannabis-yield-calculator-guide)",
       "destination": "/grow-guides",
       "permanent": true
@@ -319,14 +329,6 @@
     {
       "source": "/grow-guides/cannabis-vpd-chart-by-growth-stage",
       "destination": "/seo/grow-guides/cannabis-vpd-chart-by-growth-stage.html"
-    },
-    {
-      "source": "/grow-guides/how-to-calculate-vpd-for-cannabis",
-      "destination": "/seo/grow-guides/how-to-calculate-vpd-for-cannabis.html"
-    },
-    {
-      "source": "/grow-guides/leaf-vpd-calculator-cannabis",
-      "destination": "/seo/grow-guides/leaf-vpd-calculator-cannabis.html"
     },
     {
       "source": "/grow-guides/cannabis-vpd-with-co2",

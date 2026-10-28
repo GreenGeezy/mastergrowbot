@@ -36,8 +36,6 @@ Each tool works independently. The MasterGrowbot AI app is optional for growers 
 
 MasterGrowbot AI publishes practical cannabis cultivation guides with direct answers, troubleshooting steps, and stage-specific advice.
 
-- How to Calculate VPD for Cannabis: https://www.mastergrowbot.com/grow-guides/how-to-calculate-vpd-for-cannabis
-- Leaf VPD Calculator for Cannabis: https://www.mastergrowbot.com/grow-guides/leaf-vpd-calculator-cannabis
 - Cannabis VPD With CO2: https://www.mastergrowbot.com/grow-guides/cannabis-vpd-with-co2
 - VPD for Clones and Seedlings: https://www.mastergrowbot.com/grow-guides/vpd-for-clones-and-seedlings
 - Cannabis VPD Chart by Growth Stage: https://www.mastergrowbot.com/grow-guides/cannabis-vpd-chart-by-growth-stage

@@ -119,13 +119,11 @@ test('VPD calculator targets high-volume search intent and tracks app CTAs', asy
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('VPD Calculator: Leaf VPD and Chart by Growth Stage');
   await expect(page.getByRole('heading', { name: 'Calculate VPD from temperature and humidity, then compare it to your stage target.' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'VPD guide' })).toHaveAttribute('href', '/grow-guides/cannabis-vpd-guide');
-  await expect(page.getByRole('link', { name: 'Leaf VPD explainer' })).toHaveAttribute('href', '/grow-guides/leaf-vpd-calculator-cannabis');
   await expect(page.getByRole('link', { name: 'VPD calculator apps' })).toHaveAttribute('href', '/grow-guides/best-vpd-calculator-apps-cannabis');
   await expect(page.getByRole('link', { name: 'VPD chart by growth stage' })).toHaveAttribute('href', '/grow-guides/cannabis-vpd-chart-by-growth-stage');
-  await expect(page.getByRole('link', { name: 'How to calculate VPD' })).toHaveAttribute('href', '/grow-guides/how-to-calculate-vpd-for-cannabis');
   await expect(page.getByRole('link', { name: 'Soil and humidity meter' })).toHaveAttribute('href', '/grow-tech#soil-meter');
 
-  for (const href of ['/grow-guides/cannabis-vpd-guide', '/grow-guides/leaf-vpd-calculator-cannabis', '/grow-guides/best-vpd-calculator-apps-cannabis', '/grow-guides/cannabis-vpd-chart-by-growth-stage', '/grow-guides/how-to-calculate-vpd-for-cannabis', '/grow-tech']) {
+  for (const href of ['/grow-guides/cannabis-vpd-guide', '/grow-guides/best-vpd-calculator-apps-cannabis', '/grow-guides/cannabis-vpd-chart-by-growth-stage', '/grow-tech']) {
     expect((await request.get(href)).status(), href).toBe(200);
   }
 
