@@ -80,7 +80,7 @@ function tempFForTargetLeafVPD(rh: number, leafOffsetF: number, targetVPD: numbe
 const faqItems = [
   {
     name: 'What is the best VPD for cannabis?',
-    text: 'The best VPD for cannabis depends on the growth stage. During vegetative growth, target 0.8 to 1.2 kPa. During flower, target 1.0 to 1.5 kPa. Use the calculator above to check your exact conditions based on your temperature, humidity, and lighting type.',
+    text: 'The best VPD for cannabis depends on the growth stage. During vegetative growth, target 0.8 to 1.2 kPa. During early flower, target 1.0 to 1.3 kPa. During late flower, target 1.2 to 1.6 kPa. Use the calculator above to check your exact conditions based on your temperature, humidity, and lighting type.',
   },
   {
     name: 'Does VPD matter at night?',
@@ -88,7 +88,7 @@ const faqItems = [
   },
   {
     name: 'What VPD is too high for cannabis?',
-    text: 'A VPD above 1.6 kPa begins to stress cannabis plants, causing stomata to close and slowing transpiration. Above 2.0 kPa, plants experience severe stress with crispy leaf tips and nutrient uptake problems. If your VPD is consistently above 1.5 kPa, lower your temperature or raise your humidity.',
+    text: 'A VPD above 1.6 kPa begins to stress cannabis plants, causing stomata to close and slowing transpiration. Above 2.0 kPa, plants experience severe stress with crispy leaf tips and nutrient uptake problems. If your VPD is consistently above 1.6 kPa, lower your temperature or raise your humidity. During early flower, aim to stay at or below 1.3 kPa.',
   },
   {
     name: 'Do I need to measure leaf temperature for VPD?',
@@ -100,7 +100,7 @@ const faqItems = [
   },
   {
     name: 'Can MasterGrowbot AI help with VPD?',
-    text: 'Yes. MasterGrowbot AI includes VPD tracking in the grow journal and uses AI photo analysis to detect stress symptoms caused by VPD problems before they become serious. Download MasterGrowbot AI free for a 3-day trial on iOS or Android.',
+    text: 'Yes. MasterGrowbot AI includes VPD tracking in the grow journal and uses AI photo analysis to detect stress symptoms caused by VPD problems before they become serious. Download MasterGrowbot AI free. Eligible new Pro subscribers can try 3 days free, and Premium has no introductory trial.',
   },
 ];
 
@@ -237,8 +237,8 @@ export default function VPDCalculator() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <SEOHead
-        title="Free VPD Calculator: Leaf VPD and Stage Chart | MasterGrowbot AI"
-        description="Use this free VPD calculator for cannabis to see leaf VPD, the target range for each growth stage, and a chart by stage. Enter temperature, humidity and lighting type."
+        title="VPD Calculator and VPD Chart by Growth Stage | MasterGrowbot AI"
+        description="Free VPD calculator for cannabis. See leaf VPD and a VPD chart by growth stage, then check your temperature and humidity against the target range."
         canonicalUrl="https://www.mastergrowbot.com/vpd-calculator"
       />
       <Helmet>
@@ -275,7 +275,7 @@ export default function VPDCalculator() {
             <a href={PLAY_STORE_URL} data-cta-location="vpd-hero-text:android" className="text-landing-green hover:underline">
               Android
             </a>{' '}
-            - free 3-day trial, no signup required.
+            - eligible new Pro subscribers can try 3 days free. Premium has no introductory trial.
           </p>
         </header>
 
@@ -295,7 +295,7 @@ export default function VPDCalculator() {
             <Link to="/grow-guides/best-vpd-calculator-apps-cannabis" className="text-landing-green hover:underline">VPD calculator apps</Link>
             <Link to="/grow-guides/cannabis-vpd-chart-by-growth-stage" className="text-landing-green hover:underline">VPD chart by growth stage</Link>
             <Link to="/grow-guides/how-to-calculate-vpd-for-cannabis" className="text-landing-green hover:underline">How to calculate VPD</Link>
-            <Link to="/grow-tech#environment-monitor" className="text-landing-green hover:underline">Environment monitor kit</Link>
+            <Link to="/grow-tech#soil-meter" className="text-landing-green hover:underline">Soil and humidity meter</Link>
           </div>
         </section>
 
@@ -480,7 +480,7 @@ export default function VPDCalculator() {
                 </p>
                 <p className="text-base text-white/40 font-sans mt-1">kPa</p>
                 <p className="text-xs text-white/25 font-sans mt-2">
-                  Air VPD: {airVPD.toFixed(2)} kPa &mdash; leaf VPD accounts for your lighting type
+                  Air VPD: {airVPD.toFixed(2)} kPa. Leaf VPD accounts for your lighting type
                 </p>
               </div>
 
@@ -720,10 +720,10 @@ export default function VPDCalculator() {
                 <strong className="text-white">Step 4: Check in the morning and adjust.</strong> VPD shifts throughout the day as your lights warm the space and your plants transpire water into the air. A reading when lights first come on and one when the room reaches peak temperature gives you a useful daily range. Adjust your humidifier, dehumidifier, or intake fan speed based on what you see.
               </p>
               <p>
-                <strong className="text-white">Step 5: Track VPD trends over time.</strong> A single VPD reading is useful. A log of readings across a full grow cycle is how you understand your environment well enough to repeat your best results in the next run. MasterGrowbot AI tracks VPD alongside your full grow journal, nutrient logs, and AI photo diagnosis. Download free with a 3-day trial on{' '}
+                <strong className="text-white">Step 5: Track VPD trends over time.</strong> A single VPD reading is useful. A log of readings across a full grow cycle is how you understand your environment well enough to repeat your best results in the next run. MasterGrowbot AI tracks VPD alongside your full grow journal, nutrient logs, and AI photo diagnosis. Download it free on{' '}
                 <a href={APP_STORE_URL} data-cta-location="vpd-body-text:ios" className="text-landing-green hover:underline">iOS</a>{' '}
                 or{' '}
-                <a href={PLAY_STORE_URL} data-cta-location="vpd-body-text:android" className="text-landing-green hover:underline">Android</a>.
+                <a href={PLAY_STORE_URL} data-cta-location="vpd-body-text:android" className="text-landing-green hover:underline">Android</a>. Eligible new Pro subscribers can try 3 days free.
               </p>
               <p>
                 For more on growing fundamentals, visit the{' '}
@@ -758,7 +758,7 @@ export default function VPDCalculator() {
             Stop Guessing. Start Optimizing.
           </h2>
           <p className="text-white/60 font-sans text-sm sm:text-base max-w-lg mx-auto">
-            Download MasterGrowbot AI for VPD tracking, AI plant diagnosis, and a complete digital grow journal. Free 3-day trial on iOS and Android.
+            Download MasterGrowbot AI for VPD tracking, AI plant diagnosis, and a complete digital grow journal. Eligible new Pro subscribers can try 3 days free.
           </p>
           <AppPlatformButtons campaign="vpd-calculator" location="vpd-closing" className="pt-2" />
           <div className="mx-auto mt-5 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">

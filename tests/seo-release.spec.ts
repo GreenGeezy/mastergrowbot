@@ -114,7 +114,7 @@ test('VPD calculator targets high-volume search intent and tracks app CTAs', asy
   await page.goto('/vpd-calculator');
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.mastergrowbot.com/vpd-calculator');
-  expect(await page.title()).toMatch(/Free VPD Calculator: Leaf VPD and Stage Chart/);
+  expect(await page.title()).toMatch(/VPD Calculator and VPD Chart by Growth Stage/);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /free VPD calculator/i);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('VPD Calculator: Leaf VPD and Chart by Growth Stage');
   await expect(page.getByRole('heading', { name: 'Calculate VPD from temperature and humidity, then compare it to your stage target.' })).toBeVisible();
@@ -123,7 +123,7 @@ test('VPD calculator targets high-volume search intent and tracks app CTAs', asy
   await expect(page.getByRole('link', { name: 'VPD calculator apps' })).toHaveAttribute('href', '/grow-guides/best-vpd-calculator-apps-cannabis');
   await expect(page.getByRole('link', { name: 'VPD chart by growth stage' })).toHaveAttribute('href', '/grow-guides/cannabis-vpd-chart-by-growth-stage');
   await expect(page.getByRole('link', { name: 'How to calculate VPD' })).toHaveAttribute('href', '/grow-guides/how-to-calculate-vpd-for-cannabis');
-  await expect(page.getByRole('link', { name: 'Environment monitor kit' })).toHaveAttribute('href', '/grow-tech#environment-monitor');
+  await expect(page.getByRole('link', { name: 'Soil and humidity meter' })).toHaveAttribute('href', '/grow-tech#soil-meter');
 
   for (const href of ['/grow-guides/cannabis-vpd-guide', '/grow-guides/leaf-vpd-calculator-cannabis', '/grow-guides/best-vpd-calculator-apps-cannabis', '/grow-guides/cannabis-vpd-chart-by-growth-stage', '/grow-guides/how-to-calculate-vpd-for-cannabis', '/grow-tech']) {
     expect((await request.get(href)).status(), href).toBe(200);
