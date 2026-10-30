@@ -30,6 +30,84 @@ export interface GrowGuide {
 export const growGuides: GrowGuide[] = [
   ag1000BuyingGuide,
 {
+  "slug": "grow-buddy-ai-vs-mastergrowbot-ai",
+  "title": "Grow-Buddy AI vs MasterGrowbot AI: Cannabis App Comparison",
+  "h1": "Grow-Buddy AI vs MasterGrowbot AI: Cannabis Diagnosis Apps Compared",
+  "shortDescription": "Compare Grow-Buddy AI and MasterGrowbot AI for cannabis photo diagnosis, AI chat, journals, subscription prices, platform availability and privacy checks.",
+  "metaTitle": "Grow-Buddy AI vs MasterGrowbot AI: Cannabis Apps",
+  "metaDescription": "Compare Grow-Buddy AI and MasterGrowbot AI: photo diagnosis, AI chat, journals, subscription prices and platform support, checked October 30, 2026.",
+  "publishedDate": "2026-10-30T00:00:00Z",
+  "modifiedDate": "2026-10-30T00:00:00Z",
+  "intro": "Grow-Buddy AI and MasterGrowbot AI overlap more than most cannabis apps: both describe photo-based plant diagnosis, an AI assistant and a grow journal, and both sell monthly subscriptions. The practical difference is what each one bundles around the diagnosis, and how much you want to pay for it. Grow-Buddy AI is the lower-cost option with a free tier that already lists AI diagnoses and chat, while MasterGrowbot AI prices higher and bundles video analysis and strain profiles into its paid plans. Choose by the workflow and budget you actually need, then check the live store offer.\n\nMasterGrowbot publishes this comparison and develops MasterGrowbot AI, so weigh the framing accordingly. We reviewed the public US App Store and Google Play listings on October 30, 2026. This is not a hands-on accuracy test, and we do not claim that either app diagnoses plants more accurately or produces better growing results.",
+  "sections": [
+    {
+      "heading": "Quick comparison: Grow-Buddy AI or MasterGrowbot AI?",
+      "bodyHtml": "<div class=\"overflow-x-auto\"><table><thead><tr><th>Question</th><th>Grow-Buddy AI</th><th>MasterGrowbot AI</th></tr></thead><tbody><tr><td>Publisher</td><td>HANS Brainfood GmbH</td><td>Elijah Duffy (MasterGrowbot)</td></tr><tr><td>Main focus</td><td>AI photo diagnosis, AI chat, journal, care calendar and weather alerts</td><td>AI photo reports, grow journal and daily tasks, strain profiles, video analysis on Premium</td></tr><tr><td>Free tier</td><td>Listing describes plant management, AI diagnoses, AI chat, journal and calendar as free</td><td>Free download; subscriptions unlock Pro and Premium features</td></tr><tr><td>Listed subscription prices</td><td>Premium $2.99/month; Professional $8.99/month with 30 days free</td><td>Pro $7.99/week, $29.99/month or $99.99/year; Premium $12.99/week, $49.99/month or $199/year</td></tr><tr><td>Introductory trial</td><td>Professional plan lists 30 days free</td><td>Eligible new Pro subscribers may get a 3-day free trial; Premium does not include it</td></tr><tr><td>Video analysis</td><td>Not described in the listing reviewed</td><td>Listed as a Premium feature</td></tr><tr><td>Strain library</td><td>Not described in the listing reviewed</td><td>300 profiles with Pro, 600 with Premium</td></tr><tr><td>Weather alerts</td><td>Listed, aimed at outdoor grows</td><td>Not described in the listing reviewed</td></tr><tr><td>Platform availability</td><td>iOS and Android listings reviewed</td><td>iOS and Android apps published</td></tr><tr><td>Store signals at review</td><td>8 US ratings, 4.4 stars (small sample)</td><td>6 US ratings, 5.0 stars (small sample)</td></tr></tbody></table></div>"
+    },
+    {
+      "heading": "When Grow-Buddy AI is the closer fit",
+      "body": "Grow-Buddy AI is the more budget-oriented of the two. Its US App Store listing says the free tier already includes plant management, AI diagnoses, AI chat, the journal and the care calendar, and that Premium adds more AI, more plants and weather alerts. Professional is listed at $8.99 per month with 30 days free. If your main goal is a low-cost phone app that combines a cannabis-specific AI assistant with recordkeeping, that free-to-cheap path is the strongest reason to look at it.\n\nThe listing also makes privacy a selling point: it states that data is stored locally on your device with PIN and Face ID protection. Treat that as a developer statement to verify yourself rather than an audited guarantee, especially if you rely on the journal as your only record. The app is newer and much smaller in review volume than the established journals, and its listing describes English and German support. It also does not describe video analysis or a strain library."
+    },
+    {
+      "heading": "When MasterGrowbot AI is the closer fit",
+      "body": "MasterGrowbot AI is the broader paid product. Its iOS listing describes photo-based plant-health reports with practical next checks, a journal with notes and saved reports, daily care tasks, strain profiles with AI strain intelligence, and short-video analysis on Premium. Pro includes 300 strain profiles and Premium expands that to 600. If you want the diagnosis, the written record and the next-step task list in one place, and you value video review or a strain reference, that bundle is the reason to pay more.\n\nThe trade-off is price and trial structure. Pro is listed at $7.99 weekly, $29.99 monthly or $99.99 yearly, and Premium at $12.99 weekly, $49.99 monthly or $199 yearly. The three-day free trial applies to eligible new Pro subscribers only; Premium subscriptions do not include it. MasterGrowbot AI also publishes an Android app, which matters if you are not exclusively on iPhone."
+    },
+    {
+      "heading": "Diagnosis is the easy part to compare, and the hardest to verify",
+      "body": "Both listings promise a lot from a photograph. Grow-Buddy AI says its AI is trained specifically for cannabis and identifies nutrient deficiencies, pests, light issues and overwatering. MasterGrowbot AI says its reports review visible signs of pests, nutrient deficiencies and environmental stress. Those are marketing descriptions supplied by each developer, not independent accuracy results, and neither should be treated as a diagnosis you can skip verifying.\n\nA more useful buying test is what happens after the report. Does the app keep the photo and the report together? Can you add your own note about what you changed? Can you find that entry weeks later? Both listings describe a journal, so the differentiator is retention and retrieval, not the existence of a scan button. Our [journal-app checklist](/grow-guides/best-cannabis-grow-journal-apps-2026) covers the export, deletion and access questions worth checking before you commit."
+    },
+    {
+      "heading": "Free tier, subscription price and trial terms",
+      "body": "The price gap is large enough to decide the purchase for some growers. Grow-Buddy AI's listed subscriptions are $2.99 per month for Premium and $8.99 per month for Professional, with a free tier that already covers diagnosis, chat, journal and calendar according to the listing. MasterGrowbot AI starts at $7.99 per week or $29.99 per month for Pro, with Premium above that.\n\nCompare the offer shown on your own device rather than a price in any article, including this one. Weekly plans cost less per charge but far more per year, and annual plans only pay off if you keep using the app. Record the renewal interval, what each tier includes and the trial conditions before confirming. A free download does not mean every feature is free, and regional prices differ from the US listings reviewed here."
+    },
+    {
+      "heading": "Privacy, platform and data ownership",
+      "body": "Plant photographs and grow notes are personal records, so decide what you are comfortable uploading before you subscribe. Grow-Buddy AI's listing states that data is stored locally on the device with PIN and Face ID, which appeals to growers who want the record kept on the phone. MasterGrowbot AI's listing describes saved reports in a journal and sharing through apps you choose; it does not make a local-only storage claim, so read its privacy policy if that distinction matters to you.\n\nPlatform support is the other practical filter. Grow-Buddy AI now has a Google Play listing as well as the US App Store listing reviewed here, and that listing shows in-app purchases. The Play package com.growexpert.growbuddy matches the iOS bundle identifier, which is the strongest public signal that it is the same product, but confirm the developer and the current offer on each listing before you subscribe. MasterGrowbot AI publishes both an iOS and an Android app. For either product, check what happens to your records if you cancel."
+    },
+    {
+      "heading": "How this comparison fits other cannabis app options",
+      "body": "Grow-Buddy AI is one of several diagnosis-led apps. If you are still choosing a category, start with the [best AI plant diagnosis apps for cannabis](/grow-guides/best-ai-plant-diagnosis-apps-cannabis) overview and the [best AI cannabis growing apps](/grow-guides/best-ai-cannabis-growing-apps-2026) guide. For head-to-head decisions, see [GrowDoc vs MasterGrowbot AI](/grow-guides/growdoc-vs-mastergrowbot-ai) for a diagnosis-first reference tool, [HiGrade vs MasterGrowbot AI](/grow-guides/higrade-vs-mastergrowbot-ai) for the testing-hardware question, [bud vs MasterGrowbot AI](/grow-guides/bud-vs-mastergrowbot-ai) for the social journal and [Grow with Jane vs MasterGrowbot AI](/grow-guides/grow-with-jane-vs-mastergrowbot) for the growlog question.\n\nSimilar product names cause confusion here. Grow-Buddy AI is a mobile app published by HANS Brainfood GmbH; other tools also use GrowBuddy-style names, including nutrient calculators. Check the publisher and the store listing before you subscribe to anything."
+    },
+    {
+      "heading": "Sources and review method",
+      "body": "Sources checked October 30, 2026: [Grow-Buddy AI on the US App Store](https://apps.apple.com/us/app/grow-buddy-ai/id6745097391) (HANS Brainfood GmbH, version 2.7.9, updated October 22, 2026, 8 US ratings at 4.4 stars), [GrowBuddy on Google Play](https://play.google.com/store/apps/details?id=com.growexpert.growbuddy&gl=US) (in-app purchases listed), [MasterGrowbot AI on the US App Store](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) (Elijah Duffy, version 2.0.3, updated October 19, 2026, 6 US ratings at 5.0 stars) and [MasterGrowbot AI on Google Play](https://play.google.com/store/apps/details?id=com.mastergrowbot.app).\n\nStore descriptions and prices are developer-supplied and can change. We have not independently tested diagnostic accuracy, automatic integrations or growing outcomes, and rating counts this small are not a quality signal. This page compares software features and buying considerations only; it provides no cultivation, nutrient or yield instructions."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Is Grow-Buddy AI the same as a GrowBuddy nutrient calculator?",
+      "answer": "No. Grow-Buddy AI is a mobile diagnosis, chat and journal app published by HANS Brainfood GmbH on the US App Store. Other products use similar GrowBuddy names, including nutrient-calculation software, so check the publisher and listing before subscribing."
+    },
+    {
+      "question": "Does Grow-Buddy AI have an Android app?",
+      "answer": "A Google Play listing exists under the name GrowBuddy - Cannabis Grow App, with the package com.growexpert.growbuddy, which matches the iOS bundle identifier, and it lists in-app purchases. Confirm the developer and the current offer on Google Play before subscribing, because similar GrowBuddy names exist on both stores."
+    },
+    {
+      "question": "Which app is cheaper?",
+      "answer": "Grow-Buddy AI's listed subscriptions are lower: Premium at $2.99 per month and Professional at $8.99 per month with 30 days free, with a free tier the listing says includes diagnosis, chat, journal and calendar. MasterGrowbot AI lists Pro at $7.99 per week, $29.99 per month or $99.99 per year, and Premium at $12.99 per week, $49.99 per month or $199 per year. Check the price shown on your own device."
+    },
+    {
+      "question": "Does MasterGrowbot AI Premium include the Pro free trial?",
+      "answer": "No. The iOS listing says eligible new Pro subscribers may receive a three-day free trial, and Premium subscriptions do not include that trial. Verify the offer shown to your account before purchasing."
+    },
+    {
+      "question": "Which app diagnoses plant problems more accurately?",
+      "answer": "We cannot say. Both listings describe AI-assisted photo diagnosis, but the descriptions are supplied by the developers and we did not run a comparative accuracy test. Neither app's claims should be treated as independently verified."
+    },
+    {
+      "question": "Do these apps store grow photos on the device or in the cloud?",
+      "answer": "Grow-Buddy AI's listing states that data is stored locally on the device with PIN and Face ID protection. MasterGrowbot AI's listing describes saved reports and journal entries and sharing through apps you choose, without a local-only storage claim. Read each privacy policy before uploading photos or notes."
+    }
+  ],
+  "relatedSlugs": [
+    "best-ai-plant-diagnosis-apps-cannabis",
+    "best-ai-cannabis-growing-apps-2026",
+    "growdoc-vs-mastergrowbot-ai",
+    "higrade-vs-mastergrowbot-ai",
+    "best-cannabis-grow-journal-apps-2026"
+  ]
+},
+{
   "slug": "budlabs-vs-mastergrowbot-ai",
   "title": "BudLabs vs MasterGrowbot AI: Which iPhone App Fits Your Workflow?",
   "h1": "BudLabs vs MasterGrowbot AI: Which iPhone App Fits Your Workflow?",
