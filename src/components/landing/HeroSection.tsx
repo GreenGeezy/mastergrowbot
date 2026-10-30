@@ -40,7 +40,7 @@ export default function HeroSection() {
     <div className="premium-wrap premium-hero-grid">
       <div className="premium-hero-copy">
         <p className="premium-eyebrow"><span className="status-dot" /> MASTERGROWBOT AI · CANNABIS GROW INTELLIGENCE</p>
-        <h1 id="hero-title">Something look off?<br />Get a <em>second set of eyes.</em></h1>
+        <h1 id="hero-title">AI plant photo insights.<br />Your <em>cannabis grow journal.</em></h1>
         <p className="premium-lead">Stop guessing what your plant needs. Turn a photo into AI insights, practical checks, and a clearer next step. Keep your observations together as your grow changes.</p>
         <AppRating compact />
         <AppActions trial />

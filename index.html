@@ -23,7 +23,7 @@
         gtag('js', new Date());
         gtag('config', 'G-NT1046S3EN', {
         linker: {
-          domains: ['mastergrowbot.com', 'www.mastergrowbot.com', 'whop.com']
+          domains: ['mastergrowbot.com', 'www.mastergrowbot.com', 'infusekit.mastergrowbot.com', 'whop.com']
         }
         });
       }
@@ -34,7 +34,7 @@
         if (!el) return;
         var href = el.getAttribute('href');
         var location = el.getAttribute('data-cta-location') || 'navigation-or-footer';
-        var params = {link_url: href, location: location, cta_location: location, page_path: window.location.pathname,
+        var params = {product_id: el.getAttribute('data-product-id') || 'mastergrowbot', link_url: href, location: location, cta_location: location, page_path: window.location.pathname,
           article_slug: window.location.pathname.indexOf('/grow-guides/') === 0 ? window.location.pathname.split('/')[2] : undefined};
         var linkHost;
         try { linkHost = new URL(href, window.location.origin).hostname; } catch (_) { return; }
