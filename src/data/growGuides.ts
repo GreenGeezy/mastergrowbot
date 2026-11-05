@@ -113,6 +113,98 @@ export const growGuides: GrowGuide[] = [
   ]
 },
 {
+  "slug": "growdiaries-vs-mastergrowbot-ai",
+  "title": "GrowDiaries vs MasterGrowbot AI: Diary or Diagnosis?",
+  "h1": "GrowDiaries vs MasterGrowbot AI: Public Diary or Private Diagnosis?",
+  "shortDescription": "GrowDiaries and MasterGrowbot AI do different jobs: public diaries and community research against AI photo reports and a private grow journal. Compare prices, limits and fit.",
+  "metaTitle": "GrowDiaries vs MasterGrowbot AI: Diary or Diagnosis?",
+  "metaDescription": "Compare GrowDiaries and MasterGrowbot AI: public grow diaries and community research against AI photo diagnosis, a private journal and 2026 plan prices.",
+  "publishedDate": "2026-11-05T00:00:00Z",
+  "modifiedDate": "2026-11-05T00:00:00Z",
+  "intro": "GrowDiaries and MasterGrowbot AI solve different halves of the same problem. GrowDiaries is a public record and research community: more than 90,000 grow diaries according to its listing, strain and breeder context, and other growers comparing runs. MasterGrowbot AI is a private working tool: you photograph a plant, get a report about visible signs and next checks, and keep the result in a journal with tasks. Neither replaces the other, and the right first download depends on whether you want to study other grows or act on your own.\n\nMasterGrowbot publishes this comparison and develops MasterGrowbot AI, so weigh the framing accordingly. Store facts were checked on 5 November 2026 from the US App Store listings, Google Play and MasterGrowbot's own plan page. This is a software comparison, not a hands-on accuracy test, and it makes no claim about growing outcomes.",
+  "sections": [
+    {
+      "heading": "Quick comparison: GrowDiaries or MasterGrowbot AI?",
+      "bodyHtml": "<div class=\"overflow-x-auto\"><table><thead><tr><th>Question</th><th>GrowDiaries</th><th>MasterGrowbot AI</th></tr></thead><tbody><tr><td>Publisher</td><td>GrowD soft s.r.o.</td><td>Elijah Duffy (MasterGrowbot)</td></tr><tr><td>Main focus</td><td>Public grow diaries, community research, strain and breeder context</td><td>AI photo reports, private journal, daily tasks, strain profiles</td></tr><tr><td>Where the record lives</td><td>Public diary on growdiaries.com</td><td>Private journal in the app</td></tr><tr><td>Community</td><td>Forums, contests, breeder and nutrient representatives; listing claims 350,000+ members and 90,000+ diaries</td><td>No community feed</td></tr><tr><td>AI photo diagnosis</td><td>Not described in the listings reviewed</td><td>Core feature</td></tr><tr><td>Video analysis</td><td>Not described in the listings reviewed</td><td>iPhone Premium</td></tr><tr><td>Platforms</td><td>iOS 16.4 or later; Android with 1,000+ downloads</td><td>iOS 15.0 or later; Android</td></tr><tr><td>Price model</td><td>Free download; premium subscription sold on the website</td><td>Free download; Pro and Premium subscriptions</td></tr><tr><td>Store signals, 5 Nov 2026</td><td>2 US ratings at 4.5 (app released 25 Aug 2026)</td><td>6 US ratings at 5.0</td></tr></tbody></table></div>"
+    },
+    {
+      "heading": "What GrowDiaries does well",
+      "body": "GrowDiaries is a research archive before it is a phone app. The site organizes grows by strain, breeder, nutrient line and equipment, so you can read how other people documented a cultivar before you buy seeds or change a room. The app listing describes the same job: document grow cycles, share progress, browse the diary library, join forums and contests, and talk to representatives from seed breeders and nutrient companies.\n\nThat public format has a practical benefit. A diary other people can read tends to get updated, and a diary with dates, photos and equipment gives you something concrete to compare against your own records. If you are choosing genetics, planning a setup, or trying to understand how a strain behaves across rooms, that library is the reason to use the platform.\n\nTwo limits matter. The 350,000 member and 90,000 diary figures are the developer's own claims, not audited counts. And the app is new: the iOS version was released on 25 August 2026, and the US listing showed 2 ratings at 4.5 when checked on 5 November 2026. The web platform is older and larger than that rating count suggests, but the mobile app has not had time to build a review history."
+    },
+    {
+      "heading": "What MasterGrowbot AI does well",
+      "body": "MasterGrowbot AI is built around one loop: photograph a plant, read a report about the visible signs, and keep the result. Reports describe what to check next rather than issuing a confirmed diagnosis, and each report can be saved with notes in the journal. Daily tasks and a strain reference (300 profiles with Pro, 600 with Premium) sit around that loop.\n\nThe private format is the point. There is no public feed, so the record stays between you and the app. The app also does not require a specific light, tent or nutrient brand, which matters if your room mixes manufacturers. On iPhone, Premium adds short video analysis for showing leaves, stems and the wider room. That feature is not sold on Android.\n\nThe trade-off is cost and community. Photo analysis and the journal require Pro, so the free download is a look at the interface rather than a free diagnosis tool. On 5 November 2026 the US listing shows iPhone Pro at $7.99 per week, $29.99 per month or $99.99 per year, iPhone Premium at $12.99 per week, $49.99 per month or $199 per year, and Android Pro at $6.99 per week or $59.99 per year. The 3-day free trial applies to eligible new Pro subscribers; Premium does not include it."
+    },
+    {
+      "heading": "The difference that decides it: public research or private diagnosis",
+      "body": "Ask what you are trying to answer. If the question is how other growers ran this strain, in this tent, with this nutrient line, GrowDiaries is built for it. If the question is what to check on your plant today, and where you recorded it, MasterGrowbot AI is built for that.\n\nTake a common situation: lower leaves start to look wrong during flowering. A GrowDiaries search shows diaries from similar weeks and setups, with photos and notes about what each grower changed. That is context from other people, and its quality depends on how carefully each diary was kept. MasterGrowbot AI asks for a photo of your plant, returns visible signs and next checks, and stores the report beside your own notes so the next entry starts from what you saw last time. Neither output is a laboratory result. Community diaries are anecdotal, and an AI report is a prompt for verification, not proof.\n\nThe two products also fail in different ways. A public diary can attract advice from people who are guessing. A private diagnosis can sound more certain than a photograph allows. Treat both as inputs, and keep your own notes either way."
+    },
+    {
+      "heading": "Price and trial terms in 2026",
+      "body": "Neither app is expensive to try, and neither is a one-time purchase. Both are free to download and both sell subscriptions. The difference is that MasterGrowbot publishes plan prices in its listings and on its plan page, while GrowDiaries sells a premium subscription through its website without stating the price in the app listings reviewed here.",
+      "bodyHtml": "<div class=\"overflow-x-auto\"><table><thead><tr><th>Plan</th><th>Published price, 5 November 2026</th></tr></thead><tbody><tr><td>GrowDiaries</td><td>Free download; premium subscription price not published in the app listings reviewed</td></tr><tr><td>MasterGrowbot iPhone Pro</td><td>$7.99 per week, $29.99 per month or $99.99 per year</td></tr><tr><td>MasterGrowbot iPhone Premium</td><td>$12.99 per week, $49.99 per month or $199 per year</td></tr><tr><td>MasterGrowbot Android Pro</td><td>$6.99 per week or $59.99 per year</td></tr><tr><td>MasterGrowbot trial</td><td>3-day free trial for eligible new Pro subscribers; Premium has no trial</td></tr></tbody></table></div>"
+    },
+    {
+      "heading": "Price details that change the decision",
+      "body": "The MasterGrowbot trial is tied to eligible new Pro subscribers, not to every plan, and the weekly prices cost far more per year than the annual ones. At the published rates, $7.99 per week is $415.48 over 52 weeks against $99.99 for a year of iPhone Pro, and $6.99 per week is $363.48 against $59.99 for a year of Android Pro. Billing happens once at the price you select, so read the purchase sheet before confirming.\n\nFor GrowDiaries, open growdiaries.com/premium and read the current price and what the tier includes before you decide. That detail is not in the app description, and a comparison page cannot invent it. If you only want a vapor pressure deficit number, neither subscription is necessary: the free [VPD calculator](/vpd-calculator) runs the arithmetic without an account.\n\nOn iPhone, the step from Pro to Premium is $99.01 per year. It buys video analysis and the larger strain library. If most of your checks are single photos, that step buys a feature you will rarely open, which is why the [plan guide](/grow-guides/mastergrowbot-ai-pro-vs-premium-plans) separates the two tiers."
+    },
+    {
+      "heading": "Where each app is weaker",
+      "body": "GrowDiaries is weaker when you want a private, guided record. Its listing does not describe photo-based diagnosis, health reports or next-step task lists, and its model is public by default. If you are not comfortable posting grow photos and notes, that format is a poor fit regardless of how large the library is. The mobile app also has a short track record, and community answers vary in quality because anyone can reply.\n\nMasterGrowbot AI is weaker when you want a community. There is no forum, no public diary and no library of other people's grows inside the app. The review base is small (6 US ratings at 5.0 on 5 November 2026), and the useful features sit behind a subscription. Android buyers cannot purchase video analysis at any price today, and Premium is an iPhone plan. The report is also not a substitute for a tissue test, a lab result or a second opinion when a problem looks serious."
+    },
+    {
+      "heading": "Can you use both?",
+      "body": "Yes, and for some growers that is the sensible setup. Use GrowDiaries for genetics and setup research before a run, then keep the day-to-day record in MasterGrowbot AI, where the photo, the report and your notes stay together. Do not duplicate every entry in both apps: choose one as the working journal and use the other as a reference.\n\nIf you later publish a summary of your run, decide what stays private. The two products have different defaults, and moving text between them is your choice. The [journal app checklist](/grow-guides/best-cannabis-grow-journal-apps-2026) covers the export, deletion and access questions worth checking before you commit a season of records to either one."
+    },
+    {
+      "heading": "Which one should you download first?",
+      "bodyHtml": "<div class=\"overflow-x-auto\"><table><thead><tr><th>Your situation</th><th>Start with</th><th>Reason</th></tr></thead><tbody><tr><td>Choosing seeds, a breeder or a nutrient line</td><td>GrowDiaries</td><td>Public diaries and strain context show how others ran the same genetics</td></tr><tr><td>Comparing your setup with similar rooms</td><td>GrowDiaries</td><td>Equipment and nutrient details are part of the diary record</td></tr><tr><td>A plant looks off and you want a structured check</td><td>MasterGrowbot AI</td><td>Photo reports return visible signs and next checks</td></tr><tr><td>You want one private place for photos, reports and tasks</td><td>MasterGrowbot AI</td><td>The journal, tasks and saved reports stay together</td></tr><tr><td>You want research and a private record</td><td>Both, with one working journal</td><td>GrowDiaries for reference, MasterGrowbot AI for the record</td></tr></tbody></table></div>"
+    },
+    {
+      "heading": "Sources and review method",
+      "body": "Checked 5 November 2026:\n\n- [GrowDiary on the US App Store](https://apps.apple.com/us/app/growdiary/id6739211123): GrowD soft s.r.o., version 1.0.7, updated 3 November 2026, released 25 August 2026, 2 US ratings at 4.5, free, iOS 16.4 or later, iPhone only per the listing. Its description claims a community of more than 350,000 and more than 90,000 grow diaries, and describes documenting grow cycles, forums, contests and breeder or nutrient representatives.\n- [GrowDiaries on Google Play](https://play.google.com/store/apps/details?id=com.growdiaries.droid&gl=US): 1,000+ downloads, updated 29 September 2026, Mature 17+.\n- [MasterGrowbot AI on the US App Store](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060): Elijah Duffy, version 2.0.3, updated 19 October 2026, 6 US ratings at 5.0, iOS 15.0 or later. [MasterGrowbot AI on Google Play](https://play.google.com/store/apps/details?id=com.mastergrowbot.app).\n- MasterGrowbot plan page and homepage, checked 5 November 2026: iPhone Pro $7.99 weekly, $29.99 monthly, $99.99 annual; iPhone Premium $12.99 weekly, $49.99 monthly, $199 annual; Android Pro $6.99 weekly, $59.99 annual; 3-day trial for eligible new Pro subscribers only; video analysis on iPhone Premium; 300 strain profiles with Pro and 600 with Premium; photo analysis and journal tools require Pro.\n- GrowDiaries premium page linked from its site (growdiaries.com/premium). The app listings reviewed do not state its price.\n\nStore text and prices are supplied by each developer and can change. We have not tested diagnostic accuracy, community advice quality or growing outcomes, and small rating counts are not a quality signal. This page compares software and buying considerations only. It gives no cultivation, nutrient or yield instructions."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Is GrowDiaries free?",
+      "answer": "The app is free to download on the App Store and Google Play. GrowDiaries also sells a premium subscription through its website, and the app listings reviewed do not publish its price, so check growdiaries.com/premium before buying."
+    },
+    {
+      "question": "Does GrowDiaries have AI plant diagnosis?",
+      "answer": "Its app listing describes grow diaries, community forums, contests and strain research. It does not describe photo-based AI diagnosis or per-photo health reports. If diagnosis is what you need, compare MasterGrowbot AI and the other diagnosis apps before choosing."
+    },
+    {
+      "question": "Is the GrowDiary app on the App Store the same as GrowDiaries?",
+      "answer": "The App Store app named GrowDiary is published by GrowD soft s.r.o. and its description matches the GrowDiaries platform: community, diaries, forums and contests. Check the publisher and listing, because several unrelated apps use grow-diary style names."
+    },
+    {
+      "question": "Which app is better for a first grow?",
+      "answer": "GrowDiaries is better for reading how other people ran a similar setup. MasterGrowbot AI is better for a structured check on your own plant and a private record. Many beginners use a reference library first and a private journal once plants are in the room."
+    },
+    {
+      "question": "How much does MasterGrowbot AI cost?",
+      "answer": "On 5 November 2026 the US listing shows iPhone Pro at $7.99 per week, $29.99 per month or $99.99 per year, iPhone Premium at $12.99 per week, $49.99 per month or $199 per year, and Android Pro at $6.99 per week or $59.99 per year. The 3-day free trial applies to eligible new Pro subscribers only, and Premium does not include it."
+    },
+    {
+      "question": "Can I use GrowDiaries and MasterGrowbot AI together?",
+      "answer": "Yes. A common split is GrowDiaries for strain and setup research before a run, and MasterGrowbot AI for the private photo, report and task record during it. Choose one app as the working journal so you are not maintaining two sets of notes."
+    },
+    {
+      "question": "Do these apps replace a lab test?",
+      "answer": "No. Both are informational tools. A public diary reflects other growers' experiences, and an AI photo report describes visible signs and next checks. Neither confirms tissue analysis, pathogens or potency."
+    }
+  ],
+  "relatedSlugs": [
+    "best-cannabis-grow-journal-apps-2026",
+    "mastergrowbot-ai-pro-vs-premium-plans",
+    "grow-with-jane-vs-mastergrowbot",
+    "bud-vs-mastergrowbot-ai",
+    "best-ai-cannabis-growing-apps-2026",
+    "grow-buddy-ai-vs-mastergrowbot-ai"
+  ]
+},
+{
   "slug": "budlabs-vs-mastergrowbot-ai",
   "title": "BudLabs vs MasterGrowbot AI: Which iPhone App Fits Your Workflow?",
   "h1": "BudLabs vs MasterGrowbot AI: Which iPhone App Fits Your Workflow?",
