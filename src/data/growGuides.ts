@@ -3648,14 +3648,19 @@ Start your free 7-day trial today and experience data-driven cultivation that ma
   "h1": "Best AI Cannabis Growing Apps: What to Compare in 2026",
   "shortDescription": "Compare AI app features, photo analysis, journals, privacy and subscription terms without relying on unverified rankings or accuracy claims.",
   "metaTitle": "Best AI Cannabis Growing Apps 2026: Features to Compare",
-  "metaDescription": "Choosing an AI cannabis app? Compare photo analysis, journals, privacy and subscription terms. Explore MasterGrowbot AI for iOS and Android.",
+  "metaDescription": "Choosing an AI cannabis app? Compare photo analysis, journals, privacy and MasterGrowbot AI's 2026 iOS and Android plan prices before you subscribe.",
   "publishedDate": "2026-04-13T00:00:00Z",
-  "modifiedDate": "2026-10-05T00:00:00Z",
-  "intro": "The best AI cannabis growing app for you is the one that fits the job you need: reviewing plant photos, keeping a journal, or organizing observations. Start with the feature you will use regularly, then check the current subscription terms and how the app handles your data. MasterGrowbot AI is an option for readers who want photo-based assistance and a digital plant journal on iOS or Android. This guide offers selection criteria, not a tested ranking or an independent accuracy benchmark.",
+  "modifiedDate": "2026-11-05T00:00:00Z",
+  "intro": "AI cannabis growing apps sell the same three jobs: turning a plant photo into an explanation, keeping the observations in one place, and turning the result into a next step you can act on. The buying decision comes down to which of those jobs you will repeat weekly, whether the app you choose covers the phone you own, and what the subscription includes at renewal. MasterGrowbot AI is one option for readers who want photo reports, a journal and daily tasks on iOS or Android. This guide is a selection checklist with our own dated plan facts, not a tested ranking or an accuracy benchmark.\n\nMasterGrowbot publishes this guide and develops MasterGrowbot AI, so weigh the framing accordingly. We checked our own plan page on October 23, 2026 and the official App Store and Google Play listings on November 1, 2026. We have not run a comparative accuracy test on any app, and this page makes no claim about growing outcomes.",
   "sections": [
     {
       "heading": "Quick answer: choose by the job, not the AI label",
       "bodyHtml": "<table><thead><tr><th>Your priority</th><th>What to compare</th><th>What to verify before subscribing</th></tr></thead><tbody><tr><td>Photo-based assistance</td><td>Photo input, explanations and follow-up context</td><td>Whether results explain uncertainty instead of presenting guesses as facts</td></tr><tr><td>A useful journal</td><td>Notes, dated photos and plant-level organization</td><td>Whether you can find earlier observations easily</td></tr><tr><td>Video features</td><td>Video support and plan restrictions</td><td>Whether the feature is included in the plan shown at checkout</td></tr><tr><td>Value for money</td><td>Billing period, renewal price and trial eligibility</td><td>The terms displayed in your own app store account</td></tr><tr><td>Privacy</td><td>Photo handling, account controls and privacy policy</td><td>What you are comfortable uploading and retaining</td></tr></tbody></table>"
+    },
+    {
+      "heading": "What MasterGrowbot AI includes on iPhone and Android",
+      "body": "The table below comes from MasterGrowbot's own plan page, checked October 23, 2026, and the official store listings, checked November 1, 2026. Prices and plan names change, and regional stores show different amounts, so treat it as a dated snapshot and confirm the offer on your device before paying.\n\nThe plan split is not the same on both platforms. The iPhone app sells Pro and Premium. The Android app lists a Pro plan only, so features that depend on Premium, including video analysis, stay an iPhone purchase as of this review.\n\nAnnual prices make the tiers easier to compare. Android Pro at $59.99 per year is $40 below iPhone Pro at $99.99 per year for a plan carrying the same name. Weekly billing is the most expensive way to keep either plan: 52 weeks at $7.99 is $415.48 per year on iPhone Pro, and 52 weeks at $6.99 is $363.48 on Android Pro. Paying monthly on iPhone Pro at $29.99 costs $359.88 over 12 months, so the $99.99 annual price saves $259.89 if you keep the subscription for the full year. Premium at $199 per year compares with $675.48 over 52 weekly charges at $12.99.",
+      "bodyHtml": "<div class=\"overflow-x-auto\"><table><thead><tr><th>Plan detail</th><th>iPhone</th><th>Android</th></tr></thead><tbody><tr><td>Plans listed</td><td>Pro and Premium</td><td>Pro only</td></tr><tr><td>Pro price</td><td>$7.99 per week, $29.99 per month or $99.99 per year</td><td>$6.99 per week or $59.99 per year</td></tr><tr><td>Premium price</td><td>$12.99 per week, $49.99 per month or $199 per year</td><td>Not listed</td></tr><tr><td>Introductory trial</td><td>Eligible new Pro subscribers may get 3 days free; Premium does not include it</td><td>Check the purchase screen on your device</td></tr><tr><td>Strain profiles</td><td>300 with Pro, 600 with Premium</td><td>Check the listing for your plan</td></tr><tr><td>Video analysis</td><td>Premium feature</td><td>Not part of the listed Pro plan</td></tr><tr><td>Journal and tasks</td><td>Notes, saved reports and daily care tasks</td><td>Check the listing for your plan</td></tr></tbody></table></div>"
     },
     {
       "heading": "What MasterGrowbot AI offers",
@@ -3671,7 +3676,11 @@ Start your free 7-day trial today and experience data-driven cultivation that ma
     },
     {
       "heading": "Check subscriptions before starting a trial",
-      "body": "Read the plan name, billing period, renewal price and cancellation instructions in your store account. Do not assume that a free download means every feature is free, or that a trial applies to every plan. The [Apple listing](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) distinguishes Pro trial eligibility from Premium plans; terms can differ by platform and account.\n\nThis page does not publish a competitor price table because prices and included features need current verification. Compare what you will actually use, not the largest advertised feature count. For the current MasterGrowbot plan split, see [MasterGrowbot Pro vs Premium plans](/grow-guides/mastergrowbot-ai-pro-vs-premium-plans)."
+      "body": "Read the plan name, billing period, renewal price and cancellation instructions in your store account. Do not assume that a free download means every feature is free, or that a trial applies to every plan. The [Apple listing](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) distinguishes Pro trial eligibility from Premium plans; terms can differ by platform and account.\n\nThe plan table above covers MasterGrowbot's own current prices. Competitor prices sit in the head-to-head comparisons linked at the end of this page, where each figure carries the store review date behind it. Compare what you will actually use, not the largest advertised feature count. For the plan split in more detail, see [MasterGrowbot Pro vs Premium plans](/grow-guides/mastergrowbot-ai-pro-vs-premium-plans)."
+    },
+    {
+      "heading": "What changes for 2027 buyers",
+      "body": "The 2027 buying questions repeat the same three: which phone you use, which plan includes the feature you want, and how long you intend to keep paying. Store listings change during the year, so this is a dated preview for buyers planning a purchase for 2027, not a report on tests we have run.\n\nPlan scope is the item most likely to move. Android currently lists one plan and iPhone lists two, and the Premium-only features on iPhone have no Android equivalent in the listing we reviewed. If video analysis, the larger strain library or the Pro trial is your reason to subscribe, check the current listing for your own device rather than planning around this page.\n\nRenewal length deserves more attention than the headline price. Weekly billing costs the most per year, monthly billing costs less than weekly but more than the annual price on the same tier, and the annual price only saves money if you keep the subscription for the full year. Set a reminder before the renewal date, because a trial that converts quietly is how a cheap-looking app becomes expensive.\n\nPhoto and note handling is the third question. The listing describes saved reports and journal entries inside the app, and the [MasterGrowbot privacy policy](/privacy-policy) is the document that explains retention and deletion. Read it before you upload photographs you would not want copied elsewhere, and ask [support](/contact) about export if you plan to keep records long term."
     },
     {
       "heading": "Do you need hardware as well as an app?",
@@ -3679,7 +3688,7 @@ Start your free 7-day trial today and experience data-driven cultivation that ma
     },
     {
       "heading": "Try the workflow before committing",
-      "body": "Open the store page for your phone, review the current plan, and decide whether the photo and journal workflow fits your needs. [Explore MasterGrowbot AI for iOS](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) or [see MasterGrowbot AI on Android](https://play.google.com/store/apps/details?id=com.mastergrowbot.app). During any eligible trial, evaluate the interface, record organization and usefulness of the explanations.\n\nKey takeaways: choose a specific software job, verify the plan, review privacy, and judge the workflow yourself. Browse the [Grow Guides hub](/grow-guides) for related app-selection resources.\n\nSources checked September 26, 2026: the official Apple App Store and Google Play listings linked above. This is MasterGrowbot's own website, so the product discussion is first-party information."
+      "body": "Open the store page for your phone, review the current plan, and decide whether the photo and journal workflow fits your needs. [Explore MasterGrowbot AI for iOS](https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060) or [see MasterGrowbot AI on Android](https://play.google.com/store/apps/details?id=com.mastergrowbot.app). During an eligible trial, test one real workflow: photograph a plant, save the report, then find it again a week later.\n\nSources checked November 5, 2026: MasterGrowbot's plan page (owner pricing card, October 23, 2026), the US App Store listing and the Google Play listing, both checked November 1, 2026. Store descriptions and prices are written by the developer and can change. This is MasterGrowbot's own website, so the product discussion is first-party information."
     }
   ],
   "faqs": [
@@ -3694,6 +3703,18 @@ Start your free 7-day trial today and experience data-driven cultivation that ma
     {
       "question": "Is MasterGrowbot AI available on iOS and Android?",
       "answer": "MasterGrowbot AI has official Apple App Store and Google Play listings. Check the listing and purchase screen for your platform for current features and terms."
+    },
+    {
+      "question": "How much does MasterGrowbot AI cost?",
+      "answer": "The plan page checked October 23, 2026 lists iPhone Pro at $7.99 per week, $29.99 per month or $99.99 per year, iPhone Premium at $12.99 per week, $49.99 per month or $199 per year, and Android Pro at $6.99 per week or $59.99 per year. The purchase screen on your device is the authority for the amount you will be charged and for renewal terms."
+    },
+    {
+      "question": "Do the iPhone and Android plans include the same features?",
+      "answer": "No. The iPhone app lists Pro and Premium, while the Android app lists a Pro plan only as of November 1, 2026. Features tied to Premium on iPhone, including video analysis and the larger strain library, are not listed as part of the Android Pro plan. Check the listing and purchase screen for your device before subscribing for a specific feature."
+    },
+    {
+      "question": "Is the 3-day free trial available on Premium?",
+      "answer": "No. The US App Store listing says eligible new Pro subscribers may get a 3-day free trial and that Premium plans do not include it. Verify the offer shown to your own account before you confirm any subscription."
     }
   ],
   "relatedSlugs": [
