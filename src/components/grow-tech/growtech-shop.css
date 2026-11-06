@@ -63,3 +63,5 @@
 
 .gt-hero-copy .gt-includes{color:#294b3c;margin:16px 0}.gt-hero-copy .gt-includes svg{color:#286042;flex-shrink:0}
 
+
+.gt-hero-product-preview{display:flex;align-items:center;gap:16px;margin-bottom:18px}.gt-hero-product-preview img{width:100px;height:100px;object-fit:contain;border-radius:10px}.gt-hero-product-preview .gt-kicker{margin:0;line-height:1.8}

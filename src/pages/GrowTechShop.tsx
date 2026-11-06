@@ -55,11 +55,11 @@ export default function GrowTechShop() {
     <main>
       <header ref={heroRef} className="gt-hero gt-hero-v2"><div className="gt-container gt-hero-grid">
         <div className="gt-hero-copy">
-          <p className="gt-kicker">GROWTECH / ALPHAGROW AG1000</p>
+          <div className="gt-hero-product-preview"><img src="/images/grow-tech/ag1000-details-v2/spectrum.webp" width={100} height={100} alt="AG1000 hanging LED panel, supplier product graphic" fetchPriority="high"/><p className="gt-kicker">ALPHAGROW AG1000<br/>100W dimmable LED</p></div>
           <h1>Adjust the light.<br/><em>Watch your plants grow.</em></h1>
           <p className="gt-hero-lede">Hang the 100W full-spectrum panel above your indoor setup. Turn the dial to adjust brightness from 20% to 100% as your plants grow.</p>
           <div className="gt-hero-price"><strong>$199</strong><span>USD · one-time purchase<br/><b>US shipping included</b></span></div>
-          <ul className="gt-includes"><li><Check size={15}/>100W full-spectrum panel · 20–100% dimming</li><li><Check size={15}/>US three-prong plug · manual brightness control</li><li><Check size={15}/>Complete $19 Playbook kit included</li></ul>
+          <ul className="gt-includes"><li><Check size={15}/>100W full-spectrum panel · 20–100% dimming</li><li><Check size={15}/>US three-prong plug · manual brightness control</li><li><Check size={15}/>Equipment guides and observation files included</li></ul>
           <CheckoutButton product={growLightOffer} location="growtech:hero:light"/>
           <a className="gt-text-link" href="#shipping-returns">30-day return terms <ArrowRight size={15}/></a>
           <p className="gt-hero-delivery">Estimated US delivery about two weeks from confirmed payment. Tracking after dispatch. Tax at checkout.</p>
@@ -74,7 +74,7 @@ export default function GrowTechShop() {
           <p className="gt-light-lede">A hanging full-spectrum LED light for seed starting and compact indoor plant setups. Adjust brightness as your setup changes.</p>
           <div className="gt-price"><strong>$199</strong><span>USD · One-time payment</span></div>
           <CheckoutAssurances hardware/>
-          <p className="gt-kit-included">Playbook kit included — sold separately for $19.</p><p className="gt-light-lede">32-page Playbook, 8 prompts, fillable workbook, Equipment Quickstart, worksheets and CSV log. Files through Whop after payment.</p>
+          <p className="gt-kit-included">Equipment guides and observation files included.</p><p className="gt-light-lede">32-page Playbook, 8 prompts, fillable workbook, Equipment Quickstart, worksheets and CSV log. Files through Whop after payment.</p>
           <ul className="gt-includes"><li><Check size={15}/>AG1000 Full Spectrum 100Watts model</li><li><Check size={15}/>Rated 100W input · 20–100% dimming</li><li><Check size={15}/>US three-prong plug · manual setup</li></ul>
           <p className="gt-small">US shipping included. Check delivery details before payment.</p>
           <CheckoutButton product={growLightOffer} location="growtech:featured:light"/><p className="gt-small">Your hardware purchase is eligible for a refund if we receive the returned item within 30 days of purchase and it is undamaged. Contact us for return instructions. You pay return shipping unless the item arrived damaged or incorrect. <a href="#shipping-returns">Read the shipping and return policy</a>. <a href="mailto:support@mastergrowbot.com">Ask an order question</a>.</p>
