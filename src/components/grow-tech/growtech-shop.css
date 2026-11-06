@@ -60,3 +60,6 @@
 .gt-shop .shop-amazon-book>div{max-width:none}
 @media(max-width:760px){.gt-shop .shop-digital--wide .shop-digital-grid{grid-template-columns:1fr;gap:22px}.gt-shop .shop-digital--wide .shop-digital-grid>.lens-panel{padding:25px;gap:25px}.gt-shop .shop-digital--wide .shop-digital-grid>.lens-panel>img{height:310px}.gt-shop .shop-digital--wide .shop-digital-grid h3{font-size:26px}.gt-shop .shop-amazon-book{margin-top:32px}}
 @media(max-width:360px){.gt-shop .shop-digital--wide .shop-digital-grid>.lens-panel{padding:20px}.gt-shop .shop-digital--wide .shop-digital-grid>.lens-panel>img{height:260px}}
+
+.gt-hero-copy .gt-includes{color:#294b3c;margin:16px 0}.gt-hero-copy .gt-includes svg{color:#286042;flex-shrink:0}
+
