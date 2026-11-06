@@ -148,6 +148,7 @@ export default function EmbeddedGrowTechCheckout({
 
       </div>
 
+      {!isComplete && fallbackLink}
       {isComplete ? (
         <div className="rounded-xl border border-landing-green/25 bg-landing-green/10 p-6 text-center">
           <p className="text-lg font-semibold text-white">Your Whop checkout is complete.</p>
