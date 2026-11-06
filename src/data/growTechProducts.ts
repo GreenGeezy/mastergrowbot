@@ -264,7 +264,7 @@ export const scoutGuideBundle: GrowTechProduct = {
   deliveryKind: "hardware-and-digital",
   availability: "ready",
   fulfillmentNote: "US & Canada: estimated delivery about two weeks from payment. Shipping included. Global supply-chain and carrier delays may extend delivery times. Tracking after dispatch.",
-  deliveryCountries: ["US", "CA"],
+  deliveryCountries: [],
 };
 
 export const soilGuideOffer: GrowTechProduct = {
@@ -287,7 +287,7 @@ export const soilGuideOffer: GrowTechProduct = {
   availability: "ready",
   deliveryKind: "hardware-and-digital",
   fulfillmentNote: "US & Canada: estimated delivery about two weeks from payment. Shipping included. Global supply-chain and carrier delays may extend delivery times. Tracking after dispatch.",
-  deliveryCountries: ["US", "CA"],
+  deliveryCountries: [],
 };
 
 export const growTentOffer: GrowTechProduct = {
@@ -315,7 +315,7 @@ export const growTentOffer: GrowTechProduct = {
   anchorId: "grow-tent",
   availability: "ready",
   fulfillmentNote: "US & Canada: estimated delivery about two weeks from payment. Shipping included. Global supply-chain and carrier delays may extend delivery times. Tracking after dispatch.",
-  deliveryCountries: ["US", "CA"],
+  deliveryCountries: [],
 };
 
 export const growLightOffer: GrowTechProduct = {
@@ -339,7 +339,7 @@ export const growLightOffer: GrowTechProduct = {
   checkoutKey: "NEXT_PUBLIC_WHOP_GROW_LIGHT_CHECKOUT_URL",
   anchorId: "grow-light", availability: "ready", deliveryKind: "hardware-and-digital",
   fulfillmentNote: "Free shipping to the US and Canada. Estimated delivery about two weeks from confirmed payment. Global supply-chain and carrier delays may extend delivery times. Tracking after dispatch.",
-  deliveryCountries: ["US", "CA"],
+  deliveryCountries: [],
 };
 
 export const allGrowTechOffers: GrowTechProduct[] = [
@@ -348,6 +348,7 @@ export const allGrowTechOffers: GrowTechProduct[] = [
 ];
 
 export function canPurchaseGrowTech(product: GrowTechProduct) {
-  return product.availability === "ready" && Boolean(planIds[product.planKey]) && Boolean(checkoutUrls[product.checkoutKey]);
+  const hasDeliveryRoute = product.deliveryKind === "digital" || Boolean(product.deliveryCountries?.length);
+  return hasDeliveryRoute && product.availability === "ready" && Boolean(planIds[product.planKey]) && Boolean(checkoutUrls[product.checkoutKey]);
 }
 

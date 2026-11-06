@@ -275,6 +275,9 @@ export default function GrowGuideArticle() {
                 MasterGrowbot AI Home
               </Link>
             </div>
+            {/pest|trichome|magnif|microscope|inspect|watering|grow-light|grow-tent/.test(guide.slug) && (
+              <Link className="text-emerald-300 underline" to={`/grow-tech?utm_source=grow-guide&utm_medium=internal&utm_content=${guide.slug}#${guide.slug.includes('watering') ? 'soil-meter' : guide.slug.includes('grow-light') ? 'grow-light' : guide.slug.includes('grow-tent') ? 'grow-tent' : 'inspection'}`}>Explore equipment for this guide →</Link>
+            )}
           </article>
 
           {/* Sticky Sidebar — desktop only */}
