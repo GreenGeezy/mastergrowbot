@@ -16,8 +16,8 @@ export default function GrowTechCheckout() {
   const { productSlug } = useParams<{ productSlug: string }>();
   const product = allGrowTechOffers.find((item) => item.anchorId === productSlug);
   const begunFor = useRef<string | null>(null);
-  const [destination, setDestination] = useState({ slug: productSlug, country: "" });
-  const deliveryCountry = destination.slug === productSlug ? destination.country : "";
+  const [destination, setDestination] = useState({ slug: productSlug, country: product?.deliveryCountries?.length === 1 ? product.deliveryCountries[0] : "" });
+  const deliveryCountry = destination.slug === productSlug ? destination.country : product?.deliveryCountries?.length === 1 ? product.deliveryCountries[0] : "";
 
   useEffect(() => {
     window.scrollTo(0, 0);

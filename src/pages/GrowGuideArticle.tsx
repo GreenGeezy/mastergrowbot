@@ -202,6 +202,7 @@ export default function GrowGuideArticle() {
             </motion.div>
 
             {/* Inline CTA (within first 300 words) */}
+            {/100w-led|grow-light/.test(guide.slug) && <Link className="my-6 block rounded-xl border border-emerald-300/30 p-5 text-emerald-200" to={`/grow-tech?utm_source=grow-guide&utm_medium=internal&utm_campaign=november-ag1000&utm_content=${guide.slug}#grow-light`}>Considering a 100W light? See the $199 AG1000, with US shipping and the digital Playbook kit included →</Link>}
             {guide.slug === 'best-ai-cannabis-growing-apps-2026' ? <GuideAppPreview /> : isLensIntent ? (
               <LensOfferLink location={`${guide.slug}:intro`} />
             ) : (
