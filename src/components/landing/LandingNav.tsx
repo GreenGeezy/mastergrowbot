@@ -33,8 +33,8 @@ export default function LandingNav({ growTechMode = false, onMenuOpenChange }: {
 
         <div className="hidden items-center gap-3 sm:flex">
           {growTechMode ? (
-            <a href="/grow-tech#shop-bundles" className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black hover:bg-landing-green-glow">
-              Browse equipment <ArrowRight className="h-4 w-4" />
+            <a href="/grow-tech#growtech-app" className="group inline-flex items-center gap-2 rounded-full bg-landing-green px-5 py-2.5 text-sm font-black text-black hover:bg-landing-green-glow">
+              Explore MasterGrowbot AI <ArrowRight className="h-4 w-4" />
             </a>
           ) : (
             <>
@@ -65,7 +65,7 @@ export default function LandingNav({ growTechMode = false, onMenuOpenChange }: {
             ))}
           </div>
           {growTechMode ? (
-            <Link to="/grow-tech#shop-bundles" onClick={() => changeMenu(false)} className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Browse equipment <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/grow-tech#growtech-app" onClick={() => changeMenu(false)} className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Explore MasterGrowbot AI <ArrowRight className="h-4 w-4" /></Link>
           ) : (
             <a href={mobileNavAppStoreUrl} onClick={() => changeMenu(false)} data-cta-location="mobile-navigation:stores" className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Choose your app store <ArrowRight className="h-4 w-4" /></a>
           )}

@@ -56,7 +56,7 @@ export default function GrowGuideArticle() {
     'scouting',
   ]);
   // Journal/software pages mention photos too; that alone is not hardware intent.
-  const isLightingIntent = /100w-led|grow-light/.test(guide.slug);
+  const isLightingIntent = /100w-led|grow-light|ag1000/.test(guide.slug);
   const isLensIntent = hasAnyKeyword(intentText, ['camera', 'lens', 'trichome']);
   const appCtaIntro = isIpmIntent
     ? 'Scan Your Plant with MasterGrowbot AI'
@@ -203,8 +203,8 @@ export default function GrowGuideArticle() {
             </motion.div>
 
             {/* Inline CTA (within first 300 words) */}
-            {/100w-led|grow-light/.test(guide.slug) && <aside className="my-6 rounded-xl border border-emerald-300/30 p-5" aria-label="AG1000 package"><img src="/images/grow-tech/ag1000-details-v2/dimming.webp" alt="AG1000 panel and manual dimmer, product graphic" width={240} height={240} loading="lazy" className="mb-4 w-48 rounded-lg"/><p className="font-semibold">ALPHAGROW AG1000 · 100W · 20–100% dimming</p><p className="mt-2">$199 USD once · US shipping included</p><p className="mt-2 text-sm">US plug. Estimated delivery about two weeks from payment. Tent and ventilation sold separately.</p><Link className="mt-4 inline-flex min-h-12 items-center rounded-full bg-emerald-300 px-6 py-3 font-bold text-emerald-950" to={`/grow-tech/checkout/grow-light?utm_source=grow-guide&utm_medium=internal&utm_campaign=november-ag1000&utm_content=${guide.slug}`}>Get the AG1000 — $199 →</Link><Link className="ml-4 inline-block py-3 text-emerald-200 underline" to="/grow-tech#grow-light">View equipment photos</Link></aside>}
-            {isLightingIntent ? null : guide.slug === 'best-ai-cannabis-growing-apps-2026' ? <GuideAppPreview /> : isLensIntent ? (
+            {isLightingIntent && <aside className="my-6 rounded-xl border border-emerald-300/30 p-5" aria-label="AG1000 package"><img src="/images/grow-tech/ag1000-details-v2/dimming.webp" alt="AG1000 panel and manual dimmer, product graphic" width={240} height={240} loading="lazy" className="mb-4 w-48 rounded-lg"/><p className="font-semibold">ALPHAGROW AG1000 · 100W · 20–100% dimming</p><p className="mt-2">$199 USD once · US shipping included</p><p className="mt-2 text-sm">US plug. Estimated delivery about two weeks from payment. Tent and ventilation sold separately.</p><Link className="mt-4 inline-flex min-h-12 items-center rounded-full bg-emerald-300 px-6 py-3 font-bold text-emerald-950" to={`/grow-tech/checkout/grow-light?utm_source=grow-guide&utm_medium=internal&utm_campaign=november-ag1000&utm_content=${guide.slug}`}>Get the AG1000 — $199 →</Link><Link className="ml-4 inline-block py-3 text-emerald-200 underline" to="/grow-tech#grow-light">View equipment photos</Link></aside>}
+            {guide.slug === 'best-ai-cannabis-growing-apps-2026' ? <GuideAppPreview /> : isLensIntent ? (
               <LensOfferLink location={`${guide.slug}:intro`} />
             ) : (
               <div className="mb-10 rounded-2xl border border-landing-green/20 bg-landing-green/5 p-6 flex flex-col gap-4">

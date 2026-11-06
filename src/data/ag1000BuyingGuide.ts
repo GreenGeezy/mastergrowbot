@@ -55,6 +55,7 @@ export const ag1000BuyingGuide: GrowGuide = {
     }
   ],
   "relatedSlugs": [
+    "ag1000-vs-mars-hydro-ts600",
     "cannabis-grow-tech-kit-hardware-home-growers",
     "best-cannabis-grow-tech-home-growers"
   ]

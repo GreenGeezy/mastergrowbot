@@ -1,3 +1,4 @@
+import { ag1000Comparison } from './ag1000Comparison';
 import { ag1000BuyingGuide } from './ag1000BuyingGuide';
 import { AMAZON_BOOK_URL } from '@/components/landing/ctaLinks';
 
@@ -29,6 +30,7 @@ export interface GrowGuide {
 
 export const growGuides: GrowGuide[] = [
   ag1000BuyingGuide,
+  ag1000Comparison,
 {
   "slug": "grow-buddy-ai-vs-mastergrowbot-ai",
   "title": "Grow-Buddy AI vs MasterGrowbot AI: Cannabis App Comparison",

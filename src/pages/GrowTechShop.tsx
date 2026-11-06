@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowDown, ArrowRight, Check, Leaf, ShieldCheck, Truck } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
+import { AppActions } from '@/components/landing/HeroSection';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import LensGallery from '@/components/grow-tech/LensGallery';
@@ -63,11 +64,12 @@ export default function GrowTechShop() {
           <CheckoutButton product={growLightOffer} location="growtech:hero:light"/>
           <a className="gt-text-link" href="#shipping-returns">30-day return terms <ArrowRight size={15}/></a>
           <p className="gt-hero-delivery">Estimated US delivery about two weeks from confirmed payment. Tracking after dispatch. Tax at checkout.</p>
-          <div className="gt-hero-links"><a className="gt-text-link" href="#grow-light">See the light and specifications <ArrowDown size={16}/></a><a className="gt-text-link" href="#shop-bundles">Shop all equipment <ArrowRight size={16}/></a></div>
+          <div className="gt-hero-links"><a className="gt-text-link" href="#grow-light">See the light and specifications <ArrowDown size={16}/></a><a className="gt-text-link" href="#growtech-app">Already have a light? Explore the app <ArrowRight size={16}/></a></div>
         </div>
         <div className="gt-hero-visual"><video controls playsInline preload="none" poster="/images/grow-tech/ag1000-lifestyle-v2/hero.webp" aria-label="Grower adjusting the AG1000 dimmer, illustrated walkthrough" style={{width:'100%',height:'100%',objectFit:'cover'}} src="/videos/growtech-light-dimmer.mp4"/><span className="gt-image-label" style={{top:16,bottom:'auto',pointerEvents:'none'}}>AI illustration · tent sold separately</span></div>
       </div></header>
       <div className="gt-assurance"><div className="gt-container"><span><Truck size={18}/>US shipping included on the AG1000</span><span><ShieldCheck size={18}/>Secure Whop checkout</span><span><Leaf size={18}/>Guides included in every bundle</span></div></div>
+      <section id="growtech-app" className="gt-container gt-section" aria-labelledby="growtech-app-title"><div className="gt-light-grid"><div><p className="gt-kicker">MASTERGROWBOT AI · iPHONE & ANDROID</p><h2 id="growtech-app-title">Keep your grow photos<br/><em>and observations together.</em></h2><p>Already have the equipment? Review plant photos with AI, save reports in your grow journal and return to earlier observations as your plants change.</p><p>Use MasterGrowbot AI alongside the light you own. Photo analysis and other paid features require a subscription. Your app store shows the current price, renewal terms and trial eligibility.</p><AppActions location="growtech-app"/><Link className="gt-text-link" to="/#grow-walkthrough">See the app walkthrough <ArrowRight size={16}/></Link></div><img src="/images/premium/real-report-journal.webp" alt="MasterGrowbot AI report with journal actions" width={945} height={2048} loading="lazy" style={{width:'100%',maxWidth:270,maxHeight:520,objectFit:'contain',justifySelf:'center',borderRadius:20}}/></div></section>
       <section className="gt-light-section" id="grow-light" aria-labelledby="light-status-title">
         <div className="gt-container gt-light-grid"><LightGallery/><div>
           <p className="gt-kicker">FEATURED / COMPACT INDOOR LIGHTING</p><h2 id="light-status-title">ALPHAGROW AG1000.<br/><em>Light your next start.</em></h2>
