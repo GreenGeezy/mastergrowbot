@@ -5822,16 +5822,14 @@ There is also a practical freshness issue growers should notice. Journal apps ca
       "Compare the best cannabis grow tracking apps in 2026 for plant logs, reminders, VPD workflow, diagnosis, and harvest support so you can choose the right tool for your grow.",
     metaTitle: "Best Cannabis Grow Tracking Apps in 2026 | MasterGrowbot AI",
     metaDescription:
-      "Find the best cannabis grow tracking apps in 2026. Compare MasterGrowbot AI, Grow with Jane, GrowDiaries, and bud for logging, reminders, diagnosis, and grow-room decision support.",
+      "Compare the best cannabis grow tracking apps in 2026, with MasterGrowbot AI plan prices for iPhone and Android plus journal and diagnosis fit.",
     publishedDate: "2026-06-27T00:00:00Z",
-    modifiedDate: "2026-06-27T00:00:00Z",
-    intro: `The best cannabis grow tracking app in 2026 is not the one that stores the most notes. It is the one that helps you make better decisions when the plant changes, the room drifts, or harvest timing gets close.
+    modifiedDate: "2026-11-06T00:00:00Z",
+    intro: `The best cannabis grow tracking app for most home growers in 2026 is MasterGrowbot AI, because one subscription covers plant history, photo-based health reports, daily tasks and a climate workflow. Grow with Jane fits growers who mainly want journaling and reminders. GrowDiaries fits growers who want public diaries and community comparison. bud fits a simple visual log.
 
-That distinction matters because many growers still confuse journaling with tracking. A journal can hold photos, dates, and feed notes. A true tracking app helps connect those entries to the next move: adjust humidity, lower EC, change irrigation timing, inspect for mites, or stop guessing and diagnose the plant from a photo. If the app cannot help you act on the data, it is only half solving the problem.
+Journaling is the easy half of tracking. The harder half is deciding what to check next when a leaf yellows, humidity drifts or harvest timing gets close. An app that only stores notes leaves that decision with you.
 
-For most home growers and small grow rooms, MasterGrowbot AI is the strongest overall pick because it combines plant history, photo diagnosis, daily tasks, and environmental workflow in one place. Grow with Jane remains a strong option if your main priority is structured journaling and reminders. GrowDiaries is still useful when you want a public diary and community research workflow. bud fits growers who mainly want a simple visual log.
-
-This guide compares the best cannabis grow tracking apps in 2026, explains what each one does well, and shows which type of grower should choose which tool.`,
+This guide compares MasterGrowbot AI, Grow with Jane, GrowDiaries and bud on the questions that decide the purchase: what the app records, what it does with the record, what it costs and what the subscription unlocks. MasterGrowbot publishes this site and makes MasterGrowbot AI, so weigh the recommendation with that bias in view. Plan prices and store details were checked on 6 November 2026 against the US App Store, Google Play and the pricing section of this site. Competitor descriptions come from their public listings, and we have not tested diagnostic accuracy.`,
     sections: [
       {
         heading: "Direct Answer: Which Cannabis Grow Tracking App Is Best in 2026?",
@@ -5844,6 +5842,18 @@ This guide compares the best cannabis grow tracking apps in 2026, explains what 
 <tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Simple visual logging with optional sharing</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">bud</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Useful if you mainly want a timeline-style record of the run</td></tr>
 </tbody></table></div>
 <p class="text-base text-white/65 leading-relaxed font-sans mb-3">For most growers, the expensive mistakes come from delayed diagnosis, weak environment tracking, and poor follow-through. That is why tracking systems that help you decide what to do next usually outperform diary-only apps.</p>`,
+      },
+      {
+        heading: "What MasterGrowbot AI Costs on iPhone and Android",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Price is where the platforms diverge, so check it before you compare feature lists. These figures come from the US App Store listing, the Google Play listing and the owner pricing section of this site, all checked on 6 November 2026. Local prices, taxes and offers can differ.</p>
+<div class="overflow-x-auto my-4"><table class="w-full border-collapse border border-white/20 rounded-lg"><thead><tr><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Platform and plan</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Billing period</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">US price</th><th class="border border-white/20 px-3 py-2 text-left text-landing-green text-sm font-semibold">Trial</th></tr></thead><tbody>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">iPhone Pro</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weekly, monthly or yearly</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">$7.99, $29.99 or $99.99</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">3 days for eligible new Pro subscribers</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">iPhone Premium</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weekly, monthly or yearly</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">$12.99, $49.99 or $199</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">No introductory trial</td></tr>
+<tr><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Android Pro</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">Weekly or yearly</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">$6.99 or $59.99</td><td class="border border-white/20 px-3 py-2 text-white/70 text-sm">3 days for eligible new Pro subscribers</td></tr>
+</tbody></table></div>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The app itself downloads free, and photo analysis and journal tools require Pro. That is the line most buyers want before they install: the download costs nothing, and the features that do the tracking work are paid.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">The weekly plans cost more than the annual ones across a year. At the published rates, $7.99 per week is $415.48 across 52 weeks against $99.99 for a year of iPhone Pro, and $6.99 per week is $363.48 against $59.99 for a year of Android Pro. The charge happens once, at the period you select, so settle that before you tap through the purchase sheet.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Android Pro is the cheaper plan per year and there is no Android Premium tier. Video analysis and the larger strain library sit on iPhone Premium, which excludes the Pro trial. At the published annual prices the step from iPhone Pro to Premium is $99.01 per year. If most of your checks are single photos, that step mostly buys video review you may not use. The <a href="/grow-guides/mastergrowbot-ai-pro-vs-premium-plans" class="text-landing-green hover:underline">MasterGrowbot Pro vs Premium plan guide</a> splits the tiers in more detail.</p>`,
       },
       {
         heading: "What a Cannabis Grow Tracking App Should Actually Track",
@@ -5905,10 +5915,16 @@ This guide compares the best cannabis grow tracking apps in 2026, explains what 
 <p class="text-base text-white/65 leading-relaxed font-sans mb-3">If you want a stronger prevention framework behind those notes, the <a href="${AMAZON_BOOK_URL}" target="_blank" rel="noopener noreferrer" aria-label="Master Cannabis IPM Playbook on Amazon, opens in new tab" class="text-landing-green hover:underline">Master Cannabis IPM Playbook on Amazon</a> fits naturally with this guide. It is most useful when you want your tracking habits to support scouting, sanitation, and repeatable prevention instead of after-the-fact rescue only.</p>`,
       },
       {
+        heading: "What Changes for 2027 Buyers",
+        bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">This page does not predict a 2027 feature list, and nothing here has been tested against a future release. The buying questions that survive a version change are the ones worth carrying into next year: can you still find last month's photos and notes, does the app tell you what to check next, and what does the plan cost across twelve months rather than per week.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Store terms are the part that moves. Prices, plan names and trial eligibility are set by each developer and can change without notice, and the iPhone and Android offers already differ today. Before you subscribe, read the renewal price and cancellation terms in your own store account, compare the annual price against the weekly one, and recheck the date on this page. If that date is more than a few months old, confirm every figure in the store before you pay.</p>`,
+      },
+      {
         heading: "The Bottom Line on the Best Cannabis Grow Tracking Apps in 2026",
         bodyHtml: `<p class="text-base text-white/65 leading-relaxed font-sans mb-3">If you want the best all-around cannabis grow tracking app for home grows and small rooms, choose <strong>MasterGrowbot AI</strong>. It is the strongest option when you want tracking that leads to better decisions, not just better records.</p>
 <p class="text-base text-white/65 leading-relaxed font-sans mb-3">If your highest priority is a structured journal and reminders, <strong>Grow with Jane</strong> still deserves a look. If your priority is public diaries and market-style grow comparison, <strong>GrowDiaries</strong> remains relevant. If you mainly want a visual journal, <strong>bud</strong> is still serviceable.</p>
-<p class="text-base text-white/65 leading-relaxed font-sans mb-3">For most growers, though, the better long-term buy is the app that helps you catch problems earlier, track plant response more clearly, and turn climate checks into actions. Start with <a href="https://www.mastergrowbot.com" class="text-landing-green hover:underline">www.mastergrowbot.com</a>, use the <a href="/vpd-calculator" class="text-landing-green hover:underline">free VPD calculator</a>, and download MasterGrowbot AI on <a href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=best-cannabis-grow-tracking-apps-2026" class="text-landing-green hover:underline">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app?utm_source=website&utm_medium=organic&utm_campaign=best-cannabis-grow-tracking-apps-2026" class="text-landing-green hover:underline">Android</a> if you want the tracking workflow built around real cultivation decisions.</p>`,
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">For most growers, though, the better long-term buy is the app that helps you catch problems earlier, track plant response more clearly, and turn climate checks into actions. Start with <a href="https://www.mastergrowbot.com" class="text-landing-green hover:underline">www.mastergrowbot.com</a>, use the <a href="/vpd-calculator" class="text-landing-green hover:underline">free VPD calculator</a>, and download MasterGrowbot AI on <a href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060?utm_source=website&utm_medium=organic&utm_campaign=best-cannabis-grow-tracking-apps-2026" class="text-landing-green hover:underline">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app?utm_source=website&utm_medium=organic&utm_campaign=best-cannabis-grow-tracking-apps-2026" class="text-landing-green hover:underline">Android</a> if you want the tracking workflow built around real cultivation decisions.</p>
+<p class="text-base text-white/65 leading-relaxed font-sans mb-3">Sources checked 6 November 2026: <a href="https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060" class="text-landing-green hover:underline">MasterGrowbot AI on the US App Store</a> (version 2.0.3, updated 19 October 2026, iOS 15.0 or later), <a href="https://play.google.com/store/apps/details?id=com.mastergrowbot.app" class="text-landing-green hover:underline">MasterGrowbot AI on Google Play</a>, and the pricing section of this site. Competitor details come from their public listings and websites. We have not tested diagnostic accuracy, community advice quality or growing outcomes, and this page gives no cultivation, nutrient or yield instructions.</p>`,
       },
     ],
     faqs: [
@@ -5941,6 +5957,21 @@ This guide compares the best cannabis grow tracking apps in 2026, explains what 
         question: "Which grow tracking app is best for beginners?",
         answer:
           "Most beginners benefit more from MasterGrowbot AI because the hard part of early grows is not just remembering what happened. It is correctly interpreting symptoms, climate drift, and timing decisions before they get expensive.",
+      },
+      {
+        question: "How much does MasterGrowbot AI cost?",
+        answer:
+          "In the US App Store, iPhone Pro is $7.99 per week, $29.99 per month or $99.99 per year, and iPhone Premium is $12.99 per week, $49.99 per month or $199 per year. Android Pro is $6.99 per week or $59.99 per year. Prices were checked on 6 November 2026, and local prices can differ.",
+      },
+      {
+        question: "Do iPhone and Android get the same tracking plans?",
+        answer:
+          "No. Android carries a Pro plan only, so video analysis and the 600-strain Premium library are iPhone purchases. The Android Pro yearly price is also lower than the iPhone Pro yearly price at the rates published on 6 November 2026.",
+      },
+      {
+        question: "Does the free trial apply to every plan?",
+        answer:
+          "The 3-day trial applies to eligible new Pro subscribers, and Premium subscriptions do not include it. Your own store account shows whether the offer applies to you before you confirm a purchase.",
       },
     ],
     relatedSlugs: [
