@@ -90,7 +90,7 @@ export default function GrowTechCheckout() {
           />
         </div>}
         {isDigital ? <div className="mt-8 rounded-xl border border-white/10 p-5 text-sm leading-7 text-white/70"><h2 className="font-bold text-white">What happens after payment?</h2><p>Sign in to Whop with the email on your receipt to open the Equipment Quickstart Files and Start Here content. Your purchase includes the 12-page PDF, worksheets and CSV log. It includes no physical equipment or app subscription.</p><p>For access or purchase issues, email support@mastergrowbot.com with your receipt identifier.</p></div> : <div className="mt-8"><OrderQuestions fulfillmentNote={product.fulfillmentNote} /></div>}
-        <p className="mt-8 text-center text-xs leading-5 text-white/50">
+        <p className="mt-8 text-center text-xs leading-5 text-white/70">
           Prices are in USD. Need order help? <a href="mailto:support@mastergrowbot.com" className="text-landing-green underline">support@mastergrowbot.com</a>
         </p>
       </main>

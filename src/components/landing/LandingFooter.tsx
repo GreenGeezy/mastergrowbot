@@ -4,18 +4,18 @@ import { AMAZON_BOOK_URL, GROW_TECH_URL } from './ctaLinks';
 export default function LandingFooter() {
   return (
     <footer className="relative z-10 py-10 px-4 sm:px-6 border-t border-white/[0.04]">
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/30 font-sans">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/65 font-sans">
         <p>© {new Date().getFullYear()} AGCOM SOLUTIONS LLC. All rights reserved.</p>
         <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
           <Link to={GROW_TECH_URL} data-cta-location="footer:growtech" className="hover:text-landing-green transition-colors">
             Shop GrowTech
           </Link>
           <Link to="/playbooks" className="hover:text-landing-green transition-colors">Playbooks</Link>
-          <Link to="/about" className="hover:text-white/60 transition-colors">About</Link>
-          <Link to="/grow-guides" className="hover:text-white/60 transition-colors">
+          <Link to="/about" className="hover:text-white/75 transition-colors">About</Link>
+          <Link to="/grow-guides" className="hover:text-white/75 transition-colors">
             Grow Guides
           </Link>
-          <Link to="/vpd-calculator" className="hover:text-white/60 transition-colors">
+          <Link to="/vpd-calculator" className="hover:text-white/75 transition-colors">
             VPD Calculator
           </Link>
           <a
@@ -24,17 +24,17 @@ export default function LandingFooter() {
             rel="noopener noreferrer"
             aria-label="Available on Amazon, opens in new tab"
             data-cta-location="footer:amazon-book"
-            className="hover:text-white/60 transition-colors"
+            className="hover:text-white/75 transition-colors"
           >
             IPM book on Amazon
           </a>
-          <Link to="/contact" className="hover:text-white/60 transition-colors">
+          <Link to="/contact" className="hover:text-white/75 transition-colors">
             Contact
           </Link>
-          <Link to="/privacy-policy" className="hover:text-white/60 transition-colors">
+          <Link to="/privacy-policy" className="hover:text-white/75 transition-colors">
             Privacy Policy
           </Link>
-          <Link to="/terms-of-service" className="hover:text-white/60 transition-colors">
+          <Link to="/terms-of-service" className="hover:text-white/75 transition-colors">
             Terms of Service
           </Link>
         </div>

@@ -122,12 +122,12 @@ export default function GrowGuideArticle() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-white/40 font-sans mb-8 flex-wrap">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-white/70 font-sans mb-8 flex-wrap">
           <Link to="/" className="hover:text-white/70 transition-colors">Home</Link>
           <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
           <Link to="/grow-guides" className="hover:text-white/70 transition-colors">Grow Guides</Link>
           <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
-          <span className="text-white/60 truncate max-w-[200px] sm:max-w-none">{guide.title}</span>
+          <span className="text-white/75 truncate max-w-[200px] sm:max-w-none">{guide.title}</span>
         </nav>
 
         <div className="lg:grid lg:grid-cols-[1fr_300px] lg:gap-12">
@@ -146,7 +146,7 @@ export default function GrowGuideArticle() {
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
                 {guide.h1}
               </h1>
-              <p className="text-sm text-white/40 font-sans">
+              <p className="text-sm text-white/70 font-sans">
                 Published {new Date(guide.publishedDate).toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' })}
                 {guide.modifiedDate !== guide.publishedDate && (
                   <> · Updated {new Date(guide.modifiedDate).toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' })}</>
@@ -164,7 +164,7 @@ export default function GrowGuideArticle() {
                   <a href={appStoreUrl} data-cta-location="article-top:ios" className="inline-flex min-h-11 items-center rounded-xl border border-white/25 px-4 py-3 text-sm font-semibold text-white">iPhone App Store</a>
                   <a href={playStoreUrl} data-cta-location="article-top:android" className="inline-flex min-h-11 items-center rounded-xl border border-white/25 px-4 py-3 text-sm font-semibold text-white">Google Play</a>
                 </div>
-                <p className="mt-3 text-xs text-white/60">Free download; paid features require a subscription. Eligible new Pro subscribers can receive a three-day trial. Check your store for availability and terms.</p>
+                <p className="mt-3 text-xs text-white/75">Free download; paid features require a subscription. Eligible new Pro subscribers can receive a three-day trial. Check your store for availability and terms.</p>
               </aside>
             )}
 
@@ -176,13 +176,13 @@ export default function GrowGuideArticle() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/40 font-sans mb-3">In this guide</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/70 font-sans mb-3">In this guide</p>
               <ol className="space-y-1.5">
                 {guide.sections.map((section) => (
                   <li key={section.heading}>
                     <a
                       href={`#${slugify(section.heading)}`}
-                      className="text-sm text-white/60 hover:text-landing-green transition-colors duration-150 font-sans flex items-center gap-2 group"
+                      className="text-sm text-white/75 hover:text-landing-green transition-colors duration-150 font-sans flex items-center gap-2 group"
                     >
                       <ChevronRight className="w-3 h-3 text-white/20 group-hover:text-landing-green transition-colors flex-shrink-0" />
                       {section.heading}
@@ -210,7 +210,7 @@ export default function GrowGuideArticle() {
               <div className="mb-10 rounded-2xl border border-landing-green/20 bg-landing-green/5 p-6 flex flex-col gap-4">
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-landing-green font-sans mb-1">{appCtaIntro}</p>
-                  <p className="text-sm text-white/60 font-sans">
+                  <p className="text-sm text-white/75 font-sans">
                     {appCtaBody}
                   </p>
                 </div>
@@ -244,13 +244,13 @@ export default function GrowGuideArticle() {
               <h2 className="text-2xl sm:text-3xl font-bold text-landing-green font-sans">
                 {guide.slug === 'best-ai-cannabis-growing-apps-2026' ? 'Choose your MasterGrowbot AI plan' : 'Download MasterGrowbot AI: Free 3-Day Trial'}
               </h2>
-              <p className="text-white/60 font-sans text-sm sm:text-base max-w-lg mx-auto">
+              <p className="text-white/75 font-sans text-sm sm:text-base max-w-lg mx-auto">
                 Explore MasterGrowbot AI for plant photos, journal notes, and daily tasks. Check your app store for current trial eligibility and subscription terms.
               </p>
               {isIpmIntent && (
                 <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">
                   <h3 className="text-lg font-bold text-white font-sans">{bookCtaHeading}</h3>
-                  <p className="mt-2 text-sm text-white/60 font-sans">
+                  <p className="mt-2 text-sm text-white/75 font-sans">
                     {bookCtaBody}
                   </p>
                   <AmazonBookButton location="article-closing" className="mt-4" />
@@ -260,7 +260,7 @@ export default function GrowGuideArticle() {
               {!isIpmIntent && (
               <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">
                 <h3 className="text-lg font-bold text-white font-sans">{bookCtaHeading}</h3>
-                <p className="mt-2 text-sm text-white/60 font-sans">
+                <p className="mt-2 text-sm text-white/75 font-sans">
                   {bookCtaBody}
                 </p>
                 <AmazonBookButton location="article-closing" className="mt-4" />
@@ -269,7 +269,7 @@ export default function GrowGuideArticle() {
             </div>
 
             {/* Internal links */}
-            <div className="mb-12 text-sm text-white/40 font-sans space-x-4">
+            <div className="mb-12 text-sm text-white/70 font-sans space-x-4">
               <Link to="/grow-guides" className="hover:text-landing-green transition-colors">
                 ← All Grow Guides
               </Link>
@@ -293,7 +293,7 @@ export default function GrowGuideArticle() {
                   <p className="text-sm font-semibold text-white font-sans leading-snug">
                     {bookCtaHeading}
                   </p>
-                  <p className="text-xs text-white/50 font-sans leading-relaxed">
+                  <p className="text-xs text-white/70 font-sans leading-relaxed">
                     {bookCtaBody}
                   </p>
                   <AmazonBookButton
@@ -305,14 +305,14 @@ export default function GrowGuideArticle() {
               )}
 
               <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] p-5 space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-wider text-white/40 font-sans">
+                <p className="text-xs font-semibold uppercase tracking-wider text-white/70 font-sans">
                   AI Plant Diagnosis
                 </p>
                 <p className="text-sm font-semibold text-white font-sans leading-snug">
                   Download MasterGrowbot AI
                 </p>
 
-                <p className="text-xs text-white/50 font-sans leading-relaxed">
+                <p className="text-xs text-white/70 font-sans leading-relaxed">
                   Explore photo analysis and a digital plant journal. AI responses are informational and can be mistaken.
                 </p>
                 <a
@@ -340,7 +340,7 @@ export default function GrowGuideArticle() {
                 <p className="text-sm font-semibold text-white font-sans leading-snug">
                   {bookCtaHeading}
                 </p>
-                <p className="text-xs text-white/50 font-sans leading-relaxed">
+                <p className="text-xs text-white/70 font-sans leading-relaxed">
                   {bookCtaBody}
                 </p>
                 <AmazonBookButton
@@ -354,16 +354,16 @@ export default function GrowGuideArticle() {
               {/* Related guides in sidebar */}
               {relatedGuides.length > 0 && (
                 <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] p-5 space-y-3">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-white/40 font-sans">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-white/70 font-sans">
                     Related Guides
                   </p>
                   {relatedGuides.map((related) => (
                     <Link
                       key={related.slug}
                       to={`/grow-guides/${related.slug}`}
-                      className="group flex items-start gap-2.5 text-sm text-white/60 hover:text-landing-green transition-colors font-sans"
+                      className="group flex items-start gap-2.5 text-sm text-white/75 hover:text-landing-green transition-colors font-sans"
                     >
-                      <BookOpen className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-white/30 group-hover:text-landing-green transition-colors" />
+                      <BookOpen className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-white/65 group-hover:text-landing-green transition-colors" />
                       {related.title}
                     </Link>
                   ))}
@@ -396,7 +396,7 @@ export default function GrowGuideArticle() {
                         {related.title}
                       </h3>
                     </div>
-                    <p className="text-xs text-white/50 leading-relaxed font-sans">{related.shortDescription}</p>
+                    <p className="text-xs text-white/70 leading-relaxed font-sans">{related.shortDescription}</p>
                     <div className="flex items-center gap-1 text-landing-green text-xs font-medium font-sans">
                       Read guide <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
