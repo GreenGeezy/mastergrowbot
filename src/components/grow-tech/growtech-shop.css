@@ -71,3 +71,5 @@
 @media(max-width:760px){.gt-product-body{padding:24px 20px}.gt-shop .gt-section{padding-top:44px;padding-bottom:44px}.gt-section-heading>p{font-size:15px}.gt-delivery>p{font-size:13px}}
 
 .gt-app-preview{margin:0;max-width:320px;justify-self:center}.gt-app-preview img{display:block;width:100%;height:auto;border-radius:20px;border:1px solid #b5d1bf3d;box-shadow:0 20px 48px #0005}.gt-app-preview figcaption{font-size:13px;line-height:1.7;color:#c2d4c8;margin-top:16px;text-align:center}
+
+.gt-app-preview{width:100%;max-width:480px;min-width:0;justify-self:center}.gt-shop #growtech-app{scroll-margin-top:90px}
