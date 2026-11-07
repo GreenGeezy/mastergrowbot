@@ -27,7 +27,7 @@ test('initial canonical remains unique and follows client navigation', async ({ 
     await route.fulfill({ contentType: file.endsWith('.css') ? 'text/css' : 'text/javascript', body: readFileSync(`dist${file}`) });
   });
   await page.goto('/grow-tech');
-  await expect(page.locator('[data-section="growtech-testimonials"] blockquote').first()).toBeVisible();
+  await expect(page.locator('#grow-light')).toContainText('ALPHAGROW AG1000');
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
   await page.getByRole('link', { name: 'Grow Guides', exact: true }).first().click();
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);

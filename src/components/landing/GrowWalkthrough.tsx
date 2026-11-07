@@ -1,3 +1,4 @@
+import PremiumMotion from "./PremiumMotion";
 import ExampleHealthReport from "./ExampleHealthReport";
 import { useState } from "react";
 import { ArrowRight, Camera, FileText, NotebookPen, Sparkles } from "lucide-react";
@@ -16,7 +17,7 @@ export default function GrowWalkthrough() {
   function select(index: number) { setActive(index); trackEvent("app_walkthrough_step", {step: steps[index].label}); }
   return <section id="grow-walkthrough" className="premium-wrap premium-section grow-walkthrough" aria-labelledby="walkthrough-title">
     <div className="premium-section-heading"><div><p className="premium-eyebrow">A MOMENT IN YOUR GROW</p><h2 id="walkthrough-title">From “what’s this?”<br/><em>to a clearer next step.</em></h2></div><p>See how the app turns a plant photo into a health report you can save and revisit. Explore the walkthrough.</p></div>
-    <details style={{marginBottom:24}}>
+    <PremiumMotion name="app-story" label="Photo, actual report and journal walkthrough" poster="/images/premium-2026/app-workflow.webp"/><details style={{marginBottom:24}}>
       <summary style={{cursor:'pointer',padding:'16px 0',fontWeight:700}}>Watch the 30-second report walkthrough</summary>
       <video controls playsInline preload="none" poster={compactVideo ? "/images/premium/report-video-cover-v3.png" : "/images/premium/report-video-wide-cover-v3.png"} aria-label="MasterGrowbot AI real report walkthrough" style={{display:'block',width:'100%',maxWidth:1080,margin:'16px auto',borderRadius:20}} onPlay={() => trackEvent('app_report_video_play', {placement:'homepage_walkthrough',creative:'report_v3'})}>
         <source media="(max-width: 640px)" src="/videos/mastergrowbot-report-social-30s-v3.mp4" type="video/mp4" />
@@ -29,7 +30,7 @@ export default function GrowWalkthrough() {
     </details>
     <div className="walkthrough-nav" role="group" aria-label="Explore the photo to grow record walkthrough">{steps.map(({label,icon:Icon},i)=><button key={label} type="button" aria-pressed={active===i} aria-controls="walkthrough-panel" onClick={()=>select(i)}><span>0{i+1}</span><Icon size={19}/>{label}</button>)}</div>
     <div id="walkthrough-panel" className={`walkthrough-panel ${active===1?'is-report':''}`}>
-      {active===1 ? <ExampleHealthReport/> : <figure className="walkthrough-visual"><img src={`/images/premium/${step.image}.webp`} alt={step.alt} width={1536} height={1024} loading="lazy"/><figcaption>{step.caption}</figcaption></figure>}
+      {active===1 ? <ExampleHealthReport/> : <figure className="walkthrough-visual"><img src={active === 0 ? "/images/premium-2026/app-workflow.webp" : "/images/premium-2026/app-journal.webp"} alt={step.alt} width={1536} height={1024} loading="lazy"/><figcaption>{step.caption}</figcaption></figure>}
       <div className="walkthrough-copy"><div aria-live="polite"><p className="premium-eyebrow">{step.eyebrow}</p><h3>{step.title}</h3><p>{step.text}</p><div className="walkthrough-value"><Sparkles size={20}/><strong>{step.value}</strong></div></div><button type="button" className="premium-button secondary" onClick={()=>select((active+1)%3)}>{step.next}<ArrowRight size={18}/></button><p className="premium-fine">{active === 1 ? "Shown from the MasterGrowbot AI app. Each plant health report reflects the input provided; AI insights support grower judgment." : "The grower photo is illustrative. Your app report reflects your own plant and inputs."}</p></div>
     </div>
     <div className="walkthrough-download"><div><h3>Bring a second set of eyes to your next plant check.</h3><p>Photo analysis, strain intelligence, and grow records with Pro.</p></div><div><AppActions location="walkthrough"/><p className="premium-fine">Pro trial eligibility and subscription terms appear in your store.</p></div></div>

@@ -1,3 +1,4 @@
+import IPMPlaybookSection from './IPMPlaybookSection';
 import AppTestimonials from "./AppTestimonials";
 import { useEffect } from "react";
 import HeroSection from "./HeroSection";
@@ -5,6 +6,7 @@ import FeatureSection from "./FeatureSection";
 import LandingFooter from "./LandingFooter";
 import LandingNav from "./LandingNav";
 import "./premium.css";
+import "./premium-release.css";
 import TrustRail from "./TrustRail";
 import RecognitionSection from "./RecognitionSection";
 import VideoAnalysisSection from "./VideoAnalysisSection";
@@ -27,20 +29,17 @@ export default function LandingPage() {
       <LandingNav />
       <main>
         <HeroSection />
-        <section className="mx-auto grid max-w-6xl items-center gap-6 px-5 py-10 sm:px-8 md:grid-cols-2" aria-labelledby="home-light-title">
-          <img src="/images/grow-tech/ag1000-details-v2/spectrum.webp" width={800} height={800} loading="lazy" alt="ALPHAGROW AG1000 hanging LED panel and spectrum graphic" className="w-full max-w-md rounded-2xl" />
-          <div><p className="text-xs font-bold uppercase tracking-widest text-emerald-300">GrowTech equipment</p><h2 id="home-light-title" className="mt-3 text-3xl font-bold">Adjustable light for your indoor setup.</h2><p className="mt-4 leading-7 text-white/75">AG1000 100W LED panel with 20–100% dimming. US plug and complete digital Playbook kit included.</p><p className="mt-4 text-xl font-bold">$199 USD · US shipping included</p><Link to="/grow-tech?utm_source=homepage&utm_medium=internal&utm_campaign=november-ag1000&utm_content=equipment-card#grow-light" onClick={() => trackEvent('growtech_discovery_click', { cta_location: 'homepage_equipment', product_id: 'growtech_ag1000_light' })} className="mt-5 inline-flex min-h-12 items-center rounded-full bg-emerald-300 px-6 py-3 font-bold text-emerald-950">See the light and what’s included →</Link></div>
-        </section>
+        <GrowWalkthrough />
         <AppTestimonials />
         <RecognitionSection />
         <TrustRail />
-        <GrowWalkthrough />
         <VideoAnalysisSection />
         <FeatureSection />
-        <section className="mx-auto grid max-w-6xl items-center gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[1.2fr_.8fr]" aria-labelledby="home-playbooks-title">
-          <div><p className="text-xs font-bold uppercase tracking-widest text-emerald-300">MasterGrowbot field manuals</p><h2 id="home-playbooks-title" className="mt-4 text-3xl font-bold">Give your photos and readings a clear record.</h2><p className="mt-5 max-w-2xl leading-7 text-white/70">Follow worked AI examples, copy a prompt with the right context and save a note you have checked. Start with free equipment sheets, the $9 Quickstart or the complete $19 Playbook sale kit.</p><Link to="/playbooks" onClick={() => trackEvent('playbooks_discovery_click', { cta_location: 'homepage_field_manual' })} className="mt-7 inline-flex min-h-12 items-center rounded-full bg-emerald-300 px-6 py-3 font-bold text-emerald-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Preview the guides and compare options</Link></div>
-          <img src="/images/playbook/field-manual-scene.webp" width={1536} height={1024} loading="lazy" alt="Illustrative botanical observation scene with a phone and notebook" className="w-full rounded-2xl" />
+        <section className="mx-auto grid max-w-6xl items-center gap-6 px-5 py-10 sm:px-8 md:grid-cols-2" aria-labelledby="home-light-title">
+          <img src="/images/premium-2026/light-hero.webp" width={800} height={800} loading="lazy" alt="Illustration of a grower inspecting plants beneath an AG1000-style panel" className="w-full max-w-md rounded-2xl" />
+          <div><p className="text-xs font-bold uppercase tracking-widest text-emerald-300">GrowTech equipment</p><h2 id="home-light-title" className="mt-3 text-3xl font-bold">Adjustable light for your indoor setup.</h2><p className="mt-4 leading-7 text-white/75">AG1000 100W LED panel with 20–100% dimming. US plug and free equipment quickstart.</p><p className="mt-4 text-xl font-bold">$199 USD · US shipping included</p><Link to="/grow-tech?utm_source=homepage&utm_medium=internal&utm_campaign=november-ag1000&utm_content=equipment-card#grow-light" onClick={() => trackEvent('growtech_discovery_click', { cta_location: 'homepage_equipment', product_id: 'growtech_ag1000_light' })} className="mt-5 inline-flex min-h-12 items-center rounded-full bg-emerald-300 px-6 py-3 font-bold text-emerald-950">See the light and what’s included →</Link></div>
         </section>
+        <IPMPlaybookSection />
       </main>
       <LandingFooter />
     </div>

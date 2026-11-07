@@ -34,13 +34,13 @@ export default function HeroSection() {
     return () => observer.disconnect();
   }, []);
   return <><Helmet>
-    <link rel="preload" as="image" href="/images/premium/hero-grow-lab-mobile-v8.webp" media="(max-width: 767px)" />
-    <link rel="preload" as="image" href="/images/premium/hero-grow-lab-v8.webp" media="(min-width: 768px)" />
+    <link rel="preload" as="image" href="/images/premium-2026/app-hero-mobile.webp" media="(max-width: 767px)" />
+    <link rel="preload" as="image" href="/images/premium-2026/app-hero.webp" media="(min-width: 768px)" />
   </Helmet><section ref={section} className="premium-hero revenue-hero" aria-labelledby="hero-title">
     <div className="premium-wrap premium-hero-grid">
       <div className="premium-hero-copy">
         <p className="premium-eyebrow"><span className="status-dot" /> MASTERGROWBOT AI · CANNABIS GROW INTELLIGENCE</p>
-        <h1 id="hero-title">AI plant photo insights.<br />Your <em>cannabis grow journal.</em></h1>
+        <h1 id="hero-title">Your grow.<br />A clearer <em>next step.</em></h1>
         <p className="premium-lead">Stop guessing what your plant needs. Turn a photo into AI insights, practical checks, and a clearer next step. Keep your observations together as your grow changes.</p>
         <AppRating compact />
         <AppActions trial />
@@ -48,7 +48,7 @@ export default function HeroSection() {
         <div className="premium-hero-benefits"><span><Check size={15} aria-hidden="true" /> Understand symptoms</span><span><Check size={15} aria-hidden="true" /> Know what to check</span><span><Check size={15} aria-hidden="true" /> Track your grow</span></div>
         <a href="#video-analysis" className="premium-text-link hero-video-discovery">Want a fuller view? Explore AI video analysis on iPhone <ArrowDown size={16} aria-hidden="true" /></a>
       </div>
-      <div className="hero-showcase"><HeroProductDemo /><a href="#grow-walkthrough" className="premium-text-link hero-workflow-link">See the photo-to-journal workflow <ArrowDown size={16} aria-hidden="true" /></a></div>
+      <div className="hero-showcase"><figure className="release-hero-photo"><picture><source media="(max-width:767px)" srcSet="/images/premium-2026/app-hero-mobile.webp"/><img src="/images/premium-2026/app-hero.webp" alt="Illustrative home grower photographing a plant" width={1600} height={900} fetchPriority="high"/></picture><figcaption>AI grower illustration · Explore the actual app below</figcaption></figure><HeroProductDemo /><a href="#grow-walkthrough" className="premium-text-link hero-workflow-link">See the photo-to-journal workflow <ArrowDown size={16} aria-hidden="true" /></a></div>
       <figure className="hero-customer-quote"><blockquote>“As a first-time grower I was totally lost. MasterGrowbot walked me through everything.”</blockquote><figcaption>Sarah K. · MasterGrowbot customer</figcaption><a href="#customer-experiences">Read customer experiences <ArrowDown size={14} aria-hidden="true" /></a></figure>
     </div>
   </section></>;

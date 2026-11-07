@@ -41,10 +41,10 @@ export default function IPMPlaybookSection({ location = "homepage-ipm-playbook",
             {shopOffer ? 'AMAZON BOOK' : 'IPM PLAYBOOK'}
           </span>
           <h2 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-white font-sans sm:text-4xl">
-            {shopOffer ? 'The Master Cannabis IPM Playbook' : 'Stop Pest Outbreaks Before They Cost You Yield'}
+            {shopOffer ? 'The Master Cannabis IPM Playbook' : 'The Master Cannabis IPM Playbook'}
           </h2>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-white/62 font-sans">
-            {shopOffer ? 'Explore the book on Amazon alongside the digital Playbook and Equipment Quickstart.' : <>A visual IPM field manual for legal cannabis growers who want cleaner prevention, faster scouting, and
+            {shopOffer ? 'A practical companion for pest prevention, scouting and grow documentation.' : <>A visual IPM field manual for legal cannabis growers who want cleaner prevention, faster scouting, and
             better grow documentation.</>}
           </p>
           <div className="mt-6">

@@ -1,19 +1,7 @@
-import IPMPlaybookSection from "@/components/landing/IPMPlaybookSection";
-import CheckoutAssurances from "@/components/grow-tech/CheckoutAssurances";
-import { ArrowRight, Download } from "lucide-react";
-import { Link } from "react-router-dom";
-import { trackEvent, trackGrowTechSelectItem } from "@/lib/analytics";
-import { playbookEcommercePayload, PLAYBOOK_SALE_PRICE } from "@/data/playbook";
-import { quickstartGuide } from "@/data/growTechProducts";
-
+import { Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import IPMPlaybookSection from '@/components/landing/IPMPlaybookSection';
+import { trackEvent } from '@/lib/analytics';
 export default function ShopDigitalOffers() {
-  return <section className="lens-wrap lens-section shop-digital shop-digital--wide" id="digital-guides" aria-labelledby="shop-digital-title">
-    <p className="lens-eyebrow">DIGITAL GUIDES · USE THE TOOLS YOU ALREADY HAVE</p>
-    <h2 id="shop-digital-title">Start small. Digital kits from $9.</h2>
-    <div className="shop-digital-grid">
-      <article className="lens-panel"><img src="/images/playbook/quickstart-cover-v4.webp" alt="Equipment Quickstart cover" width={612} height={792} loading="lazy" /><div><p className="lens-eyebrow">EQUIPMENT ESSENTIALS</p><h3>Equipment Quickstart</h3><p className="digital-offer-description">12-page equipment handling and recordkeeping guide, two worksheets and a CSV log. No AI account needed.</p><p className="lens-price"><strong>$9</strong><del className="lens-small">$19</del><span>USD · Sale · Pay once</span></p><CheckoutAssurances/><Link className="lens-button lens-outline" to="/grow-tech/checkout/quickstart-guide" onClick={() => trackGrowTechSelectItem(quickstartGuide, "shop:quickstart")}>Get the Quickstart <ArrowRight size={18} /></Link><a className="lens-secondary" href="/downloads/grow-tech/quickstart-sample.pdf" target="_blank" rel="noopener noreferrer"><Download size={16} /> Preview the sample</a><p className="lens-small">Already included in the $19 kit and hardware packages.</p></div></article>
-      <article className="lens-panel"><img src="/images/playbook/observation-cover-v3.webp" alt="AI Plant Observation Playbook cover" width={612} height={792} loading="lazy" /><div><p className="lens-eyebrow">COMPLETE DIGITAL KIT</p><h3>AI Plant Observation Playbook</h3><p className="digital-offer-description">32-page Playbook, 8 copy-ready prompts, 8-page fillable workbook, the complete Equipment Quickstart, two worksheets and a CSV log.</p><p className="lens-price"><strong>$19</strong><del className="lens-small">$29</del><span>USD · Sale · Pay once · Six files</span></p><CheckoutAssurances/><Link className="lens-button" to="/playbooks/checkout" onClick={() => trackEvent("select_item", { ...playbookEcommercePayload(PLAYBOOK_SALE_PRICE, "shop:digital-kit"), item_list_id: "growtech-shop", checkout_source_page: "/grow-tech" })}>Get the complete kit <ArrowRight size={18} /></Link><Link className="lens-secondary" to="/playbooks">See contents and sample pages →</Link></div></article>
-    </div><p className="lens-small">Files through Whop after confirmed payment. Guides cover observation and recordkeeping. Hardware, AI account fees and app subscriptions are separate.</p>
-    <IPMPlaybookSection location="growtech:digital-guides:book" shopOffer />
-  </section>;
+ return <section className="gt-container gt-section" id="digital-guides" aria-labelledby="shop-digital-title"><div className="release-editorial"><img src="/images/premium-2026/guide-editorial.webp" width={1536} height={1024} loading="lazy" alt="AI illustration of a grower documenting observations with a field manual"/><div><p className="gt-kicker">FREE FIELD NOTES</p><h2 id="shop-digital-title">Better observations.<br/>Start with what you own.</h2><p>Four practical pages: your first observation, useful plant photos, temperature and humidity records, and a printable worksheet. No purchase or AI account required.</p><a className="gt-button" href="/downloads/grow-tech/equipment-quickstart-free.pdf" onClick={()=>trackEvent('free_quickstart_download',{cta_location:'growtech:free-guide'})}><Download size={18}/> Download the free quickstart</a><p className="gt-small">Illustrative grower scene. Preview the actual pages before printing.</p><Link to="/playbooks" className="gt-text-link">Resources and existing buyer access →</Link></div></div><IPMPlaybookSection location="growtech:amazon-book" shopOffer/></section>;
 }

@@ -320,16 +320,16 @@ export const growTentOffer: GrowTechProduct = {
 
 export const growLightOffer: GrowTechProduct = {
   ...growTentOffer,
-  name: "ALPHAGROW AG1000 100W LED Grow Light + Playbook Kit",
+  name: "ALPHAGROW AG1000 100W LED Grow Light",
   productId: "growtech_ag1000_light",
   badge: "Featured light",
   price: "$199", numericPrice: 199, salePrice: "$199",
-  description: "One ALPHAGROW AG1000 Full Spectrum 100Watts hanging LED grow light, US Type B three-prong plug. Rated 100W input and 20–100% dimming. Complete Playbook digital kit included; tent, plants and ventilation are separate.",
+  description: "One ALPHAGROW AG1000 Full Spectrum 100Watts hanging LED grow light, US Type B three-prong plug. Rated 100W input and 20–100% dimming. Free equipment quickstart included; tent, plants and ventilation are separate.",
   whyBuy: "Adjustable lighting for seed starting and compact indoor plant setups.",
   bestFor: ["Seed starting", "Compact indoor plant spaces"],
   dataCollected: "No sensors or automatic measurements",
   aiHelp: "No automatic app connection.",
-  schemaDescription: "ALPHAGROW AG1000 100W LED grow light, US electrical variant, $199 USD one time with free shipping within the US. Complete Playbook digital kit included. Estimated delivery about two weeks from confirmed payment. Global supply-chain and carrier delays may extend delivery times.",
+  schemaDescription: "ALPHAGROW AG1000 100W LED grow light, US electrical variant, $199 USD one time with free shipping within the US. Free equipment quickstart included. Estimated delivery about two weeks from confirmed payment. Global supply-chain and carrier delays may extend delivery times.",
   sku: "MGB-AG1000-US-V1", category: "Indoor plant grow light",
   buttonLabel: "Get the AG1000 — $199",
   image: "/images/grow-tech/ag1000-details-v2/spectrum.webp",
@@ -349,6 +349,6 @@ export const allGrowTechOffers: GrowTechProduct[] = [
 
 export function canPurchaseGrowTech(product: GrowTechProduct) {
   const hasDeliveryRoute = product.deliveryKind === "digital" || Boolean(product.deliveryCountries?.length);
-  return hasDeliveryRoute && product.availability === "ready" && Boolean(planIds[product.planKey]) && Boolean(checkoutUrls[product.checkoutKey]);
+  return product.anchorId !== "quickstart-guide" && hasDeliveryRoute && product.availability === "ready" && Boolean(planIds[product.planKey]) && Boolean(checkoutUrls[product.checkoutKey]);
 }
 

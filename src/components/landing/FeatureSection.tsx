@@ -3,11 +3,9 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppActions } from "./HeroSection";
 import { appStoreUrl, playStoreUrl } from "./ctaLinks";
-import IPMPlaybookSection from "./IPMPlaybookSection";
 import NewsletterSignup from "./NewsletterSignup";
 import { appFaqs } from "@/data/appFaqs";
 import { trackEvent } from "@/lib/analytics";
-import { growTechOfferUrl } from "@/lib/growTechAttribution";
 
 const experiences = [
   {
@@ -148,36 +146,7 @@ export default function FeatureSection() {
           your store account.
         </p>
       </section>
-      <section className="premium-wrap premium-hardware">
-        <img
-          src="/images/grow-tech/lens-launch/product.webp"
-          alt="AI product illustration of the APEXEL macro lens and LED light"
-          width="1000"
-          height="1000"
-          loading="lazy"
-        />
-        <div>
-          <p className="premium-eyebrow">MEET GROWTECH</p>
-          <h2>
-            Better tools.
-            <br />
-            <em>A closer look.</em>
-          </h2>
-          <p>
-            Get closer plant photos with the APEXEL 10–20X macro lens and LED light, plus the complete six-file MasterGrowbot digital kit.
-          </p>
-          <Link
-            className="premium-button"
-            to={growTechOfferUrl("homepage")}
-            data-cta-location="homepage:hardware"
-          >
-            Explore the $119 lens + guide <ArrowRight size={18} />
-          </Link>
-          <p className="premium-fine">
-            One-time package. Check compatibility and ordering availability.
-          </p>
-        </div>
-      </section>
+
       <section className="premium-section premium-wrap premium-faq">
         <p className="premium-eyebrow">BEFORE YOU GET STARTED</p>
         <h2>A few good questions.</h2>
@@ -190,7 +159,6 @@ export default function FeatureSection() {
           ))}
         </div>
       </section>
-      <IPMPlaybookSection />
       <section
         id="download"
         className="premium-section premium-wrap premium-final"

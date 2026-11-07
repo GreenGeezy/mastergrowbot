@@ -3,7 +3,7 @@ import CheckoutAssurances from "@/components/grow-tech/CheckoutAssurances";
 import "@/components/landing/premium.css";
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, Download, ShieldCheck, Truck } from "lucide-react";
 import EmbeddedGrowTechCheckout from "@/components/grow-tech/EmbeddedGrowTechCheckout";
 import LandingFooter from "@/components/landing/LandingFooter";
@@ -34,6 +34,8 @@ export default function GrowTechCheckout() {
       trackGrowTechBeginCheckout(product, `growtech_checkout_page:${product.anchorId}`, planIds[product.planKey]);
     }
   }, [product, deliveryCountry]);
+
+  if (productSlug == 'quickstart-guide') return <Navigate to='/playbooks' replace/>;
 
   if (!product) {
     return (
