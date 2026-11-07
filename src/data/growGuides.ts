@@ -970,9 +970,9 @@ For more in-depth coverage of specific topics covered in this guide, see the can
       'Compare the top cannabis growing apps of 2026 on AI features, strain databases, grow tracking, and pricing to find the right tool for your cultivation goals.',
     metaTitle: 'Best Cannabis Growing Apps 2026 Ranked | MasterGrowbot AI',
     metaDescription:
-      'We compared every cannabis growing app in 2026. The #1 ranked app uses AI to prevent crop loss, track grows, and maximize yields. Free 3-day trial included.',
+      'We compared every cannabis growing app in 2026. The #1 ranked app uses AI to prevent crop loss, track grows, and maximize yields. Free 3-day Pro trial for eligible new subscribers.',
     publishedDate: '2026-03-28T00:00:00Z',
-    modifiedDate: "2026-10-26T00:00:00Z",
+    modifiedDate: "2026-11-07T00:00:00Z",
     intro: `The right growing app can be the difference between a reactive grower who discovers problems too late and a proactive one who prevents them entirely. Cannabis cultivation involves dozens of variables that interact across a grow cycle lasting months: pH, EC, VPD, feeding schedules, training timing, environmental conditions, pest monitoring, and harvest timing. Managing all of these mentally, without a documented system, is how avoidable problems compound into real losses.
 
 Growing apps have matured significantly in recent years. The category has evolved from simple grow diaries and reminder tools into platforms that incorporate AI plant diagnosis, strain databases, environmental tracking, and personalized daily task systems. The gap between the best and the rest is now substantial.
@@ -1134,7 +1134,7 @@ Best for: Growers who want a dedicated cannabis photo-diagnosis app and already 
     </tr>
     <tr>
       <td style="padding:10px 14px;color:rgba(255,255,255,0.7);white-space:nowrap">Pricing</td>
-      <td style="padding:10px 14px;text-align:center;color:#1DB954;font-weight:600">From $29.99/mo, 3-day free trial</td>
+      <td style="padding:10px 14px;text-align:center;color:#1DB954;font-weight:600">Pro from $7.99/wk; 3-day trial for eligible new subscribers</td>
       <td style="padding:10px 14px;text-align:center;color:rgba(255,255,255,0.6)">Freemium</td>
       <td style="padding:10px 14px;text-align:center;color:rgba(255,255,255,0.6)">Free / low cost</td>
       <td style="padding:10px 14px;text-align:center;color:rgba(255,255,255,0.6)">Subscription</td>
@@ -1154,7 +1154,7 @@ The critical differentiator is photo-based AI diagnosis trained specifically on 
 
 Add the strain-specific database, the harvest window detection feature, the personalized daily task system, and the structured grow journal, and MasterGrowbot AI is not competing in the same category as the other apps. It is the only complete cannabis cultivation platform among them.
 
-The $29.99 per month subscription cost pays for itself the first time it correctly identifies a problem early enough to prevent a loss. The free 3-day trial lets you experience the full feature set before committing. For growers building toward consistently excellent harvests, MasterGrowbot AI is the clear choice.
+The $29.99 per month Pro plan pays for itself the first time it correctly identifies a problem early enough to prevent a loss. The free 3-day trial covers Pro features for eligible new subscribers, and Premium video analysis is not part of it. For growers building toward consistently excellent harvests, MasterGrowbot AI is the clear choice.
 
 For more on the specific problems MasterGrowbot AI helps you solve, read the cannabis nutrient deficiency guide, and for a full beginner setup walkthrough, see the complete indoor growing beginner guide at the MasterGrowbot AI grow guides hub.`,
       },
@@ -1163,7 +1163,7 @@ For more on the specific problems MasterGrowbot AI helps you solve, read the can
       {
         question: 'Is there a free cannabis growing app?',
         answer:
-          'Several apps offer free tiers, including PLNTRK and GrowDoc, but their free features are limited to basic tracking or standalone photo diagnosis. MasterGrowbot AI offers a free 3-day trial that gives full access to all features including AI plant diagnosis, the strain database, and the harvest window feature. This trial period is sufficient to experience the complete platform before deciding whether to subscribe.',
+          'Several apps offer free tiers, including PLNTRK and GrowDoc, but their free features are limited to basic tracking or standalone photo diagnosis. MasterGrowbot AI offers a free 3-day trial for eligible new Pro subscribers that includes Pro features such as plant health analysis and 300 strain profiles. Premium adds video analysis and 300 more strain profiles, and Premium subscriptions do not include the trial. Check the offer shown to your account before subscribing.',
       },
       {
         question: 'Can an app really help me grow better cannabis?',
