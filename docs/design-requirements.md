@@ -6,3 +6,4 @@
 - GrowTech gets a clean cinematic grower/light video and GIF, without caption text over the image. Keep playback controls accessible and disclose generated imagery in gallery information.
 - Only implement changes with medium/high confidence of helping comprehension, trust, conversion or profit; do not claim measured gains without data.
 - Preserve app-first homepage placement: light and Amazon IPM book only near bottom after final app CTA.
+- Lead headlines and supporting copy with the grower's benefit. Put technical specifications in product details. Do not invent yield or performance guarantees.

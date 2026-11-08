@@ -58,7 +58,7 @@ export default function GrowTechShop() {
     <main>
       <header ref={heroRef} className="gt-hero gt-hero-v2"><div className="gt-container gt-hero-grid">
         <div className="gt-hero-copy">
-          <p className="gt-kicker">ALPHAGROW AG1000 / 100W LED</p><p className="gt-hero-lede">AG1000 100W LED grow light with manual 20–100% dimming.</p>
+          <p className="gt-kicker">ALPHAGROW AG1000 / 100W LED</p><p className="gt-hero-lede">Set the light for your space. Adjust brightness as your plants grow.</p>
           <div className="gt-hero-price"><strong>$199</strong><span>USD · one-time purchase<br/><b>US shipping included</b></span></div>
           <ul className="gt-includes"><li><Check size={15}/>100W full-spectrum panel · 20–100% dimming</li><li><Check size={15}/>US three-prong plug · manual brightness control</li><li><Check size={15}/>Light + free equipment quickstart</li></ul>
           <CheckoutButton product={growLightOffer} location="growtech:hero:light"/>
@@ -66,7 +66,7 @@ export default function GrowTechShop() {
           <p className="gt-hero-delivery">Estimated US delivery about two weeks from confirmed payment. Tracking after dispatch. Tax at checkout.</p>
           <p className="gt-hero-delivery">Tent, plants, ventilation and app subscription are separate.</p><div className="gt-hero-links"><a className="gt-text-link" href="#grow-light">See the light and specifications <ArrowDown size={16}/></a><a className="gt-text-link" href="#digital-guides">Free equipment quickstart <ArrowRight size={16}/></a></div>
         </div>
-        <div className="gt-hero-visual"><h1 className="gt-scene-headline">A compact light.<br/><em>Control at the dial.</em></h1><CinematicScene name="light-hero" clean alt="Grower beside an AG1000-style panel in a compact tent; AI illustration"/></div>
+        <div className="gt-hero-visual"><h1 className="gt-scene-headline">Give your next grow<br/><em>a brighter start.</em></h1><CinematicScene name="light-hero" clean alt="Grower beside an AG1000-style panel in a compact tent; AI illustration"/></div>
       </div></header>
       <div className="gt-assurance"><div className="gt-container"><span><Truck size={18}/>US shipping included on the AG1000</span><span><ShieldCheck size={18}/>Secure Whop checkout</span><span><Leaf size={18}/>Free equipment quickstart included</span></div></div>
       <section className="gt-light-section" id="grow-light" aria-labelledby="light-status-title">
