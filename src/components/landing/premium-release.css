@@ -37,3 +37,5 @@
  .premium-site .premium-actions a { min-height:48px; }
 }
 @media(prefers-reduced-motion:reduce) { .premium-site *, .premium-site *::before,.premium-site *::after { animation:none!important; scroll-behavior:auto!important; transition:none!important; } }
+
+.gt-shop .gt-hero-visual>picture>img { object-fit:contain; min-height:0; aspect-ratio:1; background:#071017; }
