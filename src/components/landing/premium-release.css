@@ -39,3 +39,15 @@
 @media(prefers-reduced-motion:reduce) { .premium-site *, .premium-site *::before,.premium-site *::after { animation:none!important; scroll-behavior:auto!important; transition:none!important; } }
 
 .gt-shop .gt-hero-visual>picture>img { object-fit:contain; min-height:0; aspect-ratio:1; background:#071017; }
+
+/* Dark purchase surfaces retain readable text from the original light theme. */
+.gt-shop .gt-hero,.gt-shop .gt-light-section { color:#f4f3e9; }
+.gt-shop .gt-hero h1 em,.gt-shop .gt-light-section h2 em { color:#bbf77b; }
+.gt-shop .gt-hero .gt-kicker,.gt-shop .gt-light-section .gt-kicker { color:#bbf77b!important; }
+.gt-shop .gt-hero-lede,.gt-shop .gt-hero-price>span,.gt-shop .gt-hero-copy .gt-includes li,
+.gt-shop .gt-light-lede,.gt-shop .gt-light-section .gt-includes li,.gt-shop .gt-fit-note p,
+.gt-shop .gt-retailer-rating,.gt-shop .gt-retailer-rating span,.gt-shop .gt-light-gallery figcaption { color:#c4d5c8; }
+.gt-shop .gt-hero-delivery,.gt-shop .gt-light-section .gt-small { color:#c4d5c8!important; }
+.gt-shop .gt-hero-price b,.gt-shop .gt-hero-copy .gt-includes svg { color:#bbf77b; }
+.gt-shop .gt-fit-note { border-color:#ffffff30; }
+.gt-shop .gt-light-section a:focus-visible,.gt-shop .gt-light-section button:focus-visible { outline-color:#bbf77b; }
