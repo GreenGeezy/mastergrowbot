@@ -1,39 +1,4 @@
-import PremiumMotion from "./PremiumMotion";
-import ExampleHealthReport from "./ExampleHealthReport";
-import { useState } from "react";
-import { ArrowRight, Camera, FileText, NotebookPen, Sparkles } from "lucide-react";
-import { AppActions } from "./HeroSection";
-import { trackEvent } from "@/lib/analytics";
-
-const steps = [
-  { label: "Take a photo", icon: Camera, eyebrow: "01 / NOTICE SOMETHING DIFFERENT", title: "Your plant has your attention. Now what?", text: "A leaf looks different during your daily check. Open MasterGrowbot and capture what you see, so you have a starting point for a closer review.", value: "Start with your own plant, right where you are.", image: "walkthrough-capture", alt: "Illustrative home grower photographing a plant inside a grow tent", caption: "AI-generated grower scenario", next: "See the report" },
-  { label: "Review the report", icon: FileText, eyebrow: "02 / INSIDE A REAL APP REPORT", title: "See the analysis. Understand your next step.", text: "Explore an actual MasterGrowbot AI health report, from its finding and priority action to personalized tips, prevention notes, the plant photo and journal actions. Tap the report tabs to see the full flow.", value: "A report you can read, revisit and save.", image: "app-2", alt: "MasterGrowbot plant health report preview", caption: "MasterGrowbot AI app report", next: "Keep a grow record" },
-  { label: "Keep a record", icon: NotebookPen, eyebrow: "03 / BUILD YOUR GROW HISTORY", title: "Remember what you saw. Compare what changes.", text: "Save photos and observations in your grow journal. Return to your records at your next check instead of relying on memory or scattered camera-roll photos.", value: "Make every observation useful beyond today.", image: "walkthrough-record", alt: "Illustrative grower reviewing plant photos and keeping observations beside a grow tent", caption: "AI-generated record-keeping scenario · Not an app screen", next: "Replay the walkthrough" },
-];
-export default function GrowWalkthrough() {
-  const [active, setActive] = useState(0);
-  const compactVideo = typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
-  const step = steps[active];
-  function select(index: number) { setActive(index); trackEvent("app_walkthrough_step", {step: steps[index].label}); }
-  return <section id="grow-walkthrough" className="premium-wrap premium-section grow-walkthrough" aria-labelledby="walkthrough-title">
-    <div className="premium-section-heading"><div><p className="premium-eyebrow">A MOMENT IN YOUR GROW</p><h2 id="walkthrough-title">From “what’s this?”<br/><em>to a clearer next step.</em></h2></div><p>See how the app turns a plant photo into a health report you can save and revisit. Explore the walkthrough.</p></div>
-    <PremiumMotion name="app-story" label="Photo, actual report and journal walkthrough" poster="/images/premium-2026/app-workflow.webp"/><details style={{marginBottom:24}}>
-      <summary style={{cursor:'pointer',padding:'16px 0',fontWeight:700}}>Watch the 30-second report walkthrough</summary>
-      <video controls playsInline preload="none" poster={compactVideo ? "/images/premium/report-video-cover-v3.png" : "/images/premium/report-video-wide-cover-v3.png"} aria-label="MasterGrowbot AI real report walkthrough" style={{display:'block',width:'100%',maxWidth:1080,margin:'16px auto',borderRadius:20}} onPlay={() => trackEvent('app_report_video_play', {placement:'homepage_walkthrough',creative:'report_v3'})}>
-        <source media="(max-width: 640px)" src="/videos/mastergrowbot-report-social-30s-v3.mp4" type="video/mp4" />
-        <source src="/videos/mastergrowbot-report-wide-30s-v3.mp4" type="video/mp4" />
-        <track kind="captions" src="/videos/mastergrowbot-report-30s-v3.vtt" srcLang="en" label="English" />
-        Your browser does not support video. Explore the report tabs below.
-      </video>
-      <p className="premium-fine">App interface preview and actual report screenshots, with example output and an App Store review excerpt. AI insights support grower judgment. Free download; Pro requires a subscription.</p>
-      <a href="/videos/mastergrowbot-report-social-30s-v3.mp4" download="MasterGrowbot-AI-report-demo.mp4" className="premium-text-link">Download the video</a>
-    </details>
-    <div className="walkthrough-nav" role="group" aria-label="Explore the photo to grow record walkthrough">{steps.map(({label,icon:Icon},i)=><button key={label} type="button" aria-pressed={active===i} aria-controls="walkthrough-panel" onClick={()=>select(i)}><span>0{i+1}</span><Icon size={19}/>{label}</button>)}</div>
-    <div id="walkthrough-panel" className={`walkthrough-panel ${active===1?'is-report':''}`}>
-      {active===1 ? <ExampleHealthReport/> : <figure className="walkthrough-visual"><img src={active === 0 ? "/images/premium-2026/app-workflow.webp" : "/images/premium/real-report-journal.webp"} alt={active === 2 ? "Actual MasterGrowbot report with Save to Journal action" : step.alt} width={1536} height={1024} loading="lazy"/><figcaption>{active === 2 ? "Actual MasterGrowbot report with journal action" : step.caption}</figcaption></figure>}
-      <div className="walkthrough-copy"><div aria-live="polite"><p className="premium-eyebrow">{step.eyebrow}</p><h3>{step.title}</h3><p>{step.text}</p><div className="walkthrough-value"><Sparkles size={20}/><strong>{step.value}</strong></div></div><button type="button" className="premium-button secondary" onClick={()=>select((active+1)%3)}>{step.next}<ArrowRight size={18}/></button><p className="premium-fine">{active === 1 ? "Shown from the MasterGrowbot AI app. Each plant health report reflects the input provided; AI insights support grower judgment." : "The grower photo is illustrative. Your app report reflects your own plant and inputs."}</p></div>
-    </div>
-    <div className="walkthrough-download"><div><h3>Bring a second set of eyes to your next plant check.</h3><p>Photo analysis, strain intelligence, and grow records with Pro.</p></div><div><AppActions location="walkthrough"/><p className="premium-fine">Pro trial eligibility and subscription terms appear in your store.</p></div></div>
-
-  </section>;
-}
+import {useRef,useState} from 'react';
+import {trackEvent} from '@/lib/analytics';
+const steps=[{title:'Take a clear photo',text:'Start with your plant and the context you can observe.',image:'/images/cinematic-v2/app-hero.webp'},{title:'Review your report',text:'Read AI observations and practical checks. Use your own judgment before making changes.',image:'/images/premium/real-report-overview.webp'},{title:'Save the context',text:'Use Save to Journal to keep your report available for your next plant check.',image:'/images/premium/real-report-journal.webp'}];
+export default function GrowWalkthrough(){const [active,setActive]=useState(0);const [playing,setPlaying]=useState(false);const video=useRef<HTMLVideoElement>(null);return <section id="grow-walkthrough" className="premium-wrap premium-section cinema-demo"><p className="premium-eyebrow">PHOTO → REPORT → JOURNAL</p><h2>Your photo.<br/>A report you can use.</h2><div className="cinema-demo-grid"><div className="cinema-demo-media">{!playing?<img src={steps[active].image} alt={steps[active].title} width={1280} height={720} loading="lazy"/>:<video ref={video} controls autoPlay playsInline onEnded={()=>setPlaying(false)} poster={steps[active].image}><source src="/videos/premium-2026/app-story.mp4" type="video/mp4"/></video>}</div><div className="cinema-demo-steps">{steps.map((step,i)=><button key={step.title} aria-pressed={active===i} onClick={()=>{setActive(i);setPlaying(false);trackEvent('app_walkthrough_step',{step:step.title,creative:'cinematic_v2'});}}><span>0{i+1}</span><strong>{step.title}</strong><p>{step.text}</p></button>)}<button className="premium-button secondary" onClick={()=>{setPlaying(true);trackEvent('app_report_video_play',{placement:'homepage_walkthrough',creative:'cinematic_v2'});}}>Watch the 12-second walkthrough</button><p className="premium-fine">Grower scene: AI illustration. Report and journal action: actual app screenshots. Example output; AI insights can be imperfect.</p><a className="premium-text-link" href="/videos/cinematic-v2/app-story.gif" download>Download walkthrough GIF</a></div></div></section>}

@@ -1,15 +1,13 @@
 import IPMPlaybookSection from './IPMPlaybookSection';
-import AppTestimonials from "./AppTestimonials";
 import { useEffect } from "react";
 import HeroSection from "./HeroSection";
+import AppTestimonials from "./AppTestimonials";
 import FeatureSection from "./FeatureSection";
 import LandingFooter from "./LandingFooter";
 import LandingNav from "./LandingNav";
 import "./premium.css";
 import "./premium-release.css";
-import TrustRail from "./TrustRail";
-import RecognitionSection from "./RecognitionSection";
-import VideoAnalysisSection from "./VideoAnalysisSection";
+import "./cinematic.css";
 import GrowWalkthrough from "./GrowWalkthrough";
 import { Link } from "react-router-dom";
 import { trackEvent } from "@/lib/analytics";
@@ -25,15 +23,12 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="premium-site min-h-screen text-white overflow-x-hidden">
+    <div className="premium-site cinematic-site min-h-screen text-white overflow-x-hidden">
       <LandingNav />
       <main>
         <HeroSection />
         <GrowWalkthrough />
         <AppTestimonials />
-        <RecognitionSection />
-        <TrustRail />
-        <VideoAnalysisSection />
         <FeatureSection />
         <section className="mx-auto grid max-w-6xl items-center gap-6 px-5 py-10 sm:px-8 md:grid-cols-2" aria-labelledby="home-light-title">
           <img src="/images/grow-tech/ag1000-supplier/spectrum.png" width={800} height={800} loading="lazy" alt="AG1000 supplier product image and spectrum specifications" className="w-full max-w-md rounded-2xl" />

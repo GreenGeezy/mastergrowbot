@@ -5,7 +5,7 @@ import { HERO_DEMO_SECONDS, HERO_VERSION } from "@/lib/heroDemoMetadata";
 import HeroExampleReport from "./HeroExampleReport";
 
 const steps = [
-  { label: "Photo", icon: Camera, title: "Start with your plant", detail: "Try an example photo. See how a plant concern becomes a practical next step.", image: "/images/premium-2026/app-workflow.webp", alt: "Illustrative home grower photographing a cannabis plant inside a grow tent", width: 1536, height: 1024 },
+  { label: "Photo", icon: Camera, title: "Start with your plant", detail: "Try an example photo. See how a plant concern becomes a practical next step.", image: "/images/premium/walkthrough-capture.webp", alt: "Illustrative home grower photographing a cannabis plant inside a grow tent", width: 1536, height: 1024 },
   { label: "Report", icon: FileText, title: "Know what to check next", detail: "Yellow lower leaves? Start with simple watering and feeding checks.", image: "", alt: "", width: 945, height: 2048 },
   { label: "Journal", icon: NotebookPen, title: "See what changes", detail: "Keep photos and notes together as your grow progresses.", image: "/images/premium/real-report-journal.webp", alt: "Supplied MasterGrowbot app report showing journal actions", width: 945, height: 2048 },
 ];

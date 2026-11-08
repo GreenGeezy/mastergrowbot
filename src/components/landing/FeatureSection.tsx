@@ -38,74 +38,11 @@ export default function FeatureSection() {
   const item = experiences[active];
   return (
     <>
-      <section id="app-experience" className="premium-section premium-wrap">
-        <div className="premium-section-heading">
-          <div>
-            <p className="premium-eyebrow">BUILT AROUND YOUR GARDEN</p>
-            <h2>
-              See more.
-              <br />
-              <em>Understand more.</em>
-            </h2>
-          </div>
-          <p>
-            From your first plant to your next grow.
-            <br />
-            One place to observe, learn, and keep track.
-          </p>
-        </div>
-        <div className="premium-experience">
-          <div className="premium-experience-copy">
-            <div
-              className="premium-tabs"
-              role="group"
-              aria-label="Explore app features"
-            >
-              {experiences.map((entry, index) => (
-                <button
-                  key={entry.label}
-                  aria-pressed={active === index}
-                  onClick={() => {
-                    setActive(index);
-                    trackEvent("app_feature_select", { feature: entry.label });
-                  }}
-                >
-                  {entry.label}
-                </button>
-              ))}
-            </div>
-            <div aria-live="polite">
-              <p className="premium-eyebrow">
-                0{active + 1} / THE APP EXPERIENCE
-              </p>
-              <h3>{item.title}</h3>
-              <p className="premium-lead">{item.text}</p>
-            </div>
-            <a
-              className="premium-text-link"
-              href={appStoreUrl("feature-explorer")}
-              data-cta-location="feature-explorer:ios"
-            >
-              Explore on the App Store <ArrowRight size={18} />
-            </a>
-            <a className="premium-text-link" href={playStoreUrl("feature-explorer")} data-cta-location="feature-explorer:android">Explore on Google Play <ArrowRight size={18} /></a>
-            <p className="premium-fine">
-              App previews shown. AI analysis can be imperfect; use it alongside
-              your own observations.
-            </p>
-          </div>
-          <div className="premium-preview">
-            <img
-              key={item.image}
-              src={`/images/premium/app-${item.image}.webp`}
-              alt={`${item.label}: supplied MasterGrowbot app preview`}
-              width="700"
-              height="1516"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      </section>
+      <section id="app-experience" className="premium-section premium-wrap"><p className="premium-eyebrow">BUILT FOR YOUR DAILY CHECK</p><h2>Observe. Check. Remember.</h2><div className="cinema-benefits">{[
+ ['Review your observations','Look at visible changes with AI photo insights.','real-report-overview'],
+ ['Know what to check','Use the report to guide your next inspection, alongside your own judgment.','real-report-plan'],
+ ['Keep the context','Save reports to your journal and return to earlier observations.','real-report-journal']
+ ].map(([title,text,image])=><article key={title}><img src={`/images/premium/${image}.webp`} alt={`${title}: actual app report`} width={390} height={844} loading="lazy"/><h3>{title}</h3><p>{text}</p></article>)}</div></section>
       <section id="app-plans" className="premium-section premium-wrap">
         <div className="premium-section-heading">
           <div>
@@ -175,7 +112,7 @@ export default function FeatureSection() {
           Pro trial for eligible new subscribers. Paid subscription after trial
           unless canceled.
         </p>
-        <NewsletterSignup />
+
       </section>
     </>
   );
