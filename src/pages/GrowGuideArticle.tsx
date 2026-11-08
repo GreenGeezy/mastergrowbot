@@ -13,6 +13,7 @@ import { AppPlatformButtons } from '@/components/landing/cta';
 import { appStoreUrl as buildAppStoreUrl, playStoreUrl as buildPlayStoreUrl } from '@/components/landing/ctaLinks';
 import { growGuides, getGuideBySlug } from '@/data/growGuides';
 import { trackEvent } from '@/lib/analytics';
+import IPMPlaybookSection from '@/components/landing/IPMPlaybookSection';
 
 function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -277,9 +278,7 @@ export default function GrowGuideArticle() {
                 MasterGrowbot AI Home
               </Link>
             </div>
-            {/pest|trichome|magnif|microscope|inspect|watering|grow-light|grow-tent/.test(guide.slug) && (
-              <Link className="text-emerald-300 underline" to={`/grow-tech?utm_source=grow-guide&utm_medium=internal&utm_content=${guide.slug}#${guide.slug.includes('watering') ? 'soil-meter' : guide.slug.includes('grow-light') ? 'grow-light' : guide.slug.includes('grow-tent') ? 'grow-tent' : 'inspection'}`}>Explore equipment for this guide →</Link>
-            )}
+            <div className="not-prose mg-article-ipm"><IPMPlaybookSection location={`article-ipm-playbook:${guide.slug}`} /></div>
           </article>
 
           {/* Sticky Sidebar — desktop only */}

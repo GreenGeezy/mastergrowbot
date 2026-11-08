@@ -19,7 +19,7 @@ const views = [
   },
   {
     label: "Photo & journal", icon: ImageIcon,
-    image: "/images/premium/real-report-journal.webp",
+    image: "/images/premium/app-2.webp",
     alt: "Plant photo within the MasterGrowbot AI health report above Save to Journal and Share Analysis actions",
     title: "Keep the photo with the report.",
     detail: "The report ends with the plant image and actions to save the analysis to your journal or share it for a second look.",

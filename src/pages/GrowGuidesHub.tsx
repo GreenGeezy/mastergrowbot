@@ -7,6 +7,7 @@ import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import GrowTechCTA from '@/components/landing/GrowTechCTA';
+import IPMPlaybookSection from '@/components/landing/IPMPlaybookSection';
 import { AppPlatformButtons } from '@/components/landing/cta';
 import { Input } from '@/components/ui/input';
 import { growGuides } from '@/data/growGuides';
@@ -210,6 +211,7 @@ export default function GrowGuidesHub() {
         </div>
       </section>
 
+      <IPMPlaybookSection location="grow-guides-hub-ipm-playbook" />
       <LandingFooter />
     </div>
   );
