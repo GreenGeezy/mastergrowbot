@@ -143,6 +143,6 @@ export default function HeroProductDemo() {
     <div className="hero-demo-note" aria-live={playing ? "off" : "polite"} aria-atomic="true"><span><Sparkles size={14} aria-hidden="true" /> 0{active + 1} / 03 · {showPlan ? "RECOVERY PLAN" : step.label.toUpperCase()}</span><strong>{showPlan ? "A clear plan for your next check" : step.title}</strong><p>{showPlan ? "Review practical grow tips, record your checks, and follow up on what changes." : step.detail}</p></div>
     <div className="hero-demo-steps" role="group" aria-label="Explore the app workflow">{steps.map(({ label, icon: Icon }, index) => <button ref={index === 1 ? reportButton : undefined} key={label} type="button" aria-pressed={active === index && !videoOpen} aria-controls="hero-demo-panel" onClick={() => select(index)}><Icon size={17} aria-hidden="true" /><span>{label}</span></button>)}</div>
     <div className="hero-plan-controls">{active === 1 && !videoOpen && <button className="hero-plan-toggle" type="button" aria-pressed={showPlan} onClick={() => { setPlaying(false); setPhase(0); setShowPlan(!showPlan); }}>{showPlan ? "View health report" : "Explore recovery steps"}</button>}</div>
-    <p className="hero-demo-disclosure">Photo sequence & report are illustrative, not live analysis or a diagnosis · Journal: supplied app screen · AI-generated grower and botanical artwork.</p>
+    <p className="hero-demo-disclosure">Photo sequence & report are illustrative, not live analysis or a diagnosis · Journal: supplied app screen.</p>
   </div>;
 }

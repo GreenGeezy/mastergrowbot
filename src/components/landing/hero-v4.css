@@ -79,3 +79,39 @@
 @media(min-width:768px) and (max-width:1000px){.cinematic-site .mg-hero h1{white-space:normal}}
 .mg-hero-stage{isolation:isolate}.mg-hero-stage>.cinema-scene{z-index:0}.mg-hero-shade{z-index:1}.mg-hero-content{position:relative;z-index:2}.mg-hero-scroll{z-index:3}.mg-hero-stage .cinema-media-label{z-index:4}
 .cinematic-site .mg-hero-demo h2,.cinematic-site .mg-light-teaser h2,.cinematic-site .mg-hero-demo h2 em,.cinematic-site .mg-light-teaser h2 em{font-weight:700}
+/* Benefits */
+.mg-benefits{padding-block:96px 88px}
+.cinematic-site .mg-benefits h2{font-size:clamp(34px,3.8vw,56px);line-height:1.05;font-weight:700;margin-top:14px}
+.cinematic-site .mg-benefits h2 em{color:#bbf77b;font-weight:700}
+.mg-benefits-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:44px}
+.mg-benefits-grid article{position:relative;padding:28px 24px 30px;border-radius:20px;background:linear-gradient(165deg,#13241a,#0b140f);border:1px solid #ffffff14;overflow:hidden;transition:transform .2s ease,border-color .2s ease}
+.mg-benefits-grid article::after{content:"";position:absolute;inset:auto -40% -60% auto;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#bbf77b1f,transparent 70%);pointer-events:none}
+.mg-benefits-grid article:hover{transform:translateY(-4px);border-color:#bbf77b55}
+.mg-benefit-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:#bbf77b1a;color:#bbf77b;border:1px solid #bbf77b33}
+.mg-benefit-num{position:absolute;top:26px;right:24px;font-size:12px;font-weight:700;letter-spacing:.1em;color:#ffffff40}
+.cinematic-site .mg-benefits-grid h3{font-size:20px;line-height:1.25;font-weight:700;margin:22px 0 10px;color:#f4f3e9;letter-spacing:-.02em!important}
+.cinematic-site .mg-benefits-grid p{font-size:15px;line-height:1.6;color:#b9cabe;margin:0}
+.mg-benefits-cta{display:flex;align-items:center;flex-wrap:wrap;gap:16px 24px;margin-top:36px}
+.cinematic-site .mg-benefits-cta p{margin:0;font-size:13px;color:#9fb3a5}
+.cinematic-site .mg-benefits .premium-button,.cinematic-site #download .premium-button,.cinematic-site .app-customer-feedback .premium-button{min-height:54px;padding:0 22px;border-radius:14px;font-weight:700;color:#0d1f0e;border:0;background:linear-gradient(135deg,#d6ffa8 0%,#bbf77b 45%,#8fe39a 100%)}
+/* Plan badges */
+.premium-plans article{position:relative}
+.plan-badge{display:inline-block;margin:0 0 12px;padding:5px 11px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#bbf77b;color:#11200d}
+.premium-plan-featured .plan-badge{background:#d9c8ff;color:#24123f}
+/* Mobile sticky download bar */
+.mg-mobile-bar{display:none}
+@media(max-width:767px){
+  .mg-mobile-bar{position:fixed;left:10px;right:10px;bottom:10px;z-index:60;display:flex;align-items:center;gap:8px;padding:10px 10px 10px 14px;border-radius:18px;background:#0b1510f2;border:1px solid #bbf77b40;box-shadow:0 18px 40px #000a;backdrop-filter:blur(12px);transform:translateY(140%);opacity:0;transition:transform .3s ease,opacity .3s ease;pointer-events:none}
+  .mg-mobile-bar.is-visible{transform:none;opacity:1;pointer-events:auto}
+  .mg-mobile-bar-copy{flex:1;min-width:0;line-height:1.2}.mg-mobile-bar-copy strong{display:block;font-size:14px;color:#f4f3e9}.mg-mobile-bar-copy span{font-size:11px;color:#a9bdb0}
+  .mg-mobile-bar a{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 14px;border-radius:12px;font-size:14px;font-weight:700;color:#0d1f0e;background:linear-gradient(135deg,#d6ffa8,#9be86a);white-space:nowrap}
+  .mg-benefits{padding-block:56px}
+  .mg-benefits-grid{grid-template-columns:1fr;gap:12px;margin-top:28px}
+  .mg-benefits-grid article{padding:22px 20px}
+  .cinematic-site .mg-benefits-grid h3{margin-top:16px;font-size:19px}
+  .mg-benefits-cta .premium-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+  .cinematic-site .mg-benefits .premium-button{padding:0 10px;font-size:14px;justify-content:center}
+}
+@media(min-width:768px) and (max-width:1100px){.mg-benefits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:767px){.premium-site footer{padding-bottom:96px}}
+.premium-plans .plan-badge{width:fit-content;align-self:flex-start;justify-self:start}

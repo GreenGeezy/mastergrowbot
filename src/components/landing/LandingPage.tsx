@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import HeroSection from "./HeroSection";
 import AppTestimonials from "./AppTestimonials";
 import FeatureSection from "./FeatureSection";
+import GrowerBenefits from "./GrowerBenefits";
+import MobileDownloadBar from "./MobileDownloadBar";
 import LandingFooter from "./LandingFooter";
 import LandingNav from "./LandingNav";
 import "./premium.css";
@@ -29,6 +31,7 @@ export default function LandingPage() {
       <main>
         <HeroSection />
         <AppTestimonials />
+        <GrowerBenefits />
         <FeatureSection />
         <section className="premium-wrap mg-light-teaser" aria-labelledby="home-light-title">
           <div className="mg-light-teaser-media">
@@ -36,7 +39,7 @@ export default function LandingPage() {
               <source media="(max-width:767px)" srcSet="/images/grow-tech/ag1000-lifestyle-v2/hero-mobile.webp" />
               <img src="/images/grow-tech/ag1000-lifestyle-v2/hero.webp" width={1200} height={1500} loading="lazy" alt="Home grower checking cannabis plants under the AG1000 100W LED grow light in a reflective grow tent" />
             </picture>
-            <span>AI illustration · tent and plants not included</span>
+
           </div>
           <div className="mg-light-teaser-copy">
             <p className="premium-eyebrow">GROWTECH · ALPHAGROW AG1000</p>
@@ -56,6 +59,7 @@ export default function LandingPage() {
         <IPMPlaybookSection />
       </main>
       <LandingFooter />
+      <MobileDownloadBar />
     </div>
   );
 }

@@ -13,6 +13,6 @@ export default function PremiumMotion({ name, label, poster }: { name: string; l
       <source src={`/videos/premium-2026/${name}.webm`} type="video/webm"/>
       <source src={`/videos/premium-2026/${name}.mp4`} type="video/mp4"/>
     </video>}
-    <figcaption>{label}. Grower scenes are AI illustrations; app screens are supplied product screenshots.</figcaption>
+    <figcaption>{label}.</figcaption>
   </figure>;
 }
