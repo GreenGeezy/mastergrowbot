@@ -2,7 +2,7 @@ import CinematicScene from "./CinematicScene";
 import HeroProductDemo from "./HeroProductDemo";
 import { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
-import { ArrowDown, ArrowRight, Check } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, Star } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { HERO_VERSION } from "@/lib/heroDemoMetadata";
 
@@ -34,9 +34,35 @@ export default function HeroSection() {
     if (section.current) observer.observe(section.current);
     return () => observer.disconnect();
   }, []);
-  return <><Helmet><link rel="preload" as="image" href="/images/cinematic-v2/app-hero.webp" media="(min-width:601px)"/><link rel="preload" as="image" href="/images/cinematic-v2/app-hero-mobile.webp" media="(max-width:600px)"/></Helmet>
-  <section ref={section} className="cinema-hero" aria-labelledby="hero-title">
-    <CinematicScene name="app-hero" alt="Home grower photographing a cannabis plant"/>
-    <div className="cinema-shade"/><div className="premium-wrap cinema-hero-content"><div className="cinema-hero-copy"><p className="premium-eyebrow">MASTERGROWBOT AI / YOUR GROW, IN FOCUS</p><h1 id="hero-title">Know what to check.<br/><em>Keep your grow<br/>on track.</em></h1><p>Photograph your cannabis plants, review AI observations, and save your reports in one grow journal.</p><AppActions/><p className="cinema-terms">Free download. Photo analysis and journal tools require a paid subscription. Your store shows current prices and trial eligibility.</p><a href="#grow-walkthrough" className="premium-text-link">See how it works <ArrowDown size={16}/></a></div><div className="cinema-original-demo"><HeroProductDemo/></div><figure className="hero-customer-quote"><blockquote>“As a first-time grower I was totally lost. MasterGrowbot walked me through everything.”</blockquote><figcaption>Sarah K. · MasterGrowbot customer</figcaption><a href="#customer-experiences">Read customer experiences</a></figure></div>
+  return <><Helmet><link rel="preload" as="image" href="/images/cinematic-v2/app-background-v3.webp" media="(min-width:768px)"/><link rel="preload" as="image" href="/images/cinematic-v2/app-background-v3-mobile.webp" media="(max-width:767px)"/></Helmet>
+  <section ref={section} className="mg-hero" aria-labelledby="hero-title">
+    <div className="mg-hero-stage">
+      <CinematicScene name="app-background-v3" alt="Home grower checking cannabis plants under an LED grow light"/>
+      <div className="mg-hero-shade" aria-hidden="true"/>
+      <div className="premium-wrap mg-hero-content">
+        <div className="mg-hero-copy">
+          <p className="mg-hero-eyebrow"><span className="mg-pulse" aria-hidden="true"/>Your AI master grower, in your pocket</p>
+          <h1 id="hero-title">Know what to check.<br/><em>Grow with confidence.</em></h1>
+          <p className="mg-hero-lede">Snap a photo of your cannabis plant. Get an AI report on what to check next, then keep every observation in one grow journal.</p>
+          <AppActions/>
+          <ul className="mg-hero-trust" aria-label="Why growers download MasterGrowbot AI">
+            <li><span className="mg-stars" aria-hidden="true">{Array.from({length:5},(_,i)=><Star key={i} size={14} fill="currentColor"/>)}</span><strong>5.0</strong>&nbsp;on the App Store</li>
+            <li><Check size={15} aria-hidden="true"/>Free download</li>
+            <li><Check size={15} aria-hidden="true"/>iPhone &amp; Android</li>
+          </ul>
+          <p className="mg-hero-terms">Photo analysis and journal tools require a subscription. Your app store shows current prices and trial eligibility.</p>
+        </div>
+      </div>
+      <a href="#grow-walkthrough" className="mg-hero-scroll">See how it works <ArrowDown size={16} aria-hidden="true"/></a>
+    </div>
+    <div id="grow-walkthrough" className="premium-wrap mg-hero-demo">
+      <div className="mg-hero-demo-copy">
+        <p className="premium-eyebrow">SEE IT IN ACTION</p>
+        <h2>From one photo<br/><em>to your next move.</em></h2>
+        <p>Tap through a real example: a grower spots yellowing lower leaves, snaps a photo, and gets clear checks to run before changing anything.</p>
+        <figure className="mg-hero-quote"><blockquote>“As a first-time grower I was totally lost. MasterGrowbot walked me through everything.”</blockquote><figcaption>Sarah K. · MasterGrowbot customer · <a href="#customer-experiences">Read more reviews</a></figcaption></figure>
+      </div>
+      <div className="mg-hero-demo-frame"><HeroProductDemo/></div>
+    </div>
   </section></>;
 }

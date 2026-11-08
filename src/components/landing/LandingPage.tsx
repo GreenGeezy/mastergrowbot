@@ -8,8 +8,9 @@ import LandingNav from "./LandingNav";
 import "./premium.css";
 import "./premium-release.css";
 import "./cinematic.css";
-import GrowWalkthrough from "./GrowWalkthrough";
+import "./hero-v4.css";
 import { Link } from "react-router-dom";
+import { ArrowRight, Check } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
 export default function LandingPage() {
@@ -27,12 +28,30 @@ export default function LandingPage() {
       <LandingNav />
       <main>
         <HeroSection />
-        <GrowWalkthrough />
         <AppTestimonials />
         <FeatureSection />
-        <section className="mx-auto grid max-w-6xl items-center gap-6 px-5 py-10 sm:px-8 md:grid-cols-2" aria-labelledby="home-light-title">
-          <img src="/images/grow-tech/ag1000-supplier/spectrum.png" width={800} height={800} loading="lazy" alt="AG1000 supplier product image and spectrum specifications" className="w-full max-w-md rounded-2xl" />
-          <div><p className="text-xs font-bold uppercase tracking-widest text-emerald-300">GrowTech equipment</p><h2 id="home-light-title" className="mt-3 text-3xl font-bold">Adjustable light for your indoor setup.</h2><p className="mt-4 leading-7 text-white/75">AG1000 100W LED panel with 20–100% dimming. US plug and free equipment quickstart.</p><p className="mt-4 text-xl font-bold">$199 USD · US shipping included</p><Link to="/grow-tech?utm_source=homepage&utm_medium=internal&utm_campaign=november-ag1000&utm_content=equipment-card#grow-light" onClick={() => trackEvent('growtech_discovery_click', { cta_location: 'homepage_equipment', product_id: 'growtech_ag1000_light' })} className="mt-5 inline-flex min-h-12 items-center rounded-full bg-emerald-300 px-6 py-3 font-bold text-emerald-950">See the light and what’s included →</Link></div>
+        <section className="premium-wrap mg-light-teaser" aria-labelledby="home-light-title">
+          <div className="mg-light-teaser-media">
+            <picture>
+              <source media="(max-width:767px)" srcSet="/images/grow-tech/ag1000-lifestyle-v2/hero-mobile.webp" />
+              <img src="/images/grow-tech/ag1000-lifestyle-v2/hero.webp" width={1200} height={1500} loading="lazy" alt="Home grower checking cannabis plants under the AG1000 100W LED grow light in a reflective grow tent" />
+            </picture>
+            <span>AI illustration · tent and plants not included</span>
+          </div>
+          <div className="mg-light-teaser-copy">
+            <p className="premium-eyebrow">GROWTECH · ALPHAGROW AG1000</p>
+            <h2 id="home-light-title">Upgrade your light.<br /><em>Give every plant a brighter start.</em></h2>
+            <p>A 100W full-spectrum LED panel for compact indoor tents. Turn the dial from 20% to 100% as your plants grow.</p>
+            <ul>
+              <li><Check size={16} aria-hidden="true" />100W full spectrum, 20 to 100% dimming</li>
+              <li><Check size={16} aria-hidden="true" />US shipping included, 30-day returns</li>
+              <li><Check size={16} aria-hidden="true" />Free equipment quickstart included</li>
+            </ul>
+            <div className="mg-light-teaser-buy">
+              <p><strong>$199</strong><span>USD · one-time</span></p>
+              <Link to="/grow-tech?utm_source=homepage&utm_medium=internal&utm_campaign=november-ag1000&utm_content=equipment-card" onClick={() => trackEvent('growtech_discovery_click', { cta_location: 'homepage_equipment', product_id: 'growtech_ag1000_light' })} className="mg-light-teaser-cta">Shop the AG1000 <ArrowRight size={18} aria-hidden="true" /></Link>
+            </div>
+          </div>
         </section>
         <IPMPlaybookSection />
       </main>

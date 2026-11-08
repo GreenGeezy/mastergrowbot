@@ -331,7 +331,7 @@ export const growLightOffer: GrowTechProduct = {
   aiHelp: "No automatic app connection.",
   schemaDescription: "ALPHAGROW AG1000 100W LED grow light, US electrical variant, $199 USD one time with free shipping within the US. Free equipment quickstart included. Estimated delivery about two weeks from confirmed payment. Global supply-chain and carrier delays may extend delivery times.",
   sku: "MGB-AG1000-US-V1", category: "Indoor plant grow light",
-  buttonLabel: "Get the AG1000 — $199",
+  buttonLabel: "Get the AG1000 for $199",
   image: "/images/grow-tech/ag1000-details-v2/spectrum.webp",
   imageWebp: "/images/grow-tech/ag1000-details-v2/spectrum.webp",
   alt: "AG1000 hanging LED panel and spectrum graphic",

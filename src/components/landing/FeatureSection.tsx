@@ -38,11 +38,6 @@ export default function FeatureSection() {
   const item = experiences[active];
   return (
     <>
-      <section id="app-experience" className="premium-section premium-wrap"><p className="premium-eyebrow">BUILT FOR YOUR DAILY CHECK</p><h2>Observe. Check. Remember.</h2><div className="cinema-benefits">{[
- ['Review your observations','Look at visible changes with AI photo insights.','real-report-overview'],
- ['Know what to check','Use the report to guide your next inspection, alongside your own judgment.','real-report-plan'],
- ['Keep the context','Save reports to your journal and return to earlier observations.','real-report-journal']
- ].map(([title,text,image])=><article key={title}><img src={`/images/premium/${image}.webp`} alt={`${title}: actual app report`} width={390} height={844} loading="lazy"/><h3>{title}</h3><p>{text}</p></article>)}</div></section>
       <section id="app-plans" className="premium-section premium-wrap">
         <div className="premium-section-heading">
           <div>

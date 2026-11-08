@@ -16,3 +16,9 @@ Browser validation was not executed: automatic approval review failed due accoun
 The user explicitly approved commit and push on November 8, 2026 with browser validation still outstanding. Production build and all 77 prerendered routes passed. Lint passed with zero errors and six existing Fast Refresh warnings. Git whitespace validation passed. This approval authorizes publishing the current revision; it does not establish that browser checks or conversion measurement passed.
 
 Final user adjustment: headline may overlay the light loop; no disclaimer text on the scene. Headline moved into the media, with generated-imagery note retained in gallery information.
+
+## November 8 hero composition correction
+- New imagegen background app-background-v3 places grower at far right with quiet copy space at left. Original master saved in source-assets/cinematic-v2; responsive WebPs and 8-second MP4/WebM/GIF exports in public cinematic-v2 directories.
+- Original capture image and full narrated v7 video retained. Interactive demo starts at Photo in SSR, reduced-motion mode, and normal playback.
+- Original hero quote moved immediately below hero with text unchanged; all testimonial sections retained.
+- Compact left-column hero avoids placing the demonstration over the background face. Controls checked at 390x844, 768x900, 1440x900; images must finish decoding before screenshot review.

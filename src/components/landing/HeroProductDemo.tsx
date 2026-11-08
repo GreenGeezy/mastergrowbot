@@ -11,7 +11,7 @@ const steps = [
 ];
 
 export default function HeroProductDemo() {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
   const [videoOpen, setVideoOpen] = useState(false);
   const [failedScreen, setFailedScreen] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -26,7 +26,7 @@ export default function HeroProductDemo() {
   const step = steps[active];
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => { if (preference.matches) { setPlaying(false); setAnalyzing(false); setPhase(0); setShowPlan(false); setActive(1); } };
+    const update = () => { if (preference.matches) { setPlaying(false); setAnalyzing(false); setPhase(0); setShowPlan(false); setActive(0); } };
     update();
     preference.addEventListener("change", update);
     const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .25 });
@@ -123,7 +123,7 @@ export default function HeroProductDemo() {
       </div> : <div key={step.label + (showPlan ? "-plan" : "")} className="hero-demo-stage">
         <picture className="hero-lab-art" aria-hidden="true">
           <source media="(max-width: 599px)" srcSet="/images/premium/hero-grow-lab-mobile-v8.webp" />
-          <img src="/images/premium/hero-grow-lab-v8.webp" alt="" width="1200" height="800" fetchPriority="high" onError={event => { event.currentTarget.style.visibility = "hidden"; }} />
+          <img src="/images/premium/hero-grow-lab-v8.webp" alt="" width="1200" height="800" onError={event => { event.currentTarget.style.visibility = "hidden"; }} />
         </picture>
         <div className="hero-lab-grid" aria-hidden="true" />
         <div className="hero-lab-orbit" aria-hidden="true" />
