@@ -7,7 +7,7 @@ import ParticleBackground from "@/components/landing/ParticleBackground";
 import SEOHead from "@/components/SEOHead";
 import { appStoreUrl } from "@/components/landing/ctaLinks";
 import { trackEvent } from "@/lib/analytics";
-import { QUICKSTART_CONTENT_URL, QUICKSTART_FILES_URL } from "@/data/growTechProducts";
+import { COMPLETE_PLAYBOOK_SLUGS, QUICKSTART_CONTENT_URL, QUICKSTART_FILES_URL } from "@/data/growTechProducts";
 import { PLAYBOOK_CONTENT_URL, PLAYBOOK_FILES_URL } from "@/data/playbook";
 
 const nextSteps = [
@@ -35,9 +35,9 @@ export default function GrowTechThankYou() {
   const isSuccess = status === "succeeded" && /^pay_[A-Za-z0-9]+$/.test(receiptId || "");
   const isError = ["error", "failed", "canceled", "cancelled"].includes(status || "");
   const purchasedSlug = searchParams.get("product");
-  const hasGuide = ["quickstart-guide", "scout-guide-bundle", "soil-health-meter", "grow-tent", "grow-light"].includes(purchasedSlug || "");
+  const hasGuide = ["quickstart-guide", "soil-health-meter", "grow-tent", ...COMPLETE_PLAYBOOK_SLUGS].includes(purchasedSlug || "");
   const isDigitalOnly = purchasedSlug === "quickstart-guide";
-  const includesFullKit = ["scout-guide-bundle", "grow-light"].includes(purchasedSlug || "");
+  const includesFullKit = COMPLETE_PLAYBOOK_SLUGS.includes(purchasedSlug || "");
 
   useEffect(() => {
     trackEvent("growtech_thank_you_view", {

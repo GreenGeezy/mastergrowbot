@@ -8,7 +8,7 @@ import { ArrowLeft, Download, ShieldCheck, Truck } from "lucide-react";
 import EmbeddedGrowTechCheckout from "@/components/grow-tech/EmbeddedGrowTechCheckout";
 import LandingFooter from "@/components/landing/LandingFooter";
 import SEOHead from "@/components/SEOHead";
-import { allGrowTechOffers, canPurchaseGrowTech, checkoutUrls, IS_JULY_PROMO_ACTIVE, planIds } from "@/data/growTechProducts";
+import { allGrowTechOffers, canPurchaseGrowTech, checkoutUrls, COMPLETE_PLAYBOOK_PRODUCT_IDS, IS_JULY_PROMO_ACTIVE, planIds } from "@/data/growTechProducts";
 import { trackGrowTechBeginCheckout, trackEvent } from "@/lib/analytics";
 import { captureGrowTechAttribution } from "@/lib/growTechAttribution";
 
@@ -47,7 +47,7 @@ export default function GrowTechCheckout() {
   }
 
   if (!canPurchaseGrowTech(product)) {
-    return <main className="min-h-screen bg-[#060d09] px-5 py-24 text-white"><Helmet><meta name="robots" content="noindex,follow" /></Helmet><div className="mx-auto max-w-xl"><Link to="/grow-tech" className="text-emerald-300 underline">← Back to GrowTech</Link><h1 className="mt-8 text-3xl font-bold">Hardware ordering is paused</h1><p className="mt-4 leading-7 text-white/70">This hardware offer is unavailable while sourcing and fulfillment are checked. No payment is collected. Existing buyer access remains available through Whop.</p><Link to="/grow-tech#digital-guides" className="mt-6 inline-block text-emerald-300 underline">Use your existing tools: digital guides from $9</Link></div></main>;
+    return <main className="min-h-screen bg-[#060d09] px-5 py-24 text-white"><Helmet><meta name="robots" content="noindex,follow" /></Helmet><div className="mx-auto max-w-xl"><Link to="/grow-tech" className="text-emerald-300 underline">← Back to GrowTech</Link>{product.anchorId.startsWith("alphagrow-") ? <><h1 className="mt-8 text-3xl font-bold">{product.name} is launching soon</h1><p className="mt-4 leading-7 text-white/70">Checkout for this size opens as soon as stock and delivery are confirmed. No payment is collected on this page.</p><a href={`mailto:support@mastergrowbot.com?subject=${encodeURIComponent(`Notify me: ${product.name}`)}`} className="mt-6 inline-block rounded-xl bg-emerald-300 px-5 py-3 font-bold text-emerald-950">Email me when it launches</a><Link to="/grow-tech#grow-light" className="mt-4 block text-emerald-300 underline">Shop the AG1000 light, available now</Link></> : <><h1 className="mt-8 text-3xl font-bold">Hardware ordering is paused</h1><p className="mt-4 leading-7 text-white/70">This hardware offer is unavailable while sourcing and fulfillment are checked. No payment is collected. Existing buyer access remains available through Whop.</p><Link to="/playbooks" className="mt-6 inline-block text-emerald-300 underline">Existing buyer access and digital guides</Link></>}</div></main>;
   }
 
   const planId = planIds[product.planKey];
@@ -73,7 +73,7 @@ export default function GrowTechCheckout() {
           <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Complete your order</h1>
           <p className="mt-3 font-semibold">{product.name}</p>
           <p className="mt-1 text-xl font-bold">{product.price} <span className="text-sm font-normal">USD · One-time payment</span></p>
-          <CheckoutAssurances hardware={!isDigital}/>{product.productId === "growtech_ag1000_light" && <p className="mt-3 text-sm text-emerald-200">Playbook kit included — sold separately for $19. Open your files in Whop after confirmed payment.</p>}
+          <CheckoutAssurances hardware={!isDigital}/>{COMPLETE_PLAYBOOK_PRODUCT_IDS.includes(product.productId) && <p className="mt-3 text-sm text-emerald-200">Playbook kit included — sold separately for $19. Open your files in Whop after confirmed payment.</p>}
           <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-white/75">
             <span className="inline-flex items-center gap-2">{isDigital ? <Download className="h-4 w-4 text-landing-green" /> : <Truck className="h-4 w-4 text-landing-green" />} {isDigital ? "Digital access after purchase" : product.fulfillmentNote}</span>
             <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-landing-green" /> Payment secured by Whop</span>

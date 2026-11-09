@@ -6,7 +6,11 @@ type CheckoutKey =
   | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_CHECKOUT_URL"
   | "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_CHECKOUT_URL"
-  | "NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL";
+  | "NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_CHECKOUT_URL"
+  | "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_CHECKOUT_URL";
 
 type PlanKey =
   | "NEXT_PUBLIC_WHOP_GROW_LIGHT_PLAN_ID"
@@ -16,7 +20,11 @@ type PlanKey =
   | "NEXT_PUBLIC_WHOP_GROW_TECH_KIT_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_QUICKSTART_GUIDE_PLAN_ID"
   | "NEXT_PUBLIC_WHOP_SCOUT_GUIDE_BUNDLE_PLAN_ID"
-  | "NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID";
+  | "NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_PLAN_ID"
+  | "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_PLAN_ID";
 
 export type GrowTechProduct = {
   name: string;
@@ -52,7 +60,25 @@ export type GrowTechProduct = {
   deliveryCountries?: ("US" | "CA")[];
 };
 
+/**
+ * ALPHAGROW tent + kit Whop mappings (handoff 2026-11-09, GrowTech-Checkout-Map.json).
+ * A variant stays unpurchasable until BOTH its plan ID and hosted checkout URL are set,
+ * either here (replace undefined) or through the matching NEXT_PUBLIC_WHOP_ALPHAGROW_* env vars.
+ * Example: planId: "plan_abc123", hostedUrl: "https://whop.com/checkout/plan_abc123".
+ * A hosted URL that points at a different plan is rejected by canPurchaseGrowTech.
+ */
+const ALPHAGROW_WHOP: Record<"tent2x2" | "tent4x2" | "kit2x2" | "kit4x2", { planId?: string; hostedUrl?: string }> = {
+  tent2x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_PLAN_ID || undefined, hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_CHECKOUT_URL || undefined },
+  tent4x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_PLAN_ID || undefined, hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_CHECKOUT_URL || undefined },
+  kit2x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_PLAN_ID || undefined, hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_CHECKOUT_URL || undefined },
+  kit4x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_PLAN_ID || undefined, hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_CHECKOUT_URL || undefined },
+};
+
 export const checkoutUrls: Record<CheckoutKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_CHECKOUT_URL: ALPHAGROW_WHOP.tent2x2.hostedUrl,
+  NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_CHECKOUT_URL: ALPHAGROW_WHOP.tent4x2.hostedUrl,
+  NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_CHECKOUT_URL: ALPHAGROW_WHOP.kit2x2.hostedUrl,
+  NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_CHECKOUT_URL: ALPHAGROW_WHOP.kit4x2.hostedUrl,
   NEXT_PUBLIC_WHOP_GROW_LIGHT_CHECKOUT_URL: "https://whop.com/checkout/plan_iX2bQNjG0dl3j",
   NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TENT_CHECKOUT_URL || "https://whop.com/checkout/plan_BkFyLfxmpwIeY",
   NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_CHECKOUT_URL || "https://whop.com/checkout/plan_ft9q9KbJXeXj6",
@@ -66,6 +92,10 @@ export const checkoutUrls: Record<CheckoutKey, string | undefined> = {
 };
 
 export const planIds: Record<PlanKey, string | undefined> = {
+  NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_PLAN_ID: ALPHAGROW_WHOP.tent2x2.planId,
+  NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_PLAN_ID: ALPHAGROW_WHOP.tent4x2.planId,
+  NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_PLAN_ID: ALPHAGROW_WHOP.kit2x2.planId,
+  NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_PLAN_ID: ALPHAGROW_WHOP.kit4x2.planId,
   NEXT_PUBLIC_WHOP_GROW_LIGHT_PLAN_ID: "plan_iX2bQNjG0dl3j",
   NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_GROW_TENT_PLAN_ID || "plan_BkFyLfxmpwIeY",
   NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID: import.meta.env.NEXT_PUBLIC_WHOP_SCOUT_CAMERA_PLAN_ID || "plan_ft9q9KbJXeXj6",
@@ -342,13 +372,111 @@ export const growLightOffer: GrowTechProduct = {
   deliveryCountries: ["US"],
 };
 
+export type AlphaGrowVariant = GrowTechProduct & {
+  family: "tent" | "kit";
+  sizeLabel: string;
+  dimensions: string;
+  contents: string[];
+  lightNote: string;
+  mobileImage: string;
+};
+
+const alphaGrowBase = {
+  ...growLightOffer,
+  badge: "New",
+  dataCollected: "No sensors or automatic measurements",
+  aiHelp: "No automatic app connection.",
+  availability: "ready" as const,
+  deliveryKind: "hardware-and-digital" as const,
+  deliveryCountries: ["US"] as ("US" | "CA")[],
+  fulfillmentNote: "US shipping included. Estimated delivery about two weeks from confirmed payment. Tracking after dispatch. Tax at checkout.",
+};
+
+export const alphaGrowTent2x2: AlphaGrowVariant = {
+  ...alphaGrowBase, family: "tent", sizeLabel: "2×2 ft", dimensions: "24 × 24 × 48 in (2 × 2 × 4 ft)",
+  name: "ALPHAGROW 2×2 Grow Tent", productId: "growtech_alphagrow_tent_2x2", anchorId: "alphagrow-tent-2x2",
+  price: "$119", numericPrice: 119, salePrice: "$119",
+  description: "ALPHAGROW 24 × 24 × 48 in grow tent with reflective Mylar lining, observation window and removable floor tray. Includes the complete MasterGrowbot Playbook digital kit. Light, ventilation and plants sold separately.",
+  whyBuy: "A dedicated, light-tight home for one to two plants.",
+  bestFor: ["First grows", "1 to 2 plants", "Closets and spare corners"],
+  schemaDescription: "ALPHAGROW 2×2×4 ft grow tent with reflective Mylar lining, observation window and removable floor tray, plus the complete MasterGrowbot Playbook digital kit. $119 USD one time, US shipping included.",
+  sku: "MGB-ALPHAGROW-TENT-2X2", category: "Indoor grow tent", buttonLabel: "Get the 2×2 tent for $119",
+  image: "/images/grow-tech/alphagrow-v1/tent-lifestyle.webp", imageWebp: "/images/grow-tech/alphagrow-v1/tent-lifestyle.webp",
+  mobileImage: "/images/grow-tech/alphagrow-v1/tent-lifestyle-mobile.webp", imageWidth: 960, imageHeight: 1200,
+  alt: "Home grower fitting the removable floor tray into an ALPHAGROW 2×2 grow tent with reflective Mylar lining",
+  contents: ["Heavy-duty canvas with reflective Mylar lining", "Observation window and removable floor tray", "Vent ports ready for a fan and ducting", "Complete Playbook digital kit ($19 value)"],
+  lightNote: "Pairs with one AG1000 for full 2×2 coverage.",
+  planKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_PLAN_ID", checkoutKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_CHECKOUT_URL",
+};
+
+export const alphaGrowTent4x2: AlphaGrowVariant = {
+  ...alphaGrowTent2x2, sizeLabel: "4×2 ft", dimensions: "48 × 24 in footprint (4 × 2 ft)",
+  name: "ALPHAGROW 4×2 Grow Tent", productId: "growtech_alphagrow_tent_4x2", anchorId: "alphagrow-tent-4x2",
+  price: "$149", numericPrice: 149, salePrice: "$149",
+  description: "ALPHAGROW 4 × 2 ft footprint grow tent with reflective Mylar lining, observation window and removable floor tray. Includes the complete MasterGrowbot Playbook digital kit. Light, ventilation and plants sold separately.",
+  whyBuy: "Room for two to four plants without taking over the room.",
+  bestFor: ["2 to 4 plants", "Room to scale up", "Wall-side setups"],
+  schemaDescription: "ALPHAGROW 4×2 ft footprint grow tent with reflective Mylar lining, observation window and removable floor tray, plus the complete MasterGrowbot Playbook digital kit. $149 USD one time, US shipping included.",
+  sku: "MGB-ALPHAGROW-TENT-4X2", buttonLabel: "Get the 4×2 tent for $149",
+  lightNote: "Pairs with two AG1000 lights for full 4×2 flowering coverage.",
+  planKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_PLAN_ID", checkoutKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_CHECKOUT_URL",
+};
+
+// Kit contents follow the supplier listings named in the handoff. Confirm the exact package before enabling each plan.
+export const alphaGrowKit2x2: AlphaGrowVariant = {
+  ...alphaGrowBase, family: "kit", sizeLabel: "2×2 ft", dimensions: "24 × 24 × 48 in tent (2 × 2 × 4 ft)",
+  name: "ALPHAGROW 2×2 Grow Tent Kit", productId: "growtech_alphagrow_kit_2x2", anchorId: "alphagrow-kit-2x2",
+  price: "$299", numericPrice: 299, salePrice: "$299",
+  description: "ALPHAGROW 2×2 grow tent kit: 24 × 24 × 48 in reflective tent, LED grow light, quiet 4 in inline fan with carbon filter, and ducting. Includes the complete MasterGrowbot Playbook digital kit. Plants, soil and nutrients sold separately.",
+  whyBuy: "Everything you need to start your first indoor grow, in one box.",
+  bestFor: ["First-time growers", "1 to 2 plants", "Odor control"],
+  schemaDescription: "ALPHAGROW 2×2 grow tent kit with tent, LED grow light, 4 in inline fan, carbon filter and ducting, plus the complete MasterGrowbot Playbook digital kit. $299 USD one time, US shipping included.",
+  sku: "MGB-ALPHAGROW-KIT-2X2", category: "Indoor grow tent kit", buttonLabel: "Get the 2×2 kit for $299",
+  image: "/images/grow-tech/alphagrow-v1/kit-lifestyle.webp", imageWebp: "/images/grow-tech/alphagrow-v1/kit-lifestyle.webp",
+  mobileImage: "/images/grow-tech/alphagrow-v1/kit-lifestyle-mobile.webp", imageWidth: 960, imageHeight: 1200,
+  alt: "Home grower checking the inline fan and carbon filter inside an ALPHAGROW grow tent kit with young cannabis plants",
+  contents: ["24 × 24 × 48 in reflective grow tent", "Full-spectrum LED grow light", "Quiet 4 in inline fan + carbon filter", "Ducting, hangers and floor tray", "Complete Playbook digital kit ($19 value)"],
+  lightNote: "Light included. Add an AG1000 later for more intensity.",
+  planKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_PLAN_ID", checkoutKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_CHECKOUT_URL",
+};
+
+export const alphaGrowKit4x2: AlphaGrowVariant = {
+  ...alphaGrowKit2x2, sizeLabel: "4×2 ft", dimensions: "48 × 24 in tent footprint (4 × 2 ft)",
+  name: "ALPHAGROW 4×2 Grow Tent Ventilation Kit", productId: "growtech_alphagrow_kit_4x2", anchorId: "alphagrow-kit-4x2",
+  price: "$349", numericPrice: 349, salePrice: "$349",
+  description: "ALPHAGROW 4×2 grow tent kit: 48 × 24 in footprint reflective tent, 4 in inline fan with carbon filter, variable speed controller and ducting. Includes the complete MasterGrowbot Playbook digital kit. Grow light sold separately; two AG1000 lights cover a full 4×2 canopy.",
+  whyBuy: "A bigger, odor-controlled space with airflow dialed in from day one.",
+  bestFor: ["2 to 4 plants", "Odor control", "Growers adding their own light"],
+  schemaDescription: "ALPHAGROW 4×2 ft grow tent ventilation kit with tent, 4 in inline fan, carbon filter, speed controller and ducting, plus the complete MasterGrowbot Playbook digital kit. Light sold separately. $349 USD one time, US shipping included.",
+  sku: "MGB-ALPHAGROW-KIT-4X2", buttonLabel: "Get the 4×2 kit for $349",
+  contents: ["48 × 24 in footprint reflective grow tent", "Quiet 4 in inline fan + carbon filter", "Variable speed controller", "Ducting, hangers and floor tray", "Complete Playbook digital kit ($19 value)"],
+  lightNote: "Grow light not included. Two AG1000 lights cover a full 4×2 canopy.",
+  planKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_PLAN_ID", checkoutKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_CHECKOUT_URL",
+};
+
+export const alphaGrowTents: AlphaGrowVariant[] = [alphaGrowTent2x2, alphaGrowTent4x2];
+export const alphaGrowKits: AlphaGrowVariant[] = [alphaGrowKit2x2, alphaGrowKit4x2];
+
+/** Hardware purchases that unlock the complete Playbook digital kit in Whop. */
+export const COMPLETE_PLAYBOOK_PRODUCT_IDS = ["growtech_scout_guide_bundle", "growtech_ag1000_light", ...alphaGrowTents.map(v => v.productId), ...alphaGrowKits.map(v => v.productId)];
+export const COMPLETE_PLAYBOOK_SLUGS = ["scout-guide-bundle", "grow-light", ...alphaGrowTents.map(v => v.anchorId), ...alphaGrowKits.map(v => v.anchorId)];
+
 export const allGrowTechOffers: GrowTechProduct[] = [
   ...products.map((product, index) => index === 2 ? soilGuideOffer : ({ ...product, availability: "paused" as const })),
-  { ...bundle, availability: "paused" }, quickstartGuide, scoutGuideBundle, growTentOffer, growLightOffer,
+  { ...bundle, availability: "paused" }, quickstartGuide, scoutGuideBundle, growTentOffer, growLightOffer, ...alphaGrowTents, ...alphaGrowKits,
 ];
 
 export function canPurchaseGrowTech(product: GrowTechProduct) {
   const hasDeliveryRoute = product.deliveryKind === "digital" || Boolean(product.deliveryCountries?.length);
-  return product.anchorId !== "quickstart-guide" && hasDeliveryRoute && product.availability === "ready" && Boolean(planIds[product.planKey]) && Boolean(checkoutUrls[product.checkoutKey]);
+  const planId = planIds[product.planKey];
+  const hostedUrl = checkoutUrls[product.checkoutKey];
+  if (!planId || !hostedUrl) return false;
+  if (product.anchorId.startsWith("alphagrow-")) {
+    // New SKUs: require a well-formed plan and a hosted link for that same plan, never a stale or mismatched one.
+    if (!/^plan_[A-Za-z0-9]+$/.test(planId)) return false;
+    const match = hostedUrl.match(/^https:\/\/whop\.com\/checkout\/(plan_[A-Za-z0-9]+|ch_[A-Za-z0-9]+)\/?(?:\?[^#]*)?$/);
+    if (!match || (match[1].startsWith("plan_") && match[1] !== planId)) return false;
+  }
+  return product.anchorId !== "quickstart-guide" && hasDeliveryRoute && product.availability === "ready";
 }
 

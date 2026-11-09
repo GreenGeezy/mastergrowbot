@@ -3,7 +3,7 @@ import { WhopElementsCheckout } from "@/components/checkout/WhopElementsCheckout
 import { AlertCircle, ArrowUpRight, Copy } from "lucide-react";
 import { useWhopCheckoutTracking } from "@/hooks/useWhopCheckoutTracking";
 import { growTechCheckoutCampaign, attributedGrowTechCheckoutUrl } from "@/lib/growTechAttribution";
-import { QUICKSTART_FILES_URL, QUICKSTART_CONTENT_URL } from "@/data/growTechProducts";
+import { COMPLETE_PLAYBOOK_PRODUCT_IDS, QUICKSTART_FILES_URL, QUICKSTART_CONTENT_URL } from "@/data/growTechProducts";
 import { PLAYBOOK_FILES_URL, PLAYBOOK_CONTENT_URL } from "@/data/playbook";
 import {
   type GrowTechAnalyticsProduct,
@@ -45,7 +45,7 @@ export default function EmbeddedGrowTechCheckout({
   const [isComplete, setIsComplete] = useState(false);
   const [completedReceiptId, setCompletedReceiptId] = useState<string | undefined>();
   const [promoCopied, setPromoCopied] = useState(false);
-  const includesPlaybook = ["growtech_scout_guide_bundle", "growtech_ag1000_light"].includes(product.productId);
+  const includesPlaybook = COMPLETE_PLAYBOOK_PRODUCT_IDS.includes(product.productId);
 
   const checkoutPayload = useMemo(
     () => growTechEcommercePayload(product, ctaLocation, planId),
