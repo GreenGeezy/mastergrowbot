@@ -68,7 +68,8 @@ export type GrowTechProduct = {
  * A hosted URL that points at a different plan is rejected by canPurchaseGrowTech.
  */
 const ALPHAGROW_WHOP: Record<"tent2x2" | "tent4x2" | "kit2x2" | "kit4x2", { planId?: string; hostedUrl?: string }> = {
-  tent2x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_PLAN_ID || undefined, hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_CHECKOUT_URL || undefined },
+  // Whop product prod_YfI5UpdQIFje9, $119 one-time, created 2026-11-09.
+  tent2x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_PLAN_ID || "plan_PxMzYOeaaPocA", hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_2X2_CHECKOUT_URL || "https://whop.com/checkout/plan_PxMzYOeaaPocA" },
   tent4x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_PLAN_ID || undefined, hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_CHECKOUT_URL || undefined },
   kit2x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_PLAN_ID || undefined, hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_CHECKOUT_URL || undefined },
   kit4x2: { planId: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_PLAN_ID || undefined, hostedUrl: import.meta.env.NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_CHECKOUT_URL || undefined },
