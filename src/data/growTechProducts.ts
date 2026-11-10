@@ -420,11 +420,11 @@ export const alphaGrowTent4x4: AlphaGrowVariant = {
   price: "$149", numericPrice: 149, salePrice: "$149",
   description: "ALPHAGROW 4 × 4 ft footprint grow tent with reflective Mylar lining, observation window and removable floor tray. Includes the complete MasterGrowbot Playbook digital kit. Light, ventilation and plants sold separately.",
   whyBuy: "Room for two to four plants without taking over the room.",
-  bestFor: ["2 to 4 plants", "Room to scale up", "Wall-side setups"],
+  bestFor: ["4 to 6 plants", "Room to scale up", "Spare rooms and garages"],
   schemaDescription: "ALPHAGROW 4×4 ft footprint grow tent with reflective Mylar lining, observation window and removable floor tray, plus the complete MasterGrowbot Playbook digital kit. $149 USD one time, US shipping included.",
   sku: "MGB-ALPHAGROW-TENT-4X4", buttonLabel: "Get the 4×4 tent for $149",
   alt: "Home grower fitting a removable floor tray into a reflective grow tent",
-  lightNote: "Light and ventilation sold separately.",
+  lightNote: "Light and ventilation sold separately. A 4×4 needs more than one 100W light for full flowering coverage.",
   planKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_PLAN_ID", checkoutKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_TENT_4X2_CHECKOUT_URL",
 };
 
@@ -438,11 +438,11 @@ export const alphaGrowKit2x2: AlphaGrowVariant = {
   bestFor: ["First-time growers", "1 to 2 plants", "Odor control"],
   schemaDescription: "ALPHAGROW 2×2 grow tent kit with tent, 32W full-spectrum LED grow light, inline fan, carbon filter and ducting, plus the complete MasterGrowbot Playbook digital kit. $299 USD one time, US shipping included.",
   sku: "MGB-ALPHAGROW-KIT-2X2", category: "Indoor grow tent kit", buttonLabel: "Get the 2×2 kit for $299",
-  image: "/images/grow-tech/alphagrow-v1/kit-lifestyle.webp", imageWebp: "/images/grow-tech/alphagrow-v1/kit-lifestyle.webp",
-  mobileImage: "/images/grow-tech/alphagrow-v1/kit-lifestyle-mobile.webp", imageWidth: 960, imageHeight: 1200,
-  alt: "Home grower checking the inline fan and carbon filter inside an ALPHAGROW grow tent kit with young cannabis plants",
+  image: "/images/cinematic-v2/light-hero.webp", imageWebp: "/images/cinematic-v2/light-hero.webp",
+  mobileImage: "/images/cinematic-v2/light-hero-mobile.webp", imageWidth: 1536, imageHeight: 1024,
+  alt: "Home grower beside a reflective grow tent with a full-spectrum LED grow light and a flowering cannabis plant",
   contents: ["24 × 24 × 48 in reflective grow tent", "32W full-spectrum LED grow light", "Inline fan + carbon filter", "Ducting, hangers and floor tray", "Complete Playbook digital kit ($19 value)"],
-  lightNote: "32W full-spectrum LED grow light included.",
+  lightNote: "32W full-spectrum LED included. Want heavier flowers later? Add the AG1000.",
   planKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_PLAN_ID", checkoutKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_2X2_CHECKOUT_URL",
 };
 
@@ -452,11 +452,11 @@ export const alphaGrowKit4x4: AlphaGrowVariant = {
   price: "$499", numericPrice: 499, salePrice: "$499",
   description: "ALPHAGROW 4×4 grow tent kit with reflective tent, 100W dimmable full-spectrum LED grow light, inline fan, carbon filter, speed controller, ducting, hangers and floor tray. Includes the complete MasterGrowbot Playbook digital kit. Plants, soil and nutrients sold separately.",
   whyBuy: "A bigger, odor-controlled space with airflow dialed in from day one.",
-  bestFor: ["Larger grow spaces", "Room to scale up", "Tent, lighting and ventilation together"],
+  bestFor: ["Bigger harvests", "4 to 6 plants", "Tent, light and airflow together"],
   schemaDescription: "ALPHAGROW 4×4 ft grow tent kit with tent, 100W dimmable full-spectrum LED grow light, inline fan, carbon filter, speed controller and ducting, plus the complete MasterGrowbot Playbook digital kit. $499 USD one time, US shipping included.",
   sku: "MGB-ALPHAGROW-KIT-4X4", buttonLabel: "Get the 4×4 kit for $499",
   contents: ["48 × 48 in footprint reflective grow tent", "100W dimmable full-spectrum LED grow light", "Inline fan + carbon filter", "Variable speed controller", "Ducting, hangers and floor tray", "Complete Playbook digital kit ($19 value)"],
-  lightNote: "100W dimmable full-spectrum LED grow light included.",
+  lightNote: "100W dimmable LED included. For dense flowering across the full 4×4, add a second light such as the AG1000.",
   planKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_PLAN_ID", checkoutKey: "NEXT_PUBLIC_WHOP_ALPHAGROW_KIT_4X2_CHECKOUT_URL",
 };
 

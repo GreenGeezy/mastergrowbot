@@ -50,15 +50,15 @@ export default function GrowSetupShop() {
       <div className="gs-head">
         <p className="gt-kicker">NEW · ALPHAGROW TENTS &amp; KITS</p>
         <h2 id="gs-title">Starting from zero?<br /><em>Get the whole grow space.</em></h2>
-        <p>Pick your footprint. 2×2 fits a closet and one to two plants; 4×4 gives you more room to grow. Every order includes the complete MasterGrowbot Playbook so your first grow starts with a plan.</p>
+        <p>Pick your footprint. A 2×2 fits a closet and one to two plants. A 4×4 gives you room for four to six. Every order ships free in the US and includes the complete MasterGrowbot Playbook, so your first grow starts with a plan.</p>
       </div>
       <div className="gs-grid">
-        <VariantCard variants={alphaGrowKits} featured ribbon="Best for first grows" kicker="GROW TENT KIT" title="The grow tent kit"
-          pitch="Tent, airflow and odor control in one box. Unpack, set up in an afternoon and get growing." />
+        <VariantCard variants={alphaGrowKits} featured ribbon="Everything but the plants" kicker="COMPLETE GROW TENT KIT" title="The grow tent kit"
+          pitch="Tent, LED grow light, inline fan and carbon filter in one box. Unpack it, set it up in an afternoon and start your first grow." />
         <VariantCard variants={alphaGrowTents} kicker="GROW TENT" title="The grow tent"
           pitch="Already have a light or fan? Start with a light-tight, reflective tent and build around it." />
       </div>
-      <p className="gs-compare">Not sure which? Most first-time growers start with the <a href="#grow-tent-kit">2×2 kit</a>. Already own a light? Grab the <a href="#grow-tent">tent</a>, then add the <a href="#grow-light">AG1000</a> for full coverage.</p>
+      <p className="gs-compare">Not sure which? Start with the <a href="#grow-tent-kit">2×2 kit</a> for your first grow. Already own a light? Grab the <a href="#grow-tent">tent</a> and add the <a href="#grow-light">AG1000</a>.</p>
     </div>
   </section>;
 }
