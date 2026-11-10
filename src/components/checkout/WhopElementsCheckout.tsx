@@ -28,6 +28,11 @@ function getWhopElements() {
   return sharedElements;
 }
 
+/** Start Whop Elements early (for example while a shopper browses GrowTech) so checkout opens faster. */
+export function preloadWhopCheckout() {
+  try { getWhopElements(); } catch { /* checkout page will retry on mount */ }
+}
+
 export function WhopElementsCheckout({ planId, returnUrl, theme = "light", deliveryCountry, utm, styles, fallback, onComplete, onStateChange }: Props) {
   const [elements] = useState(getWhopElements);
   const attribution = useMemo(() => ({

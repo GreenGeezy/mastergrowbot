@@ -72,6 +72,8 @@ export default function EmbeddedGrowTechCheckout({
     planId,
     payload: checkoutPayload,
     onComplete: handleTrackedComplete,
+    // Whop Elements regularly needs 15-25 s on slower connections; warn only when it is truly stuck.
+    loadTimeoutMs: 30000,
   });
 
   useEffect(() => {
@@ -116,7 +118,7 @@ export default function EmbeddedGrowTechCheckout({
       onClick={() => trackGrowTechFallbackClick(product, ctaLocation, planId)}
       className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/14 bg-white/[0.06] px-4 py-2.5 text-sm font-bold text-white transition hover:border-landing-green/40 hover:bg-landing-green/10 focus:outline-none focus:ring-2 focus:ring-landing-green"
     >
-      Open full-page Whop checkout
+      Pay on Whop's secure checkout page
       <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
     </a>
   ) : null;
@@ -178,10 +180,10 @@ export default function EmbeddedGrowTechCheckout({
             {checkoutUnavailable ? (
               <div role="alert" className="flex gap-3 rounded-lg border border-amber-300/25 bg-amber-300/10 p-3 text-sm text-amber-100">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                <p>The embedded form is taking too long to respond. Your selection is saved. Use the full-page checkout option below to continue securely.</p>
+                <p>Still loading the secure form. You can keep waiting here, or tap <strong>Pay on Whop's secure checkout page</strong> above to finish in a new tab. Same product, same price.</p>
               </div>
             ) : (
-              <p className="text-xs font-semibold text-white/50">Connecting to secure payment...</p>
+              <p className="flex items-center gap-2 text-xs font-semibold text-white/60"><span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-landing-green border-t-transparent" aria-hidden="true" />Loading Whop's secure checkout. This can take a few seconds.</p>
             )}
           </div>}
           <div className="p-0 sm:p-1">
@@ -205,7 +207,8 @@ export default function EmbeddedGrowTechCheckout({
                     },
                   }}
                   fallback={
-                    <div className="flex min-h-[360px] items-center justify-center p-8 text-sm font-semibold text-white/60">
+                    <div className="flex min-h-[360px] flex-col items-center justify-center gap-3 p-8 text-sm font-semibold text-slate-500">
+                      <span className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-green-700 border-t-transparent" aria-hidden="true" />
                       Loading secure checkout...
                     </div>
                   }
