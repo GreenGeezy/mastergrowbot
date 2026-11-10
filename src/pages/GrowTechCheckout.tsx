@@ -64,7 +64,7 @@ export default function GrowTechCheckout() {
         description={`Complete your ${product.name} order with secure Whop checkout. ${isDigital ? "Digital access through Whop after purchase." : product.fulfillmentNote}`}
         canonicalUrl={`https://www.mastergrowbot.com/grow-tech/checkout/${product.anchorId}`}
       />
-      <Helmet><meta name="robots" content="noindex,follow" /></Helmet>
+      <Helmet><meta name="robots" content="noindex,follow" /><link rel="preconnect" href="https://cdn.whop.com"/><link rel="preconnect" href="https://whop.com"/><link rel="preconnect" href="https://api.whop.com"/><link rel="preconnect" href="https://js.stripe.com"/><link rel="dns-prefetch" href="https://api.stripe.com"/></Helmet>
       <header className="border-b border-white/10 px-5 py-5"><Link to="/grow-tech" className="font-bold text-white">MasterGrowbot · GrowTech</Link></header>
       <main className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         <Link to="/grow-tech" className="inline-flex items-center gap-2 text-sm font-semibold text-white/65 hover:text-white">
