@@ -36,6 +36,8 @@ export default function GrowTechCheckout() {
   }, [product, deliveryCountry]);
 
   if (productSlug == 'quickstart-guide') return <Navigate to='/playbooks' replace/>;
+  // Preserve shared checkout links after the larger tent and kit changed to 4×4.
+  if (productSlug === 'alphagrow-tent-4x2' || productSlug === 'alphagrow-kit-4x2') return <Navigate to={`/grow-tech/checkout/${productSlug.replace('4x2', '4x4')}`} replace/>;
 
   if (!product) {
     return (

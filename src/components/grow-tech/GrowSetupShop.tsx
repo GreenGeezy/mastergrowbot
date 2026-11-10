@@ -50,7 +50,7 @@ export default function GrowSetupShop() {
       <div className="gs-head">
         <p className="gt-kicker">NEW · ALPHAGROW TENTS &amp; KITS</p>
         <h2 id="gs-title">Starting from zero?<br /><em>Get the whole grow space.</em></h2>
-        <p>Pick your footprint. 2×2 fits a closet and one to two plants; 4×2 gives you room for two to four. Every order includes the complete MasterGrowbot Playbook so your first grow starts with a plan.</p>
+        <p>Pick your footprint. 2×2 fits a closet and one to two plants; 4×4 gives you more room to grow. Every order includes the complete MasterGrowbot Playbook so your first grow starts with a plan.</p>
       </div>
       <div className="gs-grid">
         <VariantCard variants={alphaGrowKits} featured ribbon="Best for first grows" kicker="GROW TENT KIT" title="The grow tent kit"
