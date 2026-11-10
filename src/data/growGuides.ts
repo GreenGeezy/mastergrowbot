@@ -1,3 +1,4 @@
+import { growtechPilotGuide as ag1000_vs_spider_farmer_sf1000 } from './ag1000-vs-spider-farmer-sf1000';
 import { ag1000Comparison } from './ag1000Comparison';
 import { ag1000BuyingGuide } from './ag1000BuyingGuide';
 import { AMAZON_BOOK_URL } from '@/components/landing/ctaLinks';
@@ -29,6 +30,7 @@ export interface GrowGuide {
 }
 
 export const growGuides: GrowGuide[] = [
+  ag1000_vs_spider_farmer_sf1000,
   ag1000BuyingGuide,
   ag1000Comparison,
 {
