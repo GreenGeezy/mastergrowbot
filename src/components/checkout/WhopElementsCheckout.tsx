@@ -20,8 +20,16 @@ type Props = {
   onStateChange?: (state: WhopCheckoutState) => void;
 };
 
+// One Whop Elements instance per page load. Re-creating it on every mount (for example when a
+// shopper moves between checkout pages in the app) starts competing coordinator iframes.
+let sharedElements: ReturnType<typeof loadWhop> | undefined;
+function getWhopElements() {
+  if (!sharedElements) sharedElements = loadWhop();
+  return sharedElements;
+}
+
 export function WhopElementsCheckout({ planId, returnUrl, theme = "light", deliveryCountry, utm, styles, fallback, onComplete, onStateChange }: Props) {
-  const [elements] = useState(() => loadWhop());
+  const [elements] = useState(getWhopElements);
   const attribution = useMemo(() => ({
     utmSource: utm?.utm_source, utmMedium: utm?.utm_medium,
     utmCampaign: utm?.utm_campaign, utmTerm: utm?.utm_term,
