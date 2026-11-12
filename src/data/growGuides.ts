@@ -1,3 +1,4 @@
+import { growtechPilotGuide as guide_2x2_vs_4x2_grow_tent } from './2x2-vs-4x2-grow-tent';
 import { growtechPilotGuide as ag1000_vs_spider_farmer_sf1000 } from './ag1000-vs-spider-farmer-sf1000';
 import { ag1000Comparison } from './ag1000Comparison';
 import { ag1000BuyingGuide } from './ag1000BuyingGuide';
@@ -30,6 +31,7 @@ export interface GrowGuide {
 }
 
 export const growGuides: GrowGuide[] = [
+  guide_2x2_vs_4x2_grow_tent,
   ag1000_vs_spider_farmer_sf1000,
   ag1000BuyingGuide,
   ag1000Comparison,

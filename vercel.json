@@ -146,6 +146,7 @@
     }
   ],
   "rewrites": [
+    {"source":"/grow-guides/2x2-vs-4x2-grow-tent","destination":"/seo/grow-guides/2x2-vs-4x2-grow-tent.html"},
     {"source":"/grow-guides/ag1000-vs-spider-farmer-sf1000","destination":"/seo/grow-guides/ag1000-vs-spider-farmer-sf1000.html"},
     {
       "source": "/grow-guides/ag1000-vs-mars-hydro-ts600",
