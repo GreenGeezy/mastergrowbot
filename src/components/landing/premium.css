@@ -387,6 +387,7 @@
 .premium-final .premium-actions {
   justify-content: center;
 }
+.premium-final .premium-lead,
 .premium-final .premium-fine {
   margin-inline: auto;
 }
