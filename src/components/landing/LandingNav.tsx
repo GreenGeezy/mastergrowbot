@@ -14,6 +14,7 @@ const navLinksBefore: NavLink[] = [
 export const freeTools: (NavLink & { blurb: string })[] = [
   { label: 'VPD Calculator', to: '/vpd-calculator', blurb: 'Leaf VPD and chart by growth stage' },
   { label: 'Grow Light Calculator', to: '/grow-light-calculator', blurb: 'DLI, PPFD and light hours' },
+  { label: 'Symptom Checker', to: '/cannabis-symptom-checker', blurb: 'Yellow leaves, spots, curling, drooping' },
 ];
 
 const navLinksAfter: NavLink[] = [

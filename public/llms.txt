@@ -18,6 +18,7 @@ MasterGrowbot AI is a cannabis cultivation assistant for growers who want plant 
 - Grow Tech Hardware: https://www.mastergrowbot.com/grow-tech
 - Free VPD Calculator: https://www.mastergrowbot.com/vpd-calculator
 - Free Grow Light Calculator (DLI and PPFD): https://www.mastergrowbot.com/grow-light-calculator
+- Free Cannabis Leaf Symptom Checker: https://www.mastergrowbot.com/cannabis-symptom-checker
 - iOS App: https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060
 - Android App: https://play.google.com/store/apps/details?id=com.mastergrowbot.app
 - Master Cannabis IPM Playbook on Amazon: https://a.co/d/07dQFaw0

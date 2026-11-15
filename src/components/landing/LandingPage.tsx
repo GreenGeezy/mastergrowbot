@@ -1,3 +1,4 @@
+import RealReports from '@/components/landing/RealReports';
 import IPMPlaybookSection from './IPMPlaybookSection';
 import { useEffect } from "react";
 import HeroSection from "./HeroSection";
@@ -31,6 +32,7 @@ export default function LandingPage() {
       <main>
         <HeroSection />
         <AppTestimonials />
+        <RealReports campaign="homepage" location="homepage" />
         <GrowerBenefits />
         <FeatureSection />
         <section className="premium-wrap mg-light-teaser" aria-labelledby="home-light-title">

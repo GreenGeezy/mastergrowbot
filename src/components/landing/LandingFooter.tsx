@@ -21,6 +21,9 @@ export default function LandingFooter() {
           <Link to="/grow-light-calculator" className="hover:text-white/75 transition-colors">
             Grow Light Calculator
           </Link>
+          <Link to="/cannabis-symptom-checker" className="hover:text-white/75 transition-colors">
+            Symptom Checker
+          </Link>
           <a
             href={AMAZON_BOOK_URL}
             target="_blank"
