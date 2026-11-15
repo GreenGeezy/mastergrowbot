@@ -193,6 +193,10 @@
       "destination": "/seo/vpd-calculator.html"
     },
     {
+      "source": "/grow-light-calculator",
+      "destination": "/seo/grow-light-calculator.html"
+    },
+    {
       "source": "/grow-guides/cannabis-nutrient-deficiency-guide",
       "destination": "/seo/grow-guides/cannabis-nutrient-deficiency-guide.html"
     },

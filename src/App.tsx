@@ -22,6 +22,7 @@ const TermsOfService = lazy(() => import("@/pages/TermsOfService"));
 const LazyGrowGuidesHub = lazy(publicPageLoaders.GrowGuidesHub);
 const LazyGrowGuideArticle = lazy(publicPageLoaders.GrowGuideArticle);
 const LazyVPDCalculator = lazy(publicPageLoaders.VPDCalculator);
+const LazyGrowLightCalculator = lazy(publicPageLoaders.GrowLightCalculator);
 const Contact = lazy(() => import("@/pages/Contact"));
 const LazyGrowTech = lazy(publicPageLoaders.GrowTech);
 const GrowTechCheckout = lazy(() => import("@/pages/GrowTechCheckout"));
@@ -48,6 +49,7 @@ const App = ({ initialPage }: { initialPage?: InitialPage }) => {
   const GrowGuideArticle = initialPage?.key === 'GrowGuideArticle' ? initialPage.component : LazyGrowGuideArticle;
   const GrowTech = initialPage?.key === 'GrowTech' ? initialPage.component : LazyGrowTech;
   const VPDCalculator = initialPage?.key === 'VPDCalculator' ? initialPage.component : LazyVPDCalculator;
+  const GrowLightCalculator = initialPage?.key === 'GrowLightCalculator' ? initialPage.component : LazyGrowLightCalculator;
   const About = initialPage?.key === 'About' ? initialPage.component : LazyAbout;
   const Playbook = initialPage?.key === 'Playbook' ? initialPage.component : LazyPlaybook;
   const LensKit = initialPage?.key === 'LensKit' ? initialPage.component : LazyLensKit;
@@ -98,6 +100,14 @@ const App = ({ initialPage }: { initialPage?: InitialPage }) => {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <VPDCalculator />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/grow-light-calculator"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <GrowLightCalculator />
               </Suspense>
             }
           />

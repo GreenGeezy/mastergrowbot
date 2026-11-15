@@ -2145,7 +2145,7 @@ Timing consistency matters just as much as duration. Plants develop circadian rh
 
 What works best in my experience is starting with 18/6 light cycles immediately after seeds break soil. This schedule provides enough energy for rapid early development while giving plants essential dark periods for root growth and cellular repair. The 6-hour dark period allows seedlings to process nutrients and establish healthy metabolic patterns that carry through their entire lifecycle.
 
-Light intensity for seedlings should start incredibly low, around 100-200 PPFD (photosynthetic photon flux density), roughly equivalent to holding a 100-watt LED 36 inches above plants. I've killed more seedlings with too much light than too little. Young plants simply cannot process high-intensity lighting and will develop light burn, stunted growth, or die completely.
+Light intensity for seedlings should start incredibly low, around 100-200 PPFD (photosynthetic photon flux density), roughly equivalent to holding a 100-watt LED 36 inches above plants. I've killed more seedlings with too much light than too little. The free [grow light calculator](/grow-light-calculator) shows whether your daily light fits the stage you are in. Young plants simply cannot process high-intensity lighting and will develop light burn, stunted growth, or die completely.
 
 Spectrum matters enormously during this stage. Blue-heavy light (400-500nm) promotes compact, sturdy growth and prevents stretching. I use T5 fluorescents or LED panels with 6500K color temperature for the first two weeks. Avoid red-heavy flowering lights during seedling stage, as they encourage stretching and weak stem development. Once seedlings develop 3-4 sets of true leaves and reach 4-6 inches tall, you can gradually transition to standard vegetative lighting schedules and intensities.`,
     },
@@ -3540,7 +3540,7 @@ DLI (Daily Light Integral) calculates total photons delivered over 24 hours. Can
 
 In practice, I measure PPFD at multiple canopy points using a quantum meter. Seedlings handle 200-400 PPFD, vegetative plants thrive at 400-600 PPFD, and flowering plants can utilize 600-1000+ PPFD with proper environmental controls. The key insight experienced growers understand is that PPFD requirements scale with your environmental conditions - higher CO2 levels, optimal temperatures, and proper nutrition allow plants to utilize higher light intensities effectively.
 
-Many growers make the mistake of chasing maximum PPFD numbers without considering their environmental limitations. Your [VPD calculator](/vpd-calculator/) becomes essential for optimizing the relationship between light intensity, temperature, and humidity.`,
+Many growers make the mistake of chasing maximum PPFD numbers without considering their environmental limitations. Your [VPD calculator](/vpd-calculator/) becomes essential for optimizing the relationship between light intensity, temperature, and humidity. To turn your own PPFD and light hours into DLI, use the free [grow light calculator](/grow-light-calculator).`,
     },
     {
       heading: "How Much Light Does Cannabis Actually Need at Each Stage",

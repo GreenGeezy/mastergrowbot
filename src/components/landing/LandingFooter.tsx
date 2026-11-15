@@ -18,6 +18,9 @@ export default function LandingFooter() {
           <Link to="/vpd-calculator" className="hover:text-white/75 transition-colors">
             VPD Calculator
           </Link>
+          <Link to="/grow-light-calculator" className="hover:text-white/75 transition-colors">
+            Grow Light Calculator
+          </Link>
           <a
             href={AMAZON_BOOK_URL}
             target="_blank"

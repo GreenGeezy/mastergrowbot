@@ -31,6 +31,11 @@ const LEAF_OFFSETS_F: Record<'led' | 'hps', number> = {
   hps:  5,
 };
 
+const GAUGE_MAX = 2;
+const CHART_TEMPS_F = [68, 70, 72, 74, 76, 78, 80, 82, 84, 86];
+const CHART_RH = [80, 75, 70, 65, 60, 55, 50, 45, 40];
+const nearest = (list: number[], value: number) => list.reduce((a, b) => (Math.abs(b - value) < Math.abs(a - value) ? b : a));
+
 const APP_STORE_URL = appStoreUrl('vpd-calculator');
 const PLAY_STORE_URL = playStoreUrl('vpd-calculator');
 
@@ -126,7 +131,7 @@ const breadcrumbSchema = {
 const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
-  name: 'Free VPD Calculator: Leaf VPD and Stage Chart',
+  name: 'VPD Calculator: Free Leaf VPD Chart for Cannabis',
   description: 'Calculate air VPD and leaf VPD from temperature, humidity, growth stage, and lighting type.',
   url: 'https://www.mastergrowbot.com/vpd-calculator',
   applicationCategory: 'UtilityApplication',
@@ -237,8 +242,8 @@ export default function VPDCalculator() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <SEOHead
-        title="VPD Calculator and VPD Chart by Growth Stage | MasterGrowbot AI"
-        description="Free VPD calculator for cannabis. See leaf VPD and a VPD chart by growth stage, then check your temperature and humidity against the target range."
+        title="VPD Calculator: Free Leaf VPD Chart | MasterGrowbot AI"
+        description="Use a free VPD calculator for cannabis. Enter temperature, humidity and lighting type to see air VPD, leaf VPD and your target range, then track it in the app."
         canonicalUrl="https://www.mastergrowbot.com/vpd-calculator"
       />
       <Helmet>
@@ -259,9 +264,12 @@ export default function VPDCalculator() {
         </nav>
 
         {/* ── HERO ──────────────────────────────────────────────────────── */}
-        <header className="mb-10 space-y-4">
+        <header className="mb-8 space-y-4">
+          <p className="inline-flex items-center gap-2 rounded-full border border-landing-green/30 bg-landing-green/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-landing-green font-sans">
+            Free tool. No signup. Works on your phone.
+          </p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white font-sans">
-            VPD Calculator: Leaf VPD and Chart by Growth Stage
+            VPD Calculator: Free Leaf VPD and Chart for Cannabis
           </h1>
           <p className="text-base sm:text-lg text-white/60 font-sans max-w-2xl leading-relaxed">
             Use this free VPD calculator to convert temperature, humidity, lighting type, and growth stage into air VPD, leaf VPD, target range, and a clear status.
@@ -293,7 +301,9 @@ export default function VPDCalculator() {
             <Link to="/grow-guides/cannabis-vpd-guide" className="text-landing-green hover:underline">VPD guide</Link>
             <Link to="/grow-guides/best-vpd-calculator-apps-cannabis" className="text-landing-green hover:underline">VPD calculator apps</Link>
             <Link to="/grow-guides/cannabis-vpd-chart-by-growth-stage" className="text-landing-green hover:underline">VPD chart by growth stage</Link>
-            <Link to="/grow-tech#soil-meter" className="text-landing-green hover:underline">Soil and humidity meter</Link>
+            <Link to="/grow-guides/vpd-for-clones-and-seedlings" className="text-landing-green hover:underline">VPD for clones and seedlings</Link>
+            <Link to="/grow-light-calculator" className="text-landing-green hover:underline">Grow light calculator</Link>
+            <a href="#vpd-chart" className="text-landing-green hover:underline">Jump to the VPD chart</a>
           </div>
         </section>
 
@@ -494,6 +504,25 @@ export default function VPDCalculator() {
                 Target for {stageConfig.label}: {stageConfig.min} to {stageConfig.max} kPa
               </p>
 
+              {/* Range gauge */}
+              <div aria-hidden="true" className="px-1">
+                <div className="relative h-2.5 rounded-full bg-white/[0.08]">
+                  <div
+                    className="absolute inset-y-0 rounded-full bg-landing-green/45"
+                    style={{ left: `${(stageConfig.min / GAUGE_MAX) * 100}%`, width: `${((stageConfig.max - stageConfig.min) / GAUGE_MAX) * 100}%` }}
+                  />
+                  <div
+                    className="absolute top-1/2 h-5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.7)] transition-[left] duration-200"
+                    style={{ left: `${(Math.min(leafVPD, GAUGE_MAX) / GAUGE_MAX) * 100}%` }}
+                  />
+                </div>
+                <div className="mt-1.5 flex justify-between text-[11px] text-white/30 font-sans">
+                  <span>0 (humid)</span>
+                  <span>1.0</span>
+                  <span>2.0 kPa (dry)</span>
+                </div>
+              </div>
+
               {/* Verdict */}
               <p className="text-sm text-white/70 font-sans text-center leading-relaxed border-t border-white/[0.07] pt-4">
                 {verdict}
@@ -535,28 +564,89 @@ export default function VPDCalculator() {
               </button>
             </div>
           </div>
+
+          {/* Result-aware app CTA */}
+          <div className="mt-7 rounded-2xl border border-landing-green/25 bg-black/40 p-5 sm:p-6 text-center">
+            <h2 className="text-lg sm:text-xl font-bold text-white font-sans">
+              {withinRange
+                ? 'Your VPD is on target. Keep it there all cycle.'
+                : 'VPD off target? Check how your plant is responding.'}
+            </h2>
+            <p className="mx-auto mt-2 max-w-2xl text-sm sm:text-base text-white/65 font-sans leading-relaxed">
+              {withinRange
+                ? 'Log this reading next to your plant photos in MasterGrowbot AI, so you can repeat the room that gave you your best run.'
+                : 'Snap a leaf photo in MasterGrowbot AI to see whether the stress is already showing, then log the fix in your grow journal.'}
+            </p>
+            <AppPlatformButtons campaign="vpd-calculator" location="vpd-calculator-results" className="pt-4" />
+            <p className="mt-3 text-xs text-white/40 font-sans">Free download. Eligible new Pro subscribers can try 3 days free.</p>
+          </div>
         </div>
 
-        <section className="mb-14 rounded-2xl border border-landing-green/20 bg-landing-green/[0.04] p-5 sm:p-6 text-center">
-          <h2 className="text-xl sm:text-2xl font-bold text-white font-sans">
-            Save VPD readings with your plant photos
+        {/* ── VPD CHART (heatmap) ───────────────────────────────────────── */}
+        <section id="vpd-chart" className="mb-16 scroll-mt-24">
+          <h2 className="text-xl sm:text-2xl font-bold text-white font-sans mb-2">
+            Leaf VPD Chart: Temperature vs Humidity
           </h2>
-          <p className="mx-auto mt-2 max-w-2xl text-sm sm:text-base text-white/60 font-sans leading-relaxed">
-            MasterGrowbot AI keeps VPD readings, grow notes, tasks, and AI plant diagnosis in one journal so each calculator check can become a useful record.
+          <p className="text-sm sm:text-base text-white/60 font-sans leading-relaxed mb-4 max-w-2xl">
+            This VPD chart updates with the growth stage and lighting type you picked above. Green cells are inside the {stageNameLower} target of {stageConfig.min} to {stageConfig.max} kPa. The outlined cell is closest to your room right now.
           </p>
-          <AppPlatformButtons campaign="vpd-calculator" location="vpd-calculator-results" className="pt-5" />
-          <aside className="mt-6 rounded-xl border border-white/15 p-5 text-sm text-white/75" aria-label="Equipment observation guides">
-            <h3 className="font-bold text-white">Keep the readings behind your VPD result.</h3>
-            <p className="mt-2">Use your own thermometer and humidity meter. The Equipment Quickstart includes a recording routine, worksheets and CSV log.</p>
-            <Link to="/grow-tech/checkout/quickstart-guide?utm_source=vpd-calculator&utm_medium=website&utm_campaign=affordable-growtech" className="mt-3 inline-block font-semibold text-landing-green underline">Equipment Quickstart · $9 sale price</Link>
-            <p className="mt-2 text-xs">Digital download · Hardware separate · Calculator remains free</p>
-          </aside>
+          <div className="mb-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/55 font-sans">
+            <span className="inline-flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm bg-sky-500/50" /> Too humid</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm bg-landing-green/70" /> On target</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm bg-yellow-400/60" /> Close</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm bg-red-500/55" /> Too dry</span>
+          </div>
+          <div className="overflow-x-auto rounded-2xl border border-white/[0.07]">
+            <table className="w-full min-w-[560px] border-separate border-spacing-[3px] p-2 text-center text-xs font-sans">
+              <caption className="sr-only">
+                Cannabis leaf VPD chart in kPa by air temperature and relative humidity for the {stageNameLower} stage
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col" className="px-2 py-2 text-left font-semibold text-white/45">RH / Temp</th>
+                  {CHART_TEMPS_F.map((t) => (
+                    <th key={t} scope="col" className="px-1 py-2 font-semibold text-white/60">
+                      {unit === 'F' ? `${t}F` : `${Math.round(fToC(t))}C`}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {CHART_RH.map((h) => (
+                  <tr key={h}>
+                    <th scope="row" className="px-2 py-2 text-left font-semibold text-white/60">{h}%</th>
+                    {CHART_TEMPS_F.map((t) => {
+                      const v = calcVPD(t, h, leafOffsetF).leafVPD;
+                      const inRange = v >= stageConfig.min && v <= stageConfig.max;
+                      const close = !inRange && v >= stageConfig.min - 0.2 && v <= stageConfig.max + 0.2;
+                      const tone = inRange
+                        ? 'bg-landing-green/70 text-black font-semibold'
+                        : close
+                        ? 'bg-yellow-400/60 text-black'
+                        : v < stageConfig.min
+                        ? 'bg-sky-500/30 text-white/80'
+                        : 'bg-red-500/40 text-white/85';
+                      const isYou = t === nearest(CHART_TEMPS_F, airTempF) && h === nearest(CHART_RH, rh);
+                      return (
+                        <td key={t} className={`rounded-md px-1 py-2 tabular-nums ${tone} ${isYou ? 'outline outline-2 outline-offset-1 outline-white' : ''}`}>
+                          {v.toFixed(2)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 text-xs text-white/40 font-sans">
+            Values are leaf VPD in kPa with a {leafOffsetF > 0 ? '+' : ''}{leafOffsetF}F leaf offset. Change the stage or lighting type in the calculator to redraw the chart.
+          </p>
         </section>
 
         {/* ── VPD REFERENCE TABLE ───────────────────────────────────────── */}
         <section className="mb-16">
           <h2 className="text-xl sm:text-2xl font-bold text-white font-sans mb-5">
-            VPD Reference Chart for Cannabis
+            VPD Reference Chart for Cannabis by Growth Stage
           </h2>
           <div className="overflow-x-auto rounded-2xl border border-white/[0.07]">
             <table className="w-full text-sm font-sans">

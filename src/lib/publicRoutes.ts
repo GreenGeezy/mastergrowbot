@@ -7,6 +7,7 @@ export const publicPageLoaders = {
   GrowTech: () => import('@/pages/GrowTech'),
   LensKit: () => import('@/pages/LensKit'),
   VPDCalculator: () => import('@/pages/VPDCalculator'),
+  GrowLightCalculator: () => import('@/pages/GrowLightCalculator'),
   About: () => import('@/pages/About'),
   Playbook: () => import('@/pages/Playbook'),
 };
@@ -15,6 +16,7 @@ export type InitialPage = { key: PublicPageKey; component: ComponentType };
 export const staticPublicRoutes: Record<string, PublicPageKey> = {
     '/': 'Index', '/grow-guides': 'GrowGuidesHub', '/grow-tech': 'GrowTech',
     '/grow-tech/apexel-macro-lens-kit': 'LensKit', '/vpd-calculator': 'VPDCalculator',
+    '/grow-light-calculator': 'GrowLightCalculator',
     '/about': 'About', '/playbooks': 'Playbook',
 };
 export function publicPageKey(path: string): PublicPageKey | undefined {
