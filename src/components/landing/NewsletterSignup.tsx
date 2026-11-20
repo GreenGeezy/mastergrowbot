@@ -3,7 +3,7 @@ import { ArrowRight, Mail, Sparkles } from 'lucide-react';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function NewsletterSignup() {
+export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?: 'h1' | 'h2' }) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -60,12 +60,11 @@ export default function NewsletterSignup() {
           Monthly briefing
         </div>
         <div>
-          <h3 className="text-2xl font-bold tracking-tight text-white font-sans sm:text-3xl">
+          <Heading className="text-2xl font-bold tracking-tight text-white font-sans sm:text-3xl">
             Cannabis AI News &amp; Tools
-          </h3>
+          </Heading>
           <p className="mt-2 text-sm leading-relaxed text-white/55 sm:text-base">
-            A free monthly briefing on how AI is changing the cannabis industry. Get the news worth following,
-            tools worth a closer look, and a candid take on what it means for people working in cannabis.
+            What can AI already do in cannabis? Get the research, tools, and stories worth your time in one short email each month.
           </p>
         </div>
       </div>
@@ -107,7 +106,7 @@ export default function NewsletterSignup() {
 
         {success && (
           <p className="mt-3 rounded-lg border border-landing-green/30 bg-landing-green/10 px-3 py-2 text-sm font-medium text-landing-green">
-            Thanks for signing up. Read the latest issue below.
+            Thanks for signing up. Look for the next briefing in your inbox.
           </p>
         )}
 
@@ -115,7 +114,6 @@ export default function NewsletterSignup() {
           Free monthly email. No spam. Unsubscribe anytime.
         </p>
       </form>
-      <a href="/newsletter#latest" className="mt-4 block text-center text-sm text-white underline">Read the latest issue</a>
     </div>
   );
 }

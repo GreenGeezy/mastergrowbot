@@ -1,7 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import ReactMarkdown from 'react-markdown';
 import NewsletterSignup from '@/components/landing/NewsletterSignup';
-import issue from '@/data/newsletter/ai-budtender.md?raw';
 
 export default function Newsletter() {
   return (
@@ -13,12 +11,8 @@ export default function Newsletter() {
       </Helmet>
       <div className="mx-auto max-w-3xl">
         <a href="/" className="text-sm underline">MasterGrowbot</a>
-        <NewsletterSignup />
-        <article id="latest" className="prose prose-invert prose-stone mx-auto mt-16 max-w-2xl pb-10 prose-headings:font-serif prose-a:text-emerald-300">
-          <p>November 2026</p>
-          <ReactMarkdown>{issue}</ReactMarkdown>
-        </article>
-        <a className="underline" href="https://www.linkedin.com/company/cannabis-ai-news-and-tools/">Follow Cannabis AI News &amp; Tools on LinkedIn</a>
+        <NewsletterSignup heading="h1" />
+        <a className="mt-8 block text-center underline" href="https://www.linkedin.com/company/cannabis-ai-news-and-tools/">Follow Cannabis AI News &amp; Tools on LinkedIn</a>
       </div>
     </main>
   );

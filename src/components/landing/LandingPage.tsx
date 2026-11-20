@@ -1,5 +1,6 @@
 import RealReports from '@/components/landing/RealReports';
 import IPMPlaybookSection from './IPMPlaybookSection';
+import NewsletterSignup from './NewsletterSignup';
 import { useEffect } from "react";
 import HeroSection from "./HeroSection";
 import AppTestimonials from "./AppTestimonials";
@@ -57,6 +58,9 @@ export default function LandingPage() {
               <Link to="/grow-tech?utm_source=homepage&utm_medium=internal&utm_campaign=november-ag1000&utm_content=equipment-card" onClick={() => trackEvent('growtech_discovery_click', { cta_location: 'homepage_equipment', product_id: 'growtech_ag1000_light' })} className="mg-light-teaser-cta">Shop the AG1000 <ArrowRight size={18} aria-hidden="true" /></Link>
             </div>
           </div>
+        </section>
+        <section className="px-4 py-8" aria-label="Free monthly newsletter">
+          <NewsletterSignup />
         </section>
         <IPMPlaybookSection />
       </main>
