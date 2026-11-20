@@ -21,19 +21,20 @@ export default function NewsletterSignup() {
     setError('');
     setIsSubmitting(true);
 
+    const attribution = new URLSearchParams(window.location.search);
     try {
       const response = await fetch('/api/newsletter/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: normalizedEmail,
-          sourcePage: '/',
-          sourceForm: 'homepage_newsletter',
-          interestProduct: 'Cannabis AI Signal',
-          utm_source: 'website',
-          utm_medium: 'organic',
-          utm_campaign: 'homepage_monthly_newsletter_signup',
-          utm_content: 'cannabis_ai_signal',
+          sourcePage: window.location.pathname,
+          sourceForm: window.location.pathname === '/newsletter' ? 'newsletter_page' : 'homepage_newsletter',
+          interestProduct: 'Cannabis AI News & Tools',
+          utm_source: attribution.get('utm_source') || 'website',
+          utm_medium: attribution.get('utm_medium') || 'organic',
+          utm_campaign: attribution.get('utm_campaign') || 'monthly_briefing',
+          utm_content: attribution.get('utm_content') || '',
         }),
       });
 
@@ -56,22 +57,22 @@ export default function NewsletterSignup() {
       <div className="mb-4 flex flex-col items-center gap-3 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-landing-green/25 bg-black/35 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-landing-green">
           <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-          Monthly signal brief
+          Monthly briefing
         </div>
         <div>
           <h3 className="text-2xl font-bold tracking-tight text-white font-sans sm:text-3xl">
-            Cannabis AI Signal
+            Cannabis AI News &amp; Tools
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-white/55 sm:text-base">
-            Where the cutting edge of AI and cannabis collide. Monthly news, opinions, AI grow tactics,
-            extraction ideas, and cannabis science signals sent the first Friday of every month.
+            A free monthly briefing on how AI is changing the cannabis industry. Get the news worth following,
+            tools worth a closer look, and a candid take on what it means for people working in cannabis.
           </p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-2xl">
         <label htmlFor="newsletter-email" className="sr-only">
-          Join Cannabis AI Signal
+          Email address for Cannabis AI News &amp; Tools
         </label>
         <div className="flex flex-col gap-3 sm:flex-row">
           <div className="relative flex-1">
@@ -93,7 +94,7 @@ export default function NewsletterSignup() {
             disabled={isSubmitting}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-landing-green px-5 py-3 text-sm font-semibold text-black transition hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isSubmitting ? 'Joining...' : 'Join Free'}
+            {isSubmitting ? 'Joining...' : 'Get the free briefing'}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
@@ -106,7 +107,7 @@ export default function NewsletterSignup() {
 
         {success && (
           <p className="mt-3 rounded-lg border border-landing-green/30 bg-landing-green/10 px-3 py-2 text-sm font-medium text-landing-green">
-            You are on the list. Watch for the next first-Friday edition.
+            Thanks for signing up. Read the latest issue below.
           </p>
         )}
 
@@ -114,6 +115,7 @@ export default function NewsletterSignup() {
           Free monthly email. No spam. Unsubscribe anytime.
         </p>
       </form>
+      <a href="/newsletter#latest" className="mt-4 block text-center text-sm text-white underline">Read the latest issue</a>
     </div>
   );
 }

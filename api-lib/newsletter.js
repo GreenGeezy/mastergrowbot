@@ -2,12 +2,12 @@ export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const RESEND_API_BASE = "https://api.resend.com";
 const DEFAULT_NOTIFY_EMAILS = ["mastergrowbotai@gmail.com", "agcomsol@gmail.com"];
-const DEFAULT_FROM_EMAIL = "Cannabis AI Signal <newsletter@mastergrowbot.com>";
+const DEFAULT_FROM_EMAIL = "Cannabis AI News & Tools <newsletter@mastergrowbot.com>";
 const DEFAULT_FORMSPREE_FORM_ID = "mrerazdy";
 const MEXICO_CITY_TIME_ZONE = "America/Mexico_City";
 const NEWSLETTER_START_DATE = process.env.NEWSLETTER_START_DATE || "2026-07-03";
 
-export const newsletterTitle = "Cannabis AI Signal";
+export const newsletterTitle = "Cannabis AI News & Tools";
 
 export const productLinks = {
   ios: "https://apps.apple.com/us/app/mastergrowbot-ai-grow-cannabis/id6752221060",
@@ -77,7 +77,6 @@ export async function resendRequest(path, options = {}) {
 export function buildContactPayload({ email, name, sourcePage, sourceForm, interestProduct, utm }) {
   return {
     email,
-    unsubscribed: false,
     properties: {
       name: sanitizeText(name),
       sourcePage: sanitizeText(sourcePage, "/"),
@@ -105,13 +104,8 @@ export async function createNewsletterContact(payload) {
     }
 
     const contactKey = encodeURIComponent(payload.email);
-    const updated = await resendRequest(`/contacts/${contactKey}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        unsubscribed: false,
-        properties: payload.properties,
-      }),
-    });
+    const existing = await resendRequest(`/contacts/${contactKey}`, { method: "GET" });
+    if (existing.unsubscribed) return existing;
 
     await resendRequest(
       `/contacts/${contactKey}/segments/${encodeURIComponent(process.env.RESEND_NEWSLETTER_SEGMENT_ID)}`,
@@ -119,9 +113,9 @@ export async function createNewsletterContact(payload) {
         method: "POST",
         body: JSON.stringify({}),
       },
-    ).catch(() => null);
+    );
 
-    return updated;
+    return existing;
   }
 }
 

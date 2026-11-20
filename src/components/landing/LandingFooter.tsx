@@ -11,6 +11,7 @@ export default function LandingFooter() {
             Shop GrowTech
           </Link>
           <Link to="/playbooks" className="hover:text-landing-green transition-colors">Playbooks</Link>
+          <Link to="/newsletter" className="hover:text-landing-green transition-colors">Cannabis AI News &amp; Tools</Link>
           <Link to="/about" className="hover:text-white/75 transition-colors">About</Link>
           <Link to="/grow-guides" className="hover:text-white/75 transition-colors">
             Grow Guides
