@@ -58,7 +58,8 @@ export default function GrowGuideArticle() {
   ]);
   // Journal/software pages mention photos too; that alone is not hardware intent.
   const isLightingIntent = /100w-led|grow-light|ag1000/.test(guide.slug);
-  const isLensIntent = hasAnyKeyword(intentText, ['camera', 'lens', 'trichome']);
+  // The lens kit page shows "Ordering opens soon", so these readers get the app CTA until it can be bought.
+  const isLensIntent = false && hasAnyKeyword(intentText, ['camera', 'lens', 'trichome']);
   const appCtaIntro = isIpmIntent
     ? 'Scan Your Plant with MasterGrowbot AI'
     : 'Skip the guesswork';
@@ -89,6 +90,16 @@ export default function GrowGuideArticle() {
     mainEntityOfPage: canonicalUrl,
   };
 
+  const faqSchema = guide.faqs?.length ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: guide.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  } : null;
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -117,6 +128,7 @@ export default function GrowGuideArticle() {
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+        {faqSchema && <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>}
       </Helmet>
 
       <LandingNav />
@@ -238,6 +250,25 @@ export default function GrowGuideArticle() {
               </motion.section>
             ))}
 
+            {/* FAQ: visible answers for readers and answer engines */}
+            {guide.faqs?.length > 0 && (
+              <section id="faq" className="mb-12 scroll-mt-6" aria-labelledby="guide-faq-heading">
+                <h2 id="guide-faq-heading" className="text-xl sm:text-2xl font-bold text-white font-sans mb-5 leading-snug">
+                  Frequently Asked Questions
+                </h2>
+                <div className="space-y-3">
+                  {guide.faqs.map((faq) => (
+                    <details key={faq.question} className="group rounded-xl border border-white/[0.08] bg-white/[0.03] p-5 open:bg-white/[0.05]">
+                      <summary className="cursor-pointer list-none text-base font-semibold text-white font-sans flex items-start justify-between gap-4">
+                        <h3 className="text-base font-semibold text-white font-sans">{faq.question}</h3>
+                        <span aria-hidden="true" className="mt-0.5 text-landing-green transition group-open:rotate-45">+</span>
+                      </summary>
+                      <p className="mt-3 text-sm sm:text-base text-white/65 leading-relaxed font-sans">{faq.answer}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Closing CTA */}
             <div className="mb-12 rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent p-8 text-center space-y-4">
