@@ -9,7 +9,7 @@ function signature(payload) {
 }
 
 export async function requestConfirmation(email) {
-  const payload = Buffer.from(JSON.stringify([email, Math.floor(Date.now() / day)])).toString("base64url");
+  const payload = Buffer.from(JSON.stringify([email, Math.floor(Date.now() / day), "weekly"])).toString("base64url");
   const mac = signature(payload);
   const url = "https://www.mastergrowbot.com/api/newsletter/confirm#" + payload + "." + mac;
   return resendRequest("/emails", {
@@ -18,8 +18,8 @@ export async function requestConfirmation(email) {
     body: JSON.stringify({
       from: sender, to: [email], reply_to: "newsletter@mastergrowbot.com",
       subject: "Confirm your subscription to Cannabis AI News & Tools",
-      text: "You requested one monthly email about cannabis and AI. Confirm your email here: " + url + "\nIf you did not request this, you can ignore this email.",
-      html: '<p>You requested one monthly email about cannabis and AI.</p><p><a href="' + url + '">Confirm my email address</a></p><p>If you did not request this, you can ignore this email.</p>',
+      text: "You requested one weekly email about cannabis and AI. Confirm your email here: " + url + "\nIf you did not request this, you can ignore this email.",
+      html: '<p>You requested one weekly email about cannabis and AI.</p><p><a href="' + url + '">Confirm my email address</a></p><p>If you did not request this, you can ignore this email.</p>',
     }),
   });
 }

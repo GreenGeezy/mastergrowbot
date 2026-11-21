@@ -19,6 +19,7 @@ export const freeTools: (NavLink & { blurb: string })[] = [
 
 const navLinksAfter: NavLink[] = [
   { label: 'Guides', to: '/grow-guides' },
+  { label: 'Newsletter', to: '/newsletter?utm_source=site_nav&utm_medium=website&utm_campaign=weekly_workbench' },
 ];
 
 const desktopLinkClass = 'group inline-flex items-center gap-1.5 text-sm font-medium text-white/62 transition hover:text-white';
