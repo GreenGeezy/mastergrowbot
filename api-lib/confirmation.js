@@ -1,7 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { emailPattern, resendRequest } from "./newsletter.js";
 
-export const segment = process.env.RESEND_NEWSLETTER_SEGMENT_ID || "d2d5af19-7ee1-4d1f-b75c-890b3a3cd602";
 export const sender = "Cannabis AI News & Tools <editor@news.mastergrowbot.com>";
 const day = 86400000;
 function signature(payload) {

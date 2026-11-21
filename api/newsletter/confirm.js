@@ -1,4 +1,5 @@
-import { confirmedEmail, segment } from "../../api-lib/confirmation.js";
+import { createHash } from "node:crypto";
+import { confirmedEmail, sender } from "../../api-lib/confirmation.js";
 import { resendRequest } from "../../api-lib/newsletter.js";
 
 export default async function handler(req, res) {
@@ -12,19 +13,17 @@ export default async function handler(req, res) {
   const email = confirmedEmail(req.body?.token);
   if (!email) return res.status(400).send("This confirmation link is invalid or expired. Request another at mastergrowbot.com/newsletter.");
   try {
-    const path = "/contacts/" + encodeURIComponent(email);
-    let contact = await resendRequest(path).catch(error => {
-      if (error.status === 404) return null;
-      throw error;
+    const proof = createHash("sha256").update(req.body.token).digest("hex");
+    await resendRequest("/emails", {
+      method: "POST",
+      headers: { "Idempotency-Key": "consent-" + proof },
+      body: JSON.stringify({
+        from: sender, to: ["agcomsol@gmail.com"],
+        subject: "Confirmed opt-in | Cannabis AI News & Tools",
+        text: "Explicit monthly newsletter subscription confirmed by inbox link.\nEmail: " + email +
+          "\nConsent receipt: " + proof + "\nReconcile against unsubscribes, bounces, complaints and owner tests before adding to the broadcast segment.",
+      }),
     });
-    if (!contact) {
-      await resendRequest("/contacts", { method: "POST", body: JSON.stringify({ email }) }).catch(error => {
-        if (![409,422].includes(error.status)) throw error;
-      });
-      contact = await resendRequest(path);
-    }
-    if (contact.unsubscribed) return res.status(200).send("This email address is opted out. Contact newsletter@mastergrowbot.com to change your preference.");
-    await resendRequest("/contacts/" + encodeURIComponent(contact.id) + "/segments/" + segment, { method: "POST" });
     return res.status(200).send("Your subscription is confirmed. Look for Cannabis AI News & Tools in your inbox.");
   } catch {
     return res.status(503).send("Confirmation could not finish. Open your email link again to retry.");
