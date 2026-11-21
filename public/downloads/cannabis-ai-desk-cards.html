@@ -1,10 +1,40 @@
 <!doctype html>
-<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Three AI desk cards for cannabis operators</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The cheaper quote? | Cannabis AI News &amp; Tools</title>
 <style>
-*{box-sizing:border-box}body{max-width:48rem;margin:auto;padding:2rem 1.2rem;color:#18352a;background:#f7f5e9;font:17px/1.55 system-ui,sans-serif}header{border-bottom:3px solid #193c2d}small{font-weight:bold;letter-spacing:.08em}h1,h2{font-family:Georgia,serif;line-height:1.1}h1{font-size:clamp(2rem,6vw,3.8rem);margin:.5em 0}article{break-inside:avoid;border-bottom:1px solid #acb7a8;padding:.8rem 0}blockquote{margin:.8em 0;padding:.75em 1em;background:#fff;border-left:4px solid #126542}a{color:#075638}@media print{body{font-size:11pt;padding:0;background:white}h1{font-size:24pt}article{padding:0}blockquote{padding:.4em 1em}}
-</style><header><small>CANNABIS AI NEWS &amp; TOOLS</small><h1>Three AI desk cards for cannabis operators</h1><p>Use these with documents you can share. Copy the prompt and attach the source. Each card includes a quick way to check the answer.</p></header>
-<article><h2>Before the vendor demo</h2><p>Give your assistant a vendor’s one-page proposal.</p><blockquote>List the three claims that would most affect our buying decision. For each, quote the claim, identify the evidence supplied, and give me one live demo request that could reveal a failure. Mark missing evidence explicitly.</blockquote><p><b>Check:</b> Pick the most expensive promise. Can the rep reproduce it with an example you chose?</p></article>
-<article><h2>Before you choose the cheaper quote</h2><p>Attach two equipment or software quotes. Remove contact and payment details first.</p><blockquote>Compare the 12-month cost at the same volume. Separate setup, recurring fees, optional extras and cancellation costs. Cite the page beside each number. Leave missing prices blank and tell me which missing item could reverse the decision.</blockquote><p><b>Check:</b> Recalculate one total yourself. Ask the vendor to price the missing item in writing.</p></article>
-<article><h2>Before you forward an earnings headline</h2><p>Attach a public cannabis company’s quarterly filing.</p><blockquote>Find the R&amp;D expense row. Extract this quarter, last year’s quarter, year to date, and last year to date. Include currency, units and page. Calculate each year-over-year change and explain why the two comparisons might tell different stories.</blockquote><p><b>Check:</b> Read the column headings yourself. A three-month number can look convincing beside a nine-month number.</p></article>
-<footer><p>Shared by a colleague? <a href="https://www.mastergrowbot.com/newsletter?utm_source=desk_cards&amp;utm_medium=referral">Get the next issue by email.</a></p></footer></html>
+*{box-sizing:border-box}body{margin:0;background:#f8f5e9;color:#173a2c;font:17px/1.48 system-ui,sans-serif}main{max-width:840px;margin:auto;padding:22px clamp(15px,4vw,40px)}header{padding:10px 0;border-top:4px solid;font-weight:700}.hero{background:#123d2e;color:#fff7dd;display:grid;grid-template-columns:1.1fr 1fr}.hero div{padding:24px}.hero img{height:100%;width:100%;object-fit:cover}h1,h2{font-family:Georgia,serif;line-height:1.04;letter-spacing:-.04em}h1{font-size:clamp(42px,7vw,70px);margin:10px 0}h2{font-size:30px;margin:0}p{margin:.6em 0}section{margin:24px 0}small{color:#edcf86}table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:6px;border-bottom:1px solid #abb6a9}th:first-child{text-align:left}input{width:100%;max-width:88px;text-align:right;font:inherit;padding:4px;border:1px solid #8a9987;background:#fffef9}output{display:block;background:#dce8d8;padding:12px;font-weight:700}blockquote{background:white;border-left:4px solid #b39144;padding:15px;margin:12px 0}button,.button{background:#173b30;color:white;border:0;padding:10px 16px;font:600 15px system-ui;cursor:pointer;text-decoration:none;display:inline-block}a{color:#14553d}footer{border-top:1px solid;padding:16px 0}@media(max-width:540px){.hero{grid-template-columns:1fr}.hero img{height:140px}}
+@media print{@page{size:letter;margin:12mm}body{background:white;font-size:10.8pt}main{padding:0}.hero{grid-template-columns:1.2fr 1fr;print-color-adjust:exact}.hero div{padding:14px}.hero img{height:150px}.hero h1{font-size:33pt}h2{font-size:19pt}section{margin:14px 0}.screen,.button{display:none}input{border:none}output{print-color-adjust:exact}}
+</style></head><body><main><header>Cannabis AI News &amp; Tools</header>
+<div class="hero"><div><small>THE CANNABIS BUYER’S GUIDE</small><h1>The cheaper quote?</h1><p>A $99 monthly fee can cost more than a $149 plan. Compare two offers before you sign.</p></div><img src="/downloads/quote-review.jpg" alt="A magnifier over a cannabis leaf and two quote sheets"></div>
+<section><h2>Compare year one</h2><p>These fictional quotes are for dispensary inventory software. Enter your own prices in US dollars, using the same number of users and locations.</p>
+<table><thead><tr><th>Cost in USD</th><th>Quote A</th><th>Quote B</th></tr></thead><tbody>
+<tr><th scope="row">Setup</th><td><input type="number" step=".01" min="0" required aria-label="Quote A Setup" value="1200"></td><td><input type="number" step=".01" min="0" required aria-label="Quote B Setup" value="300"></td></tr>
+<tr><th scope="row">Monthly fee</th><td><input type="number" step=".01" min="0" required aria-label="Quote A Monthly fee" value="99"></td><td><input type="number" step=".01" min="0" required aria-label="Quote B Monthly fee" value="149"></td></tr>
+<tr><th scope="row">Other required year-one fees</th><td><input type="number" step=".01" min="0" required aria-label="Quote A Other required year-one fees" value="0"></td><td><input type="number" step=".01" min="0" required aria-label="Quote B Other required year-one fees" value="0"></td></tr>
+<tr><th scope="row">Year-one total</th><td id="a">$2,388</td><td id="b">$2,088</td></tr></tbody></table>
+<output aria-live="polite">Quote B saves $300 in year one.</output></section>
+<section><h2>Find the missing fee</h2><p>Remove private details, attach both quotes to your AI assistant and paste this prompt.</p>
+<blockquote>Compare both offers at the same usage. Quote the exact line for each required fee. Add setup, 12 months of service and other required charges. Flag every unpriced item. Which missing cost could change the winner? Give me one question to send the rep.</blockquote>
+<p class="screen"><button id="copy">Copy prompt</button> <span role="status"></span></p>
+<p><strong>Ask the rep</strong> “What would it cost to export all our records if we leave after one year?” In the example above, an extra $301 export fee on Quote B would reverse the decision if you left.</p></section>
+<footer><a class="button" href="/downloads/cannabis-ai-buyers-guide.pdf" download>Save the one-page PDF</a> &nbsp; <a href="https://www.mastergrowbot.com/newsletter?utm_source=buyer_guide&amp;utm_medium=referral">Get the next issue</a></footer></main>
+<script>
+const fields=Array.from(document.querySelectorAll('input'));
+const money=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:2});
+function update(){
+ const valid=fields.every(field=>field.validity.valid);
+ const cents=fields.map(field=>Math.round(field.valueAsNumber*100));
+ const totals=[0,1].map(i=>cents[i]+12*cents[i+2]+cents[i+4]);
+ document.querySelector('#a').textContent=valid?money.format(totals[0]/100):'—';
+ document.querySelector('#b').textContent=valid?money.format(totals[1]/100):'—';
+ const difference=totals[0]-totals[1];
+ document.querySelector('output').textContent=!valid?'Enter all six costs. Use 0 for a confirmed zero fee.':difference===0?'The quotes cost the same in year one.':'Quote '+(difference>0?'B':'A')+' saves '+money.format(Math.abs(difference)/100)+' in year one.';
+}
+fields.forEach(field=>field.addEventListener('input',update));
+document.querySelector('#copy').onclick=async()=>{
+ const prompt=document.querySelector('blockquote');
+ const status=document.querySelector('[role=status]');
+ try{await navigator.clipboard.writeText(prompt.textContent);status.textContent='Copied.'}
+ catch{const range=document.createRange();range.selectNodeContents(prompt);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);status.textContent='Prompt selected. Use Copy on your device.'}
+};
+</script></body></html>

@@ -55,7 +55,7 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
   return (
     <div className="mx-auto mt-9 max-w-3xl rounded-2xl border border-landing-green/20 bg-landing-green/[0.07] p-5 shadow-xl shadow-landing-green/10 backdrop-blur sm:p-6">
       <div className="mb-4 flex flex-col items-center gap-3 text-center">
-        <img src="/newsletter-logo.png" alt="" width="64" height="64" loading="lazy" className="rounded-xl" />
+        <img src="/downloads/quote-review.jpg" alt="A magnifier over two vendor quotes and a cannabis leaf" width="1536" height="1024" loading="lazy" className="h-36 w-full rounded-lg object-cover sm:h-52" />
         <div>
           <Heading className="text-2xl font-bold tracking-tight text-white font-sans sm:text-3xl">
             Cannabis AI News &amp; Tools
@@ -63,7 +63,7 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
           <p className="mt-2 text-sm leading-relaxed text-white/55 sm:text-base">
             What can AI already do in cannabis? Get the research, tools, and stories worth your time in one short email each month.
           </p>
-          <p className="mt-3 text-sm text-white/85">Join free and get three copyable prompts for checking a vendor claim, comparing quotes, and reading an earnings report.</p>
+          <p className="mt-3 text-sm text-white/85">Join free for The Cheaper Quote? Compare two vendor offers, see your first-year cost, and copy the AI prompt that finds missing fees.</p>
         </div>
       </div>
 
@@ -91,7 +91,7 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
             disabled={isSubmitting}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-landing-green px-5 py-3 text-sm font-semibold text-black transition hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isSubmitting ? 'Joining...' : 'Get the prompts and newsletter'}
+            {isSubmitting ? 'Joining...' : 'Get the free buyer’s guide'}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
@@ -104,8 +104,8 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
 
         {success && (
           <div role="status" className="mt-3 rounded-lg border border-landing-green/30 bg-landing-green/10 p-4 text-white">
-            <p>Your three prompts are ready. The newsletter arrives monthly.</p>
-            <a href="/downloads/cannabis-ai-desk-cards.html" download className="mt-2 inline-block font-semibold text-landing-green underline">Download the printable desk cards</a>
+            <p>Your guide is ready. Enter your own prices or save the one-page PDF.</p>
+            <a href="/downloads/cannabis-ai-desk-cards.html" className="mt-2 inline-block font-semibold text-landing-green underline">Open the buyer’s guide</a>
           </div>
         )}
 
