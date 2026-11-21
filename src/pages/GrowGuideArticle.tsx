@@ -407,6 +407,11 @@ export default function GrowGuideArticle() {
         )}
       </div>
 
+      <p className="mx-auto max-w-3xl px-5 pb-8 text-center text-sm">
+        <Link className="text-landing-green underline" to="/newsletter?utm_source=grow_guides&utm_medium=website&utm_campaign=buyer_guide">
+          Get Cannabis AI News & Tools and the free vendor quote calculator.
+        </Link>
+      </p>
       <LandingFooter />
     </div>
   );

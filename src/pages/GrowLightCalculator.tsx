@@ -576,6 +576,11 @@ export default function GrowLightCalculator() {
         </div>
       </div>
 
+      <p className="mx-auto max-w-3xl px-5 pb-8 text-center text-sm">
+        <Link className="text-landing-green underline" to="/newsletter?utm_source=light_calculator&utm_medium=website&utm_campaign=buyer_guide">
+          Comparing equipment quotes? Check the first-year cost with our free buyer’s guide.
+        </Link>
+      </p>
       <LandingFooter />
     </div>
   );
