@@ -7,6 +7,7 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [confirmationSent, setConfirmationSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -43,6 +44,8 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
         throw new Error(data?.error || 'Something went wrong. Please try again.');
       }
 
+      const receipt = await response.json();
+      setConfirmationSent(receipt.confirmationSent === true);
       setSuccess(true);
       setEmail('');
     } catch (submitError) {
@@ -63,7 +66,9 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
           <p className="mt-2 text-sm leading-relaxed text-white/55 sm:text-base">
             What can AI already do in cannabis? Get the research, tools, and stories worth your time in one short email each month.
           </p>
-          <p className="mt-3 text-sm text-white/85">Join free for The Cheaper Quote? Compare two vendor offers, see your first-year cost, and copy the AI prompt that finds missing fees.</p>
+          <p className="mt-4 text-lg font-semibold text-white">Did Cronos spend more on research?</p>
+          <p className="mt-2 text-sm text-white/85">Its quarterly spending fell $9,000. Over nine months, spending rose $897,000. An AI summary can give either answer unless you specify the period. <a className="underline" href="https://thecronosgroup.gcs-web.com/news-releases/news-release-details/cronos-group-reports-2026-third-quarter-results/">Check the figures.</a></p>
+          <p className="mt-3 text-sm text-white/85">Get the prompt, compare two Blue Dream lab reports, and turn a product sheet into a staff FAQ. Includes one short email a month.</p>
         </div>
       </div>
 
@@ -91,7 +96,7 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
             disabled={isSubmitting}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-landing-green px-5 py-3 text-sm font-semibold text-black transition hover:bg-landing-green/90 hover:shadow-lg hover:shadow-landing-green/20 focus:outline-none focus:ring-2 focus:ring-landing-green focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isSubmitting ? 'Joining...' : 'Get the free buyer’s guide'}
+            {isSubmitting ? 'Joining...' : 'Get the three worked examples'}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
@@ -104,8 +109,9 @@ export default function NewsletterSignup({ heading: Heading = 'h2' }: { heading?
 
         {success && (
           <div role="status" className="mt-3 rounded-lg border border-landing-green/30 bg-landing-green/10 p-4 text-white">
-            <p>Your guide is ready. Enter your own prices or save the one-page PDF.</p>
-            <a href="/downloads/cannabis-ai-desk-cards.html" className="mt-2 inline-block font-semibold text-landing-green underline">Open the buyer’s guide</a>
+            <p>Your examples are ready. Each includes the source, prompt, answer, and a check you can do yourself.</p>
+            <p>{confirmationSent ? 'Check your inbox and confirm your address to receive the monthly email.' : 'Your request was saved. Confirmation email delivery is pending.'}</p>
+            <a href="/downloads/cannabis-ai-at-work.html" className="mt-2 inline-block font-semibold text-landing-green underline">Open the three examples</a>
           </div>
         )}
 

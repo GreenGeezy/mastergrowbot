@@ -1,6 +1,7 @@
+import { requestConfirmation } from "../../api-lib/confirmation.js";
 import {
-  buildContactPayload,
-  createNewsletterContact,
+
+
   emailPattern,
   isFormspreeLeadBackupConfigured,
   isGoogleLeadWebhookConfigured,
@@ -9,7 +10,7 @@ import {
   normalizeEmail,
   sendLeadToFormspree,
   sendLeadToGoogleWebhook,
-  sendOwnerNotification,
+
 } from "../../api-lib/newsletter.js";
 
 export default async function handler(req, res) {
@@ -76,30 +77,25 @@ export default async function handler(req, res) {
       return null;
     });
 
-    let contact = null;
-
-    if (isNewsletterConfigured()) {
-      contact = await createNewsletterContact(buildContactPayload(lead));
-
-      await sendOwnerNotification({
-        email,
-        sourcePage,
-        sourceForm,
-        interestProduct,
-      }).catch((error) => {
-        console.error("Newsletter owner notification failed:", error.message);
-      });
+    if (!formspreeLead && !googleLead) {
+      throw new Error("Could not record signup consent.");
     }
 
-    if (!formspreeLead && !googleLead && !contact) {
-      throw new Error("Lead storage is not configured.");
+    const newsletterForm = ["newsletter", "newsletter_page", "homepage_newsletter"].includes(sourceForm);
+    let confirmationSent = false;
+    if (newsletterForm && process.env.RESEND_API_KEY) {
+      try {
+        await requestConfirmation(email);
+        confirmationSent = true;
+      } catch (error) {
+        console.error("Confirmation delivery failed", error.status, error.message);
+      }
     }
-
     return res.status(200).json({
       ok: true,
       formspreeSaved: Boolean(formspreeLead),
       googleLeadSaved: Boolean(googleLead),
-      contactId: contact?.id || contact?.data?.id || null,
+      confirmationSent,
     });
   } catch (error) {
     console.error("Newsletter subscribe failed:", {
