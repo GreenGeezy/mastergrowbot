@@ -140,6 +140,7 @@
     }
   ],
   "rewrites": [
+    {"source":"/grow-guides/grow-tent-kit-vs-buying-separately","destination":"/seo/grow-guides/grow-tent-kit-vs-buying-separately.html"},
     { "source": "/newsletter", "destination": "/seo/newsletter.html" },
     {"source":"/grow-guides/grow-tent-setup-cost-under-400","destination":"/seo/grow-guides/grow-tent-setup-cost-under-400.html"},
     {"source":"/grow-guides/2x2-vs-4x2-grow-tent","destination":"/seo/grow-guides/2x2-vs-4x2-grow-tent.html"},
