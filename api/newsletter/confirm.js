@@ -24,7 +24,12 @@ export default async function handler(req, res) {
           "\nConsent receipt: " + proof + "\nReconcile against unsubscribes, bounces, complaints and owner tests before adding to the broadcast segment.",
       }),
     });
-    return res.status(200).send("Your subscription is confirmed. Look for Cannabis AI News &amp; Tools in your inbox. <a href='/downloads/cannabis-ai-at-work.html?utm_source=confirmation&amp;utm_medium=email&amp;utm_campaign=weekly_workbench'>Open the free Workbench</a>.");
+    return res.status(200).setHeader("Content-Type", "text/html; charset=utf-8").send(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Subscription confirmed · Cannabis AI News &amp; Tools</title>
+<body style="background:#f6f3e8;color:#173b2e;font:17px/1.6 system-ui"><main style="max-width:36rem;margin:10vh auto;padding:20px;border-top:3px solid #486243">
+<p>Cannabis AI <i>News &amp; Tools</i></p><h1 style="font:normal 2.6rem/1.05 Georgia">Your subscription is confirmed.</h1>
+<p>Look for the weekly edition in your inbox. Until then, pick a tool for the next thing you want to check.</p>
+<p><a style="color:#214d33" href="/home-grow-journal?utm_source=confirmation&amp;utm_medium=email&amp;utm_campaign=home_fieldnotes">Compare two photos of your home grow ↗</a></p>
+<p><a style="color:#214d33" href="/downloads/cannabis-ai-at-work.html?utm_source=confirmation&amp;utm_medium=email&amp;utm_campaign=weekly_workbench">Open the business Workbench ↗</a></p></main></body></html>`);
   } catch {
     return res.status(503).send("Confirmation could not finish. Open your email link again to retry.");
   }
