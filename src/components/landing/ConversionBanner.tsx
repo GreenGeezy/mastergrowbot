@@ -1,6 +1,5 @@
 import ScrollReveal from './ScrollReveal';
 import StoreBadges from './StoreBadges';
-import NewsletterSignup from './NewsletterSignup';
 
 export default function ConversionBanner() {
   return (
@@ -14,7 +13,6 @@ export default function ConversionBanner() {
             Stop guessing. Start optimizing.
           </p>
           <StoreBadges className="justify-center pt-4" />
-          <NewsletterSignup />
         </div>
       </ScrollReveal>
     </section>

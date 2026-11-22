@@ -14,6 +14,7 @@ import { appStoreUrl as buildAppStoreUrl, playStoreUrl as buildPlayStoreUrl } fr
 import { growGuides, getGuideBySlug } from '@/data/growGuides';
 import { trackEvent } from '@/lib/analytics';
 import IPMPlaybookSection from '@/components/landing/IPMPlaybookSection';
+import GrowWeekInvite from '@/components/landing/GrowWeekInvite';
 
 function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -438,11 +439,7 @@ export default function GrowGuideArticle() {
         )}
       </div>
 
-      <p className="mx-auto max-w-3xl px-5 pb-8 text-center text-sm">
-        <a className="text-landing-green underline" href="/home-grow-journal?utm_source=grow_guides&utm_medium=website&utm_campaign=home_fieldnotes">
-          Track this in your own grow. Compare two plant photos and make a prompt for ChatGPT or Claude.
-        </a>
-      </p>
+      <GrowWeekInvite source="grow_guides" content={guide.slug} />
       <LandingFooter />
     </div>
   );

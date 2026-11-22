@@ -360,7 +360,6 @@ export default function SymptomChecker() {
                   <p className="mx-auto mt-2 max-w-2xl text-sm sm:text-base text-white/65 font-sans leading-relaxed">
                     Snap a photo of the leaf in MasterGrowbot AI. You get a plant health score, the most likely issue, what to do first and the steps to fix it.
                   </p>
-                  <a href="/home-grow-journal?utm_source=symptom_checker&amp;utm_medium=website&amp;utm_campaign=home_fieldnotes&amp;utm_content=result" className="mt-3 inline-block text-sm font-semibold text-landing-green underline">Is the symptom spreading? Compare two visits in your free home grow journal.</a>
                   <AppPlatformButtons campaign="cannabis-symptom-checker" location="symptom-checker-results" className="pt-4" />
                   <p className="mt-3 text-xs text-white/40 font-sans">Free download. Eligible new Pro subscribers can try 3 days free.</p>
                 </div>

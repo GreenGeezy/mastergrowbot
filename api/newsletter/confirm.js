@@ -28,8 +28,8 @@ export default async function handler(req, res) {
 <body style="background:#f6f3e8;color:#173b2e;font:17px/1.6 system-ui"><main style="max-width:36rem;margin:10vh auto;padding:20px;border-top:3px solid #486243">
 <p>Cannabis AI <i>News &amp; Tools</i></p><h1 style="font:normal 2.6rem/1.05 Georgia">Your subscription is confirmed.</h1>
 <p>Look for the weekly edition in your inbox. Until then, pick a tool for the next thing you want to check.</p>
-<p><a style="color:#214d33" href="/home-grow-journal?utm_source=confirmation&amp;utm_medium=email&amp;utm_campaign=home_fieldnotes">Compare two photos of your home grow ↗</a></p>
-<p><a style="color:#214d33" href="/downloads/cannabis-ai-at-work.html?utm_source=confirmation&amp;utm_medium=email&amp;utm_campaign=weekly_workbench">Open the business Workbench ↗</a></p></main></body></html>`);
+<p><a style="color:#214d33" href="/cannabis-grow-calendar?utm_source=confirmation&amp;utm_medium=email&amp;utm_campaign=grow_week">Growing at home? See what this week needs in Grow Week ↗</a></p>
+<p><a style="color:#214d33" href="/downloads/cannabis-ai-at-work.html?utm_source=confirmation&amp;utm_medium=email&amp;utm_campaign=weekly_workbench">Run a cannabis business? Open the Workbench ↗</a></p></main></body></html>`);
   } catch {
     return res.status(503).send("Confirmation could not finish. Open your email link again to retry.");
   }

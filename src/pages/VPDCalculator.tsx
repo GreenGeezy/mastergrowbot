@@ -564,11 +564,6 @@ export default function VPDCalculator() {
               </button>
             </div>
           </div>
-
-          <p className="mt-4 text-sm text-white/75">
-            Have a full day of readings?{' '}
-            <a className="font-semibold text-landing-green underline" href="/downloads/cannabis-ai-at-work.html?utm_source=vpd_calculator&amp;utm_medium=website&amp;utm_campaign=weekly_workbench&amp;utm_content=result#climate">Review your humidity log and export a shift note.</a>
-          </p>
           {/* Result-aware app CTA */}
           <div className="mt-7 rounded-2xl border border-landing-green/25 bg-black/40 p-5 sm:p-6 text-center">
             <h2 className="text-lg sm:text-xl font-bold text-white font-sans">

@@ -81,7 +81,7 @@ export default async function handler(req, res) {
       throw new Error("Could not record signup consent.");
     }
 
-    const newsletterForm = ["newsletter", "newsletter_page", "homepage_newsletter", "newsletter_workbench_climate", "newsletter_workbench_stock", "newsletter_workbench_sop", "newsletter_home_journal"].includes(sourceForm);
+    const newsletterForm = ["newsletter", "newsletter_page", "homepage_newsletter", "newsletter_workbench_climate", "newsletter_workbench_stock", "newsletter_workbench_sop", "newsletter_home_journal", "newsletter_grow_week", "newsletter_homepage_footer"].includes(sourceForm);
     let confirmationSent = false;
     if (newsletterForm && process.env.RESEND_API_KEY) {
       try {

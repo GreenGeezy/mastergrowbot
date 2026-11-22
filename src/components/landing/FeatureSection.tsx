@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppActions } from "./HeroSection";
 import { appStoreUrl, playStoreUrl } from "./ctaLinks";
-import NewsletterSignup from "./NewsletterSignup";
 import { appFaqs } from "@/data/appFaqs";
 import { trackEvent } from "@/lib/analytics";
 

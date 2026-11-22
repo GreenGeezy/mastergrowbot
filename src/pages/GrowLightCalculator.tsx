@@ -575,12 +575,6 @@ export default function GrowLightCalculator() {
           </div>
         </div>
       </div>
-
-      <p className="mx-auto max-w-3xl px-5 pb-8 text-center text-sm">
-        <a className="text-landing-green underline" href="/downloads/cannabis-ai-at-work.html?utm_source=light_calculator&utm_medium=website&utm_campaign=weekly_workbench#climate">
-          Try the free sensor-log tool. See which readings crossed your room’s review threshold.
-        </a>
-      </p>
       <LandingFooter />
     </div>
   );

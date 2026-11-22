@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
+import GrowWeekInvite from '@/components/landing/GrowWeekInvite';
 import LensGallery from '@/components/grow-tech/LensGallery';
 import LensTestimonials from '@/components/grow-tech/LensTestimonials';
 import { AppPlatformButtons } from '@/components/landing/cta';
@@ -49,6 +50,6 @@ export default function LensKit() {
       <section className="lens-wrap lens-section" id="delivery"><h2>Delivery, access and returns</h2><p>{offer.fulfillmentNote}</p><p>Open Start Here and AI Plant Observation Playbook Files in Whop after confirmed payment to access the complete kit. Existing lens purchasers receive the added digital access. Hardware is sourced to order; tracking follows dispatch. Sales tax is shown at checkout. Canadian import charges, if assessed, are extra.</p><p>Contact support@mastergrowbot.com before returning your order. Your hardware purchase is eligible for a refund if we receive the returned item within 30 days of purchase and it is undamaged. You pay return shipping except for damaged or incorrect goods. Contact us before ordering for a remote address or a particular deadline. <a href="/grow-tech#shipping-returns">Read the shipping and return policy</a>.</p></section>
       <section className="lens-wrap lens-section"><h2>Keep photos with your notes</h2><p>MasterGrowbot AI offers a separate place for your photos, journal and tasks on iOS and Android. The lens does not automatically sync to the app. App subscription terms and any AI limitations are separate from this hardware purchase.</p><AppPlatformButtons campaign="lens-product" location="lens-product:app" /></section>
       <section className="lens-wrap lens-section lens-final"><h2>A closer view, with a clearer record</h2><p>{offer.name} · {offer.price} USD</p><Buy location="lens-product:final" /><p className="mt-5"><Link className="lens-secondary" to="/grow-tech">Compare other GrowTech products</Link> · <Link className="lens-secondary" to="/playbooks">Explore the digital Playbook</Link></p></section>
-    </main><LandingFooter />
+    <GrowWeekInvite source="growtech" content="lens_kit" lead="When should you start checking trichomes?" body="Grow Week counts your flower weeks from your flip date and marks the day trichome checks should begin, with calendar reminders. Free, no account." /></main><LandingFooter />
   </div>;
 }

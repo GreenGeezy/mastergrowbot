@@ -12,7 +12,6 @@ const navLinksBefore: NavLink[] = [
 // One "Free Tools" menu item holds every tool, so new tools never add a top-level item.
 // Each tool keeps its own descriptive link text on every page.
 export const freeTools: (NavLink & { blurb: string })[] = [
-  { label: 'Home Grow Fieldnotes', to: '/home-grow-journal?utm_source=free_tools&utm_medium=website&utm_campaign=home_fieldnotes', blurb: 'Compare plant photos with ChatGPT or Claude' },
   { label: 'VPD Calculator', to: '/vpd-calculator', blurb: 'Leaf VPD and chart by growth stage' },
   { label: 'Grow Light Calculator', to: '/grow-light-calculator', blurb: 'DLI, PPFD and light hours' },
   { label: 'Symptom Checker', to: '/cannabis-symptom-checker', blurb: 'Yellow leaves, spots, curling, drooping' },
@@ -20,7 +19,6 @@ export const freeTools: (NavLink & { blurb: string })[] = [
 
 const navLinksAfter: NavLink[] = [
   { label: 'Guides', to: '/grow-guides' },
-  { label: 'Newsletter', to: '/newsletter?utm_source=site_nav&utm_medium=website&utm_campaign=weekly_workbench' },
 ];
 
 const desktopLinkClass = 'group inline-flex items-center gap-1.5 text-sm font-medium text-white/62 transition hover:text-white';

@@ -1,6 +1,6 @@
 import RealReports from '@/components/landing/RealReports';
 import IPMPlaybookSection from './IPMPlaybookSection';
-import NewsletterSignup from './NewsletterSignup';
+import NewsletterBand from './NewsletterBand';
 import { useEffect } from "react";
 import HeroSection from "./HeroSection";
 import AppTestimonials from "./AppTestimonials";
@@ -32,9 +32,6 @@ export default function LandingPage() {
       <LandingNav />
       <main>
         <HeroSection />
-        <section id="weekly-newsletter" className="px-4 py-8" aria-label="Free weekly newsletter">
-          <NewsletterSignup />
-        </section>
         <AppTestimonials />
         <RealReports campaign="homepage" location="homepage" />
         <GrowerBenefits />
@@ -63,6 +60,7 @@ export default function LandingPage() {
           </div>
         </section>
         <IPMPlaybookSection />
+        <NewsletterBand />
       </main>
       <LandingFooter />
       <MobileDownloadBar />

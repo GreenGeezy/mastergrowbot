@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import SEOHead from '@/components/SEOHead';
 import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
+import GrowWeekInvite from '@/components/landing/GrowWeekInvite';
 import GrowTechCTA from '@/components/landing/GrowTechCTA';
 import IPMPlaybookSection from '@/components/landing/IPMPlaybookSection';
 import { AppPlatformButtons } from '@/components/landing/cta';
@@ -212,6 +213,7 @@ export default function GrowGuidesHub() {
       </section>
 
       <IPMPlaybookSection location="grow-guides-hub-ipm-playbook" />
+      <GrowWeekInvite source="grow_guides" content="hub" lead="Reading up for a grow that’s already started?" />
       <LandingFooter />
     </div>
   );

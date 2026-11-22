@@ -50,7 +50,6 @@ export default function HeroSection() {
             <li><Check size={15} aria-hidden="true"/>Free download</li>
             <li><Check size={15} aria-hidden="true"/>iPhone &amp; Android</li>
           </ul>
-          <a className="inline-flex items-center gap-2 py-2 text-sm font-semibold text-landing-green underline underline-offset-4" href="/home-grow-journal?utm_source=homepage&utm_medium=website&utm_campaign=home_fieldnotes&utm_content=hero" onClick={() => trackEvent("newsletter_entry_click", { placement: "homepage_hero" })}>Free home grow journal · Compare two plant photos <ArrowRight size={15} aria-hidden="true" /></a>
           <p className="mg-hero-terms">Photo analysis and journal tools require a subscription. Your app store shows current prices and trial eligibility.</p>
         </div>
       </div>
