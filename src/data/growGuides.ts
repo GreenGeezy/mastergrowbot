@@ -1,3 +1,4 @@
+import { yellowLeavesOnCannabisGuide } from './yellow-leaves-on-cannabis-causes-and-fixes';
 import { growtechPilotGuide as guide_grow_tent_kit_vs_buying_separately } from './grow-tent-kit-vs-buying-separately';
 import { growtechPilotGuide as guide_grow_tent_setup_cost_under_400 } from './grow-tent-setup-cost-under-400';
 import { giftsForCannabisGrowersGuide } from './gifts-for-cannabis-growers';
@@ -34,6 +35,7 @@ export interface GrowGuide {
 }
 
 export const growGuides: GrowGuide[] = [
+  yellowLeavesOnCannabisGuide,
   giftsForCannabisGrowersGuide,
   guide_grow_tent_kit_vs_buying_separately,
   guide_grow_tent_setup_cost_under_400,

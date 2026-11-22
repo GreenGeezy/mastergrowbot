@@ -145,6 +145,7 @@
     }
   ],
   "rewrites": [
+    {"source":"/grow-guides/yellow-leaves-on-cannabis-causes-and-fixes","destination":"/seo/grow-guides/yellow-leaves-on-cannabis-causes-and-fixes.html"},
     {"source":"/grow-guides/grow-tent-kit-vs-buying-separately","destination":"/seo/grow-guides/grow-tent-kit-vs-buying-separately.html"},
     { "source": "/cannabis-grow-calendar", "destination": "/seo/cannabis-grow-calendar.html" },
     { "source": "/newsletter", "destination": "/seo/newsletter.html" },
