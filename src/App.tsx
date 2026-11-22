@@ -17,6 +17,7 @@ function CampaignCapture() {
 
 // Lazy load all page components
 const LazyIndex = lazy(publicPageLoaders.Index);
+const LazyHomeGrowFieldnotes = lazy(publicPageLoaders.HomeGrowFieldnotes);
 const LazyNewsletter = lazy(publicPageLoaders.Newsletter);
 const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("@/pages/TermsOfService"));
@@ -47,6 +48,7 @@ const LazyLensKit = lazy(publicPageLoaders.LensKit);
 const App = ({ initialPage }: { initialPage?: InitialPage }) => {
   const location = useLocation();
   const Index = initialPage?.key === 'Index' ? initialPage.component : LazyIndex;
+  const HomeGrowFieldnotes = initialPage?.key === 'HomeGrowFieldnotes' ? initialPage.component : LazyHomeGrowFieldnotes;
   const Newsletter = initialPage?.key === 'Newsletter' ? initialPage.component : LazyNewsletter;
   const GrowGuidesHub = initialPage?.key === 'GrowGuidesHub' ? initialPage.component : LazyGrowGuidesHub;
   const GrowGuideArticle = initialPage?.key === 'GrowGuideArticle' ? initialPage.component : LazyGrowGuideArticle;
@@ -65,6 +67,7 @@ const App = ({ initialPage }: { initialPage?: InitialPage }) => {
         <CampaignCapture />
         <RouteLoadBoundary key={location.pathname} pathname={location.pathname}>
         <Routes>
+          <Route path="/home-grow-journal" element={<Suspense fallback={<LoadingSpinner />}><HomeGrowFieldnotes /></Suspense>} />
           <Route path="/newsletter" element={<Suspense fallback={<LoadingSpinner />}><Newsletter /></Suspense>} />
           <Route path="/" element={<Suspense fallback={<LoadingSpinner />}><Index /></Suspense>} />
           <Route path="/grow-tech/apexel-macro-lens-kit" element={<Suspense fallback={<LoadingSpinner />}><LensKit /></Suspense>} />

@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 
 export const publicPageLoaders = {
+  HomeGrowFieldnotes: () => import('@/pages/HomeGrowFieldnotes'),
   Newsletter: () => import('@/pages/Newsletter'),
   Index: () => import('@/pages/Index'),
   GrowGuidesHub: () => import('@/pages/GrowGuidesHub'),
@@ -16,6 +17,7 @@ export const publicPageLoaders = {
 export type PublicPageKey = keyof typeof publicPageLoaders;
 export type InitialPage = { key: PublicPageKey; component: ComponentType };
 export const staticPublicRoutes: Record<string, PublicPageKey> = {
+    '/home-grow-journal': 'HomeGrowFieldnotes',
     '/newsletter': 'Newsletter',
     '/': 'Index', '/grow-guides': 'GrowGuidesHub', '/grow-tech': 'GrowTech',
     '/grow-tech/apexel-macro-lens-kit': 'LensKit', '/vpd-calculator': 'VPDCalculator',

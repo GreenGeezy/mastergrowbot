@@ -12,7 +12,7 @@ export default function Newsletter() {
     <main className="min-h-screen bg-stone-950 px-5 py-12 text-stone-100">
       <Helmet>
         <title>Cannabis AI News &amp; Tools | Weekly newsletter</title>
-        <meta name="description" content="Weekly cannabis technology reporting, AI tools and a free workbench for cultivation, retail and operations teams." />
+        <meta name="description" content="Weekly cannabis technology reporting and hands-on AI tools for home growers and cannabis businesses." />
         <link rel="canonical" href="https://www.mastergrowbot.com/newsletter" />
       </Helmet>
       <div className="mx-auto max-w-3xl">

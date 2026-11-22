@@ -141,6 +141,7 @@
   ],
   "rewrites": [
     {"source":"/grow-guides/grow-tent-kit-vs-buying-separately","destination":"/seo/grow-guides/grow-tent-kit-vs-buying-separately.html"},
+    { "source": "/home-grow-journal", "destination": "/seo/home-grow-journal.html" },
     { "source": "/newsletter", "destination": "/seo/newsletter.html" },
     {"source":"/grow-guides/grow-tent-setup-cost-under-400","destination":"/seo/grow-guides/grow-tent-setup-cost-under-400.html"},
     {"source":"/grow-guides/gifts-for-cannabis-growers","destination":"/seo/grow-guides/gifts-for-cannabis-growers.html"},
