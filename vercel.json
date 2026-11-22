@@ -68,6 +68,15 @@
           "value": "noindex, follow"
         }
       ]
+    },
+    {
+      "source": "/images/pins/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
     }
   ],
   "redirects": [
