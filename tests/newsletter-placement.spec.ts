@@ -112,7 +112,10 @@ test.describe('Grow Week tool', () => {
     expect(ics).toContain('BEGIN:VCALENDAR');
     expect(ics).toContain('SUMMARY:Start trichome checks');
     expect(ics).not.toContain('PRIVATE-NOTE-MARKER');
-    const events = await page.evaluate(() => JSON.stringify(window.dataLayer ?? []));
+    const events = await page.evaluate(() => {
+      const seen = new WeakSet();
+      return JSON.stringify(window.dataLayer ?? [], (_k, v) => { if (v && typeof v === 'object') { if (seen.has(v) || v instanceof Node || v === window) return undefined; seen.add(v); } return v; });
+    });
     expect(events).not.toContain('PRIVATE-NOTE-MARKER');
     expect(bodies.join('\n')).not.toContain('PRIVATE-NOTE-MARKER');
   });
