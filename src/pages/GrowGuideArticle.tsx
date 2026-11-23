@@ -15,6 +15,7 @@ import { growGuides, getGuideBySlug } from '@/data/growGuides';
 import { trackEvent } from '@/lib/analytics';
 import IPMPlaybookSection from '@/components/landing/IPMPlaybookSection';
 import GrowWeekInvite from '@/components/landing/GrowWeekInvite';
+import WebProInvite from '@/components/web-pro/WebProInvite';
 
 function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -290,6 +291,7 @@ export default function GrowGuideArticle() {
                 </div>
               )}
               <AppPlatformButtons campaign={guide.slug} location="article-closing" className="pt-2" />
+              <WebProInvite location={`article-closing:${guide.slug}`} />
               {!isIpmIntent && (
               <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-landing-green/20 bg-black/40 p-5">
                 <h3 className="text-lg font-bold text-white font-sans">{bookCtaHeading}</h3>
