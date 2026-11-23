@@ -146,6 +146,21 @@ const TermsOfService = () => {
             </ul>
           </section>
 
+          {/* Web Pro subscriptions */}
+          <section>
+            <h2 className="text-xl font-semibold mb-3 text-white border-l-4 border-landing-green pl-3">MasterGrowbot Web Pro Subscriptions</h2>
+            <p className="text-white/60 mb-4">
+              MasterGrowbot Web Pro is sold on this website and is separate from any subscription bought in the mobile apps.
+            </p>
+            <ul className="list-disc pl-6 space-y-2 text-white/60">
+              <li>Payments are processed by Whop. The price and billing period are shown before you pay.</li>
+              <li>Subscriptions renew automatically at the same billing period until you cancel.</li>
+              <li>You can cancel anytime from Account inside Web Pro, which opens your Whop billing page. Access continues until the end of the period you paid for.</li>
+              <li>Web Pro works in a web browser. It does not include the mobile app subscription, and mobile sync is not available today.</li>
+              <li>Photo reports have a weekly fair use limit, which is shown inside Web Pro.</li>
+            </ul>
+          </section>
+
           {/* User Responsibilities */}
           <section>
             <h2 className="text-xl font-semibold mb-3 text-white border-l-4 border-landing-green pl-3">User Responsibilities</h2>

@@ -13,6 +13,7 @@ export const publicPageLoaders = {
   SymptomChecker: () => import('@/pages/SymptomChecker'),
   About: () => import('@/pages/About'),
   Playbook: () => import('@/pages/Playbook'),
+  WebPro: () => import('@/pages/WebPro'),
 };
 export type PublicPageKey = keyof typeof publicPageLoaders;
 export type InitialPage = { key: PublicPageKey; component: ComponentType };
@@ -23,7 +24,7 @@ export const staticPublicRoutes: Record<string, PublicPageKey> = {
     '/grow-tech/apexel-macro-lens-kit': 'LensKit', '/vpd-calculator': 'VPDCalculator',
     '/grow-light-calculator': 'GrowLightCalculator',
     '/cannabis-symptom-checker': 'SymptomChecker',
-    '/about': 'About', '/playbooks': 'Playbook',
+    '/about': 'About', '/playbooks': 'Playbook', '/pro': 'WebPro',
 };
 export function publicPageKey(path: string): PublicPageKey | undefined {
   return staticPublicRoutes[path] ?? (/^\/grow-guides\/[a-z0-9-]+$/.test(path) ? 'GrowGuideArticle' : undefined);

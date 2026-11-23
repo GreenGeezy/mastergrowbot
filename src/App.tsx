@@ -34,6 +34,8 @@ const WhopEmbedTest = lazy(() => import("@/pages/WhopEmbedTest"));
 const CheckoutDiagnostics = lazy(() => import("@/pages/CheckoutDiagnostics"));
 const LazyAbout = lazy(publicPageLoaders.About);
 const LazyPlaybook = lazy(publicPageLoaders.Playbook);
+const LazyWebPro = lazy(publicPageLoaders.WebPro);
+const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
 const PlaybookCheckout = lazy(() => import("@/pages/PlaybookCheckout"));
 const PlaybookThankYou = lazy(() => import("@/pages/PlaybookThankYou"));
 const AIStrategyIntake = lazy(() => import("@/pages/AIStrategyIntake"));
@@ -63,6 +65,7 @@ const App = ({ initialPage }: { initialPage?: InitialPage }) => {
   const SymptomChecker = initialPage?.key === 'SymptomChecker' ? initialPage.component : LazySymptomChecker;
   const About = initialPage?.key === 'About' ? initialPage.component : LazyAbout;
   const Playbook = initialPage?.key === 'Playbook' ? initialPage.component : LazyPlaybook;
+  const WebPro = initialPage?.key === 'WebPro' ? initialPage.component : LazyWebPro;
   const LensKit = initialPage?.key === 'LensKit' ? initialPage.component : LazyLensKit;
   return (
     <TooltipProvider>
@@ -183,6 +186,8 @@ const App = ({ initialPage }: { initialPage?: InitialPage }) => {
             }
           />
           <Route path="/about" element={<Suspense fallback={<LoadingSpinner />}><About /></Suspense>} />
+          <Route path="/pro" element={<Suspense fallback={<LoadingSpinner />}><WebPro /></Suspense>} />
+          <Route path="/auth/callback" element={<Suspense fallback={<LoadingSpinner />}><AuthCallback /></Suspense>} />
           <Route path="/playbooks" element={<Suspense fallback={<LoadingSpinner />}><Playbook /></Suspense>} />
           <Route path="/playbooks/checkout" element={<Suspense fallback={<LoadingSpinner />}><PlaybookCheckout /></Suspense>} />
           <Route path="/playbooks/thank-you" element={<Suspense fallback={<LoadingSpinner />}><PlaybookThankYou /></Suspense>} />

@@ -91,6 +91,17 @@ const PrivacyPolicy = () => {
             </ul>
           </section>
 
+          {/* Web Pro */}
+          <section>
+            <h2 className="text-xl font-semibold mb-3 text-white border-l-4 border-landing-green pl-3">MasterGrowbot Web Pro</h2>
+            <p className="text-white/60 leading-relaxed">
+              When you use Web Pro on this website, we store your sign-in details (email, or your Google or Apple
+              sign-in), your saved reports with a small photo preview, saved numbers and checklists. Payments are
+              processed by Whop. We receive your subscription status and payment reference, not your card number.
+              You can delete saved items and your Web Pro account from the Web Pro page.
+            </p>
+          </section>
+
           {/* Photo Uploads & AI Analysis */}
           <section>
             <h2 className="text-xl font-semibold mb-3 text-white border-l-4 border-landing-green pl-3">Photo Uploads &amp; AI Analysis</h2>

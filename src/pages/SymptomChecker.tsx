@@ -7,6 +7,7 @@ import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import RealReports from '@/components/landing/RealReports';
 import { AppPlatformButtons } from '@/components/landing/cta';
+import WebProInvite from '@/components/web-pro/WebProInvite';
 import { appStoreUrl, playStoreUrl } from '@/components/landing/ctaLinks';
 
 // This tool runs entirely in the visitor's browser. It makes no network or AI calls,
@@ -362,6 +363,7 @@ export default function SymptomChecker() {
                   </p>
                   <AppPlatformButtons campaign="cannabis-symptom-checker" location="symptom-checker-results" className="pt-4" />
                   <p className="mt-3 text-xs text-white/40 font-sans">Free download. Eligible new Pro subscribers can try 3 days free.</p>
+                  <WebProInvite location="symptom-checker-results" />
                 </div>
               </>
             )}

@@ -15,6 +15,9 @@ type Props = {
   // Shipping fields are configured on the merchant's Whop plan, not client-side.
   collectShipping?: boolean;
   collectShippingAddress?: boolean;
+  /** Recorded on the Whop payment. Read once when the checkout opens. */
+  metadata?: Record<string, string>;
+  buyerEmail?: string;
   fallback?: ReactNode;
   onComplete?: (planId: string, paymentId: string) => void;
   onStateChange?: (state: WhopCheckoutState) => void;
@@ -33,7 +36,7 @@ export function preloadWhopCheckout() {
   try { getWhopElements(); } catch { /* checkout page will retry on mount */ }
 }
 
-export function WhopElementsCheckout({ planId, returnUrl, theme = "light", deliveryCountry, utm, styles, fallback, onComplete, onStateChange }: Props) {
+export function WhopElementsCheckout({ planId, returnUrl, theme = "light", deliveryCountry, utm, styles, metadata, buyerEmail, fallback, onComplete, onStateChange }: Props) {
   const [elements] = useState(getWhopElements);
   const attribution = useMemo(() => ({
     utmSource: utm?.utm_source, utmMedium: utm?.utm_medium,
@@ -44,14 +47,14 @@ export function WhopElementsCheckout({ planId, returnUrl, theme = "light", deliv
   const defaultValues = useMemo(() => deliveryCountry ? { shippingAddress: { country: deliveryCountry } } : undefined, [deliveryCountry]);
   return <div style={{ padding: `${styles?.container?.paddingY ?? 12}px ${styles?.container?.paddingX ?? 12}px` }}>
     <WhopElements elements={elements} onLoadError={() => onStateChange?.("error")}>
-      <Checkout key={planId} plan={planId} returnUrl={returnUrl} attribution={attribution} appearance={appearance} fallback={fallback}
+      <Checkout key={planId} plan={planId} returnUrl={returnUrl} attribution={attribution} metadata={metadata} appearance={appearance} fallback={fallback}
         onComplete={completion => {
           // A waitlist entry or saved payment method is not a paid order.
           if (completion.result === "payment" && /^pay_[A-Za-z0-9]+$/.test(completion.paymentId)) {
             onComplete?.(planId, completion.paymentId);
           }
         }}>
-        <CheckoutElement defaultValues={defaultValues} fallback={fallback} onReady={() => onStateChange?.("ready")} onError={() => onStateChange?.("error")} />
+        <CheckoutElement defaultValues={defaultValues} buyerEmail={buyerEmail} fallback={fallback} onReady={() => onStateChange?.("ready")} onError={() => onStateChange?.("error")} />
       </Checkout>
     </WhopElements>
   </div>;

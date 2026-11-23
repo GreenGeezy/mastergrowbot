@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AMAZON_BOOK_URL, GROW_TECH_URL } from './ctaLinks';
+import { webProLive } from '@/lib/webPro';
 
 export default function LandingFooter() {
   return (
@@ -24,6 +25,11 @@ export default function LandingFooter() {
           <Link to="/cannabis-symptom-checker" className="hover:text-white/75 transition-colors">
             Symptom Checker
           </Link>
+          {webProLive && (
+            <Link to="/pro" data-cta-location="footer:web-pro" className="hover:text-white/75 transition-colors">
+              Web Pro
+            </Link>
+          )}
           <a
             href={AMAZON_BOOK_URL}
             target="_blank"
