@@ -16,8 +16,8 @@ export const PLANS: Record<PlanKey, { id: string | null; label: string; price: n
   },
   monthly: {
     id: planId(import.meta.env.NEXT_PUBLIC_WHOP_WEB_PRO_MONTHLY_PLAN_ID),
-    label: 'Monthly', price: 9.99, display: '$9.99', per: 'month',
-    terms: '$9.99 USD billed today, then $9.99 every month until you cancel.',
+    label: 'Monthly', price: 19, display: '$19', per: 'month',
+    terms: '$19 USD billed today, then $19 every month until you cancel.',
   },
 };
 

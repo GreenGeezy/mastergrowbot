@@ -65,7 +65,7 @@ for (const size of [{ name: 'phone', viewport: { width: 375, height: 812 } }, { 
       await expect(page.getByText('$59', { exact: true })).toBeVisible();
       await expect(page.getByText('$59 USD billed today, then $59 every year until you cancel. Cancel anytime.')).toBeVisible();
       await page.getByRole('button', { name: /^Monthly/ }).click();
-      await expect(page.getByText('$9.99 USD billed today, then $9.99 every month until you cancel. Cancel anytime.')).toBeVisible();
+      await expect(page.getByText('$19 USD billed today, then $19 every month until you cancel. Cancel anytime.')).toBeVisible();
       await expect(page.locator('#account a[href*="apps.apple.com"]')).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
       expect(await page.locator('body').innerText()).not.toMatch(/—|unlimited|gemini|openai|stripe/i);
@@ -90,7 +90,7 @@ for (const size of [{ name: 'phone', viewport: { width: 375, height: 812 } }, { 
       await page.screenshot({ path: `output/web-pro-signin-${size.name}.png` });
       await page.getByRole('button', { name: 'Create account and continue' }).click();
       await expect(page.getByRole('heading', { name: 'Start Web Pro' })).toBeVisible();
-      await expect(page.getByText('$9.99 USD billed today')).toBeVisible();
+      await expect(page.getByText('$19 USD billed today')).toBeVisible();
       expect(calls.some((c) => c.path === '/rest/v1/profiles' && c.method === 'POST' && c.body?.id === USER.id)).toBe(true);
       expect(errors).toEqual([]);
     });
