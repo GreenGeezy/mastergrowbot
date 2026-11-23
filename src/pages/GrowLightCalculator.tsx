@@ -7,6 +7,7 @@ import LandingNav from '@/components/landing/LandingNav';
 import LandingFooter from '@/components/landing/LandingFooter';
 import { AppPlatformButtons } from '@/components/landing/cta';
 import { appStoreUrl, playStoreUrl } from '@/components/landing/ctaLinks';
+import WebProInvite from '@/components/web-pro/WebProInvite';
 
 // ─── Types and constants ──────────────────────────────────────────────────────
 
@@ -404,6 +405,7 @@ export default function GrowLightCalculator() {
             </p>
             <AppPlatformButtons campaign="grow-light-calculator" location="light-calculator-results" className="pt-4" />
             <p className="mt-3 text-xs text-white/40 font-sans">Free download. Eligible new Pro subscribers can try 3 days free.</p>
+            <WebProInvite location="grow-light-calculator-results" />
           </div>
         </div>
 

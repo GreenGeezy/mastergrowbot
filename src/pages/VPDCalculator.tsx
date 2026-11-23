@@ -8,6 +8,7 @@ import LandingFooter from '@/components/landing/LandingFooter';
 import { AmazonBookButton } from '@/components/landing/AmazonBookButton';
 import { AppPlatformButtons } from '@/components/landing/cta';
 import { appStoreUrl, playStoreUrl } from '@/components/landing/ctaLinks';
+import WebProInvite from '@/components/web-pro/WebProInvite';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -578,6 +579,7 @@ export default function VPDCalculator() {
             </p>
             <AppPlatformButtons campaign="vpd-calculator" location="vpd-calculator-results" className="pt-4" />
             <p className="mt-3 text-xs text-white/40 font-sans">Free download. Eligible new Pro subscribers can try 3 days free.</p>
+            <WebProInvite location="vpd-calculator-results" />
           </div>
         </div>
 

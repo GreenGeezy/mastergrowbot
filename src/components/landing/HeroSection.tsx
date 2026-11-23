@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { ArrowDown, ArrowRight, Check, Star } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { HERO_VERSION } from "@/lib/heroDemoMetadata";
+import WebProInvite from "@/components/web-pro/WebProInvite";
 
 import { appStoreUrl, playStoreUrl } from "./ctaLinks";
 
@@ -51,6 +52,7 @@ export default function HeroSection() {
             <li><Check size={15} aria-hidden="true"/>iPhone &amp; Android</li>
           </ul>
           <p className="mg-hero-terms">Photo analysis and journal tools require a subscription. Your app store shows current prices and trial eligibility.</p>
+          <WebProInvite location="homepage-hero" align="left" />
         </div>
       </div>
       <a href="#grow-walkthrough" className="mg-hero-scroll">See how it works <ArrowDown size={16} aria-hidden="true"/></a>

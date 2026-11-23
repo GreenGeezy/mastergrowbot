@@ -5,6 +5,7 @@ import { AppActions } from "./HeroSection";
 import { appStoreUrl, playStoreUrl } from "./ctaLinks";
 import { appFaqs } from "@/data/appFaqs";
 import { trackEvent } from "@/lib/analytics";
+import WebProInvite from "@/components/web-pro/WebProInvite";
 
 const experiences = [
   {
@@ -106,6 +107,7 @@ export default function FeatureSection() {
           Pro trial for eligible new subscribers. Paid subscription after trial
           unless canceled.
         </p>
+        <WebProInvite location="homepage-download" />
 
       </section>
     </>

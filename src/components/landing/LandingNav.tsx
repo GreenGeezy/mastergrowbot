@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react';
+import { webProLive } from '@/lib/webPro';
 
 type NavLink = { label: string; to: string };
 
@@ -62,6 +63,11 @@ export default function LandingNav({ growTechMode = false, onMenuOpenChange }: {
           {navLinksAfter.map((link) => (
             <Link key={link.to} to={link.to} className={desktopLinkClass}>{link.label}</Link>
           ))}
+          {webProLive && (
+            <Link to="/pro" data-cta-location="navigation:web-pro" className="group inline-flex items-center gap-1.5 text-sm font-semibold text-landing-green transition hover:text-landing-green-glow">
+              Web Pro
+            </Link>
+          )}
         </div>
 
         <div className="hidden items-center gap-3 sm:flex">
@@ -111,6 +117,11 @@ export default function LandingNav({ growTechMode = false, onMenuOpenChange }: {
                 {link.label}<ArrowRight className="h-5 w-5 text-landing-green" />
               </Link>
             ))}
+            {webProLive && (
+              <Link to="/pro" data-cta-location="mobile-navigation:web-pro" onClick={() => changeMenu(false)} className={mobileLinkClass}>
+                Web Pro<ArrowRight className="h-5 w-5 text-landing-green" />
+              </Link>
+            )}
           </div>
           {growTechMode ? (
             <Link to="/grow-tech#grow-light" onClick={() => changeMenu(false)} className="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-landing-green px-6 py-4 text-base font-black text-black">Explore the light <ArrowRight className="h-4 w-4" /></Link>
