@@ -1,3 +1,4 @@
+import { cannabisLeavesCurlingGuide } from './cannabis-leaves-curling-up-or-down';
 import { yellowLeavesOnCannabisGuide } from './yellow-leaves-on-cannabis-causes-and-fixes';
 import { growtechPilotGuide as guide_grow_tent_kit_vs_buying_separately } from './grow-tent-kit-vs-buying-separately';
 import { growtechPilotGuide as guide_grow_tent_setup_cost_under_400 } from './grow-tent-setup-cost-under-400';
@@ -35,6 +36,7 @@ export interface GrowGuide {
 }
 
 export const growGuides: GrowGuide[] = [
+  cannabisLeavesCurlingGuide,
   yellowLeavesOnCannabisGuide,
   giftsForCannabisGrowersGuide,
   guide_grow_tent_kit_vs_buying_separately,
