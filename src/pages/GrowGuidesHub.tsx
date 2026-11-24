@@ -213,7 +213,7 @@ export default function GrowGuidesHub() {
       </section>
 
       <IPMPlaybookSection location="grow-guides-hub-ipm-playbook" />
-      <GrowWeekInvite source="grow_guides" content="hub" lead="Reading up for a grow that’s already started?" />
+      <GrowWeekInvite source="grow_guides" content="hub" lead="Find your plant’s week from its sprout date." />
       <LandingFooter />
     </div>
   );
