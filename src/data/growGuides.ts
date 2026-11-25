@@ -1,3 +1,4 @@
+import { brownSpotsOnCannabisLeavesGuide } from './brown-spots-on-cannabis-leaves';
 import { cannabisLeavesCurlingGuide } from './cannabis-leaves-curling-up-or-down';
 import { yellowLeavesOnCannabisGuide } from './yellow-leaves-on-cannabis-causes-and-fixes';
 import { growtechPilotGuide as guide_grow_tent_kit_vs_buying_separately } from './grow-tent-kit-vs-buying-separately';
@@ -36,6 +37,7 @@ export interface GrowGuide {
 }
 
 export const growGuides: GrowGuide[] = [
+  brownSpotsOnCannabisLeavesGuide,
   cannabisLeavesCurlingGuide,
   yellowLeavesOnCannabisGuide,
   giftsForCannabisGrowersGuide,
