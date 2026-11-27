@@ -51,6 +51,19 @@ export default function HeroSection() {
             <li><Check size={15} aria-hidden="true"/>Free download</li>
             <li><Check size={15} aria-hidden="true"/>iPhone &amp; Android</li>
           </ul>
+          <div className="mg-hero-qr" role="group" aria-labelledby="hero-qr-title">
+            <p id="hero-qr-title" className="mg-hero-qr-title"><strong>On a computer?</strong> Point your phone camera at a code to download MasterGrowbot AI.</p>
+            <div className="mg-hero-qr-codes">
+              <figure>
+                <img src="/images/qr/mastergrowbot-ios-app-store.svg" width="112" height="112" alt="QR code to download MasterGrowbot AI on the US App Store for iPhone" loading="lazy" decoding="async"/>
+                <figcaption><PlatformIcon platform="ios"/>iPhone</figcaption>
+              </figure>
+              <figure>
+                <img src="/images/qr/mastergrowbot-google-play.svg" width="112" height="112" alt="QR code to download MasterGrowbot AI on Google Play for Android" loading="lazy" decoding="async"/>
+                <figcaption><PlatformIcon platform="android"/>Android</figcaption>
+              </figure>
+            </div>
+          </div>
           <p className="mg-hero-terms">Photo analysis and journal tools require a subscription. Your app store shows current prices and trial eligibility.</p>
           <WebProInvite location="homepage-hero" align="left" />
         </div>
