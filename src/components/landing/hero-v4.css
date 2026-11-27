@@ -27,13 +27,14 @@
 .cinematic-site .mg-hero-terms{margin:14px 0 0;max-width:480px;font-size:12px;line-height:1.5;color:#9fb3a5}
 /* Desktop-only QR codes so computer visitors can install on their phone (hidden on touch devices and small screens). */
 .mg-hero-qr{display:flex;align-items:center;gap:18px;width:max-content;max-width:100%;margin:22px 0 0;padding:12px 16px 12px 12px;border:1px solid #bbf77b33;border-radius:18px;background:#0b1a12cc;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 14px 40px #0006}
-.mg-hero-qr-codes{display:flex;gap:12px;order:-1}
-.mg-hero-qr figure{margin:0;display:grid;justify-items:center;gap:6px}
-.mg-hero-qr img{display:block;width:112px;height:112px;border-radius:10px;background:#fff}
-.mg-hero-qr figcaption{display:inline-flex;align-items:center;gap:5px;color:#e6efe7;font-size:12px;font-weight:700}
-.mg-hero-qr figcaption svg{width:14px;height:14px;color:#bbf77b}
-.cinematic-site .mg-hero-qr-title{margin:0;max-width:190px;font-size:13px;line-height:1.5;color:#c4d4c8}
+.mg-hero-qr-codes{display:flex;order:-1}
+.mg-hero-qr figure{margin:0}
+.mg-hero-qr img{display:block;width:128px;height:128px;border-radius:12px;background:#fff}
+.cinematic-site .mg-hero-qr-title{margin:0;max-width:220px;font-size:13px;line-height:1.5;color:#c4d4c8}
 .mg-hero-qr-title strong{display:block;margin-bottom:2px;color:#f6f6ee;font-size:15px}
+.mg-hero-qr-platforms{display:flex;align-items:center;gap:6px;margin-top:8px;color:#e6efe7;font-size:12px;font-weight:700}
+.mg-hero-qr-platforms svg{width:14px;height:14px;color:#bbf77b}
+.mg-hero-qr-platforms svg:nth-of-type(2){margin-left:8px}
 @media(max-width:1023px),(hover:none),(pointer:coarse){.mg-hero-qr{display:none}}
 .mg-hero-scroll{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;color:#d9f7c4;font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;border:1px solid #ffffff26;background:#080e0c99;backdrop-filter:blur(6px)}
 .mg-hero-scroll svg{animation:mg-bob 1.8s ease-in-out infinite}
